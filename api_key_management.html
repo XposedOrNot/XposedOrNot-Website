@@ -1,0 +1,371 @@
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>XposedOrNot: API Key Management</title>
+      <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+      <link rel="dns-prefetch" href="static.hotjar.com">
+      <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+      <link rel=stylesheet href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset' type=text/css media=all>
+      <link href="static/css/style.css" type="text/css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+      <script src="static/scripts/utils.js"></script>
+      <link href="static/css/style2.css" type="text/css" rel="stylesheet" defer>
+      <link href="static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
+      <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+      <meta name="description" content="XposedOrNot: Get a detailed report of your data breach exposure">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="author" content="Devanand Premkumar">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+      <script src="https://unpkg.com/@popperjs/core@2"></script>
+      <script src="https://unpkg.com/tippy.js@6"></script>
+      <style>
+         body {
+         background-color: #f5f5f5;
+         }
+         .navbar {
+         margin-bottom: 20px;
+         }
+         .card {
+         box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
+         }
+         h3 {
+         color: #007bff;
+         //text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+         }
+         .benefit-card {
+         border: none;
+         border-radius: 10px;
+         box-shadow: 0 0 15px 0 rgba(0,0,0,0.1);
+         }
+         .benefit-card:nth-child(even) {
+         background: #007bff;
+         color: #fff;
+         }
+         .benefit-card:nth-child(odd) {
+         background: #fff;
+         color: #007bff;
+         }
+         .benefit-card .card-title {
+         font-weight: 700;
+         font-size: 1.2em;
+         }
+         .benefit-card .card-text {
+         font-size: 1em;
+         }
+      </style>
+      <script>
+          (function (h, o, t, j, a, r) {
+    h.hj = h.hj || function () {
+        (h.hj.q = h.hj.q || []).push(arguments)
+    };
+    h._hjSettings = {
+        hjid: 1613245,
+        hjsv: 6
+    };
+    a = o.getElementsByTagName('head')[0];
+    r = o.createElement('script');
+    r.async = 1;
+    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+    a.appendChild(r);
+})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+        (function () {
+    var script = document.createElement("script");
+    script.onload = () => {
+      window.GrafanaFaroWebSdk.initializeFaro({
+        url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
+        app: {
+          name: 'xonniepub',
+          version: "1.0.0",
+        },
+      });
+    };
+    script.src =
+      "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
+    document.head.appendChild(script);
+  })();
+      </script>
+   </head>
+   <body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
+      <div class="mobileheader-area">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12">
+                  <nav class="navbar navbar-expand-lg navbar-light">
+                     <a class="navbar-brand" href="index.html">
+                        <p>XposedorNot</p>
+                     </a>
+                     <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                     <span class="hamburger-box">
+                     <span class="hamburger-inner"></span>
+                     </span>
+                     </button>
+                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto"></ul>
+                        <div class="main-menu-part">
+                           <ul>
+                              <li>
+                                 <a href="password.html">Password</a>
+                              </li>
+                              <li>
+                                 <a href="faq.html">FAQ</a>
+                              </li>
+                              <li>
+                                 <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                              </li>
+                              <li>
+                                 <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
+                                 <em class="fab fa-twitter"></em>
+                                 </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </nav>
+               </div>
+            </div>
+         </div>
+      </div>
+      <header class="header-area">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-3 col-md-3">
+                  <div class="header-left">
+                     <a href="https://XposedOrNot.com">
+                        <p>XposedorNot</p>
+                     </a>
+                  </div>
+               </div>
+               <div class="col-lg-9 col-md-9">
+                  <div class="header-right">
+                     <ul>
+                        <li>
+                           <a href="password.html">Password</a>
+                        </li>
+                        <li>
+                           <a href="faq.html">FAQ</a>
+                        </li>
+                        <li>
+                           <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                        </li>
+                        <li>
+                           <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
+                           <em class="fab fa-twitter"></em>
+                           </a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </header>
+      <div class="container">
+      <br>
+      <div class="row justify-content-center align-items-center" style="height:80vh">
+         <div class="col-12">
+            <div class="card" align="center">
+               <div class="card-body">
+                  <h3 class="text-center mb-5"> XposedOrNot API Key Management</h3>
+                  <p align="center">This is your current API key which can be used to query breaches related to domains which are verified.
+                  <form id="emailForm">
+                     <div class="form-group">
+                        <div class="input-group">
+                           <input type="text" style="text-align:center; font-weight: bold; font-size:16px;" class="form-control w-75 form-control" id="api_key" name="api_key" placeholder="ImRldmEuc2VjdXJpdHlAZ21haWwuY29tIg.ZJpu5g.MrhgMQk60I5TJyYHke6YNqrsabk" readonly>
+                           <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary" id="submitButton">
+                              <span id="submitText">Reset API Key</span>
+                              <span id="submitSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                              </button>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+                  <div id="rateLimitMessage" class="alert alert-warning mt-3" style="display: none;">
+                     <i class="fas fa-exclamation-triangle"></i> Too many requests. Please slow down and try again later.
+                  </div>
+                  <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+                     <i class="fas fa-check-circle"></i> API Reset successfully completed. You may use the new API key.
+                  </div>
+                  <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
+                     <i class="fas fa-times-circle"></i> There was an error processing your request. Please try again later.
+                  </div>
+                  <div id="curl" name="curl" class="alert alert-primary mt-3">
+                     <blockquote>
+                        curl -L -X POST -H "x-api-key: [KEY]" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/
+                     </blockquote>
+                  </div>
+                  <div class="container my-5">
+                     <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-4">
+                           <div class="card benefit-card">
+                              <div class="card-body">
+                                 <h5 class="card-title">Breach Checks</h5>
+                                 <p class="card-text">Our API allows checks for data breaches, providing an up-to-date insight into potential user data expsure across all validated domains.</p>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                           <div class="card benefit-card">
+                              <div class="card-body">
+                                 <h5 class="card-title">Seamless Integration</h5>
+                                 <p class="card-text">Our API is designed to integrate seamlessly with SIEM, SOAR and other security systems, enhancing your cybersecurity posture.</p>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                           <div class="card benefit-card">
+                              <div class="card-body">
+                                 <h5 class="card-title">Real-Time Updates</h5>
+                                 <p class="card-text">Our API delivers real-time updates, enabling swift response to any new or emerging data breaches that could impact your validated domains.</p>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                           <div class="card benefit-card">
+                              <div class="card-body">
+                                 <h5 class="card-title">Robust Security</h5>
+                                 <p class="card-text">The API is designed with strong security measures, ensuring the protection of sensitive data while providing a robust tool for breach management.</p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <br><br>
+         <div align="center">Please read our <a href="api_doc.html">API Documentation</a> and <a href="xposedornot.apiary.com">API Playground</a> for more details.</strong></div>
+         <div align="center">
+            <button type="button" class="btn-lg btn-primary" style="background-color:#FC9E11;color:white">
+            </em>&nbsp; Back to Breaches Dashboard </button>
+         </div>
+      </div>
+      <div class="container text-center" style="font-family:Poppins">
+         <footer>
+            <aside>
+               <hr>
+               <div xmlns:cc="https://creativecommons.org/ns#" about="https://creativecommons.org">
+                  <div class="footer-menu" style="width:30%;Text-align:center;float:left;">
+                     <a style="color:blue" href="privacy">Privacy Policy</a>
+                  </div>
+               </div>
+               <p>
+               <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
+                  <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                  <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+               </div>
+               </p>
+            </aside>
+         </footer>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1" rel="preconnect"></script>
+      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
+      <script src="static/scripts/common.js"></script>   
+      <script type="text/javascript">
+         $.urlParam = function (name) {
+             var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+             return results[1] || 0;
+         }
+         
+         let token;
+         try {
+              email = decodeURIComponent($.urlParam('email'));
+               token = decodeURIComponent($.urlParam('token'));
+         } catch (error) {
+             window.location.replace("https://xposedornot.com");
+         }    
+         
+         $(document).ready(function() {
+         $('.btn-lg.btn-primary').click(function() {
+             var newUrl = 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+             window.location.href = newUrl;
+         });
+         });
+         
+         let api_url = "https://api.xposedornot.com/v1/get-api-key/" + token;
+         
+         $.ajax({
+             url: api_url,
+             type: 'GET',
+             success: function(res) {
+                 $('#api_key').val(res.api_key);
+                 message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                 document.getElementById('curl').innerText =  message
+             },
+             error: function(error) {
+                 if (error.responseJSON && error.responseJSON.error === 'invalid_token') {
+                     alert("Invalid token. Please try again.");
+                 }
+             }
+         });
+         
+         document.getElementById('emailForm').addEventListener('submit', function(event){
+         event.preventDefault();
+         hideAllMessages();
+         resetApiKey();
+         });
+         
+         function showRateLimitMessage() {
+         document.getElementById('rateLimitMessage').style.display = "block";
+         }
+         
+         function showSuccessMessage() {
+         document.getElementById('successMessage').style.display = "block";
+         
+         }
+         
+         function showErrorMessage(message) {
+         document.getElementById('errorMessage').innerText = message;
+         document.getElementById('errorMessage').style.display = "block";
+         }
+         
+         function resetApiKey() {
+         document.getElementById('submitText').style.display = "none";
+         document.getElementById('submitSpinner').style.display = "inline-block";
+         document.getElementById('submitButton').disabled = true;
+         
+         hideAllMessages();
+         fetch(`https://api.xposedornot.com/v1/create-api-key/${token}`)
+             .then(response => {
+                 if (!response.ok) {
+                     if (response.status === 429) {
+                         showRateLimitMessage();
+                     } else {
+                         showErrorMessage('Network response was not ok');
+                     }
+                     throw new Error('Network response was not ok');
+                 }
+                 return response.json();
+             })
+             .then(data => {
+                 if (data.status === "success") {
+                     document.getElementById('api_key').value = data.api_key;
+                     showSuccessMessage();
+                     message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + data.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                     document.getElementById('curl').innerText =  message
+                    
+                 } else {
+                     showErrorMessage('Failed to reset API key');
+                 }
+             })
+             .catch(() => {
+                 showErrorMessage('An error occurred while resetting your API key. Please try again later.');
+             })
+             .finally(() => {
+                 
+                 document.getElementById('submitText').style.display = "inline-block";
+                 document.getElementById('submitSpinner').style.display = "none";
+                 document.getElementById('submitButton').disabled = false;
+             });
+         
+         }
+         function hideAllMessages() {
+         document.getElementById('rateLimitMessage').style.display = "none";
+         document.getElementById('successMessage').style.display = "none";
+         document.getElementById('errorMessage').style.display = "none";
+         }
+      </script>
+   </body>
+</html>

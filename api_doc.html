@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="XposedOrNot: API Documentation ">
+      <meta name="author" content="Devanand Premkumar">
+      <meta content="XposedOrNot: API Documentation for Developers" property="og:title" />
+      <title>XposedOrNot API Reference</title>
+      <link rel="icon" href="favicon.ico" type="image/x-icon" />
+      <link rel=stylesheet href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset' type=text/css media=all defer async>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+      <link href="static/css/style.css" type="text/css" rel="stylesheet" defer>
+      <script>     
+         (function (h, o, t, j, a, r) {
+         h.hj = h.hj || function () {
+         (h.hj.q = h.hj.q || []).push(arguments)
+         };
+         h._hjSettings = {
+         hjid: 1613245,
+         hjsv: 6
+         };
+         a = o.getElementsByTagName('head')[0];
+         r = o.createElement('script');
+         r.async = 1;
+         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+         a.appendChild(r);
+         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+         (function () {
+         var script = document.createElement("script");
+         script.onload = () => {
+         window.GrafanaFaroWebSdk.initializeFaro({
+         url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
+         app: {
+          name: 'xonniepub',
+          version: "1.0.0",
+         },
+         });
+         };
+         script.src =
+         "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
+         document.head.appendChild(script);
+         })();
+      </script>
+   </head>
+   <body>
+      <div class="kbanner">
+         <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+            <a class="navbar-brand" href="https://xposedornot.com"><span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+            <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Community Edition</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+               <ul class="navbar-nav navbar-right">
+                  <li class="nav-item active">
+                     <a class="nav-link" href="password.html">Password &nbsp; <span class="sr-only">(current)</span>
+                     </a>
+                  </li>
+                  <li class="nav-item active">
+                     <a class="nav-link" href="faq.html">FAQ &nbsp;</a>
+                  </li>
+                  <li class="nav-item active">
+                     <a class="nav-link" href="https://blog.xposedornot.com/">Blog &nbsp;</a>
+                  </li>
+                  <li class="nav-item dropdown active">
+                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> More Tools </a>
+                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
+                        <a class="dropdown-item" href="shield.html">Privacy Shield</a>
+                        <a class="dropdown-item" href="domain.html">Domain Verification</a>
+                        <a class="dropdown-item" href="domains.html">Domain-level Search</a>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+         </nav>
+      </div>
+      <div class="container">
+      <div align="center">
+         To experiment with and test our API, we invite you to explore our API Playground.<br><br>
+         <h3><a href="https://xposedornot.docs.apiary.io" target="_blank" class="button-link"> 🎮 API Playground</a></h3>
+      </div>
+      <br>
+      <div class="panel-group" id="accordion">
+         <div class="panel panel-default">
+            <div class="panel-heading"> API Quick Reference </div>
+            &nbsp; &nbsp; Last Updated: 05-Jun-2023
+            <div id="collapse1" class="panel-collapse ">
+               <div class="panel-body">
+                  <br>
+                  Thank you for your interest in <strong>XposedOrNot</strong>. The goal is to keep our API as accessible and responsive as possible, making it a valuable tool for everyone. Hosted directly on <strong>Google Infrastructure</strong> and robustly cached by <strong>Cloudflare</strong>, the <strong>XposedOrNot API</strong> offers rapid responses for any queries, regardless of their origin point. <br><Br>
+                  The <strong>XposedOrNot API</strong> adheres to the principles of <strong>REST architecture</strong>. It returns <strong>JSON-encoded responses</strong> and utilizes <strong>standard HTTP response codes</strong>. For the majority of our API routes, there are no authentication requirements, ensuring easy access and simplicity of use. However, please note that our specific <strong>API route used for querying domain-related data requires an API key authorization</strong>. This measure is in place to ensure that only verified owners or authorities of the specified domains can access this sensitive information.<br><br>
+                  For experimentation and testing purposes, I warmly invite you to explore our API Playground. Here, you'll have the opportunity to familiarize yourself with the functionality of the XposedOrNot API in a user-friendly environment.
+                  <br>
+                  <hr>
+                  <div class="alert alert-primary" role="alert">
+                     <h4>
+                        <strong>1. API Call: Checking for Email Address Data Breaches</strong>
+                     </h4>
+                  </div>
+                  <p>
+                     This user-friendly API quickly checks if an email address has been involved in any known data breaches. It searches a comprehensive database of breaches and alerts you if the email is at risk.
+                     <br><br>
+                     This tool is invaluable for maintaining digital security and understanding the breach history of an email. It's a step towards better digital safety and awareness.
+                  </p>
+                  <br><strong>API Endpoint:</strong>
+                  <blockquote>
+                     <pre>https://api.xposedornot.com/v1/check-email/[test@example.com]</pre>
+                  </blockquote>
+                  <strong> Example of Successful Breach Detection: </strong>
+                  When a breach is detected, you'll receive a JSON response like this:
+                  <pre>
+ {
+  "domains": [
+    [
+      "Tesco",
+      "KiwiFarms",
+      "Vermillion",
+      "Verified",
+      "LizardSquad",
+      "2fast4u",
+      "Autotrader",
+      "MyRepoSpace",
+      "SweClockers"
+    ]
+  ]
+}
+		  </pre>
+                  The response is in JSON format, making it simple to parse with any scripting language. This lets you easily integrate the data into your applications.
+                  <br> <strong>Response When No Breach is Found:</strong><br>
+                  If the email address is not found in any breach database, you will get the following JSON response:
+                  <pre>
+{"Error":"Not found"}
+ </pre>
+                  <hr>
+                  <div class="alert alert-primary" role="alert">
+                     <h4>
+                        <strong>2. API Call: Data Breach Analytics for Email Addresses</strong>
+                     </h4>
+                  </div>
+                  <p> 
+                     Our API offers an in-depth analysis of an email address's data breach history. It reveals when and where breaches occurred, providing essential analytics to gauge the impact and severity of these incidents. This tool is key for understanding data exposure levels and enhancing security strategies.
+                  </p>
+                  <br><strong>API Endpoint:</strong>
+                  <blockquote>
+                     <pre>https://api.xposedornot.com/v1/breach-analytics/[email-address]</pre>
+                  </blockquote>
+                  <h3>Functional Overview:</h3>
+                  <p>The API responds with two possible outcomes: success or failure. Below are the key components of a successful response:</p>
+                  <br>
+                  <ul>
+                     <li><strong>BreachesSummary:</strong> Get a quick overview of all breaches tied to the email address, including a list of affected sites. Ideal for a fast check on breach history.</li>
+                     <br>
+                     <li><strong>ExposedBreaches:</strong> Receive detailed information on each breach, including the breached entity's name, description, domain, industry, risk level, references, exposed data types, and the year and number of records exposed. This helps assess the specifics and seriousness of each breach.</li>
+                     <br>
+                     <li><strong>BreachMetrics:</strong> This component offers analytics about the breaches, such as affected industries, password strength, risk score, data types exposed, and a yearly breakdown. This data is crucial for understanding the full impact of the breaches.</li>
+                     <br>
+                     <li><strong>xposed_data:</strong> Gain insight into the specific data types exposed in the breaches, such as names, photos, nationalities, etc. This helps in understanding the nature and extent of personal data exposure.</li>
+                     <br>
+                     <li><strong>PastesSummary:</strong> Provides an overview of 'paste' breaches (data exposures on public pastebin-like services), including a count and the most recent occurrence. It's a quick way to gauge exposure on these platforms.</li>
+                     <br>
+                     <li><strong>ExposedPastes & PasteMetrics:</strong> These components give detailed information and a yearly analysis of paste breaches, allowing for a deeper understanding of exposure trends over time.</li>
+                     <br>
+                  </ul>
+                  <p>This comprehensive suite of analytics tools offers a deep dive into the data breach history of any email, providing the insights needed for better digital security management.</p>
+                  <br>
+                  <strong>Sample JSON output on successfully finding a matching record: </strong>
+                  <pre>
+	       
+{
+  "BreachMetrics": {
+    "get_details": [],
+    "industry": [
+      [
+        [          "elec",          1        ],
+        [          "misc",          0        ],
+        [          "mini",          0        ],
+        [          "musi",          0        ],
+        [          "manu",          0        ],
+        [          "ener",          0        ],
+        [          "news",          0        ],
+        [          "ente",          0        ],
+        [          "hosp",          0        ],
+        [          "heal",          0        ],
+        [          "food",          0        ],
+        [          "phar",          0        ],
+        [          "educ",          0        ],
+        [          "cons",          0        ],
+        [          "agri",          0        ],
+        [          "tele",          0        ],
+        [          "info",          0        ],
+        [          "tran",          0        ],
+        [          "aero",          0        ],
+        [          "fina",          0        ],
+        [          "reta",          0        ],
+        [          "nonp",          0        ],
+        [          "govt",          0        ],
+        [          "spor",          0        ],
+        [          "envi",          0        ]
+      ]
+    ],
+    "passwords_strength": [
+      {
+        "EasyToCrack": 0,
+        "PlainText": 0,
+        "StrongHash": 1,
+        "Unknown": 0
+      }
+    ],
+    "risk": [
+      {
+        "risk_label": "Low",
+        "risk_score": 3
+      }
+    ],
+    "xposed_data": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "colname": "level3",
+                "group": "A",
+                "name": "data_Usernames",
+                "value": 1
+              }
+            ],
+            "colname": "level2",
+            "name": "👤 Personal Identification"
+          },
+          {
+            "children": [
+              {
+                "colname": "level3",
+                "group": "D",
+                "name": "data_Passwords",
+                "value": 1
+              }
+            ],
+            "colname": "level2",
+            "name": "🔒 Security Practices"
+          },
+          {
+            "children": [
+              {
+                "colname": "level3",
+                "group": "F",
+                "name": "data_Email addresses",
+                "value": 1
+              }
+            ],
+            "colname": "level2",
+            "name": "📞 Communication and Social Interactions"
+          }
+        ]
+      }
+    ],
+    "yearwise_details": [
+      {
+        "y2007": 0,
+        "y2008": 0,
+        "y2009": 0,
+        "y2010": 0,
+        "y2011": 0,
+        "y2012": 0,
+        "y2013": 0,
+        "y2014": 0,
+        "y2015": 1,
+        "y2016": 0,
+        "y2017": 0,
+        "y2018": 0,
+        "y2019": 0,
+        "y2020": 0,
+        "y2021": 0,
+        "y2022": 0,
+        "y2023": 0
+      }
+    ]
+  },
+  "BreachesSummary": {
+    "site": "SweClockers"
+  },
+  "ExposedBreaches": {
+    "breaches_details": [
+      {
+        "breach": "SweClockers",
+        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords—which were stored using a combination of MD5 and SHA512—were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
+        "domain": "sweclockers.com",
+        "industry": "Electronics",
+        "logo": "Sweclockers.png",
+        "password_risk": "hardtocrack",
+        "references": "",
+        "searchable": "Yes",
+        "verified": "Yes",
+        "xposed_data": "Usernames;Email addresses;Passwords",
+        "xposed_date": "2015",
+        "xposed_records": 254967
+      }
+    ]
+  },
+  "ExposedPastes": null,
+  "PasteMetrics": null,
+  "PastesSummary": {
+    "cnt": 0,
+    "domain": "",
+    "tmpstmp": ""
+  }
+}
+	       </pre>
+                  A few of the data points used in the BreachMetrics are as follows: 
+                  <ol>
+                     <li>Industry wise classification</li>
+                     This gives you the count of the breaches exposed in top-19 industries. <br>
+                     <li>Password strength</li>
+                     This gives you the count of breaches that had passwords that are 1. Easy to Crack, 2. Plain Text passwords & 3. Strong and safe password hashes used. <br>
+                     <li>Year-wise details</li>
+                     This gives you the historical data of data breaches starting from the year 2010 until now. <br>
+                  </ol>
+                  <br>
+                  <strong>Sample output on not finding the matching email address:</strong>
+                  <pre>
+{  "Error": "Not found"}
+ </pre>
+                  <p> This also means that the email searched is not found in any of the data breaches loaded in XposedOrNot. </p>
+                  <hr>
+                  <div class="alert alert-primary" role="alert">
+                     <h4>
+                        <strong>3. API call to check for exposed passwords anonymously</strong>
+                     </h4>
+                  </div>
+                  <blockquote>
+                     <pre>https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre>
+                  </blockquote>
+                  <strong>Sample JSON output on successfully finding a matching password hash: </strong>
+                  <pre>
+ {
+  "SearchPassAnon": {
+    "anon": "808d63ba47",
+    "char": "D:6;A:0;S:0;L:6",
+    "count": "11999477",
+    "wordlist": 0
+  }
+}
+ </pre>
+                  <p>If you're interested in checking for exposed passwords, this API is perfect for you. It provides results in two forms: successful or unsuccessful. Imagine you want to check the widely used password "123456" - this API can help.</p>
+                  <br>
+                  <p>The API delivers results in a JSON format, which is more informative than a simple yes/no. This detailed output enables further analysis and enhancement of the extensive list of real-time exposed passwords.</p>
+                  <br>
+                  <h4>Output Structure Guide:</h4>
+                  <br>
+                  <ul>
+                     <li><strong>"anon" Element:</strong> Every password hash in our database includes the "anon" element. This is to ensure privacy for users who want to search while remaining anonymous.</li>
+                     <li><strong>"char" Element:</strong> This element provides a breakdown of the password's characteristics, like length, use of letters, numbers, and special characters. This is especially useful for understanding password strength and whether it meets various website requirements.</li>
+                  </ul>
+                  <p>This API is not only useful for identifying exposed passwords but also helps in developing stronger, more secure password policies.</p>
+                  <br> The following table explains a bit more about the characteristics in simple terms : <br>
+                  <br>
+                  <table class="table table-condensed table-striped table-bordered table-hover">
+                     <tr>
+                        <td> Digits </td>
+                        <td> Count of numbers </td>
+                     </tr>
+                     <tr>
+                        <td> Alphabets </td>
+                        <td> Count of alphabets </td>
+                     </tr>
+                     <tr>
+                        <td> Special chars </td>
+                        <td> Count of special chars </td>
+                     </tr>
+                     <tr>
+                        <td> Length </td>
+                        <td> Length of the password </td>
+                     </tr>
+                  </table>
+                  The last one <strong>"count"</strong> denotes the number of times, this password was observed in the collected exposed data breaches. For a comprehensive list of all exposed websites, please visit <a href="xposed.html">
+                  <strong>Xposed websites in XON</strong>
+                  </a>. <br>
+                  <br> Also, one other point to note is the use of <a href="https://en.wikipedia.org/wiki/SHA-3" target="_blank" rel="noopener">
+                  <strong>SHA3 Keccak-512</strong>
+                  </a> hashing for searching and storing data in XON. Traditional hashing algorithms like MD5 and SHA1 are currently deprecated and also considering the enormous number of records exposed, I have gone ahead with <strong>SHA3 Keccak-512</strong> algorithm. Keccak-512 hashes are 128 characters long. <br>
+                  <br> Please check the simple and easy-to-use <a href="samples/index.html" target="_blank">
+                  <strong>sample login screen, </strong>
+                  </a>making use of this API. <br>
+                  <br> Two sample Keccak-512 hashes given for easy reference: <br>
+                  <br> Keccak-512("test") 
+                  <strong>
+                     <pre>1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre>
+                  </strong>
+                  <br> Keccak-512("pass") 
+                  <strong>
+                     <pre>adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre>
+                  </strong>
+                  <br>
+                  <strong>Sample output on not finding the matching password hash:</strong>
+                  <pre>
+            {  "Error": "Not found"}
+        </pre>
+                  <hr>
+                  <hr>
+                  <div class="alert alert-primary" role="alert">
+                     <h4>
+                        <strong>4. API call to check for all data breaches loaded in XposedOrNot</strong>
+                     </h4>
+                  </div>
+                  <blockquote>
+                     <pre>https://api.xposedornot.com/v1/breaches</pre>
+                  </blockquote>
+                  The API returns a successful response in the format of JSON only.<br>
+                  <br>This JSON can be easily parsed by all scripting languages for easy interpretation and to extract data elements to be used in your respective applications. <br>
+                  <pre>
+{
+  "Exposed Breaches": [
+    {
+      "Breach ID": "1.4BillionRecords",
+      "Breached Date": "2017-03-01T00:00:00+00:00",
+      "Domain": "Not-Applicable",
+      "Exposed Data": "Email addresses;Names",
+      "Exposed Records": 1114303554,
+      "Exposure Description": "\"A company called 4iQ in 2017, discovered a massive database of stolen usernames and passwords that was being traded on the dark web. The database, which was referred to as the \"\"largest-ever\"\" breach at the time, contained over 1.4 billion unique username and password combinations, as well as other personal information such as email addresses and IP addresses.\"",
+      "Industry": "Entertainment",
+      "Logo": "combolist.png",
+      "Password Risk": "unknown",
+      "Searchable": "Yes",
+      "Sensitive": "No",
+      "Verified": "Yes"
+    },
+    {
+      "Breach ID": "123RF",
+      "Breached Date": "2020-03-01T00:00:00+00:00",
+      "Domain": "123rf.com",
+      "Exposed Data": "Usernames;Email addresses;Passwords;Names;IP addresses;Physical addresses;Phone numbers",
+      "Exposed Records": 8668646,
+      "Exposure Description": "123RF Stock photo site has suffered a data breach in March 2020. The exposed database contained 8.3 million user records leaked on a hacker forum. Exposed data includes full name, email address, MD5 hashed passwords, company name, phone number, address, PayPal email if used, and IP address.",
+      "Industry": "Information Technology",
+      "Logo": "123RF.png",
+      "Password Risk": "easytocrack",
+      "Searchable": "Yes",
+      "Sensitive": "No",
+      "Verified": "Yes"
+    },
+    {
+      "Breach ID": "17173",
+      "Breached Date": "2011-12-01T00:00:00+00:00",
+      "Domain": "17173.com",
+      "Exposed Data": "Usernames;Passwords;Email addresses",
+      "Exposed Records": 7482441,
+      "Exposure Description": "The 17173 gaming site breach in 2011 was part of a larger series of data breaches in China, affecting nearly 100 million users. Of these, 7.5 million were from 17173. The breach exposed usernames, email addresses, and salted MD5 password hashes.",
+      "Industry": "Energy",
+      "Logo": "17173.png",
+      "Password Risk": "plaintext",
+      "Searchable": "Yes",
+      "Sensitive": "No",
+      "Verified": "No"
+    },
+    and so on...
+	       </pre>
+                  <br>Furthermore you can also send a parameter like a domain and filter the results to dispay content specific to that breach. <br>
+                  <blockquote>
+                     <pre>https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre>
+                  </blockquote>
+                  <pre>
+   
+{
+  "Exposed Breaches": [
+    {
+      "Breach ID": "Twitter-Scraped",
+      "Breached Date": "2021-01-01T00:00:00+00:00",
+      "Domain": "twitter.com",
+      "Exposed Data": "Usernames;Email addresses;Names;Geographic locations;Profile photos;Phone numbers",
+      "Exposed Records": 208918735,
+      "Exposure Description": "\"The \"\"Twitter Email Addresses Leak\"\" involves a data leak of over 200 million Twitter user profiles around 2021. The leak includes email addresses, names, screen names, follow counts, and account creation dates. The data was obtained through a Twitter API vulnerability that allowed the input of email addresses and phone numbers to confirm their association with Twitter IDs.\"",
+      "Industry": "Information Technology",
+      "Logo": "Twitter.png",
+      "Password Risk": "unknown",
+      "Searchable": "Yes",
+      "Sensitive": "No",
+      "Verified": "Yes"
+    }
+  ],
+  "status": "success"
+}
+		  </pre>
+                  The API returns a successful response in the format of JSON only.<br>
+                  <hr>
+                  <div class="alert alert-primary" role="alert">
+                     <h4>
+                        <strong>5. API call to check for all data breaches for verfied domains</strong>
+                     </h4>
+                  </div>
+                  <blockquote>
+                     <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
+                  </blockquote>
+                  This is a POST request and requires the valid API key to be included in the header with the key 'x-api-key'. This endpoint does not accept any request body, hence, the content length header should be set to '0'.
+                  <br>	      
+                  ** For validated domains, API key is available in the <a href="dashboard.html">dashboard</a>.
+                  <br><br>
+                  Sample API request using curl:
+                  <blockquote>
+                     <pre>
+curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/    
+	       </pre>
+                  </blockquote>
+                  The response of the API is in JSON format. The main key 'metrics' contains details about the breach. Below are the description of each sub-key in 'metrics':<br><br>
+                  1.<strong>Breach_Summary</strong>: This field provides a summary of the number of breaches per organization.<br>
+                  2.<strong>Breaches_Details</strong>: This is an array containing detailed information about each individual breach, including the name of the breached organization, the domain, and the email address associated with the breach.<br>
+                  3.<strong>Detailed_Breach_Info</strong>: This field contains a detailed summary of the breaches, including the date of the breach, the logo of the organization, whether or not the password was at risk, whether the breach is searchable, the type of data exposed, the total number of records exposed, and a description of the breach.<br>
+                  4.<strong>Domain_Summary</strong>: This provides a summary of the number of breaches per domain.<br>
+                  5.<strong>Top10_Breaches</strong>: This field provides a list of the top 10 breaches.<br>
+                  6.<strong>Yearly_Metrics</strong>: This field provides a yearly breakdown of the number of breaches from 2010 to the present year.<br>
+                  <br>Sample output is given for easy reference.<br>
+                  <pre>
+{
+  "metrics": {
+    "Breach_Summary": {
+      "AerServ": 1
+    },
+    "Breaches_Details": [
+      {
+        "breach": "AerServ",
+        "domain": "xposedornot.com",
+        "email": "deva@xposedornot.com"
+      }
+    ],
+    "Detailed_Breach_Info": {
+      "AerServ": {
+        "breached_date": "Tue, 01 Apr 2014 00:00:00 GMT",
+        "logo": "Aerserv.png",
+        "password_risk": "plaintext",
+        "searchable": "Yes",
+        "xposed_data": "Email Addresses",
+        "xposed_records": 64777,
+        "xposure_desc": "AerServ, an ad management platform, experienced a data breach in April 2018. This incident occurred after its acquisition by InMobi and affected more than 64,000 unique email addresses. The exposed data included contact information and passwords, which were stored as salted SHA-512 hashes. Later in 2018, the breached data was publicly posted on Twitter, prompting InMobi to acknowledge the incident "
+      }
+    },
+    "Domain_Summary": {
+      "xposedornot.com": 1
+    },
+    "Top10_Breaches": {
+      "AerServ": 1
+    },
+    "Yearly_Metrics": {
+      "2010": 0,
+      "2011": 0,
+      "2012": 0,
+      "2013": 0,
+      "2014": 1,
+      "2015": 0,
+      "2016": 0,
+      "2017": 0,
+      "2018": 0,
+      "2019": 0,
+      "2020": 0,
+      "2021": 0,
+      "2022": 0,
+      "2023": 0
+    }
+  },
+  "status": "success"
+}
+
+	       </pre>
+                  <strong>	       Error Handling</strong>: In case of an invalid or missing API key, the response would be as follows:
+                  <pre>
+{
+  "message":"Invalid or missing API key",
+  "status":"error"
+}
+	       </pre>
+                  The <strong>message</strong> field will contain a description of the error, and the <strong>status</strong> field will contain the string "error" to indicate that an error has occurred.
+                  <br><Br>
+                  Remember to replace "YOUR_API_KEY" with your actual API key when making a request to the endpoint.
+                  <hr>
+                  <div class="alert alert-primary" role="alert">
+                     <h4>
+                        <strong>6. API response codes</strong>
+                     </h4>
+                     <br>
+                  </div>
+                  XposedOrNot API uses conventional HTTP response codes to indicate the success or failure of an API request. In general: Codes in the 2xx range indicate success. Codes in the 4xx range indicate an error that failed given the information provided (e.g., wrong parameters, insufficient query options, wrong url etc). Codes in the 5xx range indicate an error with XposedOrNot's server. <br>
+                  <br> In other words, codes in the 4xx range indicate an user error(You) and 5xx indicates a server error(Me). <br>
+                  <br>
+                  <table class="table table-hover table-bordered ">
+                     <thead class="thead-light">
+                        <tr>
+                           <th scope="col">Code</th>
+                           <th scope="col">Description</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <th scope="row">200</th>
+                           <td>Success will output JSON response</td>
+                        </tr>
+                        <tr>
+                           <th scope="row">401</th>
+                           <td>Invalid/un-authorised API key</td>
+                        </tr>
+                        <tr>
+                           <th scope="row">404</th>
+                           <td>Error in input ( no data found )</td>
+                        </tr>
+                        <tr>
+                           <th scope="row">429</th>
+                           <td>Speed throttle hit - time to slow down</td>
+                        </tr>
+                        <tr>
+                           <th scope="row">502/503</th>
+                           <td>Server fault - Totally my problem to fix. Please shout across, if you see this ;)</td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <div class="alert alert-danger" role="alert">
+                     <strong>Note: </strong>Search queries for Passwords are not restricted by time or count. <br>
+                     <br>
+                     <em class="fas fa-exclamation-triangle" style="font-size:28px;color:red"></em> There will be a threshold of 1 query per second for each and every API request. Request you to be kindly cognizant of that and then re-try with a slow mode or sleep model. <br>
+                     <br> Folks who regularly try to misuse or abuse this API for their own nefarious purposes will be kicked into deep dark dungeons by the not-so-famous <a onclick="jsfunction()" href="javascript:void(0);">xGuardian</a>. You are warned. <br>
+                     <br>
+                     <em class="fa fa-bug" aria-hidden="true" style="font-size:28px;color:red"></em> If you came across a bug in the API, feel free to message me at Twitter or email me. I would be more than happy to acknowledge and remediate the same for the benefit of all users.
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="container text-center">
+            <footer>
+               <aside>
+                  <br>
+                  <a style="color:#3c5fec" href="https://twitter.com/xposedornot" aria-hidden="true" target="_blank" rel="noopener">&nbsp <em class="fab fa-twitter fa-3x"></em>
+                  </a>
+                  <a style="color:#3c5fec" href="https://facebook.com/xposedornot" aria-hidden="true" target="_blank" rel="noopener">&nbsp <em class="fab fa-facebook fa-3x"></em>
+                  </a>
+                  <hr>
+                  <p>Join us in shaping this fully open source site! Contributions welcome ❤️ —check out our <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub </a>. </p>
+                  <br>
+                  <h3><a href="https://xposedornot.docs.apiary.io" target="_blank" class="button-link"> 🛠️  API Playground</a></h3>
+                  <style>
+                     .button-link {
+                     display: inline-block;
+                     padding: 10px 20px;
+                     color: #fff;
+                     background-color: #007BFF;
+                     text-decoration: none;
+                     border-radius: 5px;
+                     transition: background-color 0.3s ease;
+                     }
+                     .button-link:hover {
+                     background-color: #FFBF00;
+                     }
+                  </style>
+         </div>
+         <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
+         <input type="checkbox" class="custom-control-input" id="darkSwitch">
+         <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+         </div>
+         </aside>
+         </footer>
+      </div>
+      <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+      <script type='text/javascript' src='static/scripts/bug-min.js'></script>
+      <script type='text/javascript' src='static/scripts/api_doc.js'></script>
+      <script src="static/scripts/common.js"></script>
+   </body>
+</html>
