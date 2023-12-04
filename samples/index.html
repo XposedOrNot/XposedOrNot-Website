@@ -1,0 +1,77 @@
+<head>
+<title>Sample login using XposedOrNot API</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"  crossorigin="anonymous" ></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link href="login-1.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha3/0.7.0/sha3.js" async defer></script>
+<link rel=stylesheet href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset' type=text/css media=all defer async>
+<style>
+body {
+font-family: 'Poppins', sans-serif;font-size: 16px;
+      }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="row" id="pwd-container">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <section class="login-form">
+        <form method="post" action="#" role="login">
+	<input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="username@email.com" />
+          <input type="password" class="form-control input-lg" id="passwd" placeholder="Password" required="" />
+	  <input type="checkbox" name="breached" value="XoN" checked style="display:none">
+	  <div align="left" id="message-text" ></div>
+          <button type="submit" id="go" name="go" class="btn btn-lg btn-primary btn-block">Register </button>
+          <div>
+            <a href="#">Login</a> or <a href="#">reset password</a>
+          </div>
+        </form>
+        <div class="form-links">
+          <a href="#">www.example.com</a>
+        </div>
+      </section>
+      </div>
+      <div class="col-md-4"></div>
+  </div>
+  </p>
+</div>
+<script>
+jQuery(document).ready(function() {
+    $("#go").click(function(abacus) {
+        abacus.preventDefault();
+        var pwd_hash = (keccak_512($("#passwd").val()).substring(0, 10));
+        koodudal = 'https://passwords.xposedornot.com/v1/pass/anon/' + encodeURIComponent(pwd_hash);
+        var pwd_str = document.getElementById("passwd").value;
+        if (pwd_str.length != 0) {
+            var xon_response = $.ajax(koodudal)
+                .done(function(n) {
+                    document.getElementById("message-text").className = "alert alert-danger";
+                    $('#message-text').html("Oops : This password is exposed and hence avoid using this");
+                })
+                .fail(function(n) {
+                    if (n.status === 404) {
+                        document.getElementById("message-text").className = "alert alert-success";
+                        $('#message-text').html("Success : This password was not found in xposed passwords !");
+                    } else if (n.status === 429) {
+                        document.getElementById("message-text").className = "alert alert-danger";
+                        $('#message-text').html("Oops ! XoN recommends to slow down and try again !");
+                    } else if (n.status === 502 || n.status === 504) {
+                        document.getElementById("message-text").className = "alert alert-danger";
+                        $('#message-text').html("Oops ! XoN is not responding. Recommended to try again!");
+                    }
+
+                })
+        } else {
+            document.getElementById("message-text").className = "alert alert-danger";
+            $('#message-text').html("Oops! Try again with a valid password. ");
+            $('#password').focus();
+        }
+    })
+})
+</script>
+<!--
+  Credits : <a href="https://bootsnipp.com/mrmccormack" >https://bootsnipp.com/mrmccormack</a>
+-->
+</body>
