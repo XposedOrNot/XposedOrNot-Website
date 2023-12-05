@@ -202,7 +202,8 @@ $("#searchMe_e").click(function (func_alert6) {
                 $("#div_t2").hide();
                 $("#div_html").hide();
                 $('#div_email').hide()
-                $("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br>Shortly you should receive an email with breaches link. Please follow the instructions to view the exposed data breaches for this domain.<br><br><div align="center">          <button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
+                $("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 8 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button  class="btn btn-primary btn-lg"  onClick="dashboard.html">CXO Dashboard</button>	<button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
+                //$("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br>Shortly you should receive an email with breaches link. Please follow the instructions to view the exposed data breaches for this domain.<br><br><div align="center">          <button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
             }
             if (n4.status === 429) {
                 $("#info").html("You are currently being throttled. Please slow down and try again !")
@@ -260,7 +261,8 @@ $("#searchMe_d").click(function (func_alert) {
                 $('#div_dns').hide()
                 $("#s1").hide();
                 $("#searchMe_d").removeClass("fa fa-spinner fa-spin")
-                $("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br>Shortly you should receive an email with breaches link. Please follow the instructions to view the exposed data breaches for this domain.<br><br><div align="center">          <button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
+                //$("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br>Shortly you should receive an email with breaches link. Please follow the instructions to view the exposed data breaches for this domain.<br><br><div align="center">          <button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
+                $("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 8 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button  class="btn btn-primary btn-lg"  onClick="dashboard.html">CXO Dashboard</button>	<button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
             }
             if (n4.status === 429) {
                 $("#info").html("You are currently being throttled. Please slow down and try again !")
@@ -315,7 +317,8 @@ $("#searchMe_m").click(function (func_alert3) {
                 $("#div_t2").hide();
                 $("#div_t3").hide();
                 $("#div_meta").hide();
-                $("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br>Shortly you should receive an email with breaches link. Please follow the instructions to view the exposed data breaches for this domain.<br><br><div align="center">          <button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
+                //$("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br>Shortly you should receive an email with breaches link. Please follow the instructions to view the exposed data breaches for this domain.<br><br><div align="center">          <button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
+                $("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 8 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button  class="btn btn-primary btn-lg"  onClick="dashboard.html">CXO Dashboard</button>	<button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
             }
             if (n3.status === 429) {
                 $("#info").html("You are currently being throttled. Please slow down and try again !")
@@ -369,7 +372,8 @@ $("#searchMe_h").click(function (func_alert4) {
                 $("#succ").show();
                 $("#div_t2").hide();
                 $("#div_html").hide();
-                $("#succ").html(' 🎉 <strong> Yay! Domain verification is almost complete.</strong> <BR><br>Shortly you should receive an email with breaches link. Please follow the instructions to view the exposed data breaches for this domain.<br><br><div align="center">          <button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
+                //$("#succ").html(' 🎉 <strong> Yay! Domain verification is almost complete.</strong> <BR><br>Shortly you should receive an email with breaches link. Please follow the instructions to view the exposed data breaches for this domain.<br><br><div align="center">          <button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
+                $("#succ").html(' 🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 8 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button  class="btn btn-primary btn-lg"  onClick="dashboard.html">CXO Dashboard</button>	<button  class="btn btn-primary btn-lg"  onClick="window.location.reload();">Verify Another Domain</button><br></div><br>         </div>')
             }
             if (n4.status === 429) {
                 $("#info").html("You are currently being throttled. Please slow down and try again !")
