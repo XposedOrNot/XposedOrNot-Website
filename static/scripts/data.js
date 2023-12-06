@@ -1011,6 +1011,7 @@ function _turnstileCb() {
 }
 
 document.getElementById('clippy-button').addEventListener('click', function () {
+	this.style.display = 'none';
     clippy.load('Clippy', function (agent) {
         agent.show();
         agent.speak('My name is XON Clippy');
