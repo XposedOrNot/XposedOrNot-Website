@@ -9,8 +9,6 @@ $("#edhu").on("change keyup paste", function () {
 $('#alertMeModal').on('hidden.bs.modal', function (e) {
     document.getElementById("h2head").className = "modal-header-primary";
     $('#message-text').val("You are currently being added to the alert notification service of XposedOrNot. Please make sure to complete the below shown challenge and then click 'Alert Me'.");
-    grecaptcha.reset();
-    $("#g-recaptcha").show();
     $("#alertMe").show();
     $("#alertMeClose").hide();
     $("#a_succ").hide();
@@ -33,20 +31,14 @@ $(document).ready(function () {
         } else {
             $("#b_succ").hide();
         }
-        var v = grecaptcha.getResponse();
-        if (v.length == 0) {
-            $("#a_succ").show();
-            return false;
-        }
         $("#a_succ").hide();
 
-        koodudal = 'https://api.xposedornot.com/api/v1/alertme/' + encodeURIComponent(add_str);
+        koodudal = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(add_str);
         var myjson;
         var j = $.ajax(koodudal)
             .done(function (n) {
                 $('#message-text').html("Successfully added to the alert service. Please check your email and click on the verification link to confirm");
                 document.getElementById("h2head").className = "modal-header-success";
-                $("#g-recaptcha").hide();
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
@@ -55,7 +47,6 @@ $(document).ready(function () {
                 document.getElementById("h2head").className = "modal-header-danger";
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
-                $("#g-recaptcha").hide();
             })
 
     });
