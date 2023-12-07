@@ -53,22 +53,22 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
 
     // Personal Information Exposure
     if (piiBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Personal Information Exposure (${piiBreachesCount} Breaches):</strong></span> Your personal details might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Monitor for unusual activities that could indicate identity theft or fraud.</li><br>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>Personal Information Exposure (${piiBreachesCount} Occurrences):</strong></span> Your personal details might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Monitor for unusual activities that could indicate identity theft or fraud.</li><br>`;
     }
 
     // Email Addresses and Phishing Risks
     if (emailBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Email Addresses and Phishing Risks (${emailBreachesCount} Breaches):</strong></span> Your email address might be used in phishing attempts.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with emails from unknown sources and avoid clicking on suspicious links.</li><br>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>Email Addresses and Phishing Risks (${emailBreachesCount} Occurrences):</strong></span> Your email address might be used in phishing attempts.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with emails from unknown sources and avoid clicking on suspicious links.</li><br>`;
     }
 
     // Communication and Social Interactions
     if (communicationBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Communication and Social Interactions (${communicationBreachesCount} Breaches):</strong></span> Your communication details may be at risk.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with your online interactions and consider updating privacy settings on social platforms.</li><br>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>Communication and Social Interactions (${communicationBreachesCount} Occurrences):</strong></span> Your communication details may be at risk.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with your online interactions and consider updating privacy settings on social platforms.</li><br>`;
     }
 
     // Demographics
     if (demographicsBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Demographics (${demographicsBreachesCount} Breaches):</strong></span> Sensitive demographic information might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Review and secure any accounts that may contain detailed personal information to prevent identity theft.</li><br>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>Demographics (${demographicsBreachesCount} Occurrences):</strong></span> Sensitive demographic information might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Review and secure any accounts that may contain detailed personal information to prevent identity theft.</li><br>`;
     }
 
     analysisText += "</ol>";
@@ -77,16 +77,16 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
     analysisText += `<p><strong>Your Risk Score:</strong> <span class='alert alert-${getAlertType(riskLabel)}'><strong>${riskLabel}</strong></span>. `;
     switch (riskLabel) {
         case 'Low':
-            analysisText += "Stay vigilant and proactive in securing your data.";
+            analysisText += "🟢 Stay vigilant and proactive in securing your data.";
             break;
         case 'Medium':
-            analysisText += "Enhance your security measures and remain alert.";
+            analysisText += "🟠 Enhance your security measures and remain alert.";
             break;
         case 'High':
-            analysisText += "Urgently review and fortify your security practices.";
+            analysisText += "🔴 Urgently review and fortify your security practices.";
             break;
         default:
-            analysisText += "Regularly assess and update your security settings.";
+            analysisText += "🔵 Regularly assess and update your security settings.";
     }
     analysisText += "</p></div>";
     return analysisText;
@@ -163,7 +163,7 @@ var j = $.ajax(url)
         riskLabel = jsonResponse.BreachMetrics.risk[0].risk_label
 
 	const riskAnalysisHtml = generateRiskAnalysis(riskLabel, jsonResponse);
-        $('#risk-analysis').html(riskAnalysisHtml);  // Assuming an element with ID 'risk-analysis' exists
+        $('#risk-analysis').html(riskAnalysisHtml);  
 
         drawChart_categories(xposedData)
 
@@ -284,11 +284,8 @@ var j = $.ajax(url)
             .attr("y", (d, i) => `${i + 0.8}em`)
             .text(d => d);
 
-        //document.querySelector("#my_dataviz").appendChild(svg.node());
         document.querySelector("#circlepack").appendChild(svg.node());
 
-
-        //        drawChart_categories(xposedData)
 
         let alertType;
         switch (riskLabel) {
