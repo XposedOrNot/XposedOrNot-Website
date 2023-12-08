@@ -1,5 +1,15 @@
+$.LoadingOverlaySetup({
+    background: "rgba(0, 0, 0, 0.5)",
+    image: "static/images/shield-alt.svg",
+    imageAnimation: "1s fadein",
+    imageColor: "#6daae0"
+});
 
-$.urlParam = function (name) {
+$.LoadingOverlay("show");
+
+
+
+$.urlParam = function(name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
 }
@@ -113,14 +123,6 @@ py23 = py22 = py21 = py20 = py19 = py18 = py17 = py16 = py15 = py14 = py13 = py1
 i11 = i12 = i13 = i14 = i15 = i16 = i17 = i18 = i19 = i20 = i1 = i2 = i3 = i4 = i5 = i6 = i7 = i8 = i9 = i10 = i20 = i21 = i22 = i23 = i24 = i25 = i26 = 0;
 unknown = plaintext = easy = hard = password_score = 0;
 
-$.LoadingOverlaySetup({
-    background: "rgba(0, 0, 0, 0.5)",
-    image: "static/images/shield-alt.svg",
-    imageAnimation: "1s fadein",
-    imageColor: "#6daae0"
-});
-
-$.LoadingOverlay("show");
 
 let email;
 try {
@@ -149,7 +151,7 @@ const url = `https://api.xposedornot.com/v1/breach-analytics/${encodeURIComponen
 let jsonResponse;
 
 var j = $.ajax(url)
-    .done(function (response) {
+    .done(function(response) {
 
         jsonResponse = response;
         breachesDetailsHtml = ''
@@ -162,12 +164,11 @@ var j = $.ajax(url)
         riskScore = jsonResponse.BreachMetrics.risk[0].risk_score
         riskLabel = jsonResponse.BreachMetrics.risk[0].risk_label
 
-	const riskAnalysisHtml = generateRiskAnalysis(riskLabel, jsonResponse);
-        $('#risk-analysis').html(riskAnalysisHtml);  
+        const riskAnalysisHtml = generateRiskAnalysis(riskLabel, jsonResponse);
+        $('#risk-analysis').html(riskAnalysisHtml);
 
         drawChart_categories(xposedData)
 
-        //circlePack(xposedData)   
         function transformToCirclePackFormat(xposedData) {
             const circlePackData = {
                 name: "Data Breaches",
@@ -265,7 +266,6 @@ var j = $.ajax(url)
             .attr("dy", d => `-${d.r + 10}px`)
             .attr("font-size", "18px")
             .attr("fill", "#000000")
-            //   .attr("font-weight", "bold")
             .text(d => d.data.name)
             .raise();
 
@@ -424,32 +424,106 @@ var j = $.ajax(url)
 
         }
 
-        var counts = [
-            { name: 'Aerospace', cnt: i1 },
-            { name: 'Transport', cnt: i2 },
-            { name: 'Information Technology', cnt: i3 },
-            { name: 'Telecommunication', cnt: i4 },
-            { name: 'Agriculture', cnt: i5 },
-            { name: 'Construction', cnt: i6 },
-            { name: 'Education', cnt: i7 },
-            { name: 'Pharmaceutical', cnt: i8 },
-            { name: 'Food', cnt: i9 },
-            { name: 'Health Care', cnt: i10 },
-            { name: 'Hospitality', cnt: i11 },
-            { name: 'Entertainment', cnt: i12 },
-            { name: 'News', cnt: i13 },
-            { name: 'Energy', cnt: i14 },
-            { name: 'Manufacturing', cnt: i15 },
-            { name: 'Music', cnt: i16 },
-            { name: 'Mining', cnt: i17 },
-            { name: 'Electronics', cnt: i18 },
-            { name: 'Miscellaneous', cnt: i19 },
-            { name: 'Finance', cnt: i20 },
-            { name: 'Retail', cnt: i21 },
-            { name: 'Non-Profit/Charities', cnt: i22 },
-            { name: 'Government', cnt: i23 },
-            { name: 'Sports', cnt: i24 },
-            { name: 'Environment', cnt: i25 },
+        var counts = [{
+                name: 'Aerospace',
+                cnt: i1
+            },
+            {
+                name: 'Transport',
+                cnt: i2
+            },
+            {
+                name: 'Information Technology',
+                cnt: i3
+            },
+            {
+                name: 'Telecommunication',
+                cnt: i4
+            },
+            {
+                name: 'Agriculture',
+                cnt: i5
+            },
+            {
+                name: 'Construction',
+                cnt: i6
+            },
+            {
+                name: 'Education',
+                cnt: i7
+            },
+            {
+                name: 'Pharmaceutical',
+                cnt: i8
+            },
+            {
+                name: 'Food',
+                cnt: i9
+            },
+            {
+                name: 'Health Care',
+                cnt: i10
+            },
+            {
+                name: 'Hospitality',
+                cnt: i11
+            },
+            {
+                name: 'Entertainment',
+                cnt: i12
+            },
+            {
+                name: 'News',
+                cnt: i13
+            },
+            {
+                name: 'Energy',
+                cnt: i14
+            },
+            {
+                name: 'Manufacturing',
+                cnt: i15
+            },
+            {
+                name: 'Music',
+                cnt: i16
+            },
+            {
+                name: 'Mining',
+                cnt: i17
+            },
+            {
+                name: 'Electronics',
+                cnt: i18
+            },
+            {
+                name: 'Miscellaneous',
+                cnt: i19
+            },
+            {
+                name: 'Finance',
+                cnt: i20
+            },
+            {
+                name: 'Retail',
+                cnt: i21
+            },
+            {
+                name: 'Non-Profit/Charities',
+                cnt: i22
+            },
+            {
+                name: 'Government',
+                cnt: i23
+            },
+            {
+                name: 'Sports',
+                cnt: i24
+            },
+            {
+                name: 'Environment',
+                cnt: i25
+            },
         ];
 
         counts.sort((a, b) => b.cnt - a.cnt);
@@ -528,7 +602,7 @@ var j = $.ajax(url)
                     })
 
                     breachesDetailsHtml += "<div>   <b><span class='notser'>" + breaches_xposed_date + "</span></b><br><br>   <div class='row'>      <div class='col-sm-4'> <img height=75 width=100 src='";
-                    breachesDetailsHtml +=  breaches_logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='xposed.html#" + breaches_id + "' target='_blank'>";
+                    breachesDetailsHtml += breaches_logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='xposed.html#" + breaches_id + "' target='_blank'>";
                     breachesDetailsHtml += breaches_id + "</font></strong></h3>         </a>      </div>      <div class='col-sm-4'>         <img height=75 width=75 src='";
                     breachesDetailsHtml += 'static/logos/industry/' + breaches_industry + ".png' title='";
                     breachesDetailsHtml += breaches_industry + ' Industry';
@@ -555,7 +629,7 @@ var j = $.ajax(url)
                 }
             }
 
-            breachesCountsArray.sort(function (cnt1, cnt2) {
+            breachesCountsArray.sort(function(cnt1, cnt2) {
                 if (cnt1.cnts > cnt2.cnts) return -1;
                 if (cnt1.cnts < cnt2.cnts) return 1;
                 return 0;
@@ -631,8 +705,6 @@ var j = $.ajax(url)
                     }]
                 },
                 options: {
-                    //		responsive: true,
-                    //		maintainAspectRatio: false,
                     legend: {
                         display: true,
                         position: 'bottom'
@@ -683,7 +755,7 @@ var j = $.ajax(url)
 
         g1();
     })
-    .fail(function (response) {
+    .fail(function(response) {
         if (response.status === 404) {
             $.LoadingOverlay("hide");
             document.getElementById("db-s").className = "visible alert alert-success";
@@ -733,19 +805,19 @@ function g1() {
         data: {
             labels: ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
             datasets: [{
-                label: 'Breaches Count',
-                fill: false,
-                backgroundColor: window.chartColors.red,
-                borderColor: window.chartColors.red,
-                data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23],
-            },
-            {
-                label: 'Pastes Count',
-                fill: false,
-                backgroundColor: window.chartColors.blue,
-                borderColor: window.chartColors.blue,
-                data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23],
-            }
+                    label: 'Breaches Count',
+                    fill: false,
+                    backgroundColor: window.chartColors.red,
+                    borderColor: window.chartColors.red,
+                    data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23],
+                },
+                {
+                    label: 'Pastes Count',
+                    fill: false,
+                    backgroundColor: window.chartColors.blue,
+                    borderColor: window.chartColors.blue,
+                    data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23],
+                }
             ]
         },
         options: {
@@ -804,7 +876,8 @@ function g1() {
         type: 'line',
         data: {
             labels: ['Aerospace', 'Transport', 'Information Technology', 'Telecommunication', 'Agriculture', 'Construction', 'Education', 'Pharmaceutical', 'Food', 'Health Care', 'Hospitality', 'Entertainment', 'News Media', 'Energy',
-                'Manufacturing', 'Music', 'Mining', 'Electronics', 'Miscellaneous', 'Finance', 'Retail', 'Non-Profit/Charities', 'Government', 'Sports', 'Environment',],
+                'Manufacturing', 'Music', 'Mining', 'Electronics', 'Miscellaneous', 'Finance', 'Retail', 'Non-Profit/Charities', 'Government', 'Sports', 'Environment',
+            ],
             datasets: [{
                 label: 'Breaches Count',
                 fill: false,
@@ -878,23 +951,25 @@ function g1() {
     };
 
 }
-window.onload = function () { };
+$(window).on("load", function() {
+    //  $.LoadingOverlay("hide");
+});
 
-$('#alertMeModal').on('show.bs.modal', function (event) {
+$('#alertMeModal').on('show.bs.modal', function(event) {
     var button = $(event.relatedTarget)
     var recipient = button.data('whatever')
     var modal = $(this)
     modal.find('.modal-body input').val(email)
     $('#thedudalModal').modal('hide');
 })
-$(document).ready(function () {
-    $('#alertMeModal').on('keydown', function (event) {
+$(document).ready(function() {
+    $('#alertMeModal').on('keydown', function(event) {
         if (event.keyCode === 13) {
             event.preventDefault();
             $('#alertMe').click();
         }
     });
-    $('#recipient-name').on('input', function () {
+    $('#recipient-name').on('input', function() {
         var email = $(this).val();
         var isValid = validateEmail(email);
         if (isValid) {
@@ -905,7 +980,7 @@ $(document).ready(function () {
             $('#alertMe').prop('disabled', true);
         }
     });
-    $("#alertMe").click(function (event) {
+    $("#alertMe").click(function(event) {
         event.preventDefault();
         var inputValue = document.getElementById("recipient-name").value.toLowerCase();
         var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
@@ -914,13 +989,13 @@ $(document).ready(function () {
         var alreadySubscribedMessage = "We thank you for your interest. However our records indicate you are already added to the AlertMe Service.";
 
         $.ajax(apiUrl)
-            .done(function () {
+            .done(function() {
                 $('#message-text').val(successMessage);
                 document.getElementById("h2head").className = "modal-header-success";
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
-            .fail(function () {
+            .fail(function() {
                 $('#message-text').val(alreadySubscribedMessage);
                 document.getElementById("h2head").className = "modal-header-success";
                 $("#alertMe").hide();
@@ -937,7 +1012,7 @@ floatingButton.style.position = 'fixed';
 floatingButton.style.top = '10px';
 floatingButton.style.right = '20px';
 
-document.addEventListener('scroll', function () {
+document.addEventListener('scroll', function() {
     var y = window.pageYOffset;
     if (y > 0) {
         floatingButton.style.position = 'fixed';
@@ -952,7 +1027,7 @@ document.addEventListener('scroll', function () {
 
 var apiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
 
-$.get(apiUrl, function (response) {
+$.get(apiUrl, function(response) {
     const jsonData = response;
     const result = [];
     for (let key in jsonData) {
@@ -971,14 +1046,14 @@ $.get(apiUrl, function (response) {
 });
 
 var leaving = false;
-$(document).on('mouseleave', function (e) {
+$(document).on('mouseleave', function(e) {
     if (e.clientY < 0 && !leaving) {
         leaving = true;
         $('#alertMeModal').modal('show');
     }
 });
 
-$(window).on('beforeunload', function () {
+$(window).on('beforeunload', function() {
     if (!leaving) {
         $('#alertMeModal').modal('show');
         return false;
@@ -995,7 +1070,7 @@ function _turnstileCb() {
         theme: 'light',
     });
 
-    let timerId = setInterval(function () {
+    let timerId = setInterval(function() {
         $('#alertMe').prop('disabled', true);
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -1007,40 +1082,40 @@ function _turnstileCb() {
     }, 1000);
 }
 
-document.getElementById('clippy-button').addEventListener('click', function () {
-	this.style.display = 'none';
-    clippy.load('Clippy', function (agent) {
+document.getElementById('clippy-button').addEventListener('click', function() {
+    this.style.display = 'none';
+    clippy.load('Clippy', function(agent) {
         agent.show();
         agent.speak('My name is XON Clippy');
         agent.gestureAt(200, 200);
         agent.moveTo(200, 200);
-        agent.speak('Thank you for taking your time to check the data breach exposure for this email 🙏');
+        agent.speak('Thank you for taking your time to check the data breach exposure for this email ðŸ™');
         agent.animate();
         agent.animate();
         agent.gestureAt(200, 200);
         agent.moveTo(200, 200);
-        agent.speak('You are here because this email was found in one or more data breaches 🛡️');
+        agent.speak('You are here because this email was found in one or more data breaches ðŸ›¡ï¸');
         agent.animate();
         agent.animate();
         agent.moveTo(1550, 650);
         agent.animate();
         agent.animate();
-        agent.speak('Be Aware & Be Secure 👀');
+        agent.speak('Be Aware & Be Secure ðŸ‘€');
         agent.animate();
         agent.animate();
-        agent.speak('💡 Going forward you can also get alerts in case if your email appears in exposed data breaches by clicking on the "Alert Me" button ');
+        agent.speak('ðŸ’¡ Going forward you can also get alerts in case if your email appears in exposed data breaches by clicking on the "Alert Me" button ');
         agent.animate();
         agent.animate();
-        agent.speak('Do you know XposedOrNot has billions of exposed records to help you search. 👌');
+        agent.speak('Do you know XposedOrNot has billions of exposed records to help you search. ðŸ‘Œ');
         agent.animate();
         agent.animate();
-        agent.speak('More than one third of todays data breaches are happening because of exposed passwords. 🔑');
+        agent.speak('More than one third of todays data breaches are happening because of exposed passwords. ðŸ”‘');
         agent.animate();
         agent.animate();
         agent.speak('Do you know XposedOrNot has more than 500+ exposed data breaches for you to search.');
         agent.animate();
         agent.animate();
-        agent.speak('Account take over issues are repeatedly happening because of poor password practices. Please make use of a password manager for all of your accounts. 😔');
+        agent.speak('Account take over issues are repeatedly happening because of poor password practices. Please make use of a password manager for all of your accounts. ðŸ˜”');
         agent.animate();
         agent.animate();
         agent.speak('You can also check passwords for their exposure under the "Password" page shown in the top.');
@@ -1116,7 +1191,7 @@ function drawChart() {
     var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
 
     chart.draw(data, options);
-    setInterval(function () {
+    setInterval(function() {
         data.setValue(0, 1, Math.round(riskScore))
         chart.draw(data, options);
     }, 1000);
@@ -1130,11 +1205,11 @@ google.charts.load("current", {
 
 function drawChart_categories(xposed_data) {
     margin = {
-        top: 10,
-        right: 10,
-        bottom: 10,
-        left: 10
-    },
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: 10
+        },
         width = 1000 - margin.left - margin.right,
         height = 900 - margin.top - margin.bottom;
 
@@ -1146,7 +1221,7 @@ function drawChart_categories(xposed_data) {
         .attr("transform",
             `translate(${margin.left}, ${margin.top})`);
 
-    const root = d3.hierarchy(xposed_data).sum(function (d) {
+    const root = d3.hierarchy(xposed_data).sum(function(d) {
         return d.value
     })
 
@@ -1170,23 +1245,23 @@ function drawChart_categories(xposed_data) {
         .selectAll("rect")
         .data(Array.from(root.leaves()))
         .join("rect")
-        .attr('x', function (d) {
+        .attr('x', function(d) {
             return d.x0;
         })
-        .attr('y', function (d) {
+        .attr('y', function(d) {
             return d.y0;
         })
-        .attr('width', function (d) {
+        .attr('width', function(d) {
             return d.x1 - d.x0;
         })
-        .attr('height', function (d) {
+        .attr('height', function(d) {
             return d.y1 - d.y0;
         })
         .style("stroke", "black")
-        .style("fill", function (d) {
+        .style("fill", function(d) {
             return color(d.parent.data.name)
         })
-        .style("opacity", function (d) {
+        .style("opacity", function(d) {
             return opacity(d.data.value)
         })
 
@@ -1195,13 +1270,13 @@ function drawChart_categories(xposed_data) {
         .data(root.leaves())
         .enter()
         .append("text")
-        .attr("x", function (d) {
+        .attr("x", function(d) {
             return (d.x0 + d.x1) / 2
         })
-        .attr("y", function (d) {
+        .attr("y", function(d) {
             return (d.y0 + d.y1) / 2 - 15
         })
-        .text(function (d) {
+        .text(function(d) {
             return d.data.name.replace('data_', '')
         })
 
@@ -1215,13 +1290,13 @@ function drawChart_categories(xposed_data) {
         .data(root.leaves())
         .enter()
         .append("text")
-        .attr("x", function (d) {
+        .attr("x", function(d) {
             return (d.x0 + d.x1) / 2
         })
-        .attr("y", function (d) {
+        .attr("y", function(d) {
             return (d.y0 + d.y1) / 2 + 10
         })
-        .text(function (d) {
+        .text(function(d) {
             return d.data.value
         })
         .attr("font-size", "12px")
@@ -1231,25 +1306,25 @@ function drawChart_categories(xposed_data) {
 
     svg
         .selectAll("titles")
-        .data(root.descendants().filter(function (d) {
+        .data(root.descendants().filter(function(d) {
             return d.depth == 1
         }))
         .enter()
         .append("text")
-        .attr("x", function (d) {
+        .attr("x", function(d) {
             return (d.x0 + d.x1) / 2
         })
-        .attr("y", function (d) {
+        .attr("y", function(d) {
             return d.y0 + 21
         })
         .attr("text-anchor", "middle")
-        .text(function (d) {
+        .text(function(d) {
             return d.data.name
         })
         .attr("font-size", "14px")
         .attr("font-weight", "bold")
 
-        .attr("fill", function (d) {
+        .attr("fill", function(d) {
             return color(d.data.name)
         })
 
@@ -1262,12 +1337,12 @@ function drawChart_categories(xposed_data) {
 
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
 
     $('#treemap').show();
     $('#circlepack').hide();
 
-    $('#chart-type').on('change', function () {
+    $('#chart-type').on('change', function() {
         const selectedValue = $(this).val();
         if (selectedValue === 'treemap') {
             $('#treemap').show();
@@ -1277,7 +1352,7 @@ $(document).ready(function () {
             $('#circlepack').show();
         }
     });
-    $('body').on('click', '.see-more', function (e) {
+    $('body').on('click', '.see-more', function(e) {
         e.preventDefault();
         var $this = $(this);
         var $text = $this.prev('.text');
@@ -1302,4 +1377,8 @@ $(document).ready(function () {
     });
 });
 
-$.LoadingOverlay("hide");
+$(document).ajaxStart(function() {
+    $.LoadingOverlay("show");
+}).ajaxStop(function() {
+    $.LoadingOverlay("hide");
+});
