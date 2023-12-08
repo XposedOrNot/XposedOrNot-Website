@@ -21,6 +21,24 @@ $('#alertMeModal').on('show.bs.modal', function (event) {
     $('#thedudalModal').modal('hide');
 })
 
+const isEmpty = (value) => value == null || (typeof value === "string" && value.trim().length === 0);
+
+function _turnstileCb() {
+    const turnstileStatus = turnstile.render('#turns', {
+        sitekey: '0x4AAAAAAAA_T_0Qt4kJbXno',
+        theme: 'light',
+    });
+
+    let timerId = setInterval(() => {
+        $('#alertMe').prop('disabled', true);
+        const turnstileResponse = turnstile.getResponse(turnstileStatus);
+        if (!isEmpty(turnstileResponse)) {
+            $('#alertMe').prop('disabled', false);
+            clearInterval(timerId);
+        }
+    }, 1000);
+}
+
 $(document).ready(function () {
     $("#alertMe").click(function (func_alert) {
         var add_str = document.getElementById("recipient-name").value;
