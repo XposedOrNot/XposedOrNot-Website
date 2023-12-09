@@ -152,9 +152,11 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 renderBreaches(data['Exposed Breaches']);
+		    $.LoadingOverlay("hide");
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
+		    $.LoadingOverlay("hide");
             });
     }
 
@@ -170,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
         cardBody.className = "card-body p-4";
 
         const logo = document.createElement('img');
-        //logo.src = `static/logos/${breach.Logo}`;
         logo.src = breach['Logo'];
         logo.alt = breach['Breach ID'];
         logo.width = 100;
@@ -303,7 +304,7 @@ function renderBreaches(breaches) {
     fetchBreaches();
 });
 
-$.LoadingOverlay("hide");
+//$.LoadingOverlay("hide");
 var floatingButton = document.getElementById('floating-button');
 var topPos = 100;
 floatingButton.style.position = 'fixed';
@@ -325,6 +326,14 @@ document.addEventListener('scroll', function () {
 document.getElementById("table-view-button").addEventListener("click", function() {
       window.location.href = 'breaches.html';
 })
+
+$(document).ajaxStart(function() {
+    $.LoadingOverlay("show");
+}).ajaxStop(function() {
+    $.LoadingOverlay("hide");
+});
+
+
 	</script>
    </body>
 </html>
