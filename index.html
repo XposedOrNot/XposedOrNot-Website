@@ -24,9 +24,17 @@
       <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous" />
       <link rel=stylesheet href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset' type=text/css media=all>
-      <link rel="Devanand Premkumar" href="humans.txt" />
+      <link rel="Devanand Premkumar" href="humans.txt" />      
       <script>
-        (function (h, o, t, j, a, r) {
+        document.addEventListener('DOMContentLoaded', function() {           
+            var userLang = navigator.language || navigator.userLanguage;
+            userLang = userLang.split('-')[0];             //alert(userLang)
+            var supportedLangs = ['en', 'es', 'zh', 'de', 'fr', 'it', 'ja', 'ru', 'pt', 'ar', 'bn', 'hi', 'ta'];
+            if (supportedLangs.indexOf(userLang) !== -1 && userLang !== 'en') {
+                window.location.replace('/' + userLang + '/');
+            }
+        });
+ (function (h, o, t, j, a, r) {
     h.hj = h.hj || function () {
         (h.hj.q = h.hj.q || []).push(arguments)
     };
@@ -55,38 +63,54 @@
       "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
     document.head.appendChild(script);
   })();
-      </script>
-   </head>
-   <body data-spy="scroll" data-target=".menu" data-offset="50">
+    </script>
+   </head> 
+    <body data-spy="scroll" data-target=".menu" data-offset="50">
       <div class="xon">
          <div class="searchMe">
             <div class="banner">
 		    <div class="grid">
-  <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
-    <a class="navbar-brand abs" href="#" style="text-decoration: none;">
-	          <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-      <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community Edition</span>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-collapse collapse" id="collapsingNavbar">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active px-4">
-          <a class="nav-link" href="password.html">Password</a>
-        </li>
-        <li class="nav-item active px-4">
-          <a class="nav-link" href="faq.html">FAQ</a>
-        </li>
-        <li class="nav-item active px-4">
-          <a class="nav-link" href="https://blog.xposedornot.com" target="_blank">Blog</a>
-        </li>
-        <li class="nav-item active px-4">
-          <a class="nav-link" href="api_doc.html">API</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                   <a class="navbar-brand abs" href="#" style="text-decoration: none;">
+	                   <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                       <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community Edition</span>
+                   </a>
+                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                       <span class="navbar-toggler-icon"></span>
+                   </button>
+                   <div class="navbar-collapse collapse" id="collapsingNavbar">
+                       <ul class="navbar-nav ml-auto">
+                           <li class="nav-item active px-4">
+                               <a class="nav-link" href="password.html">Password</a>
+                           </li>
+                           <li class="nav-item active px-4">
+                               <a class="nav-link" href="faq.html">FAQ</a>
+                           </li>
+                           <li class="nav-item active px-4">
+                               <a class="nav-link" href="https://blog.xposedornot.com" target="_blank">Blog</a>
+                           </li>
+                           <li class="nav-item active px-4">
+                               <a class="nav-link" href="api_doc.html">API</a>
+                           </li>
+                           <li class="nav-item active dropdown px-4">
+                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"  aria-expanded="false">    Language <i class="fas fa-caret-down"></i> </a>
+                               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">		
+                                   <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                                   <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                                   <a class="dropdown-item" href="/en/">English</a>
+                                   <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                                   <a class="dropdown-item" href="/ar/">العربية (Arabic)</a>
+                                   <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                                   <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                                   <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                                   <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                                   <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                                   <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                               </div>
+                           </li>
+                       </ul>
+                   </div>
+               </nav>
 
                   <div class="banner-row">
                      <div class="banner-left">
@@ -121,11 +145,9 @@
                               </div>
                            </div>
                         </div>
-                     </div>
-                   
+                     </div>                   
                      <div class="banner-right banner-text add-row">
-                        <h4 align="center" style="color:#3f71f3">FREE Add-Ons</h4>
-                               
+                        <h4 align="center" style="color:#3f71f3">FREE Add-Ons</h4>                               
                         <div class="add-flex">
                            <a href="shield.html" class="adds">
                               <div class="add1">
