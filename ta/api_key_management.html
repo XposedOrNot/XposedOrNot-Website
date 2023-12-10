@@ -1,0 +1,371 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>XposedOrNot: API விசை மேலாண்மை</title>
+<link href="cdnjs.cloudflare.com" rel="dns-prefetch"/>
+<link href="static.hotjar.com" rel="dns-prefetch"/>
+<link href="favicon.ico" rel="shortcut icon" type="image/ico">
+<link href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all" rel="stylesheet" type="text/css"/>
+<link href="static/css/style.css" rel="stylesheet" type="text/css"/>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" referrerpolicy="no-referrer" rel="stylesheet">
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
+<script src="static/scripts/utils.js"></script>
+<link defer="" href="static/css/style2.css" rel="stylesheet" type="text/css"/>
+<link defer="" href="static/css/xon-report.css" rel="stylesheet" type="text/css"/>
+<meta content="width=device-width, maximum-scale=5.0, initial-scale=1.0" name="viewport"/>
+<meta content="XposedOrNot: Get a detailed report of your data breach exposure" name="description"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="Devanand Premkumar" name="author"/>
+<script crossorigin="anonymous" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<style>
+         body {
+         background-color: #f5f5f5;
+         }
+         .navbar {
+         margin-bottom: 20px;
+         }
+         .card {
+         box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
+         }
+         h3 {
+         color: #007bff;
+         //text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+         }
+         .benefit-card {
+         border: none;
+         border-radius: 10px;
+         box-shadow: 0 0 15px 0 rgba(0,0,0,0.1);
+         }
+         .benefit-card:nth-child(even) {
+         background: #007bff;
+         color: #fff;
+         }
+         .benefit-card:nth-child(odd) {
+         background: #fff;
+         color: #007bff;
+         }
+         .benefit-card .card-title {
+         font-weight: 700;
+         font-size: 1.2em;
+         }
+         .benefit-card .card-text {
+         font-size: 1em;
+         }
+      </style>
+<script>
+          (function (h, o, t, j, a, r) {
+    h.hj = h.hj || function () {
+        (h.hj.q = h.hj.q || []).push(arguments)
+    };
+    h._hjSettings = {
+        hjid: 1613245,
+        hjsv: 6
+    };
+    a = o.getElementsByTagName('head')[0];
+    r = o.createElement('script');
+    r.async = 1;
+    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+    a.appendChild(r);
+})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+        (function () {
+    var script = document.createElement("script");
+    script.onload = () => {
+      window.GrafanaFaroWebSdk.initializeFaro({
+        url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
+        app: {
+          name: 'xonniepub',
+          version: "1.0.0",
+        },
+      });
+    };
+    script.src =
+      "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
+    document.head.appendChild(script);
+  })();
+      </script>
+</link></link></link></head>
+<body class="" data-gr-c-s-loaded="true" data-gr-ext-installed="" data-new-gr-c-s-check-loaded="8.884.0" style="">
+<div class="mobileheader-area">
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+<nav class="navbar navbar-expand-lg navbar-light">
+<a class="navbar-brand" href="index.html">
+<p>XposedorNot</p>
+</a>
+<button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="hamburger hamburger--squeeze navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+<span class="hamburger-box">
+<span class="hamburger-inner"></span>
+</span>
+</button>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav mr-auto"></ul>
+<div class="main-menu-part">
+<ul>
+<li>
+<a href="password.html">கடவுச்சொல்</a>
+</li>
+<li>
+<a href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
+</li>
+<li>
+<a href="https://blog.xposedornot.com/" rel="noopener noreferrer" target="_blank">வலைப்பதிவு</a>
+</li>
+<li>
+<a href="https://twitter.com/XposedOrNot" rel="noopener noreferrer" target="_blank">
+<em class="fab fa-twitter"></em>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<header class="header-area">
+<div class="container">
+<div class="row">
+<div class="col-lg-3 col-md-3">
+<div class="header-left">
+<a href="https://XposedOrNot.com">
+<p>XposedorNot</p>
+</a>
+</div>
+</div>
+<div class="col-lg-9 col-md-9">
+<div class="header-right">
+<ul>
+<li>
+<a href="password.html">கடவுச்சொல்</a>
+</li>
+<li>
+<a href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
+</li>
+<li>
+<a href="https://blog.xposedornot.com/" rel="noopener noreferrer" target="_blank">வலைப்பதிவு</a>
+</li>
+<li>
+<a href="https://twitter.com/XposedOrNot" rel="noopener noreferrer" target="_blank">
+<em class="fab fa-twitter"></em>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="container">
+<br/>
+<div class="row justify-content-center align-items-center" style="height:80vh">
+<div class="col-12">
+<div align="center" class="card">
+<div class="card-body">
+<h3 class="text-center mb-5"> XposedOrNot API விசை மேலாண்மை</h3>
+<p align="center">இது உங்களின் தற்போதைய API விசையாகும், இது சரிபார்க்கப்பட்ட டொமைன்கள் தொடர்பான மீறல்களை வினவுவதற்குப் பயன்படுத்தப்படும்.
+                  <form id="emailForm">
+<div class="form-group">
+<div class="input-group">
+<input class="form-control w-75 form-control" id="api_key" name="api_key" placeholder="ImRldmEuc2VjdXJpdHlAZ21haWwuY29tIg.ZJpu5g.MrhgMQk60I5TJyYHke6YNqrsabk" readonly="" style="text-align:center; font-weight: bold; font-size:16px;" type="text"/>
+<div class="input-group-append">
+<button class="btn btn-primary" id="submitButton" type="submit">
+<span id="submitText">API விசையை மீட்டமைக்கவும்</span>
+<span aria-hidden="true" class="spinner-border spinner-border-sm d-none" id="submitSpinner" role="status"></span>
+</button>
+</div>
+</div>
+</div>
+</form>
+<div class="alert alert-warning mt-3" id="rateLimitMessage" style="display: none;">
+<i class="fas fa-exclamation-triangle"></i> பல கோரிக்கைகள். வேகத்தைக் குறைத்து, பிறகு முயற்சிக்கவும்.
+                  </div>
+<div class="alert alert-success mt-3" id="successMessage" style="display: none;">
+<i class="fas fa-check-circle"></i> API மீட்டமைப்பு வெற்றிகரமாக முடிந்தது. நீங்கள் புதிய API விசையைப் பயன்படுத்தலாம்.
+                  </div>
+<div class="alert alert-danger mt-3" id="errorMessage" style="display: none;">
+<i class="fas fa-times-circle"></i> உங்கள் கோரிக்கையைச் செயல்படுத்துவதில் பிழை. பிறகு முயற்சிக்கவும்.
+                  </div>
+<div class="alert alert-primary mt-3" id="curl" name="curl">
+<blockquote>
+                        curl -L -X POST -H "x-api-key: [KEY]" -H "உள்ளடக்கம்-நீளம்: 0" https://api.xposedornot.com/v1/domain-breaches/
+                     </blockquote>
+</div>
+<div class="container my-5">
+<div class="row">
+<div class="col-lg-3 col-md-6 mb-4">
+<div class="card benefit-card">
+<div class="card-body">
+<h5 class="card-title">மீறல் சோதனைகள்</h5>
+<p class="card-text">எங்கள் API தரவு மீறல்களைச் சரிபார்க்க அனுமதிக்கிறது, இது அனைத்து சரிபார்க்கப்பட்ட டொமைன்களிலும் சாத்தியமான பயனர் தரவு வெளிப்பாடு பற்றிய சமீபத்திய நுண்ணறிவை வழங்குகிறது.</p>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 mb-4">
+<div class="card benefit-card">
+<div class="card-body">
+<h5 class="card-title">தடையற்ற ஒருங்கிணைப்பு</h5>
+<p class="card-text">எங்கள் API ஆனது SIEM, SOAR மற்றும் பிற பாதுகாப்பு அமைப்புகளுடன் தடையின்றி ஒருங்கிணைத்து, உங்கள் இணையப் பாதுகாப்பு நிலையை மேம்படுத்தும் வகையில் வடிவமைக்கப்பட்டுள்ளது.</p>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 mb-4">
+<div class="card benefit-card">
+<div class="card-body">
+<h5 class="card-title">நிகழ்நேர புதுப்பிப்புகள்</h5>
+<p class="card-text">எங்கள் API நிகழ்நேர புதுப்பிப்புகளை வழங்குகிறது, உங்கள் சரிபார்க்கப்பட்ட டொமைன்களைப் பாதிக்கக்கூடிய புதிய அல்லது வளர்ந்து வரும் தரவு மீறல்களுக்கு விரைவான பதிலைச் செயல்படுத்துகிறது.</p>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 mb-4">
+<div class="card benefit-card">
+<div class="card-body">
+<h5 class="card-title">வலுவான பாதுகாப்பு</h5>
+<p class="card-text">API ஆனது வலுவான பாதுகாப்பு நடவடிக்கைகளுடன் வடிவமைக்கப்பட்டுள்ளது, மீறல் மேலாண்மைக்கான வலுவான கருவியை வழங்கும் அதே வேளையில் முக்கியமான தரவின் பாதுகாப்பை உறுதி செய்கிறது.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</p></div>
+</div>
+</div>
+<br/><br/>
+<div align="center">தயவுசெய்து எங்களுடையதைப் படியுங்கள்<a href="api_doc.html">API ஆவணம்</a> மற்றும்<a href="xposedornot.apiary.com">API விளையாட்டு மைதானம்</a> மேலும் விவரங்களுக்கு.</div>
+<div align="center">
+<button class="btn-lg btn-primary" style="background-color:#FC9E11;color:white" type="button">
+மீறல்கள் டாஷ்போர்டுக்குத் திரும்பு</button>
+</div>
+</div>
+<div class="container text-center" style="font-family:Poppins">
+<footer>
+<aside>
+<hr/>
+<div about="https://creativecommons.org" xmlns:cc="https://creativecommons.org/ns#">
+<div class="footer-menu" style="width:30%;Text-align:center;float:left;">
+<a href="privacy" style="color:blue">தனியுரிமைக் கொள்கை</a>
+</div>
+</div>
+<p>
+<div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
+<input class="custom-control-input" id="darkSwitch" type="checkbox"/>
+<label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
+</div>
+</p>
+</aside>
+</footer>
+</div>
+<script crossorigin="anonymous" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+<script async="" rel="preconnect" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+<script async="" defer="" src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb"></script>
+<script src="static/scripts/common.js"></script>
+<script type="text/javascript">
+         $.urlParam = function (name) {
+             var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+             return results[1] || 0;
+         }
+         
+         let token;
+         try {
+              email = decodeURIComponent($.urlParam('email'));
+               token = decodeURIComponent($.urlParam('token'));
+         } catch (error) {
+             window.location.replace("https://xposedornot.com");
+         }    
+         
+         $(document).ready(function() {
+         $('.btn-lg.btn-primary').click(function() {
+             var newUrl = 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+             window.location.href = newUrl;
+         });
+         });
+         
+         let api_url = "https://api.xposedornot.com/v1/get-api-key/" + token;
+         
+         $.ajax({
+             url: api_url,
+             type: 'GET',
+             success: function(res) {
+                 $('#api_key').val(res.api_key);
+                 message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                 document.getElementById('curl').innerText =  message
+             },
+             error: function(error) {
+                 if (error.responseJSON && error.responseJSON.error === 'invalid_token') {
+                     alert("Invalid token. Please try again.");
+                 }
+             }
+         });
+         
+         document.getElementById('emailForm').addEventListener('submit', function(event){
+         event.preventDefault();
+         hideAllMessages();
+         resetApiKey();
+         });
+         
+         function showRateLimitMessage() {
+         document.getElementById('rateLimitMessage').style.display = "block";
+         }
+         
+         function showSuccessMessage() {
+         document.getElementById('successMessage').style.display = "block";
+         
+         }
+         
+         function showErrorMessage(message) {
+         document.getElementById('errorMessage').innerText = message;
+         document.getElementById('errorMessage').style.display = "block";
+         }
+         
+         function resetApiKey() {
+         document.getElementById('submitText').style.display = "none";
+         document.getElementById('submitSpinner').style.display = "inline-block";
+         document.getElementById('submitButton').disabled = true;
+         
+         hideAllMessages();
+         fetch(`https://api.xposedornot.com/v1/create-api-key/${token}`)
+             .then(response => {
+                 if (!response.ok) {
+                     if (response.status === 429) {
+                         showRateLimitMessage();
+                     } else {
+                         showErrorMessage('Network response was not ok');
+                     }
+                     throw new Error('Network response was not ok');
+                 }
+                 return response.json();
+             })
+             .then(data => {
+                 if (data.status === "success") {
+                     document.getElementById('api_key').value = data.api_key;
+                     showSuccessMessage();
+                     message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + data.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                     document.getElementById('curl').innerText =  message
+                    
+                 } else {
+                     showErrorMessage('Failed to reset API key');
+                 }
+             })
+             .catch(() => {
+                 showErrorMessage('An error occurred while resetting your API key. Please try again later.');
+             })
+             .finally(() => {
+                 
+                 document.getElementById('submitText').style.display = "inline-block";
+                 document.getElementById('submitSpinner').style.display = "none";
+                 document.getElementById('submitButton').disabled = false;
+             });
+         
+         }
+         function hideAllMessages() {
+         document.getElementById('rateLimitMessage').style.display = "none";
+         document.getElementById('successMessage').style.display = "none";
+         document.getElementById('errorMessage').style.display = "none";
+         }
+      </script>
+</div></body>
+</html>
