@@ -1,3 +1,0 @@
-function jsfunction() {
-    new SpiderController({});
-}

@@ -1,0 +1,208 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="XposedOrNot: Responsible Disclosure" name="description"/>
+<meta content="Devanand Premkumar" name="author"/>
+<link href="favicon.ico" rel="icon" type="image/x-icon"/>
+<title>責任ある開示</title>
+<link async="" defer="" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all" rel="stylesheet" type="text/css"/>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" referrerpolicy="no-referrer" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
+<script crossorigin="anonymous" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script crossorigin="anonymous" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+<link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+<script>
+         (function (h, o, t, j, a, r) {
+    h.hj = h.hj || function () {
+        (h.hj.q = h.hj.q || []).push(arguments)
+    };
+    h._hjSettings = {
+        hjid: 1613245,
+        hjsv: 6
+    };
+    a = o.getElementsByTagName('head')[0];
+    r = o.createElement('script');
+    r.async = 1;
+    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+    a.appendChild(r);
+})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+  (function () {
+    var script = document.createElement("script");
+    script.onload = () => {
+      window.GrafanaFaroWebSdk.initializeFaro({
+        url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
+        app: {
+          name: 'xonniepub',
+          version: "1.0.0",
+        },
+      });
+    };
+    script.src =
+      "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
+    document.head.appendChild(script);
+  })();
+      </script>
+</link></link></head>
+<body>
+<div class="kbanner">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+<a class="navbar-brand" href="https://xposedornot.com">ＸｐｏｓｅｄＯｒＮｏｔ</a>
+<button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+<ul class="navbar-nav navbar-right">
+<li class="nav-item active">
+<a class="nav-link" href="password.html">パスワード<span class="sr-only">（現在）</span>
+</a>
+</li>
+<li class="nav-item active">
+<a class="nav-link" href="faq.html">よくある質問</a>
+</li>
+<li class="nav-item active">
+<a class="nav-link" href="https://blog.xposedornot.com/">ブログ</a>
+</li>
+<li class="nav-item dropdown active">
+<a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"> その他のツール</a>
+<div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+<a class="dropdown-item" href="xposed.html">暴露された侵害</a>
+<a class="dropdown-item" href="shield.html">プライバシーシールド</a>
+<a class="dropdown-item" href="domain.html">ドメインの検証</a>
+<a class="dropdown-item" href="domains.html">ドメインレベルの検索</a>
+</div>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+<div class="container">
+<div class="panel-group" id="accordion">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-parent="#accordion" data-toggle="collapse" href="#collapse1">
+<h1>
+<strong>バグと脆弱性の責任ある開示</strong>
+</h1>
+</a>
+</h4>
+</div>
+<div class="panel-collapse" id="collapse1">
+<div class="panel-body">
+<strong>最終更新日: 2021 年 3 月 8 日</strong>
+<br/>
+<br/>こんにちは、バグハンターの皆さん！ XusedOrNot (XON) の安全性を維持するためにご協力いただき、大変嬉しく思います。私は、全員が適切に対応し、当社のサービス、ウェブサイト、ネットワークを厄介なバグや脆弱性から安全に保つために、この責任ある開示ポリシーを設定しました。<br/><br/>
+                     私の注意が必要な点を見つけた場合は、スピード違反の銃弾よりも早く修正できるよう、責任を持って調査し、報告していただくようご協力をお願いいたします。セキュリティの脆弱性の公開にご協力いただくことで、すべてのユーザーの安全を確保することができます。<br/><br/>
+<h2>
+<strong>報告のガイドライン:</strong>
+</h2>
+<br/> バグまたは脆弱性を報告する場合は、必ず次の内容を含めてください。
+                     <ol>
+<li> 画面キャプチャや出力データなどの証拠を伴う、バグまたは脆弱性の明確な説明。恥ずかしがらないでください。あなたが見つけたものを楽しみにしています。</li>
+<li> 対処している内容を理解するための、脆弱性の潜在的な影響の説明。</li>
+<li> XON セキュリティ研究者の殿堂入りにふさわしい評価を与えるために、ご希望の名前またはハンドル名を入力してください。</li>
+<li> 弊社側で問題を再現できるように、問題を再現するための正確な手順。</li>
+<li> 概念実証のビデオがある場合は、常に役立ちます。</li>
+<li> プラットフォーム、オペレーティング システム、バージョン、IP アドレス、または URL に関する関連情報。</li>
+<li> データのログ記録や追跡などの裏付けとなる証拠は常に役に立ちます。</li>
+<li> 問題が悪用されやすいかどうかについての評価。悪用可能性のスケールで 10 点中 10 点かどうかを判断することはありません。</li>
+</ol>
+                     素晴らしいバグハンターであり、XownedOrNot (XON) を安全かつ健全に保つために協力してくれてありがとう 🙌!<br/><br/>
+<h2>
+<strong>有効な提出物</strong>
+</h2>
+<br/>
+<ol>
+<li> ローカルまたはリモートのファイルの組み込み</li>
+<li> 認証バイパス</li>
+<li> ディレクトリトラバーサル</li>
+<li> 不正/意図しないデータ漏洩</li>
+<li> リモートコード実行 (RCE)</li>
+<li> SQL/XXE インジェクションとコマンド インジェクション</li>
+<li> クロスサイトスクリプティング (XSS)</li>
+<li> サーバー側リクエスト フォージェリ (SSRF)</li>
+<li> サーバーまたは API の構成ミスの問題</li>
+<li> 認証と認可に関連する問題</li>
+<li> クロスサイト リクエスト フォージェリ (CSRF)</li>
+</ol>
+<br/>
+<h2>
+<strong> スコープ内ドメイン</strong>
+</h2>
+<br/>
+<ol>
+<li>https://xposornot.com</li>
+<li>https://api.xposedornot.com</li>
+<li>https://passwords.xposedornot.com</li>
+</ol>
+<br/>
+<h2>
+<strong> 情報の用途</strong>
+</h2>
+<br/> 
+                     当社は、お客様および当社のサービスに関するすべての情報を機密として保持することをお約束します。ですから、どうか私たちのチーム以外の誰にも豆をこぼさないでください。<br/>
+<br/> 
+                     私たちはインターネットをより安全な場所にすることに全力を尽くしており、その実現を支援してくれるセキュリティ研究者に感謝しています。ですから、その取り組みに参加していただき、本当にありがとうございます 🙏!発見したバグや脆弱性を責任を持って公開することで、ユーザーとそのデータを保護することができます。<br/>
+<br/>
+<h2>
+<strong> 利用規約</strong>
+</h2>
+<br/> 
+                     注意してください。これは、脆弱性の提出に対して現金の報酬を提供する一般的なバグ報奨金プログラムではありません。私たちは（まだ）お金でできていません。ただし、あなたが私たちに重要なことを報告した場合、私たちはあなたに愛と感謝の気持ちを少しだけ示すかもしれません。<br/>
+<br/>
+                     ただ倫理を守るようにしてくださいね？私たちは、お客様がインターネットの善良な市民として行動し、利用規定に定められたルールに従うことを期待しています。しかし、そうしていただければ、私たちの殿堂ページで喜んで表彰させていただきます。これはハリウッドのウォーク オブ フェームの私たちの版のようなものですが、セキュリティ研究者向けです。さあ、あなたのスキルを披露して、XusedOrNot をすべての人にとってより安全な場所にするのにご協力ください。<br/>
+<br/>
+<h2>
+<strong> バグ報告者 - 期待</strong>
+</h2>
+<br/>
+                     バグハンターの皆さん、XusedOrNot をすべての人にとってより安全な場所にするために、皆さんのご協力をお待ちしております。始める前に、私たちがあなたに期待していることがいくつかあります。<br/><br/>
+<ol>
+<li>  XusedOrNot またはユーザーを傷つけたり混乱させたりするような行為は行わないでください。</li>
+<li>  レポートを受け取ってから 1 ～ 3 日以内に確認メールをお送りします。</li>
+<li>  ユーザーのプライバシーを尊重し、ユーザーのアカウントを覗き見しようとしないでください。</li>
+<li>  自分のアカウントと電子メール アドレスでのみテストしてください。</li>
+<li>  当社の Web サーバーまたは API へのアクセスを可能にする重大な脆弱性を見つけた場合は、そこで作業を中止し、当社に引き継がせてください。</li>
+<li>  問題が解決されるまで、問題の詳細を共有しないでください。</li>
+<li>  個人的な利益のためにこの脆弱性を悪用しようとした場合、その報告は不適格となります。</li>
+</ol>
+<br/>
+                     プラットフォームの安全性を維持するため、ご協力に感謝いたします。 XusedOrNot を最高のものにするために一緒に働きましょう!
+                  </div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-parent="#accordion" data-toggle="collapse in panel-collapse" href="#collapse25">
+<strong>報告ガイドライン</strong>
+</a>
+</h4>
+</div>
+<div class="panel-body"> 私たちを気にかけてくれてありがとう！ XusedOrNot のバグやセキュリティの脆弱性を発見した場合は、ぜひお知らせください。電子メールで報告できます。<strong>デヴァ @ xposornot.com</strong> または私たちにツイートしてください@Deva_Breaches。<br/>
+<br/> 電子メール: deva @ xposedornot.com<br/> ツイッター ：<a href="https://twitter.com/devaonbreaches">DevaOn違反</a>
+<br/>
+<br/>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="container text-center">
+<footer>
+<aside>
+<p>この完全にオープンソースのサイトの構築に参加してください。貢献は大歓迎です❤️ —私たちの記事をチェックしてください<a href="https://github.com/XposedOrNot" rel="noopener" target="_blank">GitHub</a>。</p>
+</aside>
+<div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
+<input class="custom-control-input" id="darkSwitch" type="checkbox"/>
+<label class="custom-control-label" for="darkSwitch">ダークモード</label>
+</div>
+</footer>
+</div>
+<script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+<script src="/static/scripts/common.js"></script>
+</body>
+</html>
