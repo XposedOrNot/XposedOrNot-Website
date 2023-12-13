@@ -1,0 +1,482 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>XposedOrNot：域验证</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Domain Verification: XposedOrNot" name="description"/>
+<meta content="Devanand Premkumar" name="author"/>
+<link href="favicon.ico" rel="icon" type="image/x-icon"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet"/>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
+<script crossorigin="anonymous" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link async="" defer="" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all" rel="stylesheet" type="text/css"/>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css" integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ==" rel="stylesheet">
+<script crossorigin="anonymous" integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ==" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+<link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+<script>      
+
+         (function (h, o, t, j, a, r) {
+    h.hj = h.hj || function () {
+        (h.hj.q = h.hj.q || []).push(arguments)
+    };
+    h._hjSettings = {
+        hjid: 1613245,
+        hjsv: 6
+    };
+    a = o.getElementsByTagName('head')[0];
+    r = o.createElement('script');
+    r.async = 1;
+    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+    a.appendChild(r);
+})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+  (function () {
+    var script = document.createElement("script");
+    script.onload = () => {
+      window.GrafanaFaroWebSdk.initializeFaro({
+        url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
+        app: {
+          name: 'xonniepub',
+          version: "1.0.0",
+        },
+      });
+    };
+    script.src =
+      "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
+    document.head.appendChild(script);
+  })();
+      </script>
+<style>
+         .input-field {
+         margin-right: -20px;
+         }
+         .copy-btn {
+         padding: 0.5rem 0.5rem;
+         width: auto;
+         margin-left: -30px; 
+         }
+      </style>
+</link></link></head>
+<body style="color:#3c5fec;font-family: 'Poppins', sans-serif;">
+<div class="kbanner">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+<a class="navbar-brand" href="https://xposedornot.com"><span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">是否Xpose</span>
+<span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">社区版</span></a>
+<button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+<ul class="navbar-nav navbar-right">
+<li class="nav-item active">
+<a class="nav-link" href="password.html">密码<span class="sr-only">（当前的）</span>
+</a>
+</li>
+<li class="nav-item active">
+<a class="nav-link" href="api_doc.html">应用程序编程接口</a>
+</li>
+<li class="nav-item active">
+<a class="nav-link" href="https://blog.xposedornot.com/">博客</a>
+</li>
+<li class="nav-item dropdown active">
+<a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"> 更多工具</a>
+<div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+<a class="dropdown-item" href="xposed.html">Xpose 违规</a>
+<a class="dropdown-item" href="shield.html">隐私盾</a>
+<a class="dropdown-item" href="domain.html">域名验证</a>
+<a class="dropdown-item" href="domains.html">域级搜索</a>
+<a class="dropdown-item" href="timeline.html">违反时间表</a>
+</div>
+</li>
+</ul>
+</div>
+</nav>
+          
+      </div>
+<div class="jumbotron" id="d1">
+<div class="container">
+<h1>域验证和验证</h1>
+<br/>
+<p align="center"> 要评估您的域中数据泄露风险的程度，请遵循以下步骤<strong>三个简单的步骤</strong>来验证您的信息。</p>
+</div>
+</div>
+<div class="container" id="div_input">
+<p class="alert alert-primary">我们知道保护您的域用户的安全非常重要，因此我们提供了三种绝佳的方法来验证域授权 - 使用<strong>域名系统</strong>,<strong>超文本标记语言</strong>， 和<strong>电子邮件</strong>。我们的目标是让您轻松选择适合您需求的最佳方法。<br/><br/>
+<strong>域名系统</strong>：第一种方法涉及向域的 DNS 设置添加特殊记录。这就像给您的域名进行一次秘密握手以确认它是真实的交易。我们将指导您完成整个过程，完成后，您的域的身份将立即得到验证！<br/><br/>
+<strong>超文本标记语言</strong>：如果您喜欢更实际的方法，我们可以满足您的需求！只需将带有唯一代码的 HTML 文件添加到您网站的根目录即可。这就像插上一面数字旗帜，上面写着“是的，这是我的领域！”。我们会检查是否有旗帜，如果有，就可以开始了！<br/><br/>
+<strong>电子邮件</strong>：最后，对于那些喜欢电子邮件便利的人，我们可以将验证链接直接发送到您的收件箱。单击链接，瞧，您的域名已获得授权！就像打开您最喜欢的电子邮件并点击按钮一样简单。<br/><br/>
+            请记住，我们的目的是让这个过程尽可能顺利和友好。因此，选择最适合您的方法，然后让我们对该域名进行授权！ 🎉<br/><br/>
+</p>
+<form id="defaultForm" method="post" onload="choices();" role="form">
+<div class="form-group">
+<input autocapitalize="off" autocorrect="off" autofocus="true" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" id="eventName" maxlength="255" name="edhu" placeholder="Enter a valid domain name ...(e.g.: your-domain.com)" spellcheck="false" type="text"/>
+<span class="input-group-btn">
+</span></div>
+<br/>
+</form></div>
+<div align="center">
+<button class="btn btn-primary btn-lg" id="alertMe" type="submit">开始验证过程<span class="glyphicon glyphicon-ok" id="alertMe_i1"></span>
+</button>
+</div>
+<div align="center" hidden="false" id="status">
+<button class="btn btn-primary btn-lg"> 正在初始化验证...<em class="fa fa-spinner fa-spin"></em>
+</button>
+</div>
+<input id="hid1" name="hid1" readonly="" type="hidden">
+
+<div id="div_s1">
+<div align="center" id="lbl_1">
+<div id="d1"></div>
+</div>
+<div class="selectContainer container" id="s1">
+<select class="form-control input-nl2" data-style="btn-primary" id="strat" name="strat">
+<option selected="" value="ver">选择一种可用的验证方法...</option>
+<option value="email">基于电子邮件的验证</option>
+<option value="dns_txt">基于 DNS 文本的验证</option>
+<option value="html">基于 HTML 页面的验证</option>
+</select>
+<br/>
+</div>
+</div>
+<div align="center" class="alert alert-primary container" id="div_dns" role="alert" style=" border-radius: 5px;border:2px solid #6daae0;">
+<strong>基于 DNS TXT 记录的验证。！</strong> 请在您的 DNS 中创建临时 TXT 记录，如下所示。<br/>
+<br/>
+<form id="dns_form" method="post">
+<div class="input-group" id="div2">
+<span class="input-group-addon">
+<em class="fa fa-bullseye"></em>
+</span>
+<input autocapitalize="off" autofocus="true" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !" data-val-minlength-min="3" id="edhu_dns" maxlength="255" name="edhu_dns" readonly=""/>
+</div>
+<br/>
+<div align="left" class="input-group">
+<input class="form-control input-lg" id="txt_dns" placeholder="Email address to receive the exposed data" type="email"/>
+<span class="input-group-btn">
+<button class="btn btn-lg btn-primary" id="searchMe_d" type="submit"> 核实<span class="glyphicon glyphicon-ok" id="searchMe_d_i1">
+</span></button>
+</span>
+</div>
+</form>
+</div>
+<div align="center" class="container alert alert-primary" id="div_meta" role="alert" style=" border-radius: 5px;border:2px solid #6daae0;">
+<strong>基于 META 标签的验证。！</strong> 请在您的主页中创建一个临时 META 数据标签，如下所示。<br/>
+<br/>
+<form id="meta_form" method="post">
+<div class="input-group" id="div2">
+<span class="input-group-addon">
+<em class="fa fa-bullseye"></em>
+</span>
+<input autocapitalize="off" autofocus="true" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !" data-val-minlength-min="3" id="edhu_meta" maxlength="255" name="edhu_meta" readonly=""/>
+</div>
+<br/>
+<div align="left" class="input-group">
+<input class="form-control input-lg" id="txt_email_m" placeholder="Email address to receive the exposed data" type="email"/>
+<span class="input-group-btn">
+<button class="btn btn-lg btn-primary" id="searchMe_m" type="submit"> 核实<span class="glyphicon glyphicon-ok" id="searchMe_m_i1">
+</span></button>
+</span>
+</div>
+</form>
+</div>
+<div align="center" class="alert alert-primary container" id="div_html" role="alert" style="border-radius: 5px;border:2px solid #6daae0;">
+<strong>基于 HTML 文件的验证！</strong> 请在根目录中创建一个临时文件，其值如下所示，然后单击“验证”。<br/><br/>
+<form id="html_form" method="post">
+<div class="form-group row align-items-center">
+<label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filename">文件名：</label>
+<div class="col-sm-9">
+<input class="form-control input-lg input-field" data-val="true" id="edhu_html_filename" name="edhu_html_filename" readonly="" type="text"/>
+</div>
+<div class="col-sm-1">
+<button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filename" type="button"><i class="fas fa-copy"></i> 复制</button>
+</div>
+</div>
+<div class="form-group row align-items-center">
+<label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filecontent">文件内容：</label>
+<div class="col-sm-9">
+<input class="form-control input-lg input-field" data-val="true" id="edhu_html_filecontent" name="edhu_html_filecontent" readonly="" type="text"/>
+</div>
+<div class="col-sm-1">
+<button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filecontent" type="button"><i class="fas fa-copy"></i> 复制</button>
+</div>
+</div>
+<div align="left" class="input-group">
+<input class="form-control input-lg" id="txt_email_h" placeholder="Email address to receive the exposed data" type="email"/>
+<span class="input-group-btn">
+<button class="btn btn-lg btn-primary" id="searchMe_h" type="submit"> 核实<span class="glyphicon glyphicon-ok" id="searchMe_h_i1"></span>
+</button>
+</span>
+</div>
+</form>
+</div>
+<div align="center" class="container alert alert-danger" id="dang" role="alert">
+</div>
+<div align="center" class="alert alert-primary container" id="div_email" role="alert" style="border-radius: 5px;border:2px solid #6daae0;">
+<strong>电子邮件</strong> 基于验证很容易验证所提供的域，您可以在权威电子邮件联系人中接收电子邮件。请选择电子邮件，然后单击<strong>核实</strong>。<br/>
+<br/>
+<form id="email_form" method="post">
+<div class="input-group" id="div1">
+<span class="input-group-addon">
+<em class="fa fa-envelope"></em>
+</span>
+<select class="form-control input-group input-lg" id="sel1">
+<option>请选择适当的电子邮件以接收验证电子邮件：</option>
+</select>
+</div>
+<br/>
+<div align="left" class="input-group">
+<input class="form-control input-lg" id="txt_email_e" placeholder="Email address to receive the exposed data" type="email"/>
+<span class="input-group-btn">
+<button class="btn btn-lg btn-primary" id="searchMe_e" type="submit"> 核实<span class="glyphicon glyphicon-ok" id="searchMe_e_i1">
+</span></button>
+</span>
+</div>
+</form>
+</div>
+<div class="container" id="div_t1">
+<div style=" border-radius: 5px;border:2px solid #6daae0;">
+<div class="sp1">
+<table class="table table-striped table-condensed">
+<thead>
+<tr>
+<th>脚步</th>
+<th>行动</th>
+<th>解释</th>
+<th>地位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> #1</td>
+<td> 域名</td>
+<td> 输入有效的域名</td>
+<td>
+<span class="label label-success">完全的</span>
+</td>
+</tr>
+<tr>
+<td> #2</td>
+<td>验证选项</td>
+<td>选择基于电子邮件、DNS、html 等的验证选项</td>
+<div id="div_suc1">
+<td>
+<span class="label label-warning">待办的</span>
+</td>
+</div>
+</tr>
+<tr>
+<td> #3</td>
+<td>完成验证</td>
+<td>根据所选选项成功完成验证过程</td>
+<td>
+<span class="label label-warning">待办的</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="progress">
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" class="progress-bar progress-bar-success progress-bar-striped active" id="pr1" role="progressbar" style="width:20%"> 20% 完成（成功）</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container" id="div_t3">
+<div style=" border-radius: 5px;border:2px solid #6daae0;">
+<div class="sp1">
+<table class="table table-striped table-condensed">
+<thead>
+<tr>
+<th>脚步</th>
+<th>行动</th>
+<th>解释</th>
+<th>地位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> #1</td>
+<td> 域名</td>
+<td> 输入有效的域名</td>
+<td>
+<span class="label label-success">完全的</span>
+</td>
+</tr>
+<tr>
+<td> #2</td>
+<td>验证方法</td>
+<td>选择基于电子邮件、DNS、html 等的验证选项</td>
+<div id="div_suc2">
+<td>
+<span class="label label-success">完全的</span>
+</td>
+</div>
+</tr>
+<tr>
+<td> #3</td>
+<td>完成验证</td>
+<td>按照所选方法成功完成验证过程</td>
+<td>
+<span class="label label-danger">失败的</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="progress">
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100" class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%"> 100% 完成（失败）</div>
+</div>
+</div>
+<div align="center">
+<button class="btn btn-primary btn-lg" onclick="window.location.reload();">重试一次</button>
+<br/>
+</div>
+<br/>
+</div>
+</div>
+<div class="container" id="div_t4">
+<div style=" border-radius: 5px;border:2px solid #6daae0;">
+<div class="sp1">
+<table class="table table-striped table-condensed">
+<thead>
+<tr>
+<th>脚步</th>
+<th>行动</th>
+<th>解释</th>
+<th>地位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> #1</td>
+<td> 域名</td>
+<td> 输入有效的域名</td>
+<td>
+<span class="label label-success">完全的</span>
+</td>
+</tr>
+<tr>
+<td> #2</td>
+<td>验证方法</td>
+<td>选择基于电子邮件、DNS、html 等的验证选项</td>
+<div id="div_suc2">
+<td>
+<span class="label label-success">完全的</span>
+</td>
+</div>
+</tr>
+<tr>
+<td> #3</td>
+<td>完成验证</td>
+<td>按照所选方法成功完成验证过程</td>
+<td>
+<span class="label label-success">成功</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="progress">
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%"> 100% 完成（成功）</div>
+</div>
+<div align="center" class="alert alert-success" id="succ" role="alert">
+<em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
+<br/>
+<strong>出色的 ！</strong> 我们已成功验证并发送了一封包含违规数据的电子邮件。 ！
+               </div>
+</div>
+</div>
+</div>
+<div class="container" id="div_t2">
+<div style="border-radius: 5px;border:2px solid #6daae0;">
+<div class="sp1">
+<table class="table table-striped table-condensed">
+<thead>
+<tr>
+<th>脚步</th>
+<th>行动</th>
+<th>解释</th>
+<th>地位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> #1</td>
+<td> 域名</td>
+<td> 输入有效的域名</td>
+<td>
+<span class="label label-success">完全的</span>
+</td>
+</tr>
+<tr>
+<td> #2</td>
+<td>验证方法</td>
+<td>选择基于电子邮件、DNS、html 等的验证选项</td>
+<div id="div_suc2">
+<td>
+<span class="label label-success">完全的</span>
+</td>
+</div>
+</tr>
+<tr>
+<td> #3</td>
+<td>完成验证</td>
+<td>按照所选方法成功完成验证过程</td>
+<td>
+<span class="label label-warning">待办的</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="progress">
+<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:60%"> 60% 完成（成功）</div>
+</div>
+</div>
+<br/>
+<div align="center" class="alert alert-success" hidden="false" id="succ" role="alert">
+<em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
+<br/>
+<strong>出色的 ！</strong> 我们已成功验证并发送了一封包含违规数据的电子邮件。 ！
+      </div>
+<div align="center" class="alert alert-info" hidden="false" id="info" role="alert">
+<strong>哎呀！</strong> 您可以过一段时间再试一次吗？
+      </div>
+<div align="center" class="alert alert-danger" hidden="false" id="dang" role="alert">
+<strong>哎呀！</strong> 域验证未成功。 ！
+      </div>
+<div align="center" class="container alert alert-danger" hidden="false" id="f1" role="alert">
+<h3> 请填写<strong>挑战</strong> 然后再重试一次！</h3>
+</div>
+<script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+<script src="/static/scripts/domain.js"></script>
+<script src="/static/scripts/common.js"></script>
+<script>
+         var clipboard = new ClipboardJS('.copy-btn');
+         
+         clipboard.on('success', function(e) {
+             e.trigger.textContent = 'Copied!';
+             setTimeout(function() {
+                 e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+             }, 10000);
+             e.clearSelection();
+         });
+         
+         clipboard.on('error', function(e) {
+             e.trigger.textContent = 'Failed!';
+             setTimeout(function() {
+                 e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+             }, 10000);
+         });
+         
+         	
+      </script>
+<div class="container text-center" style="font-family:Poppins">
+<footer>
+<aside>
+<hr/>
+<p> 
+需要帮助？请发送电子邮件至 deva[@]xposedornot.com 或在此处安排与我的直接聊天。
+<br/><br/></p>
+<hr/>
+</aside>
+</footer>
+</div>
+</div></div></input></body>
+</html>

@@ -1,0 +1,666 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="XposedOrNot: API Documentation " name="description"/>
+<meta content="Devanand Premkumar" name="author"/>
+<meta content="XposedOrNot: API Documentation for Developers" property="og:title">
+<title>XposeOrNot API 参考</title>
+<link href="favicon.ico" rel="icon" type="image/x-icon"/>
+<link async="" defer="" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all" rel="stylesheet" type="text/css"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet"/>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
+<script crossorigin="anonymous" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+<script>     
+         (function (h, o, t, j, a, r) {
+         h.hj = h.hj || function () {
+         (h.hj.q = h.hj.q || []).push(arguments)
+         };
+         h._hjSettings = {
+         hjid: 1613245,
+         hjsv: 6
+         };
+         a = o.getElementsByTagName('head')[0];
+         r = o.createElement('script');
+         r.async = 1;
+         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+         a.appendChild(r);
+         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+         (function () {
+         var script = document.createElement("script");
+         script.onload = () => {
+         window.GrafanaFaroWebSdk.initializeFaro({
+         url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
+         app: {
+          name: 'xonniepub',
+          version: "1.0.0",
+         },
+         });
+         };
+         script.src =
+         "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
+         document.head.appendChild(script);
+         })();
+      </script>
+</link></meta></head>
+<body>
+<div class="kbanner">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+<a class="navbar-brand" href="https://xposedornot.com"><span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">是否Xpose</span>
+<span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">社区版</span></a>
+<button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+<ul class="navbar-nav navbar-right">
+<li class="nav-item active">
+<a class="nav-link" href="password.html">密码<span class="sr-only">（当前的）</span>
+</a>
+</li>
+<li class="nav-item active">
+<a class="nav-link" href="faq.html">常问问题</a>
+</li>
+<li class="nav-item active">
+<a class="nav-link" href="https://blog.xposedornot.com/">博客</a>
+</li>
+<li class="nav-item dropdown active">
+<a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"> 更多工具</a>
+<div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+<a class="dropdown-item" href="xposed.html">Xpose 违规</a>
+<a class="dropdown-item" href="shield.html">隐私盾</a>
+<a class="dropdown-item" href="domain.html">域名验证</a>
+<a class="dropdown-item" href="domains.html">域级搜索</a>
+</div>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+<div class="container">
+<div align="center">
+         为了试验和测试我们的 API，我们邀请您探索我们的 API Playground。<br/><br/>
+<h3><a class="button-link" href="https://xposedornot.docs.apiary.io" target="_blank"> 🎮 API 游乐场</a></h3>
+</div>
+<br/>
+<div class="panel-group" id="accordion">
+<div class="panel panel-default">
+<div class="panel-heading"> API快速参考</div>
+            最后更新时间：2023 年 6 月 5 日
+            <div class="panel-collapse" id="collapse1">
+<div class="panel-body">
+<br/>
+                  感谢您对<strong>是否Xpose</strong>。我们的目标是让我们的 API 尽可能易于访问和响应，使其成为每个人都有价值的工具。直接托管于<strong>谷歌基础设施</strong> 并通过可靠的缓存<strong>云耀</strong>， 这<strong>XposeOrNot API</strong> 为任何查询提供快速响应，无论其来源为何。<br/><br/>
+                  这<strong>XposeOrNot API</strong> 坚持以下原则<strong>REST架构</strong>。它返回<strong>JSON 编码的响应</strong> 并利用<strong>标准 HTTP 响应代码</strong>。对于我们的大多数 API 路由，没有身份验证要求，确保轻松访问和简单使用。但请注意，我们的具体<strong>用于查询域相关数据的API路由需要API密钥授权</strong>。采取此措施是为了确保只有经过验证的指定域的所有者或权限才能访问此敏感信息。<br/><br/>
+                  为了进行实验和测试，我热烈邀请您探索我们的 API Playground。在这里，您将有机会在用户友好的环境中熟悉 XposedOrNot API 的功能。
+                  <br/>
+<hr/>
+<div class="alert alert-primary" role="alert">
+<h4>
+<strong>1. API调用：检查电子邮件地址数据泄露</strong>
+</h4>
+</div>
+<p>
+                     这个用户友好的 API 可以快速检查电子邮件地址是否涉及任何已知的数据泄露。它会搜索全面的违规数据库，并在电子邮件存在风险时向您发出警报。
+                     <br/><br/>
+                     该工具对于维护数字安全和了解电子邮件的泄露历史非常宝贵。这是朝着更好的数字安全和意识迈出的一步。
+                  </p>
+<br/><strong>API端点：</strong>
+<blockquote>
+<pre>https://api.xposedornot.com/v1/check-email/[test@example.com]</pre>
+</blockquote>
+<strong> 成功检测违规的示例：</strong>
+                  当检测到违规时，您将收到如下 JSON 响应：
+                  <pre>
+ {
+  "breaches": [
+    [
+      "Tesco",
+      "KiwiFarms",
+      "Vermillion",
+      "Verified",
+      "LizardSquad",
+      "2fast4u",
+      "Autotrader",
+      "MyRepoSpace",
+      "SweClockers"
+    ]
+  ]
+}
+		  </pre>
+                  响应采用 JSON 格式，因此可以使用任何脚本语言轻松解析。这使您可以轻松地将数据集成到您的应用程序中。
+                  <br/> <strong>未发现违规时的响应：</strong><br/>
+                  如果在任何违规数据库中都找不到该电子邮件地址，您将收到以下 JSON 响应：
+                  <pre>
+{"Error":"Not found"}
+ </pre>
+<hr/>
+<div class="alert alert-primary" role="alert">
+<h4>
+<strong>2. API 调用：电子邮件地址数据泄露分析</strong>
+</h4>
+</div>
+<p> 
+                     我们的 API 可以对电子邮件地址的数据泄露历史记录进行深入分析。它揭示了违规发生的时间和地点，提供必要的分析来衡量这些事件的影响和严重性。该工具对于了解数据暴露级别和增强安全策略至关重要。
+                  </p>
+<br/><strong>API端点：</strong>
+<blockquote>
+<pre>https://api.xposedornot.com/v1/breach-analytics/[email-address]</pre>
+</blockquote>
+<p>API 以两种可能的结果进行响应：成功或失败。以下是成功响应的关键组成部分：</p>
+<br/>
+<ul>
+<li><strong>违规摘要：</strong> 快速概览与电子邮件地址相关的所有违规行为，包括受影响的网站列表。非常适合快速检查违规历史记录。</li>
+<br/>
+<li><strong>暴露的漏洞：</strong> 接收有关每次违规的详细信息，包括被违规实体的名称、描述、域、行业、风险级别、参考、暴露的数据类型以及暴露的记录的年份和数量。这有助于评估每次违规的具体情况和严重性。</li>
+<br/>
+<li><strong>违规指标：</strong> 该组件提供有关违规行为的分析，例如受影响的行业、密码强度、风险评分、暴露的数据类型以及年度细分。这些数据对于了解违规行为的全面影响至关重要。</li>
+<br/>
+<li><strong>xpose_数据：</strong> 深入了解泄露中暴露的特定数据类型，例如姓名、照片、国籍等。这有助于了解个人数据暴露的性质和程度。</li>
+<br/>
+<li><strong>粘贴总结：</strong> 提供“粘贴”违规行为（类似公共 Pastebin 服务的数据暴露）的概述，包括计数和最近发生的事件。这是衡量这些平台曝光度的快速方法。</li>
+<br/>
+<li><strong>暴露粘贴和粘贴指标：</strong> 这些组件提供了锡膏泄漏的详细信息和年度分析，可以更深入地了解随时间推移的暴露趋势。</li>
+<br/>
+</ul>
+<p>这套全面的分析工具可以深入研究任何电子邮件的数据泄露历史，提供更好的数字安全管理所需的见解。</p>
+<br/>
+<strong>成功找到匹配记录的 JSON 输出示例：</strong>
+<pre>
+	       
+{
+  "BreachMetrics": {
+    "get_details": [],
+    "industry": [
+      [
+        [          "elec",          1        ],
+        [          "misc",          0        ],
+        [          "mini",          0        ],
+        [          "musi",          0        ],
+        [          "manu",          0        ],
+        [          "ener",          0        ],
+        [          "news",          0        ],
+        [          "ente",          0        ],
+        [          "hosp",          0        ],
+        [          "heal",          0        ],
+        [          "food",          0        ],
+        [          "phar",          0        ],
+        [          "educ",          0        ],
+        [          "cons",          0        ],
+        [          "agri",          0        ],
+        [          "tele",          0        ],
+        [          "info",          0        ],
+        [          "tran",          0        ],
+        [          "aero",          0        ],
+        [          "fina",          0        ],
+        [          "reta",          0        ],
+        [          "nonp",          0        ],
+        [          "govt",          0        ],
+        [          "spor",          0        ],
+        [          "envi",          0        ]
+      ]
+    ],
+    "passwords_strength": [
+      {
+        "EasyToCrack": 0,
+        "PlainText": 0,
+        "StrongHash": 1,
+        "Unknown": 0
+      }
+    ],
+    "risk": [
+      {
+        "risk_label": "Low",
+        "risk_score": 3
+      }
+    ],
+    "xposed_data": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "colname": "level3",
+                "group": "A",
+                "name": "data_Usernames",
+                "value": 1
+              }
+            ],
+            "colname": "level2",
+            "name": "👤 Personal Identification"
+          },
+          {
+            "children": [
+              {
+                "colname": "level3",
+                "group": "D",
+                "name": "data_Passwords",
+                "value": 1
+              }
+            ],
+            "colname": "level2",
+            "name": "🔒 Security Practices"
+          },
+          {
+            "children": [
+              {
+                "colname": "level3",
+                "group": "F",
+                "name": "data_Email addresses",
+                "value": 1
+              }
+            ],
+            "colname": "level2",
+            "name": "📞 Communication and Social Interactions"
+          }
+        ]
+      }
+    ],
+    "yearwise_details": [
+      {
+        "y2007": 0,
+        "y2008": 0,
+        "y2009": 0,
+        "y2010": 0,
+        "y2011": 0,
+        "y2012": 0,
+        "y2013": 0,
+        "y2014": 0,
+        "y2015": 1,
+        "y2016": 0,
+        "y2017": 0,
+        "y2018": 0,
+        "y2019": 0,
+        "y2020": 0,
+        "y2021": 0,
+        "y2022": 0,
+        "y2023": 0
+      }
+    ]
+  },
+  "BreachesSummary": {
+    "site": "SweClockers"
+  },
+  "ExposedBreaches": {
+    "breaches_details": [
+      {
+        "breach": "SweClockers",
+        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords—which were stored using a combination of MD5 and SHA512—were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
+        "domain": "sweclockers.com",
+        "industry": "Electronics",
+        "logo": "Sweclockers.png",
+        "password_risk": "hardtocrack",
+        "references": "",
+        "searchable": "Yes",
+        "verified": "Yes",
+        "xposed_data": "Usernames;Email addresses;Passwords",
+        "xposed_date": "2015",
+        "xposed_records": 254967
+      }
+    ]
+  },
+  "ExposedPastes": null,
+  "PasteMetrics": null,
+  "PastesSummary": {
+    "cnt": 0,
+    "domain": "",
+    "tmpstmp": ""
+  }
+}
+	       </pre>
+                  BreachMetrics 中使用的一些数据点如下：
+                  <ol>
+<li>行业明智分类</li>
+                     这将为您提供前 19 个行业中暴露的违规行为的数量。<br/>
+<li>密码强度</li>
+                     这将为您提供密码泄露的计数：1. 易于破解，2. 纯文本密码，3. 使用强而安全的密码哈希。<br/>
+<li>按年份划分的详细信息</li>
+                     这为您提供了从 2010 年至今的数据泄露历史数据。<br/>
+</ol>
+<br/>
+<strong>未找到匹配电子邮件地址的示例输出：</strong>
+<pre>
+{  "Error": "Not found"}
+ </pre>
+<p> 这也意味着在 XposedOrNot 中加载的任何数据泄露中都找不到搜索到的电子邮件。</p>
+<hr/>
+<div class="alert alert-primary" role="alert">
+<h4>
+<strong>3. API调用以匿名方式检查暴露的密码</strong>
+</h4>
+</div>
+<p>如果您有兴趣检查暴露的密码，这个 API 非常适合您。它以两种形式提供结果：成功或不成功。假设您想要检查广泛使用的密码“123456” - 这个 API 可以提供帮助。</p>
+<br/>
+<blockquote>
+<pre>https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre>
+</blockquote>
+<strong>成功找到匹配的密码哈希的 JSON 输出示例：</strong>
+<pre>
+ {
+  "SearchPassAnon": {
+    "anon": "808d63ba47",
+    "char": "D:6;A:0;S:0;L:6",
+    "count": "11999477",
+    "wordlist": 0
+  }
+}
+ </pre>
+<p>API 以 JSON 格式提供结果，这比简单的是/否更能提供信息。此详细输出可以进一步分析和增强大量实时暴露密码的列表。</p>
+<br/>
+<h4>输出结构指南：</h4>
+<br/>
+<ul>
+<li><strong>“匿名”元素：</strong> 我们数据库中的每个密码哈希都包含“anon”元素。这是为了确保想要匿名搜索的用户的隐私。</li>
+<li><strong>“字符”元素：</strong> 此元素提供密码特征的详细信息，例如长度、字母、数字和特殊字符的使用。这对于了解密码强度及其是否满足各种网站要求特别有用。</li>
+</ul>
+<p>该 API 不仅可用于识别暴露的密码，还有助于开发更强大、更安全的密码策略。</p>
+<br/> 下表更简单地解释了这些特性：<br/>
+<br/>
+<table class="table table-condensed table-striped table-bordered table-hover">
+<tr>
+<td> 数字</td>
+<td> 数数</td>
+</tr>
+<tr>
+<td> 字母表</td>
+<td> 字母数</td>
+</tr>
+<tr>
+<td> 特殊字符</td>
+<td> 特殊字符计数</td>
+</tr>
+<tr>
+<td> 长度</td>
+<td> 密码长度</td>
+</tr>
+</table>
+                  最后一个<strong>“数数”</strong> 表示在收集的暴露数据泄露中观察到该密码的次数。有关所有暴露网站的完整列表，请访问<a href="xposed.html">
+<strong>XON 中的 Xpose 网站</strong>
+</a>。<br/>
+<br/> 另外，另一点需要注意的是使用<a href="https://en.wikipedia.org/wiki/SHA-3" rel="noopener" target="_blank">
+<strong>SHA3 Keccak-512</strong>
+</a> 用于在 XON 中搜索和存储数据的散列。 MD5 和 SHA1 等传统哈希算法目前已被弃用，并且考虑到暴露的大量记录，我继续使用<strong>SHA3 Keccak-512</strong> 算法。 Keccak-512 哈希值的长度为 128 个字符。<br/>
+<br/> 请检查简单易用<a href="samples/index.html" target="_blank">
+<strong>示例登录屏幕，</strong>
+</a>使用此 API。<br/>
+<br/> 为了便于参考，给出了两个示例 Keccak-512 哈希值：<br/>
+<br/> Keccak-512（“测试”）
+                  <strong>
+<pre>1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre>
+</strong>
+<br/> Keccak-512（“通过”）
+                  <strong>
+<pre>adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre>
+</strong>
+<br/>
+<strong>未找到匹配的密码哈希的示例输出：</strong>
+<pre>
+            {  "Error": "Not found"}
+        </pre>
+<hr/>
+<hr/>
+<div class="alert alert-primary" role="alert">
+<h4>
+<strong>4. API 调用来检查 XposedOrNot 中加载的所有数据泄露</strong>
+</h4>
+</div>
+<blockquote>
+<pre>https://api.xposedornot.com/v1/breaches</pre>
+</blockquote>
+                  API 仅以 JSON 格式返回成功响应。<br/>
+<br/>所有脚本语言都可以轻松解析此 JSON，以便于解释并提取要在各自应用程序中使用的数据元素。<br/>
+<pre>
+{
+  "Exposed Breaches": [
+    {
+      "Breach ID": "1.4BillionRecords",
+      "Breached Date": "2017-03-01T00:00:00+00:00",
+      "Domain": "Not-Applicable",
+      "Exposed Data": "Email addresses;Names",
+      "Exposed Records": 1114303554,
+      "Exposure Description": "\"A company called 4iQ in 2017, discovered a massive database of stolen usernames and passwords that was being traded on the dark web. The database, which was referred to as the \"\"largest-ever\"\" breach at the time, contained over 1.4 billion unique username and password combinations, as well as other personal information such as email addresses and IP addresses.\"",
+      "Industry": "Entertainment",
+      "Logo": "combolist.png",
+      "Password Risk": "unknown",
+      "Searchable": "Yes",
+      "Sensitive": "No",
+      "Verified": "Yes"
+    },
+    {
+      "Breach ID": "123RF",
+      "Breached Date": "2020-03-01T00:00:00+00:00",
+      "Domain": "123rf.com",
+      "Exposed Data": "Usernames;Email addresses;Passwords;Names;IP addresses;Physical addresses;Phone numbers",
+      "Exposed Records": 8668646,
+      "Exposure Description": "123RF Stock photo site has suffered a data breach in March 2020. The exposed database contained 8.3 million user records leaked on a hacker forum. Exposed data includes full name, email address, MD5 hashed passwords, company name, phone number, address, PayPal email if used, and IP address.",
+      "Industry": "Information Technology",
+      "Logo": "123RF.png",
+      "Password Risk": "easytocrack",
+      "Searchable": "Yes",
+      "Sensitive": "No",
+      "Verified": "Yes"
+    },
+    {
+      "Breach ID": "17173",
+      "Breached Date": "2011-12-01T00:00:00+00:00",
+      "Domain": "17173.com",
+      "Exposed Data": "Usernames;Passwords;Email addresses",
+      "Exposed Records": 7482441,
+      "Exposure Description": "The 17173 gaming site breach in 2011 was part of a larger series of data breaches in China, affecting nearly 100 million users. Of these, 7.5 million were from 17173. The breach exposed usernames, email addresses, and salted MD5 password hashes.",
+      "Industry": "Energy",
+      "Logo": "17173.png",
+      "Password Risk": "plaintext",
+      "Searchable": "Yes",
+      "Sensitive": "No",
+      "Verified": "No"
+    },
+    and so on...
+	       </pre>
+<br/>此外，您还可以发送域名等参数并过滤结果以显示特定于该违规行为的内容。<br/>
+<blockquote>
+<pre>https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre>
+</blockquote>
+<pre>
+   
+{
+  "Exposed Breaches": [
+    {
+      "Breach ID": "Twitter-Scraped",
+      "Breached Date": "2021-01-01T00:00:00+00:00",
+      "Domain": "twitter.com",
+      "Exposed Data": "Usernames;Email addresses;Names;Geographic locations;Profile photos;Phone numbers",
+      "Exposed Records": 208918735,
+      "Exposure Description": "\"The \"\"Twitter Email Addresses Leak\"\" involves a data leak of over 200 million Twitter user profiles around 2021. The leak includes email addresses, names, screen names, follow counts, and account creation dates. The data was obtained through a Twitter API vulnerability that allowed the input of email addresses and phone numbers to confirm their association with Twitter IDs.\"",
+      "Industry": "Information Technology",
+      "Logo": "Twitter.png",
+      "Password Risk": "unknown",
+      "Searchable": "Yes",
+      "Sensitive": "No",
+      "Verified": "Yes"
+    }
+  ],
+  "status": "success"
+}
+		  </pre>
+                  API 仅以 JSON 格式返回成功响应。<br/>
+<hr/>
+<div class="alert alert-primary" role="alert">
+<h4>
+<strong>5. API 调用以检查已验证域的所有数据泄露</strong>
+</h4>
+</div>
+<blockquote>
+<pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
+</blockquote>
+                  这是一个 POST 请求，需要将有效的 API 密钥包含在带有密钥“x-api-key”的标头中。该端点不接受任何请求正文，因此，内容长度标头应设置为“0”。
+                  <br/>
+                  ** 对于经过验证的域，API 密钥可在<a href="dashboard.html">仪表板</a>。
+                  <br/><br/>
+                  使用curl的API请求示例：
+                  <blockquote>
+<pre>
+curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/    
+	       </pre>
+</blockquote>
+                  API 的响应采用 JSON 格式。主要关键“指标”包含有关违规的详细信息。以下是“metrics”中每个子键的描述：<br/><br/>
+                  1.<strong>违规_摘要</strong>：此字段提供每个组织的违规数量的摘要。<br/>
+                  2.<strong>违规行为_详细信息</strong>：这是一个数组，其中包含有关每个单独违规的详细信息，包括被违规组织的名称、域以及与违规相关的电子邮件地址。<br/>
+                  3.<strong>详细_违规_信息</strong>：此字段包含违规行为的详细摘要，包括违规日期、组织徽标、密码是否存在风险、违规行为是否可搜索、暴露的数据类型、记录总数暴露，以及对违规行为的描述。<br/>
+                  4.<strong>域_摘要</strong>：这提供了每个域的违规数量的摘要。<br/>
+                  5.<strong>Top10_违规行为</strong>：此字段提供前 10 个违规行为的列表。<br/>
+                  6.<strong>年度指标</strong>：该字段提供了从 2010 年至今的违规数量的年度细目。<br/>
+<br/>给出示例输出以方便参考。<br/>
+<pre>
+{
+  "metrics": {
+    "Breach_Summary": {
+      "AerServ": 1
+    },
+    "Breaches_Details": [
+      {
+        "breach": "AerServ",
+        "domain": "xposedornot.com",
+        "email": "deva@xposedornot.com"
+      }
+    ],
+    "Detailed_Breach_Info": {
+      "AerServ": {
+        "breached_date": "Tue, 01 Apr 2014 00:00:00 GMT",
+        "logo": "Aerserv.png",
+        "password_risk": "plaintext",
+        "searchable": "Yes",
+        "xposed_data": "Email Addresses",
+        "xposed_records": 64777,
+        "xposure_desc": "AerServ, an ad management platform, experienced a data breach in April 2018. This incident occurred after its acquisition by InMobi and affected more than 64,000 unique email addresses. The exposed data included contact information and passwords, which were stored as salted SHA-512 hashes. Later in 2018, the breached data was publicly posted on Twitter, prompting InMobi to acknowledge the incident "
+      }
+    },
+    "Domain_Summary": {
+      "xposedornot.com": 1
+    },
+    "Top10_Breaches": {
+      "AerServ": 1
+    },
+    "Yearly_Metrics": {
+      "2010": 0,
+      "2011": 0,
+      "2012": 0,
+      "2013": 0,
+      "2014": 1,
+      "2015": 0,
+      "2016": 0,
+      "2017": 0,
+      "2018": 0,
+      "2019": 0,
+      "2020": 0,
+      "2021": 0,
+      "2022": 0,
+      "2023": 0
+    }
+  },
+  "status": "success"
+}
+
+	       </pre>
+<strong>错误处理</strong>：如果 API 密钥无效或丢失，响应将如下：
+                  <pre>
+{
+  "message":"Invalid or missing API key",
+  "status":"error"
+}
+	       </pre>
+                  这<strong>信息</strong> 字段将包含错误的描述，以及<strong>地位</strong> 字段将包含字符串“error”以指示发生了错误。
+                  <br/><br/>
+                  请记住在向端点发出请求时将“YOUR_API_KEY”替换为您的实际 API 密钥。
+                  <hr/>
+<div class="alert alert-primary" role="alert">
+<h4>
+<strong>6.API响应码</strong>
+</h4>
+<br/>
+</div>
+                  XposedOrNot API 使用传统的 HTTP 响应代码来指示 API 请求的成功或失败。一般来说： 2xx 范围内的代码表示成功。 4xx 范围内的代码表示根据所提供的信息失败的错误（例如，错误的参数、不足的查询选项、错误的 url 等）。 5xx 范围内的代码表示 XposedOrNot 服务器出现错误。<br/>
+<br/> 换句话说，4xx范围内的代码表示用户错误（您），5xx范围内的代码表示服务器错误（我）。<br/>
+<br/>
+<table class="table table-hover table-bordered">
+<thead class="thead-light">
+<tr>
+<th scope="col">代码</th>
+<th scope="col">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">200</th>
+<td>成功会输出JSON响应</td>
+</tr>
+<tr>
+<th scope="row">401</th>
+<td>API 密钥无效/未经授权</td>
+</tr>
+<tr>
+<th scope="row">404</th>
+<td>输入错误（未找到数据）</td>
+</tr>
+<tr>
+<th scope="row">第429章</th>
+<td>踩下油门 - 是时候减速了</td>
+</tr>
+<tr>
+<th scope="row">502/503</th>
+<td>服务器故障 - 完全是我要解决的问题。如果您看到此内容，请大声喊叫；）</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-danger" role="alert">
+<strong>笔记：</strong>密码的搜索查询不受时间或次数的限制。<br/>
+<br/>
+<em class="fas fa-exclamation-triangle" style="font-size:28px;color:red"></em> 每个 API 请求的阈值为每秒 1 次查询。请您善意地认识到这一点，然后使用慢速模式或睡眠模式重试。<br/>
+<br/> 经常试图滥用此 API 来达到自己的邪恶目的的人们将被不那么出名的人踢进黑暗的地牢。<a href="javascript:void(0);" onclick="jsfunction()">守护者</a>。你被警告了。<br/>
+<br/>
+<em aria-hidden="true" class="fa fa-bug" style="font-size:28px;color:red"></em> 如果您遇到 API 中的错误，请随时在 Twitter 上给我留言或给我发电子邮件。为了所有用户的利益，我非常乐意承认并纠正这一问题。
+                  </div>
+</div>
+</div>
+</div>
+<div class="container text-center">
+<footer>
+<aside>
+<br/>
+<a aria-hidden="true" href="https://twitter.com/xposedornot" rel="noopener" style="color:#3c5fec" target="_blank">  <em class="fab fa-twitter fa-3x"></em>
+</a>
+<a aria-hidden="true" href="https://facebook.com/xposedornot" rel="noopener" style="color:#3c5fec" target="_blank">  <em class="fab fa-facebook fa-3x"></em>
+</a>
+<hr/>
+<p>与我们一起塑造这个完全开源的网站！欢迎贡献❤️ —查看我们的<a href="https://github.com/XposedOrNot" rel="noopener" target="_blank">GitHub</a>。</p>
+<br/>
+<h3><a class="button-link" href="https://xposedornot.docs.apiary.io" target="_blank"> 🛠️ API 游乐场</a></h3>
+<style>
+                     .button-link {
+                     display: inline-block;
+                     padding: 10px 20px;
+                     color: #fff;
+                     background-color: #007BFF;
+                     text-decoration: none;
+                     border-radius: 5px;
+                     transition: background-color 0.3s ease;
+                     }
+                     .button-link:hover {
+                     background-color: #FFBF00;
+                     }
+                  </style>
+</aside></footer></div>
+<div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
+<input class="custom-control-input" id="darkSwitch" type="checkbox"/>
+<label class="custom-control-label" for="darkSwitch">深色模式</label>
+</div>
+
+
+</div>
+<script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+<script src="/static/scripts/bug-min.js" type="text/javascript"></script>
+<script src="/static/scripts/api_doc.js" type="text/javascript"></script>
+<script src="/static/scripts/common.js"></script>
+</div></body>
+</html>
