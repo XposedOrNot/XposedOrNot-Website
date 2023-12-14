@@ -10,7 +10,7 @@ plaintext = easy = hard = password_score = 0;
 
 $.LoadingOverlaySetup({
     background: "rgba(0, 0, 0, 0.5)",
-    image: "static/images/shield-alt.svg",
+    image: "/static/images/shield-alt.svg",
     imageAnimation: "1s fadein",
     imageColor: "#6daae0"
 });
@@ -37,7 +37,6 @@ $("#email_sensitive").html(s)
 s = '<div align="center" class="alert alert-primary"><strong>Exposed Pastes Summary For Email: ' + email + '</strong></div></p>'
 $("#paste").html(s)
 var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
-console.log(emailVerificationUrl)
 var sitesJson;
 var sensitiveBreaches;
 
@@ -338,9 +337,9 @@ var j = $.ajax(edutu)
                         'cnt': breaches_cnt
                     })
                     n2 = n2 + "<div>   <b><span class='notser'>" + breaches_xposed_date + "</span></b><br><br>   <div class='row'>      <div class='col-sm-4'> <img height=75 width=150 src='"
-                    n2 = n2 + 'static/logos/' + breaches_logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='xposed.html#" + breaches_id + "' target='_blank'>"
+                    n2 = n2 + breaches_logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='xposed.html#" + breaches_id + "' target='_blank'>"
                     n2 = n2 + breaches_id + "</font></strong></h3>         </a>      </div>      <div class='col-sm-4'>         <img height=75 width=75 src='"
-                    n2 = n2 + 'static/logos/industry/' + breaches_industry + ".png' title='"
+                    n2 = n2 + '/static/logos/industry/' + breaches_industry + ".png' title='"
                     n2 = n2 + breaches_industry + ' Industry'
                     n2 = n2 + "'>  <figcaption>Industry: "
                     n2 = n2 + breaches_industry + "</figcaption></div></div><br><p><div align='center'><table width=75% class='table-striped table-bordered table-hover' style='font-size:18px'><tr><td><b>Exposed records</b></td><td>"
@@ -521,7 +520,6 @@ var barChartData1 = {
 };
 
 function g1() {
-    // Chart.defaults.global.defaultFontColor = 'white';
     var config = {
         type: 'line',
         data: {
