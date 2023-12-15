@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slack Channel Notification Configuration</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .main-container {
+            max-width: 1350px;
+            margin: 0 auto;
+        }
+        .config-section, .steps-section {
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        .steps-section {
+            position: absolute;
+            right: 20px;
+            width: 300px;
+            top: 80px;
+        }
+        .section-heading {
+            margin-bottom: 15px;
+            color: #4a154b; /* Slack brand color */
+        }
+        .alert {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Admin Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <!-- Additional navbar items can be added here -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Configuration Section -->
+        <div class="config-section">
+            <h2 class="section-heading">Slack Channel Notification Configuration</h2>
+            <form>
+                <!-- Add New Slack Channel -->
+                <div class="form-group">
+                    <label for="channelName">Slack Channel Name</label>
+                    <input type="text" class="form-control" id="channelName" placeholder="Enter Slack Channel Name">
+                </div>
+
+                <!-- Configuration Parameters -->
+                <h4 class="section-heading">Configuration Parameters</h4>
+                <div class="form-group">
+                    <label for="webhookUrl">Slack Webhook URL</label>
+                    <input type="text" class="form-control" id="webhookUrl" placeholder="Enter Slack Webhook URL">
+                </div>
+
+                <!-- Test Functionality -->
+                <div class="form-group">
+                    <button type="button" class="btn btn-success" onclick="testConfiguration()">Test Configuration</button>
+                </div>
+
+                <!-- Alert for Success/Failure -->
+                <div class="alert" id="testResult" role="alert" style="display:none;">
+                    <!-- This will be updated based on test results -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Steps Section -->
+    <div class="steps-section">
+        <h4 class="section-heading">Steps to Set Up a Slack Channel for Notifications</h4>
+        <ul>
+            <li>Step 1: Open your Slack application.</li>
+            <li>Step 2: Navigate to the workspace where you want the channel.</li>
+            <li>Step 3: Click on 'Add Channel' and select 'Create a channel'.</li>
+            <li>Step 4: Enter a channel name and description.</li>
+            <li>Step 5: Choose whether the channel should be public or private.</li>
+            <li>Step 6: Add members to your channel and click 'Create'.</li>
+            <li>Step 7: Set up an incoming webhook integration for your channel in Slack settings.</li>
+        </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        function testConfiguration() {
+            let webhookUrl = document.getElementById('webhookUrl').value;
+
+            // Add logic to test Slack Webhook URL (Placeholder for demonstration)
+            if (webhookUrl.includes('https://hooks.slack.com/')) {
+                updateTestResult('Slack webhook URL valid!', 'success');
+            } else {
+                updateTestResult('Invalid Slack webhook URL', 'danger');
+            }
+        }
+
+        function updateTestResult(message, type) {
+            let resultDiv = document.getElementById('testResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'alert alert-' + type;
+            resultDiv.textContent = message;
+        }
+    </script>
+</body>
+</html>
