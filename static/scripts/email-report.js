@@ -30,13 +30,13 @@ try {
     window.location.replace("http://xposedornot.com");
 }
 
-s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Summary For Email: ' + email + '</strong></div></p>'
+s = '<div align="center" class="alert alert-primary"><strong>Overall Data Breaches Summary For Email: ' + email + '</strong></div></p>'
 $("#email").html(s)
 s = '<div align="center" class="alert alert-danger"><strong>Sensitive Data Breaches Summary For Email: ' + email + '</strong></div></p>'
 $("#email_sensitive").html(s)
 s = '<div align="center" class="alert alert-primary"><strong>Exposed Pastes Summary For Email: ' + email + '</strong></div></p>'
 $("#paste").html(s)
-var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+var emailVerificationUrl = 'https://xon-api-test-wdkjdzw5ca-uw.a.run.app/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 var sitesJson;
 var sensitiveBreaches;
 
@@ -67,7 +67,7 @@ var emailVerificationPromise = $.ajax(emailVerificationUrl)
                 children: dataArr[0][1].children,
                 description: dataArr[0][1].description
             };
-
+console.log(treeData)
             $('#tree-container').hortree({
                 data: [treeData],
                 nodeRadius: 4,
@@ -84,16 +84,24 @@ var emailVerificationPromise = $.ajax(emailVerificationUrl)
                 $("#db-sensitive").show();
                 document.getElementById("db-sensitive").className = "visible alert alert-success";
             } else {
-                for (var i = 0; i < sensitiveBreaches.length; i++) {
-                    tableRowsHtml += '<tr><td>' + sensitiveBreaches[i].breach + '</td><td>' + sensitiveBreaches[i].details + ' </td><td>' + sensitiveBreaches[i].xposed_records + ' </td></tr>';
-                }
+
+for (var i = 0; i < sensitiveBreaches.length; i++) {
+    tableRowsHtml += '<tr>' +
+                     '<td>' + sensitiveBreaches[i].breach + '<br>' +
+                     '<img src="' + sensitiveBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
+                     '</td>' +
+                     '<td>' + sensitiveBreaches[i].details + '</td>' +
+                     '<td>' + sensitiveBreaches[i].xposed_records + '</td>' +
+                     '</tr>';
+}
+
             }
         }
 
         $("#data_breach_sensitive").append(tableRowsHtml);
     });
 
-edutu = 'https://api.xposedornot.com/v1/breach-analytics/' + encodeURIComponent(email);
+edutu = 'https://api.xposedornot.com/v1/breach-analytics?email=' + encodeURIComponent(email);
 
 var myjson;
 var j = $.ajax(edutu)
@@ -375,8 +383,8 @@ var j = $.ajax(edutu)
                 breaches_cnt.push(parseInt(breaches_cnts[i].cnt));
             }
 
-            console.log(breaches_id)
-            console.log(breaches_cnt)
+            //console.log(breaches_id)
+            //console.log(breaches_cnt)
 
             var top5 = document.getElementById('top5breaches');
             var top5chart = new Chart(top5, {
@@ -743,7 +751,7 @@ window.addEventListener("load", function () {
 });
 
 
-
+/**
 clippy.load('Clippy', function (agent) {
     agent.show();
     agent.speak('My name is XON Clippy');
@@ -820,7 +828,7 @@ clippy.load('Clippy', function (agent) {
     }
     setInterval(speakRandom, Math.floor(Math.random() * 60000));
 });
-
+**/
 
 google.charts.load('current', {
     'packages': ['gauge']
