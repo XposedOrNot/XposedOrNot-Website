@@ -113,7 +113,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics/';
+    const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email='';
 
     $("#searchMe").click(function (event) {
         event.preventDefault();
