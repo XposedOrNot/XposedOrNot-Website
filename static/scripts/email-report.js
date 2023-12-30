@@ -127,6 +127,7 @@ var j = $.ajax(edutu)
         $('#risk').html(risk_score_html);
 
         if (f.toString().length > 0) {
+            by24 = myjson.BreachMetrics.yearwise_details[0].y2024;
             by23 = myjson.BreachMetrics.yearwise_details[0].y2023;
             by22 = myjson.BreachMetrics.yearwise_details[0].y2022;
             by21 = myjson.BreachMetrics.yearwise_details[0].y2021;
@@ -291,6 +292,7 @@ var j = $.ajax(edutu)
 
         } else {
             if (e.toString().length > 0) {
+                py24 = myjson.PasteMetrics.yearwise_details[0].y2024;
                 py23 = myjson.PasteMetrics.yearwise_details[0].y2023;
                 py22 = myjson.PasteMetrics.yearwise_details[0].y2022;
                 py21 = myjson.PasteMetrics.yearwise_details[0].y2021;
@@ -531,20 +533,20 @@ function g1() {
     var config = {
         type: 'line',
         data: {
-            labels: ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
+            labels: ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
             datasets: [{
                 label: 'Breaches Count',
                 fill: false,
                 backgroundColor: window.chartColors.red,
                 borderColor: window.chartColors.red,
-                data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23],
+                data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24],
             },
             {
                 label: 'Pastes Count',
                 fill: false,
                 backgroundColor: window.chartColors.blue,
                 borderColor: window.chartColors.blue,
-                data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23],
+                data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23, py24],
             }
             ]
         },
