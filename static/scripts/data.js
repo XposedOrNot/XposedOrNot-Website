@@ -118,8 +118,8 @@ function getAlertType(riskLabel) {
 
 
 
-by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
-py23 = py22 = py21 = py20 = py19 = py18 = py17 = py16 = py15 = py14 = py13 = py12 = py11 = py10 = py09 = py08 = py07 = 0;
+by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
+py24 = py23 = py22 = py21 = py20 = py19 = py18 = py17 = py16 = py15 = py14 = py13 = py12 = py11 = py10 = py09 = py08 = py07 = 0;
 i11 = i12 = i13 = i14 = i15 = i16 = i17 = i18 = i19 = i20 = i1 = i2 = i3 = i4 = i5 = i6 = i7 = i8 = i9 = i10 = i20 = i21 = i22 = i23 = i24 = i25 = i26 = 0;
 unknown = plaintext = easy = hard = password_score = 0;
 
@@ -146,7 +146,7 @@ $("#data").append(`
     </div>
 `);
 
-const url = `https://api.xposedornot.com/v1/breach-analytics/${encodeURIComponent(email)}`;
+const url = `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
 
 let jsonResponse;
 
@@ -341,7 +341,6 @@ var j = $.ajax(url)
         $('#risk').html(riskScoreHtml);
 
         if (xposedData.toString().length > 0) {
-            by24 = jsonResponse.BreachMetrics.yearwise_details[0].y2024;
             by23 = jsonResponse.BreachMetrics.yearwise_details[0].y2023;
             by22 = jsonResponse.BreachMetrics.yearwise_details[0].y2022;
             by21 = jsonResponse.BreachMetrics.yearwise_details[0].y2021;
@@ -582,7 +581,6 @@ var j = $.ajax(url)
             document.getElementById("db-p").className = "visible alert alert-success";
         } else {
             if (numPastes.toString().length > 0) {
-                py24 = jsonResponse.PasteMetrics.yearwise_details[0].y2024;
                 py23 = jsonResponse.PasteMetrics.yearwise_details[0].y2023;
                 py22 = jsonResponse.PasteMetrics.yearwise_details[0].y2022;
                 py21 = jsonResponse.PasteMetrics.yearwise_details[0].y2021;
