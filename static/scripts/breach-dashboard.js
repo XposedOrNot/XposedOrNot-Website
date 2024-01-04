@@ -26,17 +26,15 @@ $(document).ready(function () {
 });
 
 s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Details For Verified Domains</strong></div></p>'
-$("#email").html(s)
+$("#email").html(s);
 s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Details For Verified Domains</strong></div></p>'
-$("#email_details").html(s)
+$("#email_details").html(s);
 
 var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_domain_breaches?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 var myjson;
-var j = $.ajax(emailVerificationUrl)
+$.ajax(emailVerificationUrl)
     .done(function (n) {
         myjson = n;
-        n2 = industry = risk_score = risk_label = '';
-        password_score = 0;
         const breachMetrics = myjson.Yearly_Metrics;
         if (breachMetrics) {
             const years = Object.keys(breachMetrics);
@@ -70,30 +68,16 @@ var j = $.ajax(emailVerificationUrl)
 
         const domainSummary = myjson.Domain_Summary;
         if (domainSummary && typeof domainSummary === 'object') {
-            const tbody = $('#verified_domains_tbody');
-            tbody.empty();
-            for (const [domain, emailCount] of Object.entries(domainSummary)) {
-                const rowHTML = `
-                <tr>
-                    <td>${domain}</td>
-                    <td>${emailCount}</td>
-                    <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Success</button></td>
-                    <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Enabled</button></td>
-		            <td><class="btn btn-outline-primary"><em class='fa fa-envelope' style='color:green;font-size: 20px;'> &nbsp</em>Email</td>
-
-                </tr>`;
-                tbody.append(rowHTML);
-            }
+            addDomainSummaryToTable(domainSummary, email, token);
         }
+
         $.LoadingOverlay("hide");
     })
     .fail(function (n) {
         if (n.status === 404) {
             $.LoadingOverlay("hide");
             document.getElementById("db-s").className = "visible alert alert-success";
-            document.getElementById("db-p").className = "visible alert alert-success";
             $("#db-s").show();
-            $("#db-p").show();
         } else if (n.status === 429) {
             $.LoadingOverlay("hide");
             document.getElementById("db-s").className = "visible alert alert-danger";
@@ -105,9 +89,21 @@ var j = $.ajax(emailVerificationUrl)
             window.location.replace("http://xposedornot.com");
             $("#db-s").show();
         }
-    })
+    });
+
 
 function g1(years, breachCounts) {
+	const allZero = breachCounts.every(count => count === 0);
+	 if (allZero) {
+        // Hide the graph
+        document.getElementById('bc').style.display = 'none';
+
+        // Create and display the banner
+        const banner = document.createElement('div');
+        banner.innerHTML = '<div align="center" class="alert alert-success" style="font-size: 20px; color: green;">Yay! No breaches in the recorded years.</div>';
+        document.getElementById('bc').parentNode.insertBefore(banner, document.getElementById('bc'));
+    } else {
+
     var ctx = document.getElementById('bc').getContext('2d');
     var config = {
         type: 'line',
@@ -119,7 +115,7 @@ function g1(years, breachCounts) {
                 backgroundColor: window.chartColors.red,
                 borderColor: window.chartColors.red,
                 data: breachCounts,
-            },]
+            }]
         },
         options: {
             responsive: true,
@@ -144,7 +140,6 @@ function g1(years, breachCounts) {
                         beginAtZero: true,
                         precision: 0
                     },
-
                     display: true,
                     scaleLabel: {
                         display: true,
@@ -171,27 +166,42 @@ function g1(years, breachCounts) {
     new Chart(ctx, config);
 }
 
+}
+
+
 function buildTopBreachesTable(breachNames, breachCounts) {
-    const breaches = breachNames.map((name, index) => ({
-        name,
-        count: breachCounts[index]
-    }));
+    // Check if all breach counts are zero
+    const allZero = breachCounts.every(count => count === 0);
 
-    breaches.sort((a, b) => b.count - a.count);
+    if (allZero) {
+        // Hide the existing table or container
+        document.getElementById('chart_div').style.display = 'none';
 
-    let tableHtml = '<table style="width:100%; border-collapse: collapse;">';
-    tableHtml += '<tr style="background-color: #f8f8f8; border-bottom: 1px solid #ddd;"><th style="padding: 10px; text-align: left;">Breach Name</th><th style="padding: 10px; text-align: left;">Count</th></tr>';
+        // Create and display the banner
+        const banner = document.createElement('div');
+        banner.innerHTML = '<div align="center" class="alert alert-success" style="font-size: 20px; color: green;">Great news! No significant breaches found.</div>';
+        document.getElementById('chart_div').parentNode.insertBefore(banner, document.getElementById('chart_div'));
+    } else {
+        // Proceed with the table creation
+        const breaches = breachNames.map((name, index) => ({
+            name,
+            count: breachCounts[index]
+        }));
 
-    for (let i = 0; i < breaches.length; i++) {
-        let rowColor = i % 2 === 0 ? '#f8f8f8' : '#ffffff';
-        let breachLink = `https://xon-beta.pages.dev/xposed#${breaches[i].name}`;
-        //TODO : Link to be revisited
-	    //let breachLink = `https://xon-beta.pages.dev/xposed#${breaches[i].name}`;
-        tableHtml += `<tr style="background-color: ${rowColor}; border-bottom: 1px solid #ddd;"><td style="padding: 10px;"><a href="${breachLink}" target="_blank">${breaches[i].name}</a></td><td style="padding: 10px;">${breaches[i].count}</td></tr>`;
+        breaches.sort((a, b) => b.count - a.count);
+
+        let tableHtml = '<table style="width:100%; border-collapse: collapse;">';
+        tableHtml += '<tr style="background-color: #f8f8f8; border-bottom: 1px solid #ddd;"><th style="padding: 10px; text-align: left;">Breach Name</th><th style="padding: 10px; text-align: left;">Count</th></tr>';
+
+        for (let i = 0; i < breaches.length; i++) {
+            let rowColor = i % 2 === 0 ? '#f8f8f8' : '#ffffff';
+            let breachLink = `https://xon-beta.pages.dev/xposed#${breaches[i].name}`;
+            tableHtml += `<tr style="background-color: ${rowColor}; border-bottom: 1px solid #ddd;"><td style="padding: 10px;"><a href="${breachLink}" target="_blank">${breaches[i].name}</a></td><td style="padding: 10px;">${breaches[i].count}</td></tr>`;
+        }
+
+        tableHtml += '</table>';
+        document.getElementById('chart_div').innerHTML = tableHtml;
     }
-
-    tableHtml += '</table>';
-    document.getElementById('chart_div').innerHTML += tableHtml;
 }
 
 
@@ -205,7 +215,6 @@ function addBreachesToTable(breaches) {
 
         const cellName = document.createElement('td');
         const link = document.createElement('a');
-        //TODO:Link to be revisited
         link.href = `https://xon-beta.pages.dev/xposed#${breach}`;
         link.target = '_blank';
         link.textContent = breach;
@@ -238,19 +247,15 @@ function addBreachesToTable(breaches) {
         span.textContent = breaches[breach].password_risk || '';
         switch (breaches[breach].password_risk) {
             case 'plaintext':
-                //		span.textContent = 'Plain text password';
                 span.classList.add('alert', 'alert-danger');
                 break;
             case 'unknown':
-                //		span.textContent = 'Unknown';
                 span.classList.add('alert', 'alert-dark');
                 break;
             case 'easytocrack':
-                //		span.textContent = 'Can be easily cracked';
                 span.classList.add('alert', 'alert-warning');
                 break;
             case 'hardtocrack':
-                //		span.textContent = 'Very hard to crack';
                 span.classList.add('alert', 'alert-success');
                 break;
             default:
@@ -282,7 +287,6 @@ function addBreachesDetailsToTable(breachesDetails) {
 
         const cellExposedData = document.createElement('td');
         cellExposedData.textContent = breachDetail.email;
-        //TODO: xposed_data
         row.appendChild(cellExposedData);
 
         tableBody.appendChild(row);
@@ -299,9 +303,35 @@ function addBreachesDetailsToTable(breachesDetails) {
     });
 }
 
+function createChannelLink(channel, email, token, domain) {
+    var url = `alert-${channel}.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`;
+    return `<a href="${url}" target="_blank">${channel} Channel</a>`;
+}
+
+function addDomainSummaryToTable(domainSummary, email, token) {
+    const tbody = $('#verified_domains_tbody');
+    tbody.empty();
+    for (const [domain, emailCount] of Object.entries(domainSummary)) {
+        const teamsUrl = `alert-teams.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`;
+        const slackUrl = `alert-slack.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`;
+        const rowHTML = `
+            <tr>
+                <td>${domain}</td>
+                <td>${emailCount}</td>
+                <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Success</button></td>
+                <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Email</button></td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary" onclick="window.open('${teamsUrl}', '_blank')"><em class='fa fa-users' style='color:blue;font-size: 20px;'> &nbsp</em>Teams</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="window.open('${slackUrl}', '_blank')"><em class='fa fa-comments' style='color:red;font-size: 20px;'> &nbsp</em>Slack</button>
+                </td>
+            </tr>`;
+        tbody.append(rowHTML);
+    }
+}
 
 const googleLink = document.getElementById("googleLink");
 googleLink.addEventListener("click", function (event) {
     event.preventDefault();
     window.open("https://xposedornot.com/domain.html", "_blank");
 });
+
