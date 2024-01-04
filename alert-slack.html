@@ -1,124 +1,423 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slack Channel Notification Configuration</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>XposedOrNot: Slack Channel Configuration</title>
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="static.hotjar.com">
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset" type="text/css" media="all">
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <script src="/static/scripts/utils.js"></script>
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
+    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+    <meta name="description" content="XposedOrNot: Get alerts in your own Slack channel">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="Devanand Premkumar">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
     <style>
         body {
-            padding-top: 20px;
-            background-color: #f8f9fa;
+            background-color: #f5f5f5;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .card {
+            box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
+        }
+        h3 {
+            color: #007bff;
+        }
+        .benefit-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px 0 rgba(0,0,0,0.1);
+        }
+        .benefit-card:nth-child(even) {
+            background: #007bff;
+            color: #fff;
+        }
+        .benefit-card:nth-child(odd) {
+            background: #fff;
+            color: #007bff;
+        }
+        .benefit-card .card-title {
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+        .benefit-card .card-text {
+            font-size: 1em;
         }
         .main-container {
-            max-width: 1350px;
+            max-width: 1000px;
             margin: 0 auto;
         }
-        .config-section, .steps-section {
+        .config-section {
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 20px;
             background-color: #fff;
+            display: none;
         }
-        .steps-section {
-            position: absolute;
-            right: 20px;
-            width: 300px;
-            top: 80px;
+        .active-step {
+            display: block;
         }
         .section-heading {
             margin-bottom: 15px;
-            color: #4a154b; /* Slack brand color */
+            color: #0056b3;
         }
         .alert {
             margin-top: 15px;
         }
+        .helper-column {
+            position: fixed;
+            right: 0;
+            top: 100px;
+            width: 300px;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .helper-column h4 {
+            color: #0056b3;
+        }
+        .helper-column ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .helper-column li {
+            margin-bottom: 10px;
+        }
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding-top: 40px; /* Increased top padding */
+        }
     </style>
+    <!-- Additional JavaScript for Hotjar and Grafana Faro Web SDK -->
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Admin Dashboard</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <!-- Additional navbar items can be added here -->
-            </ul>
+    <!-- Navigation Bar -->
+    <div class="mobileheader-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="navbar-brand" href="index.html">
+                            <p>XposedorNot</p>
+                        </a>
+                        <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto"></ul>
+                            <div class="main-menu-part">
+                                <ul>
+                                    <li>
+                                        <a href="password.html">Password</a>
+                                    </li>
+                                    <li>
+                                        <a href="faq.html">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
+                                            <em class="fab fa-twitter"></em>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
         </div>
-    </nav>
+    </div>
 
+    <!-- Header Area -->
+    <header class="header-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header-left">
+                        <a href="https://XposedOrNot.com">
+                            <p>XposedorNot</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <div class="header-right">
+                        <ul>
+                            <li>
+                                <a href="password.html">Password</a>
+                            </li>
+                            <li>
+                                <a href="faq.html">FAQ</a>
+                            </li>
+                            <li>
+                                <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                            </li>
+                            <li>
+                                <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
+                                    <em class="fab fa-twitter"></em>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
     <div class="main-container">
-        <!-- Configuration Section -->
-        <div class="config-section">
-            <h2 class="section-heading">Slack Channel Notification Configuration</h2>
+        <!-- Step 1: Collect Channel Details -->
+        <div class="config-section active-step" id="step1">
+            <h2 class="section-heading">Step 1: Enter Slack Channel Details</h2>
             <form>
-                <!-- Add New Slack Channel -->
                 <div class="form-group">
-                    <label for="channelName">Slack Channel Name</label>
-                    <input type="text" class="form-control" id="channelName" placeholder="Enter Slack Channel Name">
+                    <label for="webhookUrl">Webhook URL</label>
+                    <input type="text" class="form-control" id="webhookUrl" placeholder="Enter Webhook URL">
+                    <small class="form-text text-muted">Paste the webhook URL associated with your Slack channel.</small>
                 </div>
-
-                <!-- Configuration Parameters -->
-                <h4 class="section-heading">Configuration Parameters</h4>
                 <div class="form-group">
-                    <label for="webhookUrl">Slack Webhook URL</label>
-                    <input type="text" class="form-control" id="webhookUrl" placeholder="Enter Slack Webhook URL">
+                    <label for="token">Token</label>
+                    <input type="text" class="form-control" id="token" placeholder="Enter Token" readonly>
                 </div>
-
-                <!-- Test Functionality -->
                 <div class="form-group">
-                    <button type="button" class="btn btn-success" onclick="testConfiguration()">Test Configuration</button>
+                    <label for="domain">Domain</label>
+                    <input type="text" class="form-control" id="domain" placeholder="Enter Domain" readonly>
                 </div>
-
-                <!-- Alert for Success/Failure -->
-                <div class="alert" id="testResult" role="alert" style="display:none;">
-                    <!-- This will be updated based on test results -->
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" id="initBtn" onclick="initiateConfiguration()">Initiate Configuration</button>
+                    <button type="button" class="btn btn-secondary" onclick="cancelConfiguration()">Cancel Config</button>
                 </div>
             </form>
         </div>
+
+        <!-- Step 2: Verification -->
+        <div class="config-section" id="step2">
+            <h2 class="section-heading">Step 2: Verify Configuration</h2>
+            <form>
+                <div class="form-group">
+                    <label for="reviewWebhookUrl">Webhook URL</label>
+                    <input type="text" class="form-control" id="reviewWebhookUrl" placeholder="Webhook URL" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="reviewToken">Token</label>
+                    <input type="text" class="form-control" id="reviewToken" placeholder="Token" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="reviewDomain">Domain</label>
+                    <input type="text" class="form-control" id="reviewDomain" placeholder="Domain" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="verifyToken">Verification Token</label>
+                    <input type="text" class="form-control" id="verifyToken" placeholder="Enter Verification Token">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" id="verifyBtn" onclick="verifyConfiguration()">Verify Configuration</button>
+                    <button type="button" class="btn btn-secondary" id="backToDashboardBtn" onclick="goBackToDashboard()">Go Back to Dashboard</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Response Alert -->
+        <div class="alert" id="apiResponse" role="alert" style="display:none;"></div>
     </div>
 
-    <!-- Steps Section -->
-    <div class="steps-section">
-        <h4 class="section-heading">Steps to Set Up a Slack Channel for Notifications</h4>
-        <ul>
-            <li>Step 1: Open your Slack application.</li>
-            <li>Step 2: Navigate to the workspace where you want the channel.</li>
-            <li>Step 3: Click on 'Add Channel' and select 'Create a channel'.</li>
-            <li>Step 4: Enter a channel name and description.</li>
-            <li>Step 5: Choose whether the channel should be public or private.</li>
-            <li>Step 6: Add members to your channel and click 'Create'.</li>
-            <li>Step 7: Set up an incoming webhook integration for your channel in Slack settings.</li>
+    <!-- Helper Column for Steps -->
+    <div class="helper-column">
+        <h4>Helpful Steps</h4>
+        <ul id="helpful-steps-content">
+            <li><strong>Creating a Slack Channel:</strong> Navigate to your Slack workspace, choose or create the team, and add a new channel.</li>
+            <li><strong>Obtaining a Webhook URL:</strong> In your Slack channel, go to the settings and add an Incoming Webhook. Copy the provided URL.</li>
         </ul>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    // Function to extract URL parameters
+    $.urlParam = function(name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        return results ? results[1] : null;
+    };
 
-    <script>
-        function testConfiguration() {
-            let webhookUrl = document.getElementById('webhookUrl').value;
+    // Extract token and domain from the URL
+    let token, domain;
+    try {
+        token = decodeURIComponent($.urlParam('token'));
+        domain = decodeURIComponent($.urlParam('domain'));
 
-            // Add logic to test Slack Webhook URL (Placeholder for demonstration)
-            if (webhookUrl.includes('https://hooks.slack.com/')) {
-                updateTestResult('Slack webhook URL valid!', 'success');
-            } else {
-                updateTestResult('Invalid Slack webhook URL', 'danger');
+        // Set token and domain to the input fields and make them read-only
+        document.getElementById('token').value = token;
+        document.getElementById('domain').value = domain;
+        document.getElementById('token').readOnly = true;
+        document.getElementById('domain').readOnly = true;
+    } catch (error) {
+        window.location.replace("https://xposedornot.com");
+    }
+
+    const apiUrl = 'https:api.xposedornot.com/v1/xon_alerts_slack';
+    let globalWebhookUrl = '';
+
+    function initiateConfiguration() {
+        let webhookUrl = document.getElementById('webhookUrl').value;
+        globalWebhookUrl = webhookUrl;
+
+        if (!webhookUrl) {
+            updateApiResponse('Webhook URL is required.', 'danger');
+            return;
+        }
+
+        let data = {
+            token: token,
+            domain: domain,
+            webhook: webhookUrl,
+            action: "init"
+        };
+
+        sendApiRequest(data, 'initBtn', (responseData) => {
+            if (responseData.status === 'initiated') {
+                switchStep('step1', 'step2');
             }
+        });
+    }
+
+    function verifyConfiguration() {
+        let verifyToken = document.getElementById('verifyToken').value;
+
+        if (!verifyToken) {
+            updateApiResponse('Verification token is required.', 'danger');
+            return;
         }
 
-        function updateTestResult(message, type) {
-            let resultDiv = document.getElementById('testResult');
-            resultDiv.style.display = 'block';
-            resultDiv.className = 'alert alert-' + type;
-            resultDiv.textContent = message;
+        let data = {
+            token: token,
+            domain: domain,
+            webhook: globalWebhookUrl,
+            verify_token: verifyToken,
+            action: "verify"
+        };
+
+        sendApiRequest(data, 'verifyBtn', (responseData) => {
+            if (responseData.status === 'success') {
+                // Disable the Verify Configuration button
+                document.getElementById('verifyBtn').disabled = true;
+                // Highlight the Go Back to Dashboard button
+                document.getElementById('backToDashboardBtn').classList.remove('btn-secondary');
+                document.getElementById('backToDashboardBtn').classList.add('btn-primary');
+            }
+        });
+    }
+
+    function sendApiRequest(data, btnId, onSuccess) {
+        let btn = document.getElementById(btnId);
+        if (btn) {
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+            btn.disabled = true;
         }
-    </script>
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            if (btn) {
+                btn.textContent = btnId === 'initBtn' ? 'Initiate Configuration' : 'Verify Configuration';
+                btn.disabled = false;
+            }
+
+            if (responseData.status === 'success' || responseData.status === 'initiated') {
+                if (responseData.message) { 
+                    updateApiResponse(responseData.message, 'success');
+                }
+                if (onSuccess) {
+                    onSuccess(responseData);
+                }
+            } else {
+                updateApiResponse(responseData.message || 'An error occurred', 'danger'); 
+            }
+        })
+        .catch(error => {
+            if (btn) {
+                btn.textContent = btnId === 'initBtn' ? 'Initiate Configuration' : 'Verify Configuration';
+                btn.disabled = false;
+            }
+
+            console.error('Error:', error);
+            updateApiResponse('An error occurred', 'danger');
+        });
+    }
+
+    function updateApiResponse(message, type) {
+        let responseDiv = document.getElementById('apiResponse');
+        responseDiv.style.display = 'block';
+        responseDiv.className = 'alert alert-' + type;
+        responseDiv.innerHTML = message;
+        if (type === 'success') {
+            responseDiv.innerHTML = '<span class="alert-icon"><i class="fas fa-check-circle"></i></span> ' + message;
+        } else if (type === 'danger') {
+            responseDiv.innerHTML = '<span class="alert-icon"><i class="fas fa-times-circle"></i></span> ' + message;
+        }
+    }
+
+    function switchStep(currentStep, nextStep) {
+        document.getElementById(currentStep).classList.remove('active-step');
+        document.getElementById(nextStep).classList.add('active-step');
+        updateHelpfulSteps(nextStep);
+
+        if (nextStep === 'step2') {
+            // Populate read-only fields in Step 2 with data from Step 1
+            document.getElementById('reviewWebhookUrl').value = globalWebhookUrl;
+            document.getElementById('reviewToken').value = token;
+            document.getElementById('reviewDomain').value = domain;
+        }
+    }
+
+    function cancelConfiguration() {
+        // Reset the form or redirect the user
+        // Example: window.location.href = 'path-to-cancel-page';
+    }
+
+    function updateHelpfulSteps(step) {
+        let stepsContent = document.getElementById('helpful-steps-content');
+        if (step === 'step1') {
+            stepsContent.innerHTML = `
+                <li><strong>Creating a Slack Channel:</strong> Navigate to your Slack workspace, choose or create the team, and add a new channel.</li>
+                <li><strong>Obtaining a Webhook URL:</strong> In your Slack channel, go to the settings and add an Incoming Webhook. Copy the provided URL.</li>
+            `;
+        } else if (step === 'step2') {
+            stepsContent.innerHTML = `
+                <li><strong>Verification Process:</strong> Check your Slack channel for the verification token sent by the system.</li>
+                <li><strong>Complete Configuration:</strong> Enter the received token here and click 'Verify Configuration' to complete the setup.</li>
+            `;
+        }
+    }
+    // Call updateHelpfulSteps initially for Step 1
+    updateHelpfulSteps('step1');
+
+    function goBackToDashboard() {
+        // Logic to go back to the dashboard
+        // Example: window.location.href = 'path-to-dashboard';
+    }
+</script>
+
 </body>
-</html>
+
