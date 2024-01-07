@@ -113,7 +113,8 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email='';
+    //    const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email='';
+    const apiUrlBase = 'https://xon-api-test-wdkjdzw5ca-uw.a.run.app/v1/breach-analytics?email=';
 
     $("#searchMe").click(function (event) {
         event.preventDefault();
@@ -309,22 +310,21 @@ const breachesCountElement = $("#b1");
 const breachesRecordsElement = $("#b2");
 $.ajax(apiUrl)
     .done(function (response) {
-	//  let pastesCount = parseInt(response.Pastes_Count, 10);
         let pastesCount = parseInt(response.Pastes_Count.replace(/,/g, ''), 10);
         let pastesRecords = parseInt(response.Pastes_Records, 10);
         let breachesCount = parseInt(response.Breaches_Count, 10);
         let breachesRecords = parseInt(response.Breaches_Records, 10);
 
-        runCounter(pastesCountElement, pastesCount, 10000, function() {
+        runCounter(pastesCountElement, pastesCount, 10000, function () {
             $(pastesCountElement).text(pastesCount.toLocaleString());
         });
-        runCounter(pastesRecordsElement, pastesRecords, 10000, function() {
+        runCounter(pastesRecordsElement, pastesRecords, 10000, function () {
             $(pastesRecordsElement).text(pastesRecords.toLocaleString());
         });
-        runCounter(breachesCountElement, breachesCount, 10000, function() {
+        runCounter(breachesCountElement, breachesCount, 10000, function () {
             $(breachesCountElement).text(breachesCount.toLocaleString());
         });
-        runCounter(breachesRecordsElement, breachesRecords, 10000, function() {
+        runCounter(breachesRecordsElement, breachesRecords, 10000, function () {
             $(breachesRecordsElement).text(breachesRecords.toLocaleString());
         });
     });
