@@ -259,6 +259,7 @@
     let token, domain;
     try {
         token = decodeURIComponent($.urlParam('token'));
+        email = decodeURIComponent($.urlParam('email'));
         domain = decodeURIComponent($.urlParam('domain'));
 
         // Set token and domain to the input fields and make them read-only
@@ -392,8 +393,9 @@
     }
 
     function cancelConfiguration() {
-        // Reset the form or redirect the user
-        // Example: window.location.href = 'path-to-cancel-page';
+	    const dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+
+    window.location.href = dashboardUrl;
     }
 
     function updateHelpfulSteps(step) {

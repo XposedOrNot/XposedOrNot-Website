@@ -266,7 +266,6 @@
             <li><strong>Obtaining a Webhook URL:</strong> In your Teams channel, go to Connectors and add an Incoming Webhook. Copy the provided URL.</li>
         </ul>
     </div>
-
     <!-- JavaScript for Configuration Steps -->
 <script>
     // Function to extract URL parameters
@@ -279,6 +278,7 @@
     let token, domain;
     try {
         token = decodeURIComponent($.urlParam('token'));
+        email = decodeURIComponent($.urlParam('email'));
         domain = decodeURIComponent($.urlParam('domain'));
 
         // Set token and domain to the input fields and make them read-only
@@ -434,8 +434,9 @@ function verifyConfiguration() {
     }
 
 function cancelConfiguration() {
-    // Reset the form or redirect the user
-    // Example: window.location.href = 'path-to-cancel-page';
+ 	const dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+
+    window.location.href = dashboardUrl;
 }
 
 function updateHelpfulSteps(step) {
