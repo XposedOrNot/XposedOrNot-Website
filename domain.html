@@ -1,488 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <title>XposedOrNot: Domain Verification </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="description" content="Domain Verification: XposedOrNot">
-      <meta name="author" content="Devanand Premkumar">
-      <link rel="icon" href="favicon.ico" type="image/x-icon" />
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-      <link rel=stylesheet href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset' type=text/css media=all defer async>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css" integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ==" crossorigin="anonymous" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js" integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ==" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-      <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer>
-      <script>      
 
-         (function (h, o, t, j, a, r) {
-    h.hj = h.hj || function () {
-        (h.hj.q = h.hj.q || []).push(arguments)
-    };
-    h._hjSettings = {
-        hjid: 1613245,
-        hjsv: 6
-    };
-    a = o.getElementsByTagName('head')[0];
-    r = o.createElement('script');
-    r.async = 1;
-    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-    a.appendChild(r);
-})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-  (function () {
-    var script = document.createElement("script");
-    script.onload = () => {
-      window.GrafanaFaroWebSdk.initializeFaro({
-        url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
-        app: {
-          name: 'xonniepub',
-          version: "1.0.0",
-        },
-      });
-    };
-    script.src =
-      "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
-    document.head.appendChild(script);
-  })();
-      </script>
-      <style>
-         .input-field {
+<head>
+   <meta charset="utf-8">
+   <title>XposedOrNot: Domain Verification </title>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="Domain Verification: XposedOrNot">
+   <meta name="author" content="Devanand Premkumar">
+   <link rel="icon" href="favicon.ico" type="image/x-icon" />
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+      integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"></script>
+   <link rel=stylesheet
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset'
+      type=text/css media=all defer async>
+   <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+      integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+      crossorigin="anonymous" />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"
+      integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+      crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+   <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer>
+   <script>
+
+      (function (h, o, t, j, a, r) {
+         h.hj = h.hj || function () {
+            (h.hj.q = h.hj.q || []).push(arguments)
+         };
+         h._hjSettings = {
+            hjid: 1613245,
+            hjsv: 6
+         };
+         a = o.getElementsByTagName('head')[0];
+         r = o.createElement('script');
+         r.async = 1;
+         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+         a.appendChild(r);
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+      (function () {
+         var script = document.createElement("script");
+         script.onload = () => {
+            window.GrafanaFaroWebSdk.initializeFaro({
+               url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
+               app: {
+                  name: 'xonniepub',
+                  version: "1.0.0",
+               },
+            });
+         };
+         script.src =
+            "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
+         document.head.appendChild(script);
+      })();
+   </script>
+   <style>
+      .input-field {
          margin-right: -20px;
-         }
-         .copy-btn {
+      }
+
+      .copy-btn {
          padding: 0.5rem 0.5rem;
          width: auto;
-         margin-left: -30px; 
-         }
-      </style>
-   </head>
-   <body style="color:#3c5fec;font-family: 'Poppins', sans-serif;">
-      <div class="kbanner">
-         <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-             <a class="navbar-brand" href="https://xposedornot.com"><span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-      <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Community Edition</span></a>
+         margin-left: -30px;
+      }
+   </style>
+</head>
 
-		 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<body style="color:#3c5fec;font-family: 'Poppins', sans-serif;">
+   <div class="kbanner">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+         <a class="navbar-brand" href="https://xposedornot.com"><span
+               style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+            <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Community
+               Edition</span></a>
+
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-               <ul class="navbar-nav navbar-right">
-                  <li class="nav-item active">
-                     <a class="nav-link" href="password.html">Password &nbsp; <span class="sr-only">(current)</span>
-                     </a>
-                  </li>
-                  <li class="nav-item active">
-                     <a class="nav-link" href="api_doc.html">API &nbsp;</a>
-                  </li>
-                  <li class="nav-item active">
-                     <a class="nav-link" href="https://blog.xposedornot.com/">Blog &nbsp;</a>
-                  </li>
-                  <li class="nav-item dropdown active">
-                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> More Tools </a>
-                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
-                        <a class="dropdown-item" href="shield.html">Privacy Shield</a>
-                        <a class="dropdown-item" href="domain.html">Domain Verification</a>
-                        <a class="dropdown-item" href="domains.html">Domain-level Search</a>
-                        <a class="dropdown-item" href="timeline.html">Breaches Timeline</a>
-                     </div>
-                  </li>
-               </ul>
-            </div>
-         </nav>
-         &nbsp;
-      </div>
-      <div class="jumbotron" id="d1">
-         <div class="container">
-            <h1>Domain verification & validation</h1>
-            <br>
-            <p align="center"> To assess the extent of data breach exposure on your domain, follow these <strong>three simple steps </strong>to verify your information. </p>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav navbar-right">
+               <li class="nav-item active">
+                  <a class="nav-link" href="password.html">Password &nbsp; <span class="sr-only">(current)</span>
+                  </a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link" href="api_doc.html">API &nbsp;</a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link" href="https://blog.xposedornot.com/">Blog &nbsp;</a>
+               </li>
+               <li class="nav-item dropdown active">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false"> More Tools </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                     <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
+                     <a class="dropdown-item" href="shield.html">Privacy Shield</a>
+                     <a class="dropdown-item" href="domain.html">Domain Verification</a>
+                     <a class="dropdown-item" href="domains.html">Domain-level Search</a>
+                     <a class="dropdown-item" href="timeline.html">Breaches Timeline</a>
+                  </div>
+               </li>
+            </ul>
          </div>
+      </nav>
+      &nbsp;
+   </div>
+   <div class="jumbotron" id="d1">
+      <div class="container">
+         <h1>Domain verification & validation</h1>
+         <br>
+         <p align="center"> To assess the extent of data breach exposure on your domain, follow these <strong>three
+               simple steps </strong>to verify your information. </p>
       </div>
-      <div class="container" id="div_input">
-         <p class="alert alert-primary">We understand that keeping your domains users secure is super important, so we've got three fantastic ways to validate domain authorization - using <strong>DNS</strong>, <strong>HTML</strong>, and <strong>Email</strong>. Our goal is to make it easy peasy for you to choose the best method that suits your needs.<br><br>
-            <strong>DNS</strong>: The first method involves adding a special record to your domain's DNS settings. It's like giving your domain a secret handshake to confirm it's the real deal. We'll guide you through the process, and once it's done, your domain's identity will be verified in no time! <br><br>
-            <strong>HTML</strong>: If you prefer a more hands-on approach, we've got you covered! Simply add an HTML file with a unique code to your website's root directory. It's like planting a digital flag that says "Yep, this is my domain!". We'll check for the flag, and if it's there, you're good to go! <br><br>
-            <strong>Email</strong>: Lastly, for those who love the convenience of email, we can send a verification link straight to your inbox. Click on the link, and voilà, your domain is authorized! It's as simple as opening your favorite email and tapping a button.<br><br>
-            Remember, we're here to make this process as smooth and friendly as possible. So pick the method that works best for you, and let's get that domain authorized! 🎉<br><br>
-         </p>
-         <form id="defaultForm" method="post" role="form" onload=choices();>
-            <div class="form-group ">
-               <input type="text" autofocus class="form-control input-nl2 name"  id="eventName" name="name" autocapitalize="off" autocorrect="off" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" maxlength="255" name="edhu" placeholder="Enter a valid domain name ...(e.g.: your-domain.com)" spellcheck="false" autofocus="true">
-               <span class="input-group-btn">
-            </div>
-            <br>
-      </div>
-      <div align="center">
-      <button id="alertMe" type="submit" class="btn btn-primary btn-lg">Start Verification Process <span id="alertMe_i1" class="glyphicon glyphicon-ok"></span>
+   </div>
+   <div class="container" id="div_input">
+      <p class="alert alert-primary">We understand that keeping your domains users secure is super important, so we've
+         got three fantastic ways to validate domain authorization - using <strong>DNS</strong>, <strong>HTML</strong>,
+         and <strong>Email</strong>. Our goal is to make it easy peasy for you to choose the best method that suits your
+         needs.<br><br>
+         <strong>DNS</strong>: The first method involves adding a special record to your domain's DNS settings. It's
+         like giving your domain a secret handshake to confirm it's the real deal. We'll guide you through the process,
+         and once it's done, your domain's identity will be verified in no time! <br><br>
+         <strong>HTML</strong>: If you prefer a more hands-on approach, we've got you covered! Simply add an HTML file
+         with a unique code to your website's root directory. It's like planting a digital flag that says "Yep, this is
+         my domain!". We'll check for the flag, and if it's there, you're good to go! <br><br>
+         <strong>Email</strong>: Lastly, for those who love the convenience of email, we can send a verification link
+         straight to your inbox. Click on the link, and voilà, your domain is authorized! It's as simple as opening your
+         favorite email and tapping a button.<br><br>
+         Remember, we're here to make this process as smooth and friendly as possible. So pick the method that works
+         best for you, and let's get that domain authorized! 🎉<br><br>
+      </p>
+      <form id="defaultForm" method="post" role="form" onload=choices();>
+         <div class="form-group ">
+            <input type="text" autofocus class="form-control input-nl2 name" id="eventName" name="name"
+               autocapitalize="off" autocorrect="off" class="form-control" data-val="true"
+               data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" maxlength="255" name="edhu"
+               placeholder="Enter a valid domain name ...(e.g.: your-domain.com)" spellcheck="false" autofocus="true">
+            <span class="input-group-btn">
+         </div>
+         <br>
+   </div>
+   <div align="center">
+      <button id="alertMe" type="submit" class="btn btn-primary btn-lg">Start Verification Process <span id="alertMe_i1"
+            class="glyphicon glyphicon-ok"></span>
       </button>
-      </div>
-      <div id="status" align="center" hidden="false">
+   </div>
+   <div id="status" align="center" hidden="false">
       <button class="btn btn-primary btn-lg"> Initializing verification ... <em class="fa fa-spinner fa-spin"></em>
       </button>
+   </div>
+   <input type="hidden" name="hid1" id="hid1" readonly />
+   </form>
+   <div id="div_s1">
+      <div align="center" id="lbl_1">
+         <div id="d1"></div>
       </div>
-      <input type="hidden" name="hid1" id="hid1" readonly />
+      <div class="selectContainer container" id="s1">
+         <select name="strat" id="strat" class="form-control input-nl2" data-style="btn-primary">
+            <option value="ver" selected>Select one of the available verification methods ...</option>
+            <option value="email">Email based validation</option>
+            <option value="dns_txt">DNS Text based validation</option>
+            <option value="html">HTML Page based validation</option>
+         </select>
+         <br>
+      </div>
+   </div>
+   <div class="alert alert-primary container" role="alert" id="div_dns" align="center"
+      style=" border-radius: 5px;border:2px solid #6daae0;">
+      <strong>DNS TXT record based validation.!</strong> Please create a temporary TXT record in your DNS as shown
+      below. <br>
+      <br>
+      <form id="dns_form" method="post">
+         <div class="input-group" id=div2>
+            <span class="input-group-addon">
+               <em class="fa fa-bullseye"></em>
+            </span>
+            <input class="form-control input-lg" autocapitalize="off" class="form-control" data-val="true"
+               data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255"
+               data-val-minlength="Minimum is &#39;3&#39 !" data-val-minlength-min="3" id="edhu_dns" maxlength="255"
+               name="edhu_dns" autofocus="true" readonly>
+         </div>
+         <br>
+         <div align="left" class="input-group">
+            <input class="form-control input-lg" type=text id="txt_dns"
+               placeholder="Email address to receive the exposed data" type="email">
+            <span class="input-group-btn">
+               <button type="submit" id="searchMe_d" class="btn btn-lg btn-primary"> Verify &nbsp <span
+                     id="searchMe_d_i1" class="glyphicon glyphicon-ok">
+               </button>
+            </span>
+         </div>
       </form>
-      <div id="div_s1">
-         <div align="center" id="lbl_1">
-            <div id="d1"></div>
-         </div>
-         <div class="selectContainer container" id="s1" >
-            <select name="strat" id="strat" class="form-control input-nl2" data-style="btn-primary" >
-               <option value="ver" selected>Select one of the available verification methods ...</option>
-               <option value="email">Email based validation</option>
-               <option value="dns_txt">DNS Text based validation</option>
-               <option value="html">HTML Page based validation</option>
-            </select>
-            <br>
-         </div>
-      </div>
-      <div class="alert alert-primary container" role="alert" id="div_dns" align="center" style=" border-radius: 5px;border:2px solid #6daae0;">
-         <strong>DNS TXT record based validation.!</strong> Please create a temporary TXT record in your DNS as shown below. <br>
-         <br>
-         <form id="dns_form" method="post">
-            <div class="input-group" id=div2>
-               <span class="input-group-addon">
+   </div>
+   <div class="container alert alert-primary" role="alert" id="div_meta" align="center"
+      style=" border-radius: 5px;border:2px solid #6daae0;">
+      <strong>META tag based validation.!</strong> Please create a temporary META data tag in your home page as shown
+      below. <br>
+      <br>
+      <form id="meta_form" method="post">
+         <div class="input-group" id=div2>
+            <span class="input-group-addon">
                <em class="fa fa-bullseye"></em>
-               </span>
-               <input class="form-control input-lg" autocapitalize="off" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is &#39;3&#39 !" data-val-minlength-min="3" id="edhu_dns" maxlength="255" name="edhu_dns" autofocus="true" readonly>
-            </div>
-            <br>
-            <div align="left" class="input-group">
-               <input class="form-control input-lg" type=text id="txt_dns" placeholder="Email address to receive the exposed data" type="email">
-               <span class="input-group-btn">
-               <button type="submit" id="searchMe_d" class="btn btn-lg btn-primary"> Verify &nbsp <span id="searchMe_d_i1" class="glyphicon glyphicon-ok">
-               </button>
-               </span>
-            </div>
-         </form>
-      </div>
-      <div class="container alert alert-primary" role="alert" id="div_meta" align="center" style=" border-radius: 5px;border:2px solid #6daae0;">
-         <strong>META tag based validation.!</strong> Please create a temporary META data tag in your home page as shown below. <br>
+            </span>
+            <input class="form-control input-lg" autocapitalize="off" class="form-control" data-val="true"
+               data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255"
+               data-val-minlength="Minimum is &#39;3&#39 !" data-val-minlength-min="3" id="edhu_meta" maxlength="255"
+               name="edhu_meta" autofocus="true" readonly>
+         </div>
          <br>
-         <form id="meta_form" method="post">
-            <div class="input-group" id=div2>
-               <span class="input-group-addon">
-               <em class="fa fa-bullseye"></em>
-               </span>
-               <input class="form-control input-lg" autocapitalize="off" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is &#39;3&#39 !" data-val-minlength-min="3" id="edhu_meta" maxlength="255" name="edhu_meta" autofocus="true" readonly>
-            </div>
-            <br>
-            <div align="left" class="input-group">
-               <input class="form-control input-lg" type=text id="txt_email_m" placeholder="Email address to receive the exposed data" type="email">
-               <span class="input-group-btn">
-               <button type="submit" id="searchMe_m" class="btn btn-lg btn-primary"> Verify &nbsp <span id="searchMe_m_i1" class="glyphicon glyphicon-ok">
+         <div align="left" class="input-group">
+            <input class="form-control input-lg" type=text id="txt_email_m"
+               placeholder="Email address to receive the exposed data" type="email">
+            <span class="input-group-btn">
+               <button type="submit" id="searchMe_m" class="btn btn-lg btn-primary"> Verify &nbsp <span
+                     id="searchMe_m_i1" class="glyphicon glyphicon-ok">
                </button>
-               </span>
+            </span>
+         </div>
+      </form>
+   </div>
+   <div class="alert alert-primary container" role="alert" id="div_html" align="center"
+      style="border-radius: 5px;border:2px solid #6daae0;">
+      <strong>HTML file based validation!</strong> Please create a temporary file in your root directory with values as
+      shown below and then click Verify. <br><br>
+      <form id="html_form" method="post">
+         <div class="form-group row align-items-center">
+            <label for="edhu_html_filename" class="col-form-label col-sm-2 text-sm-end">File name:</label>
+            <div class="col-sm-9">
+               <input type="text" class="form-control input-lg input-field" data-val="true" id="edhu_html_filename"
+                  name="edhu_html_filename" readonly>
             </div>
-         </form>
-      </div>
-      <div class="alert alert-primary container" role="alert" id="div_html" align="center" style="border-radius: 5px;border:2px solid #6daae0;">
-         <strong>HTML file based validation!</strong> Please create a temporary file in your root directory with values as shown below and then click Verify. <br><br>
-         <form id="html_form" method="post">
-            <div class="form-group row align-items-center">
-               <label for="edhu_html_filename" class="col-form-label col-sm-2 text-sm-end">File name:</label>
-               <div class="col-sm-9">
-                  <input type="text" class="form-control input-lg input-field" data-val="true" id="edhu_html_filename" name="edhu_html_filename" readonly>
-               </div>
-               <div class="col-sm-1">
-                  <button class="btn btn-outline-primary copy-btn" type="button" data-clipboard-target="#edhu_html_filename"><i class="fas fa-copy"></i> Copy</button>
-               </div>
+            <div class="col-sm-1">
+               <button class="btn btn-outline-primary copy-btn" type="button"
+                  data-clipboard-target="#edhu_html_filename"><i class="fas fa-copy"></i> Copy</button>
             </div>
-            <div class="form-group row align-items-center">
-               <label for="edhu_html_filecontent" class="col-form-label col-sm-2 text-sm-end">File Content:</label>
-               <div class="col-sm-9">
-                  <input type="text" class="form-control input-lg input-field" data-val="true" id="edhu_html_filecontent" name="edhu_html_filecontent" readonly>
-               </div>
-               <div class="col-sm-1">
-                  <button class="btn btn-outline-primary copy-btn" type="button" data-clipboard-target="#edhu_html_filecontent"><i class="fas fa-copy"></i> Copy</button>
-               </div>
+         </div>
+         <div class="form-group row align-items-center">
+            <label for="edhu_html_filecontent" class="col-form-label col-sm-2 text-sm-end">File Content:</label>
+            <div class="col-sm-9">
+               <input type="text" class="form-control input-lg input-field" data-val="true" id="edhu_html_filecontent"
+                  name="edhu_html_filecontent" readonly>
             </div>
-            <div align="left" class="input-group">
-               <input class="form-control input-lg" type="text" id="txt_email_h" placeholder="Email address to receive the exposed data" type="email">
-               <span class="input-group-btn">
-               <button type="submit" id="searchMe_h" class="btn btn-lg btn-primary"> Verify &nbsp <span id="searchMe_h_i1" class="glyphicon glyphicon-ok"></span>
+            <div class="col-sm-1">
+               <button class="btn btn-outline-primary copy-btn" type="button"
+                  data-clipboard-target="#edhu_html_filecontent"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+         </div>
+         <div align="left" class="input-group">
+            <input class="form-control input-lg" type="text" id="txt_email_h"
+               placeholder="Email address to receive the exposed data" type="email">
+            <span class="input-group-btn">
+               <button type="submit" id="searchMe_h" class="btn btn-lg btn-primary"> Verify &nbsp <span
+                     id="searchMe_h_i1" class="glyphicon glyphicon-ok"></span>
                </button>
-               </span>
-            </div>
-         </form>
-      </div>
-      <div class="container alert alert-danger" role="alert" id="dang" align="center">
-      </div>
-      <div class="alert alert-primary container" role="alert" id="div_email" align="center" style="border-radius: 5px;border:2px solid #6daae0;">
-         <strong>Email </strong> based validation is easy to validate a domain provided, you can receive emails in the authoritative email contacts. Please select the email and then click <strong>Verify</strong>. <br>
-         <br>
-         <form id="email_form" method="post">
-            <div class="input-group" id=div1>
-               <span class="input-group-addon">
+            </span>
+         </div>
+      </form>
+   </div>
+   <div class="container alert alert-danger" role="alert" id="dang" align="center">
+   </div>
+   <div class="alert alert-primary container" role="alert" id="div_email" align="center"
+      style="border-radius: 5px;border:2px solid #6daae0;">
+      <strong>Email </strong> based validation is easy to validate a domain provided, you can receive emails in the
+      authoritative email contacts. Please select the email and then click <strong>Verify</strong>. <br>
+      <br>
+      <form id="email_form" method="post">
+         <div class="input-group" id=div1>
+            <span class="input-group-addon">
                <em class="fa fa-envelope"></em>
-               </span>
-               <select class="form-control input-group  input-lg" id="sel1">
-                  <option>Please select the appropriate email to receive the verification email :</option>
-               </select>
-            </div>
-            <br>
-            <div align="left" class="input-group">
-               <input class="form-control input-lg" type=text id="txt_email_e" placeholder="Email address to receive the exposed data" type="email">
-               <span class="input-group-btn">
-               <button type="submit" id="searchMe_e" class="btn btn-lg btn-primary"> Verify &nbsp <span id="searchMe_e_i1" class="glyphicon glyphicon-ok">
+            </span>
+            <select class="form-control input-group  input-lg" id="sel1">
+               <option>Please select the appropriate email to receive the verification email :</option>
+            </select>
+         </div>
+         <br>
+         <div align="left" class="input-group">
+            <input class="form-control input-lg" type=text id="txt_email_e"
+               placeholder="Email address to receive the exposed data" type="email">
+            <span class="input-group-btn">
+               <button type="submit" id="searchMe_e" class="btn btn-lg btn-primary"> Verify &nbsp <span
+                     id="searchMe_e_i1" class="glyphicon glyphicon-ok">
                </button>
-               </span>
-            </div>
-         </form>
-      </div>
-      <div class="container" id="div_t1">
-         <div style=" border-radius: 5px;border:2px solid #6daae0;">
-            <div class="sp1">
-               <table class="table table-striped table-condensed">
-                  <thead>
-                     <tr>
-                        <th>Steps</th>
-                        <th>Action </th>
-                        <th>Explanation</th>
-                        <th>Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td> # 1</td>
-                        <td> Domain name</td>
-                        <td> Enter a valid domain name</td>
-                        <td>
-                           <span class="label label-success">Completed</span>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td> # 2 </td>
-                        <td>Verification Options</td>
-                        <td>Select a verification option based on email, DNS, html etc </td>
-                        <div id="div_suc1">
-                           <td>
-                              <span class="label label-warning">Pending</span>
-                           </td>
-                        </div>
-                     </tr>
-                     <tr>
-                        <td> # 3</td>
-                        <td>Complete verification</td>
-                        <td>Successfully complete the verification process as per selected option</td>
-                        <td>
-                           <span class="label label-warning">Pending</span>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-               <div class="progress">
-                  <div id="pr1" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%"> 20% Complete (success) </div>
-               </div>
-            </div>
+            </span>
          </div>
-      </div>
-      <div class="container" id="div_t3">
-         <div style=" border-radius: 5px;border:2px solid #6daae0;">
-            <div class="sp1">
-               <table class="table table-striped table-condensed">
-                  <thead>
-                     <tr>
-                        <th>Steps</th>
-                        <th>Action </th>
-                        <th>Explanation</th>
-                        <th>Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td> # 1</td>
-                        <td> Domain name</td>
-                        <td> Enter a valid domain name</td>
-                        <td>
-                           <span class="label label-success">Completed</span>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td> # 2 </td>
-                        <td>Verification method</td>
-                        <td>Select a verification option based on email, DNS, html etc </td>
-                        <div id="div_suc2">
-                           <td>
-                              <span class="label label-success">Completed</span>
-                           </td>
-                        </div>
-                     </tr>
-                     <tr>
-                        <td> # 3</td>
-                        <td>Complete verification</td>
-                        <td>Successfully complete the verification process as per selected method</td>
-                        <td>
-                           <span class="label label-danger">Failed</span>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-               <div class="progress">
-                  <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"> 100% Complete (failure) </div>
-               </div>
-            </div>
-            <div align="center">
-               <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Retry Again</button>
-               <br>
-            </div>
-            <br>
-         </div>
-      </div>
-      <div class="container" id="div_t4">
-         <div style=" border-radius: 5px;border:2px solid #6daae0;">
-            <div class="sp1">
-               <table class="table table-striped table-condensed">
-                  <thead>
-                     <tr>
-                        <th>Steps</th>
-                        <th>Action </th>
-                        <th>Explanation</th>
-                        <th>Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td> # 1</td>
-                        <td> Domain name</td>
-                        <td> Enter a valid domain name</td>
-                        <td>
-                           <span class="label label-success">Completed</span>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td> # 2 </td>
-                        <td>Verification method</td>
-                        <td>Select a verification option based on email, DNS, html etc </td>
-                        <div id="div_suc2">
-                           <td>
-                              <span class="label label-success">Completed</span>
-                           </td>
-                        </div>
-                     </tr>
-                     <tr>
-                        <td> # 3</td>
-                        <td>Complete verification</td>
-                        <td>Successfully complete the verification process as per selected method</td>
-                        <td>
-                           <span class="label label-success">Success </span>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-               <div class="progress">
-                  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"> 100% Complete ( success ) </div>
-               </div>
-               <div class="alert alert-success" role="alert" id="succ" align="center">
-                  <em class='fa fa-check-circle' style='color:green;font-size: 78px;'></em>
-                  <br>
-                  <strong>Excellent !</strong> We have successfully validated and an email is sent across with breach data. !
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="container" id="div_t2">
-      <div style="border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-         <table class="table table-striped table-condensed">
-            <thead>
-               <tr>
-                  <th>Steps</th>
-                  <th>Action </th>
-                  <th>Explanation</th>
-                  <th>Status</th>
-               </tr>
-            </thead>
-            <tbody>
-               <tr>
-                  <td> # 1</td>
-                  <td> Domain name</td>
-                  <td> Enter a valid domain name</td>
-                  <td>
-                     <span class="label label-success">Completed</span>
-                  </td>
-               </tr>
-               <tr>
-                  <td> # 2 </td>
-                  <td>Verification method</td>
-                  <td>Select a verification option based on email, DNS, html etc</td>
-                  <div id="div_suc2">
+      </form>
+   </div>
+   <div class="container" id="div_t1">
+      <div style=" border-radius: 5px;border:2px solid #6daae0;">
+         <div class="sp1">
+            <table class="table table-striped table-condensed">
+               <thead>
+                  <tr>
+                     <th>Steps</th>
+                     <th>Action </th>
+                     <th>Explanation</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td> # 1</td>
+                     <td> Domain name</td>
+                     <td> Enter a valid domain name</td>
                      <td>
                         <span class="label label-success">Completed</span>
                      </td>
-                  </div>
-               </tr>
-               <tr>
-                  <td> # 3</td>
-                  <td>Complete verification</td>
-                  <td>Successfully complete the verification process as per selected method</td>
-                  <td>
-                     <span class="label label-warning">Pending</span>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-         <div class="progress">
-            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%"> 60% Complete (success) </div>
+                  </tr>
+                  <tr>
+                     <td> # 2 </td>
+                     <td>Verification Options</td>
+                     <td>Select a verification option based on email, DNS, html etc </td>
+                     <div id="div_suc1">
+                        <td>
+                           <span class="label label-warning">Pending</span>
+                        </td>
+                     </div>
+                  </tr>
+                  <tr>
+                     <td> # 3</td>
+                     <td>Complete verification</td>
+                     <td>Successfully complete the verification process as per selected option</td>
+                     <td>
+                        <span class="label label-warning">Pending</span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+            <div class="progress">
+               <div id="pr1" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+                  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%"> 20% Complete (success)
+               </div>
+            </div>
          </div>
       </div>
-      <br>
-      <div hidden="false" class="alert alert-success" role="alert" id="succ" align="center">
-         <em class='fa fa-check-circle' style='color:green;font-size: 78px;'></em>
+   </div>
+   <div class="container" id="div_t3">
+      <div style=" border-radius: 5px;border:2px solid #6daae0;">
+         <div class="sp1">
+            <table class="table table-striped table-condensed">
+               <thead>
+                  <tr>
+                     <th>Steps</th>
+                     <th>Action </th>
+                     <th>Explanation</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td> # 1</td>
+                     <td> Domain name</td>
+                     <td> Enter a valid domain name</td>
+                     <td>
+                        <span class="label label-success">Completed</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td> # 2 </td>
+                     <td>Verification method</td>
+                     <td>Select a verification option based on email, DNS, html etc </td>
+                     <div id="div_suc2">
+                        <td>
+                           <span class="label label-success">Completed</span>
+                        </td>
+                     </div>
+                  </tr>
+                  <tr>
+                     <td> # 3</td>
+                     <td>Complete verification</td>
+                     <td>Successfully complete the verification process as per selected method</td>
+                     <td>
+                        <span class="label label-danger">Failed</span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+            <div class="progress">
+               <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar"
+                  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"> 100% Complete (failure)
+               </div>
+            </div>
+         </div>
+         <div align="center">
+            <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Retry Again</button>
+            <br>
+         </div>
          <br>
-         <strong>Excellent !</strong> We have successfully validated and an email is sent across with breach data. !
       </div>
-      <div hidden="false" class="alert alert-info" role="alert" id="info" align="center">
-         <strong>Oops !</strong> Can you please try again after some time.
+   </div>
+   <div class="container" id="div_t4">
+      <div style=" border-radius: 5px;border:2px solid #6daae0;">
+         <div class="sp1">
+            <table class="table table-striped table-condensed">
+               <thead>
+                  <tr>
+                     <th>Steps</th>
+                     <th>Action </th>
+                     <th>Explanation</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td> # 1</td>
+                     <td> Domain name</td>
+                     <td> Enter a valid domain name</td>
+                     <td>
+                        <span class="label label-success">Completed</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td> # 2 </td>
+                     <td>Verification method</td>
+                     <td>Select a verification option based on email, DNS, html etc </td>
+                     <div id="div_suc2">
+                        <td>
+                           <span class="label label-success">Completed</span>
+                        </td>
+                     </div>
+                  </tr>
+                  <tr>
+                     <td> # 3</td>
+                     <td>Complete verification</td>
+                     <td>Successfully complete the verification process as per selected method</td>
+                     <td>
+                        <span class="label label-success">Success </span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+            <div class="progress">
+               <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+                  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"> 100% Complete ( success
+                  ) </div>
+            </div>
+            <div class="alert alert-success" role="alert" id="succ" align="center">
+               <em class='fa fa-check-circle' style='color:green;font-size: 78px;'></em>
+               <br>
+               <strong>Excellent !</strong> We have successfully validated and an email is sent across with breach data.
+               !
+            </div>
+         </div>
       </div>
-      <div hidden="false" class="alert alert-danger" role="alert" id="dang" align="center">
-         <strong>Oops !</strong> Domain validation was not successful. !
-      </div>
-      <div class="container alert alert-danger" role="alert" id="f1" hidden="false" align="center">
-         <h3> Please complete the <strong>challenge</strong> and then re-try again ! </h3>
-      </div>
+   </div>
+   <div class="container" id="div_t2">
+      <div style="border-radius: 5px;border:2px solid #6daae0;">
+         <div class="sp1">
+            <table class="table table-striped table-condensed">
+               <thead>
+                  <tr>
+                     <th>Steps</th>
+                     <th>Action </th>
+                     <th>Explanation</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td> # 1</td>
+                     <td> Domain name</td>
+                     <td> Enter a valid domain name</td>
+                     <td>
+                        <span class="label label-success">Completed</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td> # 2 </td>
+                     <td>Verification method</td>
+                     <td>Select a verification option based on email, DNS, html etc</td>
+                     <div id="div_suc2">
+                        <td>
+                           <span class="label label-success">Completed</span>
+                        </td>
+                     </div>
+                  </tr>
+                  <tr>
+                     <td> # 3</td>
+                     <td>Complete verification</td>
+                     <td>Successfully complete the verification process as per selected method</td>
+                     <td>
+                        <span class="label label-warning">Pending</span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+            <div class="progress">
+               <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+                  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%"> 60% Complete (success)
+               </div>
+            </div>
+         </div>
+         <br>
+         <div hidden="false" class="alert alert-success" role="alert" id="succ" align="center">
+            <em class='fa fa-check-circle' style='color:green;font-size: 78px;'></em>
+            <br>
+            <strong>Excellent !</strong> We have successfully validated and an email is sent across with breach data. !
+         </div>
+         <div hidden="false" class="alert alert-info" role="alert" id="info" align="center">
+            <strong>Oops !</strong> Can you please try again after some time.
+         </div>
+         <div hidden="false" class="alert alert-danger" role="alert" id="dang" align="center">
+            <strong>Oops !</strong> Domain validation was not successful. !
+         </div>
+         <div class="container alert alert-danger" role="alert" id="f1" hidden="false" align="center">
+            <h3> Please complete the <strong>challenge</strong> and then re-try again ! </h3>
+         </div>
 
 
-      <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-      <script src="/static/scripts/domain.js"></script>
-      <script src="/static/scripts/common.js"></script>
-      <script>
-         var clipboard = new ClipboardJS('.copy-btn');
-         
-         clipboard.on('success', function(e) {
-             e.trigger.textContent = 'Copied!';
-             setTimeout(function() {
-                 e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
-             }, 10000);
-             e.clearSelection();
-         });
-         
-         clipboard.on('error', function(e) {
-             e.trigger.textContent = 'Failed!';
-             setTimeout(function() {
-                 e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
-             }, 10000);
-         });
-         
-         	
-      </script>
-       <div class="container text-center" style="font-family:Poppins">
-         <footer>
-            <aside>
-               <hr>
-	       <p> 
-	       Need assistance? Email me at deva[@]xposedornot.com or schedule a direct chat with me here.
-	       <br><br></p>
-	       <hr>
-            </aside>
+         <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+         <script src="/static/scripts/domain.js"></script>
+         <script src="/static/scripts/common.js"></script>
+         <script>
+            var clipboard = new ClipboardJS('.copy-btn');
 
-         </footer>
-      </div>
+            clipboard.on('success', function (e) {
+               e.trigger.textContent = 'Copied!';
+               setTimeout(function () {
+                  e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+               }, 10000);
+               e.clearSelection();
+            });
 
-   </body>
+            clipboard.on('error', function (e) {
+               e.trigger.textContent = 'Failed!';
+               setTimeout(function () {
+                  e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+               }, 10000);
+            });
+
+
+         </script>
+         <div class="container text-center" style="font-family:Poppins">
+            <footer>
+               <aside>
+                  <hr>
+                  <p>
+                     Need assistance? Email me at deva[@]xposedornot.com or schedule a direct chat with me here.
+                     <br><br>
+                  </p>
+                  <hr>
+               </aside>
+
+            </footer>
+         </div>
+
+</body>
+
 </html>
