@@ -1,186 +1,210 @@
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <title>XposedOrNot: Privacy Shield </title>
-      <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
-      <link rel="dns-prefetch" href="static.hotjar.com">
-      <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
-      <link rel=stylesheet href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset' type=text/css media=all>
-      <link href="/static/css/style.css" type="text/css" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
-      <script src="/static/scripts/utils.js"></script>
-      <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
-      <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
-      <link rel="stylesheet" href="/static/css/jquery.hortree.min.css">
-      <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-      <meta name="description" content="XposedOrNot : Privacy Shield">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="author" content="Devanand Premkumar">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-      <script src="https://unpkg.com/@popperjs/core@2"></script>
-      <script src="https://unpkg.com/tippy.js@6"></script>
-      <style>
-         body {
+
+<head>
+   <meta charset="utf-8">
+   <title>XposedOrNot: Privacy Shield </title>
+   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+   <link rel="dns-prefetch" href="static.hotjar.com">
+   <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+   <link rel=stylesheet
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset'
+      type=text/css media=all>
+   <link href="/static/css/style.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+   <script src="/static/scripts/utils.js"></script>
+   <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
+   <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
+   <link rel="stylesheet" href="/static/css/jquery.hortree.min.css">
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="description" content="XposedOrNot : Privacy Shield">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="author" content="Devanand Premkumar">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+   <script src="https://unpkg.com/@popperjs/core@2"></script>
+   <script src="https://unpkg.com/tippy.js@6"></script>
+   <style>
+      body {
          background-color: #f5f5f5;
-         }
-         .navbar {
+      }
+
+      .navbar {
          margin-bottom: 20px;
-         }
-         .card {
+      }
+
+      .card {
          box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
-         }
-         h3 {
-         color: #007bff;         
-         }
-      </style>
-      <script>
-         (function (h, o, t, j, a, r) {
-    h.hj = h.hj || function () {
-        (h.hj.q = h.hj.q || []).push(arguments)
-    };
-    h._hjSettings = {
-        hjid: 1613245,
-        hjsv: 6
-    };
-    a = o.getElementsByTagName('head')[0];
-    r = o.createElement('script');
-    r.async = 1;
-    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-    a.appendChild(r);
-})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-  (function () {
-    var script = document.createElement("script");
-    script.onload = () => {
-      window.GrafanaFaroWebSdk.initializeFaro({
-        url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
-        app: {
-          name: 'xonniepub',
-          version: "1.0.0",
-        },
-      });
-    };
-    script.src =
-      "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
-    document.head.appendChild(script);
-  })();
-      </script>
-   </head>
-   <body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
-      <div class="mobileheader-area">
-         <div class="container">
-            <div class="row">
-               <div class="col-lg-12">
-                  <nav class="navbar navbar-expand-lg navbar-light">
-                     <a class="navbar-brand" href="index.html">
-                        <p>XposedorNot</p>
-                     </a>
-                     <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                     <span class="hamburger-box">
-                     <span class="hamburger-inner"></span>
-                     </span>
-                     </button>
-                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto"></ul>
-                        <div class="main-menu-part">
-                           <ul>
-                              <li>
-                                 <a href="password.html">Password</a>
-                              </li>
-                              <li>
-                                 <a href="faq.html">FAQ</a>
-                              </li>
-                              <li>
-                                 <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
-                              </li>
-                           </ul>
-                        </div>
-                     </div>
-                  </nav>
-               </div>
-            </div>
-         </div>
-      </div>
-      <header class="header-area">
-         <div class="container">
-            <div class="row">
-               <div class="col-lg-3 col-md-3">
-                  <div class="header-left">
-                     <a href="https://XposedOrNot.com">
-                        <p>XposedorNot</p>
-                     </a>
-                  </div>
-               </div>
-               <div class="col-lg-9 col-md-9">
-                  <div class="header-right">
-                     <ul>
-                        <li>
-                           <a href="password.html">Password</a>
-                        </li>
-                        <li>
-                           <a href="faq.html">FAQ</a>
-                        </li>
-                        <li>
-                           <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
-                        </li>
-                     </ul>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </header>
+      }
+
+      h3 {
+         color: #007bff;
+      }
+   </style>
+   <script>
+      (function (h, o, t, j, a, r) {
+         h.hj = h.hj || function () {
+            (h.hj.q = h.hj.q || []).push(arguments)
+         };
+         h._hjSettings = {
+            hjid: 1613245,
+            hjsv: 6
+         };
+         a = o.getElementsByTagName('head')[0];
+         r = o.createElement('script');
+         r.async = 1;
+         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+         a.appendChild(r);
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+      (function () {
+         var script = document.createElement("script");
+         script.onload = () => {
+            window.GrafanaFaroWebSdk.initializeFaro({
+               url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
+               app: {
+                  name: 'xonniepub',
+                  version: "1.0.0",
+               },
+            });
+         };
+         script.src =
+            "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
+         document.head.appendChild(script);
+      })();
+   </script>
+</head>
+
+<body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
+   <div class="mobileheader-area">
       <div class="container">
-         <div class="row justify-content-center align-items-center" style="height:80vh">
-            <div class="col-12">
-               <h3 class="text-center mb-5"> Privacy Conscious Users</h3>
-               <p align="center"> To safeguard your email from public searches on XposedOrNot, activate<strong> Privacy Shield</strong> by entering your email address. Privacy Shield guarantees your email remains unseen during general searches on XposedOrNot.
-                  <br><br>
-               <div class="card" align="center">
-                  <div class="card-body">
-                     <form id="emailForm">
-                        <div class="form-group">
-                           <input type="email" class="form-control w-75 form-control" id="email" name="email" placeholder="Please enter your email address...">
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="alertMe">
+         <div class="row">
+            <div class="col-lg-12">
+               <nav class="navbar navbar-expand-lg navbar-light">
+                  <a class="navbar-brand" href="index.html">
+                     <p>XposedorNot</p>
+                  </a>
+                  <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse"
+                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                     aria-label="Toggle navigation">
+                     <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                     </span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="navbar-nav mr-auto"></ul>
+                     <div class="main-menu-part">
+                        <ul>
+                           <li>
+                              <a href="password.html">Password</a>
+                           </li>
+                           <li>
+                              <a href="faq.html">FAQ</a>
+                           </li>
+                           <li>
+                              <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+   </div>
+   <header class="header-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-3 col-md-3">
+               <div class="header-left">
+                  <a href="https://XposedOrNot.com">
+                     <p>XposedorNot</p>
+                  </a>
+               </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+               <div class="header-right">
+                  <ul>
+                     <li>
+                        <a href="password.html">Password</a>
+                     </li>
+                     <li>
+                        <a href="faq.html">FAQ</a>
+                     </li>
+                     <li>
+                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </header>
+   <div class="container">
+      <div class="row justify-content-center align-items-center" style="height:80vh">
+         <div class="col-12">
+            <h3 class="text-center mb-5"> Privacy Conscious Users</h3>
+            <p align="center"> To safeguard your email from public searches on XposedOrNot, activate<strong> Privacy
+                  Shield</strong> by entering your email address. Privacy Shield guarantees your email remains unseen
+               during general searches on XposedOrNot.
+               <br><br>
+            <div class="card" align="center">
+               <div class="card-body">
+                  <form id="emailForm">
+                     <div class="form-group">
+                        <input type="email" class="form-control w-75 form-control" id="email" name="email"
+                           placeholder="Please enter your email address...">
+                     </div>
+                     <button type="submit" class="btn btn-primary" id="alertMe">
                         Activate Privacy Shield &nbsp;<span class="glyphicon glyphicon-ok"></span>
-                        <span id="submitSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                        </button>
-                     </form>
-                     <div id="rateLimitMessage" class="alert alert-warning mt-3" style="display: none;">
-                        <i class="fas fa-exclamation-triangle"></i> Too many requests. Please slow down and try again later.
-                     </div>
-                     <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
-                        <i class="fas fa-check-circle"></i>
-                     </div>
-                     <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
-                        <i class="fas fa-times-circle"></i> There was an error processing your request. Please try again later.
-                     </div>
+                        <span id="submitSpinner" class="spinner-border spinner-border-sm d-none" role="status"
+                           aria-hidden="true"></span>
+                     </button>
+                  </form>
+                  <div id="rateLimitMessage" class="alert alert-warning mt-3" style="display: none;">
+                     <i class="fas fa-exclamation-triangle"></i> Too many requests. Please slow down and try again
+                     later.
+                  </div>
+                  <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+                     <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
+                     <i class="fas fa-times-circle"></i> There was an error processing your request. Please try again
+                     later.
                   </div>
                </div>
             </div>
          </div>
       </div>
-      <div class="container text-center" style="font-family:Poppins">
-         <footer>
-            <aside>
-               <hr>
-               <p>Join us in shaping this fully open source site! Contributions welcome ❤️ —check out our <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub </a>. </p>              
-      </div>
-      <p>
-      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
+   </div>
+   <div class="container text-center" style="font-family:Poppins">
+      <footer>
+         <aside>
+            <hr>
+            <p>Join us in shaping this fully open source site! Contributions welcome ❤️ —check out our <a
+                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub </a>. </p>
+   </div>
+   <p>
+   <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
       <input type="checkbox" class="custom-control-input" id="darkSwitch">
       <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
-      </div>
-      </p>
-      </aside>
-      </footer>
-      </div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1" rel="preconnect"></script>
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
-      <script src="/static/scripts/common.js"></script> 
-      <script src="/static/scripts/shield.js"></script>
-     
-   </body>
+   </div>
+   </p>
+   </aside>
+   </footer>
+   </div>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1" rel="preconnect"></script>
+   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
+   <script src="/static/scripts/common.js"></script>
+   <script src="/static/scripts/shield.js"></script>
+
+</body>
+
 </html>
