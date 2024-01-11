@@ -126,7 +126,33 @@
             max-width: 1000px;
             margin: 0 auto;
             padding-top: 40px;
-            /* Increased top padding */
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            flex-basis: 20%;
+            margin-right: 10px;
+        }
+
+        .form-group .input-group {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .form-group .input-group input {
+            flex-grow: 1;
+            margin-right: 8px;
+        }
+
+        .form-group .form-text {
+            margin-top: 5px;
+            margin-left: calc(20% + 10px);
         }
     </style>
     <script>
@@ -246,20 +272,34 @@
         <div class="config-section active-step" id="step1">
             <h2 class="section-heading">Step 1: Enter Channel Details</h2>
             <form>
+                <!-- Webhook URL -->
                 <div class="form-group">
                     <label for="webhookUrl">Webhook URL</label>
-                    <input type="text" class="form-control" id="webhookUrl" placeholder="Enter Webhook URL">
-                    <small class="form-text text-muted">Paste the webhook URL associated with your Teams
-                        channel.</small>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="webhookUrl" placeholder="Enter Webhook URL">
+                        <span id="webhookUrl-status"></span>
+                    </div>
                 </div>
+
+                <!-- Token -->
                 <div class="form-group">
                     <label for="token">Token</label>
-                    <input type="text" class="form-control" id="token" placeholder="Enter Token" readonly>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="token" placeholder="Enter Token" readonly>
+                        <span id="token-status"></span>
+                    </div>
                 </div>
+
+                <!-- Domain -->
                 <div class="form-group">
                     <label for="domain">Domain</label>
-                    <input type="text" class="form-control" id="domain" placeholder="Enter Domain" readonly>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="domain" placeholder="Enter Domain" readonly>
+                        <span id="domain-status"></span>
+                    </div>
                 </div>
+
+                <!-- Buttons -->
                 <div class="form-group">
                     <button type="button" class="btn btn-primary" id="initBtn"
                         onclick="initiateConfiguration()">Initiate Configuration</button>
@@ -267,6 +307,7 @@
                         Config</button>
                 </div>
             </form>
+
         </div>
 
         <div class="config-section" id="step2">
@@ -310,35 +351,69 @@
         </ul>
     </div>
 
+
     <script>
+        let globalWebhookUrl, token, domain, email;
 
-        $.urlParam = function (name) {
-            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-            return results ? results[1] : null;
-        };
+        document.addEventListener('DOMContentLoaded', function () {
+            initialize();
+        }, false);
 
+        function initialize() {
+            const queryParams = new URLSearchParams(window.location.search);
+            email = queryParams.get('email');
+            domain = queryParams.get('domain');
+            token = queryParams.get('token');
 
-        let token, domain;
-        try {
-            token = decodeURIComponent($.urlParam('token'));
-            email = decodeURIComponent($.urlParam('email'));
-            domain = decodeURIComponent($.urlParam('domain'));
-            document.getElementById('token').value = token;
-            document.getElementById('domain').value = domain;
-            document.getElementById('token').readOnly = true;
-            document.getElementById('domain').readOnly = true;
-        } catch (error) {
-            window.location.replace("https://xposedornot.com");
+            if (!email || !domain || !token) {
+                updateApiResponse('Missing required query parameters: email, domain, token', 'danger');
+                return;
+            }
+
+            fetchChannelConfig();
+            updateHelpfulSteps('step1');
         }
 
-        const apiUrl = 'https://api.xposedornot.com/v1/xon_alerts_teams';
-        let globalWebhookUrl = '';
+        function fetchChannelConfig() {
+            const apiUrl = `https://xon-api-test.xposedornot.com/v1/teams-channel-config?email=${encodeURIComponent(email)}&domain=${encodeURIComponent(domain)}&token=${encodeURIComponent(token)}`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.data) {
+                        document.getElementById('webhookUrl').value = data.data.webhook;
+                        document.getElementById('domain').value = data.data.domain;
+                        globalWebhookUrl = data.data.webhook;
+                        displayConfigFetched();
+                    } else {
+                        throw new Error('Invalid data format');
+                    }
+                })
+                .catch(error => {
+                    updateApiResponse('Teams Channel is not configured for this domain', 'info');
+                });
+        }
+
+        function displayConfigFetched() {
+            document.getElementById('domain-status').innerHTML = '🟢';
+            document.getElementById('webhookUrl-status').innerHTML = '🟢';
+            updateApiResponse('Teams Channel is configured for this domain', 'success');
+        }
+
+        function displayNoConfigFound() {
+            document.getElementById('webhookUrl-status').innerHTML = '❓';
+            document.getElementById('domain-status').innerHTML = '❓';
+        }
+
+        function updateApiResponse(message, type) {
+            let responseDiv = document.getElementById('apiResponse');
+            responseDiv.style.display = 'block';
+            responseDiv.className = 'alert alert-' + type;
+            responseDiv.textContent = message;
+        }
 
         function initiateConfiguration() {
-            let webhookUrl = document.getElementById('webhookUrl').value;
-            globalWebhookUrl = webhookUrl;
-
-            if (!webhookUrl) {
+            globalWebhookUrl = document.getElementById('webhookUrl').value;
+            if (!globalWebhookUrl) {
                 updateApiResponse('Webhook URL is required.', 'danger');
                 return;
             }
@@ -346,7 +421,7 @@
             let data = {
                 token: token,
                 domain: domain,
-                webhook: webhookUrl,
+                webhook: globalWebhookUrl,
                 action: "init"
             };
 
@@ -359,7 +434,6 @@
 
         function verifyConfiguration() {
             let verifyToken = document.getElementById('verifyToken').value;
-
             if (!verifyToken) {
                 updateApiResponse('Verification token is required.', 'danger');
                 return;
@@ -375,7 +449,6 @@
 
             sendApiRequest(data, 'verifyBtn', (responseData) => {
                 if (responseData.status === 'success') {
-
                     document.getElementById('verifyBtn').disabled = true;
                     document.getElementById('backToDashboardBtn').classList.remove('btn-secondary');
                     document.getElementById('backToDashboardBtn').classList.add('btn-primary');
@@ -385,12 +458,11 @@
 
         function sendApiRequest(data, btnId, onSuccess) {
             let btn = document.getElementById(btnId);
-            if (btn) {
-                btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
-                btn.disabled = true;
-            }
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+            btn.disabled = true;
 
-            fetch(apiUrl, {
+            const setupUrl = `https://xon-api-test.xposedornot.com/v1/teams-channel-setup?email=${encodeURIComponent(email)}&domain=${encodeURIComponent(domain)}&token=${encodeURIComponent(token)}`;
+            fetch(setupUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -399,10 +471,8 @@
             })
                 .then(response => response.json())
                 .then(responseData => {
-                    if (btn) {
-                        btn.textContent = btnId === 'initBtn' ? 'Initiate Configuration' : 'Verify Configuration';
-                        btn.disabled = false;
-                    }
+                    btn.textContent = btnId === 'initBtn' ? 'Initiate Configuration' : 'Verify Configuration';
+                    btn.disabled = false;
 
                     if (responseData.status === 'success' || responseData.status === 'initiated') {
                         if (responseData.message) {
@@ -412,30 +482,14 @@
                             onSuccess(responseData);
                         }
                     } else {
-                        updateApiResponse(responseData.message || 'An error occurred', 'danger'); // Default message for undefined error
+                        updateApiResponse(responseData.message || 'An error occurred', 'danger');
                     }
                 })
                 .catch(error => {
-                    if (btn) {
-                        btn.textContent = btnId === 'initBtn' ? 'Initiate Configuration' : 'Verify Configuration';
-                        btn.disabled = false;
-                    }
-
-                    console.error('Error:', error);
+                    btn.textContent = btnId === 'initBtn' ? 'Initiate Configuration' : 'Verify Configuration';
+                    btn.disabled = false;
                     updateApiResponse('An error occurred', 'danger');
                 });
-        }
-
-        function updateApiResponse(message, type) {
-            let responseDiv = document.getElementById('apiResponse');
-            responseDiv.style.display = 'block';
-            responseDiv.className = 'alert alert-' + type;
-            responseDiv.innerHTML = message;
-            if (type === 'success') {
-                responseDiv.innerHTML = '<span class="alert-icon"><i class="fas fa-check-circle"></i></span> ' + message;
-            } else if (type === 'danger') {
-                responseDiv.innerHTML = '<span class="alert-icon"><i class="fas fa-times-circle"></i></span> ' + message;
-            }
         }
 
         function switchStep(currentStep, nextStep) {
@@ -452,7 +506,6 @@
 
         function cancelConfiguration() {
             const dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
-
             window.location.href = dashboardUrl;
         }
 
@@ -460,27 +513,22 @@
             let stepsContent = document.getElementById('helpful-steps-content');
             if (step === 'step1') {
                 stepsContent.innerHTML = `
-                <li><strong>Creating a Teams Channel:</strong> Navigate to your Teams application, choose the team, and add a new channel.</li>
-                <li><strong>Obtaining a Webhook URL:</strong> In your Teams channel, go to Connectors and add an Incoming Webhook. Copy the provided URL.</li>
-            `;
+            <li><strong>Creating a Teams Channel:</strong> Navigate to your Teams application, choose the team, and add a new channel.</li>
+            <li><strong>Obtaining a Webhook URL:</strong> In your Teams channel, go to Connectors and add an Incoming Webhook. Copy the provided URL.</li>
+        `;
             } else if (step === 'step2') {
                 stepsContent.innerHTML = `
-                <li><strong>Verification Process:</strong> Check your Teams channel for the verification token sent by the system.</li>
-                <li><strong>Complete Configuration:</strong> Enter the received token here and click 'Verify Configuration' to complete the setup.</li>
-            `;
+            <li><strong>Verification Process:</strong> Check your Teams channel for the verification token sent by the system.</li>
+            <li><strong>Complete Configuration:</strong> Enter the received token here and click 'Verify Configuration' to complete the setup.</li>
+        `;
             }
         }
 
-        updateHelpfulSteps('step1');
-
         function goBackToDashboard() {
-            // Logic to go back to the dashboard
-            // Example: window.location.href = 'path-to-dashboard';
+            const dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+            window.location.href = dashboardUrl;
         }
-
     </script>
-
-
 </body>
 
 </html>
