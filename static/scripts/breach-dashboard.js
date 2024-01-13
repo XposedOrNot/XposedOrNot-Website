@@ -93,8 +93,8 @@ $.ajax(emailVerificationUrl)
 
 
 function g1(years, breachCounts) {
-	const allZero = breachCounts.every(count => count === 0);
-	 if (allZero) {
+    const allZero = breachCounts.every(count => count === 0);
+    if (allZero) {
         // Hide the graph
         document.getElementById('bc').style.display = 'none';
 
@@ -104,67 +104,67 @@ function g1(years, breachCounts) {
         document.getElementById('bc').parentNode.insertBefore(banner, document.getElementById('bc'));
     } else {
 
-    var ctx = document.getElementById('bc').getContext('2d');
-    var config = {
-        type: 'line',
-        data: {
-            labels: years,
-            datasets: [{
-                label: 'Emails Count',
-                fill: false,
-                backgroundColor: window.chartColors.red,
-                borderColor: window.chartColors.red,
-                data: breachCounts,
-            }]
-        },
-        options: {
-            responsive: true,
-            legend: {
-                position: 'bottom',
-            },
-            title: {
-                display: false,
-                text: 'Your Overall Breaches So Far'
-            },
-            tooltips: {
-                mode: 'index',
-                intersect: false,
-            },
-            hover: {
-                mode: 'nearest',
-                intersect: true
-            },
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        precision: 0
-                    },
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        precision: 0
-                    },
-                    gridLines: {
-                        color: "#7CB9E8"
-                    },
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Count of Emails Exposed'
-                    }
+        var ctx = document.getElementById('bc').getContext('2d');
+        var config = {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Emails Count',
+                    fill: false,
+                    backgroundColor: window.chartColors.red,
+                    borderColor: window.chartColors.red,
+                    data: breachCounts,
                 }]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                },
+                title: {
+                    display: false,
+                    text: 'Your Overall Breaches So Far'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            precision: 0
+                        },
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            precision: 0
+                        },
+                        gridLines: {
+                            color: "#7CB9E8"
+                        },
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Count of Emails Exposed'
+                        }
+                    }]
+                }
             }
-        }
-    };
+        };
 
-    new Chart(ctx, config);
-}
+        new Chart(ctx, config);
+    }
 
 }
 
@@ -195,7 +195,7 @@ function buildTopBreachesTable(breachNames, breachCounts) {
 
         for (let i = 0; i < breaches.length; i++) {
             let rowColor = i % 2 === 0 ? '#f8f8f8' : '#ffffff';
-            let breachLink = `https://xon-beta.pages.dev/xposed#${breaches[i].name}`;
+            let breachLink = `https://xposedornot.com/xposed#${breaches[i].name}`;
             tableHtml += `<tr style="background-color: ${rowColor}; border-bottom: 1px solid #ddd;"><td style="padding: 10px;"><a href="${breachLink}" target="_blank">${breaches[i].name}</a></td><td style="padding: 10px;">${breaches[i].count}</td></tr>`;
         }
 
@@ -215,7 +215,7 @@ function addBreachesToTable(breaches) {
 
         const cellName = document.createElement('td');
         const link = document.createElement('a');
-        link.href = `https://xon-beta.pages.dev/xposed#${breach}`;
+        link.href = `https://xposedornot.com/xposed#${breach}`;
         link.target = '_blank';
         link.textContent = breach;
         cellName.appendChild(link);
@@ -334,4 +334,3 @@ googleLink.addEventListener("click", function (event) {
     event.preventDefault();
     window.open("https://xposedornot.com/domain.html", "_blank");
 });
-
