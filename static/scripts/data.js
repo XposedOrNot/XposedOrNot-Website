@@ -1,6 +1,6 @@
 $.LoadingOverlaySetup({
     background: "rgba(0, 0, 0, 0.5)",
-    image: "static/images/shield-alt.svg",
+    image: "/static/images/shield-alt.svg",
     imageAnimation: "1s fadein",
     imageColor: "#6daae0"
 });
@@ -1339,6 +1339,20 @@ function drawChart_categories(xposed_data) {
 }
 
 $(document).ready(function () {
+
+   $(window).scroll(function () {
+        if ($(this).scrollTop() > 50) {
+            $('#back-to-top').fadeIn();
+        } else {
+            $('#back-to-top').fadeOut();
+        }
+    });
+	$('#back-to-top').click(function () {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 400);
+        return false;
+    });
 
     $('#treemap').show();
     $('#circlepack').hide();
