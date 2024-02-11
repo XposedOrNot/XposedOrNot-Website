@@ -113,8 +113,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    //    const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email='';
-    const apiUrlBase = 'https://xon-api-test-wdkjdzw5ca-uw.a.run.app/v1/breach-analytics?email=';
+        const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email=';
 
     $("#searchMe").click(function (event) {
         event.preventDefault();
