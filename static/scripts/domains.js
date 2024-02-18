@@ -81,6 +81,19 @@ $(document).ready(function () {
                         $("#alertMe").text("Get Me Breach Data");
                     })
                     .fail(function (nc1) {
+                        if (nc1.status === 404) {
+                            $("#alertMe").text("No breach data found for this domain.");
+                            $("#dang").show();
+                            $("#succ").hide();
+                        } else {
+                            $("#alertMe").text("An error occurred. Please try again later.");
+                            $("#dang").show();
+                            $("#succ").hide();
+                        }
+                        $('#t').html('-');
+                        $('#b').html('-');
+                        $('#p').html('-');
+                        $("#getBreach").hide();
                         return false
                     })
                 e.preventDefault();
