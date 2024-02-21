@@ -113,7 +113,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-        const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email=';
+    const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email=';
 
     $("#searchMe").click(function (event) {
         event.preventDefault();
@@ -354,3 +354,86 @@ intervalId = setInterval(() => {
         clearInterval(intervalId);
     }
 }, 2000);
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let circles = [];
+const maxCircles = 20;
+const maxDistance = 300;
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function Circle() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.velocity = {
+        x: (Math.random() - 0.5) * 2,
+        y: (Math.random() - 0.5) * 2
+    };
+    this.radius = Math.random() * 5 + 2;
+}
+
+Circle.prototype.draw = function () {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = 'rgba(0, 76, 153, 0.5)';
+    ctx.fill();
+};
+
+Circle.prototype.update = function () {
+    if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+        this.velocity.x = -this.velocity.x;
+    }
+    if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+        this.velocity.y = -this.velocity.y;
+    }
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+    this.draw();
+};
+
+for (let i = 0; i < maxCircles; i++) {
+    circles.push(new Circle());
+}
+
+function connectCircles() {
+    for (let i = 0; i < circles.length; i++) {
+        for (let j = i + 1; j < circles.length; j++) {
+            const dx = circles[i].x - circles[j].x;
+            const dy = circles[i].y - circles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < maxDistance) {
+                ctx.beginPath();
+                ctx.moveTo(circles[i].x, circles[i].y);
+                ctx.lineTo(circles[j].x, circles[j].y);
+                ctx.strokeStyle = 'rgba(0, 76, 153, 0.3)';
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    circles.forEach(circle => {
+        circle.update();
+    });
+
+    connectCircles();
+}
+
+animate();
+function resizeCanvas() {
+    var container = document.getElementById('banner');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
