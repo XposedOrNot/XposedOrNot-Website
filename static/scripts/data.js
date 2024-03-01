@@ -341,6 +341,7 @@ var j = $.ajax(url)
         $('#risk').html(riskScoreHtml);
 
         if (xposedData.toString().length > 0) {
+            by24 = jsonResponse.BreachMetrics.yearwise_details[0].y2024;
             by23 = jsonResponse.BreachMetrics.yearwise_details[0].y2023;
             by22 = jsonResponse.BreachMetrics.yearwise_details[0].y2022;
             by21 = jsonResponse.BreachMetrics.yearwise_details[0].y2021;
