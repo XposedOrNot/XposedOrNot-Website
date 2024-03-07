@@ -178,10 +178,11 @@
     <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
     <script>
         function formatYesNo(data, reverse = false) {
-            if ((data === "Yes" && !reverse) || (data === "No" && reverse)) {
-                return '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
+            const displayData = data ? "Yes" : "No";
+            if ((!reverse && data) || (reverse && !data)) {
+                return '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' + displayData + '</span>';
             } else {
-                return '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
+                return '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' + displayData + '</span>';
             }
         }
 
@@ -205,58 +206,58 @@
             $('#example').DataTable({
                 ajax: {
                     url: 'https://api.xposedornot.com/v1/breaches',
-                    dataSrc: 'Exposed Breaches',
+                    dataSrc: 'exposedBreaches',
                     error: function (xhr, error, thrown) {
                         console.error("Error occurred: ", xhr, error, thrown);
                     }
                 },
                 columns: [
-                    { data: 'Breach ID' },
+                    { data: 'breachID' },
                     {
-                        data: 'Breached Date',
+                        data: 'breachedDate',
                         render: function (data) {
                             var date = new Date(data);
                             return date.toLocaleString('default', { month: 'long', year: 'numeric' });
                         }
                     },
-                    { data: 'Domain' },
+                    { data: 'domain' },
                     {
-                        data: 'Exposed Data',
+                        data: 'exposedData',
                         render: function (data) {
-                            return data.split(';').join(', ');
+                            return data.join(', ');
                         }
                     },
                     {
-                        data: 'Exposed Records',
+                        data: 'exposedRecords',
                         render: $.fn.dataTable.render.number(',', '.')
                     },
                     {
-                        data: 'Exposure Description',
+                        data: 'exposureDescription',
                         render: function (data) {
                             return formatDescription(data);
                         }
                     },
-                    { data: 'Industry' },
+                    { data: 'industry' },
                     {
-                        data: 'Password Risk',
+                        data: 'passwordRisk',
                         render: function (data) {
                             return formatPasswordRisk(data);
                         }
                     },
                     {
-                        data: 'Searchable',
+                        data: 'searchable',
                         render: function (data) {
                             return formatYesNo(data);
                         }
                     },
                     {
-                        data: 'Sensitive',
+                        data: 'sensitive',
                         render: function (data) {
                             return formatYesNo(data, true);
                         }
                     },
                     {
-                        data: 'Verified',
+                        data: 'verified',
                         render: function (data) {
                             return formatYesNo(data);
                         }
@@ -289,6 +290,7 @@
             });
         });
     </script>
+
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
     <script src="/static/scripts/common.js"></script>
 </body>
