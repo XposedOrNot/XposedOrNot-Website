@@ -13,7 +13,6 @@
     a.appendChild(r);
 })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 
-
 (function() {
     var script = document.createElement("script");
     script.onload = () => {
@@ -31,4 +30,4 @@
 
     document.head.appendChild(script);
 })();
-})();
+
