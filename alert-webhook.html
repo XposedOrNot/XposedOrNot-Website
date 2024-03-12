@@ -1,6 +1,6 @@
 <head>
     <meta charset="utf-8">
-    <title>XposedOrNot: Slack Channel Configuration</title>
+    <title>XposedOrNot: Webhook Configuration</title>
     <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="static.hotjar.com">
     <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
@@ -19,7 +19,7 @@
     <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
     <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
     <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-    <meta name="description" content="XposedOrNot: Get alerts in your own Slack channel">
+    <meta name="description" content="XposedOrNot: Get alerts using custom webhook">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="author" content="Devanand Premkumar">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -145,7 +145,7 @@
             flex-shrink: 0;
         }
     </style>
-<script src="/static/scripts/other-libraries.js" defer></script>
+    <script src="/static/scripts/other-libraries.js" defer></script>
 </head>
 
 <body>
@@ -230,7 +230,7 @@
 
     <div class="main-container">
         <div class="config-section active-step" id="step1">
-            <h2 class="section-heading">Step 1: Enter Slack Channel Details</h2>
+            <h2 class="section-heading">Step 1: Enter Custom Webhook Details</h2>
             <form>
                 <div class="form-group">
                     <label for="webhookUrl">Webhook URL</label>
@@ -289,16 +289,14 @@
     <div class="helper-column">
         <h4>Helpful Steps</h4>
         <ul id="helpful-steps-content">
-            <li><strong>Creating a Slack Channel:</strong> Navigate to your Slack workspace, choose or create the team,
-                and add a new channel.</li>
-            <li><strong>Obtaining a Webhook URL:</strong> In your Slack channel, go to the settings and add an Incoming
-                Webhook. Copy the provided URL.</li>
+            <li><strong>Creating a Webhook:</strong> Your webhook and related information</li>
+            <li><strong>Obtaining a Webhook URL:</strong> Your webhook location.</li>
         </ul>
     </div>
 
     <script>
         // Global variables
-        let globalWebhookUrl, token, domain, email;
+        let globalWebhookUrl, token, domain, email, secret;
 
         // Event listener for DOMContentLoaded
         document.addEventListener('DOMContentLoaded', function () {
@@ -316,51 +314,34 @@
                 return;
             }
 
-            fetchChannelConfig();
+            fetchWebhookConfig();
             updateHelpfulSteps('step1');
         }
 
-        function fetchChannelConfig() {
-            const apiUrl = `https://api.xposedornot.com/v1/slack-channel-config?email=${encodeURIComponent(email)}&domain=${encodeURIComponent(domain)}&token=${encodeURIComponent(token)}`;
+        function fetchWebhookConfig() {
+            const apiUrl = `https://api.xposedornot.com/v1/webhook-config?email=${encodeURIComponent(email)}&domain=${encodeURIComponent(domain)}&token=${encodeURIComponent(token)}`;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.data) {
-                        document.getElementById('webhookUrl').value = data.data.webhook;
+                        document.getElementById('webhookUrl').value = data.data.webhook_url;
                         document.getElementById('domain').value = data.data.domain;
-                        globalWebhookUrl = data.data.webhook;
+                        globalWebhookUrl = data.data.webhook_url;
                         displayConfigFetched();
                     } else {
                         throw new Error('Invalid data format');
                     }
                 })
                 .catch(error => {
-                    updateApiResponse('Slack Channel is not configured for this domain', 'info');
+                    updateApiResponse('Webhook configuration not found for this domain', 'info');
                 });
-        }
-
-        function displayConfigFetched() {
-            document.getElementById('domain-status').innerHTML = '🟢';
-            document.getElementById('webhookUrl-status').innerHTML = '🟢';
-            updateApiResponse('Slack Channel is configured for this domain', 'success');
-        }
-
-        function displayNoConfigFound() {
-            document.getElementById('webhookUrl-status').innerHTML = '❓';
-            document.getElementById('domain-status').innerHTML = '❓';
-        }
-
-        function updateApiResponse(message, type) {
-            let responseDiv = document.getElementById('apiResponse');
-            responseDiv.style.display = 'block';
-            responseDiv.className = 'alert alert-' + type;
-            responseDiv.textContent = message;
         }
 
         function initiateConfiguration() {
             globalWebhookUrl = document.getElementById('webhookUrl').value;
-            if (!globalWebhookUrl) {
-                updateApiResponse('Webhook URL is required.', 'danger');
+            secret = prompt("Please enter your webhook secret", "");
+            if (!globalWebhookUrl || !secret) {
+                updateApiResponse('Webhook URL and secret are required.', 'danger');
                 return;
             }
 
@@ -368,12 +349,14 @@
                 token: token,
                 domain: domain,
                 webhook: globalWebhookUrl,
+                secret: secret,
                 action: "init"
             };
 
             sendApiRequest(data, 'initBtn', (responseData) => {
                 if (responseData.status === 'initiated') {
                     switchStep('step1', 'step2');
+                    document.getElementById('verifyToken').value = responseData.verify_token;
                 }
             });
         }
@@ -389,6 +372,7 @@
                 token: token,
                 domain: domain,
                 webhook: globalWebhookUrl,
+                secret: secret,
                 verify_token: verifyToken,
                 action: "verify"
             };
@@ -398,6 +382,7 @@
                     document.getElementById('verifyBtn').disabled = true;
                     document.getElementById('backToDashboardBtn').classList.remove('btn-secondary');
                     document.getElementById('backToDashboardBtn').classList.add('btn-primary');
+                    updateApiResponse(responseData.message, 'success');
                 }
             });
         }
@@ -407,7 +392,7 @@
             btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
             btn.disabled = true;
 
-            const setupUrl = `https://xon-api-test.xposedornot.com/v1/slack-channel-setup?email=${encodeURIComponent(email)}&domain=${encodeURIComponent(domain)}&token=${encodeURIComponent(token)}`;
+            const setupUrl = `https://xon-api-test.xposedornot.com/v1/webhook-setup`;
             fetch(setupUrl, {
                 method: 'POST',
                 headers: {
@@ -450,31 +435,24 @@
             }
         }
 
+        function updateApiResponse(message, type) {
+            let responseDiv = document.getElementById('apiResponse');
+            responseDiv.style.display = 'block';
+            responseDiv.className = 'alert alert-' + type;
+            responseDiv.textContent = message;
+        }
+
+        function updateHelpfulSteps(step) {
+            let stepsContent = document.getElementById('helpful-steps-content');
+
+        }
+
         function cancelConfiguration() {
             const dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
             window.location.href = dashboardUrl;
         }
 
-        function updateHelpfulSteps(step) {
-            let stepsContent = document.getElementById('helpful-steps-content');
-            if (step === 'step1') {
-                stepsContent.innerHTML = `
-            <li><strong>Creating a Slack Channel:</strong> Navigate to your Teams application, choose the team, and add a new channel.</li>
-            <li><strong>Obtaining a Webhook URL:</strong> In your Teams channel, go to Connectors and add an Incoming Webhook. Copy the provided URL.</li>
-        `;
-            } else if (step === 'step2') {
-                stepsContent.innerHTML = `
-            <li><strong>Verification Process:</strong> Check your Teams channel for the verification token sent by the system.</li>
-            <li><strong>Complete Configuration:</strong> Enter the received token here and click 'Verify Configuration' to complete the setup.</li>
-        `;
-            }
-        }
 
-        function goBackToDashboard() {
-            const dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
-            window.location.href = dashboardUrl;
-
-        }
     </script>
 
 </body>
