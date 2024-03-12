@@ -115,14 +115,15 @@
         </div>
     </nav>
     <br>
-    <h1 style="text-align: center; color: white;">Exposed Breaches Visualization (Updated January-2024)</h1>
+    <h1 style="text-align: center; color: white;">Exposed Breaches Visualization (Updated March-2024)</h1>
 
     <div id="chart"></div>
+
     <script>
         fetch('https://api.xposedornot.com/v1/breaches')
             .then(response => response.json())
             .then(apiData => {
-                const data = processData(apiData['Exposed Breaches']);
+                const data = processData(apiData['exposedBreaches']);
                 createGraph(data);
             })
             .catch(error => console.error('Error fetching data:', error));
@@ -130,11 +131,11 @@
         function processData(breaches) {
             return breaches.map(breach => {
                 return {
-                    year: new Date(breach['Breached Date']).getFullYear(),
-                    name: breach['Breach ID'],
-                    logo: breach['Logo'],
-                    description: breach['Exposure Description'],
-                    count: breach['Exposed Records']
+                    year: new Date(breach['breachedDate']).getFullYear(),
+                    name: breach['breachID'],
+                    logo: breach['logo'],
+                    description: breach['exposureDescription'],
+                    count: breach['exposedRecords']
                 };
             });
         }
@@ -234,6 +235,7 @@
             }
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/scripts/common.js"></script>
 </body>
 
