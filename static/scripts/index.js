@@ -228,7 +228,7 @@ function processSearchResponse(response, email) {
             $("#detailedReport").hide();
             $("#warn").hide();
             $("#succ").show();
-            $("#succ").html("🎉 Yay good news! <br><br>The searched email was not been found in any public data breaches.")
+            $("#succ").html("🎉 Yay good news! <br><br>The searched email has not been found in any public data breaches.")
         }
 
         const pasteCount = jsonResponse.PastesSummary.cnt;
