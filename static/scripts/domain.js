@@ -234,8 +234,7 @@ $("#searchMe_d").click(function (func_alert) {
     }
     $("#searchMe_d_i1").removeClass("glyphicon glyphicon-ok")
     $("#searchMe_d_i1").addClass("fa fa-spinner fa-spin")
-    edutu4 = 'htps://xon-api-test.xposedornot.com/v1/domain_verification?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val()
-    //edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val()
+    edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val()
     var myjson4;
     var j4 = $.ajax(edutu4)
         .done(function (n4) {
