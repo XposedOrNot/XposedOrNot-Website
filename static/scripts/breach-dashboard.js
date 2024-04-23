@@ -35,6 +35,19 @@ var myjson;
 $.ajax(emailVerificationUrl)
     .done(function (n) {
         myjson = n;
+
+        if (myjson) {
+            var domains = new Set();
+            var exposedEmails = new Set();
+            myjson.Breaches_Details.forEach(function (detail) {
+                domains.add(detail.domain);
+                exposedEmails.add(detail.email);
+            });
+
+            $('#exposed-domains').text(domains.size.toLocaleString());
+            $('#exposed-emails').text(exposedEmails.size.toLocaleString());
+        }
+
         const breachMetrics = myjson.Yearly_Metrics;
         if (breachMetrics) {
             const years = Object.keys(breachMetrics);
@@ -95,10 +108,8 @@ $.ajax(emailVerificationUrl)
 function g1(years, breachCounts) {
     const allZero = breachCounts.every(count => count === 0);
     if (allZero) {
-        // Hide the graph
         document.getElementById('bc').style.display = 'none';
 
-        // Create and display the banner
         const banner = document.createElement('div');
         banner.innerHTML = '<div align="center" class="alert alert-success" style="font-size: 20px; color: green;">Yay! No breaches in the recorded years.</div>';
         document.getElementById('bc').parentNode.insertBefore(banner, document.getElementById('bc'));
@@ -170,19 +181,15 @@ function g1(years, breachCounts) {
 
 
 function buildTopBreachesTable(breachNames, breachCounts) {
-    // Check if all breach counts are zero
     const allZero = breachCounts.every(count => count === 0);
 
     if (allZero) {
-        // Hide the existing table or container
         document.getElementById('chart_div').style.display = 'none';
 
-        // Create and display the banner
         const banner = document.createElement('div');
         banner.innerHTML = '<div align="center" class="alert alert-success" style="font-size: 20px; color: green;">Great news! No significant breaches found.</div>';
         document.getElementById('chart_div').parentNode.insertBefore(banner, document.getElementById('chart_div'));
     } else {
-        // Proceed with the table creation
         const breaches = breachNames.map((name, index) => ({
             name,
             count: breachCounts[index]
@@ -274,6 +281,8 @@ function addBreachesDetailsToTable(breachesDetails) {
     const tableBody = table.querySelector('tbody');
     tableBody.innerHTML = '';
 
+    let totalRecords = 0;
+
     for (let breachDetail of breachesDetails) {
         const row = document.createElement('tr');
 
@@ -289,8 +298,12 @@ function addBreachesDetailsToTable(breachesDetails) {
         cellExposedData.textContent = breachDetail.email;
         row.appendChild(cellExposedData);
 
+        totalRecords += 1;
+
         tableBody.appendChild(row);
     }
+
+    $('#exposed-records').text(totalRecords.toLocaleString());
 
     $('#xposed_emails_details').DataTable({
         dom: 'Bfrtip',
