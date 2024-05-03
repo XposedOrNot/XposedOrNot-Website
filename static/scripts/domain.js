@@ -103,6 +103,11 @@ $("#strat").change(function () {
         $('#div_dns').hide()
         $('#div_email').hide()
         $('#edhu_html_filename').val($('#hid1').val() + '.html')
+        var domainName = $('#eventName').val();
+        $('#edhu_html_filename').val($('#hid1').val() + '.html');
+        var filename = $('#edhu_html_filename').val();
+        var url = 'https://' + domainName + '/' + filename;
+        $('#html_text').html("Verification file should be reachable at: " + url + "<br>");
         $('#edhu_html_filecontent').val('xon_verification=' + $('#hid1').val())
     }
 
@@ -132,6 +137,11 @@ $(document).ready(function () {
                 },
             },
             onSuccess: function (e, data) {
+                var domainName = $('#eventName').val();
+
+                $('#label_srategy').text(function () {
+                    return $(this).text() + ' for domain - ' + domainName;
+                });
                 $("#alertMe_i1").removeClass("glyphicon glyphicon-ok")
                 $("#alertMe_i1").addClass("fa fa-spinner fa-spin")
                 $("#status").show();
@@ -170,8 +180,11 @@ $(document).ready(function () {
 $("#searchMe_e").click(function (func_alert6) {
     func_alert6.preventDefault();
     var str = document.getElementById("txt_email_e").value.toLowerCase();
-    if ($('#sel1').has('option').length <= 0) {
-        return false
+    if ($('#sel1 option:selected').text() === "No email found. Try DNS/HTML Verifications") {
+        $('#dang').html('⛔ Domain verification through the email channel could not be completed as there are no public records for this domain. Please use alternate methods of verification: DNS or HTML.');
+        $("#dang").show();
+        $('#strat').focus();
+        return false;
     }
     if ((str == '') || (val_e(str) == false)) {
         $("#txt_email_e").focus();
