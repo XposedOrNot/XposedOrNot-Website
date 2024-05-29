@@ -38,9 +38,6 @@ $(document).ready(function () {
                         $('#email-count').text(totalEmails >= 1000 ? "1000+" : totalEmails);
                         $('#last-exposure').text(lastExposure);
 
-                        console.log("Last exposure set to: " + lastExposure); // Debugging log
-
-                        // Update the gauge chart
                         updateGaugeChart(totalBreaches);
 
                         $('#domainModal').modal('hide');
@@ -76,11 +73,16 @@ $(document).ready(function () {
         $('#errorMessage').hide();
     });
 
+    $('#checkAnotherDomainBtnInModal').on('click', function () {
+        resetForm();
+    });
+
     function handleNoBreach(domainName) {
         $('#searchedDomain').text(domainName);
         $('#domainForm').hide();
         $('#domainModalLabel').hide();
         $('#noBreachMessage').show();
+        $('#checkAnotherDomainBtnInModal').show(); 
         triggerConfetti();
         resetCounts();
     }
@@ -109,6 +111,7 @@ $(document).ready(function () {
         $('#domainForm').show();
         $('#domainModalLabel').show();
         $('#domainInput').val('').removeClass('is-invalid');
+        $('#checkAnotherDomainBtnInModal').hide(); 
         $('#domainModal').modal('show');
         $('.overlay').show();
     }
