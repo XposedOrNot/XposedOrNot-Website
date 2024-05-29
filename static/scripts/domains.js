@@ -19,45 +19,39 @@ $(document).ready(function () {
             var breachApiUrl = 'https://api.xposedornot.com/v1/domain-breach-summary?d=' + domainName;
             $.ajax(breachApiUrl)
                 .done(function (data) {
-                    var breaches = data.sendDomains.breaches_details;
-                    var totalBreaches = 0;
-                    var totalRecords = 0;
-                    var totalEmails = 0;
+                    if (data.SearchStatus === "Success" && data.sendDomains.breaches_details.length > 0) {
+                        var breaches = data.sendDomains.breaches_details;
+                        var totalBreaches = 0;
+                        var totalRecords = 0;
+                        var totalEmails = 0;
+                        var lastExposure = "--";
 
-                    breaches.forEach(function (breach) {
-                        totalBreaches++;
-                        totalRecords += parseInt(breach.breach_pastes);
-                        totalEmails += parseInt(breach.breach_emails);
-                    });
+                        breaches.forEach(function (breach) {
+                            totalBreaches += breach.breach_count;
+                            totalRecords += breach.breach_total;
+                            totalEmails += breach.breach_emails;
+                            lastExposure = breach.breach_last_seen;
+                        });
 
-                    $('#breach-count').text(totalBreaches);
-                    $('#record-count').text(totalRecords >= 50 ? "50+" : totalRecords);
-                    $('#email-count').text(totalEmails >= 50 ? "50+" : totalEmails);
+                        $('#breach-count').text(totalBreaches);
+                        $('#record-count').text(totalRecords >= 1000 ? "1000+" : totalRecords);
+                        $('#email-count').text(totalEmails >= 1000 ? "1000+" : totalEmails);
+                        $('#last-exposure').text(lastExposure);
 
-                    var lastExposure = breaches.length > 0 ? breaches[0].last_exposure : "--";
-                    $('#last-exposure').text(lastExposure);
+                        console.log("Last exposure set to: " + lastExposure); // Debugging log
 
-                    $('#domainModal').modal('hide');
-                    $('.overlay').hide();
-                    $('#content').removeClass('blurred');
+                        // Update the gauge chart
+                        updateGaugeChart(totalBreaches);
+
+                        $('#domainModal').modal('hide');
+                        $('.overlay').hide();
+                        $('#content').removeClass('blurred');
+                    } else {
+                        handleNoBreach(domainName);
+                    }
                 })
                 .fail(function (jqXHR) {
-                    if (jqXHR.status === 404) {
-                        $('#searchedDomain').text(domainName);
-                        $('#domainForm').hide();
-                        $('#domainModalLabel').hide();
-                        $('#noBreachMessage').show();
-                        triggerConfetti();
-                    } else if (jqXHR.status === 429) {
-                        var retryAfter = JSON.parse(jqXHR.responseText).retry_after_seconds;
-                        $('#errorMessage').text(`Rate limit exceeded. Please try again after ${retryAfter} seconds.`).show();
-                    } else {
-                        $("#alertMe").text("An error occurred. Please try again later.");
-                    }
-                    $('#breach-count').text('-');
-                    $('#record-count').text('-');
-                    $('#email-count').text('-');
-                    $('#last-exposure').text('--');
+                    handleFail(jqXHR, domainName);
                 })
                 .always(function () {
                     $('#submitButton').attr("disabled", false);
@@ -69,12 +63,7 @@ $(document).ready(function () {
     });
 
     $('#checkAnotherDomain').on('click', function () {
-        $('#noBreachMessage').hide();
-        $('#domainForm').show();
-        $('#domainModalLabel').show();
-        $('#domainInput').val('').removeClass('is-invalid');
-        $('#domainModal').modal('show');
-        $('.overlay').show();
+        resetForm();
     });
 
     $('#checkAnotherDomainBtn').on('click', function () {
@@ -86,6 +75,43 @@ $(document).ready(function () {
         $(this).removeClass('is-invalid');
         $('#errorMessage').hide();
     });
+
+    function handleNoBreach(domainName) {
+        $('#searchedDomain').text(domainName);
+        $('#domainForm').hide();
+        $('#domainModalLabel').hide();
+        $('#noBreachMessage').show();
+        triggerConfetti();
+        resetCounts();
+    }
+
+    function handleFail(jqXHR, domainName) {
+        if (jqXHR.status === 404) {
+            handleNoBreach(domainName);
+        } else if (jqXHR.status === 429) {
+            var retryAfter = JSON.parse(jqXHR.responseText).retry_after_seconds;
+            $('#errorMessage').text(`Rate limit exceeded. Please try again after ${retryAfter} seconds.`).show();
+        } else {
+            $("#alertMe").text("An error occurred. Please try again later.");
+        }
+        resetCounts();
+    }
+
+    function resetCounts() {
+        $('#breach-count').text('-');
+        $('#record-count').text('-');
+        $('#email-count').text('-');
+        $('#last-exposure').text('--');
+    }
+
+    function resetForm() {
+        $('#noBreachMessage').hide();
+        $('#domainForm').show();
+        $('#domainModalLabel').show();
+        $('#domainInput').val('').removeClass('is-invalid');
+        $('#domainModal').modal('show');
+        $('.overlay').show();
+    }
 
     function triggerConfetti() {
         var end = Date.now() + 5 * 1000;
@@ -108,6 +134,44 @@ $(document).ready(function () {
                 requestAnimationFrame(frame);
             }
         }());
+    }
+
+    // Google Gauge Chart
+    google.charts.load('current', { 'packages': ['gauge'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    var gaugeChart;
+    var data;
+    var options;
+
+    function drawChart() {
+        data = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Risk Score', 0]
+        ]);
+
+        options = {
+            width: 150,
+            height: 150,
+            greenFrom: 0,
+            greenTo: 40,
+            yellowFrom: 41,
+            yellowTo: 100,
+            redFrom: 101,
+            redTo: 200,
+            minorTicks: 10,
+            max: 200
+        };
+
+        gaugeChart = new google.visualization.Gauge(document.getElementById('chart_div'));
+        gaugeChart.draw(data, options);
+    }
+
+    function updateGaugeChart(value) {
+        if (gaugeChart && data) {
+            data.setValue(0, 1, Math.round(value));
+            gaugeChart.draw(data, options);
+        }
     }
 });
 
