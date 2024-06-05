@@ -41,108 +41,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
   <script src="/static/scripts/other-libraries.js" defer></script>
-  <style>
-    .modal-content {
-      border-radius: 10px;
-    }
-
-    .dark-mode {
-      background-color: #343a40;
-      color: white;
-    }
-
-    .light-mode {
-      background-color: #f1f1f1;
-      color: black;
-    }
-
-    .modal-header {
-      background-color: #343a40;
-      color: white;
-      border-bottom: none;
-    }
-
-    .modal-title {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .modal-body {
-      padding: 2rem;
-    }
-
-    .btn-primary {
-      background-color: #007bff;
-      border-color: #007bff;
-    }
-
-    .btn-success {
-      background-color: #28a745;
-      border-color: #28a745;
-    }
-
-    .form-control {
-      border-radius: 5px;
-      margin-bottom: 15px;
-    }
-
-    .modal-dialog-centered {
-      display: flex;
-      align-items: center;
-      min-height: calc(100% - 1rem);
-    }
-
-    .modal-dialog {
-      max-width: 900px;
-      margin: auto;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1040;
-      display: none;
-    }
-
-    .blurred {
-      filter: blur(5px);
-      pointer-events: none;
-    }
-
-    #logo {
-      display: none;
-      margin-left: 10px;
-    }
-
-    .confetti {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: 1050;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .error-message {
-      color: red;
-      text-align: center;
-      margin-top: 15px;
-    }
-
-    #submitButton {
-      position: relative;
-    }
-
-    #spinner {
-      margin-left: 10px;
-    }
-  </style>
 
 </head>
 
@@ -199,7 +98,7 @@
         <div class="grid">
           <div class="sec3-row">
             <h4>Exposed data breach report for your domain : <b id="domain-display"></b>
-		    </b><img id="logo" src="" alt="Logo" width="120"></h4>
+              </b><img id="logo" src="" alt="Logo" width="120"></h4>
             <div class="updt">
               <p>Last Exposure: <span id="last-exposure"></span></p>
             </div>
@@ -233,9 +132,14 @@
               </div>
             </div>
             <div class="web-bx1 web-bx4">
-             <div id="chart_div" style="width: 150px; height: 150px;"></div>
-	    </div>
+              <div id="chart_div" style="width: 150px; height: 150px;"></div>
+            </div>
           </div>
+          <div id="note" class="text-center mt-3" style="display: none;" align="left">
+            <small>*The records are trimmed for brevity. You can validate the domain ownership to see the complete
+              records.</small>
+          </div>
+
         </div>
       </div>
 
@@ -270,7 +174,6 @@
     </div>
   </div>
 
-  <!-- Modal -->
   <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
@@ -281,8 +184,8 @@
         <div class="modal-body light-mode">
           <form id="domainForm">
             <div class="form-group text-center">
-              <p>Find out if your domain has been exposed in any data breaches.</p>
-              <p>Enter your domain name below to get your report.</p>
+              <p>Discover if your domain has been part of any data breaches.</p>
+              <p>Enter your domain name below to get your breach summary.</p>
               <label for="domainInput" class="sr-only">Domain Name</label>
               <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
               <div class="invalid-feedback">
@@ -303,7 +206,8 @@
               <h4 class="text-success mt-3">No breach records found for <span id="searchedDomain"
                   class="font-weight-bold"></span>!</h4>
               <p>Hooray! Your domain appears to be safe.</p>
-              <button type="button" class="btn btn-secondary mt-3" id="checkAnotherDomainBtnInModal">Check Another Domain</button>
+              <button type="button" class="btn btn-secondary mt-3" id="checkAnotherDomainBtnInModal">Check Another
+                Domain</button>
             </div>
           </div>
         </div>
