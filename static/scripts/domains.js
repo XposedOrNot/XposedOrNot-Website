@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $('#domainForm').on('submit', function (e) {
         e.preventDefault();
-        var domainName = $('#domainInput').val();
+        var domainName = $('#domainInput').val().trim(); 
 
         if (domainRegex.test(domainName)) {
             $('#submitButton').attr("disabled", true);
@@ -15,6 +15,12 @@ $(document).ready(function () {
             $('#domain-display').text(domainName);
             var logoSrc = "https://logo.clearbit.com/" + domainName;
             $("#logo").attr("src", logoSrc).show();
+
+            $("#logo").on('error', function() {
+                $(this).hide();
+            }).on('load', function() {
+                $(this).show();
+            });
 
             var breachApiUrl = 'https://api.xposedornot.com/v1/domain-breach-summary?d=' + domainName;
             $.ajax(breachApiUrl)
@@ -146,7 +152,6 @@ $(document).ready(function () {
         }());
     }
 
-    // Google Gauge Chart
     google.charts.load('current', { 'packages': ['gauge'] });
     google.charts.setOnLoadCallback(drawChart);
 
