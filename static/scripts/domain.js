@@ -126,7 +126,7 @@ $(document).ready(function () {
                 'name': {
                     validators: {
                         regexp: {
-                            regexp: /^(?!:\/\/)([a-zA-Z0-9]+\.)+[a-zA-Z]{2,}$/i,
+                            regexp: /^(?!:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/i,
                             message: ' Please enter a valid domain address ...'
                         },
                         notEmpty: {
