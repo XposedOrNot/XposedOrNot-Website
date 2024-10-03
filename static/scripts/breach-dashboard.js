@@ -25,9 +25,8 @@ $(document).ready(function () {
     });
 });
 
-s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Details For Verified Domains</strong></div></p>'
+s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Details For Verified Domains</strong></div></p>';
 $("#email").html(s);
-s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Details For Verified Domains</strong></div></p>'
 $("#email_details").html(s);
 
 var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_domain_breaches?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
@@ -83,6 +82,7 @@ $.ajax(emailVerificationUrl)
         if (domainSummary && typeof domainSummary === 'object') {
             addDomainSummaryToTable(domainSummary, email, token);
         }
+        updateSenioritySummary(myjson.Seniority_Summary);
 
         $.LoadingOverlay("hide");
     })
@@ -104,6 +104,14 @@ $.ajax(emailVerificationUrl)
         }
     });
 
+// Function to update the Seniority Summary
+function updateSenioritySummary(senioritySummary) {
+    if (senioritySummary) {
+        $('#exposed-cxo').text(senioritySummary.c_suite ? senioritySummary.c_suite : 0);
+        $('#exposed-vp').text(senioritySummary.vp ? senioritySummary.vp : 0);
+        $('#exposed-directors').text(senioritySummary.director ? senioritySummary.director : 0);
+    }
+}
 
 function g1(years, breachCounts) {
     const allZero = breachCounts.every(count => count === 0);
@@ -176,9 +184,7 @@ function g1(years, breachCounts) {
 
         new Chart(ctx, config);
     }
-
 }
-
 
 function buildTopBreachesTable(breachNames, breachCounts) {
     const allZero = breachCounts.every(count => count === 0);
@@ -210,7 +216,6 @@ function buildTopBreachesTable(breachNames, breachCounts) {
         document.getElementById('chart_div').innerHTML = tableHtml;
     }
 }
-
 
 function addBreachesToTable(breaches) {
     const table = document.querySelector('#xposed_emails');
@@ -347,3 +352,4 @@ googleLink.addEventListener("click", function (event) {
     event.preventDefault();
     window.open("https://xposedornot.com/domain.html", "_blank");
 });
+
