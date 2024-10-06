@@ -1,7 +1,7 @@
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    return results[1] || 0;
-}
+    return results ? results[1] : 0;
+};
 
 try {
     email = decodeURIComponent($.urlParam('email'));
@@ -94,11 +94,11 @@ $.ajax(emailVerificationUrl)
         } else if (n.status === 429) {
             $.LoadingOverlay("hide");
             document.getElementById("db-s").className = "visible alert alert-danger";
-            $("#db-s").html("<b>Please Slow down.</b><br>Looks like your going too fast, please try again after some time.");
+            $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
             $("#db-s").show();
         } else if (n.status === 400) {
             $.LoadingOverlay("hide");
-            $("#db-s").html("<b>Please Slow down.</b><br>Looks like your not authenticated properly.");
+            $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're not authenticated properly.");
             window.location.replace("http://xposedornot.com");
             $("#db-s").show();
         }
@@ -122,7 +122,6 @@ function g1(years, breachCounts) {
         banner.innerHTML = '<div align="center" class="alert alert-success" style="font-size: 20px; color: green;">Yay! No breaches in the recorded years.</div>';
         document.getElementById('bc').parentNode.insertBefore(banner, document.getElementById('bc'));
     } else {
-
         var ctx = document.getElementById('bc').getContext('2d');
         var config = {
             type: 'line',
@@ -244,7 +243,34 @@ function addBreachesToTable(breaches) {
         row.appendChild(cellRecords);
 
         const cellDesc = document.createElement('td');
-        cellDesc.textContent = breaches[breach].xposure_desc || '';
+        const breachDescription = breaches[breach].xposure_desc || '';
+        const trimmedDesc = breachDescription.length > 100 ? breachDescription.substring(0, 100) + '...' : breachDescription;
+
+        const descContent = document.createElement('div');
+        descContent.classList.add('description-content');
+        descContent.style.maxHeight = '75px';
+        descContent.style.overflow = 'hidden';
+        descContent.textContent = trimmedDesc;
+
+        const toggleButton = document.createElement('button');
+        toggleButton.textContent = 'See more';
+        toggleButton.classList.add('btn', 'btn-link');
+        toggleButton.style.padding = '0';
+        toggleButton.style.display = 'block';
+        toggleButton.onclick = function () {
+            if (descContent.style.maxHeight === '75px') {
+                descContent.style.maxHeight = 'none';
+                descContent.textContent = breachDescription;
+                toggleButton.textContent = 'Show less';
+            } else {
+                descContent.style.maxHeight = '75px';
+                descContent.textContent = trimmedDesc;
+                toggleButton.textContent = 'See more';
+            }
+        };
+
+        cellDesc.appendChild(descContent);
+        cellDesc.appendChild(toggleButton);
         row.appendChild(cellDesc);
 
         const cellData = document.createElement('td');
@@ -279,7 +305,25 @@ function addBreachesToTable(breaches) {
         row.appendChild(cellPasswordrisk);
         tableBody.appendChild(row);
     }
+    /**
+        $(table).DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'csv', 'excel', 'pdf'
+            ],
+            paging: true,
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50, 75, 100],
+            initComplete: function () {
+                $(".dt-buttons").prepend('<span class="buttons-label">Export as: &nbsp;</span>');
+            },
+            autoWidth: false, 
+            responsive: true,
+            order: [[1, 'desc']], 
+        });
+        **/
 }
+
 
 function addBreachesDetailsToTable(breachesDetails) {
     const table = document.querySelector('#xposed_emails_details');
@@ -288,23 +332,31 @@ function addBreachesDetailsToTable(breachesDetails) {
 
     let totalRecords = 0;
 
+
+    const exposedDataLookup = {};
+    $('#xposed_emails tbody tr').each(function () {
+        const breachName = $(this).find('td').eq(0).text().trim(); // Get breach name from the first column
+        const exposedData = $(this).find('td').eq(3).text().trim(); // Get exposed data from the fourth column
+        exposedDataLookup[breachName] = exposedData || 'No Data Available';
+    });
+
+
+
+
     for (let breachDetail of breachesDetails) {
         const row = document.createElement('tr');
-
         const cellBreachName = document.createElement('td');
         cellBreachName.textContent = breachDetail.breach;
         row.appendChild(cellBreachName);
-
         const cellEmailAddress = document.createElement('td');
         cellEmailAddress.textContent = breachDetail.email;
         row.appendChild(cellEmailAddress);
-
+        const breachNameToLookup = breachDetail.breach.trim();
+        const exposedData = exposedDataLookup[breachNameToLookup];
         const cellExposedData = document.createElement('td');
-        cellExposedData.textContent = breachDetail.email;
+        cellExposedData.textContent = exposedData || 'No Data Available';
         row.appendChild(cellExposedData);
-
         totalRecords += 1;
-
         tableBody.appendChild(row);
     }
 
@@ -312,19 +364,20 @@ function addBreachesDetailsToTable(breachesDetails) {
 
     $('#xposed_emails_details').DataTable({
         dom: 'Bfrtip',
-        buttons: [
-            'csv', 'excel', 'pdf'
-        ],
+        buttons: ['csv', 'excel', 'pdf'],
+        paging: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50],
+        autoWidth: false,
+        responsive: true,
         initComplete: function () {
             $(".dt-buttons").prepend('<span class="buttons-label">Export as: &nbsp;</span>');
-        }
+        },
+        order: [[0, 'asc']],
     });
 }
 
-function createChannelLink(channel, email, token, domain) {
-    var url = `alert-${channel}.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`;
-    return `<a href="${url}" target="_blank">${channel} Channel</a>`;
-}
+
 
 function addDomainSummaryToTable(domainSummary, email, token) {
     const tbody = $('#verified_domains_tbody');
