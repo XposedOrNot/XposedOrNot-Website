@@ -15,22 +15,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
         integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             background-color: #f8f9fa;
         }
 
         .news-item {
-            cursor: pointer;
+            position: relative;
             background: #fff;
             border-left: 5px solid #007bff;
             margin-bottom: 10px;
             padding: 20px;
             border-radius: 5px;
-            position: relative;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
         }
 
         .news-item:hover {
@@ -45,36 +46,51 @@
             color: #6c757d;
         }
 
-        .container {
-            max-width: 1200px;
-        }
-
-        #timeline-dropdown,
-        #search-input {
-            float: right;
-            margin-left: 10px;
-        }
-
-        .news-preview {
-            display: none;
-            padding: 20px;
-            background-color: #eeeeee;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
         .pagination-controls {
             margin-top: 20px;
+            text-align: center;
         }
 
         .pagination-controls button {
             margin: 0 5px;
+            min-width: 80px;
+        }
+
+        .pagination-controls span {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1rem;
+            color: #6c757d;
+        }
+
+        .news-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            color: #ff5722;
+            opacity: 0.8;
+        }
+
+        .news-icon:hover {
+            opacity: 1;
+        }
+
+        a {
+            word-break: break-all;
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary justify-content-center">
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+    <div class="container">
         <a class="navbar-brand" href="https://xposedornot.com" style="text-decoration: none;">
             <span style="font-size: 1.5em; font-weight: bold; color: white;">XposedOrNot</span>
             <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -5px;">Community
@@ -84,26 +100,19 @@
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="password.html">Password</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="faq.html">FAQ</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+
+    </div>
+</nav>
 
     <div class="container my-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0" style="color: #007bff;">xonPulse<span style="font-size: 0.6em; color: inherit;">: Your news
-                    feed for data breaches</span></h1>
-
-            <div>
-                <input type="text" id="search-input" class="form-control w-auto" placeholder="Search news...">
-                <select id="timeline-dropdown" class="form-control w-auto">
+        <div class="row mb-4">
+            <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <h1 class="mb-0" style="color: #007bff; font-size: 1.5rem;">xonPulse<span
+                        style="font-size: 0.8em; color: inherit;">: Your news feed for data breaches</span></h1>
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-md-end align-items-center">
+                <input type="text" id="search-input" class="form-control me-2 w-100 w-md-auto" placeholder="Search news...">
+                <select id="timeline-dropdown" class="form-control w-100 w-md-auto">
                     <option value="all">All Time</option>
                     <option value="day">Last 1 Day</option>
                     <option value="week">Last 1 Week</option>
@@ -113,29 +122,42 @@
                 </select>
             </div>
         </div>
-        <div id="news-container">
+
+        <div class="alert alert-info">
+            Stay updated with the latest data breaches reported in the media. Discover incidents impacting security and
+            take proactive steps to safeguard your data.
         </div>
-        <div class="pagination-controls text-center">
-            <button id="prev-page" class="btn btn-primary">
-                << Previous</button>
-                    <span id="page-info"></span>
-                    <button id="next-page" class="btn btn-primary">Next >></button>
+
+        <div id="news-container"></div>
+        <div class="row">
+            <div class="col-12 pagination-controls">
+                <button id="prev-page" class="btn btn-primary">&lt;&lt; Previous</button>
+                <span id="page-info">Page 1 of 10</span>
+                <button id="next-page" class="btn btn-primary">Next &gt;&gt;</button>
+            </div>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            var allNews = [];
-            var currentPage = 1;
-            var itemsPerPage = 10;
+            let currentPage = 1;
+            const itemsPerPage = 10;
+            let sortedData = [];
+
+            function updatePagination(totalPages) {
+                $('#page-info').text(`Page ${currentPage} of ${totalPages}`);
+                $('#prev-page').prop('disabled', currentPage === 1);
+                $('#next-page').prop('disabled', currentPage === totalPages);
+            }
 
             function fetchNews() {
                 $.ajax({
                     url: 'https://api.xposedornot.com/v1/xon-pulse',
                     method: 'GET',
                     success: function (data) {
-                        allNews = data.sort((a, b) => new Date(b.date) - new Date(a.date));
-                        filterAndDisplayNews();
+                        sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                        displayPaginatedNews();
                     },
                     error: function () {
                         console.error('Failed to fetch news');
@@ -143,108 +165,66 @@
                 });
             }
 
-            function filterAndDisplayNews() {
-                var searchText = $('#search-input').val().toLowerCase();
-                var timeline = $('#timeline-dropdown').val();
-                var now = new Date();
-                var filteredNews = allNews.filter(news => {
-                    var newsDate = new Date(news.date);
-                    return (news.title.toLowerCase().includes(searchText) || news.summary.toLowerCase().includes(searchText)) &&
-                        fitsTimeline(timeline, newsDate, now);
-                });
-
-                var paginatedItems = paginateItems(filteredNews, currentPage, itemsPerPage);
-                displayNews(paginatedItems.items);
-
-                updatePaginationControls(paginatedItems.page, paginatedItems.totalPages);
+            function filterNews(searchText) {
+                return sortedData.filter(news =>
+                    news.title.toLowerCase().includes(searchText) ||
+                    news.summary.toLowerCase().includes(searchText)
+                );
             }
 
-            function paginateItems(items, page, itemsPerPage) {
-                let offset = (page - 1) * itemsPerPage;
-                return {
-                    items: items.slice(offset, offset + itemsPerPage),
-                    page: page,
-                    totalPages: Math.ceil(items.length / itemsPerPage)
-                };
-            }
+            function displayPaginatedNews() {
+                const searchText = $('#search-input').val().toLowerCase();
+                const filteredData = searchText ? filterNews(searchText) : sortedData;
+                const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-            function updatePaginationControls(page, totalPages) {
-                $('#page-info').text(`Page ${page} of ${totalPages}`);
-                $('#prev-page').prop('disabled', page === 1);
-                $('#next-page').prop('disabled', page === totalPages || totalPages === 0);
-            }
+                updatePagination(totalPages);
 
-            function fitsTimeline(timeline, newsDate, now) {
-                switch (timeline) {
-                    case 'day':
-                        return (now - newsDate) <= (24 * 60 * 60 * 1000);
-                    case 'week':
-                        return (now - newsDate) <= (7 * 24 * 60 * 60 * 1000);
-                    case 'month':
-                        return (now - newsDate) <= (30 * 24 * 60 * 60 * 1000);
-                    case 'quarter':
-                        return (now - newsDate) <= (91 * 24 * 60 * 60 * 1000);
-                    case 'year':
-                        return (now - newsDate) <= (365 * 24 * 60 * 60 * 1000);
-                    default:
-                        return true;
-                }
+                const paginatedData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+                displayNews(paginatedData);
             }
 
             function displayNews(newsItems) {
                 $('#news-container').empty();
                 if (newsItems.length === 0) {
-                    $('#news-container').html('<div class="text-center">No news in this timeframe.</div>');
+                    $('#news-container').html('<div class="text-center">No news found for the search term.</div>');
                     return;
                 }
-
-                newsItems.forEach(function (news) {
-                    var newsItem = $(`
-                <div class="news-item" data-url="${news.url}">
-                    <div class="news-date">${news.date}</div>
-                    <h5>${news.title}</h5>
-                    <p>${news.summary}</p>
-                    <div class="news-preview">
-                        <a href="${news.url}" target="_blank">Read more - ${news.url}</a>
-                    </div>
-                </div>
-            `);
-                    $('#news-container').append(newsItem);
+                newsItems.forEach(news => {
+                    $('#news-container').append(`
+                        <div class="news-item">
+                            <div class="news-date">${news.date}</div>
+                            <h5>${news.title}</h5>
+                            <p>${news.summary}</p>
+                            <p><strong>Read More:</strong> <a href="${news.url}" target="_blank">${news.url}</a></p>
+                            <div class="news-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                        </div>
+                    `);
                 });
             }
 
-            $(document).on('click', '.news-item', function (e) {
-                if (e.target.tagName !== 'A') {
-                    $(this).find('.news-preview').slideToggle();
-                }
-            });
-
-            $('#search-input, #timeline-dropdown').on('change input', function () {
+            $('#search-input').on('input', function () {
                 currentPage = 1;
-                filterAndDisplayNews();
+                displayPaginatedNews();
             });
 
             $('#prev-page').click(function () {
                 if (currentPage > 1) {
                     currentPage--;
-                    filterAndDisplayNews();
+                    displayPaginatedNews();
                 }
             });
 
             $('#next-page').click(function () {
                 currentPage++;
-                filterAndDisplayNews();
+                displayPaginatedNews();
             });
 
             fetchNews();
         });
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
-        integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/static/scripts/common.js"></script>
 </body>
 
 </html>
+
