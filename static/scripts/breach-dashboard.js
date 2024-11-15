@@ -305,43 +305,27 @@ function addBreachesToTable(breaches) {
         row.appendChild(cellPasswordrisk);
         tableBody.appendChild(row);
     }
-    /**
-        $(table).DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', 'excel', 'pdf'
-            ],
-            paging: true,
-            pageLength: 10,
-            lengthMenu: [5, 10, 25, 50, 75, 100],
-            initComplete: function () {
-                $(".dt-buttons").prepend('<span class="buttons-label">Export as: &nbsp;</span>');
-            },
-            autoWidth: false, 
-            responsive: true,
-            order: [[1, 'desc']], 
-        });
-        **/
+
 }
 
-
 function addBreachesDetailsToTable(breachesDetails) {
-    const table = document.querySelector('#xposed_emails_details');
-    const tableBody = table.querySelector('tbody');
-    tableBody.innerHTML = '';
+    const table = $('#xposed_emails_details');
+
+    if ($.fn.DataTable.isDataTable(table)) {
+        table.DataTable().destroy();
+    }
+
+    const tableBody = table.find('tbody');
+    tableBody.empty();
 
     let totalRecords = 0;
 
-
     const exposedDataLookup = {};
     $('#xposed_emails tbody tr').each(function () {
-        const breachName = $(this).find('td').eq(0).text().trim(); // Get breach name from the first column
-        const exposedData = $(this).find('td').eq(3).text().trim(); // Get exposed data from the fourth column
+        const breachName = $(this).find('td').eq(0).text().trim();
+        const exposedData = $(this).find('td').eq(3).text().trim();
         exposedDataLookup[breachName] = exposedData || 'No Data Available';
     });
-
-
-
 
     for (let breachDetail of breachesDetails) {
         const row = document.createElement('tr');
@@ -357,12 +341,12 @@ function addBreachesDetailsToTable(breachesDetails) {
         cellExposedData.textContent = exposedData || 'No Data Available';
         row.appendChild(cellExposedData);
         totalRecords += 1;
-        tableBody.appendChild(row);
+        tableBody.append(row);
     }
 
     $('#exposed-records').text(totalRecords.toLocaleString());
 
-    $('#xposed_emails_details').DataTable({
+    table.DataTable({
         dom: 'Bfrtip',
         buttons: ['csv', 'excel', 'pdf'],
         paging: true,
@@ -376,7 +360,6 @@ function addBreachesDetailsToTable(breachesDetails) {
         order: [[0, 'asc']],
     });
 }
-
 
 
 function addDomainSummaryToTable(domainSummary, email, token) {
@@ -404,5 +387,92 @@ const googleLink = document.getElementById("googleLink");
 googleLink.addEventListener("click", function (event) {
     event.preventDefault();
     window.open("https://xposedornot.com/domain.html", "_blank");
+});
+
+
+function updateApiCall(timeFilter) {
+    const emailVerificationUrl = `https://api.xposedornot.com/v2/send_domain_breaches?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&time_filter=${timeFilter}`;
+    $.LoadingOverlay("show");
+
+    $.ajax(emailVerificationUrl)
+        .done(function (n) {
+
+            myjson = n;
+
+            if (myjson) {
+                var domains = new Set();
+                var exposedEmails = new Set();
+                myjson.Breaches_Details.forEach(function (detail) {
+                    domains.add(detail.domain);
+                    exposedEmails.add(detail.email);
+                });
+
+                $('#exposed-domains').text(domains.size.toLocaleString());
+                $('#exposed-emails').text(exposedEmails.size.toLocaleString());
+            }
+
+            const breachMetrics = myjson.Yearly_Metrics;
+            if (breachMetrics) {
+                const years = Object.keys(breachMetrics);
+                const breachCounts = Object.values(breachMetrics);
+                g1(years, breachCounts);
+            }
+
+            const topBreaches = myjson.Top10_Breaches;
+            if (topBreaches) {
+                const breachNames = Object.keys(topBreaches);
+                const breachCounts = Object.values(topBreaches);
+                buildTopBreachesTable(breachNames, breachCounts);
+            }
+
+            const breachesDetails = myjson.Detailed_Breach_Info;
+            if (breachesDetails) {
+                addBreachesToTable(breachesDetails);
+            }
+
+            const breachesSummary = myjson.Breaches_Details;
+            if (breachesSummary) {
+                addBreachesDetailsToTable(breachesSummary);
+            }
+
+            const yearlyBreachHierarchy = myjson.Yearly_Breach_Hierarchy;
+            if (yearlyBreachHierarchy) {
+                $('#tree-container').hortree({
+                    data: [yearlyBreachHierarchy]
+                });
+            }
+
+            const domainSummary = myjson.Domain_Summary;
+            if (domainSummary && typeof domainSummary === 'object') {
+                addDomainSummaryToTable(domainSummary, email, token);
+            }
+            updateSenioritySummary(myjson.Seniority_Summary);
+
+            $.LoadingOverlay("hide");
+        })
+        .fail(function (n) {
+
+            if (n.status === 404) {
+                $.LoadingOverlay("hide");
+                document.getElementById("db-s").className = "visible alert alert-success";
+                $("#db-s").show();
+            } else if (n.status === 429) {
+                $.LoadingOverlay("hide");
+                document.getElementById("db-s").className = "visible alert alert-danger";
+                $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
+                $("#db-s").show();
+            } else if (n.status === 400) {
+                $.LoadingOverlay("hide");
+                $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're not authenticated properly.");
+                window.location.replace("http://xposedornot.com");
+                $("#db-s").show();
+            }
+        });
+}
+
+
+$('#data-filter').change(function () {
+    const selectedValue = $(this).val();
+    updateApiCall(selectedValue);
 });
 
