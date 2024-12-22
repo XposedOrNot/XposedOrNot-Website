@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Powered Breach Insights by XposedOrNot</title>
+  <meta name="description"
+    content="AI-Powered Breach Insights by XposedOrNot: Check if your email is exposed to any data breach and take action to stay safe.">
+  <meta name="author" content="Devanand Premkumar">
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+
+  <meta property="og:title" content="AI-Powered Breach Insights by XposedOrNot">
+  <meta property="og:description"
+    content="Check if your email is exposed to any data breach and take action to stay safe.">
+  <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+  <meta property="og:url" content="https://xposedornot.com">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@XposedOrNot">
+  <meta name="twitter:creator" content="@DevaOnBreaches">
+  <meta name="twitter:title" content="AI-Powered Breach Insights by XposedOrNot">
+  <meta name="twitter:description"
+    content="Check if your email is exposed to any data breach and take action to stay safe.">
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    header a {
+      text-decoration: none;
+      color: #3c5fec;
+      ;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    footer {
+      background-color: #3c5fec;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      font-size: 14px;
+      margin-top: auto;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      text-align: center;
+      background-color: white;
+      border-radius: 10px;
+      padding: 40px 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 70%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h1 {
+      color: #3c5fec;
+      ;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      width: 60%;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      border-radius: 30px;
+      border: 1px solid #ccc;
+      font-size: 18px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #2A9D8F;
+    }
+
+    button {
+      background-color: #3c5fec;
+      ;
+      color: white;
+      padding: 14px 30px;
+      margin: 10px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 25%;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #248e77;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      display: none;
+    }
+
+    .result-container {
+      text-align: left;
+      margin-top: 20px;
+      display: none;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .success-message {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #28a745;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #2A9D8F;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body onload="document.getElementById('emailInput').focus();">
+
+  <header>
+    <a href="https://xposedornot.com" target="_blank">XposedOrNot</a>
+  </header>
+
+  <div class="container" id="mainContainer">
+    <h1>AI-Powered Data Breach Insights</h1>
+    <p class="subtitle">Unlock personalized insights into your data breach history with AI-driven analysis.</p> <br>
+    <input type="text" id="emailInput" placeholder="Enter your email address to check" />
+    <div>
+      <button onclick="openBreachData()">Breach Data</button>
+      <button onclick="fetchData('ai')">Get AI Insights</button>
+    </div>
+    <div class="loader" id="loader"></div>
+    <p class="error-message" id="errorMessage">Sorry, no data found for this email.</p>
+    <div class="result-container" id="resultContainer"></div>
+  </div>
+
+  <footer>
+    <a href="https://xposedornot.com/faq">FAQ</a>
+    <a href="https://xposedornot.com/privacy">Privacy</a>
+  </footer>
+
+  <script>
+    function openBreachData() {
+      const email = document.getElementById('emailInput').value.trim();
+      if (!email) {
+        alert("Please enter an email address.");
+        return;
+      }
+      const url = `https://xposedornot.com/data-breaches-risks?email=${encodeURIComponent(email)}`;
+      window.open(url, '_blank');
+    }
+
+    async function fetchData(type) {
+      const email = document.getElementById('emailInput').value.trim();
+      const errorMessage = document.getElementById('errorMessage');
+      const resultContainer = document.getElementById('resultContainer');
+      const loader = document.getElementById('loader');
+
+      if (!email) {
+        errorMessage.textContent = "Please enter an email address.";
+        errorMessage.style.display = "block";
+        resultContainer.style.display = "none";
+        return;
+      }
+
+      loader.style.display = "block";
+      const apiUrl = `https://api.xposedornot.com/v2/breach-analytics?email=${encodeURIComponent(email)}`;
+
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error('Email not found');
+        }
+
+        const data = await response.json();
+        loader.style.display = "none";
+        errorMessage.style.display = "none";
+        resultContainer.style.display = "block";
+
+        if (type === 'ai') {
+          if (data.AI_Summary) {
+            resultContainer.innerHTML = `${marked.parse(data.AI_Summary)}`;
+          } else {
+            resultContainer.innerHTML = `
+            <div class="success-message">
+              <i>✔</i> Congrats, no data breaches found!
+            </div>`;
+          }
+        } else if (data) {
+          resultContainer.innerHTML = `<h2>Breach Details:</h2>${marked.parse(JSON.stringify(data, null, 2))}`;
+        } else {
+          throw new Error('Invalid API response');
+        }
+      } catch (error) {
+        loader.style.display = "none";
+        errorMessage.textContent = "Sorry, no data found for this email.";
+        errorMessage.style.display = "block";
+        resultContainer.style.display = "none";
+      }
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</body>
+
+</html>
