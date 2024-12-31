@@ -118,8 +118,8 @@ function getAlertType(riskLabel) {
 
 
 
-by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
-py24 = py23 = py22 = py21 = py20 = py19 = py18 = py17 = py16 = py15 = py14 = py13 = py12 = py11 = py10 = py09 = py08 = py07 = 0;
+by25 = by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
+py25 = py24 = py23 = py22 = py21 = py20 = py19 = py18 = py17 = py16 = py15 = py14 = py13 = py12 = py11 = py10 = py09 = py08 = py07 = 0;
 i11 = i12 = i13 = i14 = i15 = i16 = i17 = i18 = i19 = i20 = i1 = i2 = i3 = i4 = i5 = i6 = i7 = i8 = i9 = i10 = i20 = i21 = i22 = i23 = i24 = i25 = i26 = 0;
 unknown = plaintext = easy = hard = password_score = 0;
 
@@ -341,6 +341,7 @@ var j = $.ajax(url)
         $('#risk').html(riskScoreHtml);
 
         if (xposedData.toString().length > 0) {
+            by25 = jsonResponse.BreachMetrics.yearwise_details[0].y2025;
             by24 = jsonResponse.BreachMetrics.yearwise_details[0].y2024;
             by23 = jsonResponse.BreachMetrics.yearwise_details[0].y2023;
             by22 = jsonResponse.BreachMetrics.yearwise_details[0].y2022;
@@ -839,20 +840,20 @@ function g1() {
     var config = {
         type: 'line',
         data: {
-            labels: ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+            labels: ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
             datasets: [{
                 label: 'Breaches Count',
                 fill: false,
                 backgroundColor: window.chartColors.red,
                 borderColor: window.chartColors.red,
-                data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24],
+                data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24, by25],
             },
             {
                 label: 'Pastes Count',
                 fill: false,
                 backgroundColor: window.chartColors.blue,
                 borderColor: window.chartColors.blue,
-                data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23, py24],
+                data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23, py24, py24],
             }
             ]
         },
@@ -1341,14 +1342,14 @@ function drawChart_categories(xposed_data) {
 
 $(document).ready(function () {
 
-   $(window).scroll(function () {
+    $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {
             $('#back-to-top').fadeIn();
         } else {
             $('#back-to-top').fadeOut();
         }
     });
-	$('#back-to-top').click(function () {
+    $('#back-to-top').click(function () {
         $('body,html').animate({
             scrollTop: 0
         }, 400);
