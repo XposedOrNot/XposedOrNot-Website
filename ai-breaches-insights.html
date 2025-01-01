@@ -23,6 +23,8 @@
   <meta name="twitter:description" content="Check if your email is exposed to any data breach and take action to stay safe.">
   <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
@@ -88,13 +90,15 @@
 
     input[type="text"] {
       width: 80%;
-      max-width: 400px;
-      padding: 14px 20px;
+      max-width: 700px;
+      padding: 16px 24px;
       margin-bottom: 20px;
       border-radius: 30px;
       border: 1px solid #ccc;
-      font-size: 16px;
+      font-size: 18px;
       outline: none;
+      font-family: 'Poppins', sans-serif; 
+  letter-spacing: 1px;
     }
 
     input[type="text"]:focus {
@@ -104,14 +108,14 @@
     button {
       background-color: #3c5fec;
       color: white;
-      padding: 14px 20px;
-      margin: 10px;
+      padding: 16px 24px;
+      margin: 12px;
       border: none;
       border-radius: 30px;
-      font-size: 16px;
+      font-size: 24px;
       cursor: pointer;
       width: auto;
-      min-width: 120px;
+      min-width: 220px;
       transition: background-color 0.3s;
     }
 
@@ -269,7 +273,6 @@
     <br>
     <input type="text" id="emailInput" placeholder="Enter your email address to check" onkeydown="if(event.key === 'Enter') fetchData('ai');"/>
     <div>
-      <button onclick="openBreachData()">Breach Data</button>
       <button onclick="fetchData('ai')">Get AI Insights</button>
     </div>
     <div class="loader" id="loader"></div>
@@ -294,18 +297,14 @@
   <footer>
     <a href="https://xposedornot.com/faq">FAQ</a>
     <a href="https://xposedornot.com/privacy">Privacy</a>
+  <div class="custom-control custom-switch" style="display: none; text-align: right; width: 20%; float: right;">
+  <input type="checkbox" class="custom-control-input" id="darkSwitch">
+  <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+  </div>
+
   </footer>
 
   <script>
-    function openBreachData() {
-      const email = document.getElementById('emailInput').value.trim();
-      if (!email) {
-        alert("Please enter an email address.");
-        return;
-      }
-      const url = `https://xposedornot.com/data-breaches-risks?email=${encodeURIComponent(email)}`;
-      window.open(url, '_blank');
-    }
 
     async function fetchData(type) {
       const email = document.getElementById('emailInput').value.trim();
@@ -362,6 +361,11 @@
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  <script src="/static/scripts/common.js"></script>
 </body>
 
 </html>
