@@ -302,7 +302,7 @@ function handleVideoModal() {
         videoElement.attr('src', videoSrc);
     });
 }
-const apiUrl = 'https://api.xposedornot.com/v1/metrics/';
+const apiUrl = 'https://api.xposedornot.com/v1/metrics';
 const pastesCountElement = $("#p1");
 const pastesRecordsElement = $("#p2");
 const breachesCountElement = $("#b1");
