@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XON Globe</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three-globe@2.23.0/dist/three-globe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #globe-banner {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 48px;
+      pointer-events: none;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      z-index: 10;
+    }
+
+    .webgl {
+      width: 100%;
+      height: 70vh;
+      display: block;
+    }
+
+    #data-display {
+      width: 100%;
+      max-width: 300px;
+      margin: 10px auto;
+      height: 400px;
+      overflow-y: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      display: block;
+    }
+
+    #data-display h4 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    #data-display p {
+      margin: 5px 0;
+    }
+
+    #footer {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 14px;
+      pointer-events: none;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+      z-index: 10;
+    }
+
+    @media (max-width: 767px) {
+      #globe-banner {
+        font-size: 24px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      body {
+        flex-direction: row;
+      }
+      .webgl {
+        height: 100vh;
+        width: calc(100% - 320px);
+      }
+      #data-display {
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        width: 300px;
+        margin: 0;
+      }
+      #footer {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="globe-banner">XON Globe</div>
+  <div id="loading" class="display">
+    <div>
+      <i class="fa-solid fa-spinner fa-spin"></i>
+    </div>
+  </div>
+  <canvas class="webgl"></canvas>
+  <div id="data-display">
+    <h4>Incoming connections:</h4>
+    <div id="data-content"></div>
+  </div>
+
+  <div id="footer">Powered by XposedOrNot</div>
+
+  <script src="main12.js"></script>
+</body>
+</html>
