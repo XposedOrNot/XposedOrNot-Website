@@ -33,7 +33,7 @@ const fetchAssets = async () => {
   }
 };
 
-let scene, globe;
+let scene, globe, camera, renderer;
 
 const initGlobe = (countries, map, lines) => {
   scene = new THREE.Scene();
@@ -85,8 +85,13 @@ const initGlobe = (countries, map, lines) => {
     w: window.innerWidth,
     h: window.innerHeight,
   };
-  const camera = new THREE.PerspectiveCamera(45, sizes.w / sizes.h);
-  camera.position.set(60, 10, 20);
+
+  camera = new THREE.PerspectiveCamera(45, sizes.w / sizes.h);
+  if (window.innerWidth < 768) {
+    camera.position.set(0, 0, 800); 
+  } else {
+    camera.position.set(60, 10, 20); 
+  }
   scene.add(camera);
 
   const dlight = new THREE.DirectionalLight(0xffffff, 1.2);
@@ -97,7 +102,7 @@ const initGlobe = (countries, map, lines) => {
   scene.add(ambientLight);
 
   const canvas = document.querySelector(".webgl");
-  const renderer = new THREE.WebGLRenderer({
+  renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     alpha: true,
   });
@@ -114,6 +119,13 @@ const initGlobe = (countries, map, lines) => {
   window.addEventListener("resize", () => {
     sizes.w = window.innerWidth;
     sizes.h = window.innerHeight;
+
+    if (window.innerWidth < 768) {
+      camera.position.set(0, 0, 800); 
+    } else {
+      camera.position.set(60, 10, 20); 
+    }
+
     renderer.setSize(sizes.w, sizes.h);
     camera.aspect = sizes.w / sizes.h;
     camera.updateProjectionMatrix();
