@@ -6,10 +6,16 @@ const colors = {
 };
 
 let dataBuffer = [];
-const dataRetentionTime = 5 * 60 * 1000;
-
+const dataRetentionTime = 5 * 60 * 1000; 
+const maxArcs = 100; 
 let lastDataPoint = null;
 let arcsArray = [];
+
+let lastUpdateTime = 0;
+const updateInterval = 1000; 
+
+let lastUIUpdateTime = 0;
+const uiUpdateInterval = 500; 
 
 const fetchAssets = async () => {
   try {
@@ -146,16 +152,13 @@ const connectToStream = () => {
         eventSource.onerror = (err) => {
           console.error("EventSource error:", err);
           if (eventSource.readyState === EventSource.CLOSED) {
-          } else if (eventSource.readyState === EventSource.CONNECTING) {
-            console.warn("EventSource is reconnecting...");
+            setTimeout(establishConnection, 5000); 
           }
-          eventSource.close();
-          setTimeout(establishConnection, 5000);
         };
-
       })
       .catch(error => {
-        setTimeout(establishConnection, 5000);
+        console.error("Failed to connect to stream:", error);
+        setTimeout(establishConnection, 5000); 
       });
   };
 
@@ -164,39 +167,44 @@ const connectToStream = () => {
 
 const updateGlobeWithStreamData = (data) => {
   if (globe && data.lat !== undefined && data.lon !== undefined) {
-    console.log(`Updating globe with data: ${data.city}, (${data.lat}, ${data.lon})`);
-
     const timestamp = Date.now();
+
     dataBuffer.push({ ...data, timestamp, isNew: true });
     dataBuffer = dataBuffer.filter(item => timestamp - item.timestamp < dataRetentionTime);
 
-    globe.pointsData(dataBuffer.map(item => ({
-      lat: item.lat,
-      lng: item.lon,
-      size: 6,
-      color: item.isNew ? colors.fluorescentGreen : colors.red
-    })));
+    if (timestamp - lastUpdateTime >= updateInterval) {
+      globe.pointsData(dataBuffer.map(item => ({
+        lat: item.lat,
+        lng: item.lon,
+        size: 6,
+        color: item.isNew ? colors.fluorescentGreen : colors.red
+      })));
 
-    globe.labelsData(dataBuffer.map(item => ({
-      lat: item.lat + 0.5,
-      lng: item.lon,
-      text: item.city || "Unknown"
-    })))
-      .labelText('text')
-      .labelSize(2)
-      .labelColor(() => "#FFFFFF")
-      .labelAltitude(0.2);
+      globe.labelsData(dataBuffer.map(item => ({
+        lat: item.lat + 0.5,
+        lng: item.lon,
+        text: item.city || "Unknown"
+      })))
+        .labelText('text')
+        .labelSize(2)
+        .labelColor(() => "#FFFFFF")
+        .labelAltitude(0.2);
 
-    const dataContent = document.getElementById('data-content');
-    const dataElement = document.createElement('p');
-    dataElement.textContent = `${new Date().toLocaleString()} - ${data.city}`;
-    dataContent.prepend(dataElement);
+      lastUpdateTime = timestamp;
+    }
+
+    if (timestamp - lastUIUpdateTime >= uiUpdateInterval) {
+      const dataContent = document.getElementById('data-content');
+      const dataElement = document.createElement('p');
+      dataElement.textContent = `${new Date().toLocaleString()} - ${data.city}`;
+      dataContent.prepend(dataElement);
+      lastUIUpdateTime = timestamp;
+    }
 
     if (data.isNew) {
       animateNewDataPoint(data);
     }
 
-    // Check if source and destination are the same
     if (lastDataPoint && 
         (lastDataPoint.lat !== data.lat || lastDataPoint.lon !== data.lon)) {
       const newArc = {
@@ -207,7 +215,12 @@ const updateGlobeWithStreamData = (data) => {
         arcAlt: 0.5
       };
       arcsArray.push(newArc);
-      globe.arcsData(arcsArray); // Update the globe with the new arcs data
+
+      if (arcsArray.length > maxArcs) {
+        arcsArray.shift();
+      }
+
+      globe.arcsData(arcsArray); 
     }
     lastDataPoint = data;
 
