@@ -9,7 +9,7 @@ let dataBuffer = [];
 const dataRetentionTime = 5 * 60 * 1000;
 
 let lastDataPoint = null;
-let currentArc = null;
+let arcsArray = [];
 
 const fetchAssets = async () => {
   try {
@@ -195,8 +195,10 @@ const updateGlobeWithStreamData = (data) => {
     if (data.isNew) {
       animateNewDataPoint(data);
     }
-    let arcsArray = [];
-    if (lastDataPoint) {
+
+    // Check if source and destination are the same
+    if (lastDataPoint && 
+        (lastDataPoint.lat !== data.lat || lastDataPoint.lon !== data.lon)) {
       const newArc = {
         startLat: parseFloat(lastDataPoint.lat),
         startLng: parseFloat(lastDataPoint.lon),
@@ -205,10 +207,9 @@ const updateGlobeWithStreamData = (data) => {
         arcAlt: 0.5
       };
       arcsArray.push(newArc);
-      globe.arcsData(arcsArray);
+      globe.arcsData(arcsArray); // Update the globe with the new arcs data
     }
     lastDataPoint = data;
-
 
     dataBuffer.forEach(item => {
       if (Date.now() - item.timestamp > dataRetentionTime) {
@@ -239,4 +240,3 @@ const animateNewDataPoint = (data) => {
 
 fetchAssets();
 connectToStream();
-
