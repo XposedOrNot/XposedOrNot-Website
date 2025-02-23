@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, maximum-scale=5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>XposedOrNot: Our Repository</title>
   <meta name="description" content="Explore XposedOrNot's extensive repository of data breaches. Access detailed information and insights to protect your digital identity.">
@@ -23,10 +23,24 @@
   <link rel="stylesheet" href="static/css/repo-style.css" type="text/css">
   <link rel="stylesheet" href="static/css/repo-responsive.css" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
-    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer">
-  <link rel="Devanand Premkumar" href="humans.txt">
+        integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="author" href="humans.txt">
   <style>
+    .col-45 {
+      flex: 0 0 45%;
+      max-width: 45%;
+    }
+    .col-10 {
+      flex: 0 0 10%;
+      max-width: 10%;
+    }
+    .custom-row {
+      display: flex;
+    }
+    .center-text {
+      text-align: center;
+    }
     .sec3-right {
       position: relative;
       z-index: 9999;
@@ -45,13 +59,10 @@
       text-decoration: none;
       font-weight: 600;
     }
-    table,
-    th,
-    td {
+    table, th, td {
       color: white;
     }
-    .readMore,
-    .readLess {
+    .readMore, .readLess {
       color: #fff;
       cursor: pointer;
       text-decoration: underline;
@@ -70,24 +81,24 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"
-    integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc="
-    crossorigin="anonymous"></script>
+          integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc="
+          crossorigin="anonymous"></script>
 </head>
 <body>
   <div>
-    <div>
+    <header>
       <div class="header">
         <div class="grid">
           <div class="header-row">
             <a href="index.html" class="logo-text">XposedOrNot</a>
-            <div class="header-right">
+            <nav class="header-right">
               <ul>
                 <li><a href="password.html">Password</a></li>
                 <li><a href="faq.html">FAQ</a></li>
                 <li><a href="xonPulse.html">News</a></li>
                 <li><a href="api_doc.html">API</a></li>
               </ul>
-            </div>
+            </nav>
           </div>
         </div>
       </div>
@@ -95,8 +106,8 @@
         <nav class="navbar">
           <a class="navbar-brand" href="#">XposedOrNot</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
+                  data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                  aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             <span class="navbar-toggler-icon"></span>
             <span class="navbar-toggler-icon icon-last"></span>
@@ -117,11 +128,14 @@
       </div>
       <div class="banner">
         <div class="grid">
-          <div class="banner-row">
+          <div class="banner-row center-text">
             <h1>Our Repository</h1>
           </div>
         </div>
       </div>
+    </header>
+
+    <main>
       <div class="sec3">
         <div class="grid">
           <div class="sec3-row">
@@ -130,7 +144,7 @@
                 <div class="web-bx1">
                   <div class="web-in">
                     <div class="web-bx-icn">
-                      <img src="static/images/close-circle.png" alt="">
+                      <img src="static/images/close-circle.png" alt="Close icon">
                     </div>
                     <h4 id="breaches-count">0</h4>
                     <h5>Breaches</h5>
@@ -139,7 +153,7 @@
                 <div class="web-bx1">
                   <div class="web-in">
                     <div class="web-bx-icn">
-                      <img src="static/images/document-text.png" alt="">
+                      <img src="static/images/document-text.png" alt="Document icon">
                     </div>
                     <h4 id="records-count">0</h4>
                     <h5>Records</h5>
@@ -150,7 +164,7 @@
                 <div class="web-bx1">
                   <div class="web-in">
                     <div class="web-bx-icn">
-                      <img src="static/images/lock2.png" alt="">
+                      <img src="static/images/lock2.png" alt="Lock icon">
                     </div>
                     <h4 id="pastes-count">0</h4>
                     <h5>Emails</h5>
@@ -159,7 +173,7 @@
                 <div class="web-bx1">
                   <div class="web-in">
                     <div class="web-bx-icn">
-                      <img src="static/images/sms.png" alt="">
+                      <img src="static/images/sms.png" alt="SMS icon">
                     </div>
                     <h4 id="emails-count">0</h4>
                     <h5>Passwords</h5>
@@ -167,14 +181,15 @@
                 </div>
               </div>
             </div>
-            <div class="sec3-right" align="center">
+            <div class="sec3-right center-text">
               <h4>Yearly Trend of Exposed Data Breaches</h4>
               <canvas id="myChart" style="width:100%;max-width:800px"></canvas>
             </div>
           </div>
-          <div class="breach-row">
-            <div class="row">
-              <div class="breach1 col-md-6" align="center">
+
+          <section class="breach-row">
+            <div class="custom-row">
+              <div class="col-45 breach1 center-text">
                 <h4>Top 10 Data Breaches</h4>
                 <div id="top-breaches-table" class="table-responsive">
                   <table class="table">
@@ -190,7 +205,10 @@
                   </table>
                 </div>
               </div>
-              <div class="breach1 col-md-6" align="center">
+              <div class="col-10">
+                <!-- Blank spacer -->
+              </div>
+              <div class="col-45 breach1 center-text">
                 <h4>Recent Breaches</h4>
                 <div id="another-table" class="table-responsive">
                   <table class="table">
@@ -207,8 +225,9 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="buttons">
+          </section>
+
+          <div class="buttons center-text">
             <ul>
               <li><a href="xposed.html">Data Breaches</a></li>
               <li><a href="domains.html">Check Company Exposure</a></li>
@@ -217,9 +236,12 @@
           </div>
         </div>
       </div>
+    </main>
+
+    <footer>
       <div class="copy">
         <div class="grid">
-          <div class="copy-row">
+          <div class="copy-row center-text">
             <p>XposedOrNot.com</p>
             <ul>
               <li>
@@ -241,8 +263,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   </div>
+
   <script>
     $.LoadingOverlay("show", {
       background: "rgba(0, 0, 0, 0.5)",
@@ -263,6 +286,10 @@
     }
 
     $(document).ready(function() {
+      $(document).on("click", ".readMore", function() {
+        toggleDescription(this);
+      });
+
       $.fn.runCounter = function(options) {
         const settings = $.extend({ start: 0, end: 0, duration: 5000 }, options);
         return this.each(function() {
@@ -302,7 +329,6 @@
               lineTension: 0,
               backgroundColor: "#fff",
               borderColor: "#575ed8",
-              color: "#fff",
               data: breachesCount
             }]
           },
@@ -331,7 +357,7 @@
               <td>${breach.breachid}</td>
               <td>
                 <span class="description truncated">${breach.description}</span>
-                <span class="readMore" onclick="toggleDescription(this)">Read more</span>
+                <span class="readMore">Read more</span>
               </td>
               <td>${breach.count.toLocaleString()}</td>
             </tr>
@@ -347,7 +373,7 @@
               <td>${breach.breachid}</td>
               <td>
                 <span class="description truncated">${breach.description}</span>
-                <span class="readMore" onclick="toggleDescription(this)">Read more</span>
+                <span class="readMore">Read more</span>
               </td>
               <td>${breach.count.toLocaleString()}</td>
             </tr>
