@@ -75,6 +75,19 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+    @media screen and (max-width: 768px) {
+      .custom-row {
+        display: block;
+      }
+      .col-45 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+      .col-10 {
+        display: none;
+      }
+    }
   </style>
   <script defer src="/static/scripts/other-libraries.js"></script>
   <script src="https://kit.fontawesome.com/00d920835c.js" crossorigin="anonymous"></script>
@@ -206,7 +219,6 @@
                 </div>
               </div>
               <div class="col-10">
-                <!-- Blank spacer -->
               </div>
               <div class="col-45 breach1 center-text">
                 <h4>Recent Breaches</h4>
@@ -319,7 +331,6 @@
 
         const years = Object.keys(data.Yearly_Breaches_Count);
         const breachesCount = Object.values(data.Yearly_Breaches_Count);
-
         new Chart("myChart", {
           type: "line",
           data: {
@@ -364,9 +375,10 @@
           `);
         });
 
+        const recentBreaches = data.Recent_Breaches;
         const secondTableBody = $("#another-table tbody");
         secondTableBody.empty();
-        topBreaches.forEach(breach => {
+        recentBreaches.forEach(breach => {
           secondTableBody.append(`
             <tr>
               <td><img src="${breach.logo}" alt="Logo" width="50"></td>
