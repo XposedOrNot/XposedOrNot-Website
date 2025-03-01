@@ -8,7 +8,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-    <meta name="description" content="Explore XposedOrNot's comprehensive data breach repository. Find detailed information on breaches to safeguard your personal and corporate data." />
+    <meta name="description"
+        content="Explore XposedOrNot's comprehensive data breach repository. Find detailed information on breaches to safeguard your personal and corporate data." />
     <meta name="author" content="Devanand Premkumar">
     <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
     <link rel="dns-prefetch" href="cdn.jsdelivr.net">
@@ -38,6 +39,23 @@
         type=text/css media=all>
     <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
     <script src="/static/scripts/other-libraries.js" defer></script>
+    <style>
+        .reference-url,
+        .reference-url a,
+        a.reference-url,
+        .card-body a.reference-url {
+            color: #ffffff !important;
+            text-decoration: underline !important;
+        }
+
+        .reference-url:hover,
+        .reference-url a:hover,
+        a.reference-url:hover {
+            color: #ffc107 !important;
+            text-decoration: underline !important;
+            transition: color 0.3s ease !important;
+        }
+    </style>
 </head>
 
 <body data-spy="scroll" data-target=".menu" data-offset="50">
@@ -170,10 +188,18 @@
                 cardBody.className = "card-body p-4";
 
                 const logo = document.createElement('img');
+                const breachDate = new Date(breach['breachedDate']);
+                const formattedDate = breachDate.getDate().toString().padStart(2, '0') + '-' +
+                    breachDate.toLocaleString('default', { month: 'short' }) + '-' +
+                    breachDate.getFullYear();
+                const altText = `${breach['breachID']} data breach logo - Exposed ${breach['exposedRecords'].toLocaleString()} records on ${formattedDate}`;
                 logo.src = breach['logo'];
-                logo.alt = breach['breachID'];
+                logo.alt = altText;
+                logo.title = altText;
                 logo.width = 100;
                 logo.height = 100;
+                logo.loading = "lazy";
+                logo.style.cursor = "help";
 
                 const title = document.createElement('h4');
                 const titleLink = document.createElement('a');
@@ -183,7 +209,6 @@
 
                 const date = document.createElement('p');
                 date.className = "small mb-4";
-                const breachDate = new Date(breach['breachedDate']);
                 date.textContent = breachDate.toLocaleString('default', { month: 'long' }) + ' ' + breachDate.getFullYear();
 
                 const description = document.createElement('p');
@@ -212,6 +237,10 @@
                 referenceElement.textContent = breach['referenceURL'] ? breach['referenceURL'] : 'No references found.';
                 if (breach['referenceURL']) {
                     referenceElement.href = breach['referenceURL'];
+                    referenceElement.target = "_blank";
+                    referenceElement.rel = "noopener";
+                    referenceElement.className = "reference-url";
+                    referenceElement.style.setProperty('color', '#ffffff', 'important');
                 }
                 referenceElement.className = "reference-url";
                 cardBody.appendChild(referenceElement);
@@ -340,4 +369,3 @@
 </body>
 
 </html>
-
