@@ -139,9 +139,6 @@ $(document).ready(function () {
             onSuccess: function (e, data) {
                 var domainName = $('#eventName').val();
 
-                $('#label_srategy').text(function () {
-                    return $(this).text() + ' for domain - ' + domainName;
-                });
                 $("#alertMe_i1").removeClass("glyphicon glyphicon-ok")
                 $("#alertMe_i1").addClass("fa fa-spinner fa-spin")
                 $("#status").show();
@@ -157,12 +154,17 @@ $(document).ready(function () {
                     $("#alertMe_i1").removeClass("fa fa-spinner fa-spin")
                     $("#alertMe_i1").addClass("glyphicon glyphicon-ok")
                     $("#eventName").hide();
-                    //TODO: To be revisited
-                    $("#lbl_1").html('<div align="left" class="container alert alert-primary"> <strong>Let us get your authorization sorted for ' + $('#eventName').val() + ' 🌟</strong><br><br>' + "We've got a few super easy methods for you to choose from, so you can pick the one that suits you best. You can:<br>" +
+
+                    $("#lbl_1").html('<div align="left" class="container alert alert-primary">' +
+                        '<strong>Let us get your authorization sorted for ' +
+                        '<span class="domain-label">' + $('#eventName').val() + '</span>' +
+                        ' 🌟</strong><br><br>' +
+                        "We've got a few super easy methods for you to choose from, so you can pick the one that suits you best. You can:<br>" +
                         "1. Respond to an email sent to one of the standard email addresses we provide (it'll pop up in your inbox before you know it).<br>" +
                         "2. Add a nifty TXT entry to your domain's DNS settings (think of it as a secret code that confirms you're the real owner).<br>" +
                         "3. Upload a .html file to your site with the given info (kind of like attaching a digital name tag).<br><br>" +
                         "Remember, keep this page open until you're done, or you'll need to start from square one. Don't worry, though; we're here to help make this process a breeze! 🍃<br><br></div>");
+
                     $("#lbl_1").hide()
                     $("#div_input").hide();
                     $("#div_s1").show();
@@ -172,6 +174,8 @@ $(document).ready(function () {
                     $("#div_t1").show();
                     $("#strat").focus();
                     $("#status").hide();
+
+                    $('#domain-display').text(domainName);
                 }
                 e.preventDefault();
             }
