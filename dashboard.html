@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
    <meta charset="utf-8">
-   <title>XposedOrNot: Breaches Dashboard</title>
+   <title>XposedOrNot CxO Dashboard - Manage Data Breach Monitoring Across Domains</title>
    <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
    <link rel="dns-prefetch" href="static.hotjar.com">
    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
@@ -20,7 +21,14 @@
    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
    <link rel="stylesheet" href="/static/css/jquery.hortree.min.css">
    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description" content="XposedOrNot: Get a detailed report of your data breach exposure">
+   <meta name="description"
+      content="XposedOrNot CxO Dashboard - Secure, passwordless access to monitor and manage data breaches across your organization's domains. Get real-time alerts and comprehensive breach reports.">
+   <meta name="keywords" content="data breach monitoring, domain security, CxO dashboard, cybersecurity, breach alerts">
+   <meta property="og:title" content="XposedOrNot CxO Dashboard - Data Breach Monitoring">
+   <meta property="og:description"
+      content="Secure dashboard for monitoring data breaches across your organization's domains. Get real-time alerts and comprehensive breach reports.">
+   <meta property="og:type" content="website">
+   <meta property="og:url" content="https://xposedornot.com/dashboard">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="author" content="Devanand Premkumar">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -40,11 +48,56 @@
 
       .card {
          box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
+         transition: all 0.3s ease;
       }
 
-      h3 {
-         color: #007bff;
-         //text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+      .card:hover {
+         transform: translateY(-2px);
+         box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.3);
+      }
+
+      .form-control:focus {
+         border-color: #007bff;
+         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+
+      .btn-primary {
+         transition: all 0.3s ease;
+         position: relative;
+         overflow: hidden;
+      }
+
+      .btn-primary:hover {
+         transform: translateY(-1px);
+      }
+
+      /* Improved alert styling */
+      .alert {
+         border-radius: 8px;
+         padding: 1rem;
+         margin-top: 1rem;
+         opacity: 0;
+         transform: translateY(20px);
+         transition: all 0.3s ease;
+      }
+
+      .alert.show {
+         opacity: 1;
+         transform: translateY(0);
+      }
+
+
+      .tooltip-inner {
+         max-width: 300px;
+         padding: 8px 12px;
+         font-size: 0.9rem;
+      }
+
+
+      .alert.show {
+         opacity: 1;
+         transform: translateY(0);
+         display: block !important;
       }
    </style>
    <script src="/static/scripts/other-libraries.js" defer></script>
@@ -129,90 +182,124 @@
       </div>
    </header>
    <div class="container">
-      <div class="row justify-content-center align-items-center" style="height:80vh">
-         <div class="col-12">
-            <h3 class="text-center mb-5"> CxO Dashboard Gateway</h3>
-            <p align="center">Welcome to the CXO Dashboard Gateway, the effortless solution for managing your data
-               breaches across your digital domains.
-               <br><br>Streamlined access, enhanced security, and simplified domain management, all at your fingertips
-               with the CXO Dashboard.<br>
-            </p>
-            <div class="card" align="center">
-               <div class="card-body follow-row">
+      <div class="row justify-content-center align-items-center" style="min-height:80vh">
+         <div class="col-12 col-md-8 col-lg-6">
+            <h3 class="text-center mb-4">XposedOrNot CxO Data Breach Monitoring Dashboard</h3>
+            <p class="text-center mb-5">Welcome to the CXO Dashboard Gateway, your comprehensive solution for monitoring
+               and
+               managing data breaches across your organization's digital domains. Get instant alerts, detailed reports,
+               and actionable insights to protect your digital assets.</p>
+
+            <div class="card">
+               <div class="card-body p-4">
                   <form id="emailForm">
                      <div class="form-group">
-                        <input type="email" class="form-control w-75 form-control" id="email" name="email"
-                           placeholder="Please enter your email address to receive the passwordless dashboard link">
+                        <label for="email" class="sr-only">Email address</label>
+                        <div class="input-group">
+                           <input type="email" class="form-control form-control-lg" id="email" name="email"
+                              placeholder="Enter your email address" data-toggle="tooltip" data-placement="top"
+                              title="Enter the email associated with your domain to receive a secure dashboard link">
+                           <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary btn-lg" id="submitButton">
+                                 <span id="submitText">Get Access</span>
+                                 <span id="submitSpinner" class="spinner-border spinner-border-sm d-none"
+                                    role="status"></span>
+                              </button>
+                           </div>
+                        </div>
                      </div>
-                     <button type="submit" class="btn btn-primary" id="submitButton">
-                        <span id="submitText">Get Domain Breaches</span>
-                        <span id="submitSpinner" class="spinner-border spinner-border-sm d-none" role="status"
-                           aria-hidden="true"></span>
-                     </button>
                   </form>
-                  <div id="rateLimitMessage" class="alert alert-warning mt-3" style="display: none;">
-                     <i class="fas fa-exclamation-triangle"></i> Too many requests. Please slow down and try again
-                     later.
+
+
+                  <div id="rateLimitMessage" class="alert alert-warning" role="alert" style="display: none;">
+                     <i class="fas fa-exclamation-triangle mr-2"></i>
+                     <strong>Please wait:</strong> Too many attempts. Try again in a few minutes.
                   </div>
-                  <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
-                     <i class="fas fa-check-circle"></i> If you have already verified domain ownership, you should
-                     receive an email link to the dashboard shortly.
+                  <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+                     <i class="fas fa-check-circle mr-2"></i>
+                     <strong>Success!</strong> Check your email for the dashboard link.
                   </div>
-                  <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
-                     <i class="fas fa-times-circle"></i> There was an error processing your request. Please try again
-                     later.
+                  <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;">
+                     <i class="fas fa-times-circle mr-2"></i>
+                     <strong>Error:</strong> Unable to process request. Please try again.
                   </div>
                </div>
             </div>
          </div>
       </div>
    </div>
-   <script type="text/javascript">
+   <script>
       $(document).ready(function () {
+
+         $('[data-toggle="tooltip"]').tooltip();
+
+
          $('#emailForm').bootstrapValidator({
+            feedbackIcons: {
+               valid: 'fa fa-check',
+               invalid: 'fa fa-times',
+               validating: 'fa fa-refresh'
+            },
             fields: {
                email: {
                   validators: {
                      notEmpty: {
-                        message: 'The email is required and cannot be empty'
+                        message: 'Email address is required'
                      },
                      emailAddress: {
-                        message: 'The input is not a valid email address'
+                        message: 'Please enter a valid email address'
                      }
                   }
                }
             }
-         }).on('success.form.bv', function (e) {
+         });
+
+
+         function showAlert(alertId) {
+            $('.alert').hide().removeClass('show');
+            $(alertId).show().addClass('show');
+         }
+
+
+         $('#emailForm').on('submit', function (e) {
             e.preventDefault();
-            var email = $('#email').val();
             var $submitButton = $('#submitButton');
             var $submitText = $('#submitText');
             var $submitSpinner = $('#submitSpinner');
+            var $email = $('#email');
+            var emailValue = $email.val();
 
+
+            if (!emailValue || !emailValue.includes('@')) {
+               showAlert('#errorMessage');
+               return;
+            }
+
+
+            $submitButton.prop('disabled', true);
+            $email.prop('disabled', true);
             $submitText.hide();
             $submitSpinner.removeClass('d-none').addClass('d-inline-block');
-            $submitButton.prop('disabled', true);
 
             $.ajax({
-               url: 'https://api.xposedornot.com/v1/domain-alert/' + email,
+               url: 'https://api.xposedornot.com/v1/domain-alert/' + emailValue,
                type: 'GET',
                success: function (response) {
-                  $('#successMessage').show();
-                  $('#errorMessage').hide();
-                  $('#rateLimitMessage').hide();
+                  showAlert('#successMessage');
 
-                  $submitButton.prop('disabled', false);
-                  $submitText.show();
-                  $submitSpinner.removeClass('d-inline-block').addClass('d-none');
+                  $email.val('');
                },
                error: function (error) {
                   if (error.status === 429) {
-                     $('#rateLimitMessage').show();
+                     showAlert('#rateLimitMessage');
                   } else {
-                     $('#errorMessage').show();
+                     showAlert('#errorMessage');
                   }
+               },
+               complete: function () {
 
                   $submitButton.prop('disabled', false);
+                  $email.prop('disabled', false);
                   $submitText.show();
                   $submitSpinner.removeClass('d-inline-block').addClass('d-none');
                }
