@@ -8,7 +8,6 @@ $.LoadingOverlaySetup({
 $.LoadingOverlay("show");
 
 
-
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
@@ -21,17 +20,17 @@ function validateEmail(email) {
 
 
 
-// Function to generate risk-specific analysis text
+
 function generateRiskAnalysis(riskLabel, jsonResponse) {
     let analysisText = "<div align='left' class='alert alert-info'>";
     const breachesDetails = jsonResponse.ExposedBreaches.breaches_details;
     const xposedData = jsonResponse.BreachMetrics.xposed_data[0].children;
 
-    // Define colors for category text and recommended action text
+
     const categoryColor = "#407f7f"; // Muted Teal
     const actionTextColor = "#355035"; // Deep Green
 
-    // Calculate counts and prepare content for each category
+
     let plaintextBreaches = [];
     let easyToCrackBreaches = [];
     breachesDetails.forEach(breach => {
@@ -49,7 +48,7 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
 
     analysisText += "<ol>";
 
-    // Compromised Passwords
+
     if (plaintextBreaches.length > 0 || easyToCrackBreaches.length > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Compromised Passwords (${plaintextBreaches.length + easyToCrackBreaches.length} Breaches):</strong></span><ul>`;
         if (plaintextBreaches.length > 0) {
@@ -61,30 +60,30 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
         analysisText += `<li style='color: ${actionTextColor};'><strong>Recommended Action:</strong> If your email is linked to any of these breaches, immediately change your passwords. Use strong, unique passwords for each account.</li></ul></li><br>`;
     }
 
-    // Personal Information Exposure
+
     if (piiBreachesCount > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Personal Information Exposure (${piiBreachesCount} Occurrences):</strong></span> Your personal details might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Monitor for unusual activities that could indicate identity theft or fraud.</li><br>`;
     }
 
-    // Email Addresses and Phishing Risks
+
     if (emailBreachesCount > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Email Addresses and Phishing Risks (${emailBreachesCount} Occurrences):</strong></span> Your email address might be used in phishing attempts.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with emails from unknown sources and avoid clicking on suspicious links.</li><br>`;
     }
 
-    // Communication and Social Interactions
+
     if (communicationBreachesCount > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Communication and Social Interactions (${communicationBreachesCount} Occurrences):</strong></span> Your communication details may be at risk.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with your online interactions and consider updating privacy settings on social platforms.</li><br>`;
     }
 
-    // Demographics
+
     if (demographicsBreachesCount > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Demographics (${demographicsBreachesCount} Occurrences):</strong></span> Sensitive demographic information might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Review and secure any accounts that may contain detailed personal information to prevent identity theft.</li><br>`;
     }
 
     analysisText += "</ol>";
 
-    // Risk Score Assessment
-    analysisText += `<p><strong>Your Risk Score:</strong> <span class='alert alert-${getAlertType(riskLabel)}'><strong>${riskLabel}</strong></span>. `;
+
+    analysisText += `<p><strong>Your Risk Score:</strong> <span class='alert alert-${getAlertType(riskLabel)}' style='padding: 2px 8px; display: inline-block; margin: 0;'><strong>${riskLabel}</strong></span><br><br><strong>Our Recommendations:</strong><br>`;
     switch (riskLabel) {
         case 'Low':
             analysisText += "🟢 Stay vigilant and proactive in securing your data.";
@@ -837,157 +836,89 @@ var barChartData1 = {
 };
 
 function g1() {
+    // Check if dark mode is active
+    const isDarkMode = document.body.classList.contains('dark-mode');
+
+    // Define the labels array
+    const chartLabels = ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'];
+
     var config = {
         type: 'line',
         data: {
-            labels: ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+            labels: chartLabels,  // Use the defined labels array
             datasets: [{
                 label: 'Breaches Count',
                 fill: false,
                 backgroundColor: window.chartColors.red,
                 borderColor: window.chartColors.red,
                 data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24, by25],
-            },
-            {
-                label: 'Pastes Count',
-                fill: false,
-                backgroundColor: window.chartColors.blue,
-                borderColor: window.chartColors.blue,
-                data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23, py24, py24],
-            }
-            ]
-        },
-        options: {
-            responsive: true,
-            legend: {
-                position: 'bottom',
-            },
-            title: {
-                display: false,
-                text: 'Your Overall Breaches So Far'
-            },
-            tooltips: {
-                mode: 'index',
-                intersect: false,
-            },
-            hover: {
-                mode: 'nearest',
-                intersect: true
-            },
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        precision: 0
-                    },
-
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        precision: 0
-                    },
-                    gridLines: {
-                        color: "#7CB9E8"
-                    },
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Count of Data Breaches'
-                    }
-                }]
-            }
-        }
-    };
-
-
-    var ctx = document.getElementById('bc').getContext('2d');
-    window.myLine = new Chart(ctx, config);
-
-    Chart.defaults.global.defaultFontColor = '#417ff9';
-    var config = {
-        type: 'line',
-        data: {
-            labels: ['Aerospace', 'Transport', 'Information Technology', 'Telecommunication', 'Agriculture', 'Construction', 'Education', 'Pharmaceutical', 'Food', 'Health Care', 'Hospitality', 'Entertainment', 'News Media', 'Energy',
-                'Manufacturing', 'Music', 'Mining', 'Electronics', 'Miscellaneous', 'Finance', 'Retail', 'Non-Profit/Charities', 'Government', 'Sports', 'Environment',
-            ],
-            datasets: [{
-                label: 'Breaches Count',
-                fill: false,
-                backgroundColor: window.chartColors.red,
-                borderColor: window.chartColors.red,
-                data: [i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14, i15, i16, i17, i18, i19, i20, i21, i22, i23, i24, i25, i26],
             }]
         },
         options: {
             responsive: true,
-            title: {
-                display: false,
-                text: 'Breaches by industry-verticals'
-            },
-            tooltips: {
-                mode: 'index',
-                intersect: false,
-            },
-            hover: {
-                mode: 'nearest',
-                intersect: true
+            defaultFontColor: isDarkMode ? '#FFFFFF' : '#666666',
+            legend: {
+                position: 'bottom',
+                labels: {
+                    fontColor: isDarkMode ? '#FFFFFF' : '#666666',
+                    fontSize: 12,
+                    fontStyle: 'bold'
+                }
             },
             scales: {
                 xAxes: [{
-                    display: true,
+                    ticks: {
+                        beginAtZero: true,
+                        precision: 0,
+                        fontColor: isDarkMode ? '#FFFFFF' : '#666666',
+                        fontSize: 12,
+                        fontStyle: 'bold'
+                    },
+                    gridLines: {
+                        display: false,
+                        color: '#e0e0e0',
+                        drawOnChartArea: false,
+                        drawBorder: true,
+                        zeroLineColor: isDarkMode ? '#FFFFFF' : '#666666'
+                    },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Industry'
+                        fontColor: isDarkMode ? '#FFFFFF' : '#666666',
+                        fontSize: 12,
+                        fontStyle: 'bold'
                     }
                 }],
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        precision: 0
+                        precision: 0,
+                        fontColor: isDarkMode ? '#FFFFFF' : '#666666',
+                        fontSize: 12,
+                        fontStyle: 'bold'
                     },
-                    display: true,
+                    gridLines: {
+                        display: isDarkMode ? false : true,
+                        color: '#e0e0e0',
+                        drawOnChartArea: isDarkMode ? false : true,
+                        drawBorder: true,
+                        zeroLineColor: isDarkMode ? '#FFFFFF' : '#666666'
+                    },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Count'
+                        labelString: 'Count of Data Breaches',
+                        fontColor: isDarkMode ? '#FFFFFF' : '#666666',
+                        fontSize: 12,
+                        fontStyle: 'bold'
                     }
                 }]
             }
         }
     };
 
-    var color = Chart.helpers.color;
-    var barChartData1 = {
-        labels: ['Plain Text Password', 'Easily Crackable Hash', 'Strong Hashes'],
-        datasets: [{
-            label: 'Exposed Passwords Risk Profile',
-            backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-            borderColor: window.chartColors.blue,
-            borderWidth: 1,
-            data: [
-                plaintext,
-                easy,
-                hard
-            ],
-            backgroundColor: [
-                'rgba(255, 0, 0, 0.7)',
-                'rgba(255, 165, 0, 0.7)',
-                'rgba(0,255,0, 0.7)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(75, 192, 192, 1)'
-            ],
-        }]
-
-    };
-
+    var ctx = document.getElementById('bc').getContext('2d');
+    window.myLine = new Chart(ctx, config);
 }
+
 $(window).on("load", function () {
     //  $.LoadingOverlay("hide");
 });
@@ -1073,7 +1004,7 @@ $.get(apiUrl, function (response) {
 
     const dataForTree = [];
     dataForTree.push({
-        children: result[0][1],
+        children: result[0][1].filter(yearNode => yearNode.children && yearNode.children.length > 0),
         description: result[1][1]
     });
 
