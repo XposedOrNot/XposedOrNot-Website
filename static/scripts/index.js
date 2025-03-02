@@ -128,7 +128,7 @@ $(document).ready(function () {
         $("#ssvisible").html("<h2>Searching ...</h2>");
         updateEmailBadge(email);
         updateBreachBadge('No breaches found!');
-        updatePasteBadge('No pastes found!');
+
 
         if (!email) {
             updateModalForInvalidEmail(email);
@@ -170,9 +170,7 @@ function updateBreachBadge(text) {
     $('#data_breach').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">' + text + '</span>');
 }
 
-function updatePasteBadge(text) {
-    $('#paste_breach').html('<b>Exposed Pastes </b> <span class="badge" style="float:right">' + text + '</span>');
-}
+
 
 function updateModalForInvalidEmail(email) {
     $("#hhead").addClass("modal-header-danger");
@@ -199,7 +197,7 @@ function processSearchResponse(response, email) {
         $("#hhead").attr("class", "modal-header-danger");
         $("#dismiss").attr("class", "btn-danger btn");
         $("#mbody").show();
-        $("#ssvisible").html("<h2>Search results for you</h2>");
+        $("#ssvisible").html("<h2>Email Security Check Results</h2>");
         $("#warn").show();
         $("#succ").hide();
         $("#spins").hide();
