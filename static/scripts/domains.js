@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $('#domainForm').on('submit', function (e) {
         e.preventDefault();
-        var domainName = $('#domainInput').val().trim(); 
+        var domainName = $('#domainInput').val().trim();
 
         if (domainRegex.test(domainName)) {
             $('#submitButton').attr("disabled", true);
@@ -16,9 +16,9 @@ $(document).ready(function () {
             var logoSrc = "https://logo.clearbit.com/" + domainName;
             $("#logo").attr("src", logoSrc).show();
 
-            $("#logo").on('error', function() {
+            $("#logo").on('error', function () {
                 $(this).hide();
-            }).on('load', function() {
+            }).on('load', function () {
                 $(this).show();
             });
 
