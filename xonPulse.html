@@ -4,13 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xonPulse: Your Data Breach News Feed</title>
+
+
+    <title>Data Breach News Feed & Alerts | xonPulse by XposedOrNot</title>
+    <meta name="description"
+        content="Stay informed about the latest data breaches, cyber security incidents, and privacy violations. Real-time updates on company breaches, hacks, and data leaks.">
+    <meta name="keywords"
+        content="data breach news, cyber security alerts, privacy violations, security incidents, hack reports, data leaks">
+    <meta name="author" content="XposedOrNot">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://xposedornot.com/xonPulse" />
+
+
+    <meta property="og:title" content="Data Breach News Feed & Alerts | xonPulse">
+    <meta property="og:description"
+        content="Stay informed about the latest data breaches, cyber security incidents, and privacy violations. Real-time updates on company breaches, hacks, and data leaks.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xposedornot.com/xonPulse">
     <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+    <meta property="og:site_name" content="XposedOrNot">
+
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@XposedOrNot">
     <meta name="twitter:creator" content="@DevaOnBreaches">
-    <meta name="twitter:title" content="xonPulse: Your Data Breach News Feed">
-    <meta name="twitter:description" content="xonPulse: Your Data Breach News Feed">
+    <meta name="twitter:title" content="Data Breach News Feed & Alerts | xonPulse">
+    <meta name="twitter:description"
+        content="Stay informed about the latest data breaches, cyber security incidents, and privacy violations.">
     <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
         integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
@@ -22,125 +42,241 @@
             background-color: #f8f9fa;
         }
 
+        .navbar-brand span {
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar-brand:hover span {
+            opacity: 1;
+        }
+
         .news-item {
             position: relative;
             background: #fff;
             border-left: 5px solid #007bff;
-            margin-bottom: 10px;
-            padding: 20px;
-            border-radius: 5px;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            hyphens: auto;
+            margin-bottom: 15px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
 
         .news-item:hover {
-            background-color: #f1f1f1;
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .news-date {
             position: absolute;
             right: 20px;
             top: 20px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: #6c757d;
+            font-weight: 500;
         }
 
         .pagination-controls {
-            margin-top: 20px;
+            margin-top: 30px;
             text-align: center;
         }
 
         .pagination-controls button {
-            margin: 0 5px;
-            min-width: 80px;
+            margin: 0 8px;
+            min-width: 100px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
         }
 
         .pagination-controls span {
             display: inline-block;
-            margin: 0 10px;
-            font-size: 1rem;
-            color: #6c757d;
+            margin: 0 15px;
+            font-size: 1.1rem;
+            color: #495057;
+            font-weight: 500;
         }
 
         .news-icon {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            bottom: 15px;
+            right: 15px;
             font-size: 1.5rem;
-            color: #ff5722;
+            color: #dc3545;
             opacity: 0.8;
+            transition: all 0.3s ease;
         }
 
         .news-icon:hover {
             opacity: 1;
+            transform: scale(1.1);
         }
 
-        a {
-            word-break: break-all;
-            color: #007bff;
-            text-decoration: underline;
+        .search-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
         }
 
-        a:hover {
-            text-decoration: none;
+        #search-input,
+        #timeline-dropdown {
+            border-radius: 20px;
+            padding: 10px 20px;
+            border: 1px solid #dee2e6;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+
+        #search-input:focus,
+        #timeline-dropdown:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
+        .alert-info {
+            border-radius: 8px;
+            border: none;
+            background-color: #e3f2fd;
+            color: #0c5460;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        footer {
+            background: #343a40;
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .news-item {
+                padding: 20px 15px;
+            }
+
+            .news-date {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-bottom: 10px;
+            }
+
+            .pagination-controls button {
+                min-width: 80px;
+            }
         }
     </style>
+
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Data Breach News Feed & Alerts | xonPulse",
+        "description": "Stay informed about the latest data breaches, cyber security incidents, and privacy violations.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "XposedOrNot",
+            "logo": "https://xposedornot.com/static/images/xon.png"
+        }
+    }
+    </script>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="https://xposedornot.com" style="text-decoration: none;">
-            <span style="font-size: 1.5em; font-weight: bold; color: white;">XposedOrNot</span>
-            <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -5px;">Community
-                Edition</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="https://xposedornot.com">
+                <span style="font-size: 1.5em; font-weight: bold;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; opacity: 0.85; margin-top: -5px;">Community
+                    Edition</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    </div>
-</nav>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://xposedornot.com">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://xposedornot.com/xonPulse">xonPulse</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://xposedornot.com/faq">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="container my-5">
-        <div class="row mb-4">
-            <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <h1 class="mb-0" style="color: #007bff; font-size: 1.5rem;">xonPulse<span
-                        style="font-size: 0.8em; color: inherit;">: Your news feed for data breaches</span></h1>
-            </div>
-            <div class="col-12 col-md-6 d-flex justify-content-md-end align-items-center">
-                <input type="text" id="search-input" class="form-control me-2 w-100 w-md-auto" placeholder="Search news...">
-                <select id="timeline-dropdown" class="form-control w-100 w-md-auto">
-                    <option value="all">All Time</option>
-                    <option value="day">Last 1 Day</option>
-                    <option value="week">Last 1 Week</option>
-                    <option value="month">Last Month</option>
-                    <option value="quarter">Last Quarter</option>
-                    <option value="year">Last Year</option>
-                </select>
+        <div class="search-section">
+            <div class="row">
+                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                    <h1 style="color: #007bff; font-size: 1.8rem; margin-bottom: 0;">xonPulse
+                        <span style="font-size: 0.8em; color: #6c757d;">Your news feed for data breaches</span>
+                    </h1>
+                </div>
+                <div class="col-12 col-md-6 d-flex justify-content-md-end align-items-center">
+                    <input type="text" id="search-input" class="form-control me-2" placeholder="Search news...">
+                    <select id="timeline-dropdown" class="form-control ml-2">
+                        <option value="all">All Time</option>
+                        <option value="day">Last 1 Day</option>
+                        <option value="week">Last 1 Week</option>
+                        <option value="month">Last Month</option>
+                        <option value="quarter">Last Quarter</option>
+                        <option value="year">Last Year</option>
+                    </select>
+                </div>
             </div>
         </div>
 
         <div class="alert alert-info">
-            Stay updated with the latest data breaches reported in the media. Discover incidents impacting security and
-            take proactive steps to safeguard your data.
+            <h2 class="h5 mb-2">Latest Data Breach News & Security Alerts</h2>
+            <p class="mb-0">Stay updated with the latest data breaches, cyber security incidents, and privacy violations
+                reported in the media. Discover security breaches impacting organizations worldwide and take proactive
+                steps to safeguard your data.</p>
         </div>
 
         <div id="news-container"></div>
-        <div class="row">
-            <div class="col-12 pagination-controls">
-                <button id="prev-page" class="btn btn-primary">&lt;&lt; Previous</button>
-                <span id="page-info">Page 1 of 10</span>
-                <button id="next-page" class="btn btn-primary">Next &gt;&gt;</button>
-            </div>
+        <div class="pagination-controls">
+            <button id="prev-page" class="btn btn-primary">&lt;&lt; Previous</button>
+            <span id="page-info">Page 1 of 10</span>
+            <button id="next-page" class="btn btn-primary">Next &gt;&gt;</button>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>xonPulse provides real-time data breach notifications and cyber security news updates.</p>
+                    <p>Stay informed about the latest security incidents and privacy violations.</p>
+                    <p>© 2024 XposedOrNot. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
     <script>
         $(document).ready(function () {
+
             let currentPage = 1;
             const itemsPerPage = 10;
             let sortedData = [];
@@ -225,8 +361,7 @@
         });
     </script>
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-   <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/common.js"></script>
 </body>
 
 </html>
-
