@@ -1,6 +1,19 @@
 $(document).ready(function () {
-    $('#domainModal').modal('show');
+    $('#domainModal').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
     $('.overlay').show();
+
+    $('#domainModal').on('shown.bs.modal', function () {
+        $('#domainInput').focus();
+        setTimeout(function () {
+            if (document.activeElement !== document.getElementById('domainInput')) {
+                $('#domainInput').focus();
+            }
+        }, 100);
+    });
 
     const domainRegex = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)?[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/;
 
