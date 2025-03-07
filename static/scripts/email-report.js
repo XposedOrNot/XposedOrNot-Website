@@ -36,7 +36,7 @@ s = '<div align="center" class="alert alert-danger"><strong>Sensitive Data Breac
 $("#email_sensitive").html(s)
 s = '<div align="center" class="alert alert-primary"><strong>Exposed Pastes Summary For Email: ' + email + '</strong></div></p>'
 $("#paste").html(s)
-var emailVerificationUrl = 'https://xon-api-test-wdkjdzw5ca-uw.a.run.app/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 var sitesJson;
 var sensitiveBreaches;
 
