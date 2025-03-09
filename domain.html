@@ -342,6 +342,20 @@
       .verification-select option:first-child {
          color: #8898aa !important;
       }
+
+      .input-lg.is-valid {
+         border-color: #28a745 !important;
+         box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+      }
+
+      .input-lg.is-invalid {
+         border-color: #dc3545 !important;
+         box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+      }
+
+      .form-control.success-validation {
+         background-image: none !important;
+      }
    </style>
 </head>
 
@@ -606,10 +620,10 @@
          </div>
          <div align="left" class="input-group">
             <input class="form-control input-lg" type="text" id="txt_email_h"
-               placeholder="Email address to receive the exposed data" type="email">
+               placeholder="Email address to receive the exposed data">
             <span class="input-group-btn">
-               <button type="submit" id="searchMe_h" class="btn btn-lg btn-primary">
-                  Verify &nbsp; <span id="searchMe_h_i1" class="glyphicon glyphicon-ok"></span>
+               <button type="submit" id="searchMe_h" class="btn btn-lg btn-primary" disabled>
+                  Verify &nbsp; <i class="fas fa-check"></i>
                </button>
             </span>
          </div>
@@ -646,10 +660,10 @@
          <br>
          <div align="left" class="input-group">
             <input class="form-control input-lg" type=text id="txt_email_e"
-               placeholder="Email address to receive the exposed data" type="email">
+               placeholder="Email address to receive the exposed data">
             <span class="input-group-btn">
-               <button type="submit" id="searchMe_e" class="btn btn-lg btn-primary"> Verify &nbsp <span
-                     id="searchMe_e_i1" class="glyphicon glyphicon-ok">
+               <button type="submit" id="searchMe_e" class="btn btn-lg btn-primary" disabled>
+                  Verify &nbsp; <i class="fas fa-check"></i>
                </button>
             </span>
          </div>
@@ -935,6 +949,54 @@
 
             document.getElementById('eventName').addEventListener('input', updateDomainLabel);
             document.getElementById('eventName').addEventListener('change', updateDomainLabel);
+
+            function validateEmail(email) {
+               const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+               return regex.test(email);
+            }
+
+            function setupEmailValidation(inputId, buttonId) {
+               const input = document.getElementById(inputId);
+               const button = document.getElementById(buttonId);
+
+               input.addEventListener('input', function () {
+                  const isValid = validateEmail(this.value);
+
+                  // Remove existing validation classes
+                  this.classList.remove('is-valid', 'is-invalid');
+
+                  // Add appropriate validation class
+                  this.classList.add(isValid ? 'is-valid' : 'is-invalid');
+
+                  // Enable/disable button
+                  button.disabled = !isValid;
+               });
+            }
+
+            // Setup validation for all email inputs
+            setupEmailValidation('txt_email_h', 'searchMe_h');
+            setupEmailValidation('txt_email_e', 'searchMe_e');
+            setupEmailValidation('txt_email_m', 'searchMe_m');
+            setupEmailValidation('txt_dns', 'searchMe_d');
+
+            // Update the existing bootstrapValidator configuration
+            $('#email_form, #html_form, #meta_form, #dns_form').bootstrapValidator({
+               fields: {
+                  txt_email_e: {
+                     validators: {
+                        notEmpty: {
+                           message: 'Email address is required'
+                        },
+                        emailAddress: {
+                           message: 'Please enter a valid email address'
+                        }
+                     }
+                  }
+               }
+            }).on('success.field.bv', function (e, data) {
+               // Remove success icon
+               data.element.next('.form-control-feedback').hide();
+            });
          </script>
          <div class="container text-center" style="font-family:Poppins">
             <footer>
