@@ -112,6 +112,23 @@
             border-radius: 4px !important;
          }
       }
+
+      .form-control.is-valid {
+         border-color: #28a745 !important;
+         box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+         background-image: none !important;
+      }
+
+      .form-control.is-invalid {
+         border-color: #dc3545 !important;
+         box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+         background-image: none !important;
+      }
+
+
+      .form-control-feedback {
+         display: none !important;
+      }
    </style>
    <script src="/static/scripts/other-libraries.js" defer></script>
 </head>
@@ -243,36 +260,70 @@
    </div>
    <script>
       $(document).ready(function () {
-
          $('[data-toggle="tooltip"]').tooltip();
 
+         function validateEmail(email) {
+            const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!email) return false;
+            if (!regex.test(email)) return false;
+
+            const [localPart, domain] = email.split('@');
+            if (domain.length < 4) return false;
+
+            return true;
+         }
+
+         let initialLoad = true;
 
          $('#emailForm').bootstrapValidator({
-            feedbackIcons: {
-               valid: 'fa fa-check',
-               invalid: 'fa fa-times',
-               validating: 'fa fa-refresh'
-            },
+            live: 'enabled',
+            trigger: 'blur change',
+            feedbackIcons: false,
             fields: {
                email: {
                   validators: {
-                     notEmpty: {
-                        message: 'Email address is required'
-                     },
-                     emailAddress: {
-                        message: 'Please enter a valid email address'
+                     callback: {
+                        message: 'Please enter a valid email address',
+                        callback: function (value) {
+                           if (initialLoad) {
+                              initialLoad = false;
+                              return true;
+                           }
+                           return validateEmail(value);
+                        }
                      }
                   }
                }
             }
+         }).on('status.field.bv', function (e, data) {
+            const $field = data.element;
+            const isValid = data.status === 'VALID';
+            const button = $('#submitButton');
+
+            $field.removeClass('is-valid is-invalid');
+            if (!initialLoad && $field.val()) {
+               $field.addClass(isValid ? 'is-valid' : 'is-invalid');
+            }
+            button.prop('disabled', !isValid);
          });
 
+         $('#submitButton').prop('disabled', true);
+
+         $('#email').on('input', function () {
+            const $field = $(this);
+            const isValid = validateEmail($field.val());
+
+            $field.removeClass('is-valid is-invalid');
+            if ($field.val()) {
+               $field.addClass(isValid ? 'is-valid' : 'is-invalid');
+            }
+            $('#submitButton').prop('disabled', !isValid);
+         });
 
          function showAlert(alertId) {
             $('.alert').hide().removeClass('show');
             $(alertId).show().addClass('show');
          }
-
 
          $('#emailForm').on('submit', function (e) {
             e.preventDefault();
@@ -282,12 +333,10 @@
             var $email = $('#email');
             var emailValue = $email.val();
 
-
-            if (!emailValue || !emailValue.includes('@')) {
+            if (!validateEmail(emailValue)) {
                showAlert('#errorMessage');
                return;
             }
-
 
             $submitButton.prop('disabled', true);
             $email.prop('disabled', true);
@@ -299,8 +348,7 @@
                type: 'GET',
                success: function (response) {
                   showAlert('#successMessage');
-
-                  $email.val('');
+                  $email.val('').removeClass('is-valid is-invalid');
                },
                error: function (error) {
                   if (error.status === 429) {
@@ -310,13 +358,18 @@
                   }
                },
                complete: function () {
-
                   $submitButton.prop('disabled', false);
                   $email.prop('disabled', false);
                   $submitText.show();
                   $submitSpinner.removeClass('d-inline-block').addClass('d-none');
                }
             });
+         });
+
+         $('#emailForm').on('reset', function () {
+            const $field = $('#email');
+            $field.removeClass('is-valid is-invalid');
+            $('#submitButton').prop('disabled', true);
          });
       });
    </script>
