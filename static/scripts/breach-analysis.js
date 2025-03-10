@@ -19,6 +19,11 @@ function initializeTheme() {
         html.setAttribute('data-bs-theme', isDark ? 'light' : 'dark');
         updateThemeIcon(!isDark);
         localStorage.setItem('theme', isDark ? 'light' : 'dark');
+
+
+        d3.selectAll('#visualization text:not(.fa)')
+            .attr('fill', isDark ? 'light' : '#000')
+            .attr('stroke', isDark ? 'none' : '#ffffff');
     });
 
 
@@ -288,14 +293,28 @@ function calculateRiskScore(breaches) {
 
 function initializeVisualization() {
     const container = document.getElementById('visualization');
-    d3.select('#visualization')
+
+
+    const svg = d3.select('#visualization')
         .append('svg')
-        .attr('width', container.clientWidth)
+        .attr('width', Math.max(800, container.clientWidth))
         .attr('height', container.clientHeight);
 
+
+    const zoom = d3.zoom()
+        .scaleExtent([0.5, 2])
+        .on('zoom', (event) => {
+            svg.selectAll('g').attr('transform', event.transform);
+        });
+
+    svg.call(zoom);
+
+    // Initial update
     updateVisualization();
+
+    // Handle window resize
     window.addEventListener('resize', debounce(() => {
-        updateVisualization();
+        updateVisualizationSize();
     }, 250));
 }
 
@@ -307,46 +326,26 @@ function updateVisualizationSize() {
     const nodeCount = filteredData?.Breaches_Details?.length || 0;
     const uniqueBreaches = new Set(filteredData?.Breaches_Details?.map(item => item.breach)).size || 0;
 
+    // Calculate minimum width based on node count
+    const minWidth = Math.max(800, nodeCount * 10);
 
-    let baseHeight = Math.max(
-        600,
-        Math.min(2000, nodeCount * 15 + uniqueBreaches * 30)
-    );
-
-
-    let height;
-    if (window.innerWidth >= 1200) {
-        height = Math.max(baseHeight, window.innerHeight - 300);
-    } else {
-        height = Math.max(baseHeight, window.innerHeight - 400);
-    }
-
-
-    const minWidth = nodeCount > 500 ? 1200 : 800;
-    const width = Math.max(container.clientWidth, minWidth);
-
-
-    container.style.height = `${height}px`;
-    container.style.minWidth = `${minWidth}px`;
-    container.style.overflowX = 'auto';
-
-
+    // Set SVG dimensions
     const svg = d3.select('#visualization svg');
     if (svg.node()) {
-        svg.attr('width', width)
-            .attr('height', height);
+        svg
+            .attr('width', Math.max(minWidth, container.clientWidth))
+            .attr('height', container.clientHeight);
     }
 }
 
 
 function updateVisualization() {
     const container = document.getElementById('visualization');
-    const width = container.clientWidth;
+    const width = Math.max(800, container.clientWidth);
     const height = container.clientHeight;
 
 
     d3.select('#visualization svg').html('');
-
 
     const nodeIcons = {
         domain: '\uf0ac',
@@ -354,15 +353,12 @@ function updateVisualization() {
         breach: '\uf3ed'
     };
 
-
     const defs = d3.select('#visualization svg').append('defs');
     defs.append('style')
         .text(`@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');`);
 
-
     const nodes = [];
     const links = [];
-
 
     const domains = [...new Set(filteredData.Breaches_Details.map(item => item.domain))];
     domains.forEach(domain => {
@@ -370,13 +366,11 @@ function updateVisualization() {
         nodes.push({ id: domain, type: 'domain', label: `${domain} (${emailCount})` });
     });
 
-
     const breaches = [...new Set(filteredData.Breaches_Details.map(item => item.breach))];
     breaches.forEach(breach => {
         const emailCount = filteredData.Breaches_Details.filter(item => item.breach === breach).length;
         nodes.push({ id: breach, type: 'breach', label: `${breach} (${emailCount})` });
     });
-
 
     filteredData.Breaches_Details.forEach(item => {
         const shouldShowEmail = expandedNodes.has(item.breach) || expandedNodes.has(item.domain);
@@ -387,11 +381,9 @@ function updateVisualization() {
             links.push({ source: item.domain, target: item.email });
             links.push({ source: item.email, target: item.breach });
         } else {
-
             links.push({ source: item.domain, target: item.breach });
         }
     });
-
 
     const nodeCount = nodes.length;
     const isLargeDataset = nodeCount > 100;
@@ -399,11 +391,9 @@ function updateVisualization() {
     const simulation = d3.forceSimulation(nodes)
         .force('link', d3.forceLink(links).id(d => d.id).distance(isLargeDataset ? 200 : 150))
         .force('charge', d3.forceManyBody().strength(isLargeDataset ? -800 : -500))
-        .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('collision', d3.forceCollide().radius(isLargeDataset ? 80 : 50));
+        .force('center', d3.forceCenter(width / 2, height / 2));
 
     const svg = d3.select('#visualization svg');
-
 
     svg.append('defs').selectAll('marker')
         .data(['end'])
@@ -419,7 +409,6 @@ function updateVisualization() {
         .attr('d', 'M0,-5L10,0L0,5')
         .attr('fill', '#999');
 
-
     const link = svg.append('g')
         .selectAll('line')
         .data(links)
@@ -430,7 +419,6 @@ function updateVisualization() {
         .attr('stroke-width', d => {
             return (d.source.type === 'domain' && d.target.type === 'breach') ? 2 : 1;
         });
-
 
     const nodeGroup = svg.append('g')
         .selectAll('g')
@@ -443,7 +431,6 @@ function updateVisualization() {
             .on('drag', dragged)
             .on('end', dragended))
         .on('click', (event, d) => handleNodeClick(event, d));
-
 
     nodeGroup.append('circle')
         .attr('r', d => {
@@ -465,7 +452,6 @@ function updateVisualization() {
         .attr('stroke', d => expandedNodes.has(d.id) ? '#ffc107' : '#fff')
         .attr('stroke-width', d => expandedNodes.has(d.id) ? 3 : 1.5);
 
-
     nodeGroup.append('text')
         .attr('class', 'fa')
         .attr('font-family', 'FontAwesome')
@@ -481,7 +467,6 @@ function updateVisualization() {
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .text(d => nodeIcons[d.type]);
-
 
     nodeGroup.append('text')
         .text(d => {
@@ -504,10 +489,8 @@ function updateVisualization() {
         .attr('paint-order', 'stroke')
         .attr('pointer-events', 'none');
 
-
     nodeGroup.append('title')
         .text(d => `${d.type}: ${d.label}`);
-
 
     simulation.on('tick', () => {
         link
@@ -520,7 +503,6 @@ function updateVisualization() {
             .attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
-
     function getConnectedBreach(emailId) {
         const connection = filteredData.Breaches_Details.find(item => item.email === emailId);
         return connection ? connection.breach : null;
@@ -530,7 +512,6 @@ function updateVisualization() {
         const connection = filteredData.Breaches_Details.find(item => item.email === emailId);
         return connection ? connection.domain : null;
     }
-
 
     function dragstarted(event) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -548,6 +529,15 @@ function updateVisualization() {
         event.subject.fx = null;
         event.subject.fy = null;
     }
+
+    // Add pan and zoom behavior
+    const zoom = d3.zoom()
+        .scaleExtent([0.5, 2])
+        .on('zoom', (event) => {
+            svg.selectAll('g').attr('transform', event.transform);
+        });
+
+    svg.call(zoom);
 }
 
 
@@ -574,7 +564,9 @@ function initializeDataTable() {
                 }
             }
         ],
-        dom: '<"d-flex justify-content-between align-items-center mb-3"Bf>rt<"d-flex justify-content-between align-items-center"lip>',
+        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+            '<"row"<"col-sm-12"tr>>' +
+            '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         buttons: [
             {
                 extend: 'collection',
@@ -583,12 +575,36 @@ function initializeDataTable() {
             }
         ],
         pageLength: 10,
+        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
         order: [[3, 'desc']],
         responsive: true,
+        scrollX: true,
+        scrollCollapse: true,
+        autoWidth: false,
         language: {
             search: 'Search results:',
-            lengthMenu: 'Show _MENU_ entries per page',
-            info: 'Showing _START_ to _END_ of _TOTAL_ entries'
+            lengthMenu: '_MENU_ entries per page',
+            info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+            paginate: {
+                first: '«',
+                previous: '‹',
+                next: '›',
+                last: '»'
+            }
+        },
+        drawCallback: function () {
+            $(window).trigger('resize');
+        },
+        initComplete: function () {
+            // Adjust columns on initial load
+            this.api().columns.adjust();
+        }
+    });
+
+    // Handle window resize to fix table layout
+    $(window).on('resize', function () {
+        if (breachTable) {
+            breachTable.columns.adjust();
         }
     });
 }
@@ -642,7 +658,7 @@ function handleNodeClick(event, d) {
 
 
 function updateTop10Lists() {
-    // Update Top 10 Breaches
+
     const breachCounts = {};
     filteredData.Breaches_Details.forEach(item => {
         breachCounts[item.breach] = (breachCounts[item.breach] || 0) + 1;
@@ -675,7 +691,7 @@ function updateTop10Lists() {
         topBreachesBody.appendChild(row);
     });
 
-    // Update Top 10 Emails
+
     const emailBreachCounts = {};
     const emailDomains = {};
 
@@ -711,7 +727,7 @@ function updateTop10Lists() {
         topEmailsBody.appendChild(row);
     });
 
-    // Add click handlers
+
     document.querySelectorAll('.breach-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -740,7 +756,7 @@ function getRiskBadgeClass(risk) {
     }
 }
 
-// Add CSS for the badges
+
 const style = document.createElement('style');
 style.textContent = `
     .badge {
