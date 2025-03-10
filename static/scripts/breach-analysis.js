@@ -1,4 +1,3 @@
-
 let allData = null;
 let filteredData = null;
 let breachTable = null;
@@ -74,6 +73,7 @@ async function init() {
         updateSummaryTiles();
         initializeVisualization();
         initializeDataTable();
+        updateTop10Lists();
 
     } catch (error) {
         console.error('Error initializing application:', error);
@@ -229,6 +229,7 @@ function filterData() {
     updateSummaryTiles();
     updateVisualization();
     updateDataTable();
+    updateTop10Lists();
 }
 
 
@@ -500,6 +501,7 @@ function updateVisualization() {
         .attr('fill', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#e9ecef' : '#000')
         .attr('stroke', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'none' : '#ffffff')
         .attr('stroke-width', '1px')
+        .attr('paint-order', 'stroke')
         .attr('pointer-events', 'none');
 
 
@@ -637,6 +639,126 @@ function handleNodeClick(event, d) {
         filterData();
     }
 }
+
+
+function updateTop10Lists() {
+    // Update Top 10 Breaches
+    const breachCounts = {};
+    filteredData.Breaches_Details.forEach(item => {
+        breachCounts[item.breach] = (breachCounts[item.breach] || 0) + 1;
+    });
+
+    const sortedBreaches = Object.entries(breachCounts)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10);
+
+    const topBreachesBody = document.querySelector('#topBreachesTable tbody');
+    topBreachesBody.innerHTML = '';
+
+    sortedBreaches.forEach(([breach, count]) => {
+        const breachInfo = allData.Detailed_Breach_Info[breach];
+        const riskLevel = breachInfo?.password_risk || 'unknown';
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <a href="#" class="breach-link" data-breach="${breach}">
+                    ${breach}
+                </a>
+            </td>
+            <td>${count}</td>
+            <td>
+                <span class="badge ${getRiskBadgeClass(riskLevel)}">
+                    ${riskLevel}
+                </span>
+            </td>
+        `;
+        topBreachesBody.appendChild(row);
+    });
+
+    // Update Top 10 Emails
+    const emailBreachCounts = {};
+    const emailDomains = {};
+
+    filteredData.Breaches_Details.forEach(item => {
+        emailBreachCounts[item.email] = (emailBreachCounts[item.email] || 0) + 1;
+        emailDomains[item.email] = emailDomains[item.email] || new Set();
+        emailDomains[item.email].add(item.domain);
+    });
+
+    const sortedEmails = Object.entries(emailBreachCounts)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10);
+
+    const topEmailsBody = document.querySelector('#topEmailsTable tbody');
+    topEmailsBody.innerHTML = '';
+
+    sortedEmails.forEach(([email, count]) => {
+        const domains = Array.from(emailDomains[email]);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <a href="#" class="email-link" data-email="${email}">
+                    ${email}
+                </a>
+            </td>
+            <td>${count}</td>
+            <td>
+                <span class="badge bg-secondary" title="${domains.join(', ')}">
+                    ${domains.length} domain${domains.length !== 1 ? 's' : ''}
+                </span>
+            </td>
+        `;
+        topEmailsBody.appendChild(row);
+    });
+
+    // Add click handlers
+    document.querySelectorAll('.breach-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const breach = e.target.dataset.breach;
+            document.getElementById('breachFilter').value = breach;
+            filterData();
+        });
+    });
+
+    document.querySelectorAll('.email-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = e.target.dataset.email;
+            document.getElementById('emailFilter').value = email;
+            filterData();
+        });
+    });
+}
+
+function getRiskBadgeClass(risk) {
+    switch (risk) {
+        case 'plaintext': return 'bg-danger';
+        case 'easytocrack': return 'bg-warning text-dark';
+        case 'hardtocrack': return 'bg-success';
+        default: return 'bg-secondary';
+    }
+}
+
+// Add CSS for the badges
+const style = document.createElement('style');
+style.textContent = `
+    .badge {
+        font-size: 0.8em;
+        padding: 0.4em 0.6em;
+    }
+    .breach-link, .email-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    .breach-link:hover, .email-link:hover {
+        text-decoration: underline;
+    }
+    [data-bs-theme="dark"] .text-dark {
+        color: #000 !important;
+    }
+`;
+document.head.appendChild(style);
 
 
 document.addEventListener('DOMContentLoaded', () => {
