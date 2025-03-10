@@ -23,6 +23,11 @@ $(document).ready(function () {
         var newUrl = 'api_key_management.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
         window.location.href = newUrl;
     });
+
+    $('#breachAnalysisBtn').click(function () {
+        var analysisUrl = 'breach-analysis.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+        window.location.href = analysisUrl;
+    });
 });
 
 s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Details For Verified Domains</strong></div></p>';

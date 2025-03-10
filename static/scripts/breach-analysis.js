@@ -1,11 +1,11 @@
-// Global variables to store data
+
 let allData = null;
 let filteredData = null;
 let breachTable = null;
 let expandedNodes = new Set();
 let emailTypeahead = null;
 
-// Theme handling
+
 function initializeTheme() {
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
@@ -22,13 +22,13 @@ function initializeTheme() {
         localStorage.setItem('theme', isDark ? 'light' : 'dark');
     });
 
-    // Set initial theme from localStorage or default to dark
+
     const savedTheme = localStorage.getItem('theme') || 'dark';
     html.setAttribute('data-bs-theme', savedTheme);
     updateThemeIcon(savedTheme === 'dark');
 }
 
-// Loading state handling
+
 function showLoading() {
     document.getElementById('loadingOverlay').style.display = 'flex';
 }
@@ -37,7 +37,7 @@ function hideLoading() {
     document.getElementById('loadingOverlay').style.display = 'none';
 }
 
-// Parse URL parameters
+
 function getUrlParams() {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -46,7 +46,7 @@ function getUrlParams() {
     };
 }
 
-// Initialize the application
+
 async function init() {
     showLoading();
     initializeTheme();
@@ -55,16 +55,20 @@ async function init() {
     if (!params.email || !params.token) {
         hideLoading();
         alert('Missing required parameters');
+        window.location.href = 'breach-dashboard.html';
         return;
     }
 
+
+    document.getElementById('backToDashboard').addEventListener('click', () => {
+        window.location.href = `breach-dashboard.html?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`;
+    });
+
     try {
-        // Fetch data from API
         const response = await fetch(`https://api.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`);
         allData = await response.json();
         filteredData = allData;
 
-        // Initialize components
         populateFilters();
         setupFilterListeners();
         updateSummaryTiles();
@@ -79,23 +83,23 @@ async function init() {
     }
 }
 
-// Initialize email typeahead
+
 function initializeEmailTypeahead() {
     const emails = [...new Set(allData.Breaches_Details.map(item => item.email))];
 
-    // Initialize Bloodhound for email suggestions
+
     const emailEngine = new Bloodhound({
         local: emails,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         datumTokenizer: Bloodhound.tokenizers.whitespace
     });
 
-    // Clear existing typeahead if it exists
+
     if (emailTypeahead) {
         emailTypeahead.typeahead('destroy');
     }
 
-    // Initialize typeahead
+
     emailTypeahead = $('#emailFilter').typeahead({
         hint: true,
         highlight: true,
@@ -106,15 +110,15 @@ function initializeEmailTypeahead() {
             source: emailEngine
         });
 
-    // Handle selection
+
     emailTypeahead.on('typeahead:select', function (ev, suggestion) {
         filterData();
     });
 }
 
-// Populate filter dropdowns
+
 function populateFilters() {
-    // Domain filter
+
     const domains = [...new Set(allData.Breaches_Details.map(item => item.domain))];
     const domainSelect = document.getElementById('domainFilter');
     domainSelect.innerHTML = '<option value="">All Domains</option>';
@@ -123,7 +127,7 @@ function populateFilters() {
         domainSelect.add(option);
     });
 
-    // Breach filter
+
     const breaches = Object.keys(allData.Detailed_Breach_Info);
     const breachSelect = document.getElementById('breachFilter');
     breachSelect.innerHTML = '<option value="">All Breaches</option>';
@@ -132,7 +136,7 @@ function populateFilters() {
         breachSelect.add(option);
     });
 
-    // Year filter
+
     const years = Object.keys(allData.Yearly_Metrics).sort((a, b) => b - a);
     const yearSelect = document.getElementById('yearFilter');
     yearSelect.innerHTML = '<option value="">All Years</option>';
@@ -141,11 +145,11 @@ function populateFilters() {
         yearSelect.add(option);
     });
 
-    // Initialize email typeahead
+
     initializeEmailTypeahead();
 }
 
-// Add event listeners for filters
+
 function setupFilterListeners() {
     ['domainFilter', 'breachFilter', 'yearFilter'].forEach(id => {
         const element = document.getElementById(id);
@@ -155,14 +159,14 @@ function setupFilterListeners() {
         });
     });
 
-    // Email filter input
+
     const emailFilter = document.getElementById('emailFilter');
     emailFilter.addEventListener('input', debounce(() => {
         updateFilterActiveState(emailFilter);
         filterData();
     }, 300));
 
-    // Clear email filter button
+
     document.getElementById('clearEmailFilter').addEventListener('click', () => {
         emailFilter.value = '';
         updateFilterActiveState(emailFilter);
@@ -170,7 +174,7 @@ function setupFilterListeners() {
     });
 }
 
-// Update filter active state
+
 function updateFilterActiveState(element) {
     if (element.value) {
         element.classList.add('filter-active');
@@ -179,7 +183,7 @@ function updateFilterActiveState(element) {
     }
 }
 
-// Debounce function to limit how often filterData is called
+
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -192,17 +196,15 @@ function debounce(func, wait) {
     };
 }
 
-// Filter data based on selected values
+
 function filterData() {
     const selectedDomain = document.getElementById('domainFilter').value;
     const selectedBreach = document.getElementById('breachFilter').value;
     const selectedYear = document.getElementById('yearFilter').value;
     const emailSearch = document.getElementById('emailFilter').value.toLowerCase();
 
-    // Reset expanded nodes when filters change
     expandedNodes.clear();
 
-    // Auto-expand selected breach or domain
     if (selectedBreach) {
         expandedNodes.add(selectedBreach);
     }
@@ -229,20 +231,33 @@ function filterData() {
     updateDataTable();
 }
 
-// Update summary tiles with filtered data
-function updateSummaryTiles() {
-    const uniqueBreaches = [...new Set(filteredData.Breaches_Details.map(item => item.breach))];
-    const uniqueEmails = [...new Set(filteredData.Breaches_Details.map(item => item.email))];
 
-    // Calculate risk score (example implementation)
+function updateSummaryTiles() {
+    const uniqueBreaches = new Set(filteredData.Breaches_Details.map(item => item.breach)).size;
+    const uniqueEmails = new Set(filteredData.Breaches_Details.map(item => item.email)).size;
     const riskScore = calculateRiskScore(filteredData.Breaches_Details);
 
-    document.getElementById('totalBreaches').textContent = uniqueBreaches.length;
-    document.getElementById('uniqueEmails').textContent = uniqueEmails.length;
-    document.getElementById('riskScore').textContent = riskScore;
+    document.getElementById('totalBreaches').innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas fa-shield-alt fa-2x me-3 text-danger"></i>
+            <span>${uniqueBreaches}</span>
+        </div>
+    `;
+    document.getElementById('riskScore').innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+            <span>${riskScore}</span>
+        </div>
+    `;
+    document.getElementById('uniqueEmails').innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas fa-envelope fa-2x me-3 text-primary"></i>
+            <span>${uniqueEmails}</span>
+        </div>
+    `;
 }
 
-// Calculate risk score based on breach types and counts
+
 function calculateRiskScore(breaches) {
     const riskWeights = {
         'plaintext': 1.0,
@@ -256,7 +271,7 @@ function calculateRiskScore(breaches) {
 
     uniqueBreaches.forEach(breach => {
         const breachInfo = allData.Detailed_Breach_Info[breach];
-        // Handle cases where breach info is missing
+
         if (!breachInfo) {
             console.warn(`Missing breach information for: ${breach}`);
             totalRisk += riskWeights['unknown'];
@@ -269,7 +284,7 @@ function calculateRiskScore(breaches) {
     return Math.min(Math.round(totalRisk * 10), 100);
 }
 
-// Initialize D3.js visualization
+
 function initializeVisualization() {
     const container = document.getElementById('visualization');
     d3.select('#visualization')
@@ -283,7 +298,7 @@ function initializeVisualization() {
     }, 250));
 }
 
-// Update visualization size based on content
+
 function updateVisualizationSize() {
     const container = document.getElementById('visualization');
     if (!container) return;
@@ -291,13 +306,13 @@ function updateVisualizationSize() {
     const nodeCount = filteredData?.Breaches_Details?.length || 0;
     const uniqueBreaches = new Set(filteredData?.Breaches_Details?.map(item => item.breach)).size || 0;
 
-    // Calculate base height based on number of nodes and breaches
+
     let baseHeight = Math.max(
         600,
         Math.min(2000, nodeCount * 15 + uniqueBreaches * 30)
     );
 
-    // Adjust height based on screen size
+
     let height;
     if (window.innerWidth >= 1200) {
         height = Math.max(baseHeight, window.innerHeight - 300);
@@ -305,16 +320,16 @@ function updateVisualizationSize() {
         height = Math.max(baseHeight, window.innerHeight - 400);
     }
 
-    // For very large datasets, ensure minimum width
+
     const minWidth = nodeCount > 500 ? 1200 : 800;
     const width = Math.max(container.clientWidth, minWidth);
 
-    // Update container dimensions
+
     container.style.height = `${height}px`;
     container.style.minWidth = `${minWidth}px`;
     container.style.overflowX = 'auto';
 
-    // Update SVG dimensions
+
     const svg = d3.select('#visualization svg');
     if (svg.node()) {
         svg.attr('width', width)
@@ -322,46 +337,46 @@ function updateVisualizationSize() {
     }
 }
 
-// Update D3.js visualization with filtered data
+
 function updateVisualization() {
     const container = document.getElementById('visualization');
     const width = container.clientWidth;
     const height = container.clientHeight;
 
-    // Clear existing visualization
+
     d3.select('#visualization svg').html('');
 
-    // Define icons for node types
+
     const nodeIcons = {
-        domain: '\uf0ac', // Globe icon
-        email: '\uf0e0',  // Envelope icon
-        breach: '\uf3ed'  // Shield-alt icon
+        domain: '\uf0ac',
+        email: '\uf0e0',
+        breach: '\uf3ed'
     };
 
-    // Add Font Awesome to SVG
+
     const defs = d3.select('#visualization svg').append('defs');
     defs.append('style')
         .text(`@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');`);
 
-    // Prepare data for visualization
+
     const nodes = [];
     const links = [];
 
-    // Add domain nodes
+
     const domains = [...new Set(filteredData.Breaches_Details.map(item => item.domain))];
     domains.forEach(domain => {
         const emailCount = filteredData.Breaches_Details.filter(item => item.domain === domain).length;
         nodes.push({ id: domain, type: 'domain', label: `${domain} (${emailCount})` });
     });
 
-    // Add breach nodes
+
     const breaches = [...new Set(filteredData.Breaches_Details.map(item => item.breach))];
     breaches.forEach(breach => {
         const emailCount = filteredData.Breaches_Details.filter(item => item.breach === breach).length;
         nodes.push({ id: breach, type: 'breach', label: `${breach} (${emailCount})` });
     });
 
-    // Add email nodes and links only for expanded nodes
+
     filteredData.Breaches_Details.forEach(item => {
         const shouldShowEmail = expandedNodes.has(item.breach) || expandedNodes.has(item.domain);
         if (shouldShowEmail) {
@@ -371,12 +386,12 @@ function updateVisualization() {
             links.push({ source: item.domain, target: item.email });
             links.push({ source: item.email, target: item.breach });
         } else {
-            // Direct link between domain and breach when not expanded
+
             links.push({ source: item.domain, target: item.breach });
         }
     });
 
-    // Create force simulation with adjusted forces for larger datasets
+
     const nodeCount = nodes.length;
     const isLargeDataset = nodeCount > 100;
 
@@ -388,7 +403,7 @@ function updateVisualization() {
 
     const svg = d3.select('#visualization svg');
 
-    // Create arrow markers for links
+
     svg.append('defs').selectAll('marker')
         .data(['end'])
         .enter().append('marker')
@@ -403,7 +418,7 @@ function updateVisualization() {
         .attr('d', 'M0,-5L10,0L0,5')
         .attr('fill', '#999');
 
-    // Draw links
+
     const link = svg.append('g')
         .selectAll('line')
         .data(links)
@@ -415,7 +430,7 @@ function updateVisualization() {
             return (d.source.type === 'domain' && d.target.type === 'breach') ? 2 : 1;
         });
 
-    // Create node groups
+
     const nodeGroup = svg.append('g')
         .selectAll('g')
         .data(nodes)
@@ -428,7 +443,7 @@ function updateVisualization() {
             .on('end', dragended))
         .on('click', (event, d) => handleNodeClick(event, d));
 
-    // Add circles to nodes
+
     nodeGroup.append('circle')
         .attr('r', d => {
             switch (d.type) {
@@ -449,7 +464,7 @@ function updateVisualization() {
         .attr('stroke', d => expandedNodes.has(d.id) ? '#ffc107' : '#fff')
         .attr('stroke-width', d => expandedNodes.has(d.id) ? 3 : 1.5);
 
-    // Add icons to nodes
+
     nodeGroup.append('text')
         .attr('class', 'fa')
         .attr('font-family', 'FontAwesome')
@@ -466,7 +481,7 @@ function updateVisualization() {
         .attr('dominant-baseline', 'central')
         .text(d => nodeIcons[d.type]);
 
-    // Add labels with improved visibility
+
     nodeGroup.append('text')
         .text(d => {
             if (d.type === 'email' && !expandedNodes.has(d.id) &&
@@ -482,16 +497,16 @@ function updateVisualization() {
         .attr('y', 4)
         .attr('font-size', d => d.type === 'email' ? '8px' : '10px')
         .attr('font-family', 'Arial')
-        .attr('fill', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#e9ecef' : '#333')
+        .attr('fill', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#e9ecef' : '#000')
         .attr('stroke', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'none' : '#ffffff')
-        .attr('stroke-width', '0.5px')
+        .attr('stroke-width', '1px')
         .attr('pointer-events', 'none');
 
-    // Add tooltips
+
     nodeGroup.append('title')
         .text(d => `${d.type}: ${d.label}`);
 
-    // Update positions on tick
+
     simulation.on('tick', () => {
         link
             .attr('x1', d => d.source.x)
@@ -503,7 +518,7 @@ function updateVisualization() {
             .attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
-    // Helper functions
+
     function getConnectedBreach(emailId) {
         const connection = filteredData.Breaches_Details.find(item => item.email === emailId);
         return connection ? connection.breach : null;
@@ -514,7 +529,7 @@ function updateVisualization() {
         return connection ? connection.domain : null;
     }
 
-    // Drag functions
+
     function dragstarted(event) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
         event.subject.fx = event.subject.x;
@@ -533,7 +548,7 @@ function updateVisualization() {
     }
 }
 
-// Initialize DataTables
+
 function initializeDataTable() {
     breachTable = $('#breachTable').DataTable({
         data: processTableData(),
@@ -545,10 +560,9 @@ function initializeDataTable() {
                 data: 'breachDate',
                 render: function (data) {
                     const date = new Date(data);
-                    const day = date.getDate().toString().padStart(2, '0');
                     const month = date.toLocaleString('default', { month: 'short' });
                     const year = date.getFullYear();
-                    return `${day}-${month}-${year}`;
+                    return `${month}-${year}`;
                 }
             },
             {
@@ -577,12 +591,12 @@ function initializeDataTable() {
     });
 }
 
-// Update DataTable with filtered data
+
 function updateDataTable() {
     breachTable.clear().rows.add(processTableData()).draw();
 }
 
-// Process data for DataTable
+
 function processTableData() {
     return filteredData.Breaches_Details.map(item => {
         const breachInfo = allData.Detailed_Breach_Info[item.breach] || {
@@ -599,7 +613,7 @@ function processTableData() {
     });
 }
 
-// Handle node click events
+
 function handleNodeClick(event, d) {
     if (d.type === 'domain' || d.type === 'breach') {
         if (expandedNodes.has(d.id)) {
@@ -608,7 +622,7 @@ function handleNodeClick(event, d) {
             expandedNodes.add(d.id);
         }
 
-        // Update filters based on selection
+
         if (d.type === 'domain') {
             const element = document.getElementById('domainFilter');
             element.value = expandedNodes.has(d.id) ? d.id : '';
@@ -619,12 +633,12 @@ function handleNodeClick(event, d) {
             updateFilterActiveState(element);
         }
 
-        // Update visualization and table
+
         filterData();
     }
 }
 
-// Initialize application when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', () => {
     init();
 });
