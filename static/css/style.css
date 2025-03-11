@@ -1278,3 +1278,342 @@ body {
 		border-color: #fff;
 		color: #fff;
 	}
+
+	.dt-buttons {
+		display: flex;
+		align-items: center;
+		float: left;
+		margin-right: 20px;
+	}
+
+	.dt-button-collection {
+		position: absolute;
+		background: white;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		padding: 5px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+
+	[data-theme="dark"] .dt-button-collection {
+		background: #313131;
+		border-color: #444;
+	}
+
+	.back-to-top {
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+		background: #3c5fec;
+		color: white;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		opacity: 0;
+		transition: opacity 0.3s;
+		z-index: 1000;
+	}
+
+	[data-theme="dark"] .back-to-top {
+		background: #6daae0;
+	}
+
+	.back-to-top.visible {
+		opacity: 1;
+	}
+
+	/* Add these styles for responsive tables */
+	.table-responsive-wrapper {
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		margin-bottom: 1rem;
+		background:
+			linear-gradient(to right, white 30%, rgba(255, 255, 255, 0)),
+			linear-gradient(to right, rgba(255, 255, 255, 0), white 70%) 0 100%,
+			radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)),
+			radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+		background-repeat: no-repeat;
+		background-color: white;
+		background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+		background-position: 0 0, 100% 0, 0 0, 100% 0;
+		background-attachment: local, local, scroll, scroll;
+	}
+
+	[data-theme="dark"] .table-responsive-wrapper {
+		background:
+			linear-gradient(to right, #0e0f19 30%, rgba(14, 15, 25, 0)),
+			linear-gradient(to right, rgba(14, 15, 25, 0), #0e0f19 70%) 0 100%,
+			radial-gradient(farthest-side at 0% 50%, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0)),
+			radial-gradient(farthest-side at 100% 50%, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0)) 0 100%;
+		background-color: #0e0f19;
+	}
+
+	.dataTables_wrapper {
+		width: 100%;
+	}
+
+	@media screen and (max-width: 767px) {
+
+		.dataTables_wrapper .dataTables_length,
+		.dataTables_wrapper .dataTables_filter,
+		.dataTables_wrapper .dataTables_info,
+		.dataTables_wrapper .dataTables_paginate {
+			float: none;
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		.dataTables_wrapper .dataTables_paginate {
+			margin-top: 10px;
+		}
+
+		.dt-buttons {
+			text-align: center;
+			float: none !important;
+			margin-bottom: 10px;
+		}
+	}
+
+	/* Utility Buttons Styling and Hover Effects */
+	.utility-buttons {
+		display: flex;
+		gap: 15px;
+	}
+
+	.btn-utility {
+		position: relative;
+		padding: 10px 20px;
+		color: #2c3e50;
+		background: #ffffff;
+		border: 2px solid #3498db;
+		border-radius: 8px;
+		overflow: hidden;
+		transition: all 0.3s ease;
+		z-index: 1;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	/* Icon styling */
+	.btn-utility i {
+		font-size: 1.2em;
+		transition: transform 0.3s ease;
+	}
+
+	/* Hover effect - slide up background */
+	.btn-utility::before {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: #3498db;
+		transition: all 0.3s ease;
+		z-index: -1;
+	}
+
+	.btn-utility:hover::before {
+		top: 0;
+	}
+
+	.btn-utility:hover {
+		color: #ffffff;
+		transform: translateY(-3px);
+		box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+	}
+
+	/* Icon bounce effect on hover */
+	.btn-utility:hover i {
+		transform: scale(1.2);
+	}
+
+	/* Specific colors for each button */
+	.api-key-btn {
+		border-color: #e74c3c;
+	}
+
+	.api-key-btn::before {
+		background: #e74c3c;
+	}
+
+	.api-key-btn:hover {
+		box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+	}
+
+	.domain-add-btn {
+		border-color: #2ecc71;
+	}
+
+	.domain-add-btn::before {
+		background: #2ecc71;
+	}
+
+	.domain-add-btn:hover {
+		z-index: 1000;
+	}
+
+	[data-tooltip]:hover:before {
+		visibility: visible;
+		opacity: 1;
+		bottom: calc(100% + 10px);
+	}
+
+	/* Dark mode support */
+	[data-theme="dark"] .btn-utility {
+		color: #fff;
+	}
+
+	[data-theme="dark"] [data-tooltip]:before {
+		background: rgba(255, 255, 255, 0.9);
+		color: #000;
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 768px) {
+		.utility-buttons {
+			justify-content: center;
+			margin-top: 15px;
+		}
+
+		.btn-utility {
+			width: 100%;
+			justify-content: center;
+			margin-bottom: 8px;
+		}
+
+		.btn-utility span {
+			display: none;
+		}
+
+		.btn-utility i {
+			margin: 0;
+			font-size: 1.3em;
+		}
+	}
+
+	/* Dark mode styles for utility buttons */
+	[data-theme="dark"] .utility-buttons .btn-utility {
+		color: #fff;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+	}
+
+	/* Dark mode gradients for each button type */
+	[data-theme="dark"] .api-key-btn {
+		background: linear-gradient(135deg, #6daae0 0%, #4284fb 100%);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	[data-theme="dark"] .api-key-btn:hover {
+		background: linear-gradient(135deg, #4284fb 0%, #6daae0 100%);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(109, 170, 224, 0.3);
+	}
+
+	[data-theme="dark"] .domain-add-btn {
+		background: linear-gradient(135deg, #5c9ee6 0%, #3674d9 100%);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	[data-theme="dark"] .domain-add-btn:hover {
+		background: linear-gradient(135deg, #3674d9 0%, #5c9ee6 100%);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(92, 158, 230, 0.3);
+	}
+
+	[data-theme="dark"] .analysis-btn {
+		background: linear-gradient(135deg, #e6a65c 0%, #d98236 100%);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	[data-theme="dark"] .analysis-btn:hover {
+		background: linear-gradient(135deg, #d98236 0%, #e6a65c 100%);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(230, 166, 92, 0.3);
+	}
+
+	/* Dark mode container background */
+	[data-theme="dark"] .xon-row-area-min {
+		background-color: #181b2d;
+	}
+
+	/* Dark mode tooltip */
+	[data-theme="dark"] [data-tooltip]:before {
+		background: rgba(49, 49, 49, 0.95);
+		color: #9fc0e0;
+		border: 1px solid #444;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	/* Dark mode custom select */
+	[data-theme="dark"] .custom-select {
+		background-color: #313131;
+		color: #9fc0e0;
+		border-color: #444;
+	}
+
+	[data-theme="dark"] .custom-select:focus {
+		border-color: #6daae0;
+		box-shadow: 0 0 0 0.2rem rgba(109, 170, 224, 0.25);
+	}
+
+	/* Dark mode button text */
+	[data-theme="dark"] .btn-utility span {
+		color: #fff;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	}
+
+	[data-theme="dark"] .btn-utility i {
+		color: #fff;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	}
+
+	/* Dark mode focus states */
+	[data-theme="dark"] .btn-utility:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px #6daae0;
+	}
+
+	/* Dark mode active states */
+	[data-theme="dark"] .btn-utility:active {
+		transform: translateY(1px);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	/* Ensure buttons maintain visibility in dark mode */
+	[data-theme="dark"] .utility-buttons {
+		background: transparent;
+	}
+
+	/* Add contrast to button container in dark mode */
+	[data-theme="dark"] .utility-buttons .btn-utility {
+		margin: 2px;
+		position: relative;
+		z-index: 1;
+	}
+
+	/* Add subtle glow effect in dark mode */
+	[data-theme="dark"] .btn-utility::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-radius: 8px;
+		background: transparent;
+		box-shadow: 0 0 15px rgba(109, 170, 224, 0.2);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		z-index: -1;
+	}
+
+	[data-theme="dark"] .btn-utility:hover::after {
+		opacity: 1;
+	}
