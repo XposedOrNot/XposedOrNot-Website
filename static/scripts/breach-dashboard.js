@@ -28,6 +28,57 @@ $(document).ready(function () {
         var analysisUrl = 'breach-analysis.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
         window.location.href = analysisUrl;
     });
+
+    const backToTop = $('.back-to-top');
+
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            backToTop.addClass('visible');
+        } else {
+            backToTop.removeClass('visible');
+        }
+    });
+
+    backToTop.click(function (e) {
+        e.preventDefault();
+        $('html, body').animate({
+            scrollTop: 0
+        }, {
+            duration: 500,
+            easing: 'easeInOutQuad'
+        });
+    });
+
+    if ($(window).scrollTop() <= 300) {
+        backToTop.removeClass('visible');
+    }
+
+
+    $('.api-key-btn').click(function () {
+        var newUrl = 'api_key_management.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+        window.location.href = newUrl;
+    });
+
+    $('.domain-add-btn').click(function () {
+        window.open("https://xposedornot.com/domain.html", "_blank");
+    });
+
+    $('.analysis-btn').click(function () {
+        var analysisUrl = 'breach-analysis.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+        window.location.href = analysisUrl;
+    });
+
+
+    $('.utility-buttons .btn-utility').click(function (e) {
+        const buttonType = $(this).attr('class').split(' ')[2];
+        const bottomButton = $(`.xon .btn-lg[data-button="${buttonType}"]`);
+        if (bottomButton.length) {
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: bottomButton.offset().top
+            }, 1000);
+        }
+    });
 });
 
 s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Details For Verified Domains</strong></div></p>';
@@ -78,8 +129,16 @@ $.ajax(emailVerificationUrl)
 
         const yearlyBreachHierarchy = myjson.Yearly_Breach_Hierarchy;
         if (yearlyBreachHierarchy) {
+            $('#tree-container').empty();
             $('#tree-container').hortree({
-                data: [yearlyBreachHierarchy]
+                data: [yearlyBreachHierarchy],
+                levelSeparation: 30,
+                nodeWidth: 120,
+                nodeHeight: 80,
+                rootClass: 'hortree-root',
+                childrenClass: 'hortree-children',
+                labelClass: 'hortree-label',
+                edgeClass: 'hortree-edge'
             });
         }
 
@@ -109,7 +168,7 @@ $.ajax(emailVerificationUrl)
         }
     });
 
-// Function to update the Seniority Summary
+
 function updateSenioritySummary(senioritySummary) {
     if (senioritySummary) {
         $('#exposed-cxo').text(senioritySummary.c_suite ? senioritySummary.c_suite : 0);
@@ -222,95 +281,166 @@ function buildTopBreachesTable(breachNames, breachCounts) {
 }
 
 function addBreachesToTable(breaches) {
-    const table = document.querySelector('#xposed_emails');
-    const tableBody = table.querySelector('tbody');
-    tableBody.innerHTML = '';
+
+    window.breachesData = breaches;
+
+    const table = $('#xposed_emails');
+
+    if ($.fn.DataTable.isDataTable(table)) {
+        table.DataTable().destroy();
+    }
+
+    const tableBody = table.find('tbody');
+    tableBody.empty();
 
     for (let breach in breaches) {
-        const row = document.createElement('tr');
+        const row = $('<tr>');
 
-        const cellName = document.createElement('td');
-        const link = document.createElement('a');
-        link.href = `https://xposedornot.com/xposed#${breach}`;
-        link.target = '_blank';
-        link.textContent = breach;
-        cellName.appendChild(link);
-        row.appendChild(cellName);
 
-        const cellRecords = document.createElement('td');
+        const cellName = $('<td>');
+        const link = $('<a>', {
+            href: `https://xposedornot.com/xposed#${breach}`,
+            target: '_blank',
+            text: breach
+        });
+        cellName.append(link);
+        row.append(cellName);
+
+
+        const cellRecords = $('<td>');
         let records = breaches[breach].xposed_records;
         if (records && !isNaN(records)) {
-            let formattedRecords = parseInt(records).toLocaleString();
-            cellRecords.textContent = formattedRecords;
-        } else {
-            cellRecords.textContent = '';
+            cellRecords.text(parseInt(records).toLocaleString());
         }
-        row.appendChild(cellRecords);
+        row.append(cellRecords);
 
-        const cellDesc = document.createElement('td');
+
+        const cellDesc = $('<td style="min-width: 250px;">');
         const breachDescription = breaches[breach].xposure_desc || '';
-        const trimmedDesc = breachDescription.length > 100 ? breachDescription.substring(0, 100) + '...' : breachDescription;
+        const trimmedDesc = breachDescription.length > 200 ?
+            breachDescription.substring(0, 200) + '...' :
+            breachDescription;
 
-        const descContent = document.createElement('div');
-        descContent.classList.add('description-content');
-        descContent.style.maxHeight = '75px';
-        descContent.style.overflow = 'hidden';
-        descContent.textContent = trimmedDesc;
+        const descContent = $('<div>', {
+            class: 'description-content',
+            text: trimmedDesc
+        }).css({
+            maxHeight: '150px',
+            overflow: 'hidden'
+        });
 
-        const toggleButton = document.createElement('button');
-        toggleButton.textContent = 'See more';
-        toggleButton.classList.add('btn', 'btn-link');
-        toggleButton.style.padding = '0';
-        toggleButton.style.display = 'block';
-        toggleButton.onclick = function () {
-            if (descContent.style.maxHeight === '75px') {
-                descContent.style.maxHeight = 'none';
-                descContent.textContent = breachDescription;
-                toggleButton.textContent = 'Show less';
-            } else {
-                descContent.style.maxHeight = '75px';
-                descContent.textContent = trimmedDesc;
-                toggleButton.textContent = 'See more';
-            }
-        };
+        if (breachDescription.length > 200) {
+            const toggleButton = $('<button>', {
+                text: 'See more',
+                class: 'btn btn-link',
+                css: {
+                    padding: '0',
+                    display: 'block'
+                }
+            }).click(function () {
+                const content = $(this).prev('.description-content');
+                if (content.css('maxHeight') === '150px') {
+                    content.css('maxHeight', 'none').text(breachDescription);
+                    $(this).text('Show less');
+                } else {
+                    content.css('maxHeight', '150px').text(trimmedDesc);
+                    $(this).text('See more');
+                }
+            });
+            cellDesc.append(descContent).append(toggleButton);
+        } else {
+            cellDesc.append(descContent);
+        }
+        row.append(cellDesc);
 
-        cellDesc.appendChild(descContent);
-        cellDesc.appendChild(toggleButton);
-        row.appendChild(cellDesc);
 
-        const cellData = document.createElement('td');
+        const cellData = $('<td style="min-width: 200px;">');
         let breaches_xposed_data = breaches[breach].xposed_data;
         let dataArray = breaches_xposed_data.split(";");
         let displayData = dataArray.join(", ");
-        cellData.textContent = displayData || '';
-        row.appendChild(cellData);
 
-        const cellPasswordrisk = document.createElement('td');
-        const span = document.createElement('span');
-        span.textContent = breaches[breach].password_risk || '';
+        const dataContent = $('<div>', {
+            class: 'data-content',
+            text: displayData.length > 100 ? displayData.substring(0, 100) + '...' : displayData
+        }).css({
+            maxHeight: '150px',
+            overflow: 'hidden'
+        });
+
+        if (displayData.length > 100) {
+            const toggleDataButton = $('<button>', {
+                text: 'See more',
+                class: 'btn btn-link',
+                css: {
+                    padding: '0',
+                    display: 'block'
+                }
+            }).click(function () {
+                const content = $(this).prev('.data-content');
+                if (content.css('maxHeight') === '150px') {
+                    content.css('maxHeight', 'none').text(displayData);
+                    $(this).text('Show less');
+                } else {
+                    content.css('maxHeight', '150px').text(displayData.substring(0, 100) + '...');
+                    $(this).text('See more');
+                }
+            });
+            cellData.append(dataContent).append(toggleDataButton);
+        } else {
+            cellData.append(dataContent);
+        }
+        row.append(cellData);
+
+
+        const cellPasswordrisk = $('<td>');
+        const span = $('<span>', {
+            text: breaches[breach].password_risk || ''
+        });
+
         switch (breaches[breach].password_risk) {
             case 'plaintext':
-                span.classList.add('alert', 'alert-danger');
+                span.addClass('alert alert-danger');
                 break;
             case 'unknown':
-                span.classList.add('alert', 'alert-dark');
+                span.addClass('alert alert-dark');
                 break;
             case 'easytocrack':
-                span.classList.add('alert', 'alert-warning');
+                span.addClass('alert alert-warning');
                 break;
             case 'hardtocrack':
-                span.classList.add('alert', 'alert-success');
-                break;
-            default:
-                span.textContent = breaches[breach].password_risk || '';
+                span.addClass('alert alert-success');
                 break;
         }
 
-        cellPasswordrisk.appendChild(span);
-        row.appendChild(cellPasswordrisk);
-        tableBody.appendChild(row);
+        cellPasswordrisk.append(span);
+        row.append(cellPasswordrisk);
+        tableBody.append(row);
     }
 
+
+    table.DataTable({
+        dom: '<"top"<"d-flex align-items-center justify-content-between"lB>f>rtip',
+        buttons: [{
+            extend: 'collection',
+            text: 'Export',
+            buttons: ['csv', 'excel', 'pdf']
+        }],
+        pageLength: 10,
+        responsive: true,
+        scrollX: true,
+        autoWidth: false,
+        order: [[0, 'desc']],
+        columnDefs: [
+            {
+                targets: [1, 4],
+                width: '10%'
+            },
+            {
+                targets: [2, 3],
+                width: '30%'
+            }
+        ]
+    });
 }
 
 function addBreachesDetailsToTable(breachesDetails) {
@@ -325,47 +455,47 @@ function addBreachesDetailsToTable(breachesDetails) {
 
     let totalRecords = 0;
 
-    const exposedDataLookup = {};
-    $('#xposed_emails tbody tr').each(function () {
-        const breachName = $(this).find('td').eq(0).text().trim();
-        const exposedData = $(this).find('td').eq(3).text().trim();
-        exposedDataLookup[breachName] = exposedData || 'No Data Available';
-    });
 
-    for (let breachDetail of breachesDetails) {
-        const row = document.createElement('tr');
-        const cellBreachName = document.createElement('td');
-        cellBreachName.textContent = breachDetail.breach;
-        row.appendChild(cellBreachName);
-        const cellEmailAddress = document.createElement('td');
-        cellEmailAddress.textContent = breachDetail.email;
-        row.appendChild(cellEmailAddress);
-        const breachNameToLookup = breachDetail.breach.trim();
-        const exposedData = exposedDataLookup[breachNameToLookup];
-        const cellExposedData = document.createElement('td');
-        cellExposedData.textContent = exposedData || 'No Data Available';
-        row.appendChild(cellExposedData);
-        totalRecords += 1;
+    const breachesData = window.breachesData || {};
+
+    breachesDetails.forEach(breachDetail => {
+        const row = $('<tr>');
+
+
+        row.append($('<td>').text(breachDetail.breach));
+
+
+        row.append($('<td>').text(breachDetail.email));
+
+
+        const breachInfo = breachesData[breachDetail.breach];
+        const exposedData = breachInfo ? breachInfo.xposed_data : '';
+        row.append($('<td>').text(exposedData));
+
         tableBody.append(row);
-    }
+        totalRecords++;
+    });
 
     $('#exposed-records').text(totalRecords.toLocaleString());
 
     table.DataTable({
-        dom: 'Bfrtip',
-        buttons: ['csv', 'excel', 'pdf'],
-        paging: true,
+        dom: '<"top"<"d-flex align-items-center justify-content-between"lB>f>rtip',
+        buttons: [{
+            extend: 'collection',
+            text: 'Export',
+            buttons: ['csv', 'excel', 'pdf']
+        }],
         pageLength: 10,
         lengthMenu: [5, 10, 25, 50],
         autoWidth: false,
         responsive: true,
+        scrollX: true,
         initComplete: function () {
             $(".dt-buttons").prepend('<span class="buttons-label">Export as: &nbsp;</span>');
         },
-        order: [[0, 'asc']],
+        order: [[0, 'asc']]
     });
 }
-
 
 function addDomainSummaryToTable(domainSummary, email, token) {
     const tbody = $('#verified_domains_tbody');
@@ -394,14 +524,12 @@ googleLink.addEventListener("click", function (event) {
     window.open("https://xposedornot.com/domain.html", "_blank");
 });
 
-
 function updateApiCall(timeFilter) {
     const emailVerificationUrl = `https://api.xposedornot.com/v2/send_domain_breaches?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&time_filter=${timeFilter}`;
     $.LoadingOverlay("show");
 
     $.ajax(emailVerificationUrl)
         .done(function (n) {
-
             myjson = n;
 
             if (myjson) {
@@ -442,8 +570,16 @@ function updateApiCall(timeFilter) {
 
             const yearlyBreachHierarchy = myjson.Yearly_Breach_Hierarchy;
             if (yearlyBreachHierarchy) {
+                $('#tree-container').empty();
                 $('#tree-container').hortree({
-                    data: [yearlyBreachHierarchy]
+                    data: [yearlyBreachHierarchy],
+                    levelSeparation: 30,
+                    nodeWidth: 120,
+                    nodeHeight: 80,
+                    rootClass: 'hortree-root',
+                    childrenClass: 'hortree-children',
+                    labelClass: 'hortree-label',
+                    edgeClass: 'hortree-edge'
                 });
             }
 
@@ -456,7 +592,6 @@ function updateApiCall(timeFilter) {
             $.LoadingOverlay("hide");
         })
         .fail(function (n) {
-
             if (n.status === 404) {
                 $.LoadingOverlay("hide");
                 document.getElementById("db-s").className = "visible alert alert-success";
@@ -475,9 +610,14 @@ function updateApiCall(timeFilter) {
         });
 }
 
-
 $('#data-filter').change(function () {
     const selectedValue = $(this).val();
     updateApiCall(selectedValue);
 });
 
+if (typeof jQuery.easing.easeInOutQuad === 'undefined') {
+    jQuery.easing.easeInOutQuad = function (x, t, b, c, d) {
+        if ((t /= d / 2) < 1) return c / 2 * t * t + b;
+        return -c / 2 * ((--t) * (t - 2) - 1) + b;
+    };
+}
