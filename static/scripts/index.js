@@ -83,11 +83,6 @@ $(document).ready(function () {
     });
 
     $("#alertMe").click((event) => {
-        const successMessage = "Successfully added to the alert service. Please check your email and click on the verification link to confirm";
-        const alreadySubscribedMessage = "We thank you for your interest. However our records indicate you are already added to the AlertMe Service.";
-
-        $("#alertMe_i2").removeClass("fa fa-bell ring");
-        $("#alertMe_i1").addClass("fa fa-spinner fa-spin");
         event.preventDefault();
 
         const inputValue = $("#recipient-name").val().toLowerCase();
@@ -95,13 +90,13 @@ $(document).ready(function () {
 
         $.ajax(apiUrl)
             .done(() => {
-                $('#message-text').val(successMessage);
+                $('#message-text').val(ALERT_MESSAGES.subscribeSuccess);
                 $("#h2head").attr("class", "modal-header-success");
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
             .fail(() => {
-                $('#message-text').val(alreadySubscribedMessage);
+                $('#message-text').val(ALERT_MESSAGES.alreadySubscribed);
                 $("#h2head").attr("class", "modal-header-success");
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
@@ -182,6 +177,21 @@ function updateModalForInvalidEmail(email) {
     $("#mbody").show();
 }
 
+const STATUS_MESSAGES = {
+    searching: "Searching for your email in our database...",
+    success: "🎉 Good news! Your email hasn't been found in any public data breaches.",
+    invalidEmail: "Please enter a valid email address to check",
+    throttled: "Please wait a moment before trying again",
+    serverError: "We're experiencing technical difficulties. Please try again in a few minutes.",
+    breachFound: "Important: Your email was found in the following data breaches:"
+};
+
+const ALERT_MESSAGES = {
+    subscribe: "Get instant notifications if your email appears in future data breaches",
+    subscribeSuccess: "Email verification sent! Please check your inbox to confirm alerts",
+    alreadySubscribed: "You're already protected! This email is registered for breach alerts"
+};
+
 function processSearchResponse(response, email) {
     const jsonResponse = response;
 
@@ -226,7 +236,7 @@ function processSearchResponse(response, email) {
             $("#detailedReport").hide();
             $("#warn").hide();
             $("#succ").show();
-            $("#succ").html("🎉 Yay good news! <br><br>The searched email has not been found in any public data breaches.")
+            $("#succ").html(STATUS_MESSAGES.success);
         }
 
         const pasteCount = jsonResponse.PastesSummary.cnt;
