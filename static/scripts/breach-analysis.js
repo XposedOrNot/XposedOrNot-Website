@@ -69,7 +69,8 @@ async function init() {
     });
 
     try {
-        const response = await fetch(`https://api.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`);
+        //const response = await fetch(`https://api.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`);
+        const response = await fetch(`https://xon-api-test.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`);
         allData = await response.json();
         filteredData = allData;
 
@@ -309,10 +310,10 @@ function initializeVisualization() {
 
     svg.call(zoom);
 
-    // Initial update
+
     updateVisualization();
 
-    // Handle window resize
+
     window.addEventListener('resize', debounce(() => {
         updateVisualizationSize();
     }, 250));
@@ -326,10 +327,10 @@ function updateVisualizationSize() {
     const nodeCount = filteredData?.Breaches_Details?.length || 0;
     const uniqueBreaches = new Set(filteredData?.Breaches_Details?.map(item => item.breach)).size || 0;
 
-    // Calculate minimum width based on node count
+
     const minWidth = Math.max(800, nodeCount * 10);
 
-    // Set SVG dimensions
+
     const svg = d3.select('#visualization svg');
     if (svg.node()) {
         svg
@@ -530,7 +531,7 @@ function updateVisualization() {
         event.subject.fy = null;
     }
 
-    // Add pan and zoom behavior
+
     const zoom = d3.zoom()
         .scaleExtent([0.5, 2])
         .on('zoom', (event) => {
@@ -596,12 +597,12 @@ function initializeDataTable() {
             $(window).trigger('resize');
         },
         initComplete: function () {
-            // Adjust columns on initial load
+
             this.api().columns.adjust();
         }
     });
 
-    // Handle window resize to fix table layout
+
     $(window).on('resize', function () {
         if (breachTable) {
             breachTable.columns.adjust();

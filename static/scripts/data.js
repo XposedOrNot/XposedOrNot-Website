@@ -145,7 +145,8 @@ $("#data").append(`
     </div>
 `);
 
-const url = `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
+//const url = `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
+const url = `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
 
 let jsonResponse;
 
@@ -951,7 +952,8 @@ $(document).ready(function () {
     $("#alertMe").click(function (event) {
         event.preventDefault();
         var inputValue = document.getElementById("recipient-name").value.toLowerCase();
-        var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        //var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        var apiUrl = 'https://xon-api-test.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
 
         var successMessage = "Successfully added to the alert service. Please check your email and click on the verification link to confirm";
         var alreadySubscribedMessage = "We thank you for your interest. However our records indicate you are already added to the AlertMe Service.";
@@ -993,20 +995,15 @@ document.addEventListener('scroll', function () {
     }
 });
 
-var apiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
+//var apiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
+var apiUrl = `https://xon-api-test.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
 
 $.get(apiUrl, function (response) {
-    const jsonData = response;
-    const result = [];
-    for (let key in jsonData) {
-        result.push([key, jsonData[key]]);
-    }
-
-    const dataForTree = [];
-    dataForTree.push({
-        children: result[0][1].filter(yearNode => yearNode.children && yearNode.children.length > 0),
-        description: result[1][1]
-    });
+    // Create the tree data structure directly from the response
+    const dataForTree = [{
+        description: response.description,
+        children: response.children.filter(year => year.children && year.children.length > 0)
+    }];
 
     $('#tree-container').hortree({
         data: dataForTree

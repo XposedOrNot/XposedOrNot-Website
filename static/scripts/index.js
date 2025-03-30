@@ -86,7 +86,8 @@ $(document).ready(function () {
         event.preventDefault();
 
         const inputValue = $("#recipient-name").val().toLowerCase();
-        const apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        //const apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        const apiUrl = 'https://xon-api-test.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
 
         $.ajax(apiUrl)
             .done(() => {
@@ -108,7 +109,8 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email=';
+    //const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email=';
+    const apiUrlBase = 'https://xon-api-test.xposedornot.com/v1/breach-analytics?email=';
 
     $("#searchMe").click(function (event) {
         event.preventDefault();
@@ -310,7 +312,9 @@ function handleVideoModal() {
         videoElement.attr('src', videoSrc);
     });
 }
-const apiUrl = 'https://api.xposedornot.com/v1/metrics';
+
+//      const apiUrl = 'https://api.xposedornot.com/v1/metrics';
+const apiUrl = 'https://xon-api-test.xposedornot.com/v1/metrics';
 const pastesCountElement = $("#p1");
 const pastesRecordsElement = $("#p2");
 const breachesCountElement = $("#b1");

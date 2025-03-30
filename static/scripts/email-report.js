@@ -36,7 +36,9 @@ s = '<div align="center" class="alert alert-danger"><strong>Sensitive Data Breac
 $("#email_sensitive").html(s)
 s = '<div align="center" class="alert alert-primary"><strong>Exposed Pastes Summary For Email: ' + email + '</strong></div></p>'
 $("#paste").html(s)
-var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+//var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+var emailVerificationUrl = 'https://xon-api-test.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+
 var sitesJson;
 var sensitiveBreaches;
 
@@ -67,7 +69,7 @@ var emailVerificationPromise = $.ajax(emailVerificationUrl)
                 children: dataArr[0][1].children,
                 description: dataArr[0][1].description
             };
-console.log(treeData)
+            console.log(treeData)
             $('#tree-container').hortree({
                 data: [treeData],
                 nodeRadius: 4,
@@ -85,15 +87,15 @@ console.log(treeData)
                 document.getElementById("db-sensitive").className = "visible alert alert-success";
             } else {
 
-for (var i = 0; i < sensitiveBreaches.length; i++) {
-    tableRowsHtml += '<tr>' +
-                     '<td>' + sensitiveBreaches[i].breach + '<br>' +
-                     '<img src="' + sensitiveBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
-                     '</td>' +
-                     '<td>' + sensitiveBreaches[i].details + '</td>' +
-                     '<td>' + sensitiveBreaches[i].xposed_records + '</td>' +
-                     '</tr>';
-}
+                for (var i = 0; i < sensitiveBreaches.length; i++) {
+                    tableRowsHtml += '<tr>' +
+                        '<td>' + sensitiveBreaches[i].breach + '<br>' +
+                        '<img src="' + sensitiveBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
+                        '</td>' +
+                        '<td>' + sensitiveBreaches[i].details + '</td>' +
+                        '<td>' + sensitiveBreaches[i].xposed_records + '</td>' +
+                        '</tr>';
+                }
 
             }
         }
@@ -102,7 +104,7 @@ for (var i = 0; i < sensitiveBreaches.length; i++) {
     });
 
 //edutu = 'https://api.xposedornot.com/v1/breach-analytics?email=' + encodeURIComponent(email);
-edutu = 'https://api.xposedornot.com/v1/breach-analytics?email=' + encodeURIComponent(email) +  "&token=" + encodeURIComponent(token);
+edutu = 'https://xon-api-test.xposedornot.com/v1/breach-analytics?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 
 var myjson;
 var j = $.ajax(edutu)
@@ -713,8 +715,8 @@ $(document).ready(function () {
     $("#alertMe").click(function (event) {
         event.preventDefault();
         var inputValue = document.getElementById("recipient-name").value.toLowerCase();
-        var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
-        console.log(apiUrl)
+        //var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        var apiUrl = 'https://xon-api-test.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
         var successMessage = "Successfully added to the alert service. Please check your email and click on the verification link to confirm";
         var alreadySubscribedMessage = "We thank you for your interest. However our records indicate you are already added to the AlertMe Service.";
 
@@ -750,86 +752,6 @@ window.addEventListener("load", function () {
         resetTheme()
     }))
 });
-
-
-/**
-clippy.load('Clippy', function (agent) {
-    agent.show();
-    agent.speak('My name is XON Clippy');
-    agent.animate();
-    agent.animate();
-    agent.gestureAt(200, 200);
-    agent.moveTo(200, 200);
-    agent.speak('Thank you for taking your time to check the data breach exposure for this email 🙏');
-    agent.animate();
-    agent.animate();
-    agent.gestureAt(200, 200);
-    agent.moveTo(200, 200);
-    agent.speak('You are here because this email was found in one or more data breaches 🔑');
-    agent.animate();
-    agent.animate();
-    agent.moveTo(1550, 650);
-    agent.animate();
-    agent.animate();
-    agent.speak('Be Aware & Be Secure 🛡️');
-    agent.animate();
-    agent.animate();
-    agent.speak('💡 Going forward you can also get alerts in case if your email appears in exposed data breaches by clicking on the "Alert Me" button ');
-    agent.animate();
-    agent.animate();
-    agent.speak('Do you know XposedOrNot has more than 10 billion exposed records to help you search.');
-    agent.animate();
-    agent.animate();
-    agent.speak('More than one third of todays data breaches are happening because of exposed passwords.');
-    agent.animate();
-    agent.animate();
-    agent.speak('Do you know XposedOrNot has more than 500+ exposed data breaches for you to search.');
-    agent.animate();
-    agent.animate();
-    agent.speak('Account take over issues are repeatedly happening because of poor password practices. Please make use of a password manager for all of your accounts.✅');
-    agent.animate();
-    agent.animate();
-    agent.speak('You can also check passwords for their exposure under the "Password" page shown in the top.');
-    agent.animations();
-
-    function speakRandom() {
-        var phrases = [
-            'One of the easiest ways to prevent a data breach is to use strong, unique passwords for each of your accounts.',
-            'Be wary of suspicious emails or messages asking for your personal information - they could be phishing attempts.',
-            'Using a VPN can help protect your online activity and keep your data safe from prying eyes.',
-            'Enabling two-factor authentication (2FA) can add an extra layer of security to your online accounts.',
-            'Don\'t forget to keep your software up-to-date with the latest security patches and updates.',
-            'Be cautious when using public Wi-Fi networks - they may not be secure and could put your data at risk.',
-            'If you suspect your data may have been compromised in a breach, it\'s important to act quickly and change your passwords.',
-            'Regularly monitoring your credit report can help you spot any signs of identity theft or fraud early on.',
-            'Always be vigilant when entering personal information online - make sure you\'re on a secure website (look for the lock icon in the address bar) and never enter sensitive information on a site you don\'t trust.',
-            'You can also get alerts in case if your email appears in exposed data breaches by clicking on the "Alert Me" button',
-            'Do you know XposedOrNot has more than 10 billion exposed records to help you',
-            'More than one third of today\'s data breaches are happening because of exposed data breaches',
-            'Do you know XposedOrNot has more than 500+ exposed data breaches for you to search',
-            'Keeping your software up-to-date is important not just for new features, but also for fixing security vulnerabilities.',
-            'Using a password manager to generate and store unique passwords for each of your accounts can help prevent a breach.',
-            'Be cautious when downloading apps or software from third-party websites - they could be fake and contain malware.',
-            'Setting up automatic software updates ensures that you always have the latest security patches installed.',
-            'Be careful when clicking on links in emails or messages - they could be phishing attempts designed to steal your data.',
-            'Regularly backing up your data to an external drive or cloud storage service can help minimize the damage of a breach.',
-            'Using anti-virus and anti-malware software can help detect and remove malicious software from your computer.',
-            'Avoid using public Wi-Fi networks for sensitive activities like online banking or shopping - use a VPN instead.',
-            'Educate yourself on common phishing techniques and stay vigilant against suspicious emails or messages.',
-            'If you\'re ever unsure about the legitimacy of an email or message, contact the sender directly to verify its authenticity.',
-            'Always use strong, complex passwords that are difficult for anyone to guess.',
-            'Be careful when sharing personal information online - only provide it to trusted sources and avoid oversharing on social media.',
-            'Account take over issues are repeatedly happening because of poor password practices. Please make use of a password manager for all of your accounts'
-        ];
-
-        var randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-        agent.animate();
-        agent.speak(randomPhrase);
-        agent.animate();
-    }
-    setInterval(speakRandom, Math.floor(Math.random() * 60000));
-});
-**/
 
 google.charts.load('current', {
     'packages': ['gauge']
