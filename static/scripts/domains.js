@@ -35,7 +35,8 @@ $(document).ready(function () {
                 $(this).show();
             });
 
-            var breachApiUrl = 'https://api.xposedornot.com/v1/domain-breach-summary?d=' + domainName;
+            //var breachApiUrl = 'https://api.xposedornot.com/v1/domain-breach-summary?d=' + domainName;
+            var breachApiUrl = 'https://xon-api-test.xposedornot.com/v1/domain-breach-summary?d=' + domainName;
             $.ajax(breachApiUrl)
                 .done(function (data) {
                     if (data.SearchStatus === "Success" && data.sendDomains.breaches_details.length > 0) {

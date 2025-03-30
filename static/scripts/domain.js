@@ -62,7 +62,8 @@ $("#strat").change(function () {
         $('#succ').hide()
         $('#div_t2').show()
         var options = $('#sel1');
-        edutu2 = 'https://api.xposedornot.com/v1/domain_verification?z=c&d=' + $('#eventName').val()
+        //edutu2 = 'https://api.xposedornot.com/v1/domain_verification?z=c&d=' + $('#eventName').val()
+        edutu2 = 'https://xon-api-test.xposedornot.com/v1/domain_verification?z=c&d=' + $('#eventName').val()
         var myjson2;
         var j = $.ajax(edutu2)
             .done(function (n2) {
@@ -196,7 +197,8 @@ $("#searchMe_e").click(function (func_alert6) {
     }
     $("#searchMe_e_i1").removeClass("glyphicon glyphicon-ok")
     $("#searchMe_e_i1").addClass("fa fa-spinner fa-spin")
-    edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=d&d=' + $('#eventName').val() + '&a=' + $('#txt_email_e').val() + '&ae=' + $('#sel1').val()
+    //edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=d&d=' + $('#eventName').val() + '&a=' + $('#txt_email_e').val() + '&ae=' + $('#sel1').val()
+    edutu4 = 'https://xon-api-test.xposedornot.com/v1/domain_verification?z=d&d=' + $('#eventName').val() + '&a=' + $('#txt_email_e').val() + '&ae=' + $('#sel1').val()
     var myjson4;
     var j4 = $.ajax(edutu4)
         .done(function (n4) {
@@ -251,7 +253,8 @@ $("#searchMe_d").click(function (func_alert) {
     }
     $("#searchMe_d_i1").removeClass("glyphicon glyphicon-ok")
     $("#searchMe_d_i1").addClass("fa fa-spinner fa-spin")
-    edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val()
+    //edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val()
+    edutu4 = 'https://xon-api-test.xposedornot.com/v1/domain_verification?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val()
     var myjson4;
     var j4 = $.ajax(edutu4)
         .done(function (n4) {
@@ -310,7 +313,8 @@ $("#searchMe_m").click(function (func_alert3) {
     }
     $("#searchMe_m_i1").removeClass("glyphicon glyphicon-ok")
     $("#searchMe_m_i1").addClass("fa fa-spinner fa-spin")
-    edutu3 = 'https://api.xposedornot.com/v1/domain_verification?z=v&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_m').val()
+    //edutu3 = 'https://api.xposedornot.com/v1/domain_verification?z=v&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_m').val()
+    edutu3 = 'https://xon-api-test.xposedornot.com/v1/domain_verification?z=v&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_m').val()
     var myjson3;
     var j3 = $.ajax(edutu3)
         .done(function (n3) {
@@ -368,7 +372,8 @@ $("#searchMe_h").click(function (func_alert4) {
     }
     $("#searchMe_h_i1").removeClass("glyphicon glyphicon-ok")
     $("#searchMe_h_i1").addClass("fa fa-spinner fa-spin")
-    edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=a&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_h').val()
+    //edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=a&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_h').val()
+    edutu4 = 'https://xon-api-test.xposedornot.com/v1/domain_verification?z=a&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_h').val()
     var myjson4;
     var j4 = $.ajax(edutu4)
         .done(function (n4) {

@@ -85,7 +85,8 @@ s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Detai
 $("#email").html(s);
 $("#email_details").html(s);
 
-var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_domain_breaches?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+//var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_domain_breaches?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+var emailVerificationUrl = 'https://xon-api-test.xposedornot.com/v1/send_domain_breaches?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 var myjson;
 $.ajax(emailVerificationUrl)
     .done(function (n) {
