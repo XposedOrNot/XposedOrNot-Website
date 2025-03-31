@@ -564,18 +564,118 @@ var j = $.ajax(url)
         ];
 
         counts.sort((a, b) => b.cnt - a.cnt);
-        let industryList = "<ul>";
+        let industryList = `
+            <div class="industry-list">
+                <div class="row">
+                    ${counts.filter(item => item.cnt > 0).map(item => `
+                        <div class="col-md-6 mb-2">
+                            <div class="industry-item ${item.cnt > 0 ? 'has-breaches' : ''}">
+                                <span class="industry-name">${item.name}</span>
+                                <span class="badge badge-${getBadgeClass(item.cnt)}">${item.cnt}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
 
-        for (let i = 0; i < counts.length; i++) {
-            if (counts[i].cnt > 0) {
-                industryList += `<li><a href="#"><strong>${counts[i].name} <span>${counts[i].cnt}</span></a></strong></li>`;
-            } else {
-                industryList += `<li><a href="#">${counts[i].name} <span>${counts[i].cnt}</span></a></li>`;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            .industry-list {
+                padding: 15px;
             }
+            .industry-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 15px;
+                border-radius: 8px;
+                background-color: ${document.body.classList.contains('dark-mode') ? '#2d3436' : '#f8f9fa'};
+                transition: all 0.3s ease;
+                margin-bottom: 8px;
+            }
+            .industry-item:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            .industry-name {
+                font-weight: 500;
+                color: ${document.body.classList.contains('dark-mode') ? '#fff' : '#2d3436'};
+            }
+            .badge {
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-weight: 600;
+            }
+            .badge-high {
+                background-color: #ff7675;
+                color: white;
+            }
+            .badge-medium {
+                background-color: #fdcb6e;
+                color: #2d3436;
+            }
+            .badge-low {
+                background-color: #00b894;
+                color: white;
+            }
+        `;
+        document.head.appendChild(style);
+
+
+        function getBadgeClass(count) {
+            if (count > 10) return 'high';
+            if (count > 5) return 'medium';
+            return 'low';
         }
 
-        industryList += "</ul>";
         $('#industry').html(industryList);
+
+
+        const githubSection = `
+            <div class="github-collab-section h-100">
+                <div class="github-content text-center">
+                    <div class="github-icon mb-3">
+                        <i class="fab fa-github fa-3x"></i>
+                    </div>
+                    <h4 class="mb-3">Join Our Open Source Community! 🚀</h4>
+                    <p class="mb-4">
+                        Help us make the internet safer by contributing to XposedOrNot. 
+                        Whether you're a developer, designer, or security enthusiast, 
+                        your ideas can make a difference!
+                    </p>
+                    <div class="github-stats mb-3">
+                        <div class="row justify-content-center">
+                            <div class="col-auto px-3">
+                                <div class="stat-item">
+                                    <i class="fas fa-code-branch"></i>
+                                    <span>Open Source</span>
+                                </div>
+                            </div>
+                            <div class="col-auto px-3">
+                                <div class="stat-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Community Driven</span>
+                                </div>
+                            </div>
+                            <div class="col-auto px-3">
+                                <div class="stat-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Security Focused</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://github.com/xposedornot" target="_blank" class="btn btn-github">
+                        <i class="fab fa-github mr-2"></i> Visit our GitHub
+                    </a>
+                </div>
+            </div>
+        `;
+
+
+        $('.xon-row2-right .text-center').html(githubSection);
 
         pasteDetailsTable = ""
         if (numPastes == 0) {
@@ -682,6 +782,10 @@ var j = $.ajax(url)
 
             }
             var top5 = document.getElementById('top5breaches');
+
+
+            top5.parentElement.style.height = '400px';
+
             var top5chart = new Chart(top5, {
                 type: 'doughnut',
                 data: {
@@ -689,44 +793,88 @@ var j = $.ajax(url)
                     datasets: [{
                         data: breaches_cnt,
                         backgroundColor: [
-                            'rgba(255, 0, 0, 0.7)',
-                            'rgba(255, 165, 0, 0.7)',
-                            'rgba(255, 125, 20, 0.7)',
-                            'rgba(255, 100, 100, 0.7)',
-                            'rgba(0,255,0, 0.7)'
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(153, 102, 255, 0.8)'
                         ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 2
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 65,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 20,
+                            bottom: 40,
+                            left: 20
+                        }
+                    },
                     legend: {
-                        display: true,
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            fontColor: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
+                            fontSize: 12,
+                            fontStyle: 'bold',
+                            usePointStyle: true,
+                            boxWidth: 10
+                        }
+                    },
+                    tooltips: {
+                        enabled: true,
+                        mode: 'index',
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var total = dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = ((currentValue / total) * 100).toFixed(1);
+                                return data.labels[tooltipItem.index] + ': ' + currentValue.toLocaleString() + ' (' + percentage + '%)';
+                            }
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
                     },
                     plugins: {
                         datalabels: {
-                            display: true,
-                            borderRadius: 1,
+                            color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
                             font: {
-                                color: 'red',
                                 weight: 'bold',
-                            }
-                        },
-                        doughnutlabel: {
-                            labels: [{
-                                text: '550',
-                                font: {
-                                    size: 20,
-                                    weight: 'bold'
-                                }
-                            }, {
-                                text: 'total'
-                            }]
+                                size: 11
+                            },
+                            formatter: (value, ctx) => {
+                                const total = ctx.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return percentage + '%';
+                            },
+                            offset: 10,
+                            display: 'auto'
                         }
                     }
                 }
-            })
+            });
 
             var passwords = document.getElementById('passwords');
+
+            // Set canvas container height
+            passwords.parentElement.style.height = '400px';
+
             var passwordschart = new Chart(passwords, {
                 type: 'doughnut',
                 data: {
@@ -734,57 +882,80 @@ var j = $.ajax(url)
                     datasets: [{
                         data: [plaintext, easy, hard, unknown],
                         backgroundColor: [
-                            'rgba(255, 0, 0, 0.7)',
-                            'rgba(255, 165, 0, 0.7)',
-                            'rgba(0,255,0, 0.7)',
-                            'rgba(0,0,0, 0.7)'
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(255, 159, 64, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(201, 203, 207, 0.8)'
                         ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(201, 203, 207, 1)'
+                        ],
+                        borderWidth: 2
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 65,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 20,
+                            bottom: 40,
+                            left: 20
+                        }
+                    },
                     legend: {
-                        display: true,
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            fontColor: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
+                            fontSize: 12,
+                            fontStyle: 'bold',
+                            usePointStyle: true,
+                            boxWidth: 10
+                        }
+                    },
+                    tooltips: {
+                        enabled: true,
+                        mode: 'index',
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var total = dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = ((currentValue / total) * 100).toFixed(1);
+                                return data.labels[tooltipItem.index] + ': ' + currentValue.toLocaleString() + ' (' + percentage + '%)';
+                            }
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
                     },
                     plugins: {
                         datalabels: {
-                            display: true,
-                            borderRadius: 1,
+                            color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
                             font: {
-                                color: 'red',
                                 weight: 'bold',
+                                size: 11
                             },
-
-                            anchor: 'end',
-                            align: 'end',
-                            offset: 10,
-                            borderWidth: 1,
-                            borderColor: 'white',
-                            borderRadius: 3,
                             formatter: (value, ctx) => {
-                                return value;
+                                const total = ctx.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return percentage + '%';
                             },
-                            connectors: {
-                                color: 'black',
-                                length: 16,
-                                lineWidth: 1,
-                                spacing: 8
-                            }
-                        },
-                        doughnutlabel: {
-                            labels: [{
-                                text: '550',
-                                font: {
-                                    size: 20,
-                                    weight: 'bold'
-                                }
-                            }, {
-                                text: 'total'
-                            }]
+                            offset: 10,
+                            display: 'auto'
                         }
                     }
                 }
-            })
+            });
             $("#data_breach").append(nn);
             $("#data_breach_sensitive").append(nn);
             $("#details").append(breachesDetailsHtml);
@@ -837,16 +1008,16 @@ var barChartData1 = {
 };
 
 function g1() {
-    // Check if dark mode is active
+
     const isDarkMode = document.body.classList.contains('dark-mode');
 
-    // Define the labels array
+
     const chartLabels = ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'];
 
     var config = {
         type: 'line',
         data: {
-            labels: chartLabels,  // Use the defined labels array
+            labels: chartLabels,
             datasets: [{
                 label: 'Breaches Count',
                 fill: false,
@@ -999,7 +1170,7 @@ document.addEventListener('scroll', function () {
 var apiUrl = `https://xon-api-test.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
 
 $.get(apiUrl, function (response) {
-    // Create the tree data structure directly from the response
+
     const dataForTree = [{
         description: response.description,
         children: response.children.filter(year => year.children && year.children.length > 0)
@@ -1051,69 +1222,65 @@ document.getElementById('clippy-button').addEventListener('click', function () {
     this.style.display = 'none';
     clippy.load('Clippy', function (agent) {
         agent.show();
-        agent.speak('My name is XON Clippy');
+        agent.speak('Hi there! I\'m XON Clippy, your friendly security assistant! 👋');
         agent.gestureAt(200, 200);
         agent.moveTo(200, 200);
-        agent.speak('Thank you for taking your time to check the data breach exposure for this email 🙏');
+        agent.speak('I\'m here to help you understand your data breach exposure and keep your information safe 🛡️');
         agent.animate();
         agent.animate();
         agent.gestureAt(200, 200);
         agent.moveTo(200, 200);
-        agent.speak('You are here because this email was found in one or more data breaches 🚨');
+        agent.speak('I noticed your email was found in some data breaches - but don\'t worry, I\'m here to help you take control! 💪');
         agent.animate();
         agent.animate();
         agent.moveTo(1550, 650);
         agent.animate();
         agent.animate();
-        agent.speak('Be Aware & Be Secure 🛡️');
+        agent.speak('First things first: Let\'s make sure this doesn\'t happen again. I recommend enabling breach alerts right away! 🔔');
         agent.animate();
         agent.animate();
-        agent.speak('💡 Going forward you can also get alerts in case if your email appears in exposed data breaches by clicking on the "Alert Me" button ');
+        agent.speak('Just click that "Alert Me" button, and I\'ll keep watch over your email 24/7. Think of me as your personal security guard! 🕵️');
         agent.animate();
         agent.animate();
-        agent.speak('Do you know XposedOrNot has billions of exposed records to help you search. 👌');
+        agent.speak('Did you know? We\'ve identified over 10 billion exposed records in our database. That\'s why staying informed is crucial! 📊');
         agent.animate();
         agent.animate();
-        agent.speak('More than one third of todays data breaches are happening because of exposed passwords. 🔑');
+        agent.speak('Here\'s a shocking fact: Nearly 80% of data breaches involve weak or stolen passwords. But we can fix that! 🔑');
         agent.animate();
         agent.animate();
-        agent.speak('Do you know XposedOrNot has more than 500+ exposed data breaches for you to search.');
+        agent.speak('Pro tip: Using a password manager is like having a secure vault for all your digital keys. It\'s a game-changer! 🏰');
         agent.animate();
         agent.animate();
-        agent.speak('Account take over issues are repeatedly happening because of poor password practices. Please make use of a password manager for all of your accounts. 😔');
-        agent.animate();
-        agent.animate();
-        agent.speak('You can also check passwords for their exposure under the "Password" page shown in the top.');
+        agent.speak('Want to check if your passwords are secure? Head over to the "Password" page - I\'ll help you strengthen your digital armor! 💪');
         agent.animations();
 
         function speakRandom() {
             var phrases = [
-                'One of the easiest ways to prevent a data breach is to use strong, unique passwords for each of your accounts.',
-                'Be wary of suspicious emails or messages asking for your personal information - they could be phishing attempts.',
-                'Using a VPN can help protect your online activity and keep your data safe from prying eyes.',
-                'Enabling two-factor authentication (2FA) can add an extra layer of security to your online accounts.',
-                'Don\'t forget to keep your software up-to-date with the latest security patches and updates.',
-                'Be cautious when using public Wi-Fi networks - they may not be secure and could put your data at risk.',
-                'If you suspect your data may have been compromised in a breach, it\'s important to act quickly and change your passwords.',
-                'Regularly monitoring your credit report can help you spot any signs of identity theft or fraud early on.',
-                'Always be vigilant when entering personal information online - make sure you\'re on a secure website (look for the lock icon in the address bar) and never enter sensitive information on a site you don\'t trust.',
-                'You can also get alerts in case if your email appears in exposed data breaches by clicking on the "Alert Me" button',
-                'Do you know XposedOrNot has more than 10 billion exposed records to help you',
-                'More than one third of today\'s data breaches are happening because of exposed data breaches',
-                'Do you know XposedOrNot has more than 500+ exposed data breaches for you to search',
-                'Keeping your software up-to-date is important not just for new features, but also for fixing security vulnerabilities.',
-                'Using a password manager to generate and store unique passwords for each of your accounts can help prevent a breach.',
-                'Be cautious when downloading apps or software from third-party websites - they could be fake and contain malware.',
-                'Setting up automatic software updates ensures that you always have the latest security patches installed.',
-                'Be careful when clicking on links in emails or messages - they could be phishing attempts designed to steal your data.',
-                'Regularly backing up your data to an external drive or cloud storage service can help minimize the damage of a breach.',
-                'Using anti-virus and anti-malware software can help detect and remove malicious software from your computer.',
-                'Avoid using public Wi-Fi networks for sensitive activities like online banking or shopping - use a VPN instead.',
-                'Educate yourself on common phishing techniques and stay vigilant against suspicious emails or messages.',
-                'If you\'re ever unsure about the legitimacy of an email or message, contact the sender directly to verify its authenticity.',
-                'Always use strong, complex passwords that are difficult for anyone to guess.',
-                'Be careful when sharing personal information online - only provide it to trusted sources and avoid oversharing on social media.',
-                'Account take over issues are repeatedly happening because of poor password practices. Please make use of a password manager for all of your accounts'
+                '🎯 Quick Tip: Create unique passwords for each account - it\'s like having different keys for different doors!',
+                '🚨 Stay Alert: If an email asks for personal info, think twice! Legitimate companies rarely ask for sensitive data via email.',
+                '🔒 Privacy Boost: A VPN is like a secret tunnel for your internet traffic - perfect for public WiFi!',
+                '🛡️ Power Move: Enable two-factor authentication (2FA) - it\'s like adding a security guard to your password!',
+                '🔄 Update Time: Keep your software fresh! Think of updates as armor upgrades for your digital life.',
+                '📱 WiFi Warning: Public WiFi is like a crowded street - use a VPN to keep your data in a private car!',
+                '⚡ Quick Action: If you suspect a breach, change your passwords immediately - better safe than sorry!',
+                '👀 Stay Vigilant: Regular credit monitoring is like having a security camera for your financial life.',
+                '🔍 Website Check: Look for the padlock icon in your browser - it\'s your website security badge!',
+                '📧 Breach Alerts: Enable alerts to be your first line of defense against future breaches!',
+                '💾 Backup Smart: Regular backups are like insurance for your digital life - they\'re priceless when you need them!',
+                '🦠 Anti-Virus Tip: Keep your anti-virus updated - it\'s your digital immune system!',
+                '🌐 Safe Browsing: Treat links in emails like strangers - verify before trusting!',
+                '🔐 Password Power: Strong passwords are your digital shield - make them count!',
+                '🤫 Privacy First: Think twice before sharing personal info online - less is more!',
+                '📱 App Safety: Only download apps from official stores - they\'re like verified marketplaces!',
+                '🔄 Auto-Updates: Enable automatic updates - let your devices protect themselves!',
+                '📨 Email Smart: Hover over links before clicking - it\'s like checking ID at the door!',
+                '💪 Security Habit: Regular security check-ups are like digital health examinations!',
+                '🎮 2FA Power: Two-factor authentication is like having a backup superpower!',
+                '🔑 Password Manager: Think of it as your digital keychain - organized and secure!',
+                '🕵️ Phishing Alert: If an offer seems too good to be true, it probably is!',
+                '✉️ Email Verify: When in doubt about an email, contact the company directly!',
+                '🎯 Target Smart: Cybercriminals love easy targets - don\'t be one!',
+                '🤝 Trust Wisely: Build your circle of trusted websites and stick to them!'
             ];
 
             var randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
