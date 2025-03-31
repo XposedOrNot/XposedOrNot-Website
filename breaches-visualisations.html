@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Breaches Visualization</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta property="og:title" content="XposedOrNot: Data Breaches Repository" />
     <meta name="description"
         content="Visualize data breaches with XposedOrNot. Gain insights through interactive charts and graphs to better understand breach trends and impacts." />
@@ -24,74 +25,142 @@
         html {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #333;
-            overflow: hidden;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
         }
 
         #chart {
-            width: calc(100vw - 40px);
-            height: calc(100vh - 56px);
-            overflow: auto;
-            padding: 20px 20px;
+            width: 100%;
+            padding: 20px;
+            margin: 0 auto;
         }
 
         .navbar-custom {
-            background-color: #007bff;
+            background-color: #2563eb;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand,
         .nav-link {
             color: white !important;
+            font-weight: 500;
         }
 
         .tooltip {
             position: absolute;
-            background-color: white;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.98);
+            border: none;
+            padding: 20px;
+            border-radius: 12px;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.3s;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 250px;
-            color: #333;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 320px;
+            color: #1a1a1a;
+            font-size: 14px;
+            line-height: 1.6;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .tooltip-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #111827;
+            border-bottom: 2px solid;
+            padding-bottom: 8px;
+        }
+
+        .tooltip-logo {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip-description {
+            color: #4b5563;
+            margin: 12px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .tooltip-stats {
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .axis text.year-label {
+            font-size: 16px;
+            font-weight: 600;
+            fill: currentColor;
+        }
+
+        .axis line.year-grid {
+            stroke: currentColor;
+            stroke-opacity: 0.2;
         }
 
         .circle {
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07));
         }
 
-        .axis path,
+        .axis path {
+            stroke: #4b5563;
+        }
+
         .axis line {
-            fill: none;
-            stroke: #bbb;
-            shape-rendering: crispEdges;
+            stroke: #374151;
+            stroke-dasharray: 2, 2;
         }
 
         .axis text {
             font-size: 14px;
-            fill: #ccc;
+            fill: #e5e7eb;
+            font-weight: 500;
         }
 
         text.breach-title {
-            font-size: 12px;
+            font-size: 13px;
             text-anchor: middle;
             fill: white;
-            font-weight: bold;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
         }
 
         img.logo {
             max-width: 100%;
             height: auto;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            border-radius: 4px;
         }
 
         image.breach-logo {
             pointer-events: none;
+        }
+
+        .page-title {
+            color: white;
+            text-align: center;
+            margin: 2rem 0;
+            font-weight: 600;
+            font-size: 2rem;
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
     </style>
     <script src="https://d3js.org/d3.v6.min.js"></script>
@@ -115,7 +184,7 @@
         </div>
     </nav>
     <br>
-    <h1 style="text-align: center; color: white;">Exposed Breaches Visualization (Updated 2025)</h1>
+    <h1 class="page-title">Data Breaches Visualization (Updated 2025)</h1>
 
     <div id="chart"></div>
 
@@ -161,9 +230,37 @@
             const dataByYear = d3.group(data, d => d.year);
             const years = Array.from(dataByYear.keys()).sort(d3.descending);
 
-            const margin = { top: 20, right: 20, bottom: 20, left: 60 };
-            const width = window.innerWidth - margin.left - margin.right;
-            let height = d3.sum(Array.from(dataByYear.values()), breaches => breaches.length * 10 + 40);
+            // Calculate dynamic spacing based on breach count per year
+            const breachesPerYear = Array.from(dataByYear.entries()).map(([year, breaches]) => ({
+                year: year,
+                count: breaches.length
+            }));
+
+            // Calculate lines needed per year (1 line per 8 breaches, minimum 1, maximum 10)
+            const linesPerYear = breachesPerYear.map(d => {
+                const count = d.count;
+                if (count <= 10) return 1;
+                if (count <= 20) return 2;
+                if (count <= 30) return 3;
+                if (count <= 40) return 4;
+                if (count <= 50) return 5;
+                return Math.min(8, Math.ceil(count / 10));
+            });
+
+            const margin = { top: 40, right: 60, bottom: 40, left: 160 }; // Increased left margin
+            const width = Math.min(2000, window.innerWidth) - margin.left - margin.right;
+
+            // Dynamic height calculation based on lines per year
+            const baseHeight = 120; // Slightly reduced base height
+            const height = years.reduce((acc, year, i) => {
+                return acc + (baseHeight * linesPerYear[i]);
+            }, 0);
+
+            // Create tooltip div if it doesn't exist
+            const tooltip = d3.select("body").selectAll(".tooltip").data([0])
+                .enter()
+                .append("div")
+                .attr("class", "tooltip");
 
             const svg = d3.select("#chart").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -171,37 +268,211 @@
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            const yScale = d3.scaleBand()
+            // Calculate vertical ranges for each year
+            const yearRanges = new Map();
+            let currentHeight = 0;
+            years.forEach(year => {
+                const yearHeight = baseHeight * linesPerYear[years.indexOf(year)];
+                yearRanges.set(year, {
+                    start: currentHeight,
+                    end: currentHeight + yearHeight,
+                    height: yearHeight,
+                    center: currentHeight + yearHeight / 2
+                });
+                currentHeight += yearHeight;
+            });
+
+            const yScale = d3.scalePoint()
                 .domain(years)
                 .range([0, height])
-                .paddingInner(0.1);
+                .padding(0.2); // Reduced padding between years
 
-            const colorScale = d3.scaleOrdinal(d3.schemeDark2);
-            const yAxis = d3.axisLeft(yScale).tickFormat(d3.format("d"));
-            svg.append("g")
+            // Modern color palettes per year with gradients - updated with more contrasting colors
+            const colorPalettes = {
+                2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),  // Vibrant reds
+                2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),  // Fresh greens
+                2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),  // Rich purples
+                2022: ['#FFD43B', '#FCC419', '#FAB005', '#F59F00', '#F08C00'].reverse(),  // Golden yellows
+                2021: ['#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'].reverse(),  // Teals
+                2020: ['#FF922B', '#FD7E14', '#F76707', '#E8590C', '#D9480F'].reverse(),  // Deep oranges
+                2019: ['#339AF0', '#228BE6', '#1C7ED6', '#1971C2', '#1864AB'].reverse(),  // Ocean blues
+                2018: ['#E64980', '#D6336C', '#C2255C', '#A61E4D', '#9C1453'].reverse(),  // Hot pinks
+                2017: ['#66D9E8', '#3BC9DB', '#22B8CF', '#15AABF', '#1098AD'].reverse(),  // Bright cyans
+                2016: ['#9775FA', '#845EF7', '#7950F2', '#7048E8', '#6741D9'].reverse(),  // Bright purples
+                2015: ['#F783AC', '#F06595', '#E64980', '#D6336C', '#C2255C'].reverse(),  // Pinks
+                2014: ['#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20'].reverse(),  // Forest greens
+                2013: ['#FF5722', '#F4511E', '#E64A19', '#D84315', '#BF360C'].reverse(),  // Deep oranges
+                2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),  // Cyan
+                2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),  // Purple
+                2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),  // Amber
+                2009: ['#795548', '#6D4C41', '#5D4037', '#4E342E', '#3E2723'].reverse(),  // Brown
+                2008: ['#607D8B', '#546E7A', '#455A64', '#37474F', '#263238'].reverse(),  // Blue grey
+                2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()   // Pink
+            };
+
+            // Default palette for older years
+            const defaultPalette = ['#748FFC', '#4C6EF5', '#4263EB', '#3B5BDB', '#364FC7'].reverse();
+
+            const yAxis = d3.axisLeft(yScale)
+                .tickFormat(year => {
+                    const count = dataByYear.get(year).length;
+                    return `Year ${year} (${count} breaches)`;
+                })
+                .tickSize(-width);
+
+            const gAxis = svg.append("g")
                 .attr("class", "axis")
                 .call(yAxis)
-                .selectAll(".tick text")
-                .style("font-size", "16px");
+                .call(g => g.select(".domain").remove());
 
-            const simulation = d3.forceSimulation(data)
-                .force("x", d3.forceX(width / 2).strength(0.1))
-                .force("y", d3.forceY(d => yScale(d.year) + yScale.bandwidth() / 2).strength(1))
-                .force("collide", d3.forceCollide(d => circleSize(d.count) + 3))
-                .on("tick", ticked);
+            // Style the year labels and align them with the center of their section
+            gAxis.selectAll(".tick")
+                .each(function (year) {
+                    const yearRange = yearRanges.get(year);
+                    const palette = colorPalettes[year] || defaultPalette;
+                    const baseColor = palette[0]; // Use the first (usually brightest) color from the palette
 
-            const tooltip = d3.select("#chart").append("div")
-                .attr("class", "tooltip");
+                    d3.select(this)
+                        .attr("transform", `translate(0,${yearRange.center})`)
+                        .select("text")
+                        .attr("class", "year-label")
+                        .style("fill", baseColor)
+                        .style("font-weight", "600");
+
+                    // Style the grid line for this year
+                    d3.select(this)
+                        .select("line")
+                        .attr("class", "year-grid")
+                        .style("stroke", baseColor);
+                });
+
+            // Calculate initial positions with better horizontal distribution
+            data.forEach(d => {
+                const yearRange = yearRanges.get(d.year);
+                d.fy = yearRange.start + Math.random() * yearRange.height;
+                // Distribute initial x positions more evenly across the width
+                d.x = (Math.random() * 0.8 + 0.1) * width; // Use 80% of width, offset by 10% from edges
+            });
+
+            // Dynamic force parameters based on breach count
+            function calculateForceParameters(yearData) {
+                const count = yearData.length;
+                // Adaptive padding - reduce more aggressively for years with many breaches
+                const baseCollisionPadding = count > 15 ?
+                    Math.max(1, Math.min(5, 10 - count / 15)) : // More aggressive reduction for crowded years
+                    Math.max(5, Math.min(12, 15 - count / 10)); // Normal padding for less crowded years
+
+                return {
+                    collisionPadding: baseCollisionPadding,
+                    charge: Math.min(-15, -20 - count / 2), // Slightly reduced repulsion
+                    xStrength: count > 15 ? 0.02 : 0.015, // Reduced x-force to allow more spread
+                };
+            }
+
+            // Create separate simulation for each year with improved distribution
+            const simulations = [];
+            years.forEach(year => {
+                const yearData = data.filter(d => d.year === year);
+                const forceParams = calculateForceParameters(yearData);
+                const yearRange = yearRanges.get(year);
+
+                // Create multiple anchor points across the width to better distribute balloons
+                const anchorPoints = [];
+                const numAnchors = Math.min(yearData.length, 5); // Up to 5 anchor points
+                for (let i = 0; i < numAnchors; i++) {
+                    anchorPoints.push((width * (i + 1)) / (numAnchors + 1));
+                }
+
+                const yearSimulation = d3.forceSimulation(yearData)
+                    .force("x", d3.forceX().x(d => {
+                        // Assign each node to the nearest anchor point
+                        const anchorIndex = Math.floor(Math.random() * anchorPoints.length);
+                        return anchorPoints[anchorIndex];
+                    }).strength(forceParams.xStrength))
+                    .force("y", d3.forceY(yearRange.center).strength(0.2))
+                    .force("collide", d3.forceCollide(d => circleSize(d.count) + forceParams.collisionPadding).strength(0.8))
+                    .force("charge", d3.forceManyBody().strength(forceParams.charge))
+                    .on("tick", () => {
+                        breaches
+                            .filter(d => d.year === year)
+                            .attr("transform", d => {
+                                const padding = circleSize(d.count) + forceParams.collisionPadding;
+                                d.x = Math.max(padding, Math.min(width - padding, d.x));
+                                d.y = Math.max(
+                                    yearRange.start + padding,
+                                    Math.min(yearRange.end - padding, d.y)
+                                );
+                                return `translate(${d.x},${d.y})`;
+                            });
+                    });
+                simulations.push(yearSimulation);
+            });
+
+            // Add continuous gentle animation
+            function addJitter() {
+                simulations.forEach(sim => {
+                    const nodes = sim.nodes();
+                    nodes.forEach(node => {
+                        // Add small random movement
+                        node.x += (Math.random() - 0.5) * 0.5;
+                        node.y += (Math.random() - 0.5) * 0.5;
+                    });
+                    sim.alpha(0.1).restart(); // Restart simulation with low alpha
+                });
+            }
+
+            // Start continuous animation
+            setInterval(addJitter, 2000); // Add jitter every 2 seconds
 
             const breaches = svg.selectAll(".breach")
                 .data(data)
                 .enter().append("g")
-                .attr("class", "breach");
+                .attr("class", "breach")
+                .attr("transform", d => {
+                    const yearRange = yearRanges.get(d.year);
+                    const y = yearRange.center + (Math.random() - 0.5) * yearRange.height * 0.8;
+                    const x = d.x;
+                    return `translate(${x},${y})`;
+                });
+
+            // Add gradient definitions
+            const defs = svg.append("defs");
+
+            // Create gradient for each circle with pulsing animation
+            breaches.each(function (d, i) {
+                const gradientId = `gradient-${d.year}-${i}`;
+                const palette = colorPalettes[d.year] || defaultPalette;
+                const gradient = defs.append("radialGradient")
+                    .attr("id", gradientId)
+                    .attr("gradientUnits", "userSpaceOnUse")
+                    .attr("cx", "0")
+                    .attr("cy", "0")
+                    .attr("r", circleSize(d.count));
+
+                gradient.append("stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", palette[0]);
+
+                gradient.append("stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", palette[palette.length - 1]);
+
+                // Add subtle pulse animation to gradient
+                const pulseAnimation = gradient.append("animate")
+                    .attr("attributeName", "r")
+                    .attr("values", `${circleSize(d.count)};${circleSize(d.count) * 1.1};${circleSize(d.count)}`)
+                    .attr("dur", "3s")
+                    .attr("repeatCount", "indefinite");
+            });
 
             breaches.append("circle")
                 .attr("class", "circle")
-                .attr("r", d => circleSize(d.count))
-                .style("fill", d => colorScale(d.year));
+                .attr("r", 0)
+                .style("fill", (d, i) => `url(#gradient-${d.year}-${i})`)
+                .style("opacity", 0.9)
+                .transition()
+                .duration(1000)
+                .attr("r", d => circleSize(d.count));
 
             breaches.append("image")
                 .attr("class", "breach-logo")
@@ -209,31 +480,76 @@
                 .attr("x", d => -logoSize(d.count) / 2)
                 .attr("y", d => -logoSize(d.count) / 2)
                 .attr("width", d => logoSize(d.count))
-                .attr("height", d => logoSize(d.count));
+                .attr("height", d => logoSize(d.count))
+                .style("opacity", 0)
+                .transition()
+                .delay(500)
+                .duration(500)
+                .style("opacity", 1);
 
             breaches.append("text")
                 .attr("class", "breach-title")
                 .attr("y", d => circleSize(d.count) / 2 + logoSize(d.count) / 2 - 8)
-                .text(d => d.name);
+                .text(d => d.name)
+                .style("opacity", 0)
+                .transition()
+                .delay(1000)
+                .duration(500)
+                .style("opacity", 1);
+
+            let previousSize = null;
+            let activeElement = null;
 
             breaches.on("mouseover", function (event, d) {
-                const originalSize = circleSize(d.count);
-                d3.select(this).select("circle").transition().attr("r", originalSize + 10);
-                tooltip.transition().duration(200).style("opacity", 1);
-                tooltip.html("<img src='" + d.logo + "' alt='Logo' class='logo'><strong>" + d.name + "</strong><br/>" + d.description)
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY + 10) + "px");
-            })
-                .on("mouseout", function (d) {
-                    const originalSize = circleSize(d.count);
-                    d3.select(this).select("circle").transition().attr("r", originalSize);
-                    tooltip.transition().duration(500).style("opacity", 0);
-                });
+                const element = d3.select(this);
+                activeElement = element;
+                previousSize = circleSize(d.count);
+                const palette = colorPalettes[d.year] || defaultPalette;
 
-            function ticked() {
-                breaches
-                    .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
-            }
+                element.select("circle")
+                    .transition()
+                    .duration(300)
+                    .attr("r", previousSize + 10)
+                    .style("opacity", 1);
+
+                element.raise();
+
+                const tooltipContent = `
+                    <div class="tooltip-title" style="border-color: ${palette[0]}">
+                        ${d.name}
+                    </div>
+                    <img src="${d.logo}" alt="Logo" class="tooltip-logo">
+                    <div class="tooltip-description">
+                        ${d.description}
+                    </div>
+                    <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[0]}; border: 1px solid ${palette[0]}40">
+                        Records exposed: ${d3.format(",")(d.count)}
+                    </div>
+                `;
+
+                tooltip.html(tooltipContent)
+                    .style("left", (event.pageX + 15) + "px")
+                    .style("top", (event.pageY + 15) + "px")
+                    .style("border-left", `4px solid ${palette[0]}`)
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 1);
+            })
+                .on("mouseout", function (event, d) {
+                    if (activeElement) {
+                        activeElement.select("circle")
+                            .transition()
+                            .duration(300)
+                            .attr("r", previousSize)
+                            .style("opacity", 0.9);
+                    }
+
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+
+                    activeElement = null;
+                });
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
