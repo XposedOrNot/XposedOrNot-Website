@@ -378,7 +378,8 @@
       }
 
       loader.style.display = "block";
-      const apiUrl = `https://api.xposedornot.com/v2/breach-analytics?email=${encodeURIComponent(email)}`;
+      //const apiUrl = `https://api.xposedornot.com/v2/breach-analytics?email=${encodeURIComponent(email)}`;
+      const apiUrl = `https://xon-api-test.xposedornot.com/v2/breach-analytics?email=${encodeURIComponent(email)}`;
 
       try {
         const response = await fetch(apiUrl);
@@ -394,7 +395,7 @@
         if (type === 'ai') {
           blogSection.style.display = "flex";
           if (data.AI_Summary) {
-            // Format the AI summary with better structure
+
             const formattedSummary = formatAISummary(data.AI_Summary);
             resultContainer.innerHTML = formattedSummary;
           } else {
