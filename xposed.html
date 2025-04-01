@@ -38,6 +38,8 @@
         href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset'
         type=text/css media=all>
     <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="/static/scripts/other-libraries.js" defer></script>
     <style>
         .reference-url,
@@ -54,6 +56,44 @@
             color: #ffc107 !important;
             text-decoration: underline !important;
             transition: color 0.3s ease !important;
+        }
+
+
+
+
+        .tippy-box[data-theme~='xon'] {
+            background-color: rgba(45, 52, 54, 0.95);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.9em;
+            max-width: 300px !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .tippy-box[data-theme~='xon'][data-placement^='top']>.tippy-arrow::before {
+            border-top-color: rgba(45, 52, 54, 0.95);
+        }
+
+
+        .card.gradient-custom-4 {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: background 0.3s ease;
+        }
+
+
+        @media (prefers-color-scheme: dark) {
+            .card.gradient-custom-4 {
+                background: linear-gradient(135deg, #2d3436 0%, #1a1e1f 100%);
+            }
+
+            .tippy-box[data-theme~='xon'] {
+                background-color: rgba(52, 58, 64, 0.95);
+            }
+
+            .tippy-box[data-theme~='xon'][data-placement^='top']>.tippy-arrow::before {
+                border-top-color: rgba(52, 58, 64, 0.95);
+            }
         }
     </style>
 </head>
@@ -139,13 +179,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
         integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
-        integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"
         integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
     <script src="/static/scripts/common.js"></script>
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.js" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
 
     <script>
         $.LoadingOverlaySetup({
@@ -267,27 +309,48 @@
             }
 
             function createBadge(type, isActive) {
+                const badge = document.createElement('span');
                 let badgeText = "";
                 let badgeClass = "";
+                let tooltipContent = "";
 
                 switch (type) {
                     case 'Searchable':
                         badgeText = isActive ? "Searchable" : "Not Searchable";
                         badgeClass = isActive ? "ver" : "notver";
+                        tooltipContent = isActive ?
+                            "This breach is publicly searchable. You can check if your data was exposed using our search tool." :
+                            "This breach is not publicly searchable due to data sensitivity or verification status.";
                         break;
                     case 'Verified':
                         badgeText = isActive ? "Verified" : "Not Verified";
                         badgeClass = isActive ? "ver" : "notver";
+                        tooltipContent = isActive ?
+                            "This breach has been verified by our  team and confirmed as authentic." :
+                            "This breach is currently unverified.";
                         break;
                     case 'Sensitive':
                         badgeText = "Data Breach";
                         badgeClass = "notser";
+                        tooltipContent = "This incident involves exposure of personal data. Take necessary precautions to protect your information.";
                         break;
                 }
 
-                const badge = document.createElement('span');
                 badge.textContent = badgeText;
                 badge.className = badgeClass;
+                badge.setAttribute('data-tippy-content', tooltipContent);
+
+
+                tippy(badge, {
+                    theme: 'xon',
+                    placement: 'top',
+                    animation: 'scale',
+                    duration: [200, 150],
+                    arrow: true,
+                    delay: [100, 50],
+                    interactive: true
+                });
+
                 return badge;
             }
 
