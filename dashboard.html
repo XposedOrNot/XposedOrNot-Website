@@ -34,9 +34,18 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
       integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-   <script src="https://unpkg.com/@popperjs/core@2"></script>
-   <script src="https://unpkg.com/tippy.js@6"></script>
+   <script src="/static/scripts/utils.js"></script>
+   <script src="/static/scripts/other-libraries.js"></script>
+   <script src="/static/scripts/common.js"></script>
+   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
    <style>
       body {
          background-color: #f5f5f5;
@@ -130,7 +139,6 @@
          display: none !important;
       }
    </style>
-   <script src="/static/scripts/other-libraries.js" defer></script>
 </head>
 
 <body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
@@ -260,7 +268,10 @@
    </div>
    <script>
       $(document).ready(function () {
-         $('[data-toggle="tooltip"]').tooltip();
+         $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover',
+            container: 'body'
+         });
 
          function validateEmail(email) {
             const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -342,9 +353,8 @@
             $email.prop('disabled', true);
             $submitText.hide();
             $submitSpinner.removeClass('d-none').addClass('d-inline-block');
-
+            //url: 'https://api.xposedornot.com/v1/domain-alert/' + emailValue,
             $.ajax({
-               //url: 'https://api.xposedornot.com/v1/domain-alert/' + emailValue,
                url: 'https://xon-api-test.xposedornot.com/v1/domain-alert/' + emailValue,
                type: 'GET',
                success: function (response) {
@@ -395,12 +405,6 @@
          </aside>
       </footer>
    </div>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
-      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1" rel="preconnect"></script>
-   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
-   <script src="/static/scripts/common.js"></script>
 </body>
 
 </html>
