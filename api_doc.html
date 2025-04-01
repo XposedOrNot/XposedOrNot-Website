@@ -46,6 +46,249 @@
       crossorigin="anonymous"></script>
    <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer>
    <script src="/static/scripts/other-libraries.js" defer></script>
+   <style>
+      :root {
+         --primary-color: #007BFF;
+         --secondary-color: #6c757d;
+         --background-color: #ffffff;
+         --text-color: #212529;
+         --border-color: #dee2e6;
+         --hover-color: #FFBF00;
+         --code-bg: #f6f8fa;
+         --panel-bg: #f8f9fa;
+         --code-text: #24292e;
+      }
+
+      [data-theme="dark"] {
+         --primary-color: #0d6efd;
+         --secondary-color: #adb5bd;
+         --background-color: #212529;
+         --text-color: #f8f9fa;
+         --border-color: #495057;
+         --hover-color: #ffd43b;
+         --code-bg: #1a1d20;
+         --panel-bg: #343a40;
+         --code-text: #e9ecef;
+      }
+
+      body {
+         font-family: 'Poppins', sans-serif;
+         line-height: 1.6;
+         color: var(--text-color);
+         background-color: var(--background-color);
+         transition: all 0.3s ease;
+      }
+
+      .container {
+         max-width: 1200px;
+         padding: 2rem;
+      }
+
+      .kbanner {
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .button-link {
+         display: inline-block;
+         padding: 12px 24px;
+         color: #fff;
+         background-color: var(--primary-color);
+         text-decoration: none;
+         border-radius: 8px;
+         transition: all 0.3s ease;
+         border: none;
+         font-weight: 500;
+      }
+
+      .button-link:hover {
+         background-color: var(--hover-color);
+         transform: translateY(-2px);
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+         color: #212529;
+         text-decoration: none;
+      }
+
+      .panel {
+         background: var(--panel-bg);
+         border-radius: 12px;
+         border: 1px solid var(--border-color);
+         margin-bottom: 2rem;
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+         overflow: hidden;
+      }
+
+      .panel-heading {
+         background-color: var(--primary-color);
+         color: white;
+         padding: 1.5rem;
+         font-size: 1.25rem;
+         font-weight: 600;
+         border-radius: 12px 12px 0 0;
+      }
+
+      .panel-body {
+         padding: 2rem;
+      }
+
+      pre {
+         background-color: var(--code-bg);
+         border-radius: 8px;
+         padding: 1.5rem;
+         margin: 1rem 0;
+         overflow-x: auto;
+         border: 1px solid var(--border-color);
+         color: var(--code-text);
+         box-shadow: inset 0 1px 2px rgba(0, 0, 0, .05);
+      }
+
+      .alert {
+         border-radius: 8px;
+         padding: 1.5rem;
+         margin: 1.5rem 0;
+         border: none;
+      }
+
+      .alert-primary {
+         background-color: rgba(13, 110, 253, 0.1);
+         border-left: 4px solid var(--primary-color);
+      }
+
+      [data-theme="dark"] .alert-primary {
+         background-color: rgba(13, 110, 253, 0.2);
+      }
+
+      [data-theme="dark"] .alert-primary h4 {
+         color: #ffffff;
+      }
+
+      .alert-danger {
+         background-color: rgba(220, 53, 69, 0.1);
+         border-left: 4px solid #dc3545;
+      }
+
+      .table {
+         border-radius: 8px;
+         overflow: hidden;
+         margin: 1.5rem 0;
+      }
+
+      .table th {
+         background-color: var(--primary-color);
+         color: white;
+      }
+
+      .table td,
+      .table th {
+         padding: 1rem;
+      }
+
+      blockquote {
+         background-color: var(--code-bg);
+         border-left: 4px solid var(--primary-color);
+         padding: 1.5rem;
+         margin: 1.5rem 0;
+         border-radius: 0 8px 8px 0;
+         box-shadow: inset 0 1px 2px rgba(0, 0, 0, .05);
+      }
+
+      [data-theme="dark"] pre {
+         background-color: #1a1d20;
+         color: #e9ecef;
+         border-color: #495057;
+      }
+
+      [data-theme="dark"] code {
+         color: #e9ecef;
+      }
+
+      [data-theme="dark"] blockquote {
+         background-color: #1a1d20;
+         color: #e9ecef;
+      }
+
+      .custom-switch {
+         position: fixed;
+         bottom: 2rem;
+         right: 2rem;
+         background: none;
+         padding: 0.5rem;
+         border-radius: 8px;
+         z-index: 1000;
+         width: auto;
+         display: inline-flex;
+         align-items: center;
+         justify-content: flex-end;
+         float: right;
+      }
+
+      .custom-switch label {
+         color: var(--text-color);
+         margin-left: 0.5rem;
+         white-space: nowrap;
+      }
+
+      html {
+         scroll-behavior: smooth;
+      }
+
+      @media (max-width: 768px) {
+         .container {
+            padding: 1rem;
+         }
+
+         .panel-body {
+            padding: 1rem;
+         }
+
+         .custom-switch {
+            bottom: 1rem;
+            right: 1rem;
+         }
+      }
+
+      ::-webkit-scrollbar {
+         width: 8px;
+         height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+         background: var(--background-color);
+      }
+
+      ::-webkit-scrollbar-thumb {
+         background: var(--primary-color);
+         border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+         background: var(--hover-color);
+      }
+
+      #collapse1 {
+         background-color: var(--background-color);
+         color: var(--text-color);
+      }
+
+      .panel-default {
+         background-color: var(--panel-bg);
+         color: var(--text-color);
+      }
+
+      .panel-heading {
+         color: white !important;
+      }
+
+      [data-theme="dark"] #collapse1,
+      [data-theme="dark"] .panel-default {
+         background-color: var(--background-color);
+         color: var(--text-color);
+      }
+
+      [data-theme="dark"] .panel-heading {
+         background-color: var(--primary-color);
+         color: white !important;
+      }
+   </style>
 </head>
 
 <body>
@@ -88,8 +331,10 @@
    <div class="container">
       <div align="center">
          To experiment with and test our API, we invite you to explore our API Playground.<br><br>
-         <h3><a href="https://xposedornot.docs.apiary.io" target="_blank" class="button-link"> 🎮 API Playground</a>
-         </h3>
+         <h3 style="display: inline-block; margin-right: 20px;"><a href="https://api.xposedornot.com/docs"
+               target="_blank" class="button-link"> 📚 Swagger Documentation</a></h3>
+         <h3 style="display: inline-block;"><a href="https://xposedornot.docs.apiary.io" target="_blank"
+               class="button-link"> 🎮 API Playground</a></h3>
       </div>
       <br>
       <div class="panel-group" id="accordion">
@@ -759,8 +1004,10 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                   <p>Join us in shaping this fully open source site! Contributions welcome ❤️ —check out our <a
                         href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub </a>. </p>
                   <br>
-                  <h3><a href="https://xposedornot.docs.apiary.io" target="_blank" class="button-link"> 🛠️ API
-                        Playground</a></h3>
+                  <h3 style="display: inline-block; margin-right: 20px;"><a href="https://api.xposedornot.com/docs"
+                        target="_blank" class="button-link"> 📚 Swagger Documentation</a></h3>
+                  <h3 style="display: inline-block;"><a href="https://xposedornot.docs.apiary.io" target="_blank"
+                        class="button-link"> 🛠️ API Playground</a></h3>
                   <style>
                      .button-link {
                         display: inline-block;
@@ -808,6 +1055,36 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
               }
           }
       }
+      </script>
+      <script>
+
+         const darkSwitch = document.getElementById('darkSwitch');
+         const theme = localStorage.getItem('theme');
+
+         if (theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            darkSwitch.checked = theme === 'dark';
+         }
+
+         darkSwitch.addEventListener('change', function (e) {
+            if (e.target.checked) {
+               document.documentElement.setAttribute('data-theme', 'dark');
+               localStorage.setItem('theme', 'dark');
+            } else {
+               document.documentElement.setAttribute('data-theme', 'light');
+               localStorage.setItem('theme', 'light');
+            }
+         });
+
+
+         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+               e.preventDefault();
+               document.querySelector(this.getAttribute('href')).scrollIntoView({
+                  behavior: 'smooth'
+               });
+            });
+         });
       </script>
 </body>
 
