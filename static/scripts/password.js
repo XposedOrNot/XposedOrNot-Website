@@ -3,10 +3,10 @@ function validateEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 
-$("#edhu").on("change keyup paste", function () {
+$("#edhu").on("change keyup paste", function() {
     $("#output").val(keccak_512($("#edhu").val()));
 })
-$('#alertMeModal').on('hidden.bs.modal', function (e) {
+$('#alertMeModal').on('hidden.bs.modal', function(e) {
     document.getElementById("h2head").className = "modal-header-primary";
     $('#message-text').val("You are currently being added to the alert notification service of XposedOrNot. Please make sure to complete the below shown challenge and then click 'Alert Me'.");
     $("#alertMe").show();
@@ -14,7 +14,7 @@ $('#alertMeModal').on('hidden.bs.modal', function (e) {
     $("#a_succ").hide();
     $("#b_succ").hide();
 })
-$('#alertMeModal').on('show.bs.modal', function (event) {
+$('#alertMeModal').on('show.bs.modal', function(event) {
     var button = $(event.relatedTarget)
     var recipient = button.data('xonnie')
     var modal = $(this)
@@ -39,8 +39,8 @@ function _turnstileCb() {
     }, 1000);
 }
 
-$(document).ready(function () {
-    $("#alertMe").click(function (func_alert) {
+$(document).ready(function() {
+    $("#alertMe").click(function(func_alert) {
         var add_str = document.getElementById("recipient-name").value;
         if ((add_str.length == 0) || validateEmail(document.getElementById("recipient-name").value) == false) {
             $("#b_succ").show();
@@ -54,13 +54,13 @@ $(document).ready(function () {
         koodudal = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(add_str);
         var myjson;
         var j = $.ajax(koodudal)
-            .done(function (n) {
+            .done(function(n) {
                 $('#message-text').html("Successfully added to the alert service. Please check your email and click on the verification link to confirm");
                 document.getElementById("h2head").className = "modal-header-success";
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
-            .fail(function (n) {
+            .fail(function(n) {
                 $('#message-text').html("We thank you for your interest. However our records indicate you are already added to the AlertMe Service.");
                 document.getElementById("h2head").className = "modal-header-danger";
                 $("#alertMe").hide();
@@ -69,7 +69,7 @@ $(document).ready(function () {
 
     });
 
-    $("#searchMe").click(function (event) {
+    $("#searchMe").click(function(event) {
         event.preventDefault();
         const email = $("#output").val().substring(0, 10);
         const domain = $("#edhu").val();
@@ -105,7 +105,7 @@ $(document).ready(function () {
 
         let myjson;
         const jqXHR = $.ajax(apiUrl + encodedEmail)
-            .done(function (response) {
+            .done(function(response) {
                 myjson = response;
                 const breachCount = myjson.SearchPassAnon.count;
                 const breachChars = myjson.SearchPassAnon.char;
@@ -123,7 +123,7 @@ $(document).ready(function () {
                     $("#info").hide();
                     $("#alert_").show();
 
-                    if (1 == 0) { } else {
+                    if (1 == 0) {} else {
                         nn1 = '<br>'
                     }
 
@@ -141,7 +141,7 @@ $(document).ready(function () {
                     $('#data_email').html(email);
                 }
             })
-            .fail(function (response) {
+            .fail(function(response) {
                 if (response.status === 429) {
                     $("#mbody").show();
                     $("#spins").hide();
@@ -169,24 +169,24 @@ $(document).ready(function () {
     });
 });
 
-$(document).ready(function () {
+$(document).ready(function() {
     var videoModal = $('#vidModal');
     var videoElement = $('#video');
     var videoSrc;
 
-    $('.video-btn').click(function () {
+    $('.video-btn').click(function() {
         videoSrc = $(this).data("src");
     });
 
-    videoModal.on('shown.bs.modal', function (event) {
+    videoModal.on('shown.bs.modal', function(event) {
         videoElement.attr('src', videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
     });
 
-    videoModal.on('hide.bs.modal', function (event) {
+    videoModal.on('hide.bs.modal', function(event) {
         videoElement.attr('src', videoSrc);
     });
 
-    $("#detailedReport").click(function () {
+    $("#detailedReport").click(function() {
         var url = "data-breaches-risks.html?e=" + document.getElementById("edhu").value.toLowerCase();
         window.open(url);
         window.opener = null;

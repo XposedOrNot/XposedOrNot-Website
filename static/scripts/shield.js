@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
     $('#emailForm').bootstrapValidator({
         fields: {
             email: {
@@ -12,7 +12,7 @@ $(document).ready(function () {
                 }
             }
         }
-    }).on('success.form.bv', function (e) {
+    }).on('success.form.bv', function(e) {
         e.preventDefault();
 
         var email = $('#email').val().toLowerCase();
@@ -31,14 +31,14 @@ $(document).ready(function () {
         $.ajax({
             url: url,
             type: "GET",
-            success: function (response) {
+            success: function(response) {
                 $('#submitSpinner').addClass('d-none');
                 $('#alertMe').prop('disabled', false);
 
                 $("#successMessage").show().html('<i class="fas fa-check-circle"></i> Shield Added Successfully. Shortly you should receive an email with next steps to complete this process.');
                 $("#errorMessage").hide();
             },
-            error: function (error) {
+            error: function(error) {
                 $('#submitSpinner').addClass('d-none');
                 $('#alertMe').prop('disabled', false);
                 $("#errorMessage").show().html('<i class="fas fa-times-circle"></i> There was an error processing your request. Please try again later.');

@@ -18,11 +18,10 @@ const data = [{
         A propritery auto-reload solution for web developers, now deprecated in favor of live-server and
         hot module reload in Webpack.
     `
-}
-];
+}];
 
 function drawGraph(data) {
-    var nodes = data.map(function (i) {
+    var nodes = data.map(function(i) {
         var node = {};
         node.year = i.cat;
         node.groups = (i.cat - 2010);
@@ -40,7 +39,7 @@ function drawGraph(data) {
     var labels = [];
     var yearTypes = [];
 
-    data.forEach(function (d) {
+    data.forEach(function(d) {
         labels[(d.cat - 2010)] = (d.cat);
         if (yearTypes.indexOf(d.cat) == -1) {
             yearTypes.push(d.cat);
@@ -75,22 +74,22 @@ function drawGraph(data) {
 
     function ticked() {
         var k = this.alpha() * 0.3;
-        nodes.forEach(function (n, i) {
+        nodes.forEach(function(n, i) {
             n.y += (clusters(n.groups) - n.y) * k / 3.5 - 350;
             n.x += (0 - n.x) * k / 12 + 300;
         });
         node
-            .attr("cx", function (d) {
+            .attr("cx", function(d) {
                 return d.x;
             })
-            .attr("cy", function (d) {
+            .attr("cy", function(d) {
                 return d.y;
             });
         images
-            .attr("x", function (d) {
+            .attr("x", function(d) {
                 return d.x - d.radius * 0.7;
             })
-            .attr("y", function (d) {
+            .attr("y", function(d) {
                 return d.y - d.radius * 0.7;
             });
 
@@ -118,13 +117,13 @@ function drawGraph(data) {
     var tickText = d3.selectAll('.tick').selectAll('text')
         .style("font-size", "16px")
         .style('fill', 'white')
-        .text(function (d) {
+        .text(function(d) {
             return labels[d]
         });
 
     var simulation = d3.forceSimulation()
         .force("charge", d3.forceManyBody())
-        .force('collision', d3.forceCollide().radius(function (d) {
+        .force('collision', d3.forceCollide().radius(function(d) {
             return d.radius;
         }))
         .force("center", d3.forceCenter(width / 4, 2 * (height / 3)));
@@ -137,13 +136,13 @@ function drawGraph(data) {
         .enter()
         .append("circle")
         .attr('id', d => d.id)
-        .attr("r", function (d) {
+        .attr("r", function(d) {
             return d.radius;
         })
-        .attr("fill", function (d) {
+        .attr("fill", function(d) {
             return color(yearTypes.indexOf(d.year));
         })
-        .on("mouseover", function (d) {
+        .on("mouseover", function(d) {
             d3.select(this)
             div.transition()
                 .duration(0)
@@ -151,11 +150,11 @@ function drawGraph(data) {
             div.html("<b>" + d.name + "</b><br><img width=50px src=" + d.icon + "></img><br><br>" + d.desc + "<br><br>").style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         })
-        .on("mousemove", function (d) {
+        .on("mousemove", function(d) {
             div.style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         })
-        .on("mouseleave", function (d) {
+        .on("mouseleave", function(d) {
             div.transition()
                 .duration(200)
                 .style("opacity", 0)
@@ -170,7 +169,7 @@ function drawGraph(data) {
         .attr('xlink:href', d => d.icon)
         .attr('height', d => d.radius * 2 * 0.7)
         .attr('width', d => d.radius * 2 * 0.7)
-        .on("mouseover", function (d) {
+        .on("mouseover", function(d) {
             d3.select(this)
             div.transition()
                 .duration(0)
@@ -178,16 +177,16 @@ function drawGraph(data) {
             div.html("<h3>" + d.name + "</h3><br><img width=50px src=" + d.icon + "></img><br><br>" + d.desc + "<br><br>").style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         })
-        .on("mousemove", function (d) {
+        .on("mousemove", function(d) {
             div.style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         })
-        .on("mouseleave", function (d) {
+        .on("mouseleave", function(d) {
             div.transition()
                 .duration(200)
                 .style("opacity", 0)
         })
-        .on("click", function (d) {
+        .on("click", function(d) {
             //alert(d.link)
             window.open(d.link);
         })
@@ -195,7 +194,7 @@ function drawGraph(data) {
     node.append('text')
         .attr('font-size', '120px')
         .style('text-anchor', 'middle')
-        .text(function (d) {
+        .text(function(d) {
             return d.year;
         });
 

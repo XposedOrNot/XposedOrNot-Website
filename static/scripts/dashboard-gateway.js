@@ -1,6 +1,5 @@
-$(document).ready(function () {
-    $('#emailForm').bootstrapValidator({
-    }).on('success.form.bv', function (e) {
+$(document).ready(function() {
+    $('#emailForm').bootstrapValidator({}).on('success.form.bv', function(e) {
         e.preventDefault();
 
         var email = $('#email').val();
@@ -17,13 +16,13 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://xon-api-test.xposedornot.com/v1/domain-alert/' + email,
             type: 'GET',
-            success: function (response) {
+            success: function(response) {
                 $('#successMessage').show();
                 $submitButton.prop('disabled', false);
                 $submitText.show();
                 $submitSpinner.removeClass('d-inline-block').addClass('d-none');
             },
-            error: function (error) {
+            error: function(error) {
                 if (error.status === 429) {
                     $('#rateLimitMessage').show();
                 } else {

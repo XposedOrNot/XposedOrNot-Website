@@ -13,23 +13,27 @@ const validateEmail = (email) => {
     return emailRegex.test(escapedEmail);
 };
 
-(function ($) {
-    $.fn.runCounter = function (options) {
+(function($) {
+    $.fn.runCounter = function(options) {
         var defaults = {
             start: 0,
             end: 0,
             duration: 1000
         };
         var opt = $.extend(defaults, options);
-        return this.each(function () {
+        return this.each(function() {
             var $this = $(this);
-            $({ counter: opt.start }).animate({ counter: opt.end }, {
+            $({
+                counter: opt.start
+            }).animate({
+                counter: opt.end
+            }, {
                 duration: opt.duration,
                 easing: 'linear',
-                step: function () {
+                step: function() {
                     $this.text(Math.floor(this.counter));
                 },
-                complete: function () {
+                complete: function() {
                     $this.text(opt.end.toLocaleString());
                 }
             });
@@ -72,7 +76,7 @@ function _turnstileCb() {
     }, 1000);
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
 
     $('#alertMeModal').on('keydown', (event) => {
         const enterKeyCode = 13;
@@ -108,11 +112,11 @@ $(document).ready(function () {
     $("#alertMe_i2").addClass("fa fa-bell ring");
 });
 
-$(document).ready(function () {
+$(document).ready(function() {
     //const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email=';
     const apiUrlBase = 'https://xon-api-test.xposedornot.com/v1/breach-analytics?email=';
 
-    $("#searchMe").click(function (event) {
+    $("#searchMe").click(function(event) {
         event.preventDefault();
         let email = $("#edhu").val().toLowerCase().trim();
         let apiUrl = apiUrlBase + encodeURIComponent(email);
@@ -132,16 +136,16 @@ $(document).ready(function () {
             return;
         }
 
-        $.ajax(apiUrl).done(function (response) {
+        $.ajax(apiUrl).done(function(response) {
             processSearchResponse(response, email);
-        }).fail(function (error) {
+        }).fail(function(error) {
             processSearchError(error, email);
         });
 
         $('#thedudalModal').modal();
     });
 
-    $('#edhu, #recipient-name').on('input', function () {
+    $('#edhu, #recipient-name').on('input', function() {
         let email = $(this).val();
         let isValid = validateEmail(email);
         let targetButton = $(this).is('#edhu') ? '#searchMe' : '#alertMe';
@@ -152,7 +156,7 @@ $(document).ready(function () {
 
     handleVideoModal();
 
-    $("#detailedReport").click(function () {
+    $("#detailedReport").click(function() {
         let url = "data-breaches-risks.html?email=" + $("#edhu").val().toLowerCase();
         window.open(url, '_blank').opener = null;
     });
@@ -300,15 +304,15 @@ function handleVideoModal() {
     const videoElement = $('#video');
     let videoSrc;
 
-    $('.video-btn').click(function () {
+    $('.video-btn').click(function() {
         videoSrc = $(this).data("src");
     });
 
-    videoModal.on('shown.bs.modal', function (event) {
+    videoModal.on('shown.bs.modal', function(event) {
         videoElement.attr('src', videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
     });
 
-    videoModal.on('hide.bs.modal', function (event) {
+    videoModal.on('hide.bs.modal', function(event) {
         videoElement.attr('src', videoSrc);
     });
 }
@@ -320,25 +324,26 @@ const pastesRecordsElement = $("#p2");
 const breachesCountElement = $("#b1");
 const breachesRecordsElement = $("#b2");
 $.ajax(apiUrl)
-    .done(function (response) {
+    .done(function(response) {
         let pastesCount = parseInt(response.Pastes_Count.replace(/,/g, ''), 10);
         let pastesRecords = parseInt(response.Pastes_Records, 10);
         let breachesCount = parseInt(response.Breaches_Count, 10);
         let breachesRecords = parseInt(response.Breaches_Records, 10);
 
-        runCounter(pastesCountElement, pastesCount, 10000, function () {
+        runCounter(pastesCountElement, pastesCount, 10000, function() {
             $(pastesCountElement).text(pastesCount.toLocaleString());
         });
-        runCounter(pastesRecordsElement, pastesRecords, 10000, function () {
+        runCounter(pastesRecordsElement, pastesRecords, 10000, function() {
             $(pastesRecordsElement).text(pastesRecords.toLocaleString());
         });
-        runCounter(breachesCountElement, breachesCount, 10000, function () {
+        runCounter(breachesCountElement, breachesCount, 10000, function() {
             $(breachesCountElement).text(breachesCount.toLocaleString());
         });
-        runCounter(breachesRecordsElement, breachesRecords, 10000, function () {
+        runCounter(breachesRecordsElement, breachesRecords, 10000, function() {
             $(breachesRecordsElement).text(breachesRecords.toLocaleString());
         });
     });
+
 function runCounter(element, endValue, duration) {
     element.runCounter({
         start: 0,
@@ -390,14 +395,14 @@ function Circle() {
     this.radius = Math.random() * 5 + 2;
 }
 
-Circle.prototype.draw = function () {
+Circle.prototype.draw = function() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     ctx.fillStyle = 'rgba(0, 76, 153, 0.5)';
     ctx.fill();
 };
 
-Circle.prototype.update = function () {
+Circle.prototype.update = function() {
     if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
         this.velocity.x = -this.velocity.x;
     }
@@ -442,6 +447,7 @@ function animate() {
 }
 
 animate();
+
 function resizeCanvas() {
     var container = document.getElementById('banner');
     canvas.width = container.offsetWidth;

@@ -31,8 +31,8 @@ function resetTheme() {
 initTheme();
 themeSwitch.on("change", resetTheme);
 
-(function (h, o, t, j, a, r) {
-    h.hj = h.hj || function () {
+(function(h, o, t, j, a, r) {
+    h.hj = h.hj || function() {
         (h.hj.q = h.hj.q || []).push(arguments)
     };
     h._hjSettings = {
