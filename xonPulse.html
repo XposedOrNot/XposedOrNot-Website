@@ -38,138 +38,234 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
         body {
-            background-color: #f8f9fa;
+            background-color: var(--background-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
         }
 
-        .navbar-brand span {
-            transition: opacity 0.3s ease;
+        .navbar {
+            background: var(--primary-color) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
         }
 
-        .navbar-brand:hover span {
-            opacity: 1;
-        }
-
-        .news-item {
-            position: relative;
-            background: #fff;
-            border-left: 5px solid #007bff;
-            margin-bottom: 15px;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .news-item:hover {
-            background-color: #f8f9fa;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .news-date {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 0.9rem;
-            color: #6c757d;
-            font-weight: 500;
-        }
-
-        .pagination-controls {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .pagination-controls button {
-            margin: 0 8px;
-            min-width: 100px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .pagination-controls span {
-            display: inline-block;
-            margin: 0 15px;
-            font-size: 1.1rem;
-            color: #495057;
-            font-weight: 500;
-        }
-
-        .news-icon {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            color: #dc3545;
-            opacity: 0.8;
-            transition: all 0.3s ease;
-        }
-
-        .news-icon:hover {
-            opacity: 1;
-            transform: scale(1.1);
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .search-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         #search-input,
         #timeline-dropdown {
-            border-radius: 20px;
-            padding: 10px 20px;
-            border: 1px solid #dee2e6;
-            margin: 0 5px;
-            transition: all 0.3s ease;
+            border-radius: var(--border-radius);
+            padding: 0.75rem 1.25rem;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            font-size: 1rem;
+            transition: var(--transition);
+            flex: 1;
+            min-width: 200px;
         }
 
         #search-input:focus,
         #timeline-dropdown:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
         }
 
-        .alert-info {
-            border-radius: 8px;
+        .news-item {
+            background: var(--card-background);
             border: none;
-            background-color: #e3f2fd;
-            color: #0c5460;
-            padding: 20px;
-            margin-bottom: 30px;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: var(--transition);
+            position: relative;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .news-item h5 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-right: 100px;
+        }
+
+        .news-date {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .news-summary {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .news-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .news-link:hover {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        .pagination-controls button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+            min-width: 120px;
+        }
+
+        .pagination-controls button:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .pagination-controls button:not(:disabled):hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        #page-info {
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border-radius: var(--border-radius);
+        }
+
+        .loading-spinner {
+            display: none;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .loading-spinner.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         footer {
-            background: #343a40;
-            color: white;
-            padding: 40px 0;
-            margin-top: 60px;
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 3rem 0;
+            margin-top: 4rem;
         }
 
         footer p {
-            margin-bottom: 10px;
+            margin-bottom: 0.5rem;
             opacity: 0.9;
+            font-size: 0.95rem;
         }
 
         @media (max-width: 768px) {
+            .search-section {
+                padding: 1.5rem;
+            }
+
             .news-item {
-                padding: 20px 15px;
+                padding: 1.25rem;
             }
 
             .news-date {
-                position: relative;
-                top: 0;
-                right: 0;
-                margin-bottom: 10px;
+                position: static;
+                margin-bottom: 1rem;
+                display: inline-block;
             }
 
-            .pagination-controls button {
-                min-width: 80px;
+            .news-item h5 {
+                padding-right: 0;
+                font-size: 1.1rem;
+            }
+
+            .pagination-controls {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            #page-info {
+                order: -1;
             }
         }
     </style>
@@ -223,38 +319,49 @@
 
     <div class="container my-5">
         <div class="search-section">
-            <div class="row">
-                <div class="col-12 col-md-6 mb-3 mb-md-0">
-                    <h1 style="color: #007bff; font-size: 1.8rem; margin-bottom: 0;">xonPulse
-                        <span style="font-size: 0.8em; color: #6c757d;">Your news feed for data breaches</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 style="color: var(--primary-color); font-size: 2rem; margin-bottom: 0.5rem; font-weight: 700;">
+                        xonPulse
+                        <span
+                            style="font-size: 1.1rem; color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                            Your Real-Time Data Breach Intelligence Feed
+                        </span>
                     </h1>
                 </div>
-                <div class="col-12 col-md-6 d-flex justify-content-md-end align-items-center">
-                    <input type="text" id="search-input" class="form-control me-2" placeholder="Search news...">
-                    <select id="timeline-dropdown" class="form-control ml-2">
-                        <option value="all">All Time</option>
-                        <option value="day">Last 1 Day</option>
-                        <option value="week">Last 1 Week</option>
-                        <option value="month">Last Month</option>
-                        <option value="quarter">Last Quarter</option>
-                        <option value="year">Last Year</option>
-                    </select>
-                </div>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control"
+                    placeholder="Search for breaches, companies, or incidents...">
+                <select id="timeline-dropdown" class="form-control">
+                    <option value="all">All Time</option>
+                    <option value="day">Last 24 Hours</option>
+                    <option value="week">Past Week</option>
+                    <option value="month">Past Month</option>
+                    <option value="quarter">Past 3 Months</option>
+                    <option value="year">Past Year</option>
+                </select>
             </div>
         </div>
 
-        <div class="alert alert-info">
-            <h2 class="h5 mb-2">Latest Data Breach News & Security Alerts</h2>
-            <p class="mb-0">Stay updated with the latest data breaches, cyber security incidents, and privacy violations
-                reported in the media. Discover security breaches impacting organizations worldwide and take proactive
-                steps to safeguard your data.</p>
+        <div class="alert alert-info"
+            style="border-radius: var(--border-radius); background-color: #eff6ff; border: none; color: #1e40af;">
+            <h2 class="h5 mb-2" style="color: var(--primary-color); font-weight: 600;">Stay Informed About Data Breaches
+            </h2>
+            <p class="mb-0">Get real-time updates on data breaches, cyber security incidents, and privacy violations
+                worldwide. Our curated feed helps you stay ahead of potential threats and take proactive measures to
+                protect your digital assets.</p>
+        </div>
+
+        <div class="loading-spinner">
+            <div class="spinner"></div>
         </div>
 
         <div id="news-container"></div>
         <div class="pagination-controls">
-            <button id="prev-page" class="btn btn-primary">&lt;&lt; Previous</button>
+            <button id="prev-page" class="btn">&larr; Previous</button>
             <span id="page-info">Page 1 of 10</span>
-            <button id="next-page" class="btn btn-primary">Next &gt;&gt;</button>
+            <button id="next-page" class="btn">Next &rarr;</button>
         </div>
     </div>
 
@@ -277,10 +384,19 @@
 
     <script>
         $(document).ready(function () {
-
             let currentPage = 1;
             const itemsPerPage = 10;
             let sortedData = [];
+
+            function showLoading() {
+                $('.loading-spinner').addClass('active');
+                $('#news-container').hide();
+            }
+
+            function hideLoading() {
+                $('.loading-spinner').removeClass('active');
+                $('#news-container').show();
+            }
 
             function updatePagination(totalPages) {
                 $('#page-info').text(`Page ${currentPage} of ${totalPages}`);
@@ -289,29 +405,32 @@
             }
 
             function fetchNews() {
+                showLoading();
                 $.ajax({
-                    //url: 'https://api.xposedornot.com/v1/xon-pulse',
                     url: 'https://xon-api-test.xposedornot.com/v1/xon-pulse',
                     method: 'GET',
-                    success: function (data) {
-                        sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    success: function (response) {
+                        sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
                         displayPaginatedNews();
+                        hideLoading();
                     },
                     error: function () {
                         console.error('Failed to fetch news');
+                        hideLoading();
+                        $('#news-container').html('<div class="alert alert-danger">Failed to load news. Please try again later.</div>');
                     }
                 });
             }
 
             function filterNews(searchText) {
                 return sortedData.filter(news =>
-                    news.title.toLowerCase().includes(searchText) ||
-                    news.summary.toLowerCase().includes(searchText)
+                    news.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                    news.summary.toLowerCase().includes(searchText.toLowerCase())
                 );
             }
 
             function displayPaginatedNews() {
-                const searchText = $('#search-input').val().toLowerCase();
+                const searchText = $('#search-input').val();
                 const filteredData = searchText ? filterNews(searchText) : sortedData;
                 const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -324,7 +443,7 @@
             function displayNews(newsItems) {
                 $('#news-container').empty();
                 if (newsItems.length === 0) {
-                    $('#news-container').html('<div class="text-center">No news found for the search term.</div>');
+                    $('#news-container').html('<div class="text-center p-5">No news found matching your search criteria.</div>');
                     return;
                 }
                 newsItems.forEach(news => {
@@ -332,17 +451,26 @@
                         <div class="news-item">
                             <div class="news-date">${news.date}</div>
                             <h5>${news.title}</h5>
-                            <p>${news.summary}</p>
-                            <p><strong>Read More:</strong> <a href="${news.url}" target="_blank">${news.url}</a></p>
-                            <div class="news-icon">
-                                <i class="fas fa-fire"></i>
-                            </div>
+                            <p class="news-summary">${news.summary}</p>
+                            <a href="${news.url}" target="_blank" class="news-link">
+                                Read Full Article 
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
                         </div>
                     `);
                 });
             }
 
+            let searchTimeout;
             $('#search-input').on('input', function () {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentPage = 1;
+                    displayPaginatedNews();
+                }, 300);
+            });
+
+            $('#timeline-dropdown').on('change', function () {
                 currentPage = 1;
                 displayPaginatedNews();
             });
@@ -351,12 +479,14 @@
                 if (currentPage > 1) {
                     currentPage--;
                     displayPaginatedNews();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });
 
             $('#next-page').click(function () {
                 currentPage++;
                 displayPaginatedNews();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
             fetchNews();
