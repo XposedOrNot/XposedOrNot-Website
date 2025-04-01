@@ -364,6 +364,59 @@
       .form-control.success-validation {
          background-image: none !important;
       }
+
+      .input-group {
+         position: relative;
+         width: 100%;
+         margin-bottom: 30px;
+      }
+
+      .input-group .form-control {
+         width: calc(100% - 120px);
+         /* Fixed space for button */
+         height: 46px;
+         float: left;
+         border-top-right-radius: 0;
+         border-bottom-right-radius: 0;
+      }
+
+      .input-group-btn {
+         float: left;
+         width: 120px;
+         /* Fixed button width */
+      }
+
+      .input-group-btn .btn {
+         width: 100%;
+         height: 46px;
+         border-top-left-radius: 0;
+         border-bottom-left-radius: 0;
+      }
+
+      .input-group:after {
+         content: "";
+         display: table;
+         clear: both;
+      }
+
+      .validation-message {
+         position: absolute;
+         left: 0;
+         top: 100%;
+         margin-top: 5px;
+         color: #dc3545;
+         font-size: 12px;
+         width: 100%;
+      }
+
+      /* Simple validation states */
+      .form-control.is-valid {
+         border-color: #28a745;
+      }
+
+      .form-control.is-invalid {
+         border-color: #dc3545;
+      }
    </style>
 </head>
 
@@ -516,14 +569,19 @@
       below. <br>
       <br>
       <form id="dns_form" method="post">
-         <div class="input-group" id=div2>
-            <span class="input-group-addon">
-               <em class="fa fa-bullseye"></em>
-            </span>
-            <input class="form-control input-lg" autocapitalize="off" class="form-control" data-val="true"
-               data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255"
-               data-val-minlength="Minimum is &#39;3&#39 !" data-val-minlength-min="3" id="edhu_dns" maxlength="255"
-               name="edhu_dns" autofocus="true" readonly>
+         <div class="form-group row align-items-center">
+            <label for="edhu_dns" class="col-form-label col-sm-2 text-sm-end">DNS TXT Record:</label>
+            <div class="col-sm-9">
+               <input class="form-control input-lg input-field" autocapitalize="off" data-val="true"
+                  data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255"
+                  data-val-minlength="Minimum is &#39;3&#39 !" data-val-minlength-min="3" id="edhu_dns" maxlength="255"
+                  name="edhu_dns" autofocus="true" readonly>
+            </div>
+            <div class="col-sm-1">
+               <button class="btn btn-outline-primary copy-btn" type="button" data-clipboard-target="#edhu_dns">
+                  <i class="fas fa-copy"></i> Copy
+               </button>
+            </div>
          </div>
          <br>
          <div align="left" class="input-group">
@@ -534,6 +592,7 @@
                      id="searchMe_d_i1" class="glyphicon glyphicon-ok">
                </button>
             </span>
+            <div class="validation-message"></div>
          </div>
       </form>
    </div>
@@ -561,6 +620,7 @@
                      id="searchMe_m_i1" class="glyphicon glyphicon-ok">
                </button>
             </span>
+            <div class="validation-message"></div>
          </div>
       </form>
    </div>
@@ -628,6 +688,7 @@
                   Verify &nbsp; <i class="fas fa-check"></i>
                </button>
             </span>
+            <div class="validation-message"></div>
          </div>
       </form>
    </div>
@@ -668,6 +729,7 @@
                   Verify &nbsp; <i class="fas fa-check"></i>
                </button>
             </span>
+            <div class="validation-message"></div>
          </div>
       </form>
    </div>
@@ -959,39 +1021,39 @@
             function setupEmailValidation(inputId, buttonId) {
                const input = document.getElementById(inputId);
                const button = document.getElementById(buttonId);
+               const messageContainer = input.closest('.input-group').querySelector('.validation-message');
 
                input.addEventListener('input', function () {
                   const isValid = validateEmail(this.value);
 
                   this.classList.remove('is-valid', 'is-invalid');
-
                   this.classList.add(isValid ? 'is-valid' : 'is-invalid');
+
+                  if (messageContainer) {
+                     messageContainer.textContent = isValid ? '' : 'Please enter a valid email address';
+                  }
 
                   button.disabled = !isValid;
                });
             }
 
-            setupEmailValidation('txt_email_h', 'searchMe_h');
-            setupEmailValidation('txt_email_e', 'searchMe_e');
-            setupEmailValidation('txt_email_m', 'searchMe_m');
-            setupEmailValidation('txt_dns', 'searchMe_d');
+            document.addEventListener('DOMContentLoaded', function () {
+               setupEmailValidation('txt_email_h', 'searchMe_h');
+               setupEmailValidation('txt_email_e', 'searchMe_e');
+               setupEmailValidation('txt_email_m', 'searchMe_m');
+               setupEmailValidation('txt_dns', 'searchMe_d');
 
-            $('#email_form, #html_form, #meta_form, #dns_form').bootstrapValidator({
-               fields: {
-                  txt_email_e: {
-                     validators: {
-                        notEmpty: {
-                           message: 'Email address is required'
-                        },
-                        emailAddress: {
-                           message: 'Please enter a valid email address'
+               ['email_form', 'html_form', 'meta_form', 'dns_form'].forEach(formId => {
+                  const form = document.getElementById(formId);
+                  if (form) {
+                     form.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        const emailInput = this.querySelector('input[type="text"]');
+                        if (emailInput && validateEmail(emailInput.value)) {
                         }
-                     }
+                     });
                   }
-               }
-            }).on('success.field.bv', function (e, data) {
-
-               data.element.next('.form-control-feedback').hide();
+               });
             });
          </script>
          <div class="container text-center" style="font-family:Poppins">
