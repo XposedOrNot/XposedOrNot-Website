@@ -136,14 +136,6 @@ $("#email").html(emailHeader("Data Breaches Quick Information"));
 $("#email_sensitive").html(emailHeader('<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed.">?</span>&nbsp;&nbsp; Sensitive Data Breaches Summary'));
 $("#paste").html(emailHeader("Exposed Pastes Summary"));
 $("#data").html(emailHeader("Your Exposed Data Sorted by Categories"));
-$("#data").append(`
-    <div id="chart-selector" style="float:right;">
-        <select id="chart-type" name="chart-type">
-            <option value="treemap">Treemap</option>
-            <option value="circlepack">Circle Pack</option>
-        </select>
-    </div>
-`);
 
 //const url = `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
 const url = `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
@@ -152,7 +144,6 @@ let jsonResponse;
 
 var j = $.ajax(url)
     .done(function (response) {
-
         jsonResponse = response;
         breachesDetailsHtml = ''
         numPastes = '', breachesSite = '', xposedData = '', riskScore = '', riskLabel = '';
@@ -174,11 +165,9 @@ var j = $.ajax(url)
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-
             var data = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
                 ['Risk Score', 0]
-
             ]);
 
             var options = {
@@ -201,126 +190,7 @@ var j = $.ajax(url)
                 data.setValue(0, 1, Math.round(riskScore))
                 chart.draw(data, options);
             }, 1000);
-
         }
-
-        function transformToCirclePackFormat(xposedData) {
-            const circlePackData = {
-                name: "Data Breaches",
-                children: []
-            };
-
-            xposedData.children.forEach(item => {
-                const category = {
-                    name: item.name.replace(/[^a-zA-Z0-9 ]/g, ""),
-                    children: []
-                };
-
-                if (item.children) {
-                    item.children.forEach(childItem => {
-                        category.children.push({
-                            name: childItem.name.replace(/^data_/, "").replace(/[^a-zA-Z0-9 ]/g, ""),
-                            value: childItem.value || 0
-                        });
-                    });
-                }
-
-                circlePackData.children.push(category);
-            });
-
-            return circlePackData;
-        }
-
-        const dataForCirclePacking = transformToCirclePackFormat(xposedData);
-        const width = 928;
-        const height = width;
-        const margin = 10;
-        const format = d3.format(",d");
-
-        const baseColors = d3.scaleOrdinal()
-            .domain([...Array(dataForCirclePacking.children.length).keys()])
-            .range(["#8E7DAE", "#D22B2B", "#50C878", "#0096FF", "#E97451", "#FFBF00", "#DB7093", "#DA70D6", "#8A2BE2", "#F4A460"]);
-
-        function getShade(parentColor, index, total) {
-            if (total === 1) return d3.color(parentColor).brighter(1);
-            const interpolator = d3.interpolateRgb.gamma(2.2)(parentColor, "#ffffff");
-            return interpolator(0.2 + (0.7 * index) / (total - 1));
-        }
-
-        const pack = d3.pack()
-            .size([width - margin * 2, height - margin * 2])
-            .padding(3);
-
-        const root = pack(d3.hierarchy(dataForCirclePacking)
-            .sum(d => d.value)
-            .sort((a, b) => b.value - a.value));
-
-        const svg = d3.create("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .attr("viewBox", [-margin, -margin, width, height])
-            .attr("style", "width: 100%; height: auto;")
-            .attr("text-anchor", "middle");
-
-        const node = svg.append("g")
-            .selectAll("g")
-            .data(root.descendants())
-            .join("g")
-            .attr("transform", d => {
-                if (d.depth === 0) {
-                    return `translate(${width / 2},${height / 2})`;
-                } else {
-                    return `translate(${d.x},${d.y})`;
-                }
-            });
-
-        node.append("title")
-            .text(d => {
-                if (d.depth === 2) {
-                    return `Exposed ${d.data.name} count : ${format(d.value)}`;
-                } else {
-                    return d.data.name;
-                }
-            });
-
-        node.append("circle")
-            .attr("fill", d => {
-                if (d.depth === 0) return "#EFEFEF";
-                if (d.depth === 1) return baseColors(d.parent.children.indexOf(d));
-                const siblings = d.parent.children;
-                const index = siblings.indexOf(d);
-                const parentColor = baseColors(d.parent.parent.children.indexOf(d.parent));
-                return getShade(parentColor, index, siblings.length);
-            })
-            .attr("stroke", "#888")
-            .attr("stroke-width", "1.5")
-            .attr("r", d => d.r);
-
-        node.filter(d => d.children && d.depth === 1)
-            .append("text")
-            .attr("dy", d => `-${d.r + 10}px`)
-            .attr("font-size", "18px")
-            .attr("fill", "#000000")
-            .text(d => d.data.name)
-            .raise();
-
-
-        const leaf = node.filter(d => !d.children);
-        leaf.append("text")
-            .style("fill", "#300000")
-            .attr("clip-path", d => `url(#clip-${d.data.name})`)
-            .attr("font-size", "15px")
-            .attr("text-anchor", "middle")
-            .attr("dy", "-0.2em")
-            .selectAll("tspan")
-            .data(d => [d.data.name, format(d.value)])
-            .join("tspan")
-            .attr("x", 0)
-            .attr("y", (d, i) => `${i + 0.8}em`)
-            .text(d => d);
-
-        document.querySelector("#circlepack").appendChild(svg.node());
-
 
         let alertType;
         switch (riskLabel) {
@@ -1301,142 +1171,201 @@ google.charts.load("current", {
 });
 
 
-function drawChart_categories(xposed_data) {
-    margin = {
-        top: 10,
-        right: 10,
-        bottom: 10,
-        left: 10
-    },
-        width = 1000 - margin.left - margin.right,
-        height = 900 - margin.top - margin.bottom;
+function getCategoryBadgeClass(count) {
+    if (count > 10) return 'high';
+    if (count > 5) return 'medium';
+    return 'low';
+}
 
-    const svg = d3.select("#treemap")
-        .append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-        .append("g")
-        .attr("transform",
-            `translate(${margin.left}, ${margin.top})`);
+function drawChart_categories(xposedData) {
+    // First add the styles if they don't exist
+    if (!document.getElementById('category-styles')) {
+        const styleElement = document.createElement('style');
+        styleElement.id = 'category-styles';
+        styleElement.textContent = `
+            .category-list {
+                padding: 15px;
+            }
+            .category-group {
+                background-color: var(--card-bg);
+                border-radius: 12px;
+                margin-bottom: 15px;
+                overflow: hidden;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                transition: all 0.3s ease;
+                border: 1px solid var(--border-color);
+            }
+            .category-group:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            .category-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px;
+                cursor: pointer;
+                background-color: var(--card-bg);
+                border-bottom: 1px solid var(--border-color);
+            }
+            .category-header:hover {
+                background-color: var(--hover-bg);
+            }
+            .category-name {
+                font-weight: 600;
+                font-size: 1.1em;
+                color: var(--text-color);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .category-total {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .badge {
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-weight: 600;
+                font-size: 0.9em;
+            }
+            .badge-high {
+                background-color: var(--danger-color);
+                color: white;
+            }
+            .badge-medium {
+                background-color: var(--warning-color);
+                color: var(--text-color);
+            }
+            .badge-low {
+                background-color: var(--success-color);
+                color: white;
+            }
+            .subcategories {
+                padding: 0;
+                margin: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+            }
+            .subcategories.expanded {
+                max-height: 1000px;
+            }
+            .subcategory-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 20px 12px 40px;
+                border-bottom: 1px solid var(--border-color);
+                background-color: var(--card-bg);
+            }
+            .subcategory-item:last-child {
+                border-bottom: none;
+            }
+            .subcategory-name {
+                color: var(--text-color);
+                font-size: 0.95em;
+            }
+            .subcategory-count {
+                font-size: 0.9em;
+                color: var(--text-muted);
+            }
+            .toggle-icon {
+                transition: transform 0.3s ease;
+                color: var(--text-color);
+            }
+            .toggle-icon.expanded {
+                transform: rotate(180deg);
+            }
+        `;
+        document.head.appendChild(styleElement);
+    }
 
-    const root = d3.hierarchy(xposed_data).sum(function (d) {
-        return d.value
-    })
+    // Handle the categories list
+    try {
+        const categoriesList = document.getElementById('categories-list');
+        if (categoriesList && xposedData && xposedData.children) {
+            let categoryGroups = [];
 
+            // Process each category and its subcategories
+            xposedData.children.forEach(category => {
+                let subcategories = [];
+                let total = 0;
 
-    d3.treemap()
-        .size([width, height])
-        .paddingTop(28)
-        .paddingRight(7)
-        .paddingInner(3)
-        (root)
+                if (category.children && Array.isArray(category.children)) {
+                    category.children.forEach(subcategory => {
+                        const count = parseInt(subcategory.value || 0);
+                        if (count > 0) {
+                            subcategories.push({
+                                name: subcategory.name.replace('data_', ''),
+                                count: count
+                            });
+                            total += count;
+                        }
+                    });
+                }
 
-    const color = d3.scaleOrdinal()
-        .domain(["Personal Identification", "Financial Information", "Personal Habits and Lifestyle", "Security Practices", "Employment and Education", "Communication and Social Interactions", "Device and Network Information", "Demographics", "Health Information", "Political and Social Views"])
-        .range(["#8E7DAE", "#D22B2B", "#50C878", "#0096FF", "#E97451", "#FFBF00", "#DB7093", "#DA70D6", "#8A2BE2", "#F4A460"])
+                if (total > 0) {
+                    categoryGroups.push({
+                        name: category.name,
+                        total: total,
+                        subcategories: subcategories.sort((a, b) => b.count - a.count)
+                    });
+                }
+            });
 
-    const opacity = d3.scaleLinear()
-        .domain([10, 30])
-        .range([.5, 1])
+            // Sort categories by total count
+            categoryGroups.sort((a, b) => b.total - a.total);
 
-    svg
-        .selectAll("rect")
-        .data(Array.from(root.leaves()))
-        .join("rect")
-        .attr('x', function (d) {
-            return d.x0;
-        })
-        .attr('y', function (d) {
-            return d.y0;
-        })
-        .attr('width', function (d) {
-            return d.x1 - d.x0;
-        })
-        .attr('height', function (d) {
-            return d.y1 - d.y0;
-        })
-        .style("stroke", "black")
-        .style("fill", function (d) {
-            return color(d.parent.data.name)
-        })
-        .style("opacity", function (d) {
-            return opacity(d.data.value)
-        })
+            // Generate HTML
+            if (categoryGroups.length > 0) {
+                let categoriesHTML = `
+                    <div class="category-list">
+                        ${categoryGroups.map(group => `
+                            <div class="category-group">
+                                <div class="category-header">
+                                    <div class="category-name">
+                                        <span class="toggle-icon">▼</span>
+                                        ${group.name}
+                                    </div>
+                                    <div class="category-total">
+                                        <span class="badge badge-${getCategoryBadgeClass(group.total)}">${group.total.toLocaleString()}</span>
+                                    </div>
+                                </div>
+                                <div class="subcategories">
+                                    ${group.subcategories.map(sub => `
+                                        <div class="subcategory-item">
+                                            <span class="subcategory-name">${sub.name}</span>
+                                            <span class="subcategory-count">${sub.count.toLocaleString()}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                categoriesList.innerHTML = categoriesHTML;
 
-    svg
-        .selectAll("text")
-        .data(root.leaves())
-        .enter()
-        .append("text")
-        .attr("x", function (d) {
-            return (d.x0 + d.x1) / 2
-        })
-        .attr("y", function (d) {
-            return (d.y0 + d.y1) / 2 - 15
-        })
-        .text(function (d) {
-            return d.data.name.replace('data_', '')
-        })
-
-        .attr("font-size", "16px")
-        .attr("fill", "black")
-        .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "middle");
-
-    svg
-        .selectAll("vals")
-        .data(root.leaves())
-        .enter()
-        .append("text")
-        .attr("x", function (d) {
-            return (d.x0 + d.x1) / 2
-        })
-        .attr("y", function (d) {
-            return (d.y0 + d.y1) / 2 + 10
-        })
-        .text(function (d) {
-            return d.data.value
-        })
-        .attr("font-size", "12px")
-        .attr("fill", "black")
-        .attr("text-anchor", "middle")
-        .attr("alignment-baseline", "middle");
-
-    svg
-        .selectAll("titles")
-        .data(root.descendants().filter(function (d) {
-            return d.depth == 1
-        }))
-        .enter()
-        .append("text")
-        .attr("x", function (d) {
-            return (d.x0 + d.x1) / 2
-        })
-        .attr("y", function (d) {
-            return d.y0 + 21
-        })
-        .attr("text-anchor", "middle")
-        .text(function (d) {
-            return d.data.name
-        })
-        .attr("font-size", "14px")
-        .attr("font-weight", "bold")
-
-        .attr("fill", function (d) {
-            return color(d.data.name)
-        })
-
-    svg
-        .append("text")
-        .attr("x", 0)
-        .attr("y", 14)
-        .attr("font-size", "32px")
-        .attr("fill", "grey")
-
+                // Add click handlers for expand/collapse
+                document.querySelectorAll('.category-header').forEach(header => {
+                    header.addEventListener('click', () => {
+                        const subcategories = header.nextElementSibling;
+                        const toggleIcon = header.querySelector('.toggle-icon');
+                        subcategories.classList.toggle('expanded');
+                        toggleIcon.classList.toggle('expanded');
+                    });
+                });
+            } else {
+                categoriesList.innerHTML = '<div class="alert alert-info">No category data available</div>';
+            }
+        }
+    } catch (error) {
+        console.warn('Error rendering categories list:', error);
+    }
 }
 
 $(document).ready(function () {
-
     $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {
             $('#back-to-top').fadeIn();
@@ -1451,19 +1380,7 @@ $(document).ready(function () {
         return false;
     });
 
-    $('#treemap').show();
-    $('#circlepack').hide();
 
-    $('#chart-type').on('change', function () {
-        const selectedValue = $(this).val();
-        if (selectedValue === 'treemap') {
-            $('#treemap').show();
-            $('#circlepack').hide();
-        } else if (selectedValue === 'circlepack') {
-            $('#treemap').hide();
-            $('#circlepack').show();
-        }
-    });
     $('body').on('click', '.see-more', function (e) {
         e.preventDefault();
         var $this = $(this);
