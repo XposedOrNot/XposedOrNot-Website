@@ -102,6 +102,14 @@
          padding: 0.5rem 0.5rem;
          width: auto;
          margin-left: -30px;
+         transition: all 0.3s ease;
+      }
+
+      .copy-btn:hover {
+         background-color: #4CAF50;
+         color: white;
+         transform: translateY(-1px);
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
       .verification-info {
@@ -574,12 +582,6 @@
                <li>The file should be accessible at: <code>https://yourdomain.com/[filename-below]</code></li>
             </ul>
          </div>
-         <div class="alert alert-light mt-2">
-            <i class="fas fa-lightbulb"></i>
-            <strong>For Example:</strong><br>
-            If your domain is <code>example.com</code> and the file name below shows <code>abc123.html</code>,<br>
-            it should be accessible at: <code>https://example.com/abc123.html</code>
-         </div>
          <div class="alert alert-success mt-2">
             <i class="fas fa-link"></i>
             <strong>Your Verification URL:</strong><br>
@@ -890,7 +892,6 @@
             <h3> Please complete the <strong>challenge</strong> and then re-try again ! </h3>
          </div>
 
-
          <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
          <script src="/static/scripts/domain.js"></script>
          <script src="/static/scripts/common.js"></script>
@@ -962,24 +963,19 @@
                input.addEventListener('input', function () {
                   const isValid = validateEmail(this.value);
 
-                  // Remove existing validation classes
                   this.classList.remove('is-valid', 'is-invalid');
 
-                  // Add appropriate validation class
                   this.classList.add(isValid ? 'is-valid' : 'is-invalid');
 
-                  // Enable/disable button
                   button.disabled = !isValid;
                });
             }
 
-            // Setup validation for all email inputs
             setupEmailValidation('txt_email_h', 'searchMe_h');
             setupEmailValidation('txt_email_e', 'searchMe_e');
             setupEmailValidation('txt_email_m', 'searchMe_m');
             setupEmailValidation('txt_dns', 'searchMe_d');
 
-            // Update the existing bootstrapValidator configuration
             $('#email_form, #html_form, #meta_form, #dns_form').bootstrapValidator({
                fields: {
                   txt_email_e: {
