@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('#domainModal').modal({
         show: true,
         backdrop: 'static',
@@ -6,9 +6,9 @@ $(document).ready(function() {
     });
     $('.overlay').show();
 
-    $('#domainModal').on('shown.bs.modal', function() {
+    $('#domainModal').on('shown.bs.modal', function () {
         $('#domainInput').focus();
-        setTimeout(function() {
+        setTimeout(function () {
             if (document.activeElement !== document.getElementById('domainInput')) {
                 $('#domainInput').focus();
             }
@@ -17,7 +17,7 @@ $(document).ready(function() {
 
     const domainRegex = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)?[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/;
 
-    $('#domainForm').on('submit', function(e) {
+    $('#domainForm').on('submit', function (e) {
         e.preventDefault();
         var domainName = $('#domainInput').val().trim();
 
@@ -26,19 +26,19 @@ $(document).ready(function() {
             $('#spinner').show();
 
             $('#domain-display').text(domainName);
-            var logoSrc = "https://logo.clearbit.com/" + domainName;
-            $("#logo").attr("src", logoSrc).show();
+            var logoSrc = "https://logo.clearbit.com/" + domainName + "?size=200";
+            $("#logo").attr("src", logoSrc).hide();
 
-            $("#logo").on('error', function() {
+            $("#logo").on('error', function () {
                 $(this).hide();
-            }).on('load', function() {
+            }).on('load', function () {
                 $(this).show();
             });
 
             //var breachApiUrl = 'https://api.xposedornot.com/v1/domain-breach-summary?d=' + domainName;
             var breachApiUrl = 'https://xon-api-test.xposedornot.com/v1/domain-breach-summary?d=' + domainName;
             $.ajax(breachApiUrl)
-                .done(function(data) {
+                .done(function (data) {
                     if (data.SearchStatus === "Success" && data.sendDomains.breaches_details.length > 0) {
                         var breaches = data.sendDomains.breaches_details;
                         var totalBreaches = 0;
@@ -46,7 +46,7 @@ $(document).ready(function() {
                         var totalEmails = 0;
                         var lastExposure = "--";
 
-                        breaches.forEach(function(breach) {
+                        breaches.forEach(function (breach) {
                             totalBreaches += breach.breach_count;
                             totalRecords += breach.breach_total;
                             totalEmails += breach.breach_emails;
@@ -73,10 +73,10 @@ $(document).ready(function() {
                         handleNoBreach(domainName);
                     }
                 })
-                .fail(function(jqXHR) {
+                .fail(function (jqXHR) {
                     handleFail(jqXHR, domainName);
                 })
-                .always(function() {
+                .always(function () {
                     $('#submitButton').attr("disabled", false);
                     $('#spinner').hide();
                 });
@@ -85,21 +85,21 @@ $(document).ready(function() {
         }
     });
 
-    $('#checkAnotherDomain').on('click', function() {
+    $('#checkAnotherDomain').on('click', function () {
         resetForm();
     });
 
-    $('#checkAnotherDomainBtn').on('click', function() {
+    $('#checkAnotherDomainBtn').on('click', function () {
         $('#domainModal').modal('show');
         $('.overlay').show();
     });
 
-    $('#domainInput').on('input', function() {
+    $('#domainInput').on('input', function () {
         $(this).removeClass('is-invalid');
         $('#errorMessage').hide();
     });
 
-    $('#checkAnotherDomainBtnInModal').on('click', function() {
+    $('#checkAnotherDomainBtnInModal').on('click', function () {
         resetForm();
     });
 
