@@ -26,7 +26,7 @@ $(document).ready(function () {
             $('#spinner').show();
 
             $('#domain-display').text(domainName);
-            var logoSrc = "https://logo.clearbit.com/" + domainName + "?size=200";
+            var logoSrc = "https://img.logo.dev/" + domainName + "?size=200&token=pk_SfmfJZb2RYiEgGDl2nxd3Q";
             $("#logo").attr("src", logoSrc).hide();
 
             $("#logo").on('error', function () {
