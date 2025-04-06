@@ -45,8 +45,8 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
     const breachesDetails = jsonResponse.ExposedBreaches.breaches_details;
     const xposedData = jsonResponse.BreachMetrics.xposed_data[0].children;
 
-    const categoryColor = "#407f7f"; // Muted Teal
-    const actionTextColor = "#355035"; // Deep Green
+    const categoryColor = "#407f7f";
+    const actionTextColor = "#355035";
 
     let plaintextBreaches = [];
     let easyToCrackBreaches = [];
@@ -126,16 +126,16 @@ try {
 const emailHeader = (category) => `<div align="center" class="alert alert-primary"><strong>${category} For Email: ${email}</strong></div></p>`;
 
 $("#email").html(emailHeader("Data Breaches Quick Information"));
-$("#email_sensitive").html(emailHeader('<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed.">?</span>&nbsp;&nbsp; Sensitive Data Breaches Summary'));
+$("#email_sensitive").html(emailHeader('<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed.">?</span>&nbsp;&nbsp; 🔥 Sensitive Data Breaches Summary'));
 $("#data").html(emailHeader("Your Exposed Data Sorted by Categories"));
 
-// Show validation required message by default for sensitive breaches section
+
 $("#db-sensitive").show();
 $("#sensitive-data-table").hide();
 document.getElementById("db-sensitive").className = "alert alert-info";
 $("#db-sensitive").html(`
     <em class="fas fa-lock"></em>
-    <strong>Sensitive Data Breaches Require Validation</strong>
+    <strong>🔥 Sensitive Data Breaches Require Verification 🔥</strong>
     <p style="font-size:16px; margin-top:10px;">
         To view sensitive data breaches that may contain more critical information, 
         please verify your email address. This extra step helps protect sensitive data 
@@ -146,21 +146,21 @@ $("#db-sensitive").html(`
     </button>
 `);
 
-// Regular breach data URL
+
 const url = token
     ? `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
     : `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
 
 let jsonResponse;
 
-// If no token, show the default validation required message
+
 if (!token) {
     $("#db-sensitive").show();
     $("#sensitive-data-table").hide();
     document.getElementById("db-sensitive").className = "alert alert-info";
     $("#db-sensitive").html(`
         <em class="fas fa-lock"></em>
-        <strong>Sensitive Data Breaches Require Validation</strong>
+        <strong>🔥 Sensitive Data Breaches Require Verification 🔥</strong>
         <p style="font-size:16px; margin-top:10px;">
             To view sensitive data breaches that may contain more critical information, 
             please verify your email address. This extra step helps protect sensitive data 
@@ -176,18 +176,18 @@ var j = $.ajax(url)
     .done(function (response) {
         jsonResponse = response;
 
-        // Handle sensitive breaches if token exists
+
         if (token) {
             if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
                 const sensitiveBreaches = jsonResponse.ExposedBreaches.sensitive_breaches_details;
-                // Process sensitive breaches
+
                 if (!sensitiveBreaches || sensitiveBreaches.length === 0) {
                     $("#db-sensitive").show();
                     $("#sensitive-data-table").hide();
                     document.getElementById("db-sensitive").className = "visible alert alert-success";
                     $("#db-sensitive").html(`
                         <em class="fas fa-check-circle"></em>
-                        <strong> Your email is not found in any sensitive data breaches loaded in XposedOrNot</strong>
+                        <strong>🔥 Your email is not found in any sensitive data breaches loaded in XposedOrNot</strong>
                         <p style="color:green;font-size:20px"></p>
                         <h3><strong>Good news 🎉</strong></h3>
                     `);
@@ -197,11 +197,12 @@ var j = $.ajax(url)
                     let tableRowsHtml = "";
                     for (var i = 0; i < sensitiveBreaches.length; i++) {
                         tableRowsHtml += '<tr>' +
-                            '<td>' + sensitiveBreaches[i].breach + '<br>' +
+                            '<td style="text-align: center;"><span style="color:#FF4500;">🔥</span> ' + sensitiveBreaches[i].breach + '<br>' +
                             '<img src="' + sensitiveBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
                             '</td>' +
-                            '<td>' + sensitiveBreaches[i].details + '</td>' +
-                            '<td>' + sensitiveBreaches[i].xposed_records + '</td>' +
+                            '<td><div class="text">' + sensitiveBreaches[i].details + '</div>' +
+                            '<a href="#" class="see-more">See More</a></td>' +
+                            '<td style="text-align: right;">' + parseInt(sensitiveBreaches[i].xposed_records).toLocaleString() + '</td>' +
                             '</tr>';
                     }
                     $("#data_breach_sensitive").html(tableRowsHtml);
@@ -212,19 +213,36 @@ var j = $.ajax(url)
                 document.getElementById("db-sensitive").className = "visible alert alert-success";
                 $("#db-sensitive").html(`
                     <em class="fas fa-check-circle"></em>
-                    <strong> Your email is not found in any sensitive data breaches loaded in XposedOrNot</strong>
+                    <strong>🔥 Your email is not found in any sensitive data breaches loaded in XposedOrNot</strong>
                     <p style="color:green;font-size:20px"></p>
                     <h3><strong>Good news 🎉</strong></h3>
                 `);
             }
+        } else if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details &&
+            jsonResponse.ExposedBreaches.sensitive_breaches_details.length > 0) {
+
+            $("#db-sensitive").show();
+            $("#sensitive-data-table").hide();
+            document.getElementById("db-sensitive").className = "alert alert-info";
+            $("#db-sensitive").html(`
+                
+                <strong>🔥 Sensitive Data Breaches Require Verification 🔥</strong>
+                <p style="font-size:16px; margin-top:10px;">
+                    To view sensitive data breaches that may contain more critical information, 
+                    please verify your email address. This extra step helps protect sensitive data 
+                    from unauthorized access.
+                </p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
+                    <em class="fas fa-envelope"></em> Verify Email Now
+                </button>
+            `);
         }
 
-        console.log('Processing regular breaches data');
+
         breachesDetailsHtml = ''
-        numPastes = '', breachesSite = '', xposedData = '', riskScore = '', riskLabel = '';
+        breachesSite = '', xposedData = '', riskScore = '', riskLabel = '';
         let passwordScore = 0;
         const passwordsCounts = [];
-        numPastes = jsonResponse.PastesSummary.cnt;
         breachesSite = jsonResponse.BreachesSummary.site;
         xposedData = jsonResponse.BreachMetrics.xposed_data[0]
         riskScore = jsonResponse.BreachMetrics.risk[0].risk_score
@@ -233,7 +251,7 @@ var j = $.ajax(url)
         const riskAnalysisHtml = generateRiskAnalysis(riskLabel, jsonResponse);
         $('#risk-analysis').html(riskAnalysisHtml);
 
-        drawChart_categories(xposedData)
+        drawChart_categories(xposedData.children)
         google.charts.load('current', {
             'packages': ['gauge']
         });
@@ -245,9 +263,12 @@ var j = $.ajax(url)
                 ['Risk Score', 0]
             ]);
 
+            // Responsive options based on screen size
+            const isMobile = window.innerWidth <= 767;
+
             var options = {
-                width: 500,
-                height: 300,
+                width: isMobile ? 300 : 500,
+                height: isMobile ? 200 : 300,
                 greenFrom: 0,
                 greenTo: 40,
                 yellowFrom: 41,
@@ -265,6 +286,13 @@ var j = $.ajax(url)
                 data.setValue(0, 1, Math.round(riskScore))
                 chart.draw(data, options);
             }, 1000);
+
+            window.addEventListener('resize', function () {
+                const isMobile = window.innerWidth <= 767;
+                options.width = isMobile ? 300 : 500;
+                options.height = isMobile ? 200 : 300;
+                chart.draw(data, options);
+            });
         }
 
         let alertType;
@@ -317,20 +345,20 @@ var j = $.ajax(url)
             })
             password_score = (plaintext / (easy + hard + plaintext + unknown)) * 100
 
-            // Calculate industries including both regular and sensitive breaches
+
             industries = jsonResponse.BreachMetrics.industry[0];
 
-            // Process industry calculations
+
             if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
                 const sensitiveBreaches = jsonResponse.ExposedBreaches.sensitive_breaches_details;
 
-                // Create a map of existing industry counts
+
                 const industryMap = new Map();
                 industries.forEach(ind => {
                     industryMap.set(ind[0], ind[1]);
                 });
 
-                // Add sensitive breaches to industry calculations
+
                 sensitiveBreaches.forEach(breach => {
                     const industry = breach.industry.toLowerCase().substring(0, 4); // Get industry code
                     if (industryMap.has(industry)) {
@@ -340,7 +368,7 @@ var j = $.ajax(url)
                     }
                 });
 
-                // Convert back to array format
+
                 industries = Array.from(industryMap.entries());
             }
 
@@ -481,11 +509,18 @@ var j = $.ajax(url)
             ];
 
             counts.sort((a, b) => b.cnt - a.cnt);
+
+            function getBadgeClass(count) {
+                if (count > 10) return 'high';
+                if (count > 5) return 'medium';
+                return 'low';
+            }
+
             let industryList = `
                 <div class="industry-list">
                     <div class="row">
                         ${counts.filter(item => item.cnt > 0).map(item => `
-                            <div class="col-md-6 mb-2">
+                            <div class="${window.innerWidth <= 767 ? 'col-12' : 'col-md-6'} mb-2">
                                 <div class="industry-item ${item.cnt > 0 ? 'has-breaches' : ''}">
                                     <span class="industry-name">${item.name}</span>
                                     <span class="badge badge-${getBadgeClass(item.cnt)}">${item.cnt}</span>
@@ -536,18 +571,20 @@ var j = $.ajax(url)
                     background-color: #00b894;
                     color: white;
                 }
+                @media (max-width: 767px) {
+                    .industry-list .row {
+                        margin: 0 !important;
+                    }
+                    .industry-item {
+                        margin-bottom: 10px;
+                    }
+                }
             `;
             document.head.appendChild(style);
 
-            function getBadgeClass(count) {
-                if (count > 10) return 'high';
-                if (count > 5) return 'medium';
-                return 'low';
-            }
-
             $('#industry').html(industryList);
 
-            // GitHub section
+
             const githubSection = `
                 <div class="github-collab-section h-100">
                     <div class="github-content text-center">
@@ -557,8 +594,7 @@ var j = $.ajax(url)
                         <h4 class="mb-3">Join Our Open Source Community! 🚀</h4>
                         <p class="mb-4">
                             Help us make the internet safer by contributing to XposedOrNot. 
-                            Whether you're a developer, designer, or security enthusiast, 
-                            your ideas can make a difference!
+                            Your ideas & contributions can make a difference!
                         </p>
                         <div class="github-stats mb-3">
                             <div class="row justify-content-center">
@@ -571,13 +607,13 @@ var j = $.ajax(url)
                                 <div class="col-auto px-3">
                                     <div class="stat-item">
                                         <i class="fas fa-users"></i>
-                                        <span>Community Driven</span>
+                                        <span>Community</span>
                                     </div>
                                 </div>
                                 <div class="col-auto px-3">
                                     <div class="stat-item">
                                         <i class="fas fa-shield-alt"></i>
-                                        <span>Security Focused</span>
+                                        <span>Security</span>
                                     </div>
                                 </div>
                             </div>
@@ -597,21 +633,21 @@ var j = $.ajax(url)
                 const regularBreaches = jsonResponse.ExposedBreaches.breaches_details;
                 for (var i = 0; i < regularBreaches.length; i++) {
                     breachesTable += '<tr>' +
-                        '<td>' + regularBreaches[i].breach + '<br>' +
+                        '<td style="text-align: center;">' + regularBreaches[i].breach + '<br>' +
                         '<img src="' + regularBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
                         '</td>' +
                         '<td><div class="text">' + regularBreaches[i].details + '</div>' +
                         '<a href="#" class="see-more">See More</a></td>' +
-                        '<td>' + parseInt(regularBreaches[i].xposed_records).toLocaleString() + '</td>' +
+                        '<td style="text-align: right;">' + parseInt(regularBreaches[i].xposed_records).toLocaleString() + '</td>' +
                         '</tr>';
 
-                    // Add to detailed view
+
                     breachesDetailsHtml += generateBreachDetailHtml(regularBreaches[i], false);
                 }
                 $("#data_breach").html(breachesTable);
             }
 
-            // Add sensitive breaches to detailed view if token exists
+
             if (token && jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
                 const sensitiveBreaches = jsonResponse.ExposedBreaches.sensitive_breaches_details;
                 for (var i = 0; i < sensitiveBreaches.length; i++) {
@@ -619,7 +655,7 @@ var j = $.ajax(url)
                 }
             }
 
-            // Remove the duplicate table generation
+
             nn = "";
             if (xposedData.toString().length <= 0) {
                 document.getElementById("db-s").className = "visible alert alert-success";
@@ -636,7 +672,7 @@ var j = $.ajax(url)
                     });
                 }
 
-                // Add sensitive breaches to counts array if token exists
+
                 if (token && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
                     jsonResponse.ExposedBreaches.sensitive_breaches_details.forEach(breach => {
                         breachesCountsArray.push({
@@ -663,6 +699,8 @@ var j = $.ajax(url)
 
 
             top5.parentElement.style.height = '400px';
+
+            const isMobile = window.innerWidth <= 767;
 
             var top5chart = new Chart(top5, {
                 type: 'doughnut',
@@ -750,7 +788,6 @@ var j = $.ajax(url)
 
             var passwords = document.getElementById('passwords');
 
-            // Set canvas container height
             passwords.parentElement.style.height = '400px';
 
             var passwordschart = new Chart(passwords, {
@@ -844,9 +881,7 @@ var j = $.ajax(url)
         if (response.status === 404) {
             $.LoadingOverlay("hide");
             document.getElementById("db-s").className = "visible alert alert-success";
-            document.getElementById("db-p").className = "visible alert alert-success";
             $("#db-s").show();
-            $("#db-p").show();
             g1()
         } else if (response.status === 429) {
             $.LoadingOverlay("hide");
@@ -887,7 +922,6 @@ var barChartData1 = {
 function g1() {
 
     const isDarkMode = document.body.classList.contains('dark-mode');
-
 
     const chartLabels = ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'];
 
@@ -1020,8 +1054,78 @@ $(document).ready(function () {
                 $("#alertMeClose").show();
             });
     });
-});
 
+    function adjustLayoutForScreenSize() {
+        const isMobile = window.innerWidth <= 767;
+
+
+        if (isMobile) {
+            $('.xon-row2-right, .xon-row2-left').css({
+                'height': 'auto',
+                'min-height': '350px',
+                'margin-bottom': '30px'
+            });
+
+
+            $('.github-collab-section').css({
+                'height': 'auto',
+                'min-height': '280px',
+                'overflow': 'visible',
+                'margin-bottom': '30px'
+            });
+
+
+            $('.github-content').css({
+                'padding': '15px 5px'
+            });
+
+
+            if (window.innerWidth < 400) {
+                $('.github-stats .row').css({
+                    'flex-direction': 'column',
+                    'align-items': 'center'
+                });
+
+                $('.github-stats .col-auto').css({
+                    'width': '100%',
+                    'text-align': 'center',
+                    'margin-bottom': '10px'
+                });
+            }
+        } else {
+
+            $('.xon-row2-right').css({
+                'height': '450px',
+                'margin-bottom': ''
+            });
+
+            $('.github-collab-section').css({
+                'height': '100%',
+                'overflow': 'hidden',
+                'margin-bottom': ''
+            });
+
+            $('.github-content').css({
+                'padding': ''
+            });
+
+            $('.github-stats .row').css({
+                'flex-direction': '',
+                'align-items': ''
+            });
+
+            $('.github-stats .col-auto').css({
+                'width': '',
+                'text-align': '',
+                'margin-bottom': ''
+            });
+        }
+    }
+
+
+    adjustLayoutForScreenSize();
+    $(window).on('resize', adjustLayoutForScreenSize);
+});
 
 
 var floatingButton = document.getElementById('floating-button');
@@ -1168,8 +1272,6 @@ document.getElementById('clippy-button').addEventListener('click', function () {
 });
 
 
-
-
 google.charts.load("current", {
     packages: ["corechart"]
 });
@@ -1183,7 +1285,198 @@ function getCategoryBadgeClass(count) {
 
 function drawChart_categories(xposedData) {
     try {
-        // Chart rendering code
+        if (!xposedData || !xposedData.length) {
+            return;
+        }
+
+        const style = document.createElement('style');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+
+        style.textContent = `
+            .categories-list {
+                padding: 15px;
+            }
+            .category-header {
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                border-bottom: 1px solid ${isDarkMode ? '#444' : '#ddd'};
+            }
+            .category-header h5 {
+                color: ${isDarkMode ? '#9fc0e0' : '#3A4B5E'};
+                font-weight: 600;
+                margin: 0;
+                font-size: 1.1rem;
+            }
+            .category-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 15px;
+                border-radius: 8px;
+                background-color: #f8f9fa;
+                transition: all 0.3s ease;
+                margin-bottom: 8px;
+                border: 1px solid #e1e4e8;
+            }
+            .category-item:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                background-color: #e9ecef;
+            }
+            .category-name {
+                font-weight: 500;
+                color: #2d3436;
+            }
+            [data-theme="dark"] .category-item, .dark-mode .category-item {
+                background-color: #1f2937;
+                color: #ffffff;
+                border: 1px solid #4a5568;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+            [data-theme="dark"] .category-item:hover, .dark-mode .category-item:hover {
+                background-color: #2d3748;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                border: 1px solid #6daae0;
+            }
+            [data-theme="dark"] .category-name, .dark-mode .category-name {
+                color: #e2e8f0;
+                font-weight: 600;
+            }
+            .badge-high {
+                background-color: #ff7675;
+                color: white;
+            }
+            .badge-medium {
+                background-color: #fdcb6e;
+                color: #2d3436;
+            }
+            .badge-low {
+                background-color: #00b894;
+                color: white;
+            }
+            [data-theme="dark"] .badge, .dark-mode .badge {
+                background-color: #2d3748;
+                color: #e2e8f0;
+                border: 1px solid #4a5568;
+                font-weight: 700;
+            }
+            [data-theme="dark"] .badge-high, .dark-mode .badge-high {
+                background-color: #e53e3e;
+                color: white;
+                border: none;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            }
+            [data-theme="dark"] .badge-medium, .dark-mode .badge-medium {
+                background-color: #ecc94b;
+                color: #1a202c;
+                border: none;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            }
+            [data-theme="dark"] .badge-low, .dark-mode .badge-low {
+                background-color: #38a169;
+                color: white;
+                border: none;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            }
+            [data-theme="dark"] .category-header h5, .dark-mode .category-header h5 {
+                color: #6daae0;
+                font-weight: 700;
+                margin: 0;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            }
+            /* Responsive styles for mobile view */
+            @media (max-width: 767px) {
+                .category-header h5 {
+                    font-size: 0.95rem !important;
+                    line-height: 1.3;
+                    padding: 5px 0;
+                }
+                [data-theme="dark"] .category-header h5, .dark-mode .category-header h5 {
+                    font-size: 0.95rem !important;
+                }
+                .category-header {
+                    margin-bottom: 8px;
+                    padding-bottom: 4px;
+                }
+                .categories-list {
+                    padding: 10px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+
+        let categoriesHTML = `
+            <div class="categories-list">
+                <div class="row">
+        `;
+
+
+        xposedData.forEach(category => {
+            if (!category.children || !category.children.length) {
+                return;
+            }
+
+
+            const totalItems = category.children.reduce((sum, item) => sum + item.value, 0);
+            if (totalItems === 0) {
+                return;
+            }
+
+
+            let categoryName = category.name;
+            if (categoryName.startsWith("data_")) {
+                categoryName = categoryName.substring(5);
+            }
+
+
+            categoriesHTML += `
+                <div class="col-12 mb-3">
+                    <div class="category-header">
+                        <h5>${categoryName} (${totalItems} items)</h5>
+                    </div>
+                    <div class="row">
+            `;
+
+
+            category.children.forEach(item => {
+                if (item.value === 0) return;
+
+
+                let itemName = item.name;
+                if (itemName.startsWith("data_")) {
+                    itemName = itemName.substring(5);
+                }
+
+                categoriesHTML += `
+                    <div class="col-md-6 mb-2">
+                        <div class="category-item ${isDarkMode ? 'dark-mode' : ''}">
+                            <span class="category-name">${itemName}</span>
+                            <span class="badge badge-${getCategoryBadgeClass(item.value)}">${item.value}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            categoriesHTML += `
+                    </div>
+                </div>
+            `;
+        });
+
+        categoriesHTML += `
+                </div>
+            </div>
+        `;
+
+
+        $('#categories-list').html(categoriesHTML);
+
+
+        if (isDarkMode) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
     } catch (error) {
         console.warn('Error rendering categories list:', error);
     }
