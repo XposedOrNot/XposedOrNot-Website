@@ -7,9 +7,14 @@ $.LoadingOverlaySetup({
 
 $.LoadingOverlay("show");
 
-
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (!results) {
+        if (name === 'email') {
+            throw new Error('Email parameter is required');
+        }
+        return null;
+    }
     return results[1] || 0;
 }
 
@@ -18,18 +23,30 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+let by25 = by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
+let i11 = i12 = i13 = i14 = i15 = i16 = i17 = i18 = i19 = i20 = i1 = i2 = i3 = i4 = i5 = i6 = i7 = i8 = i9 = i10 = i20 = i21 = i22 = i23 = i24 = i25 = i26 = 0;
+let unknown = plaintext = easy = hard = password_score = 0;
 
-
+function getAlertType(riskLabel) {
+    switch (riskLabel) {
+        case 'Low':
+            return 'success';
+        case 'Medium':
+            return 'warning';
+        case 'High':
+            return 'danger';
+        default:
+            return 'secondary';
+    }
+}
 
 function generateRiskAnalysis(riskLabel, jsonResponse) {
     let analysisText = "<div align='left' class='alert alert-info'>";
     const breachesDetails = jsonResponse.ExposedBreaches.breaches_details;
     const xposedData = jsonResponse.BreachMetrics.xposed_data[0].children;
 
-
     const categoryColor = "#407f7f"; // Muted Teal
     const actionTextColor = "#355035"; // Deep Green
-
 
     let plaintextBreaches = [];
     let easyToCrackBreaches = [];
@@ -48,7 +65,6 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
 
     analysisText += "<ol>";
 
-
     if (plaintextBreaches.length > 0 || easyToCrackBreaches.length > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Compromised Passwords (${plaintextBreaches.length + easyToCrackBreaches.length} Breaches):</strong></span><ul>`;
         if (plaintextBreaches.length > 0) {
@@ -60,28 +76,23 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
         analysisText += `<li style='color: ${actionTextColor};'><strong>Recommended Action:</strong> If your email is linked to any of these breaches, immediately change your passwords. Use strong, unique passwords for each account.</li></ul></li><br>`;
     }
 
-
     if (piiBreachesCount > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Personal Information Exposure (${piiBreachesCount} Occurrences):</strong></span> Your personal details might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Monitor for unusual activities that could indicate identity theft or fraud.</li><br>`;
     }
-
 
     if (emailBreachesCount > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Email Addresses and Phishing Risks (${emailBreachesCount} Occurrences):</strong></span> Your email address might be used in phishing attempts.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with emails from unknown sources and avoid clicking on suspicious links.</li><br>`;
     }
 
-
     if (communicationBreachesCount > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Communication and Social Interactions (${communicationBreachesCount} Occurrences):</strong></span> Your communication details may be at risk.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with your online interactions and consider updating privacy settings on social platforms.</li><br>`;
     }
-
 
     if (demographicsBreachesCount > 0) {
         analysisText += `<li><span style='color: ${categoryColor};'><strong>Demographics (${demographicsBreachesCount} Occurrences):</strong></span> Sensitive demographic information might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Review and secure any accounts that may contain detailed personal information to prevent identity theft.</li><br>`;
     }
 
     analysisText += "</ol>";
-
 
     analysisText += `<p><strong>Your Risk Score:</strong> <span class='alert alert-${getAlertType(riskLabel)}' style='padding: 2px 8px; display: inline-block; margin: 0;'><strong>${riskLabel}</strong></span><br><br><strong>Our Recommendations:</strong><br>`;
     switch (riskLabel) {
@@ -101,32 +112,14 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
     return analysisText;
 }
 
-function getAlertType(riskLabel) {
-    switch (riskLabel) {
-        case 'Low':
-            return 'success';
-        case 'Medium':
-            return 'warning';
-        case 'High':
-            return 'danger';
-        default:
-            return 'secondary';
-    }
-}
+let email, token;
 
-
-
-
-by25 = by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
-py25 = py24 = py23 = py22 = py21 = py20 = py19 = py18 = py17 = py16 = py15 = py14 = py13 = py12 = py11 = py10 = py09 = py08 = py07 = 0;
-i11 = i12 = i13 = i14 = i15 = i16 = i17 = i18 = i19 = i20 = i1 = i2 = i3 = i4 = i5 = i6 = i7 = i8 = i9 = i10 = i20 = i21 = i22 = i23 = i24 = i25 = i26 = 0;
-unknown = plaintext = easy = hard = password_score = 0;
-
-
-let email;
 try {
     email = decodeURIComponent($.urlParam('email'));
+    const hasToken = $.urlParam('token');
+    token = hasToken ? decodeURIComponent(hasToken) : null;
 } catch (error) {
+    console.error('Error parsing URL parameters:', error);
     window.location.replace("https://xposedornot.com");
 }
 
@@ -134,17 +127,99 @@ const emailHeader = (category) => `<div align="center" class="alert alert-primar
 
 $("#email").html(emailHeader("Data Breaches Quick Information"));
 $("#email_sensitive").html(emailHeader('<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed.">?</span>&nbsp;&nbsp; Sensitive Data Breaches Summary'));
-$("#paste").html(emailHeader("Exposed Pastes Summary"));
 $("#data").html(emailHeader("Your Exposed Data Sorted by Categories"));
 
-//const url = `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
-const url = `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
+// Show validation required message by default for sensitive breaches section
+$("#db-sensitive").show();
+$("#sensitive-data-table").hide();
+document.getElementById("db-sensitive").className = "alert alert-info";
+$("#db-sensitive").html(`
+    <em class="fas fa-lock"></em>
+    <strong>Sensitive Data Breaches Require Validation</strong>
+    <p style="font-size:16px; margin-top:10px;">
+        To view sensitive data breaches that may contain more critical information, 
+        please verify your email address. This extra step helps protect sensitive data 
+        from unauthorized access.
+    </p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
+        <em class="fas fa-envelope"></em> Verify Email Now
+    </button>
+`);
+
+// Regular breach data URL
+const url = token
+    ? `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
+    : `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
 
 let jsonResponse;
+
+// If no token, show the default validation required message
+if (!token) {
+    $("#db-sensitive").show();
+    $("#sensitive-data-table").hide();
+    document.getElementById("db-sensitive").className = "alert alert-info";
+    $("#db-sensitive").html(`
+        <em class="fas fa-lock"></em>
+        <strong>Sensitive Data Breaches Require Validation</strong>
+        <p style="font-size:16px; margin-top:10px;">
+            To view sensitive data breaches that may contain more critical information, 
+            please verify your email address. This extra step helps protect sensitive data 
+            from unauthorized access.
+        </p>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
+            <em class="fas fa-envelope"></em> Verify Email Now
+        </button>
+    `);
+}
 
 var j = $.ajax(url)
     .done(function (response) {
         jsonResponse = response;
+
+        // Handle sensitive breaches if token exists
+        if (token) {
+            if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
+                const sensitiveBreaches = jsonResponse.ExposedBreaches.sensitive_breaches_details;
+                // Process sensitive breaches
+                if (!sensitiveBreaches || sensitiveBreaches.length === 0) {
+                    $("#db-sensitive").show();
+                    $("#sensitive-data-table").hide();
+                    document.getElementById("db-sensitive").className = "visible alert alert-success";
+                    $("#db-sensitive").html(`
+                        <em class="fas fa-check-circle"></em>
+                        <strong> Your email is not found in any sensitive data breaches loaded in XposedOrNot</strong>
+                        <p style="color:green;font-size:20px"></p>
+                        <h3><strong>Good news 🎉</strong></h3>
+                    `);
+                } else {
+                    $("#db-sensitive").hide();
+                    $("#sensitive-data-table").show();
+                    let tableRowsHtml = "";
+                    for (var i = 0; i < sensitiveBreaches.length; i++) {
+                        tableRowsHtml += '<tr>' +
+                            '<td>' + sensitiveBreaches[i].breach + '<br>' +
+                            '<img src="' + sensitiveBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
+                            '</td>' +
+                            '<td>' + sensitiveBreaches[i].details + '</td>' +
+                            '<td>' + sensitiveBreaches[i].xposed_records + '</td>' +
+                            '</tr>';
+                    }
+                    $("#data_breach_sensitive").html(tableRowsHtml);
+                }
+            } else {
+                $("#db-sensitive").show();
+                $("#sensitive-data-table").hide();
+                document.getElementById("db-sensitive").className = "visible alert alert-success";
+                $("#db-sensitive").html(`
+                    <em class="fas fa-check-circle"></em>
+                    <strong> Your email is not found in any sensitive data breaches loaded in XposedOrNot</strong>
+                    <p style="color:green;font-size:20px"></p>
+                    <h3><strong>Good news 🎉</strong></h3>
+                `);
+            }
+        }
+
+        console.log('Processing regular breaches data');
         breachesDetailsHtml = ''
         numPastes = '', breachesSite = '', xposedData = '', riskScore = '', riskLabel = '';
         let passwordScore = 0;
@@ -242,404 +317,338 @@ var j = $.ajax(url)
             })
             password_score = (plaintext / (easy + hard + plaintext + unknown)) * 100
 
-            industries = jsonResponse.BreachMetrics.industry[0]
+            // Calculate industries including both regular and sensitive breaches
+            industries = jsonResponse.BreachMetrics.industry[0];
 
-            for (var i = 0; i < 19; i++) {
+            // Process industry calculations
+            if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
+                const sensitiveBreaches = jsonResponse.ExposedBreaches.sensitive_breaches_details;
+
+                // Create a map of existing industry counts
+                const industryMap = new Map();
+                industries.forEach(ind => {
+                    industryMap.set(ind[0], ind[1]);
+                });
+
+                // Add sensitive breaches to industry calculations
+                sensitiveBreaches.forEach(breach => {
+                    const industry = breach.industry.toLowerCase().substring(0, 4); // Get industry code
+                    if (industryMap.has(industry)) {
+                        industryMap.set(industry, industryMap.get(industry) + 1);
+                    } else {
+                        industryMap.set(industry, 1);
+                    }
+                });
+
+                // Convert back to array format
+                industries = Array.from(industryMap.entries());
+            }
+
+            for (var i = 0; i < industries.length; i++) {
                 var ind_split = industries[i];
                 var categoryName = ind_split[0];
                 var categoryCount = ind_split[1];
 
                 switch (categoryName) {
-                    case "aero":
-                        i1 = categoryCount;
-                        break;
-                    case "tran":
-                        i2 = categoryCount;
-                        break;
-                    case "info":
-                        i3 = categoryCount;
-                        break;
-                    case "tele":
-                        i4 = categoryCount;
-                        break;
-                    case "agri":
-                        i5 = categoryCount;
-                        break;
-                    case "cons":
-                        i6 = categoryCount;
-                        break;
-                    case "educ":
-                        i7 = categoryCount;
-                        break;
-                    case "phar":
-                        i8 = categoryCount;
-                        break;
-                    case "food":
-                        i9 = categoryCount;
-                        break;
-                    case "heal":
-                        i10 = categoryCount;
-                        break;
-                    case "hosp":
-                        i11 = categoryCount;
-                        break;
-                    case "ente":
-                        i12 = categoryCount;
-                        break;
-                    case "news":
-                        i13 = categoryCount;
-                        break;
-                    case "ener":
-                        i14 = categoryCount;
-                        break;
-                    case "manu":
-                        i15 = categoryCount;
-                        break;
-                    case "musi":
-                        i16 = categoryCount;
-                        break;
-                    case "mini":
-                        i17 = categoryCount;
-                        break;
-                    case "elec":
-                        i18 = categoryCount;
-                        break;
-                    case "misc":
-                        i19 = categoryCount;
-                        break;
-                    case "fina":
-                        i20 = categoryCount;
-                        break;
-                    case "reta":
-                        i21 = categoryCount;
-                        break;
-                    case "nonp":
-                        i22 = categoryCount;
-                        break;
-                    case "govt":
-                        i23 = categoryCount;
-                        break;
-                    case "spor":
-                        i24 = categoryCount;
-                        break;
-                    case "envi":
-                        i25 = categoryCount;
-                        break;
-
+                    case "aero": i1 = categoryCount; break;
+                    case "tran": i2 = categoryCount; break;
+                    case "info": i3 = categoryCount; break;
+                    case "tele": i4 = categoryCount; break;
+                    case "agri": i5 = categoryCount; break;
+                    case "cons": i6 = categoryCount; break;
+                    case "educ": i7 = categoryCount; break;
+                    case "phar": i8 = categoryCount; break;
+                    case "food": i9 = categoryCount; break;
+                    case "heal": i10 = categoryCount; break;
+                    case "hosp": i11 = categoryCount; break;
+                    case "ente": i12 = categoryCount; break;
+                    case "news": i13 = categoryCount; break;
+                    case "ener": i14 = categoryCount; break;
+                    case "manu": i15 = categoryCount; break;
+                    case "musi": i16 = categoryCount; break;
+                    case "mini": i17 = categoryCount; break;
+                    case "elec": i18 = categoryCount; break;
+                    case "misc": i19 = categoryCount; break;
+                    case "fina": i20 = categoryCount; break;
+                    case "reta": i21 = categoryCount; break;
+                    case "nonp": i22 = categoryCount; break;
+                    case "govt": i23 = categoryCount; break;
+                    case "spor": i24 = categoryCount; break;
+                    case "envi": i25 = categoryCount; break;
                 }
             }
 
-        }
+            var counts = [{
+                name: 'Aerospace',
+                cnt: i1
+            },
+            {
+                name: 'Transport',
+                cnt: i2
+            },
+            {
+                name: 'Information Technology',
+                cnt: i3
+            },
+            {
+                name: 'Telecommunication',
+                cnt: i4
+            },
+            {
+                name: 'Agriculture',
+                cnt: i5
+            },
+            {
+                name: 'Construction',
+                cnt: i6
+            },
+            {
+                name: 'Education',
+                cnt: i7
+            },
+            {
+                name: 'Pharmaceutical',
+                cnt: i8
+            },
+            {
+                name: 'Food',
+                cnt: i9
+            },
+            {
+                name: 'Health Care',
+                cnt: i10
+            },
+            {
+                name: 'Hospitality',
+                cnt: i11
+            },
+            {
+                name: 'Entertainment',
+                cnt: i12
+            },
+            {
+                name: 'News',
+                cnt: i13
+            },
+            {
+                name: 'Energy',
+                cnt: i14
+            },
+            {
+                name: 'Manufacturing',
+                cnt: i15
+            },
+            {
+                name: 'Music',
+                cnt: i16
+            },
+            {
+                name: 'Mining',
+                cnt: i17
+            },
+            {
+                name: 'Electronics',
+                cnt: i18
+            },
+            {
+                name: 'Miscellaneous',
+                cnt: i19
+            },
+            {
+                name: 'Finance',
+                cnt: i20
+            },
+            {
+                name: 'Retail',
+                cnt: i21
+            },
+            {
+                name: 'Non-Profit/Charities',
+                cnt: i22
+            },
+            {
+                name: 'Government',
+                cnt: i23
+            },
+            {
+                name: 'Sports',
+                cnt: i24
+            },
+            {
+                name: 'Environment',
+                cnt: i25
+            }
+            ];
 
-        var counts = [{
-            name: 'Aerospace',
-            cnt: i1
-        },
-        {
-            name: 'Transport',
-            cnt: i2
-        },
-        {
-            name: 'Information Technology',
-            cnt: i3
-        },
-        {
-            name: 'Telecommunication',
-            cnt: i4
-        },
-        {
-            name: 'Agriculture',
-            cnt: i5
-        },
-        {
-            name: 'Construction',
-            cnt: i6
-        },
-        {
-            name: 'Education',
-            cnt: i7
-        },
-        {
-            name: 'Pharmaceutical',
-            cnt: i8
-        },
-        {
-            name: 'Food',
-            cnt: i9
-        },
-        {
-            name: 'Health Care',
-            cnt: i10
-        },
-        {
-            name: 'Hospitality',
-            cnt: i11
-        },
-        {
-            name: 'Entertainment',
-            cnt: i12
-        },
-        {
-            name: 'News',
-            cnt: i13
-        },
-        {
-            name: 'Energy',
-            cnt: i14
-        },
-        {
-            name: 'Manufacturing',
-            cnt: i15
-        },
-        {
-            name: 'Music',
-            cnt: i16
-        },
-        {
-            name: 'Mining',
-            cnt: i17
-        },
-        {
-            name: 'Electronics',
-            cnt: i18
-        },
-        {
-            name: 'Miscellaneous',
-            cnt: i19
-        },
-        {
-            name: 'Finance',
-            cnt: i20
-        },
-        {
-            name: 'Retail',
-            cnt: i21
-        },
-        {
-            name: 'Non-Profit/Charities',
-            cnt: i22
-        },
-        {
-            name: 'Government',
-            cnt: i23
-        },
-        {
-            name: 'Sports',
-            cnt: i24
-        },
-        {
-            name: 'Environment',
-            cnt: i25
-        },
-        ];
-
-        counts.sort((a, b) => b.cnt - a.cnt);
-        let industryList = `
-            <div class="industry-list">
-                <div class="row">
-                    ${counts.filter(item => item.cnt > 0).map(item => `
-                        <div class="col-md-6 mb-2">
-                            <div class="industry-item ${item.cnt > 0 ? 'has-breaches' : ''}">
-                                <span class="industry-name">${item.name}</span>
-                                <span class="badge badge-${getBadgeClass(item.cnt)}">${item.cnt}</span>
+            counts.sort((a, b) => b.cnt - a.cnt);
+            let industryList = `
+                <div class="industry-list">
+                    <div class="row">
+                        ${counts.filter(item => item.cnt > 0).map(item => `
+                            <div class="col-md-6 mb-2">
+                                <div class="industry-item ${item.cnt > 0 ? 'has-breaches' : ''}">
+                                    <span class="industry-name">${item.name}</span>
+                                    <span class="badge badge-${getBadgeClass(item.cnt)}">${item.cnt}</span>
+                                </div>
                             </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-
-
-        const style = document.createElement('style');
-        style.textContent = `
-            .industry-list {
-                padding: 15px;
-            }
-            .industry-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 15px;
-                border-radius: 8px;
-                background-color: ${document.body.classList.contains('dark-mode') ? '#2d3436' : '#f8f9fa'};
-                transition: all 0.3s ease;
-                margin-bottom: 8px;
-            }
-            .industry-item:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            }
-            .industry-name {
-                font-weight: 500;
-                color: ${document.body.classList.contains('dark-mode') ? '#fff' : '#2d3436'};
-            }
-            .badge {
-                padding: 6px 12px;
-                border-radius: 20px;
-                font-weight: 600;
-            }
-            .badge-high {
-                background-color: #ff7675;
-                color: white;
-            }
-            .badge-medium {
-                background-color: #fdcb6e;
-                color: #2d3436;
-            }
-            .badge-low {
-                background-color: #00b894;
-                color: white;
-            }
-        `;
-        document.head.appendChild(style);
-
-
-        function getBadgeClass(count) {
-            if (count > 10) return 'high';
-            if (count > 5) return 'medium';
-            return 'low';
-        }
-
-        $('#industry').html(industryList);
-
-
-        const githubSection = `
-            <div class="github-collab-section h-100">
-                <div class="github-content text-center">
-                    <div class="github-icon mb-3">
-                        <i class="fab fa-github fa-3x"></i>
+                        `).join('')}
                     </div>
-                    <h4 class="mb-3">Join Our Open Source Community! 🚀</h4>
-                    <p class="mb-4">
-                        Help us make the internet safer by contributing to XposedOrNot. 
-                        Whether you're a developer, designer, or security enthusiast, 
-                        your ideas can make a difference!
-                    </p>
-                    <div class="github-stats mb-3">
-                        <div class="row justify-content-center">
-                            <div class="col-auto px-3">
-                                <div class="stat-item">
-                                    <i class="fas fa-code-branch"></i>
-                                    <span>Open Source</span>
+                </div>
+            `;
+
+            const style = document.createElement('style');
+            style.textContent = `
+                .industry-list {
+                    padding: 15px;
+                }
+                .industry-item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px 15px;
+                    border-radius: 8px;
+                    background-color: ${document.body.classList.contains('dark-mode') ? '#2d3436' : '#f8f9fa'};
+                    transition: all 0.3s ease;
+                    margin-bottom: 8px;
+                }
+                .industry-item:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                }
+                .industry-name {
+                    font-weight: 500;
+                    color: ${document.body.classList.contains('dark-mode') ? '#fff' : '#2d3436'};
+                }
+                .badge {
+                    padding: 6px 12px;
+                    border-radius: 20px;
+                    font-weight: 600;
+                }
+                .badge-high {
+                    background-color: #ff7675;
+                    color: white;
+                }
+                .badge-medium {
+                    background-color: #fdcb6e;
+                    color: #2d3436;
+                }
+                .badge-low {
+                    background-color: #00b894;
+                    color: white;
+                }
+            `;
+            document.head.appendChild(style);
+
+            function getBadgeClass(count) {
+                if (count > 10) return 'high';
+                if (count > 5) return 'medium';
+                return 'low';
+            }
+
+            $('#industry').html(industryList);
+
+            // GitHub section
+            const githubSection = `
+                <div class="github-collab-section h-100">
+                    <div class="github-content text-center">
+                        <div class="github-icon mb-3">
+                            <i class="fab fa-github fa-3x"></i>
+                        </div>
+                        <h4 class="mb-3">Join Our Open Source Community! 🚀</h4>
+                        <p class="mb-4">
+                            Help us make the internet safer by contributing to XposedOrNot. 
+                            Whether you're a developer, designer, or security enthusiast, 
+                            your ideas can make a difference!
+                        </p>
+                        <div class="github-stats mb-3">
+                            <div class="row justify-content-center">
+                                <div class="col-auto px-3">
+                                    <div class="stat-item">
+                                        <i class="fas fa-code-branch"></i>
+                                        <span>Open Source</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-auto px-3">
-                                <div class="stat-item">
-                                    <i class="fas fa-users"></i>
-                                    <span>Community Driven</span>
+                                <div class="col-auto px-3">
+                                    <div class="stat-item">
+                                        <i class="fas fa-users"></i>
+                                        <span>Community Driven</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-auto px-3">
-                                <div class="stat-item">
-                                    <i class="fas fa-shield-alt"></i>
-                                    <span>Security Focused</span>
+                                <div class="col-auto px-3">
+                                    <div class="stat-item">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>Security Focused</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <a href="https://github.com/xposedornot" target="_blank" class="btn btn-github">
+                            <i class="fab fa-github mr-2"></i> Visit our GitHub
+                        </a>
                     </div>
-                    <a href="https://github.com/xposedornot" target="_blank" class="btn btn-github">
-                        <i class="fab fa-github mr-2"></i> Visit our GitHub
-                    </a>
                 </div>
-            </div>
-        `;
+            `;
 
+            $('.xon-row2-right .text-center').html(githubSection);
 
-        $('.xon-row2-right .text-center').html(githubSection);
+            breachesDetailsHtml = ''
+            if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.breaches_details) {
+                let breachesTable = "";
+                const regularBreaches = jsonResponse.ExposedBreaches.breaches_details;
+                for (var i = 0; i < regularBreaches.length; i++) {
+                    breachesTable += '<tr>' +
+                        '<td>' + regularBreaches[i].breach + '<br>' +
+                        '<img src="' + regularBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
+                        '</td>' +
+                        '<td><div class="text">' + regularBreaches[i].details + '</div>' +
+                        '<a href="#" class="see-more">See More</a></td>' +
+                        '<td>' + parseInt(regularBreaches[i].xposed_records).toLocaleString() + '</td>' +
+                        '</tr>';
 
-        pasteDetailsTable = ""
-        if (numPastes == 0) {
-            $("#db-p").show();
-            document.getElementById("db-p").className = "visible alert alert-success";
-        } else {
-            if (numPastes.toString().length > 0) {
-                py23 = jsonResponse.PasteMetrics.yearwise_details[0].y2023;
-                py22 = jsonResponse.PasteMetrics.yearwise_details[0].y2022;
-                py21 = jsonResponse.PasteMetrics.yearwise_details[0].y2021;
-                py20 = jsonResponse.PasteMetrics.yearwise_details[0].y2020;
-                py19 = jsonResponse.PasteMetrics.yearwise_details[0].y2019;
-                py18 = jsonResponse.PasteMetrics.yearwise_details[0].y2018;
-                py17 = jsonResponse.PasteMetrics.yearwise_details[0].y2017;
-                py16 = jsonResponse.PasteMetrics.yearwise_details[0].y2016;
-                py15 = jsonResponse.PasteMetrics.yearwise_details[0].y2015;
-                py14 = jsonResponse.PasteMetrics.yearwise_details[0].y2014;
-                py13 = jsonResponse.PasteMetrics.yearwise_details[0].y2013;
-                py12 = jsonResponse.PasteMetrics.yearwise_details[0].y2012;
-                py11 = jsonResponse.PasteMetrics.yearwise_details[0].y2011;
-                py10 = jsonResponse.PasteMetrics.yearwise_details[0].y2010;
-                py09 = jsonResponse.PasteMetrics.yearwise_details[0].y2009;
-                py08 = jsonResponse.PasteMetrics.yearwise_details[0].y2008;
-                py07 = jsonResponse.PasteMetrics.yearwise_details[0].y2007;
-            }
-            let pastesDetails = jsonResponse.ExposedPastes.pastes_details;
-            for (let i = 0; i < pastesDetails.length; i++) {
-                pasteDetailsTable += `<tr><td>${pastesDetails[i].pasteId}</td><td>${pastesDetails[i].xposed_date}</td><td>${pastesDetails[i].xposed_records}</td></tr>`;
+                    // Add to detailed view
+                    breachesDetailsHtml += generateBreachDetailHtml(regularBreaches[i], false);
+                }
+                $("#data_breach").html(breachesTable);
             }
 
-        }
-        $("#paste_breach").append(pasteDetailsTable);
-
-        pasteDetailsTable = ""
-        nn = ""
-        if (xposedData.toString().length <= 0) {
-            document.getElementById("db-s").className = "visible alert alert-success";
-            $("#db-s").show();
-        } else {
-            breachesCountsArray = []
-            exposedBreachesDetails = jsonResponse.ExposedBreaches.breaches_details;
-            if (exposedBreachesDetails.length > 0) {
-                for (var i = 0; i < exposedBreachesDetails.length; i++) {
-                    ia = i + 1;
-                    breaches_id = exposedBreachesDetails[i].breach;
-                    breaches_cnt = exposedBreachesDetails[i].xposed_records;
-                    breaches_dt = exposedBreachesDetails[i].details
-                    breaches_domain = exposedBreachesDetails[i].domain
-                    breaches_industry = exposedBreachesDetails[i].industry
-                    breaches_logo = exposedBreachesDetails[i].logo
-                    breaches_xposed_data = exposedBreachesDetails[i].xposed_data
-                    breaches_password_risk = exposedBreachesDetails[i].password_risk
-                    breaches_searchable = exposedBreachesDetails[i].searchable
-                    breaches_verified = exposedBreachesDetails[i].verified
-                    breaches_xposed_date = exposedBreachesDetails[i].xposed_date
-                    breaches_references = exposedBreachesDetails[i].references
-                    nn += '<tr><td> ' + breaches_id + '</td><td><div class="text">' + breaches_dt + '</div><a href="#" class="see-more">See More</a></td><td>' + parseInt(breaches_cnt).toLocaleString() + '</td></tr>';
-                    breachesCountsArray.push({
-                        'breach': breaches_id,
-                        'cnt': breaches_cnt
-                    })
-
-                    breachesDetailsHtml += "<div>   <b><span class='notser'>" + breaches_xposed_date + "</span></b><br><br>   <div class='row'>      <div class='col-sm-4'> <img height=75 width=100 src='";
-                    breachesDetailsHtml += breaches_logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='xposed.html#" + breaches_id + "' target='_blank'>";
-                    breachesDetailsHtml += breaches_id + "</font></strong></h3>         </a>      </div>      <div class='col-sm-4'>         <img height=75 width=75 src='";
-                    breachesDetailsHtml += 'static/logos/industry/' + breaches_industry + ".png' title='";
-                    breachesDetailsHtml += breaches_industry + ' Industry';
-                    breachesDetailsHtml += "'>  <figcaption>Industry: ";
-                    breachesDetailsHtml += breaches_industry + "</figcaption></div></div><br><p><div align='center'><table width=85% class='table-striped table-bordered table-hover' style='font-size:16px'><tr><td>Number of Records Exposed</td><td>";
-                    breachesDetailsHtml += parseInt(breaches_cnt).toLocaleString();
-                    breachesDetailsHtml += "</td></tr><tr><td table width=30%>Data Types Exposed<td>";
-                    breachesDetailsHtml += breaches_xposed_data.replace(/;/g, ', ');
-                    breachesDetailsHtml += " </td></tr><tr><td>Password/Hash Status</td><td>";
-                    breachesDetailsHtml += breaches_password_risk;
-                    breachesDetailsHtml += "</td></tr><tr><td>Affected Domain</td><td> ";
-                    breachesDetailsHtml += breaches_domain;
-                    breachesDetailsHtml += "</td></tr></table><p style='font-size:22px;'>";
-                    breachesDetailsHtml += breaches_dt;
-                    breachesDetailsHtml += "</p></div><br><br><b><u>Reference link(s):</u></b><br><a target='_blank' href='" + encodeURI(breaches_references) + "'> " + breaches_references + "</a></p>";
-                    breachesDetailsHtml += "<span class='ver'>Searchable</span>";
-                    if (breaches_verified === "Yes") {
-                        breachesDetailsHtml += "<span class='ver'>Verified</span>";
-                    } else {
-                        breachesDetailsHtml += "<span class='notver'>Untrusted</span>";
-                    }
-                    breachesDetailsHtml += "<span class='notser'>Data Breach</span></div><hr>";
-
+            // Add sensitive breaches to detailed view if token exists
+            if (token && jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
+                const sensitiveBreaches = jsonResponse.ExposedBreaches.sensitive_breaches_details;
+                for (var i = 0; i < sensitiveBreaches.length; i++) {
+                    breachesDetailsHtml += generateBreachDetailHtml(sensitiveBreaches[i], true);
                 }
             }
 
-            breachesCountsArray.sort(function (cnt1, cnt2) {
-                if (cnt1.cnts > cnt2.cnts) return -1;
-                if (cnt1.cnts < cnt2.cnts) return 1;
-                return 0;
+            // Remove the duplicate table generation
+            nn = "";
+            if (xposedData.toString().length <= 0) {
+                document.getElementById("db-s").className = "visible alert alert-success";
+                $("#db-s").show();
+            } else {
+                breachesCountsArray = []
+                // Add regular breaches to counts array
+                if (jsonResponse.ExposedBreaches.breaches_details) {
+                    jsonResponse.ExposedBreaches.breaches_details.forEach(breach => {
+                        breachesCountsArray.push({
+                            'breach': breach.breach,
+                            'cnt': breach.xposed_records
+                        });
+                    });
+                }
+
+                // Add sensitive breaches to counts array if token exists
+                if (token && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
+                    jsonResponse.ExposedBreaches.sensitive_breaches_details.forEach(breach => {
+                        breachesCountsArray.push({
+                            'breach': breach.breach,
+                            'cnt': breach.xposed_records
+                        });
+                    });
+                }
+            }
+
+            breachesCountsArray.sort(function (a, b) {
+                return b.cnt - a.cnt;
             });
 
             breachesCountsArray = breachesCountsArray.slice(0, 5);
@@ -649,7 +658,6 @@ var j = $.ajax(url)
             for (i = 0; i < breachesCountsArray.length; i++) {
                 breaches_id.push(breachesCountsArray[i].breach);
                 breaches_cnt.push(parseInt(breachesCountsArray[i].cnt));
-
             }
             var top5 = document.getElementById('top5breaches');
 
@@ -827,7 +835,6 @@ var j = $.ajax(url)
                 }
             });
             $("#data_breach").append(nn);
-            $("#data_breach_sensitive").append(nn);
             $("#details").append(breachesDetailsHtml);
         }
 
@@ -1037,9 +1044,9 @@ document.addEventListener('scroll', function () {
 });
 
 //var apiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
-var apiUrl = `https://xon-api-test.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
+var analyticsApiUrl = `https://xon-api-test.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
 
-$.get(apiUrl, function (response) {
+$.get(analyticsApiUrl, function (response) {
 
     const dataForTree = [{
         description: response.description,
@@ -1119,9 +1126,6 @@ document.getElementById('clippy-button').addEventListener('click', function () {
         agent.animate();
         agent.animate();
         agent.speak('Pro tip: Using a password manager is like having a secure vault for all your digital keys. It\'s a game-changer! 🏰');
-        agent.animate();
-        agent.animate();
-        agent.speak('Want to check if your passwords are secure? Head over to the "Password" page - I\'ll help you strengthen your digital armor! 💪');
         agent.animations();
 
         function speakRandom() {
@@ -1178,188 +1182,8 @@ function getCategoryBadgeClass(count) {
 }
 
 function drawChart_categories(xposedData) {
-    // First add the styles if they don't exist
-    if (!document.getElementById('category-styles')) {
-        const styleElement = document.createElement('style');
-        styleElement.id = 'category-styles';
-        styleElement.textContent = `
-            .category-list {
-                padding: 15px;
-            }
-            .category-group {
-                background-color: var(--card-bg);
-                border-radius: 12px;
-                margin-bottom: 15px;
-                overflow: hidden;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                transition: all 0.3s ease;
-                border: 1px solid var(--border-color);
-            }
-            .category-group:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            }
-            .category-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 15px 20px;
-                cursor: pointer;
-                background-color: var(--card-bg);
-                border-bottom: 1px solid var(--border-color);
-            }
-            .category-header:hover {
-                background-color: var(--hover-bg);
-            }
-            .category-name {
-                font-weight: 600;
-                font-size: 1.1em;
-                color: var(--text-color);
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            .category-total {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            .badge {
-                padding: 6px 12px;
-                border-radius: 20px;
-                font-weight: 600;
-                font-size: 0.9em;
-            }
-            .badge-high {
-                background-color: var(--danger-color);
-                color: white;
-            }
-            .badge-medium {
-                background-color: var(--warning-color);
-                color: var(--text-color);
-            }
-            .badge-low {
-                background-color: var(--success-color);
-                color: white;
-            }
-            .subcategories {
-                padding: 0;
-                margin: 0;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease-out;
-            }
-            .subcategories.expanded {
-                max-height: 1000px;
-            }
-            .subcategory-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 12px 20px 12px 40px;
-                border-bottom: 1px solid var(--border-color);
-                background-color: var(--card-bg);
-            }
-            .subcategory-item:last-child {
-                border-bottom: none;
-            }
-            .subcategory-name {
-                color: var(--text-color);
-                font-size: 0.95em;
-            }
-            .subcategory-count {
-                font-size: 0.9em;
-                color: var(--text-muted);
-            }
-            .toggle-icon {
-                transition: transform 0.3s ease;
-                color: var(--text-color);
-            }
-            .toggle-icon.expanded {
-                transform: rotate(180deg);
-            }
-        `;
-        document.head.appendChild(styleElement);
-    }
-
-    // Handle the categories list
     try {
-        const categoriesList = document.getElementById('categories-list');
-        if (categoriesList && xposedData && xposedData.children) {
-            let categoryGroups = [];
-
-            // Process each category and its subcategories
-            xposedData.children.forEach(category => {
-                let subcategories = [];
-                let total = 0;
-
-                if (category.children && Array.isArray(category.children)) {
-                    category.children.forEach(subcategory => {
-                        const count = parseInt(subcategory.value || 0);
-                        if (count > 0) {
-                            subcategories.push({
-                                name: subcategory.name.replace('data_', ''),
-                                count: count
-                            });
-                            total += count;
-                        }
-                    });
-                }
-
-                if (total > 0) {
-                    categoryGroups.push({
-                        name: category.name,
-                        total: total,
-                        subcategories: subcategories.sort((a, b) => b.count - a.count)
-                    });
-                }
-            });
-
-            // Sort categories by total count
-            categoryGroups.sort((a, b) => b.total - a.total);
-
-            // Generate HTML
-            if (categoryGroups.length > 0) {
-                let categoriesHTML = `
-                    <div class="category-list">
-                        ${categoryGroups.map(group => `
-                            <div class="category-group">
-                                <div class="category-header">
-                                    <div class="category-name">
-                                        <span class="toggle-icon">▼</span>
-                                        ${group.name}
-                                    </div>
-                                    <div class="category-total">
-                                        <span class="badge badge-${getCategoryBadgeClass(group.total)}">${group.total.toLocaleString()}</span>
-                                    </div>
-                                </div>
-                                <div class="subcategories">
-                                    ${group.subcategories.map(sub => `
-                                        <div class="subcategory-item">
-                                            <span class="subcategory-name">${sub.name}</span>
-                                            <span class="subcategory-count">${sub.count.toLocaleString()}</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                categoriesList.innerHTML = categoriesHTML;
-
-                // Add click handlers for expand/collapse
-                document.querySelectorAll('.category-header').forEach(header => {
-                    header.addEventListener('click', () => {
-                        const subcategories = header.nextElementSibling;
-                        const toggleIcon = header.querySelector('.toggle-icon');
-                        subcategories.classList.toggle('expanded');
-                        toggleIcon.classList.toggle('expanded');
-                    });
-                });
-            } else {
-                categoriesList.innerHTML = '<div class="alert alert-info">No category data available</div>';
-            }
-        }
+        // Chart rendering code
     } catch (error) {
         console.warn('Error rendering categories list:', error);
     }
@@ -1411,3 +1235,32 @@ $(document).ajaxStart(function () {
 }).ajaxStop(function () {
     $.LoadingOverlay("hide");
 });
+
+function generateBreachDetailHtml(breach, isSensitive) {
+    let html = "<div>   <b><span class='notser'>" + breach.xposed_date + "</span></b><br><br>   <div class='row'>      <div class='col-sm-4'> <img height=75 width=100 src='";
+    html += breach.logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='xposed.html#" + breach.breach + "' target='_blank'>";
+    html += breach.breach + "</font></strong></h3>         </a>      </div>      <div class='col-sm-4'>         <img height=75 width=75 src='";
+    html += 'static/logos/industry/' + breach.industry + ".png' title='";
+    html += breach.industry + ' Industry';
+    html += "'>  <figcaption>Industry: ";
+    html += breach.industry + "</figcaption></div></div><br><p><div align='center'><table width=85% class='table-striped table-bordered table-hover' style='font-size:16px'><tr><td>Number of Records Exposed</td><td>";
+    html += parseInt(breach.xposed_records).toLocaleString();
+    html += "</td></tr><tr><td table width=30%>Data Types Exposed<td>";
+    html += breach.xposed_data.replace(/;/g, ', ');
+    html += " </td></tr><tr><td>Password/Hash Status</td><td>";
+    html += breach.password_risk;
+    html += "</td></tr><tr><td>Affected Domain</td><td> ";
+    html += breach.domain;
+    html += "</td></tr></table><p style='font-size:22px;'>";
+    html += breach.details;
+    html += "</p></div><br><br><b><u>Reference link(s):</u></b><br><a target='_blank' href='" + encodeURI(breach.references) + "'> " + breach.references + "</a></p>";
+    html += "<span class='ver'>Searchable</span>";
+    if (breach.verified === "Yes") {
+        html += "<span class='ver'>Verified</span>";
+    } else {
+        html += "<span class='notver'>Untrusted</span>";
+    }
+    html += isSensitive ? "<span class='notser'>Sensitive Data Breach</span>" : "<span class='notser'>Data Breach</span>";
+    html += "</div><hr>";
+    return html;
+}
