@@ -828,7 +828,7 @@ ul {
 	border-radius: 16px;
 	box-shadow: 0px 3px 5px rgb(0 0 0 / 20%);
 	height: 450px;
-
+	overflow: hidden;
 }
 
 .xon-row2-right h3 {
@@ -841,7 +841,7 @@ ul {
 
 .xon-row2-right_a1 {
 	height: 360px;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 
@@ -961,8 +961,8 @@ p.para {
 }
 
 .xon-row-left_bb {
-	overflow-y: scroll;
-	height: 337px;
+	overflow-y: auto;
+	height: 292px;
 }
 
 
@@ -1025,8 +1025,8 @@ p.para {
 }
 
 .xon-row-right_bb {
-	overflow-y: scroll;
-	height: 337px;
+	overflow-y: auto;
+	height: 273px;
 }
 
 
@@ -1427,7 +1427,7 @@ p.para {
 }
 
 
-@media screen and (min-width: 576px) and (max-width: 767px) {
+@media screen and (max-width: 767px) {
 	#floating-button {
 		z-index: 999;
 	}
@@ -1474,7 +1474,7 @@ p.para {
 
 	.xon-row2-right_a1 {
 		height: auto;
-		overflow-y: scroll;
+		overflow-y: auto;
 	}
 
 	.xon-row2-right {
@@ -1485,10 +1485,22 @@ p.para {
 		height: auto;
 		text-align: center;
 		margin-bottom: 25px;
+		overflow: hidden;
+	}
+
+	#chart_div {
+		width: 100% !important;
+		height: auto !important;
+		margin: 0 auto !important;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	#chart_div svg {
-		margin-left: 25%;
+		margin: 0 auto !important;
+		display: block !important;
+		max-width: 100% !important;
 	}
 
 	#tree-container {
@@ -1620,7 +1632,7 @@ p.para {
 	}
 
 	.xon-row-left_bb {
-		overflow-y: scroll;
+		overflow-y: auto;
 		height: 292px;
 	}
 
@@ -1668,7 +1680,7 @@ p.para {
 	}
 
 	.xon-row-right_bb {
-		overflow-y: scroll;
+		overflow-y: auto;
 		height: 273px;
 	}
 
@@ -1715,6 +1727,8 @@ p.para {
 	.col-6 {
 		max-width: 100%;
 		padding: 0 !important;
+		width: 100% !important;
+		flex: 0 0 100% !important;
 	}
 
 	.col-md-12 {
@@ -1729,6 +1743,27 @@ p.para {
 		padding: 15px 0;
 	}
 
+	/* Chart specific adjustments for mobile */
+	.xon-row2-right,
+	.xon-row2-left {
+		margin-bottom: 30px !important;
+		height: auto !important;
+		min-height: 350px;
+	}
+
+	.xon-row2-right canvas,
+	.xon-row2-left canvas {
+		width: 100% !important;
+		max-height: 300px !important;
+		margin: 0 auto !important;
+	}
+
+	/* Ensure GitHub container doesn't overflow */
+	.github-collab-section {
+		height: auto !important;
+		min-height: 280px !important;
+		margin-bottom: 30px !important;
+	}
 }
 
 @media (max-width :360px) and (min-device-width :280px) {
@@ -1939,6 +1974,67 @@ p.para {
 	color: #9fc0e0 !important;
 }
 
+/* Mobile responsive styles for GitHub section */
+@media (max-width: 768px) {
+	.github-collab-section {
+		padding: 1rem;
+		height: auto;
+		overflow: visible;
+	}
+
+	.github-stats .row {
+		flex-wrap: wrap !important;
+		justify-content: center;
+	}
+
+	.github-stats .col-auto {
+		flex: 0 0 auto;
+		width: auto;
+		margin-bottom: 0.5rem;
+		padding: 0 0.25rem;
+	}
+
+	.stat-item {
+		font-size: 0.8rem;
+		white-space: normal;
+		text-align: center;
+		flex-direction: column;
+	}
+
+	.stat-item i {
+		margin-right: 0;
+		margin-bottom: 0.25rem;
+	}
+
+	.github-content h4 {
+		font-size: 1.1rem;
+	}
+
+	.github-content p {
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 576px) {
+	.github-collab-section {
+		padding: 0.75rem;
+	}
+
+	.github-stats .col-auto {
+		width: 100%;
+		margin-bottom: 0.5rem;
+	}
+
+	.github-content h4 {
+		font-size: 1rem;
+	}
+
+	.btn-github {
+		width: 100%;
+		padding: 8px 15px;
+		font-size: 0.9rem;
+	}
+}
 
 :root {
 	--bg-primary: #ffffff;
