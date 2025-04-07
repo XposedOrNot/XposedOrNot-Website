@@ -289,8 +289,7 @@
             });
          });
 
-         //let api_url = "https://api.xposedornot.com/v1/get-api-key/" + token;
-         let api_url = "https://xon-api-test.xposedornot.com/v1/get-api-key/" + token;
+         let api_url = "https://api.xposedornot.com/v1/get-api-key/" + token;
 
          $.ajax({
             url: api_url,
@@ -331,9 +330,10 @@
             document.getElementById('submitText').style.display = "none";
             document.getElementById('submitSpinner').style.display = "inline-block";
             document.getElementById('submitButton').disabled = true;
-            //fetch(`https://api.xposedornot.com/v1/create-api-key/${token}`)
+
             hideAllMessages();
-            fetch(`https://xon-api-test.xposedornot.com/v1/create-api-key/${token}`)
+
+            fetch(`https://api.xposedornot.com/v1/create-api-key/${token}`)
                .then(response => {
                   if (!response.ok) {
                      if (response.status === 429) {

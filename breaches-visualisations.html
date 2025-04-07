@@ -189,8 +189,8 @@
     <div id="chart"></div>
 
     <script>
-        //fetch('https://api.xposedornot.com/v1/breaches')
-        fetch('https://xon-api-test.xposedornot.com/v1/breaches')
+        fetch('https://api.xposedornot.com/v1/breaches')
+
             .then(response => response.json())
             .then(apiData => {
                 const data = processData(apiData['exposedBreaches']);
@@ -247,7 +247,7 @@
                 return Math.min(8, Math.ceil(count / 10));
             });
 
-            const margin = { top: 40, right: 60, bottom: 40, left: 160 }; // Increased left margin
+            const margin = { top: 40, right: 60, bottom: 40, left: 160 };
             const width = Math.min(2000, window.innerWidth) - margin.left - margin.right;
 
             // Dynamic height calculation based on lines per year
@@ -256,7 +256,7 @@
                 return acc + (baseHeight * linesPerYear[i]);
             }, 0);
 
-            // Create tooltip div if it doesn't exist
+
             const tooltip = d3.select("body").selectAll(".tooltip").data([0])
                 .enter()
                 .append("div")
@@ -287,7 +287,7 @@
                 .range([0, height])
                 .padding(0.2); // Reduced padding between years
 
-            // Modern color palettes per year with gradients - updated with more contrasting colors
+
             const colorPalettes = {
                 2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),  // Vibrant reds
                 2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),  // Fresh greens
@@ -310,7 +310,7 @@
                 2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()   // Pink
             };
 
-            // Default palette for older years
+
             const defaultPalette = ['#748FFC', '#4C6EF5', '#4263EB', '#3B5BDB', '#364FC7'].reverse();
 
             const yAxis = d3.axisLeft(yScale)
@@ -325,12 +325,11 @@
                 .call(yAxis)
                 .call(g => g.select(".domain").remove());
 
-            // Style the year labels and align them with the center of their section
             gAxis.selectAll(".tick")
                 .each(function (year) {
                     const yearRange = yearRanges.get(year);
                     const palette = colorPalettes[year] || defaultPalette;
-                    const baseColor = palette[0]; // Use the first (usually brightest) color from the palette
+                    const baseColor = palette[0];
 
                     d3.select(this)
                         .attr("transform", `translate(0,${yearRange.center})`)
@@ -339,53 +338,53 @@
                         .style("fill", baseColor)
                         .style("font-weight", "600");
 
-                    // Style the grid line for this year
+
                     d3.select(this)
                         .select("line")
                         .attr("class", "year-grid")
                         .style("stroke", baseColor);
                 });
 
-            // Calculate initial positions with better horizontal distribution
+
             data.forEach(d => {
                 const yearRange = yearRanges.get(d.year);
                 d.fy = yearRange.start + Math.random() * yearRange.height;
-                // Distribute initial x positions more evenly across the width
-                d.x = (Math.random() * 0.8 + 0.1) * width; // Use 80% of width, offset by 10% from edges
+
+                d.x = (Math.random() * 0.8 + 0.1) * width;
             });
 
-            // Dynamic force parameters based on breach count
+
             function calculateForceParameters(yearData) {
                 const count = yearData.length;
-                // Adaptive padding - reduce more aggressively for years with many breaches
+
                 const baseCollisionPadding = count > 15 ?
-                    Math.max(1, Math.min(5, 10 - count / 15)) : // More aggressive reduction for crowded years
-                    Math.max(5, Math.min(12, 15 - count / 10)); // Normal padding for less crowded years
+                    Math.max(1, Math.min(5, 10 - count / 15)) :
+                    Math.max(5, Math.min(12, 15 - count / 10));
 
                 return {
                     collisionPadding: baseCollisionPadding,
-                    charge: Math.min(-15, -20 - count / 2), // Slightly reduced repulsion
-                    xStrength: count > 15 ? 0.02 : 0.015, // Reduced x-force to allow more spread
+                    charge: Math.min(-15, -20 - count / 2),
+                    xStrength: count > 15 ? 0.02 : 0.015,
                 };
             }
 
-            // Create separate simulation for each year with improved distribution
+
             const simulations = [];
             years.forEach(year => {
                 const yearData = data.filter(d => d.year === year);
                 const forceParams = calculateForceParameters(yearData);
                 const yearRange = yearRanges.get(year);
 
-                // Create multiple anchor points across the width to better distribute balloons
+
                 const anchorPoints = [];
-                const numAnchors = Math.min(yearData.length, 5); // Up to 5 anchor points
+                const numAnchors = Math.min(yearData.length, 5);
                 for (let i = 0; i < numAnchors; i++) {
                     anchorPoints.push((width * (i + 1)) / (numAnchors + 1));
                 }
 
                 const yearSimulation = d3.forceSimulation(yearData)
                     .force("x", d3.forceX().x(d => {
-                        // Assign each node to the nearest anchor point
+
                         const anchorIndex = Math.floor(Math.random() * anchorPoints.length);
                         return anchorPoints[anchorIndex];
                     }).strength(forceParams.xStrength))
@@ -408,21 +407,21 @@
                 simulations.push(yearSimulation);
             });
 
-            // Add continuous gentle animation
+
             function addJitter() {
                 simulations.forEach(sim => {
                     const nodes = sim.nodes();
                     nodes.forEach(node => {
-                        // Add small random movement
+
                         node.x += (Math.random() - 0.5) * 0.5;
                         node.y += (Math.random() - 0.5) * 0.5;
                     });
-                    sim.alpha(0.1).restart(); // Restart simulation with low alpha
+                    sim.alpha(0.1).restart();
                 });
             }
 
-            // Start continuous animation
-            setInterval(addJitter, 2000); // Add jitter every 2 seconds
+
+            setInterval(addJitter, 2000);
 
             const breaches = svg.selectAll(".breach")
                 .data(data)
@@ -435,10 +434,10 @@
                     return `translate(${x},${y})`;
                 });
 
-            // Add gradient definitions
+
             const defs = svg.append("defs");
 
-            // Create gradient for each circle with pulsing animation
+
             breaches.each(function (d, i) {
                 const gradientId = `gradient-${d.year}-${i}`;
                 const palette = colorPalettes[d.year] || defaultPalette;
@@ -457,7 +456,7 @@
                     .attr("offset", "100%")
                     .attr("stop-color", palette[palette.length - 1]);
 
-                // Add subtle pulse animation to gradient
+
                 const pulseAnimation = gradient.append("animate")
                     .attr("attributeName", "r")
                     .attr("values", `${circleSize(d.count)};${circleSize(d.count) * 1.1};${circleSize(d.count)}`)
