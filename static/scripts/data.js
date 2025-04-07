@@ -148,8 +148,8 @@ $("#db-sensitive").html(`
 
 
 const url = token
-    ? `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
-    : `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
+    ? `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
+    : `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
 
 let jsonResponse;
 
@@ -1034,8 +1034,7 @@ $(document).ready(function () {
     $("#alertMe").click(function (event) {
         event.preventDefault();
         var inputValue = document.getElementById("recipient-name").value.toLowerCase();
-        //var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
-        var apiUrl = 'https://xon-api-test.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
 
         var successMessage = "Successfully added to the alert service. Please check your email and click on the verification link to confirm";
         var alreadySubscribedMessage = "We thank you for your interest. However our records indicate you are already added to the AlertMe Service.";
@@ -1147,8 +1146,7 @@ document.addEventListener('scroll', function () {
     }
 });
 
-//var apiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
-var analyticsApiUrl = `https://xon-api-test.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
+var analyticsApiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
 
 $.get(analyticsApiUrl, function (response) {
 

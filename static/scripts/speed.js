@@ -21,8 +21,8 @@ $(document).ready(function () {
         var str = document.getElementById("edhu").value.toLowerCase().trim();
         f = 0;
 
-        //const newLocal = 'https://api.xposedornot.com/v1/check-email/';
-        const newLocal = 'https://xon-api-test.xposedornot.com/v1/check-email/';
+        const newLocal = 'https://api.xposedornot.com/v1/check-email/';
+
         edutu = newLocal + encodeURIComponent(str);
         var time = new Date();
         tt = '<br>[ * ] Search started &nbsp &nbsp: <strong>' + time + "<strong>";

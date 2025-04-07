@@ -319,8 +319,8 @@
         }
 
         function fetchWebhookConfig() {
-            //const apiUrl = `https://api.xposedornot.com/v1/webhook-config?email=${encodeURIComponent(email)}&domain=${encodeURIComponent(domain)}&token=${encodeURIComponent(token)}`;
-            const apiUrl = `https://xon-api-test.xposedornot.com/v1/webhook-config?email=${encodeURIComponent(email)}&domain=${encodeURIComponent(domain)}&token=${encodeURIComponent(token)}`;
+            const apiUrl = `https://api.xposedornot.com/v1/webhook-config?email=${encodeURIComponent(email)}&domain=${encodeURIComponent(domain)}&token=${encodeURIComponent(token)}`;
+
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -392,8 +392,6 @@
             let btn = document.getElementById(btnId);
             btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
             btn.disabled = true;
-
-            //const setupUrl = `https://xon-api-test.xposedornot.com/v1/webhook-setup`;
             const setupUrl = `https://api.xposedornot.com/v1/webhook-setup`;
             fetch(setupUrl, {
                 method: 'POST',

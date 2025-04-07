@@ -17,7 +17,7 @@ $.LoadingOverlaySetup({
 
 $.LoadingOverlay("show");
 
-$.urlParam = function(name) {
+$.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
 
@@ -36,15 +36,14 @@ s = '<div align="center" class="alert alert-danger"><strong>Sensitive Data Breac
 $("#email_sensitive").html(s)
 s = '<div align="center" class="alert alert-primary"><strong>Exposed Pastes Summary For Email: ' + email + '</strong></div></p>'
 $("#paste").html(s)
-//var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
-var emailVerificationUrl = 'https://xon-api-test.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 
 var sitesJson;
 var sensitiveBreaches;
 
 var emailVerificationPromise = $.ajax(emailVerificationUrl)
 
-    .done(function(response) {
+    .done(function (response) {
 
         sitesJson = response;
 
@@ -103,12 +102,11 @@ var emailVerificationPromise = $.ajax(emailVerificationUrl)
         $("#data_breach_sensitive").append(tableRowsHtml);
     });
 
-//edutu = 'https://api.xposedornot.com/v1/breach-analytics?email=' + encodeURIComponent(email);
-edutu = 'https://xon-api-test.xposedornot.com/v1/breach-analytics?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+const edutu = 'https://api.xposedornot.com/v1/breach-analytics?email=' + encodeURIComponent(email);
 
 var myjson;
 var j = $.ajax(edutu)
-    .done(function(n) {
+    .done(function (n) {
         myjson = n;
         n2 = industry = risk_score = risk_label = '';
         password_score = 0;
@@ -246,105 +244,105 @@ var j = $.ajax(edutu)
 
 
         var cnts = [{
-                name: 'Aerospace',
-                cnt: i1
-            },
-            {
-                name: 'Transport',
-                cnt: i2
-            },
-            {
-                name: 'Information Technology',
-                cnt: i3
-            },
-            {
-                name: 'Telecommunication',
-                cnt: i4
-            },
-            {
-                name: 'Agriculture',
-                cnt: i5
-            },
-            {
-                name: 'Construction',
-                cnt: i6
-            },
-            {
-                name: 'Education',
-                cnt: i7
-            },
-            {
-                name: 'Pharmaceutical',
-                cnt: i8
-            },
-            {
-                name: 'Food',
-                cnt: i9
-            },
-            {
-                name: 'Health Care',
-                cnt: i10
-            },
-            {
-                name: 'Hospitality',
-                cnt: i11
-            },
-            {
-                name: 'Entertainment',
-                cnt: i12
-            },
-            {
-                name: 'News',
-                cnt: i13
-            },
-            {
-                name: 'Energy',
-                cnt: i14
-            },
-            {
-                name: 'Manufacturing',
-                cnt: i15
-            },
-            {
-                name: 'Music',
-                cnt: i16
-            },
-            {
-                name: 'Mining',
-                cnt: i17
-            },
-            {
-                name: 'Electronics',
-                cnt: i18
-            },
-            {
-                name: 'Miscellaneous',
-                cnt: i19
-            },
-            {
-                name: 'Finance',
-                cnt: i20
-            },
-            {
-                name: 'Retail',
-                cnt: i21
-            },
-            {
-                name: 'Non-Profit/Charities',
-                cnt: i22
-            },
-            {
-                name: 'Government',
-                cnt: i23
-            },
-            {
-                name: 'Sports',
-                cnt: i24
-            },
-            {
-                name: 'Environment',
-                cnt: i25
-            },
+            name: 'Aerospace',
+            cnt: i1
+        },
+        {
+            name: 'Transport',
+            cnt: i2
+        },
+        {
+            name: 'Information Technology',
+            cnt: i3
+        },
+        {
+            name: 'Telecommunication',
+            cnt: i4
+        },
+        {
+            name: 'Agriculture',
+            cnt: i5
+        },
+        {
+            name: 'Construction',
+            cnt: i6
+        },
+        {
+            name: 'Education',
+            cnt: i7
+        },
+        {
+            name: 'Pharmaceutical',
+            cnt: i8
+        },
+        {
+            name: 'Food',
+            cnt: i9
+        },
+        {
+            name: 'Health Care',
+            cnt: i10
+        },
+        {
+            name: 'Hospitality',
+            cnt: i11
+        },
+        {
+            name: 'Entertainment',
+            cnt: i12
+        },
+        {
+            name: 'News',
+            cnt: i13
+        },
+        {
+            name: 'Energy',
+            cnt: i14
+        },
+        {
+            name: 'Manufacturing',
+            cnt: i15
+        },
+        {
+            name: 'Music',
+            cnt: i16
+        },
+        {
+            name: 'Mining',
+            cnt: i17
+        },
+        {
+            name: 'Electronics',
+            cnt: i18
+        },
+        {
+            name: 'Miscellaneous',
+            cnt: i19
+        },
+        {
+            name: 'Finance',
+            cnt: i20
+        },
+        {
+            name: 'Retail',
+            cnt: i21
+        },
+        {
+            name: 'Non-Profit/Charities',
+            cnt: i22
+        },
+        {
+            name: 'Government',
+            cnt: i23
+        },
+        {
+            name: 'Sports',
+            cnt: i24
+        },
+        {
+            name: 'Environment',
+            cnt: i25
+        },
         ]
         cnts.sort((a, b) => b.cnt - a.cnt);
 
@@ -447,7 +445,7 @@ var j = $.ajax(edutu)
                     n2 = n2 + "<span class='notser'>Data Breach</span></div><hr>"
                 }
             }
-            breaches_cnts.sort(function(cnt1, cnt2) {
+            breaches_cnts.sort(function (cnt1, cnt2) {
                 if (cnt1.cnts > cnt2.cnts) return -1;
                 if (cnt1.cnts < cnt2.cnts) return 1;
             });
@@ -560,7 +558,7 @@ var j = $.ajax(edutu)
         $.LoadingOverlay("hide");
         g1();
     })
-    .fail(function(n) {
+    .fail(function (n) {
         if (n.status === 404) {
             $.LoadingOverlay("hide");
             document.getElementById("db-s").className = "visible alert alert-success";
@@ -610,19 +608,19 @@ function g1() {
         data: {
             labels: ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
             datasets: [{
-                    label: 'Breaches Count',
-                    fill: false,
-                    backgroundColor: window.chartColors.red,
-                    borderColor: window.chartColors.red,
-                    data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23],
-                },
-                {
-                    label: 'Pastes Count',
-                    fill: false,
-                    backgroundColor: window.chartColors.blue,
-                    borderColor: window.chartColors.blue,
-                    data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23],
-                }
+                label: 'Breaches Count',
+                fill: false,
+                backgroundColor: window.chartColors.red,
+                borderColor: window.chartColors.red,
+                data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23],
+            },
+            {
+                label: 'Pastes Count',
+                fill: false,
+                backgroundColor: window.chartColors.blue,
+                borderColor: window.chartColors.blue,
+                data: [py07, py08, py09, py10, py11, py12, py13, py14, py15, py16, py17, py18, py19, py20, py21, py22, py23],
+            }
             ]
         },
         options: {
@@ -756,11 +754,11 @@ function g1() {
     };
 
 }
-window.onload = function() {};
+window.onload = function () { };
 
 //D3 closure
 
-$('#alertMeModal').on('show.bs.modal', function(event) {
+$('#alertMeModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var recipient = button.data('whatever')
     var modal = $(this)
@@ -768,15 +766,15 @@ $('#alertMeModal').on('show.bs.modal', function(event) {
     modal.find('.modal-body input').val(email)
     $('#thedudalModal').modal('hide');
 })
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $('#alertMeModal').on('keydown', function(event) {
+    $('#alertMeModal').on('keydown', function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
             $('#alertMe').click();
         }
     });
-    $('#recipient-name').on('input', function() {
+    $('#recipient-name').on('input', function () {
         var email = $(this).val();
         var isValid = validateEmail(email);
         if (isValid) {
@@ -787,23 +785,23 @@ $(document).ready(function() {
             $('#alertMe').prop('disabled', true);
         }
     });
-    $("#alertMe").click(function(event) {
+    $("#alertMe").click(function (event) {
         event.preventDefault();
         var inputValue = document.getElementById("recipient-name").value.toLowerCase();
-        //var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
-        var apiUrl = 'https://xon-api-test.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+
         var successMessage = "Successfully added to the alert service. Please check your email and click on the verification link to confirm";
         var alreadySubscribedMessage = "We thank you for your interest. However our records indicate you are already added to the AlertMe Service.";
 
         $.ajax(apiUrl)
-            .done(function() {
+            .done(function () {
                 alert(1)
                 $('#message-text').val(successMessage);
                 document.getElementById("h2head").className = "modal-header-success";
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
-            .fail(function() {
+            .fail(function () {
                 alert(2)
                 $('#message-text').val(alreadySubscribedMessage);
                 document.getElementById("h2head").className = "modal-header-success";
@@ -822,8 +820,8 @@ function resetTheme() {
     darkSwitch.checked ? (document.body.setAttribute("data-theme", "dark"), localStorage.setItem("darkSwitch", "dark")) : (document.body.removeAttribute("data-theme"), localStorage.removeItem("darkSwitch"))
 }
 var darkSwitch = document.getElementById("darkSwitch");
-window.addEventListener("load", function() {
-    darkSwitch && (initTheme(), darkSwitch.addEventListener("change", function() {
+window.addEventListener("load", function () {
+    darkSwitch && (initTheme(), darkSwitch.addEventListener("change", function () {
         resetTheme()
     }))
 });
@@ -857,7 +855,7 @@ function drawChart() {
     var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
 
     chart.draw(data, options);
-    setInterval(function() {
+    setInterval(function () {
         data.setValue(0, 1, Math.round(risk_score))
         chart.draw(data, options);
     }, 1000);
