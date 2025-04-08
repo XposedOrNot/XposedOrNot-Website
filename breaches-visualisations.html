@@ -34,6 +34,7 @@
             width: 100%;
             padding: 20px;
             margin: 0 auto;
+            position: relative;
         }
 
         .navbar-custom {
@@ -49,27 +50,28 @@
 
         .tooltip {
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.98);
+            background-color: rgba(30, 30, 34, 0.95);
             border: none;
             padding: 20px;
             border-radius: 12px;
             pointer-events: none;
             opacity: 0;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             max-width: 320px;
-            color: #1a1a1a;
+            color: #f8f9fa;
             font-size: 14px;
             line-height: 1.6;
             z-index: 1000;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .tooltip-title {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 12px;
-            color: #111827;
+            color: #f8f9fa;
             border-bottom: 2px solid;
             padding-bottom: 8px;
         }
@@ -80,11 +82,11 @@
             display: block;
             margin-bottom: 12px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .tooltip-description {
-            color: #4b5563;
+            color: #e2e8f0;
             margin: 12px 0;
             font-size: 14px;
             line-height: 1.6;
@@ -99,20 +101,53 @@
         }
 
         .axis text.year-label {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             fill: currentColor;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+        }
+
+        .year-badge-bg {
+            fill: rgba(255, 255, 255, 0.1);
+            stroke: currentColor;
+            stroke-width: 1px;
+            stroke-opacity: 0.3;
+            rx: 5px;
+            ry: 5px;
+        }
+
+        @keyframes pulse-badge {
+            0% {
+                stroke-opacity: 0.3;
+            }
+
+            50% {
+                stroke-opacity: 0.6;
+            }
+
+            100% {
+                stroke-opacity: 0.3;
+            }
+        }
+
+        .year-badge-bg:hover {
+            animation: pulse-badge 2s infinite ease-in-out;
+            fill: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
         }
 
         .axis line.year-grid {
             stroke: currentColor;
-            stroke-opacity: 0.2;
+            stroke-opacity: 0.3;
+            stroke-width: 1px;
+            stroke-dasharray: 3, 3;
         }
 
         .circle {
             cursor: pointer;
             transition: all 0.3s ease-in-out;
-            filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07));
+            filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3));
         }
 
         .axis path {
@@ -135,7 +170,7 @@
             text-anchor: middle;
             fill: white;
             font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
             pointer-events: none;
         }
 
@@ -162,12 +197,283 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+
+        .overlay-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .overlay-content {
+            max-width: 800px;
+            background-color: rgba(30, 30, 30, 0.9);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .overlay-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .overlay-container p {
+            max-width: 600px;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .overlay-container ul {
+            text-align: left;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        .overlay-container li {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .overlay-container button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .overlay-container button:hover,
+        .overlay-container button:focus {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .overlay-container button:focus {
+            outline: 3px solid rgba(59, 130, 246, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .overlay-content {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .overlay-container h2 {
+                font-size: 1.5rem;
+            }
+
+            .overlay-container p,
+            .overlay-container li {
+                font-size: 0.9rem;
+            }
+        }
+
+        .info-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            z-index: 100;
+        }
+
+        .info-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            background: #1d4ed8;
+        }
+
+        .industry-filter {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: rgba(37, 99, 235, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(-10px);
+            width: 220px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .industry-filter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .industry-filter h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .active-industry {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .industry-filter label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .industry-filter select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(30, 30, 34, 0.8);
+            color: white;
+            font-size: 14px;
+            margin-bottom: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .industry-filter select option {
+            background-color: #2a2a2a;
+            color: white;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        .industry-filter select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .industry-filter button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .industry-filter button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        @keyframes pulse-circle {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .industry-highlight {
+            animation: pulse-circle 2.5s infinite ease-in-out;
+            z-index: 10;
+        }
+
+        .industry-highlight circle {
+            stroke: rgba(255, 255, 255, 0.5);
+            stroke-width: 2px;
+        }
+
+        .filtered-out {
+            pointer-events: none;
+        }
+
+        .filtered-in {
+            z-index: 5;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="/static/scripts/other-libraries.js" defer></script>
 </head>
 
 <body>
+    <div id="loadingOverlay"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+        <div style="text-align: center;">
+            <div class="spinner"
+                style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;">
+            </div>
+            <p style="margin-top: 10px; font-weight: bold;">Loading visualization...</p>
+        </div>
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-custom">
         <a class="navbar-brand" href="#">XposedOrNot</a>
         <div class="navbar-collapse collapse justify-content-center">
@@ -188,15 +494,94 @@
 
     <div id="chart"></div>
 
-    <script>
-        fetch('https://api.xposedornot.com/v1/breaches')
+    <!-- Info button -->
+    <button class="info-button" id="infoButton" aria-label="Show visualization information">i</button>
 
+    <!-- Industry filter -->
+    <div class="industry-filter" id="industryFilter">
+        <h4>Filter Data Breaches</h4>
+        <label for="industrySelect">Select Industry Category</label>
+        <select id="industrySelect">
+            <option value="all">All Industries</option>
+            <!-- Industry options will be populated dynamically -->
+        </select>
+        <button id="resetFilter">Reset Filter</button>
+        <div class="active-industry" id="activeIndustry">Showing: All Industries</div>
+    </div>
+
+    <!-- Custom overlay for visualization details -->
+    <div class="overlay-container" id="infoOverlay">
+        <div class="overlay-content">
+            <h2>Understanding Data Breach Visualization</h2>
+            <p>This interactive visualization displays major data breaches organized by year, providing insights into
+                the scope and impact of cybersecurity incidents over time.</p>
+
+            <p><strong>How to use this visualization:</strong></p>
+            <ul>
+                <li><strong>Circle Size:</strong> Represents the number of records exposed in each breach</li>
+                <li><strong>Color Scheme:</strong> Colors are grouped by year to help identify trends</li>
+                <li><strong>Logos:</strong> Company/organization identifiers appear in the center of each circle</li>
+                <li><strong>Hover:</strong> Move your cursor over any breach to see detailed information</li>
+            </ul>
+
+            <p>The visualization automatically arranges breaches to minimize overlap while keeping them organized by
+                year.</p>
+
+            <button id="closeOverlay" tabindex="0" aria-label="Continue to visualization">Continue to
+                Visualization</button>
+        </div>
+    </div>
+
+    <script>
+        let allBreachData = [];
+
+        document.getElementById('loadingOverlay').style.display = 'flex';
+
+        fetch('https://api.xposedornot.com/v1/breaches')
             .then(response => response.json())
             .then(apiData => {
-                const data = processData(apiData['exposedBreaches']);
-                createGraph(data);
+                allBreachData = processData(apiData['exposedBreaches']);
+
+                populateIndustryFilter(apiData['exposedBreaches']);
+                createGraph(allBreachData);
+                document.getElementById('loadingOverlay').style.display = 'none';
+
+                setTimeout(() => {
+                    document.getElementById('industryFilter').classList.add('visible');
+                }, 500);
             })
-            .catch(error => console.error('Error fetching data:', error));
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            });
+
+        function populateIndustryFilter(breaches) {
+            const industrySelect = document.getElementById('industrySelect');
+
+            const industries = new Set();
+            breaches.forEach(breach => {
+                if (breach.industry && breach.industry.trim() !== '') {
+                    industries.add(breach.industry);
+                } else {
+                    industries.add('Uncategorized');
+                }
+            });
+
+            const sortedIndustries = Array.from(industries).sort();
+
+            while (industrySelect.options.length > 1) {
+                industrySelect.remove(1);
+            }
+
+            sortedIndustries.forEach(industry => {
+                const option = document.createElement('option');
+                option.value = industry.toLowerCase().replace(/\s+/g, '-');
+                option.textContent = industry;
+                industrySelect.appendChild(option);
+            });
+
+            console.log(`Populated filter with ${sortedIndustries.length} unique industries`);
+        }
 
         function processData(breaches) {
             return breaches.map(breach => {
@@ -205,57 +590,57 @@
                     name: breach['breachID'],
                     logo: breach['logo'],
                     description: breach['exposureDescription'],
-                    count: breach['exposedRecords']
+                    count: breach['exposedRecords'],
+                    industry: breach['industry'] || 'Uncategorized'
                 };
             });
         }
 
         function circleSize(count) {
-            if (count >= 50000000) return 80;
-            else if (count >= 10000000) return 65;
-            else if (count >= 5000000) return 55;
-            else if (count >= 1000000) return 45;
-            else return 30;
+            if (count >= 50000000) return 70;
+            else if (count >= 10000000) return 58;
+            else if (count >= 5000000) return 50;
+            else if (count >= 1000000) return 42;
+            else return 28;
         }
 
         function logoSize(count) {
-            if (count >= 50000000) return 50;
-            else if (count >= 10000000) return 45;
-            else if (count >= 5000000) return 40;
-            else if (count >= 1000000) return 35;
-            else return 30;
+            if (count >= 50000000) return 45;
+            else if (count >= 10000000) return 40;
+            else if (count >= 5000000) return 36;
+            else if (count >= 1000000) return 32;
+            else return 26;
         }
 
         function createGraph(data) {
             const dataByYear = d3.group(data, d => d.year);
             const years = Array.from(dataByYear.keys()).sort(d3.descending);
 
-            // Calculate dynamic spacing based on breach count per year
             const breachesPerYear = Array.from(dataByYear.entries()).map(([year, breaches]) => ({
                 year: year,
                 count: breaches.length
             }));
 
-            // Calculate lines needed per year (1 line per 8 breaches, minimum 1, maximum 10)
+            const maxBreaches = Math.max(...breachesPerYear.map(d => d.count));
+            const minLines = 1.2;
+            const maxLines = 8;
+
+            const scalingExponent = 1.2;
+
             const linesPerYear = breachesPerYear.map(d => {
-                const count = d.count;
-                if (count <= 10) return 1;
-                if (count <= 20) return 2;
-                if (count <= 30) return 3;
-                if (count <= 40) return 4;
-                if (count <= 50) return 5;
-                return Math.min(8, Math.ceil(count / 10));
+                const proportion = d.count / maxBreaches;
+                const scaledProportion = Math.pow(proportion, scalingExponent);
+                const calculatedLines = minLines + (maxLines - minLines) * scaledProportion;
+                return Math.round(calculatedLines * 2) / 2;
             });
 
             const margin = { top: 40, right: 60, bottom: 40, left: 160 };
             const width = Math.min(2000, window.innerWidth) - margin.left - margin.right;
 
-            // Dynamic height calculation based on lines per year
-            const baseHeight = 120; // Slightly reduced base height
+            const baseHeight = 100;
             const height = years.reduce((acc, year, i) => {
                 return acc + (baseHeight * linesPerYear[i]);
             }, 0);
-
 
             const tooltip = d3.select("body").selectAll(".tooltip").data([0])
                 .enter()
@@ -268,55 +653,54 @@
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Calculate vertical ranges for each year
             const yearRanges = new Map();
             let currentHeight = 0;
-            years.forEach(year => {
+            years.forEach((year, idx) => {
                 const yearHeight = baseHeight * linesPerYear[years.indexOf(year)];
+                const verticalOffset = idx === 0 ? 0 : -10;
+
                 yearRanges.set(year, {
-                    start: currentHeight,
-                    end: currentHeight + yearHeight,
+                    start: currentHeight + verticalOffset,
+                    end: currentHeight + yearHeight + verticalOffset,
                     height: yearHeight,
-                    center: currentHeight + yearHeight / 2
+                    center: currentHeight + yearHeight / 2 + verticalOffset
                 });
-                currentHeight += yearHeight;
+                currentHeight += yearHeight + verticalOffset;
             });
 
             const yScale = d3.scalePoint()
                 .domain(years)
                 .range([0, height])
-                .padding(0.2); // Reduced padding between years
-
+                .padding(0.1);
 
             const colorPalettes = {
-                2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),  // Vibrant reds
-                2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),  // Fresh greens
-                2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),  // Rich purples
-                2022: ['#FFD43B', '#FCC419', '#FAB005', '#F59F00', '#F08C00'].reverse(),  // Golden yellows
-                2021: ['#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'].reverse(),  // Teals
-                2020: ['#FF922B', '#FD7E14', '#F76707', '#E8590C', '#D9480F'].reverse(),  // Deep oranges
-                2019: ['#339AF0', '#228BE6', '#1C7ED6', '#1971C2', '#1864AB'].reverse(),  // Ocean blues
-                2018: ['#E64980', '#D6336C', '#C2255C', '#A61E4D', '#9C1453'].reverse(),  // Hot pinks
-                2017: ['#66D9E8', '#3BC9DB', '#22B8CF', '#15AABF', '#1098AD'].reverse(),  // Bright cyans
-                2016: ['#9775FA', '#845EF7', '#7950F2', '#7048E8', '#6741D9'].reverse(),  // Bright purples
-                2015: ['#F783AC', '#F06595', '#E64980', '#D6336C', '#C2255C'].reverse(),  // Pinks
-                2014: ['#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20'].reverse(),  // Forest greens
-                2013: ['#FF5722', '#F4511E', '#E64A19', '#D84315', '#BF360C'].reverse(),  // Deep oranges
-                2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),  // Cyan
-                2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),  // Purple
-                2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),  // Amber
-                2009: ['#795548', '#6D4C41', '#5D4037', '#4E342E', '#3E2723'].reverse(),  // Brown
-                2008: ['#607D8B', '#546E7A', '#455A64', '#37474F', '#263238'].reverse(),  // Blue grey
-                2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()   // Pink
+                2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
+                2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
+                2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),
+                2022: ['#FFD43B', '#FCC419', '#FAB005', '#F59F00', '#F08C00'].reverse(),
+                2021: ['#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'].reverse(),
+                2020: ['#FF922B', '#FD7E14', '#F76707', '#E8590C', '#D9480F'].reverse(),
+                2019: ['#339AF0', '#228BE6', '#1C7ED6', '#1971C2', '#1864AB'].reverse(),
+                2018: ['#E64980', '#D6336C', '#C2255C', '#A61E4D', '#9C1453'].reverse(),
+                2017: ['#66D9E8', '#3BC9DB', '#22B8CF', '#15AABF', '#1098AD'].reverse(),
+                2016: ['#9775FA', '#845EF7', '#7950F2', '#7048E8', '#6741D9'].reverse(),
+                2015: ['#F783AC', '#F06595', '#E64980', '#D6336C', '#C2255C'].reverse(),
+                2014: ['#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20'].reverse(),
+                2013: ['#FF5722', '#F4511E', '#E64A19', '#D84315', '#BF360C'].reverse(),
+                2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),
+                2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),
+                2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),
+                2009: ['#795548', '#6D4C41', '#5D4037', '#4E342E', '#3E2723'].reverse(),
+                2008: ['#607D8B', '#546E7A', '#455A64', '#37474F', '#263238'].reverse(),
+                2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()
             };
-
 
             const defaultPalette = ['#748FFC', '#4C6EF5', '#4263EB', '#3B5BDB', '#364FC7'].reverse();
 
             const yAxis = d3.axisLeft(yScale)
                 .tickFormat(year => {
                     const count = dataByYear.get(year).length;
-                    return `Year ${year} (${count} breaches)`;
+                    return `${year}`;
                 })
                 .tickSize(-width);
 
@@ -330,14 +714,27 @@
                     const yearRange = yearRanges.get(year);
                     const palette = colorPalettes[year] || defaultPalette;
                     const baseColor = palette[0];
+                    const count = dataByYear.get(year).length;
 
                     d3.select(this)
                         .attr("transform", `translate(0,${yearRange.center})`)
                         .select("text")
                         .attr("class", "year-label")
+                        .text(`${year} (${count} breaches)`)
                         .style("fill", baseColor)
                         .style("font-weight", "600");
 
+                    const textNode = d3.select(this).select("text").node();
+                    if (textNode) {
+                        const textBox = textNode.getBBox();
+                        d3.select(this).insert("rect", "text")
+                            .attr("class", "year-badge-bg")
+                            .attr("x", textBox.x - 10)
+                            .attr("y", textBox.y - 5)
+                            .attr("width", textBox.width + 20)
+                            .attr("height", textBox.height + 10)
+                            .style("stroke", baseColor);
+                    }
 
                     d3.select(this)
                         .select("line")
@@ -345,29 +742,31 @@
                         .style("stroke", baseColor);
                 });
 
-
-            data.forEach(d => {
+            data.forEach((d, i) => {
                 const yearRange = yearRanges.get(d.year);
-                d.fy = yearRange.start + Math.random() * yearRange.height;
-
+                d.index = i;
+                d.fy = yearRange.start + (yearRange.height * (i % 4 + 0.5)) / 5;
                 d.x = (Math.random() * 0.8 + 0.1) * width;
             });
-
 
             function calculateForceParameters(yearData) {
                 const count = yearData.length;
 
-                const baseCollisionPadding = count > 15 ?
-                    Math.max(1, Math.min(5, 10 - count / 15)) :
-                    Math.max(5, Math.min(12, 15 - count / 10));
+                const baseCollisionPadding = count > 60 ? 0.5 :
+                    count > 40 ? 1.0 :
+                        count > 20 ? 1.5 : 2.0;
+
+                const chargeStrength = count > 60 ? -60 :
+                    count > 40 ? -55 :
+                        count > 20 ? -45 : -40;
 
                 return {
                     collisionPadding: baseCollisionPadding,
-                    charge: Math.min(-15, -20 - count / 2),
-                    xStrength: count > 15 ? 0.02 : 0.015,
+                    charge: chargeStrength,
+                    xStrength: count > 40 ? 0.03 : (count > 20 ? 0.025 : 0.02),
+                    yStrength: count > 40 ? 0.02 : (count > 20 ? 0.03 : 0.04)
                 };
             }
-
 
             const simulations = [];
             years.forEach(year => {
@@ -375,68 +774,138 @@
                 const forceParams = calculateForceParameters(yearData);
                 const yearRange = yearRanges.get(year);
 
-
-                const anchorPoints = [];
-                const numAnchors = Math.min(yearData.length, 5);
-                for (let i = 0; i < numAnchors; i++) {
-                    anchorPoints.push((width * (i + 1)) / (numAnchors + 1));
-                }
+                yearData.forEach((d, i) => {
+                    d.x = Math.random() * width;
+                    d.y = yearRange.start + Math.random() * yearRange.height;
+                    d.index = i;
+                    d.total = yearData.length;
+                });
 
                 const yearSimulation = d3.forceSimulation(yearData)
-                    .force("x", d3.forceX().x(d => {
-
-                        const anchorIndex = Math.floor(Math.random() * anchorPoints.length);
-                        return anchorPoints[anchorIndex];
-                    }).strength(forceParams.xStrength))
-                    .force("y", d3.forceY(yearRange.center).strength(0.2))
-                    .force("collide", d3.forceCollide(d => circleSize(d.count) + forceParams.collisionPadding).strength(0.8))
+                    .force("x", d3.forceX(width / 2).strength(forceParams.xStrength))
+                    .force("y", d3.forceY(yearRange.center).strength(forceParams.yStrength))
+                    .force("collide", d3.forceCollide(d => circleSize(d.count) + forceParams.collisionPadding).strength(0.98).iterations(4))
                     .force("charge", d3.forceManyBody().strength(forceParams.charge))
+                    .force("random", alpha => {
+                        if (alpha < 0.5) return;
+                        yearData.forEach(d => {
+                            d.x += (Math.random() - 0.5) * alpha * 2;
+                            d.y += (Math.random() - 0.5) * alpha * 2;
+                        });
+                    })
+                    .alpha(1)
+                    .alphaDecay(0.01)
                     .on("tick", () => {
                         breaches
                             .filter(d => d.year === year)
                             .attr("transform", d => {
                                 const padding = circleSize(d.count) + forceParams.collisionPadding;
                                 d.x = Math.max(padding, Math.min(width - padding, d.x));
-                                d.y = Math.max(
-                                    yearRange.start + padding,
-                                    Math.min(yearRange.end - padding, d.y)
-                                );
+                                const verticalPadding = yearRange.height * 0.05;
+                                const minY = yearRange.start + verticalPadding;
+                                const maxY = yearRange.end - verticalPadding;
+                                d.y = Math.max(minY, Math.min(maxY, d.y));
                                 return `translate(${d.x},${d.y})`;
                             });
                     });
+
                 simulations.push(yearSimulation);
             });
 
-
             function addJitter() {
-                simulations.forEach(sim => {
-                    const nodes = sim.nodes();
-                    nodes.forEach(node => {
+                try {
+                    const svgMargin = { top: 40, right: 60, bottom: 40, left: 160 };
 
-                        node.x += (Math.random() - 0.5) * 0.5;
-                        node.y += (Math.random() - 0.5) * 0.5;
+                    const svgElement = d3.select("svg").node();
+                    if (!svgElement) return;
+
+                    const svgRect = svgElement.getBoundingClientRect();
+                    const viewportMargin = 100;
+
+                    simulations.forEach(sim => {
+                        const nodes = sim.nodes();
+
+                        const visibleNodes = [];
+                        for (const node of nodes) {
+                            const nodeClientX = svgRect.left + svgMargin.left + node.x;
+                            const nodeClientY = svgRect.top + svgMargin.top + node.y;
+
+                            const isVisible = (
+                                nodeClientY >= -viewportMargin &&
+                                nodeClientY <= window.innerHeight + viewportMargin &&
+                                nodeClientX >= -viewportMargin &&
+                                nodeClientX <= window.innerWidth + viewportMargin
+                            );
+
+                            if (isVisible) {
+                                visibleNodes.push(node);
+                            }
+                        }
+
+                        if (visibleNodes.length === 0) return;
+
+                        const nodesToJitter = [];
+                        for (const node of visibleNodes) {
+                            if (Math.random() < 0.2) {
+                                nodesToJitter.push(node);
+                            }
+                        }
+
+                        if (nodesToJitter.length === 0) return;
+
+                        const jitterStrength = Math.min(0.7, 1.5 / Math.sqrt(nodes.length));
+
+                        for (const node of nodesToJitter) {
+                            const angle = Math.random() * Math.PI * 2;
+                            const distance = Math.random() * jitterStrength;
+
+                            node.x += Math.cos(angle) * distance;
+                            node.y += Math.sin(angle) * distance;
+                        }
+
+                        sim.alpha(0.2).restart();
                     });
-                    sim.alpha(0.1).restart();
-                });
+                } catch (error) {
+                    console.error("Error in jitter function:", error);
+                }
             }
 
+            const jitterInterval = setInterval(addJitter, 1500);
 
-            setInterval(addJitter, 2000);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    clearInterval(jitterInterval);
+                } else {
+                    if (!jitterInterval) {
+                        setInterval(addJitter, 1500);
+                    }
+                }
+            });
+
+            window.addEventListener('scroll', () => {
+                if (!window.jitterScrollTimeout) {
+                    window.jitterScrollTimeout = setTimeout(() => {
+                        addJitter();
+                        window.jitterScrollTimeout = null;
+                    }, 100);
+                }
+            });
 
             const breaches = svg.selectAll(".breach")
                 .data(data)
                 .enter().append("g")
                 .attr("class", "breach")
+                .attr("data-industry", d => d.industry)
                 .attr("transform", d => {
                     const yearRange = yearRanges.get(d.year);
-                    const y = yearRange.center + (Math.random() - 0.5) * yearRange.height * 0.8;
-                    const x = d.x;
-                    return `translate(${x},${y})`;
+                    const y = d.targetY || (yearRange.center + (Math.random() - 0.5) * yearRange.height * 0.8);
+                    const yearDataLength = dataByYear.get(d.year).length;
+                    const positionInYear = dataByYear.get(d.year).indexOf(d);
+                    const horizontalPosition = width * (0.1 + (0.8 * positionInYear / yearDataLength));
+                    return `translate(${horizontalPosition},${y})`;
                 });
 
-
             const defs = svg.append("defs");
-
 
             breaches.each(function (d, i) {
                 const gradientId = `gradient-${d.year}-${i}`;
@@ -455,7 +924,6 @@
                 gradient.append("stop")
                     .attr("offset", "100%")
                     .attr("stop-color", palette[palette.length - 1]);
-
 
                 const pulseAnimation = gradient.append("animate")
                     .attr("attributeName", "r")
@@ -515,7 +983,7 @@
 
                 const tooltipContent = `
                     <div class="tooltip-title" style="border-color: ${palette[0]}">
-                        ${d.name}
+                        ${d.name} <span style="opacity: 0.8; font-size: 0.9em;">(${d.year})</span>
                     </div>
                     <img src="${d.logo}" alt="Logo" class="tooltip-logo">
                     <div class="tooltip-description">
@@ -526,42 +994,55 @@
                     </div>
                 `;
 
-
                 tooltip.html(tooltipContent)
-                    .style("left", "0px")
-                    .style("top", "0px")
                     .style("opacity", 0)
                     .style("display", "block")
                     .style("border-left", `4px solid ${palette[0]}`);
-
 
                 const tooltipNode = tooltip.node();
                 const tooltipRect = tooltipNode.getBoundingClientRect();
                 const viewportWidth = window.innerWidth;
                 const viewportHeight = window.innerHeight;
 
+                const cursorX = event.clientX;
+                const cursorY = event.clientY;
+                const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
-                let left = event.pageX + 15;
-                let top = event.pageY + 15;
+                let left, top;
 
+                left = cursorX + scrollX - (tooltipRect.width / 2);
 
-                if (left + tooltipRect.width > viewportWidth - 20) {
-                    left = event.pageX - tooltipRect.width - 15;
+                if (left < scrollX + 20) {
+                    left = scrollX + 20;
+                }
+                if (left + tooltipRect.width > scrollX + viewportWidth - 20) {
+                    left = scrollX + viewportWidth - tooltipRect.width - 20;
                 }
 
+                const spaceAbove = cursorY - scrollY;
+                const spaceBelow = viewportHeight - cursorY;
 
-                if (top + tooltipRect.height > viewportHeight - 20) {
-                    top = event.pageY - tooltipRect.height - 15;
+                if (tooltipRect.height < spaceBelow - 20) {
+                    top = cursorY + scrollY + 20;
+                } else if (tooltipRect.height < spaceAbove - 20) {
+                    top = cursorY + scrollY - tooltipRect.height - 20;
+                } else {
+                    const availableHeight = Math.max(spaceAbove, spaceBelow);
+                    if (tooltipRect.height < availableHeight) {
+                        if (spaceBelow > spaceAbove) {
+                            top = cursorY + scrollY + 20;
+                        } else {
+                            top = cursorY + scrollY - tooltipRect.height - 20;
+                        }
+                    } else {
+                        top = scrollY + 20;
+                    }
                 }
-
-
-                left = Math.max(20, left);
-                top = Math.max(20, top);
-
 
                 tooltip
-                    .style("left", left + "px")
-                    .style("top", top + "px")
+                    .style("left", `${Math.round(left)}px`)
+                    .style("top", `${Math.round(top)}px`)
                     .transition()
                     .duration(200)
                     .style("opacity", 1);
@@ -585,10 +1066,73 @@
                     activeElement = null;
                 });
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const overlay = document.getElementById('infoOverlay');
+            const closeBtn = document.getElementById('closeOverlay');
+            const infoBtn = document.getElementById('infoButton');
+            const industryFilter = document.getElementById('industrySelect');
+            const resetBtn = document.getElementById('resetFilter');
+
+            industryFilter.addEventListener('change', function () {
+                filterByIndustry(this.value);
+            });
+
+            resetBtn.addEventListener('click', function () {
+                industryFilter.value = 'all';
+                filterByIndustry('all');
+            });
+
+            infoBtn.addEventListener('click', function () {
+                overlay.style.display = 'flex';
+            });
+
+            closeBtn.addEventListener('click', function () {
+                overlay.style.display = 'none';
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && overlay.style.display === 'flex') {
+                    overlay.style.display = 'none';
+                }
+
+                if (e.key === 'Enter' && document.activeElement === closeBtn) {
+                    overlay.style.display = 'none';
+                }
+            });
+        });
+
+        function filterByIndustry(industry) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            let displayName = 'All Industries';
+            if (industry !== 'all') {
+                const selectedOption = document.querySelector(`#industrySelect option[value="${industry}"]`);
+                if (selectedOption) {
+                    displayName = selectedOption.textContent;
+                }
+            }
+
+            document.getElementById('activeIndustry').textContent = `Showing: ${displayName}`;
+
+            let filteredData;
+            if (industry === 'all') {
+                filteredData = allBreachData;
+            } else {
+                const industryName = document.querySelector(`#industrySelect option[value="${industry}"]`)?.textContent;
+                filteredData = allBreachData.filter(d => d.industry === industryName);
+            }
+
+            d3.select("#chart").selectAll("svg").remove();
+
+            document.getElementById('industryFilter').classList.add('visible');
+
+            setTimeout(() => {
+                createGraph(filteredData);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 300);
+        }
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/scripts/common.js"></script>
 </body>
 
