@@ -52,28 +52,40 @@ $('#alertMeModal').on('hidden.bs.modal', (e) => {
 
 $('#alertMeModal').on('show.bs.modal', (event) => {
     const button = $(event.relatedTarget);
-    const modal = $(this);
     const email = $("#edhu").val().toLowerCase();
-    modal.find('.modal-body input').val(email);
+    $("#recipient-name").val(email);
     $('#thedudalModal').modal('hide');
+
+
+    try {
+        if (typeof turnstile !== 'undefined') {
+            turnstile.reset('#turns');
+        }
+    } catch (e) {
+        console.error('Error resetting Turnstile:', e);
+    }
 });
 
 const isEmpty = (value) => value == null || (typeof value === "string" && value.trim().length === 0);
 
 function _turnstileCb() {
-    const turnstileStatus = turnstile.render('#turns', {
-        sitekey: '0x4AAAAAAAA_T_0Qt4kJbXno',
-        theme: 'light',
-    });
+    try {
+        const turnstileStatus = turnstile.render('#turns', {
+            sitekey: '0x4AAAAAAAA_T_0Qt4kJbXno',
+            theme: 'light',
+            callback: function (token) {
 
-    let timerId = setInterval(() => {
+                $('#alertMe').prop('disabled', false);
+            }
+        });
+
+
         $('#alertMe').prop('disabled', true);
-        const turnstileResponse = turnstile.getResponse(turnstileStatus);
-        if (!isEmpty(turnstileResponse)) {
-            $('#alertMe').prop('disabled', false);
-            clearInterval(timerId);
-        }
-    }, 1000);
+    } catch (error) {
+        console.error('Turnstile error:', error);
+
+        $('#alertMe').prop('disabled', false);
+    }
 }
 
 $(document).ready(function () {
@@ -86,25 +98,64 @@ $(document).ready(function () {
         }
     });
 
+
+    $('#alertMeModal').on('shown.bs.modal', function () {
+        if (typeof turnstile !== 'undefined' && document.getElementById('turns')) {
+            try {
+                turnstile.reset('#turns');
+            } catch (e) {
+                console.error('Failed to reset Turnstile:', e);
+            }
+        }
+    });
+
     $("#alertMe").click((event) => {
         event.preventDefault();
 
         const inputValue = $("#recipient-name").val().toLowerCase();
+        let turnstileResponse = '';
+
+        try {
+
+            if (typeof turnstile !== 'undefined') {
+                turnstileResponse = turnstile.getResponse() || '';
+            }
+        } catch (e) {
+            console.error('Error getting Turnstile response:', e);
+        }
+
+
+        $("#alertMe_i1").addClass("fa fa-spinner fa-spin");
+        $("#alertMe_i2").removeClass("fa fa-bell ring");
+
 
         const apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        const headers = turnstileResponse ? { 'X-Turnstile-Token': turnstileResponse } : {};
 
-        $.ajax(apiUrl)
+        $.ajax({
+            url: apiUrl,
+            type: 'GET',
+            headers: headers
+        })
             .done(() => {
                 $('#message-text').val(ALERT_MESSAGES.subscribeSuccess);
                 $("#h2head").attr("class", "modal-header-success");
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
+
+
+                $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
+                $("#alertMe_i2").addClass("fa fa-bell ring");
             })
             .fail(() => {
                 $('#message-text').val(ALERT_MESSAGES.alreadySubscribed);
                 $("#h2head").attr("class", "modal-header-success");
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
+
+
+                $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
+                $("#alertMe_i2").addClass("fa fa-bell ring");
             });
     });
 
