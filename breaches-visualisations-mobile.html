@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Breaches Visualization (Mobile)</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <meta property="og:title" content="XposedOrNot: Data Breaches Repository" />
+    <meta name="description"
+        content="Visualize data breaches with XposedOrNot. Gain insights through interactive charts and graphs to better understand breach trends and impacts." />
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta property="og:url" content="https://xposedornot.com/data_breaches" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@XposedOrNot">
+    <meta name="twitter:title" content="XposedOrNot: Data Breaches Repository">
+    <meta name="twitter:description"
+        content="Visualize data breaches with XposedOrNot. Gain insights through interactive charts and graphs to better understand breach trends and impacts.">
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+    <script>
+        (function () {
+            function isDesktopDevice() {
+                return (window.innerWidth > 768) &&
+                    !(navigator.userAgent.match(/Android/i) ||
+                        navigator.userAgent.match(/webOS/i) ||
+                        navigator.userAgent.match(/iPhone/i) ||
+                        navigator.userAgent.match(/iPad/i) ||
+                        navigator.userAgent.match(/iPod/i) ||
+                        navigator.userAgent.match(/BlackBerry/i) ||
+                        navigator.userAgent.match(/Windows Phone/i));
+            }
+
+            if (isDesktopDevice()) {
+                if (!window.location.href.includes('breaches-visualisations.html')) {
+                    window.location.href = 'breaches-visualisations.html';
+                }
+            }
+        })();
+    </script>
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        .navbar-custom {
+            background-color: #2563eb;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .tooltip {
+            position: fixed;
+            background-color: rgba(30, 30, 34, 0.95);
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 300px;
+            color: #f8f9fa;
+            font-size: 14px;
+            line-height: 1.6;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            left: 50%;
+            bottom: 20px;
+            transform: translateX(-50%);
+        }
+
+        .tooltip-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #f8f9fa;
+            border-bottom: 2px solid;
+            padding-bottom: 6px;
+        }
+
+        .tooltip-logo {
+            max-width: 30%;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .tooltip-description {
+            color: #e2e8f0;
+            margin: 10px 0;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .tooltip-stats {
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .year-section {
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .year-header {
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .year-header:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .year-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            color: white;
+        }
+
+        .year-count {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .year-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .year-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .year-section.active .year-content {
+            max-height: 2000px;
+            transition: max-height 1s ease-in;
+        }
+
+        .year-section.active .year-icon {
+            transform: rotate(180deg);
+        }
+
+        .breach-container {
+            position: relative;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .breach-circle {
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3));
+        }
+
+        .breach-logo {
+            pointer-events: none;
+        }
+
+        .breach-title {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 5px;
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .page-title {
+            color: white;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-weight: 600;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 0 15px;
+        }
+
+        .filter-controls {
+            background: rgba(37, 99, 235, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            margin: 10px 15px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-controls h4 {
+            margin: 0 0 15px 0;
+            font-size: 16px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-controls select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(30, 30, 34, 0.8);
+            color: white;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .filter-controls button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .filter-controls button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .active-industry {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .desktop-view-link {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            color: #3b82f6;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+
+<body>
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <p style="margin-top: 15px; color: white; font-weight: bold;">Loading data breaches...</p>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand" href="#">XposedOrNot</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="https://blog.xposedornot.com">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="api_doc.html">API</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="page-title">Data Breaches Visualization (Mobile)</h1>
+
+    <div class="filter-controls">
+        <h4>Filter Data Breaches</h4>
+        <select id="industrySelect">
+            <option value="all">All Industries</option>
+            <!-- Industry options will be populated dynamically -->
+        </select>
+        <button id="resetFilter">Reset Filter</button>
+        <div class="active-industry" id="activeIndustry">Showing: All Industries</div>
+    </div>
+
+    <a href="breaches-visualisations.html" class="desktop-view-link">View Desktop Version</a>
+
+    <div id="timelineContainer"></div>
+
+    <div class="tooltip" id="tooltip" style="display: none;"></div>
+
+    <script>
+        let allBreachData = [];
+        const colorPalettes = {
+            2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
+            2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
+            2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),
+            2022: ['#FFD43B', '#FCC419', '#FAB005', '#F59F00', '#F08C00'].reverse(),
+            2021: ['#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'].reverse(),
+            2020: ['#FF922B', '#FD7E14', '#F76707', '#E8590C', '#D9480F'].reverse(),
+            2019: ['#339AF0', '#228BE6', '#1C7ED6', '#1971C2', '#1864AB'].reverse(),
+            2018: ['#E64980', '#D6336C', '#C2255C', '#A61E4D', '#9C1453'].reverse(),
+            2017: ['#66D9E8', '#3BC9DB', '#22B8CF', '#15AABF', '#1098AD'].reverse(),
+            2016: ['#9775FA', '#845EF7', '#7950F2', '#7048E8', '#6741D9'].reverse(),
+            2015: ['#F783AC', '#F06595', '#E64980', '#D6336C', '#C2255C'].reverse(),
+            2014: ['#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20'].reverse(),
+            2013: ['#FF5722', '#F4511E', '#E64A19', '#D84315', '#BF360C'].reverse(),
+            2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),
+            2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),
+            2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),
+            2009: ['#795548', '#6D4C41', '#5D4037', '#4E342E', '#3E2723'].reverse(),
+            2008: ['#607D8B', '#546E7A', '#455A64', '#37474F', '#263238'].reverse(),
+            2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()
+        };
+        const defaultPalette = ['#748FFC', '#4C6EF5', '#4263EB', '#3B5BDB', '#364FC7'].reverse();
+
+        function circleSize(count) {
+            if (count >= 50000000) return 55;
+            else if (count >= 10000000) return 48;
+            else if (count >= 5000000) return 42;
+            else if (count >= 1000000) return 36;
+            else return 30;
+        }
+
+        function logoSize(count) {
+            if (count >= 50000000) return 38;
+            else if (count >= 10000000) return 32;
+            else if (count >= 5000000) return 28;
+            else if (count >= 1000000) return 24;
+            else return 20;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            fetch('https://api.xposedornot.com/v1/breaches')
+                .then(response => response.json())
+                .then(apiData => {
+                    allBreachData = processData(apiData['exposedBreaches']);
+                    populateIndustryFilter(apiData['exposedBreaches']);
+                    createMobileTimeline(allBreachData);
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    document.getElementById('timelineContainer').innerHTML = `
+                        <div style="color: white; text-align: center; padding: 20px;">
+                            <p>Error loading data. Please try again later.</p>
+                        </div>
+                    `;
+                });
+
+
+            document.getElementById('resetFilter').addEventListener('click', function () {
+                document.getElementById('industrySelect').value = 'all';
+                filterByIndustry('all');
+            });
+
+            document.getElementById('industrySelect').addEventListener('change', function () {
+                filterByIndustry(this.value);
+            });
+        });
+
+        function processData(breaches) {
+            return breaches.map(breach => {
+                return {
+                    year: new Date(breach['breachedDate']).getFullYear(),
+                    name: breach['breachID'],
+                    logo: breach['logo'],
+                    description: breach['exposureDescription'],
+                    count: breach['exposedRecords'],
+                    industry: breach['industry'] || 'Uncategorized'
+                };
+            });
+        }
+
+        function populateIndustryFilter(breaches) {
+            const industrySelect = document.getElementById('industrySelect');
+
+            const industries = new Set();
+            breaches.forEach(breach => {
+                if (breach.industry && breach.industry.trim() !== '') {
+                    industries.add(breach.industry);
+                } else {
+                    industries.add('Uncategorized');
+                }
+            });
+
+            const sortedIndustries = Array.from(industries).sort();
+
+
+            while (industrySelect.options.length > 1) {
+                industrySelect.remove(1);
+            }
+
+            sortedIndustries.forEach(industry => {
+                const option = document.createElement('option');
+                option.value = industry.toLowerCase().replace(/\s+/g, '-');
+                option.textContent = industry;
+                industrySelect.appendChild(option);
+            });
+        }
+
+        function createMobileTimeline(data) {
+            const timelineContainer = document.getElementById('timelineContainer');
+            timelineContainer.innerHTML = ''; // Clear previous content
+
+
+            const dataByYear = d3.group(data, d => d.year);
+            const years = Array.from(dataByYear.keys()).sort(d3.descending);
+
+
+            years.forEach(year => {
+                const yearData = dataByYear.get(year);
+                const palette = colorPalettes[year] || defaultPalette;
+
+                const yearSection = document.createElement('div');
+                yearSection.className = 'year-section active';
+                yearSection.dataset.year = year;
+
+                const yearHeader = document.createElement('div');
+                yearHeader.className = 'year-header';
+                yearHeader.style.borderLeft = `4px solid ${palette[0]}`;
+                yearHeader.innerHTML = `
+                    <h3 class="year-title" style="color: ${palette[0]};">${year}</h3>
+                    <span class="year-count">${yearData.length} breaches</span>
+                    <i class="fas fa-chevron-down year-icon" style="transform: rotate(180deg);"></i>
+                `;
+
+                const yearContent = document.createElement('div');
+                yearContent.className = 'year-content';
+
+                const svgContainer = document.createElement('div');
+                svgContainer.className = 'breach-container';
+
+                yearContent.appendChild(svgContainer);
+
+                yearSection.appendChild(yearHeader);
+                yearSection.appendChild(yearContent);
+
+                timelineContainer.appendChild(yearSection);
+
+                yearHeader.addEventListener('click', function () {
+                    if (yearSection.classList.contains('active')) {
+                        yearSection.classList.remove('active');
+                        yearHeader.querySelector('.year-icon').style.transform = 'rotate(0deg)';
+                    } else {
+                        yearSection.classList.add('active');
+                        yearHeader.querySelector('.year-icon').style.transform = 'rotate(180deg)';
+
+                        if (svgContainer.childElementCount === 0) {
+                            createYearVisualization(yearData, svgContainer, year);
+                        }
+                    }
+                });
+
+                createYearVisualization(yearData, svgContainer, year);
+            });
+        }
+
+        function createYearVisualization(yearData, container, year) {
+            const containerWidth = container.clientWidth || window.innerWidth - 30;
+            const palette = colorPalettes[year] || defaultPalette;
+
+            yearData.sort((a, b) => b.count - a.count);
+
+            const maxCircleSize = circleSize(Number.MAX_SAFE_INTEGER);
+            const breachesPerRow = Math.floor(containerWidth / (maxCircleSize * 2.2));
+
+            const rows = Math.ceil(yearData.length / breachesPerRow);
+
+            const rowHeight = maxCircleSize * 2.5;
+            const svgHeight = rows * rowHeight;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('width', '100%')
+                .attr('height', svgHeight)
+                .attr('viewBox', `0 0 ${containerWidth} ${svgHeight}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const defs = svg.append("defs");
+
+            yearData.forEach((breach, i) => {
+                const gradientId = `gradient-${year}-${i}`;
+                const gradient = defs.append("radialGradient")
+                    .attr("id", gradientId)
+                    .attr("cx", "0.5")
+                    .attr("cy", "0.5")
+                    .attr("r", "0.5")
+                    .attr("fx", "0.5")
+                    .attr("fy", "0.5");
+
+                gradient.append("stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", palette[0]);
+
+                gradient.append("stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", palette[palette.length - 1]);
+            });
+
+            const breaches = svg.selectAll('.breach-group')
+                .data(yearData)
+                .enter()
+                .append('g')
+                .attr('class', 'breach-group')
+                .attr('transform', (d, i) => {
+                    const row = Math.floor(i / breachesPerRow);
+                    const col = i % breachesPerRow;
+                    const x = col * (containerWidth / breachesPerRow) + (containerWidth / breachesPerRow) / 2;
+                    const y = row * rowHeight + maxCircleSize;
+                    return `translate(${x}, ${y})`;
+                });
+
+            breaches.append('circle')
+                .attr('class', 'breach-circle')
+                .attr('r', d => circleSize(d.count))
+                .attr('fill', (d, i) => `url(#gradient-${year}-${i})`)
+                .attr('data-breach', d => d.name)
+                .on('click', function (event, d) {
+                    showTooltip(event, d, palette[0]);
+                });
+
+            breaches.append('image')
+                .attr('class', 'breach-logo')
+                .attr('xlink:href', d => d.logo)
+                .attr('x', d => -logoSize(d.count) / 2)
+                .attr('y', d => -logoSize(d.count) / 2)
+                .attr('width', d => logoSize(d.count))
+                .attr('height', d => logoSize(d.count));
+
+            breaches.append('text')
+                .attr('class', 'breach-title')
+                .attr('x', 0)
+                .attr('y', d => circleSize(d.count) + 15)
+                .attr('text-anchor', 'middle')
+                .text(d => d.name.length > 15 ? d.name.substring(0, 15) + '...' : d.name);
+        }
+
+        function showTooltip(event, breach, color) {
+            const tooltip = document.getElementById('tooltip');
+
+            const tooltipContent = `
+                <div class="tooltip-title" style="border-color: ${color}">
+                    ${breach.name} <span style="opacity: 0.8; font-size: 0.9em;">(${breach.year})</span>
+                </div>
+                <img src="${breach.logo}" alt="Logo" class="tooltip-logo">
+                <div class="tooltip-description">
+                    ${breach.description}
+                </div>
+                <div class="tooltip-stats" style="background: ${color}20; color: ${color}; border: 1px solid ${color}40">
+                    Records exposed: ${d3.format(",")(breach.count)}
+                </div>
+            `;
+
+            tooltip.innerHTML = tooltipContent;
+            tooltip.style.borderLeft = `4px solid ${color}`;
+            tooltip.style.display = 'block';
+            tooltip.style.opacity = '1';
+
+            document.addEventListener('click', closeTooltip);
+
+            function closeTooltip(e) {
+                if (!tooltip.contains(e.target) && e.target !== event.currentTarget) {
+                    tooltip.style.opacity = '0';
+                    setTimeout(() => {
+                        tooltip.style.display = 'none';
+                    }, 300);
+                    document.removeEventListener('click', closeTooltip);
+                }
+            }
+        }
+
+        function filterByIndustry(industry) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            let displayName = 'All Industries';
+            if (industry !== 'all') {
+                const selectedOption = document.querySelector(`#industrySelect option[value="${industry}"]`);
+                if (selectedOption) {
+                    displayName = selectedOption.textContent;
+                }
+            }
+
+            document.getElementById('activeIndustry').textContent = `Showing: ${displayName}`;
+
+            let filteredData;
+            if (industry === 'all') {
+                filteredData = allBreachData;
+            } else {
+                const industryName = document.querySelector(`#industrySelect option[value="${industry}"]`)?.textContent;
+                filteredData = allBreachData.filter(d => d.industry === industryName);
+            }
+
+            setTimeout(() => {
+                createMobileTimeline(filteredData);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 300);
+        }
+    </script>
+</body>
+
+</html>
