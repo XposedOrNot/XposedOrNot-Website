@@ -20,6 +20,27 @@
         content="Visualize data breaches with XposedOrNot. Gain insights through interactive charts and graphs to better understand breach trends and impacts.">
     <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
+    <script>
+        (function () {
+            function isMobileDevice() {
+                return (window.innerWidth <= 768) ||
+                    (navigator.userAgent.match(/Android/i) ||
+                        navigator.userAgent.match(/webOS/i) ||
+                        navigator.userAgent.match(/iPhone/i) ||
+                        navigator.userAgent.match(/iPad/i) ||
+                        navigator.userAgent.match(/iPod/i) ||
+                        navigator.userAgent.match(/BlackBerry/i) ||
+                        navigator.userAgent.match(/Windows Phone/i));
+            }
+
+            if (isMobileDevice()) {
+                if (!window.location.href.includes('breaches-visualisations-mobile.html')) {
+                    window.location.href = 'breaches-visualisations-mobile.html';
+                }
+            }
+        })();
+    </script>
+
     <style>
         body,
         html {
@@ -333,7 +354,7 @@
             z-index: 100;
             opacity: 0;
             transform: translateY(-10px);
-            width: 220px;
+            width: 280px;
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -344,20 +365,20 @@
         }
 
         .industry-filter h4 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
+            margin: 0 0 15px 0;
+            font-size: 18px;
             color: white;
             text-align: center;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .active-industry {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 4px;
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 14px;
             text-align: center;
             width: 100%;
@@ -368,17 +389,19 @@
             display: block;
             margin-bottom: 10px;
             font-weight: 600;
+            font-size: 15px;
+            white-space: nowrap;
         }
 
         .industry-filter select {
             width: 100%;
-            padding: 8px 10px;
+            padding: 10px 12px;
             border-radius: 4px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             background: rgba(30, 30, 34, 0.8);
             color: white;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             max-height: 200px;
             overflow-y: auto;
         }
@@ -393,19 +416,20 @@
         .industry-filter select:focus {
             outline: none;
             border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
         }
 
         .industry-filter button {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
             transition: background 0.3s ease;
             width: 100%;
-            margin-top: 8px;
+            margin-top: 10px;
             font-weight: 500;
         }
 
@@ -925,7 +949,7 @@
                     .attr("offset", "100%")
                     .attr("stop-color", palette[palette.length - 1]);
 
-                const pulseAnimation = gradient.append("animate")
+                gradient.append("animate")
                     .attr("attributeName", "r")
                     .attr("values", `${circleSize(d.count)};${circleSize(d.count) * 1.1};${circleSize(d.count)}`)
                     .attr("dur", "3s")
