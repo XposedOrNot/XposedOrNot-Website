@@ -270,13 +270,13 @@ var j = $.ajax(url)
                 width: isMobile ? 300 : 500,
                 height: isMobile ? 200 : 300,
                 greenFrom: 0,
-                greenTo: 40,
-                yellowFrom: 41,
-                yellowTo: 100,
-                redFrom: 101,
-                redTo: 200,
-                minorTicks: 10,
-                max: 200
+                greenTo: 33,
+                yellowFrom: 34,
+                yellowTo: 66,
+                redFrom: 67,
+                redTo: 100,
+                minorTicks: 5,
+                max: 100
             };
 
             var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
