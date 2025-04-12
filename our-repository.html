@@ -55,7 +55,7 @@
       border-radius: 10px;
       padding: 15px;
       height: auto;
-      min-height: 400px;
+      min-height: 450px;
     }
 
     .sec3-right canvas {
@@ -65,7 +65,7 @@
     }
 
     .sec3-right .chart-wrapper {
-      height: 400px;
+      height: 450px;
       display: flex;
       align-items: stretch;
     }
@@ -158,10 +158,26 @@
       background: rgba(87, 94, 216, 0.1);
       border-radius: 10px;
       margin: 5px;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .web-bx1:hover {
+      background: rgba(220, 20, 60, 0.1);
     }
 
     .web-in {
       padding: 15px 10px;
+    }
+
+    .web-in h4,
+    .web-in h5 {
+      transition: color 0.3s ease;
+    }
+
+    .web-bx1:hover .web-in h4,
+    .web-bx1:hover .web-in h5 {
+      color: #dc143c;
     }
 
     .sec3-flex {
@@ -193,8 +209,9 @@
 
       .yearly-chart-container canvas,
       #industryChart {
-        width: 95% !important;
-        margin: 0 auto !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
       }
 
       .chart-wrapper {
@@ -202,16 +219,16 @@
         justify-content: center;
         align-items: center;
         width: 100%;
+        height: 100%;
       }
 
       .sec3-right {
         padding: 15px 5px;
+        min-height: 400px;
       }
 
       .sec3-right .chart-wrapper {
         height: 400px;
-        display: flex;
-        align-items: stretch;
       }
 
       .sec3-row {
@@ -247,20 +264,9 @@
         height: 24px;
       }
 
-      .sec3-right {
-        height: auto;
-        min-height: 350px;
-        margin-top: 20px;
-        padding: 10px;
-      }
-
       .sec3-right h4 {
         font-size: 16px;
         margin-bottom: 10px;
-      }
-
-      .sec3-right .chart-wrapper {
-        height: 400px;
       }
 
       table {
@@ -316,7 +322,7 @@
       }
 
       .banner h1 {
-        font-size: 24px;
+        font-size: 2rem;
       }
 
       /* Chart adjustments for mobile */
@@ -345,10 +351,6 @@
 
       .yearly-chart-container .chart-wrapper {
         height: 200px;
-      }
-
-      .sec3-right .chart-wrapper {
-        height: 400px;
       }
 
       td:nth-child(3) {
@@ -434,6 +436,46 @@
 
       .navbar-nav {
         padding: 10px 0;
+      }
+    }
+
+    .banner h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0;
+    }
+
+    .yearly-chart-container h4,
+    .sec3-right h4,
+    .breach1 h4 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .banner h1 {
+        font-size: 2rem;
+      }
+
+      .yearly-chart-container h4,
+      .sec3-right h4,
+      .breach1 h4 {
+        font-size: 1.25rem;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .banner h1 {
+        font-size: 1.75rem;
+      }
+
+      .yearly-chart-container h4,
+      .sec3-right h4,
+      .breach1 h4 {
+        font-size: 1.1rem;
       }
     }
   </style>
@@ -747,17 +789,17 @@
             maintainAspectRatio: false,
             layout: {
               padding: {
-                left: 5,
-                right: 80,
-                top: 30,
-                bottom: 25
+                left: 0,
+                right: 30,
+                top: 15,
+                bottom: 15
               }
             },
             scales: {
               xAxes: [{
                 ticks: {
                   fontColor: "#fff",
-                  padding: 10,
+                  padding: 5,
                   callback: function (value) {
                     return value;
                   }
@@ -772,7 +814,7 @@
                 ticks: {
                   beginAtZero: true,
                   fontColor: "#fff",
-                  padding: 8,
+                  padding: 5,
                   callback: function (value) {
                     if (value >= 1000000) {
                       return (value / 1000000).toFixed(1) + 'M';
@@ -866,10 +908,10 @@
             },
             layout: {
               padding: {
-                left: 5,
+                left: 0,
                 right: 65,
-                top: 15,
-                bottom: 15
+                top: 0,
+                bottom: 0
               }
             },
             scales: {
@@ -877,7 +919,7 @@
                 ticks: {
                   fontColor: "#fff",
                   beginAtZero: true,
-                  padding: 8,
+                  padding: 0,
                   callback: function (value) {
                     if (value >= 1000000) {
                       return (value / 1000000).toFixed(1) + 'M';
@@ -896,14 +938,14 @@
                 ticks: {
                   fontColor: "#fff",
                   fontSize: 11,
-                  padding: 8
+                  padding: 0
                 },
                 gridLines: {
                   display: false,
                   drawBorder: true
                 },
-                barPercentage: 0.95,
-                categoryPercentage: 0.98,
+                barPercentage: 0.6,
+                categoryPercentage: 0.8,
                 position: 'left',
                 offset: true
               }]
