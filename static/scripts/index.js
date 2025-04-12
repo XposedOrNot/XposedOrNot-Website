@@ -249,76 +249,161 @@ const ALERT_MESSAGES = {
     alreadySubscribed: "You're already protected! This email is registered for breach alerts"
 };
 
+function fireConfetti() {
+    // Vibrant color palette
+    const colors = [
+        '#FF6B6B',  // Coral red
+        '#4ECDC4',  // Turquoise
+        '#45B7D1',  // Sky blue
+        '#96CEB4',  // Sage green
+        '#FFEEAD',  // Cream yellow
+        '#FFD93D',  // Golden yellow
+        '#FF9EAA',  // Pink
+        '#A06CD5'   // Purple
+    ];
+
+    // First burst from left
+    confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { x: 0.2, y: 0.8 },
+        colors: colors,
+        ticks: 200,
+        gravity: 1.2,
+        scalar: 1.2,
+        shapes: ['square', 'circle']
+    });
+
+    // Second burst from right after a small delay
+    setTimeout(() => {
+        confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { x: 0.8, y: 0.8 },
+            colors: colors,
+            ticks: 200,
+            gravity: 1.2,
+            scalar: 1.2,
+            shapes: ['square', 'circle']
+        });
+    }, 250);
+
+    // Add a final smaller burst from the center for extra flair
+    setTimeout(() => {
+        confetti({
+            particleCount: 100,
+            spread: 100,
+            origin: { x: 0.5, y: 0.9 },
+            colors: colors,
+            ticks: 150,
+            gravity: 1,
+            scalar: 1,
+            shapes: ['square', 'circle']
+        });
+    }, 500);
+}
+
 function processSearchResponse(response, email) {
     const jsonResponse = response;
-
     const breachSummary = jsonResponse.BreachesSummary.site;
     const pasteSummaryCount = jsonResponse.PastesSummary.cnt;
 
-    let warningMessage = "";
-    if (breachSummary.toString().length < 0) {
+    // Reset modal styling first
+    $(".modal-content").css({
+        'background-color': '',
+        'border': ''
+    });
+    $("#data_email, #data_breach").removeClass('alert-danger alert-success').addClass('alert-primary');
 
-        $('#data_breach').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">No breaches found!</span>')
+    // Always stop spinning and show mbody
+    $("#spins").hide();
+    $("#mbody").show();
+
+    // Check if no breaches found (either empty or length < 1)
+    if (!breachSummary || breachSummary.length < 1) {
+        // Success state - No breaches
+        $(".modal-content").css({
+            'background-color': '#f8fff8',
+            'border': '2px solid #28a745'
+        });
+
+        $("#hhead").attr("class", "modal-header-success");
+        $("#dismiss").attr("class", "btn btn-success");
+        $("#ssvisible").html("<h2>Search Results</h2>");
+
+        $('#data_email')
+            .removeClass('alert-primary alert-danger')
+            .addClass('alert-success')
+            .html('<b>Searched Email </b> <span class="badge bg-success text-white" style="float:right">' + email + '</span>');
+
+        $('#data_breach')
+            .removeClass('alert-primary alert-danger')
+            .addClass('alert-success')
+            .html('<b>Exposed Breaches </b> <span class="badge bg-success text-white" style="float:right">No breaches found!</span>');
+
+        $("#detailedReport").hide();
+        $("#warn").hide();
+        $("#info").hide();
+        $("#succ").show();
+        $("#alert_").show();
+        $("#succ").html(STATUS_MESSAGES.success);
+
+        // Fire confetti animation
+        setTimeout(fireConfetti, 100);
+
     } else {
+        // Danger state - Breaches found
+        $(".modal-content").css({
+            'background-color': '#fff5f5',
+            'border': '2px solid #dc3545'
+        });
 
         $("#hhead").attr("class", "modal-header-danger");
         $("#dismiss").attr("class", "btn-danger btn");
-        $("#mbody").show();
         $("#ssvisible").html("<h2>Email Security Check Results</h2>");
         $("#warn").show();
         $("#succ").hide();
-        $("#spins").hide();
         $("#info").hide();
         $("#alert_").show();
-        $('#data_email').html('<b>Searched Email </b> <span class="badge" style="float:right">' + email + '</span>');
 
-        if (breachSummary.length > 0) {
-            $("#detailedReport").show();
-            $('#data_breach').html('Exposed Breaches <span class="badge" style="float:right">' + breachSummary.split(";").length + '</span>');
-            warningMessage = 'Below shown are the data breaches in which this email was exposed:   <br><br>';
+        $('#data_email')
+            .removeClass('alert-primary alert-success')
+            .addClass('alert-danger')
+            .html('<b>Searched Email </b> <span class="badge bg-danger text-white" style="float:right">' + email + '</span>');
 
-            const breaches = breachSummary.split(";")
-            for (let i = 0; i < breaches.length; i++) {
-                warningMessage += '<a rel="noopener" target="_blank" title="Pls click here for more details..." href=xposed.html#' + breaches[i] + '>' + breaches[i] + '</a>';
-                if (i !== breaches.length - 1) {
-                    warningMessage += ', ';
-                }
+        let warningMessage = 'Below shown are the data breaches in which this email was exposed:   <br><br>';
+        $("#detailedReport").show();
+        $('#data_breach')
+            .removeClass('alert-primary alert-success')
+            .addClass('alert-danger')
+            .html('Exposed Breaches <span class="badge bg-danger text-white" style="float:right">' + breachSummary.split(";").length + '</span>');
+
+        const breaches = breachSummary.split(";");
+        for (let i = 0; i < breaches.length; i++) {
+            warningMessage += '<a rel="noopener" target="_blank" title="Click here for more details..." href=xposed.html#' + breaches[i] + '>' + breaches[i] + '</a>';
+            if (i !== breaches.length - 1) {
+                warningMessage += ', ';
             }
         }
 
-        if (pasteSummaryCount.toString() == 0 && breachSummary.length < 1) {
-            $("#hhead").attr("class", "modal-header-success");
-            $("#dismiss").attr("class", "btn btn-success");
-            $('#paste_breach').html('<b>Exposed Pastes </b> <span class="badge" style="float:right">No pastes found!</span>');
-            $("#detailedReport").hide();
-            $("#warn").hide();
-            $("#succ").show();
-            $("#succ").html(STATUS_MESSAGES.success);
-        }
-
-        const pasteCount = jsonResponse.PastesSummary.cnt;
-        if (pasteCount > 0) {
-            $("#detailedReport").show();
-            $('#paste_breach').html('<b>Exposed Pastes </b> <span class="badge" style="float:right">' + pasteCount + '</span>');
-            warningMessage += '<br><br>' + ' </b>Searched email has been exposed in public pastes shown below <br>';
-
-            const pastes = jsonResponse.PastesSummary.tweet_id.split(";")
-            for (let i = 0; i < pastes.length; i++) {
-                warningMessage += '<a  rel="noopener" target="_blank" title="Pls click here to open" href=https://pastebin.com/' + pastes[i] + '>' + pastes[i] + '</a>' + ' ; ';
-            }
-        }
-
-        if (warningMessage.length > 0) {
-            $("#warn").html(warningMessage);
-            $("#warn").show();
-        }
+        $("#warn").html(warningMessage);
+        $("#warn").show();
     }
 
-    if (response.status === 429) {
-        $("#mbody").show();
-        $("#spins").hide();
-        $("#succ").html("You are currently being throttled. Please slow down and try again !")
-        $('#data_email').html('<b>Searched Email </b> <span class="badge" style="float:right">' + email + '</span>')
+    // Handle paste summary if needed
+    const pasteCount = jsonResponse.PastesSummary.cnt;
+    if (pasteCount > 0) {
+        $("#detailedReport").show();
+        warningMessage += '<br><br>' + 'Searched email has been exposed in public pastes shown below <br>';
+        const pastes = jsonResponse.PastesSummary.tweet_id.split(";");
+        for (let i = 0; i < pastes.length; i++) {
+            warningMessage += '<a rel="noopener" target="_blank" title="Click here to open" href=https://pastebin.com/' + pastes[i] + '>' + pastes[i] + '</a>';
+            if (i !== pastes.length - 1) {
+                warningMessage += ' ; ';
+            }
+        }
+        $("#warn").html(warningMessage);
+        $("#warn").show();
     }
 }
 
