@@ -47,6 +47,39 @@
    <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer>
    <script src="/static/scripts/other-libraries.js" defer></script>
 
+   <style>
+      /* Dark mode styles only for elements missing dark mode */
+      [data-theme="dark"] .panel-heading.p-3.mb-3 {
+         background-color: var(--dark-bg-color, #1a1f3c);
+      }
+
+      [data-theme="dark"] .panel-heading.p-3.mb-3 .panel-title a {
+         color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .collapsed.collapse.show,
+      [data-theme="dark"] .panel-collapse.collapse.show {
+         background-color: var(--dark-bg-color, #1a1f3c);
+      }
+
+      [data-theme="dark"] .breadcrumb {
+         background-color: var(--dark-bg-color, #1a1f3c);
+         border: 1px solid var(--dark-border-color, #2a305c);
+      }
+
+      [data-theme="dark"] .breadcrumb-item {
+         color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .breadcrumb-item.active {
+         color: #8f96b3;
+      }
+
+      [data-theme="dark"] .breadcrumb-item+.breadcrumb-item::before {
+         color: #8f96b3;
+      }
+   </style>
+
 </head>
 
 <body>
@@ -489,47 +522,42 @@
                      </div>
                      <div id="collapse301" class="collapsed collapse show" role="tabpanel" aria-labelledby="heading301">
                         <div class="panel-body px-3 mb-4"> <strong>What is the risk score formula? </strong><br> <br>
-                           The <strong>risk score formula</strong> calculates a user's account risk based on the number
-                           and severity of data breaches associated with the user's email, the time since the last
-                           breach, and the strength of the user's password. <br><br>
-                           The formula is:<br>
-                           <strong> Risk Score = (A x W1) + (B x W2) + (C x W3) + (D x W4)</strong> <br><br>
-                           where: <br>
-                           A = number of data breaches associated with the user's email address<br>
-                           B = severity of data breaches associated with the user's email address<br>
-                           C = time since last breach associated with the user's email address<br>
-                           D = password strength based on a password strength algorithm<br><br>
-                           and:<br><br>
-                           W1 = weight for factor A<br>
-                           W2 = weight for factor B<br>
-                           W3 = weight for factor C<br>
-                           W4 = weight for factor D<br><br>
-                           For example, let's say we assign the following weights to each factor:<br><br>
-                           W1 = 4 (number of data breaches is considered the most important factor)<br>
-                           W2 = 2 (severity of data breaches is also important, but not as much as the number of
-                           breaches)<br>
-                           W3 = 1 (time since last breach is still important, but less so than the other factors)<br>
-                           W4 = 3 (password strength is also important, but not as much as the number of
-                           breaches)<br><br>
-                           We could then use the following formula to calculate a user's risk score:<br><br>
-                           Risk Score = (A x 4) + (B x 2) + (C x 1) + (D x 3)<br><br>
-                           For example, if a user has been involved in 5 data breaches, with 2 of them being
-                           high-severity breaches, and the last breach occurring 6 months ago, and has a strong
-                           password, their risk score would be:<br><br>
-                           Risk Score = (5 x 4) + (2 x 2) + (6/12 x 1) + (1 x 3) = 31
-                           <br>
-                           <br>
-                           <strong>How is the risk score calculated?</strong><br><br>
-                           Each factor is multiplied by its weight, and the results are added together to calculate the
-                           risk score. The risk score will be displayed visually as a traffic light system, with green
-                           indicating low risk, yellow indicating moderate risk, and red indicating high risk.
-                           <br>
-                           <br>
-                           <strong>What factors are considered in the risk score formula?</strong>
-                           <br><br>
-                           The factors considered in the risk score formula are the number and severity of data breaches
-                           associated with the user's email, the time since the last breach, and the strength of the
-                           user's password.
+                           The <strong>risk score formula</strong> calculates a normalized risk score (0-100) based on
+                           multiple factors that indicate the potential risk level of an account. The score considers
+                           the number of breaches, types of exposed passwords, recency of breaches, and sensitivity of
+                           exposed data.<br><br>
+                           The formula combines four main components:<br><br>
+                           <strong>1. Base Score (0-15 points)</strong><br>
+                           • 3 points per breach, up to a maximum of 15 points<br><br>
+                           <strong>2. Password Risk Score (0-40 points)</strong><br>
+                           • Weighted based on password exposure types:<br>
+                           &nbsp;&nbsp;- Plaintext passwords: 40 points<br>
+                           &nbsp;&nbsp;- Easy to crack passwords: 30 points<br>
+                           &nbsp;&nbsp;- Unknown password types: 20 points<br>
+                           &nbsp;&nbsp;- Strong hash passwords: 10 points<br>
+                           • Final password score is the weighted average based on total passwords<br><br>
+                           <strong>3. Recency Score (0-25 points)</strong><br>
+                           Based on most recent breach:<br>
+                           • Within 3 months: 25 points<br>
+                           • 3-6 months: 20 points<br>
+                           • 6-12 months: 15 points<br>
+                           • 12-24 months: 10 points<br>
+                           • Over 24 months: 5 points<br><br>
+                           <strong>4. Sensitive Data Score (0-20 points)</strong><br>
+                           • 4 points per exposed high-risk data category, up to 20 points<br>
+                           • High-risk categories include:<br>
+                           &nbsp;&nbsp;- Security Practices (passwords, security questions)<br>
+                           &nbsp;&nbsp;- Financial Details (credit cards, bank accounts)<br>
+                           &nbsp;&nbsp;- Health Information (medical data)<br>
+                           &nbsp;&nbsp;- Personal Identification (identity data)<br><br>
+                           <strong>Final Risk Score</strong><br>
+                           The final score is the sum of all components, capped at 100 points. Risk levels are
+                           categorized as:<br>
+                           • High Risk: 70-100 points<br>
+                           • Medium Risk: 40-69 points<br>
+                           • Low Risk: 0-39 points<br><br>
+                           This comprehensive scoring system helps users understand their exposure risk level and take
+                           appropriate action to protect their accounts.
                         </div>
                      </div>
                   </div>
