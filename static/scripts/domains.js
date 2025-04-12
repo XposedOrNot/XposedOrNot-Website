@@ -39,36 +39,41 @@ $(document).ready(function () {
 
             $.ajax(breachApiUrl)
                 .done(function (data) {
-                    if (data.SearchStatus === "Success" && data.sendDomains.breaches_details.length > 0) {
-                        var breaches = data.sendDomains.breaches_details;
-                        var totalBreaches = 0;
-                        var totalRecords = 0;
-                        var totalEmails = 0;
-                        var lastExposure = "--";
+                    if (data.SearchStatus === "Success") {
+                        if (data.sendDomains.breaches_details.length > 0 &&
+                            data.sendDomains.breaches_details[0].breach_emails > 0) {
+                            var breaches = data.sendDomains.breaches_details;
+                            var totalBreaches = 0;
+                            var totalRecords = 0;
+                            var totalEmails = 0;
+                            var lastExposure = "--";
 
-                        breaches.forEach(function (breach) {
-                            totalBreaches += breach.breach_count;
-                            totalRecords += breach.breach_total;
-                            totalEmails += breach.breach_emails;
-                            lastExposure = breach.breach_last_seen;
-                        });
+                            breaches.forEach(function (breach) {
+                                totalBreaches += breach.breach_count;
+                                totalRecords += breach.breach_total;
+                                totalEmails += breach.breach_emails;
+                                lastExposure = breach.breach_last_seen;
+                            });
 
-                        $('#breach-count').text(totalBreaches);
-                        $('#record-count').text(totalRecords >= 1000 ? "1000+" : totalRecords);
-                        $('#email-count').text(totalEmails >= 1000 ? "1000+" : totalEmails);
-                        $('#last-exposure').text(lastExposure);
+                            $('#breach-count').text(totalBreaches);
+                            $('#record-count').text(totalRecords >= 1000 ? "1000+" : totalRecords);
+                            $('#email-count').text(totalEmails >= 1000 ? "1000+" : totalEmails);
+                            $('#last-exposure').text(lastExposure);
 
-                        if (totalRecords >= 1000 || totalEmails >= 1000) {
-                            $('#note').show();
+                            if (totalRecords >= 1000 || totalEmails >= 1000) {
+                                $('#note').show();
+                            } else {
+                                $('#note').hide();
+                            }
+
+                            updateGaugeChart(totalBreaches);
+
+                            $('#domainModal').modal('hide');
+                            $('.overlay').hide();
+                            $('#content').removeClass('blurred');
                         } else {
-                            $('#note').hide();
+                            handleNoBreach(domainName);
                         }
-
-                        updateGaugeChart(totalBreaches);
-
-                        $('#domainModal').modal('hide');
-                        $('.overlay').hide();
-                        $('#content').removeClass('blurred');
                     } else {
                         handleNoBreach(domainName);
                     }
@@ -144,30 +149,53 @@ $(document).ready(function () {
     }
 
     function triggerConfetti() {
-        var end = Date.now() + 5 * 1000;
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+        const duration = 3000;
 
-        (function frame() {
+        // First burst
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: colors,
+            shapes: ['square', 'circle'],
+            ticks: 200
+        });
+
+        // Second burst after 500ms
+        setTimeout(() => {
             confetti({
-                particleCount: 5,
+                particleCount: 80,
                 angle: 60,
-                spread: 55,
-                origin: {
-                    x: 0
-                }
+                spread: 80,
+                origin: { x: 0, y: 0.6 },
+                colors: colors,
+                shapes: ['square', 'circle'],
+                ticks: 200
             });
             confetti({
-                particleCount: 5,
+                particleCount: 80,
                 angle: 120,
-                spread: 55,
-                origin: {
-                    x: 1
-                }
+                spread: 80,
+                origin: { x: 1, y: 0.6 },
+                colors: colors,
+                shapes: ['square', 'circle'],
+                ticks: 200
             });
+        }, 500);
 
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
-        }());
+        // Third burst after 1000ms
+        setTimeout(() => {
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.7 },
+                colors: colors,
+                shapes: ['square', 'circle'],
+                ticks: 200,
+                gravity: 1.2
+            });
+        }, 1000);
     }
 
     google.charts.load('current', {
