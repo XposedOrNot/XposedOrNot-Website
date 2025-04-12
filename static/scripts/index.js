@@ -329,7 +329,7 @@ function processSearchResponse(response, email) {
 
         $("#hhead").attr("class", "modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
-        $("#ssvisible").html("<h2>Search Results</h2>");
+        $("#ssvisible").html('<h2><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
 
         $('#data_email')
             .removeClass('alert-primary alert-danger')
@@ -360,7 +360,7 @@ function processSearchResponse(response, email) {
 
         $("#hhead").attr("class", "modal-header-danger");
         $("#dismiss").attr("class", "btn-danger btn");
-        $("#ssvisible").html("<h2>Email Security Check Results</h2>");
+        $("#ssvisible").html('<h2><i class="fas fa-exclamation-triangle fa-2x text-white"></i>&nbsp;&nbsp;Warning: Your Email Was Breached!</h2>');
         $("#warn").show();
         $("#succ").hide();
         $("#info").hide();
