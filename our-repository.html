@@ -30,6 +30,74 @@
     crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="author" href="humans.txt">
   <style>
+    .page-wrapper {
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+      background: #1b192b;
+    }
+
+    .web-background {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: url(/static/images/blue-web.png) right top no-repeat;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+    }
+
+    .yearly-chart-container {
+      position: relative;
+      z-index: 3;
+      margin: 40px 0;
+      width: 100%;
+      height: 400px;
+      padding: 15px 15px 25px 15px;
+      background: rgba(87, 94, 216, 0.1);
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+    }
+
+    .yearly-chart-container canvas {
+      position: relative;
+      z-index: 4;
+      width: 100% !important;
+      max-height: 360px !important;
+      margin: 0 auto;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      z-index: 4;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #1b192b;
+      font-family: 'Inter', sans-serif !important;
+      position: relative;
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    .custom-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
     .col-45 {
       flex: 0 0 49%;
       max-width: 49%;
@@ -40,8 +108,73 @@
       max-width: 2%;
     }
 
-    .custom-row {
+    .sec3-stats {
+      width: 100%;
+    }
+
+    .sec3-flex {
       display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .web-bx1 {
+      flex: 0 1 auto;
+      background: rgba(87, 94, 216, 0.1);
+      border-radius: 10px;
+      margin: 5px;
+      transition: all 0.3s ease;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 140px;
+    }
+
+    .web-bx1:hover {
+      background: rgba(220, 20, 60, 0.1);
+    }
+
+    .web-in {
+      padding: 15px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .web-bx-icn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .web-bx-icn img {
+      width: 32px;
+      height: 32px;
+      opacity: 0.9;
+    }
+
+    .web-in h4 {
+      margin: 5px 0;
+      text-align: center;
+    }
+
+    .web-in h5 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .web-in h4,
+    .web-in h5 {
+      transition: color 0.3s ease;
+    }
+
+    .web-bx1:hover .web-in h4,
+    .web-bx1:hover .web-in h5 {
+      color: #dc143c;
     }
 
     .center-text {
@@ -90,11 +223,18 @@
 
     .readMore,
     .readLess {
-      color: #fff;
+      color: #dc143c;
       cursor: pointer;
       text-decoration: underline;
       font-size: 0.9em;
       margin-left: 6px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .readMore:hover,
+    .readLess:hover {
+      color: #ff4d6a;
     }
 
     .description.truncated {
@@ -104,21 +244,11 @@
       overflow: hidden;
     }
 
-    .yearly-chart-container {
-      position: relative;
-      z-index: 2;
-      margin: 20px 0 40px;
-      width: 100%;
-      height: 400px;
-      padding: 15px;
-      background: rgba(87, 94, 216, 0.1);
-      border-radius: 10px;
-    }
-
-    .yearly-chart-container canvas {
-      width: 100% !important;
-      max-height: 360px !important;
-      margin: 0 auto;
+    .web-bg {
+      z-index: -999 !important;
+      position: absolute !important;
+      pointer-events: none;
+      opacity: 0.5;
     }
 
     .yearly-chart-container h4 {
@@ -128,8 +258,9 @@
       margin-bottom: 10px;
     }
 
-    .chart-wrapper {
+    .yearly-chart-container .chart-wrapper {
       position: relative;
+      z-index: 1000 !important;
       height: 360px;
       width: 100%;
       box-sizing: border-box;
@@ -137,7 +268,7 @@
     }
 
     .sec3-row {
-      margin-top: 0;
+      margin: 40px 0;
     }
 
     h4 {
@@ -147,11 +278,6 @@
     .sec3-right h4 {
       color: #fff;
       font-weight: 600;
-    }
-
-    .web-bg {
-      z-index: -1;
-      position: relative;
     }
 
     .web-bx1 {
@@ -202,7 +328,7 @@
       }
 
       .yearly-chart-container {
-        margin: 15px 0;
+        margin: 20px 0;
         padding: 10px;
         height: 300px;
       }
@@ -232,7 +358,7 @@
       }
 
       .sec3-row {
-        margin-top: 15px;
+        margin: 20px 0;
       }
 
       .sec3-flex {
@@ -247,16 +373,11 @@
 
       .web-in {
         padding: 12px 8px;
-      }
-
-      .web-in h4 {
-        font-size: 18px;
-        margin-bottom: 5px;
-      }
-
-      .web-in h5 {
-        font-size: 14px;
-        margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
       }
 
       .web-bx-icn img {
@@ -365,12 +486,13 @@
     .table-responsive {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      margin: 0 -15px;
+      margin: 0;
       padding: 0 15px;
     }
 
     .table {
       min-width: 500px;
+      margin-bottom: 0;
     }
 
     .chartjs-tooltip {
@@ -478,6 +600,44 @@
         font-size: 1.1rem;
       }
     }
+
+    .breach-row {
+      margin: 40px 0;
+    }
+
+    .buttons {
+      margin: 40px 0;
+    }
+
+    .breach1 {
+      position: relative;
+      z-index: 3;
+      background: rgba(87, 94, 216, 0.1);
+      border-radius: 10px;
+      padding: 15px;
+      backdrop-filter: blur(8px);
+    }
+
+    .breach1 h4 {
+      margin: 10px 0 20px;
+    }
+
+    .web-bx-icn {
+      margin-bottom: 10px;
+    }
+
+    .web-bx-icn img {
+      width: 32px;
+      height: 32px;
+      opacity: 0.9;
+    }
+
+    @media screen and (max-width: 768px) {
+      .web-bx-icn img {
+        width: 24px;
+        height: 24px;
+      }
+    }
   </style>
   <script defer src="/static/scripts/other-libraries.js"></script>
   <script src="https://kit.fontawesome.com/00d920835c.js" crossorigin="anonymous"></script>
@@ -503,196 +663,206 @@
 </head>
 
 <body>
-  <div>
-    <header>
-      <div class="header">
-        <div class="grid">
-          <div class="header-row">
-            <a href="index.html" class="logo-text">XposedOrNot</a>
-            <nav class="header-right">
-              <ul>
-                <li><a href="password.html">Password</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="xonPulse.html">News</a></li>
-                <li><a href="api_doc.html">API</a></li>
+  <div class="page-wrapper">
+    <div class="web-background"></div>
+    <div class="content-wrapper">
+      <header>
+        <div class="header">
+          <div class="grid">
+            <div class="header-row">
+              <a href="index.html" class="logo-text">XposedOrNot</a>
+              <nav class="header-right">
+                <ul>
+                  <li><a href="password.html">Password</a></li>
+                  <li><a href="faq.html">FAQ</a></li>
+                  <li><a href="xonPulse.html">News</a></li>
+                  <li><a href="api_doc.html">API</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="menu">
+          <nav class="navbar">
+            <a class="navbar-brand" href="#">XposedOrNot</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="password.html">Password</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="faq.html">FAQ</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="xonPulse.html">News</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="api_doc.html">API</a>
+                </li>
               </ul>
-            </nav>
-          </div>
+            </div>
+          </nav>
         </div>
-      </div>
-      <div class="menu">
-        <nav class="navbar">
-          <a class="navbar-brand" href="#">XposedOrNot</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            <span class="navbar-toggler-icon"></span>
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="password.html">Password</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="faq.html">FAQ</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="xonPulse.html">News</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="api_doc.html">API</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-      <div class="banner">
-        <div class="grid">
-          <div class="banner-row center-text">
-            <h1>Our Repository</h1>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <main>
-      <div class="sec3">
-        <div class="grid">
-          <div class="yearly-chart-container center-text">
-            <h4>Yearly Trend of Exposed Data Breaches</h4>
-            <div class="chart-wrapper">
-              <canvas id="yearlyChart"></canvas>
+        <div class="banner">
+          <div class="grid">
+            <div class="banner-row center-text">
+              <h1>Our Repository</h1>
             </div>
           </div>
+        </div>
+      </header>
 
-          <div class="sec3-row">
-            <div class="sec3-left">
-              <div class="sec3-flex">
-                <div class="web-bx1">
-                  <div class="web-in">
-                    <div class="web-bx-icn">
-                      <img src="static/images/close-circle.png" alt="Close icon">
-                    </div>
-                    <h4 id="breaches-count">0</h4>
-                    <h5>Breaches</h5>
-                  </div>
-                </div>
-                <div class="web-bx1">
-                  <div class="web-in">
-                    <div class="web-bx-icn">
-                      <img src="static/images/document-text.png" alt="Document icon">
-                    </div>
-                    <h4 id="records-count">0</h4>
-                    <h5>Records</h5>
-                  </div>
-                </div>
-              </div>
-              <div class="sec3-flex">
-                <div class="web-bx1">
-                  <div class="web-in">
-                    <div class="web-bx-icn">
-                      <img src="static/images/lock2.png" alt="Lock icon">
-                    </div>
-                    <h4 id="pastes-count">0</h4>
-                    <h5>Emails</h5>
-                  </div>
-                </div>
-                <div class="web-bx1">
-                  <div class="web-in">
-                    <div class="web-bx-icn">
-                      <img src="static/images/sms.png" alt="SMS icon">
-                    </div>
-                    <h4 id="emails-count">0</h4>
-                    <h5>Passwords</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="sec3-right center-text">
-              <h4>Breaches by Industry</h4>
+      <main>
+        <div class="sec3">
+          <div class="grid">
+            <div class="yearly-chart-container center-text">
+              <h4>Yearly Trend of Exposed Data Breaches</h4>
               <div class="chart-wrapper">
-                <canvas id="industryChart"></canvas>
+                <canvas id="yearlyChart"></canvas>
               </div>
             </div>
-          </div>
 
-          <section class="breach-row">
-            <div class="custom-row">
-              <div class="col-45 breach1 center-text">
-                <h4>Top 10 Data Breaches</h4>
-                <div id="top-breaches-table" class="table-responsive">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Logo</th>
-                        <th>Breach ID</th>
-                        <th>Description</th>
-                        <th>Records</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
+            <div class="sec3-row">
+              <div class="custom-row">
+                <div class="col-45">
+                  <div class="sec3-stats">
+                    <div class="sec3-flex">
+                      <div class="web-bx1">
+                        <div class="web-in">
+                          <div class="web-bx-icn">
+                            <img src="static/images/close-circle.png" alt="Close icon">
+                          </div>
+                          <h4 id="breaches-count">0</h4>
+                          <h5>Breaches</h5>
+                        </div>
+                      </div>
+                      <div class="web-bx1">
+                        <div class="web-in">
+                          <div class="web-bx-icn">
+                            <img src="static/images/document-text.png" alt="Document icon">
+                          </div>
+                          <h4 id="records-count">0</h4>
+                          <h5>Records</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="sec3-flex">
+                      <div class="web-bx1">
+                        <div class="web-in">
+                          <div class="web-bx-icn">
+                            <img src="static/images/lock2.png" alt="Lock icon">
+                          </div>
+                          <h4 id="pastes-count">0</h4>
+                          <h5>Emails</h5>
+                        </div>
+                      </div>
+                      <div class="web-bx1">
+                        <div class="web-in">
+                          <div class="web-bx-icn">
+                            <img src="static/images/sms.png" alt="SMS icon">
+                          </div>
+                          <h4 id="emails-count">0</h4>
+                          <h5>Passwords</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col-10">
-              </div>
-              <div class="col-45 breach1 center-text">
-                <h4>Recent Breaches</h4>
-                <div id="another-table" class="table-responsive">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Logo</th>
-                        <th>Breach ID</th>
-                        <th>Description</th>
-                        <th>Records</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
+                <div class="col-10"></div>
+                <div class="col-45">
+                  <div class="sec3-right center-text">
+                    <h4>Breaches by Industry</h4>
+                    <div class="chart-wrapper">
+                      <canvas id="industryChart"></canvas>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </section>
 
-          <div class="buttons center-text">
-            <ul>
-              <li><a href="xposed.html">Data Breaches</a></li>
-              <li><a href="domains.html">Check Company Exposure</a></li>
-              <li><a href="domain.html">Verify Domain</a></li>
-            </ul>
+            <section class="breach-row">
+              <div class="custom-row">
+                <div class="col-45 breach1 center-text">
+                  <h4>Top 10 Data Breaches</h4>
+                  <div id="top-breaches-table" class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Logo</th>
+                          <th>Breach ID</th>
+                          <th>Description</th>
+                          <th>Records</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-10">
+                </div>
+                <div class="col-45 breach1 center-text">
+                  <h4>Recent Breaches</h4>
+                  <div id="another-table" class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Logo</th>
+                          <th>Breach ID</th>
+                          <th>Description</th>
+                          <th>Records</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div class="buttons center-text">
+              <ul>
+                <li><a href="xposed.html">Data Breaches</a></li>
+                <li><a href="domains.html">Check Company Exposure</a></li>
+                <li><a href="domain.html">Verify Domain</a></li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
 
-    <footer>
-      <div class="copy">
-        <div class="grid">
-          <div class="copy-row center-text">
-            <p>XposedOrNot.com</p>
-            <ul>
-              <li>
-                <a href="https://facebook.com/xposedornot">
-                  <i class="fab fa-brands fa-facebook"></i>
-                </a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/company/xposedornot">
-                  <i class="fab fa-brands fa-linkedin"></i>
-                </a>
-              </li>
-              <li class="last">
-                <a href="https://twitter.com/xposedornot">
-                  <i class="fab fa-brands fa-twitter"></i>
-                </a>
-              </li>
-            </ul>
+      <footer>
+        <div class="copy">
+          <div class="grid">
+            <div class="copy-row center-text">
+              <p>XposedOrNot.com</p>
+              <ul>
+                <li>
+                  <a href="https://facebook.com/xposedornot">
+                    <i class="fab fa-brands fa-facebook"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.linkedin.com/company/xposedornot">
+                    <i class="fab fa-brands fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="last">
+                  <a href="https://twitter.com/xposedornot">
+                    <i class="fab fa-brands fa-twitter"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
@@ -792,7 +962,7 @@
                 left: 0,
                 right: 30,
                 top: 15,
-                bottom: 15
+                bottom: 35
               }
             },
             scales: {
@@ -1021,7 +1191,7 @@
             <tr>
               <td><img src="${breach.logo}" alt="Logo" width="50"></td>
               <td>${breach.breachid}</td>
-              <td>
+              <td style="text-align: left;">
                 <span class="description truncated">${breach.description}</span>
                 <span class="readMore">Read more</span>
               </td>
@@ -1038,7 +1208,7 @@
             <tr>
               <td><img src="${breach.logo}" alt="Logo" width="50"></td>
               <td>${breach.breachid}</td>
-              <td>
+              <td style="text-align: left;">
                 <span class="description truncated">${breach.description}</span>
                 <span class="readMore">Read more</span>
               </td>
