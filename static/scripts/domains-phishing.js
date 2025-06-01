@@ -197,6 +197,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const riskScore = calculateRiskScore(data);
                 google.charts.setOnLoadCallback(() => drawRiskMeter(riskScore));
 
+                // Update the phishing domains table
+                if (typeof window.updatePhishingTable === 'function') {
+                    window.updatePhishingTable(data);
+                }
+
                 // Show results
                 $('#domainModal').modal('hide');
                 document.getElementById('content').classList.remove('blurred');
@@ -257,4 +262,17 @@ document.addEventListener('DOMContentLoaded', function () {
         focusInput();
     });
     $('#domainModal').modal('show');
+
+    function resetCounts() {
+        $('#breach-count').text('-');
+        $('#record-count').text('-');
+        $('#email-count').text('-');
+        $('#last-exposure').text('--');
+        $('#note').hide();
+
+        // Clear the phishing domains table
+        if (typeof window.clearPhishingTable === 'function') {
+            window.clearPhishingTable();
+        }
+    }
 }); 
