@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=no">
+  <title>XposedOrNot: Check for phishing domains targeting your brand</title>
+  <meta name="description"
+    content="Check if your domain has phishing lookalikes with XposedOrNot. Get a detailed report of potential phishing domains targeting your brand." />
+  <meta name="author" content="Devanand Premkumar">
+  <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://static.hotjar.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta content="XposedOrNot: Check for phishing domains targeting your brand" property="og:title">
+  <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@XposedOrNot">
+  <meta name="twitter:creator" content="@DevaOnBreaches">
+  <meta name="twitter:title" content="Check for phishing domains targeting your brand">
+  <meta name="twitter:description"
+    content="Check if your domain has phishing lookalikes with XposedOrNot. Get a detailed report of potential phishing domains targeting your brand.">
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+  <script src="https://kit.fontawesome.com/00d920835c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset"
+    type="text/css" media="all">
+  <link rel="Devanand Premkumar" href="humans.txt">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="/static/scripts/other-libraries.js" defer></script>
+  <link href="static/css/style-domain.css" type="text/css" rel="stylesheet">
+  <link href="static/css/responsive.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap4.min.css">
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+</head>
+
+<body>
+  <div class="overlay"></div>
+  <div id="content" class="blurred">
+    <div>
+      <div class="header">
+        <div class="grid">
+          <div class="header-row">
+            <a href="index.html">XposedOrNot</a>
+            <div class="header-right">
+              <ul>
+                <li><a href="password.html">Password</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="xonPulse.html">News</a></li>
+                <li><a href="api_doc.html">API</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu">
+        <nav class="navbar">
+          <a class="navbar-brand" href="index.html">XposedOrNot</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon icon-last"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link active" href="#">Password<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">News</a></li>
+              <li class="nav-item  last lang"><a class="nav-link" href="#">API</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="banner">
+        <div class="grid">
+          <div class="banner-row">
+            <h1>Our scan found <span>potential phishing domains</span><br> targeting your brand</h1>
+          </div>
+        </div>
+      </div>
+      <div class="sec3">
+        <div class="grid">
+          <div class="sec3-row">
+            <h4>Phishing domain report for : <b id="domain-display"></b>
+              </b><img id="logo" src="" alt="Logo" width="120"></h4>
+            <div class="updt">
+              <p>Last Scan: <span id="last-exposure"></span></p>
+            </div>
+          </div>
+          <div class="sec3-flex">
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="static/images/close-circle.png" alt="">
+                </div>
+                <h4 id="breach-count">--</h4>
+                <h5>Total Scanned</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="static/images/document-text.png" alt="">
+                </div>
+                <h4 id="record-count">--</h4>
+                <h5>Live Domains</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="static/images/sms.png" alt="">
+                </div>
+                <h4 id="email-count">-</h4>
+                <h5>Fuzzer Types</h5>
+              </div>
+            </div>
+            <div class="web-bx1 web-bx4">
+              <div id="chart_div" style="width: 150px; height: 150px;"></div>
+            </div>
+          </div>
+          <div id="note" class="text-center mt-3" style="display: none; color: white; text-align: left !important;">
+            <small>* The report shows potential phishing domains that are currently live. Verify domain ownership to see
+              detailed DNS and WHOIS information.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec5">
+        <div class="grid">
+          <div class="table-container">
+            <div class="table-responsive">
+              <table id="phishingDomainsTable" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Domain</th>
+                    <th>Fuzzer Type</th>
+                    <th>DNS NS</th>
+                    <th>DNS A</th>
+                    <th>DNS MX</th>
+                    <th>Created Date</th>
+                    <th>Registrar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div align="center" class="mt-4">
+            <button type="button" class="btn btn-secondary" id="checkAnotherDomainBtn">Check Another Domain</button>
+          </div>
+        </div>
+      </div>
+      <div align="center"><a href="https://logo.dev" alt="Logo API">Logos provided by Logo.dev</a></div>
+      <div class="copy">
+        <div class="grid">
+          <div class="copy-row">
+            <p><a href="XposedOrNot.com">XposedOrNot.com</a></p>
+            <ul>
+              <li><a href="https://facebook.com/xposedornot"><i class="fab fa-brands fa-facebook"></i></a></li>
+              <li><a href="https://www.linkedin.com/company/xposedornot"><i class="fab fa-brands fa-linkedin"></i></a>
+              </li>
+              <li class="last"><a href="https://twitter.com/xposedornot"><i class="fab fa-brands fa-twitter"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content dark-mode">
+        <div class="modal-header">
+          <h5 class="modal-title" id="domainModalLabel">Check for Phishing Domains</h5>
+        </div>
+        <div class="modal-body light-mode">
+          <form id="domainForm" autocomplete="off">
+            <div class="form-group text-center">
+              <p>Enter your domain name below to scan for potential phishing domains.</p><br><br>
+              <label for="domainInput" class="sr-only">Domain Name</label>
+              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <div class="invalid-feedback">
+                Please enter a valid domain name.
+              </div>
+              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+                Scan Domain
+                <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                  style="display:none;"></span>
+              </button>
+              <div id="errorMessage" class="error-message" style="display:none;"></div>
+            </div>
+          </form>
+          <div id="noBreachMessage" style="display: none;">
+            <div class="text-center">
+              <i class="fas fa-shield-alt fa-3x text-success"></i>
+              <h4 class="text-success mt-3">No phishing domains found for <span id="searchedDomain"
+                  class="font-weight-bold"></span>!</h4>
+              <p>Your domain appears to be safe from phishing lookalikes.</p>
+              <button type="button" class="btn btn-secondary mt-3" id="checkAnotherDomainBtnInModal">Check Another
+                Domain</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  <script src="static/scripts/domains-phishing.js"></script>
+  <script src="static/scripts/domains-phishing-table.js"></script>
+  <script src="static/scripts/common.js"></script>
+</body>
+
+</html>
