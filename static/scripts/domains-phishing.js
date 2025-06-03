@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Update statistics
                 breachCount.textContent = data.total_scanned;
                 recordCount.textContent = data.total_live;
-                emailCount.textContent = '-'; // No longer showing fuzzer count
+                emailCount.textContent = data.unique_fuzzers || '-';
 
                 // Calculate and display risk score
                 const riskScore = calculateRiskScore(data);
