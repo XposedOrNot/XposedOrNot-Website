@@ -152,7 +152,7 @@ async function checkDomain(domain) {
             // Update statistics
             document.getElementById('breach-count').textContent = data.total_scanned;
             document.getElementById('record-count').textContent = data.total_live;
-            document.getElementById('email-count').textContent = '-'; // No longer showing fuzzer count
+            document.getElementById('email-count').textContent = data.unique_fuzzers || '-';
 
             // Calculate and display risk score
             const riskScore = calculateRiskScore(data);
