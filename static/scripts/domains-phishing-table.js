@@ -1,6 +1,5 @@
 let phishingTable;
 
-// Initialize Google Charts with gauge package
 google.charts.load('current', { 'packages': ['gauge'] });
 
 function formatDate(dateString) {
@@ -9,21 +8,11 @@ function formatDate(dateString) {
 }
 
 function calculateRiskScore(data) {
-    // Risk factors:
-    // 1. Number of live domains (higher = more risk)
-    // 2. Ratio of live domains to total scanned (higher ratio = more risk)
-
     const liveDomains = data.total_live;
     const totalScanned = data.total_scanned;
-
-    // Calculate base risk from live domains (0-70 points)
     const domainRisk = Math.min((liveDomains / 10) * 10, 70);
-
-    // Calculate risk from live ratio (0-30 points)
     const liveRatio = liveDomains / totalScanned;
     const ratioRisk = Math.min(liveRatio * 30, 30);
-
-    // Total risk score (0-100)
     return Math.round(domainRisk + ratioRisk);
 }
 
@@ -54,7 +43,7 @@ function drawRiskMeter(riskScore) {
     const chart = new google.visualization.Gauge(chartDiv);
     chart.draw(chartData, options);
 
-    // Add risk level text below the chart
+
     let riskLevel;
     if (riskScore <= 70) {
         riskLevel = 'Low Risk';
@@ -71,7 +60,6 @@ function drawRiskMeter(riskScore) {
     riskLevelDiv.style.fontSize = '14px';
     riskLevelDiv.textContent = riskLevel;
 
-    // Clear previous elements if they exist
     const existingElements = chartDiv.parentElement.querySelectorAll('.risk-level, .risk-score');
     existingElements.forEach(el => el.remove());
 
@@ -79,7 +67,7 @@ function drawRiskMeter(riskScore) {
     chartDiv.parentElement.appendChild(riskLevelDiv);
 }
 
-// Utility to get URL parameters
+
 function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -88,13 +76,12 @@ function getUrlParameter(name) {
 }
 
 async function checkDomain(domain) {
-    const API_ENDPOINT = 'https://xon-api-test-325858668484.us-west1.run.app/v1/domain-phishing/';
+    const API_ENDPOINT = 'https://api.xposedornot.com/v1/domain-phishing/';
     try {
-        // Get email and token from URL
+
         const email = getUrlParameter('email');
         const token = getUrlParameter('token');
 
-        // Build API URL with query params
         let apiUrl = API_ENDPOINT + encodeURIComponent(domain);
         const params = [];
         if (email) params.push('email=' + encodeURIComponent(email));
@@ -105,7 +92,6 @@ async function checkDomain(domain) {
 
         const response = await fetch(apiUrl);
 
-        // Handle specific HTTP status codes
         if (response.status === 429) {
             alert('Too many requests. Please try again in a few minutes.');
             $.LoadingOverlay("hide");
@@ -130,44 +116,38 @@ async function checkDomain(domain) {
         const data = await response.json();
 
         if (data.status === 'success') {
-            // Update domain display
             document.getElementById('domain-display').textContent = domain;
             document.getElementById('last-exposure').textContent = formatDate(data.last_checked);
 
-            // Update logo
             const logoImg = document.getElementById('logo');
             if (logoImg) {
                 logoImg.src = `https://logo.clearbit.com/${domain}`;
                 logoImg.onerror = function () {
-                    // If logo fails to load, try alternative logo service
                     this.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
                     this.onerror = function () {
-                        // If both fail, hide the logo
                         this.style.display = 'none';
                     };
                 };
                 logoImg.style.display = 'inline-block';
             }
 
-            // Update statistics
+
             document.getElementById('breach-count').textContent = data.total_scanned;
             document.getElementById('record-count').textContent = data.total_live;
             document.getElementById('email-count').textContent = data.unique_fuzzers || '-';
 
-            // Calculate and display risk score
+
             const riskScore = calculateRiskScore(data);
             google.charts.setOnLoadCallback(() => {
                 drawRiskMeter(riskScore);
-                $.LoadingOverlay("hide"); // Hide loading overlay after chart is drawn
+                $.LoadingOverlay("hide");
             });
 
-            // Show results
             document.getElementById('content').classList.remove('blurred');
             document.getElementById('note').style.display = 'block';
 
-            // Store domain data for detailed view
             window.domainData = data;
-            // Update phishing table
+
             updatePhishingTable(data);
         } else {
             alert(data.message || 'An error occurred while checking the domain.');
@@ -185,7 +165,7 @@ async function checkDomain(domain) {
 }
 
 $(document).ready(function () {
-    // Initialize DataTable with default options
+
     phishingTable = $('#phishingDomainsTable').DataTable({
         responsive: true,
         pageLength: 10,
@@ -293,7 +273,7 @@ $(document).ready(function () {
             }
         ],
         initComplete: function () {
-            // Add custom styling for dark mode
+
             $('.dataTables_wrapper').css('color', '#fff');
             $('.dataTables_length').css('color', '#fff');
             $('.dataTables_filter').css({
@@ -303,7 +283,7 @@ $(document).ready(function () {
             $('.dataTables_paginate').css('color', '#fff');
             $('.btn-light').css('color', '#000');
 
-            // Style the export button
+
             $('.dt-buttons').css({
                 'display': 'inline-block',
                 'margin-right': '15px'
@@ -316,7 +296,7 @@ $(document).ready(function () {
                 'margin-right': '5px'
             });
 
-            // Style the top row
+
             $('.dataTables_wrapper .top').css({
                 'display': 'flex',
                 'justify-content': 'space-between',
@@ -325,11 +305,11 @@ $(document).ready(function () {
             });
         },
         drawCallback: function () {
-            // Remove show more initialization
+
         }
     });
 
-    // Handle "Check Another Domain" button
+
     const checkAnotherDomainBtn = document.getElementById('checkAnotherDomainBtn');
     if (checkAnotherDomainBtn) {
         checkAnotherDomainBtn.addEventListener('click', function () {
@@ -337,7 +317,7 @@ $(document).ready(function () {
         });
     }
 
-    // Get domain from URL and start check
+
     const domain = getUrlParameter('domain');
     if (domain) {
         checkDomain(domain);
@@ -346,7 +326,7 @@ $(document).ready(function () {
     }
 });
 
-// Function to update table with new data
+
 function updatePhishingTable(data) {
     if (!data || !data.raw_results || !Array.isArray(data.raw_results) || data.raw_results.length === 0) {
         phishingTable.clear().draw();
@@ -354,13 +334,11 @@ function updatePhishingTable(data) {
         return;
     }
 
-    // Clear existing data
     phishingTable.clear();
 
-    // Process and validate data before adding
     const processedData = data.raw_results.map(row => ({
         ...row,
-        // Ensure all required fields exist
+
         domain: row.domain || '',
         fuzzer: row.fuzzer || '',
         dns_ns: Array.isArray(row.dns_ns) ? row.dns_ns : [],
@@ -370,10 +348,8 @@ function updatePhishingTable(data) {
         whois_registrar: row.whois_registrar || ''
     }));
 
-    // Add new data
     phishingTable.rows.add(processedData).draw();
 
-    // Show/hide table based on data availability
     if (processedData.length > 0) {
         $('#phishingDomainsTable_wrapper').show();
     } else {
@@ -381,23 +357,13 @@ function updatePhishingTable(data) {
     }
 }
 
-// Function to clear table
 function clearPhishingTable() {
     phishingTable.clear().draw();
     $('#phishingDomainsTable_wrapper').hide();
 }
 
-// Initially hide the table wrapper
 $('#phishingDomainsTable_wrapper').hide();
 
-// Remove the show more related functions
-// Remove createExpandableCell and initializeShowMore functions
-
-// Remove the window resize handler for show more
 $(window).off('resize');
 
-// Remove the show more related functions
-// Remove createExpandableCell and initializeShowMore functions
-
-// Remove the window resize handler for show more
 $(window).off('resize'); 
