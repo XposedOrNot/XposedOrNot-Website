@@ -138,29 +138,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 500); // Small delay to ensure modal is fully shown
     }
 
-    // Utility to get URL parameters
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-
     async function checkDomain(domain) {
         try {
             showLoading();
-            // Get email and token from URL
-            const email = getUrlParameter('email');
-            const token = getUrlParameter('token');
-            // Build API URL with query params
-            let apiUrl = API_ENDPOINT + encodeURIComponent(domain);
-            const params = [];
-            if (email) params.push('email=' + encodeURIComponent(email));
-            if (token) params.push('token=' + encodeURIComponent(token));
-            if (params.length > 0) {
-                apiUrl += '?' + params.join('&');
-            }
-            const response = await fetch(apiUrl);
+            const response = await fetch(API_ENDPOINT + encodeURIComponent(domain));
 
             // Handle specific HTTP status codes
             if (response.status === 429) {
@@ -259,15 +240,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle "Check Another Domain" buttons
     [checkAnotherDomainBtn, checkAnotherDomainBtnInModal].forEach(btn => {
-        btn.addEventListener('click', function () {
-            $('#domainModal').modal('show');
-            document.getElementById('content').classList.add('blurred');
-            document.getElementById('note').style.display = 'none';
-            domainInput.value = '';
-            hideError();
-            noBreachMessage.style.display = 'none';
-            focusInput();
-        });
+        if (btn) {
+            btn.addEventListener('click', function () {
+                $('#domainModal').modal('show');
+                document.getElementById('content').classList.add('blurred');
+                document.getElementById('note').style.display = 'none';
+                domainInput.value = '';
+                hideError();
+                noBreachMessage.style.display = 'none';
+                focusInput();
+            });
+        }
     });
 
     // Show modal on page load and focus input
