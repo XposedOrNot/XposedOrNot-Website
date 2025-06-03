@@ -53,11 +53,14 @@
       .utility-buttons {
          display: flex;
          gap: 15px;
+         align-items: center;
+         flex-wrap: nowrap;
+         position: relative;
       }
 
       .btn-utility {
          position: relative;
-         padding: 10px 20px;
+         padding: 8px 15px;
          color: #2c3e50;
          background: #ffffff;
          border: 2px solid #3498db;
@@ -68,14 +71,15 @@
          display: flex;
          align-items: center;
          gap: 8px;
+         margin: 0;
+         white-space: nowrap;
+         font-size: 0.9rem;
       }
-
 
       .btn-utility i {
          font-size: 1.2em;
          transition: transform 0.3s ease;
       }
-
 
       .btn-utility::before {
          content: '';
@@ -99,11 +103,9 @@
          box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
       }
 
-
       .btn-utility:hover i {
          transform: scale(1.2);
       }
-
 
       .api-key-btn {
          border-color: #e74c3c;
@@ -141,6 +143,28 @@
          box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3);
       }
 
+      .phishing-btn {
+         border-color: #9b59b6;
+         position: relative;
+      }
+
+      .phishing-btn::before {
+         background: #9b59b6;
+      }
+
+      .phishing-btn:hover {
+         box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
+      }
+
+      .phishing-btn i.fa-chevron-down {
+         font-size: 0.8em;
+         margin-left: 5px;
+         transition: transform 0.3s ease;
+      }
+
+      .phishing-btn:hover i.fa-chevron-down {
+         transform: rotate(180deg);
+      }
 
       [data-theme="dark"] .btn-utility {
          background: #2c3e50;
@@ -163,6 +187,165 @@
 
       [data-theme="dark"] .analysis-btn {
          border-color: #f1c40f;
+      }
+
+      [data-theme="dark"] .phishing-btn {
+         border-color: #9b59b6;
+      }
+
+      [data-theme="dark"] .domain-dropdown {
+         background: #2c3e50;
+         border-color: #34495e;
+      }
+
+      [data-theme="dark"] .domain-dropdown-item {
+         color: #ecf0f1;
+      }
+
+      [data-theme="dark"] .domain-dropdown-item:hover {
+         background-color: #34495e;
+         color: #fff;
+      }
+
+      .btn-group {
+         position: relative;
+      }
+
+      #phishingBtn {
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+      }
+
+      #phishingBtn i {
+         font-size: 0.8em;
+         margin-left: 5px;
+      }
+
+      .phishing-btn-wrapper {
+         position: relative;
+         display: inline-flex;
+      }
+
+      .domain-dropdown {
+         position: absolute;
+         top: 100%;
+         right: 0;
+         background: #9b59b6;
+         border: 2px solid #9b59b6;
+         border-radius: 8px;
+         box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+         min-width: 200px;
+         z-index: 99999;
+         padding: 5px 0;
+         display: none;
+         margin-top: 5px;
+      }
+
+      .domain-dropdown.show {
+         display: block;
+      }
+
+      .domain-dropdown-item {
+         padding: 10px 15px;
+         cursor: pointer;
+         color: #ffffff;
+         text-decoration: none;
+         display: block;
+         white-space: nowrap;
+         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+         background: #9b59b6;
+      }
+
+      .domain-dropdown-item:last-child {
+         border-bottom: none;
+      }
+
+      .domain-dropdown-item:hover {
+         background-color: rgba(255, 255, 255, 0.1);
+         text-decoration: none;
+         color: #ffffff;
+      }
+
+      [data-theme="dark"] .domain-dropdown,
+      [data-theme="dark"] .domain-dropdown-item {
+         background: #8e44ad;
+         border-color: #8e44ad;
+      }
+
+      [data-theme="dark"] .domain-dropdown-item {
+         color: #ecf0f1;
+      }
+
+      [data-theme="dark"] .domain-dropdown-item:hover {
+         background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Add a small arrow at the top of the dropdown */
+      .domain-dropdown::before {
+         content: '';
+         position: absolute;
+         top: -6px;
+         right: 20px;
+         width: 12px;
+         height: 12px;
+         background: #9b59b6;
+         transform: rotate(45deg);
+         border-left: 2px solid #9b59b6;
+         border-top: 2px solid #9b59b6;
+      }
+
+      [data-theme="dark"] .domain-dropdown::before {
+         background: #8e44ad;
+         border-left-color: #8e44ad;
+         border-top-color: #8e44ad;
+      }
+
+      /* Custom select styling to make it more compact */
+      #data-filter.custom-select {
+         height: 38px;
+         padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+         font-size: 0.9rem;
+      }
+
+      /* Ensure proper spacing in the row */
+      .xon-row-area-min .row {
+         margin: 0;
+         flex-wrap: nowrap;
+      }
+
+      .xon-row-area-min .col {
+         padding: 0;
+      }
+
+      .xon-row-area-min .col-auto {
+         padding-right: 15px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 1400px) {
+         .btn-utility {
+            padding: 8px 12px;
+            font-size: 0.85rem;
+         }
+
+         .utility-buttons {
+            gap: 10px;
+         }
+      }
+
+      @media (max-width: 1200px) {
+         .btn-utility span {
+            display: none;
+         }
+
+         .btn-utility {
+            padding: 8px;
+         }
+
+         .btn-utility i {
+            margin: 0;
+         }
       }
    </style>
    <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -248,16 +431,16 @@
    </div>
    <div class="xon-row-area-min">
       <div class="container">
-         <div class="row align-items-center justify-content-between">
-            <div class="col-md-auto mb-3 mb-md-0">
-               <select id="data-filter" class="custom-select" style="width: 200px;">
+         <div class="row align-items-center">
+            <div class="col-auto mb-3 mb-md-0">
+               <select id="data-filter" class="custom-select" style="width: 150px;">
                   <option value="all">All Data</option>
                   <option value="12_months">Last 12 Months</option>
                   <option value="6_months">Last 6 Months</option>
                </select>
             </div>
-            <div class="col-md-auto">
-               <div class="utility-buttons">
+            <div class="col">
+               <div class="utility-buttons justify-content-end">
                   <button type="button" class="btn btn-utility api-key-btn"
                      data-tooltip="Manage your API keys for automated access">
                      <i class="fas fa-key"></i>
@@ -273,6 +456,17 @@
                      <i class="fas fa-chart-bar"></i>
                      <span>Breach Analysis</span>
                   </button>
+                  <div class="phishing-btn-wrapper">
+                     <button type="button" class="btn btn-utility phishing-btn" id="phishingBtn"
+                        data-tooltip="View phishing analysis for domains">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Phishing Analysis</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                     </button>
+                     <div class="domain-dropdown" id="domainDropdown">
+                        <!-- Domains will be populated dynamically -->
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
@@ -656,6 +850,49 @@
    <div class="back-to-top">
       <i class="fas fa-arrow-up"></i>
    </div>
+   <script>
+      document.addEventListener('DOMContentLoaded', function () {
+         const phishingBtn = document.getElementById('phishingBtn');
+         const domainDropdown = document.getElementById('domainDropdown');
+         const phishingBtnWrapper = phishingBtn.parentElement;
+         let isDropdownVisible = false;
+
+         // Toggle dropdown on click
+         phishingBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            isDropdownVisible = !isDropdownVisible;
+            domainDropdown.style.display = isDropdownVisible ? 'block' : 'none';
+         });
+
+         // Show dropdown on hover
+         phishingBtnWrapper.addEventListener('mouseenter', function () {
+            domainDropdown.style.display = 'block';
+         });
+
+         // Hide dropdown on mouse leave
+         phishingBtnWrapper.addEventListener('mouseleave', function () {
+            if (!isDropdownVisible) {
+               domainDropdown.style.display = 'none';
+            }
+         });
+
+         // Close dropdown when clicking outside
+         document.addEventListener('click', function (e) {
+            if (!phishingBtn.contains(e.target) && !domainDropdown.contains(e.target)) {
+               isDropdownVisible = false;
+               domainDropdown.style.display = 'none';
+            }
+         });
+
+         // Close dropdown when selecting an item
+         domainDropdown.addEventListener('click', function (e) {
+            if (e.target.classList.contains('domain-dropdown-item')) {
+               isDropdownVisible = false;
+               domainDropdown.style.display = 'none';
+            }
+         });
+      });
+   </script>
 </body>
 
 </html>

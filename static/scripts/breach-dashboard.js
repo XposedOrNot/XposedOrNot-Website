@@ -24,6 +24,12 @@ $(document).ready(function () {
         window.location.href = newUrl;
     });
 
+    // Initialize phishing button if it exists
+    const phishingBtn = document.getElementById('phishingBtn');
+    if (phishingBtn) {
+        initializePhishingButton();
+    }
+
     $('#breachAnalysisBtn').click(function () {
         var analysisUrl = 'breach-analysis.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
         window.location.href = analysisUrl;
@@ -148,6 +154,12 @@ $.ajax(emailVerificationUrl)
             addDomainSummaryToTable(domainSummary, email, token);
         }
         updateSenioritySummary(myjson.Seniority_Summary);
+
+        // Only initialize if button exists
+        const phishingBtn = document.getElementById('phishingBtn');
+        if (phishingBtn) {
+            initializePhishingButton();
+        }
 
         $.LoadingOverlay("hide");
     })
@@ -590,6 +602,12 @@ function updateApiCall(timeFilter) {
             }
             updateSenioritySummary(myjson.Seniority_Summary);
 
+            // Only initialize if button exists
+            const phishingBtn = document.getElementById('phishingBtn');
+            if (phishingBtn) {
+                initializePhishingButton();
+            }
+
             $.LoadingOverlay("hide");
         })
         .fail(function (n) {
@@ -621,4 +639,67 @@ if (typeof jQuery.easing.easeInOutQuad === 'undefined') {
         if ((t /= d / 2) < 1) return c / 2 * t * t + b;
         return -c / 2 * ((--t) * (t - 2) - 1) + b;
     };
+}
+
+// Modify the initialization function to check for button existence
+function initializePhishingButton() {
+    const phishingBtn = document.getElementById('phishingBtn');
+    const domainDropdown = document.getElementById('domainDropdown');
+
+    if (!phishingBtn || !domainDropdown) {
+        console.warn('Phishing button or dropdown not found in DOM');
+        return;
+    }
+
+    let domains = [];
+
+    // Get domains from the API response
+    if (myjson && myjson.Breaches_Details) {
+        domains = [...new Set(myjson.Breaches_Details.map(detail => detail.domain))];
+    }
+
+    // Remove any existing event listeners
+    const newPhishingBtn = phishingBtn.cloneNode(true);
+    phishingBtn.parentNode.replaceChild(newPhishingBtn, phishingBtn);
+
+    // Toggle dropdown on button click
+    newPhishingBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        domainDropdown.classList.toggle('show');
+
+        // Populate domains if not already done
+        if (domainDropdown.children.length === 0) {
+            domainDropdown.innerHTML = '';
+            if (domains.length === 1) {
+                // If only one domain, create a single clickable item
+                const item = document.createElement('div');
+                item.className = 'domain-dropdown-item';
+                item.textContent = domains[0];
+                item.addEventListener('click', () => {
+                    window.open(`domains-phishing-detail.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domains[0])}`, '_blank');
+                    domainDropdown.classList.remove('show');
+                });
+                domainDropdown.appendChild(item);
+            } else {
+                // If multiple domains, create items for each
+                domains.forEach(domain => {
+                    const item = document.createElement('div');
+                    item.className = 'domain-dropdown-item';
+                    item.textContent = domain;
+                    item.addEventListener('click', () => {
+                        window.open(`domains-phishing-detail.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`, '_blank');
+                        domainDropdown.classList.remove('show');
+                    });
+                    domainDropdown.appendChild(item);
+                });
+            }
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (e) {
+        if (!newPhishingBtn.contains(e.target) && !domainDropdown.contains(e.target)) {
+            domainDropdown.classList.remove('show');
+        }
+    });
 }
