@@ -147,8 +147,9 @@ $(document).ready(function () {
 
     // Function to update table with new data
     window.updatePhishingTable = function (data) {
-        if (!data || !data.raw_results) {
+        if (!data || !data.raw_results || !Array.isArray(data.raw_results) || data.raw_results.length === 0) {
             phishingTable.clear().draw();
+            $('#phishingDomainsTable_wrapper').hide();
             return;
         }
 

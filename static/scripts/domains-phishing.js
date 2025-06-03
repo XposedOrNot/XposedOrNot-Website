@@ -64,25 +64,20 @@ document.addEventListener('DOMContentLoaded', function () {
     function calculateRiskScore(data) {
         // Risk factors:
         // 1. Number of live domains (higher = more risk)
-        // 2. Types of fuzzers used (more variety = more risk)
-        // 3. Ratio of live domains to total scanned (higher ratio = more risk)
+        // 2. Ratio of live domains to total scanned (higher ratio = more risk)
 
         const liveDomains = data.total_live;
         const totalScanned = data.total_scanned;
-        const uniqueFuzzers = getUniqueFuzzerCount(data);
 
-        // Calculate base risk from live domains (0-50 points)
-        const domainRisk = Math.min((liveDomains / 10) * 10, 50);
+        // Calculate base risk from live domains (0-70 points)
+        const domainRisk = Math.min((liveDomains / 10) * 10, 70);
 
-        // Calculate risk from fuzzer variety (0-30 points)
-        const fuzzerRisk = Math.min(uniqueFuzzers * 5, 30);
-
-        // Calculate risk from live ratio (0-20 points)
+        // Calculate risk from live ratio (0-30 points)
         const liveRatio = liveDomains / totalScanned;
-        const ratioRisk = Math.min(liveRatio * 20, 20);
+        const ratioRisk = Math.min(liveRatio * 30, 30);
 
         // Total risk score (0-100)
-        return Math.round(domainRisk + fuzzerRisk + ratioRisk);
+        return Math.round(domainRisk + ratioRisk);
     }
 
     function drawRiskMeter(riskScore) {
@@ -143,10 +138,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 500); // Small delay to ensure modal is fully shown
     }
 
+    // Utility to get URL parameters
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
     async function checkDomain(domain) {
         try {
             showLoading();
-            const response = await fetch(API_ENDPOINT + domain);
+            // Get email and token from URL
+            const email = getUrlParameter('email');
+            const token = getUrlParameter('token');
+            // Build API URL with query params
+            let apiUrl = API_ENDPOINT + encodeURIComponent(domain);
+            const params = [];
+            if (email) params.push('email=' + encodeURIComponent(email));
+            if (token) params.push('token=' + encodeURIComponent(token));
+            if (params.length > 0) {
+                apiUrl += '?' + params.join('&');
+            }
+            const response = await fetch(apiUrl);
 
             // Handle specific HTTP status codes
             if (response.status === 429) {
@@ -191,16 +205,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Update statistics
                 breachCount.textContent = data.total_scanned;
                 recordCount.textContent = data.total_live;
-                emailCount.textContent = getUniqueFuzzerCount(data);
+                emailCount.textContent = '-'; // No longer showing fuzzer count
 
                 // Calculate and display risk score
                 const riskScore = calculateRiskScore(data);
                 google.charts.setOnLoadCallback(() => drawRiskMeter(riskScore));
-
-                // Update the phishing domains table
-                if (typeof window.updatePhishingTable === 'function') {
-                    window.updatePhishingTable(data);
-                }
 
                 // Show results
                 $('#domainModal').modal('hide');
@@ -209,6 +218,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Store domain data for detailed view
                 window.domainData = data;
+                // Update phishing table (detailed or summary)
+                if (typeof window.updatePhishingTable === 'function') {
+                    window.updatePhishingTable(data);
+                }
             } else {
                 showError(data.message || 'An error occurred while checking the domain.');
             }
