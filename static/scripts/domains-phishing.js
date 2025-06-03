@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const API_ENDPOINT = 'https://xon-api-test-325858668484.us-west1.run.app/v1/domain-phishing/';
+    const API_ENDPOINT = 'https://api.xposedornot.com/v1/domain-phishing/';
     const domainForm = document.getElementById('domainForm');
     const domainInput = document.getElementById('domainInput');
     const submitButton = document.getElementById('submitButton');
@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkAnotherDomainBtn = document.getElementById('checkAnotherDomainBtn');
     const checkAnotherDomainBtnInModal = document.getElementById('checkAnotherDomainBtnInModal');
 
-    // Initialize Google Charts with gauge package
     google.charts.load('current', { 'packages': ['gauge'] });
 
     function showLoading() {
@@ -33,11 +32,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function showError(message) {
         errorMessage.textContent = message;
         errorMessage.style.display = 'block';
-        errorMessage.style.color = '#dc3545'; // Bootstrap danger color
+        errorMessage.style.color = '#dc3545';
         errorMessage.style.marginTop = '15px';
         errorMessage.style.fontWeight = '500';
 
-        // Ensure modal stays open when there's an error
         $('#domainModal').modal('show');
     }
 
@@ -62,21 +60,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function calculateRiskScore(data) {
-        // Risk factors:
-        // 1. Number of live domains (higher = more risk)
-        // 2. Ratio of live domains to total scanned (higher ratio = more risk)
 
         const liveDomains = data.total_live;
         const totalScanned = data.total_scanned;
-
-        // Calculate base risk from live domains (0-70 points)
         const domainRisk = Math.min((liveDomains / 10) * 10, 70);
 
-        // Calculate risk from live ratio (0-30 points)
         const liveRatio = liveDomains / totalScanned;
         const ratioRisk = Math.min(liveRatio * 30, 30);
 
-        // Total risk score (0-100)
+
         return Math.round(domainRisk + ratioRisk);
     }
 
@@ -106,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const chart = new google.visualization.Gauge(chartDiv);
         chart.draw(chartData, options);
 
-        // Add risk level text below the chart
+
         let riskLevel;
         if (riskScore <= 70) {
             riskLevel = 'Low Risk';
@@ -123,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
         riskLevelDiv.style.fontSize = '14px';
         riskLevelDiv.textContent = riskLevel;
 
-        // Clear previous elements if they exist
+
         const existingElements = chartDiv.parentElement.querySelectorAll('.risk-level, .risk-score');
         existingElements.forEach(el => el.remove());
 
@@ -131,11 +123,11 @@ document.addEventListener('DOMContentLoaded', function () {
         chartDiv.parentElement.appendChild(riskLevelDiv);
     }
 
-    // Function to focus on the input field
+
     function focusInput() {
         setTimeout(() => {
             domainInput.focus();
-        }, 500); // Small delay to ensure modal is fully shown
+        }, 250);
     }
 
     async function checkDomain(domain) {
@@ -143,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showLoading();
             const response = await fetch(API_ENDPOINT + encodeURIComponent(domain));
 
-            // Handle specific HTTP status codes
+
             if (response.status === 429) {
                 showError('Too many requests. Please try again in a few minutes.');
                 return;
@@ -164,42 +156,41 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
 
             if (data.status === 'success') {
-                // Update domain display
+
                 domainDisplay.textContent = domain;
                 lastExposure.textContent = formatDate(data.last_checked);
 
-                // Update logo
+
                 const logoImg = document.getElementById('logo');
                 if (logoImg) {
                     logoImg.src = `https://logo.clearbit.com/${domain}`;
                     logoImg.onerror = function () {
-                        // If logo fails to load, try alternative logo service
                         this.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
                         this.onerror = function () {
-                            // If both fail, hide the logo
+
                             this.style.display = 'none';
                         };
                     };
                     logoImg.style.display = 'inline-block';
                 }
 
-                // Update statistics
+
                 breachCount.textContent = data.total_scanned;
                 recordCount.textContent = data.total_live;
                 emailCount.textContent = data.unique_fuzzers || '-';
 
-                // Calculate and display risk score
+
                 const riskScore = calculateRiskScore(data);
                 google.charts.setOnLoadCallback(() => drawRiskMeter(riskScore));
 
-                // Show results
+
                 $('#domainModal').modal('hide');
                 document.getElementById('content').classList.remove('blurred');
                 document.getElementById('note').style.display = 'block';
 
-                // Store domain data for detailed view
+
                 window.domainData = data;
-                // Update phishing table (detailed or summary)
+
                 if (typeof window.updatePhishingTable === 'function') {
                     window.updatePhishingTable(data);
                 }
@@ -220,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     domainForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        hideError(); // Clear any previous errors
+        hideError();
         const domain = domainInput.value.trim().toLowerCase();
 
         if (!domain) {
@@ -228,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Basic domain validation
+
         const domainRegex = /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/;
         if (!domainRegex.test(domain)) {
             showError('Please enter a valid domain name.');
@@ -238,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
         checkDomain(domain);
     });
 
-    // Handle "Check Another Domain" buttons
+
     [checkAnotherDomainBtn, checkAnotherDomainBtnInModal].forEach(btn => {
         if (btn) {
             btn.addEventListener('click', function () {
@@ -253,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Show modal on page load and focus input
+
     $('#domainModal').on('shown.bs.modal', function () {
         focusInput();
     });
@@ -266,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#last-exposure').text('--');
         $('#note').hide();
 
-        // Clear the phishing domains table
+
         if (typeof window.clearPhishingTable === 'function') {
             window.clearPhishingTable();
         }
