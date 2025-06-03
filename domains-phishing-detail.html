@@ -54,9 +54,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.7/loadingoverlay.min.js"></script>
 </head>
 
 <body>
+  <script>
+    $.LoadingOverlaySetup({
+      background: "rgba(0, 0, 0, 0.5)",
+      image: "static/images/shield-alt.svg",
+      imageAnimation: "1s fadein",
+      imageColor: "#6daae0"
+    });
+    $.LoadingOverlay("show");
+  </script>
   <div class="overlay"></div>
   <div id="content" class="blurred">
     <div>
@@ -197,46 +207,17 @@
     </div>
   </div>
 
-  <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content dark-mode">
-        <div class="modal-header">
-          <h5 class="modal-title" id="domainModalLabel">Check for Phishing Domains</h5>
-        </div>
-        <div class="modal-body light-mode">
-          <form id="domainForm" autocomplete="off">
-            <div class="form-group text-center">
-              <p>Enter your domain name below to scan for potential phishing domains.</p><br><br>
-              <label for="domainInput" class="sr-only">Domain Name</label>
-              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
-              <div class="invalid-feedback">
-                Please enter a valid domain name.
-              </div>
-              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
-                Scan Domain
-                <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
-                  style="display:none;"></span>
-              </button>
-              <div id="errorMessage" class="error-message" style="display:none;"></div>
-            </div>
-          </form>
-          <div id="noBreachMessage" style="display: none;">
-            <div class="text-center">
-              <i class="fas fa-shield-alt fa-3x text-success"></i>
-              <h4 class="text-success mt-3">No phishing domains found for <span id="searchedDomain"
-                  class="font-weight-bold"></span>!</h4>
-              <p>Your domain appears to be safe from phishing lookalikes.</p>
-              <button type="button" class="btn btn-secondary mt-3" id="checkAnotherDomainBtnInModal">Check Another
-                Domain</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  <script>
+    // Get domain from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const domain = urlParams.get('domain');
+
+    if (!domain) {
+      // Redirect to index if no domain provided
+      window.location.href = 'index.html';
+    }
+  </script>
   <script src="static/scripts/domains-phishing.js"></script>
   <script src="static/scripts/domains-phishing-table.js"></script>
   <script src="static/scripts/common.js"></script>
