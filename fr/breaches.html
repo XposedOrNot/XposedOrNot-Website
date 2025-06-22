@@ -1,290 +1,256 @@
 <html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>XposedOrNot : référentiel de violations de données</title>
-<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet"/>
-<link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet"/>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="XposedOrNot : FAQ for quick reference" name="description"/>
-<meta content="Devanand Premkumar" name="author"/>
-<link href="favicon.ico" rel="icon" type="image/x-icon">
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet"/>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-<script crossorigin="anonymous" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link async="" defer="" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all" rel="stylesheet" type="text/css"/>
-<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css" integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ==" rel="stylesheet">
-<script crossorigin="anonymous" integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ==" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-<link defer="" href="static/css/style.css" rel="stylesheet" type="text/css"/>
-<script>
-         (function (h, o, t, j, a, r) {
-         h.hj = h.hj || function () {
-         (h.hj.q = h.hj.q || []).push(arguments)
-         };
-         h._hjSettings = {
-         hjid: 1613245,
-         hjsv: 6
-         };
-         a = o.getElementsByTagName('head')[0];
-         r = o.createElement('script');
-         r.async = 1;
-         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-         a.appendChild(r);
-         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-         (function () {
-         var script = document.createElement("script");
-         script.onload = () => {
-         window.GrafanaFaroWebSdk.initializeFaro({
-         url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
-         app: {
-          name: 'xonniepub',
-          version: "1.0.0",
-         },
-         });
-         };
-         script.src =
-         "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
-         document.head.appendChild(script);
-         })();
-      </script>
-<style>
-         .btn-label {
-         cursor: default;
-         background-color: #f7f7f7;
-         border: none;
-         padding: 6px 12px;
-         vertical-align: middle;
-         margin-right: 4px;
-         }
-         .dt-buttons {
-         float: right;
-         }
-         .header, .footer {
-         background-color: #f7f7f7;
-         padding: 10px;
-         text-align: center;
-         }
-         .container {
-         padding: 20px;
-         }
-      </style>
-<script>
-         (function (h, o, t, j, a, r) {
-         h.hj = h.hj || function () {
-         (h.hj.q = h.hj.q || []).push(arguments)
-         };
-         h._hjSettings = {
-         hjid: 1613245,
-         hjsv: 6
-         };
-         a = o.getElementsByTagName('head')[0];
-         r = o.createElement('script');
-         r.async = 1;
-         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-         a.appendChild(r);
-         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-         (function () {
-         var script = document.createElement("script");
-         script.onload = () => {
-         window.GrafanaFaroWebSdk.initializeFaro({
-         url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
-         app: {
-          name: 'xonniepub',
-          version: "1.0.0",
-         },
-         });
-         };
-         script.src =
-         "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
-         document.head.appendChild(script);
-         })();
-      </script>
-</link></link></link></head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>XposedOrNot : référentiel de violations de données</title>
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="XposedOrNot : FAQ for quick reference" name="description" />
+    <meta content="Devanand Premkumar" name="author" />
+    <link href="favicon.ico" rel="icon" type="image/x-icon">
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
+    <script crossorigin="anonymous"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link async="" defer=""
+        href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset"
+        media="all" rel="stylesheet" type="text/css" />
+    <link crossorigin="anonymous"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+        integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+        rel="stylesheet">
+    <script crossorigin="anonymous"
+        integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+    <link defer="" href="static/css/style.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .btn-label {
+            cursor: default;
+            background-color: #f7f7f7;
+            border: none;
+            padding: 6px 12px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .dt-buttons {
+            float: right;
+        }
+
+        .header,
+        .footer {
+            background-color: #f7f7f7;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+        }
+    </style>
+
+    </link>
+    </link>
+    </link>
+</head>
+
 <body>
-<div class="kbanner">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-<a class="navbar-brand" href="https://xposedornot.com"><span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-<span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Edition communautaire</span></a>
-<button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbarNavDropdown">
-<ul class="navbar-nav navbar-right">
-<li class="nav-item active">
-<a class="nav-link" href="password.html">Mot de passe<span class="sr-only">(actuel)</span>
-</a>
-</li>
-<li class="nav-item active">
-<a class="nav-link" href="api_doc.html">API</a>
-</li>
-<li class="nav-item active">
-<a class="nav-link" href="https://blog.xposedornot.com/">Blog</a>
-</li>
-<li class="nav-item dropdown active">
-<a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"> Plus d'outils</a>
-<div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-<a class="dropdown-item" href="xposed.html">Violations Xposed</a>
-<a class="dropdown-item" href="shield.html">Bouclier de confidentialité</a>
-<a class="dropdown-item" href="domain.html">Vérification du domaine</a>
-<a class="dropdown-item" href="domains.html">Recherche au niveau du domaine</a>
-<a class="dropdown-item" href="timeline.html">Chronologie des violations</a>
-</div>
-</li>
-</ul>
-</div>
-</nav>
-</div>
-<div class="header">
-<h1>XposedOrNot : violations de données</h1>
-</div>
-<div>
-<table class="display" id="example" style="width:100%">
-<thead>
-<tr>
-<th>Identifiant de violation</th>
-<th>Date de violation</th>
-<th>Domaine</th>
-<th>Données exposées</th>
-<th>Dossiers exposés</th>
-<th>Description</th>
-<th>Industrie</th>
-<th>Risque de mot de passe</th>
-<th>Consultable</th>
-<th>Sensible</th>
-<th>Vérifié</th>
-</tr>
-</thead>
-</table>
-</div>
-<div class="footer">
-<p> XposesdOrNot.com</p>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
-<script>
-         function formatYesNo(data, reverse=false) {
-             if ((data === "Yes" && !reverse) || (data === "No" && reverse)) {
-                 return '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
-             } else {
-                 return '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
-             }
-         }
-         
-         function formatPasswordRisk(data) {
-             if (data === "plaintext" || data === "easytocrack") {
-                 return '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
-             } else {
-                 return '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
-             }
-         }
-         
-         function formatDescription(data) {
-             if (data.split(' ').length > 40) {
-                 return data.split(' ').slice(0, 40).join(' ') + '... <a href="#" class="readMore">Read more</a><span style="display: none;">' + data + '</span>';
-             } else {
-                 return data;
-             }
-         }
-         
-         $(document).ready(function() {
-             $('#example').DataTable({
-                 ajax: {
-                     url: 'https://api.xposedornot.com/v1/breaches',
-                     dataSrc: 'Exposed Breaches',
-                     error: function (xhr, error, thrown) {
-                         console.error("Error occurred: ", xhr, error, thrown);
-                     }
-                 },
-                 columns: [
-                     { data: 'Breach ID' },
-                     {
-                         data: 'Breached Date',
-                         render: function(data) {
-                             var date = new Date(data);
-                             return date.toLocaleString('default', { month: 'long', year: 'numeric' });
-                         }
-                     },
-                     { data: 'Domain' },
-                     { 
-                         data: 'Exposed Data',
-                         render: function(data) {
-                             return data.split(';').join(', ');
-                         }
-                     },
-                     { 
-                         data: 'Exposed Records',
-                         render: $.fn.dataTable.render.number(',', '.')
-                     },
-                     {
-                         data: 'Exposure Description',
-                         render: function(data) {
-                             return formatDescription(data);
-                         }
-                     },
-                     { data: 'Industry' },
-                     {
-                         data: 'Password Risk',
-                         render: function(data) {
-                             return formatPasswordRisk(data);
-                         }
-                     },
-                     {
-                         data: 'Searchable',
-                         render: function(data) {
-                             return formatYesNo(data);
-                         }
-                     },
-                     {
-                         data: 'Sensitive',
-                         render: function(data) {
-                             return formatYesNo(data, true);
-                         }
-                     },
-                     {
-                         data: 'Verified',
-                         render: function(data) {
-                             return formatYesNo(data);
-                         }
-                     }
-                 ],
-                 order: [[1, 'desc']],
-                 dom: 'Blfrtip',
-                 buttons: [
-                     {
-                         extend: 'colvis',
-                         postfixButtons: ['colvisRestore'],
-                         text: 'Select Columns',
-                         className: 'pull-right'
-                     },
-                     'csvHtml5', 'excelHtml5', 
-                 ],
-                 initComplete: function() {
-                     $(".dt-buttons").prepend('<button class="btn btn-label">Export:</button> ');
-                 },
-                 language: {
-                     buttons: {
-                         colvis: 'Select Columns'
-                     }
-                 }
-             });
-         
-             $('#example').on('click', '.readMore', function(e) {
-                 e.preventDefault();
-                 $(this).parent().html($(this).next().text());
-             });
-         });
-      </script>
-<script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-<script src="/static/scripts/common.js"></script>
+    <div class="kbanner">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+            <a class="navbar-brand" href="https://xposedornot.com"><span
+                    style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Edition
+                    communautaire</span></a>
+            <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav navbar-right">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="password.html">Mot de passe<span class="sr-only">(actuel)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="api_doc.html">API</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://blog.xposedornot.com/">Blog</a>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+                            data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"> Plus d'outils</a>
+                        <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                            <a class="dropdown-item" href="xposed.html">Violations Xposed</a>
+                            <a class="dropdown-item" href="shield.html">Bouclier de confidentialité</a>
+                            <a class="dropdown-item" href="domain.html">Vérification du domaine</a>
+                            <a class="dropdown-item" href="domains.html">Recherche au niveau du domaine</a>
+                            <a class="dropdown-item" href="timeline.html">Chronologie des violations</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="header">
+        <h1>XposedOrNot : violations de données</h1>
+    </div>
+    <div>
+        <table class="display" id="example" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Identifiant de violation</th>
+                    <th>Date de violation</th>
+                    <th>Domaine</th>
+                    <th>Données exposées</th>
+                    <th>Dossiers exposés</th>
+                    <th>Description</th>
+                    <th>Industrie</th>
+                    <th>Risque de mot de passe</th>
+                    <th>Consultable</th>
+                    <th>Sensible</th>
+                    <th>Vérifié</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="footer">
+        <p> XposesdOrNot.com</p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
+    <script>
+        function formatYesNo(data, reverse = false) {
+            if ((data === "Yes" && !reverse) || (data === "No" && reverse)) {
+                return '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
+            } else {
+                return '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
+            }
+        }
+
+        function formatPasswordRisk(data) {
+            if (data === "plaintext" || data === "easytocrack") {
+                return '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
+            } else {
+                return '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
+            }
+        }
+
+        function formatDescription(data) {
+            if (data.split(' ').length > 40) {
+                return data.split(' ').slice(0, 40).join(' ') + '... <a href="#" class="readMore">Read more</a><span style="display: none;">' + data + '</span>';
+            } else {
+                return data;
+            }
+        }
+
+        $(document).ready(function () {
+            $('#example').DataTable({
+                ajax: {
+                    url: 'https://api.xposedornot.com/v1/breaches',
+                    dataSrc: 'Exposed Breaches',
+                    error: function (xhr, error, thrown) {
+                        console.error("Error occurred: ", xhr, error, thrown);
+                    }
+                },
+                columns: [
+                    { data: 'Breach ID' },
+                    {
+                        data: 'Breached Date',
+                        render: function (data) {
+                            var date = new Date(data);
+                            return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+                        }
+                    },
+                    { data: 'Domain' },
+                    {
+                        data: 'Exposed Data',
+                        render: function (data) {
+                            return data.split(';').join(', ');
+                        }
+                    },
+                    {
+                        data: 'Exposed Records',
+                        render: $.fn.dataTable.render.number(',', '.')
+                    },
+                    {
+                        data: 'Exposure Description',
+                        render: function (data) {
+                            return formatDescription(data);
+                        }
+                    },
+                    { data: 'Industry' },
+                    {
+                        data: 'Password Risk',
+                        render: function (data) {
+                            return formatPasswordRisk(data);
+                        }
+                    },
+                    {
+                        data: 'Searchable',
+                        render: function (data) {
+                            return formatYesNo(data);
+                        }
+                    },
+                    {
+                        data: 'Sensitive',
+                        render: function (data) {
+                            return formatYesNo(data, true);
+                        }
+                    },
+                    {
+                        data: 'Verified',
+                        render: function (data) {
+                            return formatYesNo(data);
+                        }
+                    }
+                ],
+                order: [[1, 'desc']],
+                dom: 'Blfrtip',
+                buttons: [
+                    {
+                        extend: 'colvis',
+                        postfixButtons: ['colvisRestore'],
+                        text: 'Select Columns',
+                        className: 'pull-right'
+                    },
+                    'csvHtml5', 'excelHtml5',
+                ],
+                initComplete: function () {
+                    $(".dt-buttons").prepend('<button class="btn btn-label">Export:</button> ');
+                },
+                language: {
+                    buttons: {
+                        colvis: 'Select Columns'
+                    }
+                }
+            });
+
+            $('#example').on('click', '.readMore', function (e) {
+                e.preventDefault();
+                $(this).parent().html($(this).next().text());
+            });
+        });
+    </script>
+    <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script src="/static/scripts/common.js"></script>
 </body>
+
 </html>
