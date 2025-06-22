@@ -1,482 +1,525 @@
 <html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<title>XposedOrNot: डोमेन सत्यापन</title>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="Domain Verification: XposedOrNot" name="description"/>
-<meta content="Devanand Premkumar" name="author"/>
-<link href="favicon.ico" rel="icon" type="image/x-icon"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet"/>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-<script crossorigin="anonymous" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link async="" defer="" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all" rel="stylesheet" type="text/css"/>
-<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css" integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ==" rel="stylesheet">
-<script crossorigin="anonymous" integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ==" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-<link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css"/>
-<script>      
+  <meta charset="utf-8" />
+  <title>XposedOrNot: डोमेन सत्यापन</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="Domain Verification: XposedOrNot" name="description" />
+  <meta content="Devanand Premkumar" name="author" />
+  <link href="favicon.ico" rel="icon" type="image/x-icon" />
+  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
+  <script crossorigin="anonymous"
+    integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+    referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link async="" defer=""
+    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all"
+    rel="stylesheet" type="text/css" />
+  <link crossorigin="anonymous"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+    integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+    rel="stylesheet">
+  <script crossorigin="anonymous"
+    integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
 
-         (function (h, o, t, j, a, r) {
-    h.hj = h.hj || function () {
-        (h.hj.q = h.hj.q || []).push(arguments)
-    };
-    h._hjSettings = {
-        hjid: 1613245,
-        hjsv: 6
-    };
-    a = o.getElementsByTagName('head')[0];
-    r = o.createElement('script');
-    r.async = 1;
-    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-    a.appendChild(r);
-})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-  (function () {
-    var script = document.createElement("script");
-    script.onload = () => {
-      window.GrafanaFaroWebSdk.initializeFaro({
-        url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
-        app: {
-          name: 'xonniepub',
-          version: "1.0.0",
-        },
-      });
-    };
-    script.src =
-      "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
-    document.head.appendChild(script);
-  })();
-      </script>
-<style>
-         .input-field {
-         margin-right: -20px;
-         }
-         .copy-btn {
-         padding: 0.5rem 0.5rem;
-         width: auto;
-         margin-left: -30px; 
-         }
-      </style>
-</link></link></head>
+  <style>
+    .input-field {
+      margin-right: -20px;
+    }
+
+    .copy-btn {
+      padding: 0.5rem 0.5rem;
+      width: auto;
+      margin-left: -30px;
+    }
+  </style>
+  </link>
+  </link>
+</head>
+
 <body style="color:#3c5fec;font-family: 'Poppins', sans-serif;">
-<div class="kbanner">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-<a class="navbar-brand" href="https://xposedornot.com"><span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">एक्सपोज़डऑरनॉट</span>
-<span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">सामुदायिक संस्करण</span></a>
-<button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbarNavDropdown">
-<ul class="navbar-nav navbar-right">
-<li class="nav-item active">
-<a class="nav-link" href="password.html">पासवर्ड<span class="sr-only">(मौजूदा)</span>
-</a>
-</li>
-<li class="nav-item active">
-<a class="nav-link" href="api_doc.html">एपीआई</a>
-</li>
-<li class="nav-item active">
-<a class="nav-link" href="https://blog.xposedornot.com/">ब्लॉग</a>
-</li>
-<li class="nav-item dropdown active">
-<a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink"> अधिक उपकरण</a>
-<div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-<a class="dropdown-item" href="xposed.html">एक्सपोज़ड उल्लंघन</a>
-<a class="dropdown-item" href="shield.html">गोपनीयता शील्ड</a>
-<a class="dropdown-item" href="domain.html">डोमेन सत्यापन</a>
-<a class="dropdown-item" href="domains.html">डोमेन-स्तरीय खोज</a>
-<a class="dropdown-item" href="timeline.html">समयरेखा का उल्लंघन</a>
-</div>
-</li>
-</ul>
-</div>
-</nav>
-          
+  <div class="kbanner">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+      <a class="navbar-brand" href="https://xposedornot.com"><span
+          style="font-size: 1.5em; font-weight: bold; display: block; color: white;">एक्सपोज़डऑरनॉट</span>
+        <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">सामुदायिक
+          संस्करण</span></a>
+      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
+        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav navbar-right">
+          <li class="nav-item active">
+            <a class="nav-link" href="password.html">पासवर्ड<span class="sr-only">(मौजूदा)</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="api_doc.html">एपीआई</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://blog.xposedornot.com/">ब्लॉग</a>
+          </li>
+          <li class="nav-item dropdown active">
+            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+              href="#" id="navbarDropdownMenuLink"> अधिक उपकरण</a>
+            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+              <a class="dropdown-item" href="xposed.html">एक्सपोज़ड उल्लंघन</a>
+              <a class="dropdown-item" href="shield.html">गोपनीयता शील्ड</a>
+              <a class="dropdown-item" href="domain.html">डोमेन सत्यापन</a>
+              <a class="dropdown-item" href="domains.html">डोमेन-स्तरीय खोज</a>
+              <a class="dropdown-item" href="timeline.html">समयरेखा का उल्लंघन</a>
+            </div>
+          </li>
+        </ul>
       </div>
-<div class="jumbotron" id="d1">
-<div class="container">
-<h1>डोमेन सत्यापन और सत्यापन</h1>
-<br/>
-<p align="center"> अपने डोमेन पर डेटा उल्लंघन जोखिम की सीमा का आकलन करने के लिए, इनका पालन करें<strong>तीन सरल चरण</strong>आपकी जानकारी सत्यापित करने के लिए.</p>
-</div>
-</div>
-<div class="container" id="div_input">
-<p class="alert alert-primary">हम समझते हैं कि आपके डोमेन उपयोगकर्ताओं को सुरक्षित रखना अत्यंत महत्वपूर्ण है, इसलिए हमारे पास डोमेन प्राधिकरण को सत्यापित करने के तीन शानदार तरीके हैं - का उपयोग करना<strong>डीएनएस</strong>,<strong>एचटीएमएल</strong>, और<strong>ईमेल</strong>. हमारा लक्ष्य आपके लिए अपनी आवश्यकताओं के अनुरूप सर्वोत्तम विधि चुनना आसान बनाना है।<br/><br/>
-<strong>डीएनएस</strong>: पहली विधि में आपके डोमेन की DNS सेटिंग्स में एक विशेष रिकॉर्ड जोड़ना शामिल है। यह आपके डोमेन को यह पुष्टि करने के लिए गुप्त रूप से हाथ मिलाने जैसा है कि यह वास्तविक सौदा है। हम प्रक्रिया में आपका मार्गदर्शन करेंगे, और एक बार यह पूरा हो जाने पर, आपके डोमेन की पहचान कुछ ही समय में सत्यापित हो जाएगी!<br/><br/>
-<strong>एचटीएमएल</strong>: यदि आप अधिक व्यावहारिक दृष्टिकोण पसंद करते हैं, तो हमने आपको कवर कर लिया है! बस अपनी वेबसाइट की रूट डायरेक्टरी में एक अद्वितीय कोड के साथ एक HTML फ़ाइल जोड़ें। यह एक डिजिटल झंडा लगाने जैसा है जो कहता है "हां, यह मेरा डोमेन है!"। हम झंडे की जाँच करेंगे, और यदि वह वहाँ है, तो आप जाने के लिए तैयार हैं!<br/><br/>
-<strong>ईमेल</strong>: अंत में, उन लोगों के लिए जो ईमेल की सुविधा पसंद करते हैं, हम सीधे आपके इनबॉक्स में एक सत्यापन लिंक भेज सकते हैं। लिंक पर क्लिक करें और वॉइला, आपका डोमेन अधिकृत है! यह अपना पसंदीदा ईमेल खोलने और एक बटन टैप करने जितना आसान है।<br/><br/>
-            याद रखें, हम इस प्रक्रिया को यथासंभव सहज और मैत्रीपूर्ण बनाने के लिए यहां हैं। तो वह तरीका चुनें जो आपके लिए सबसे अच्छा काम करता है, और आइए उस डोमेन को अधिकृत करें! 🎉<br/><br/>
-</p>
-<form id="defaultForm" method="post" onload="choices();" role="form">
-<div class="form-group">
-<input autocapitalize="off" autocorrect="off" autofocus="true" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" id="eventName" maxlength="255" name="edhu" placeholder="Enter a valid domain name ...(e.g.: your-domain.com)" spellcheck="false" type="text"/>
-<span class="input-group-btn">
-</span></div>
-<br/>
-</form></div>
-<div align="center">
-<button class="btn btn-primary btn-lg" id="alertMe" type="submit">सत्यापन प्रक्रिया प्रारंभ करें<span class="glyphicon glyphicon-ok" id="alertMe_i1"></span>
-</button>
-</div>
-<div align="center" hidden="false" id="status">
-<button class="btn btn-primary btn-lg"> सत्यापन प्रारंभ किया जा रहा है...<em class="fa fa-spinner fa-spin"></em>
-</button>
-</div>
-<input id="hid1" name="hid1" readonly="" type="hidden">
+    </nav>
+     
+  </div>
+  <div class="jumbotron" id="d1">
+    <div class="container">
+      <h1>डोमेन सत्यापन और सत्यापन</h1>
+      <br />
+      <p align="center"> अपने डोमेन पर डेटा उल्लंघन जोखिम की सीमा का आकलन करने के लिए, इनका पालन करें<strong>तीन सरल
+          चरण</strong>आपकी जानकारी सत्यापित करने के लिए.</p>
+    </div>
+  </div>
+  <div class="container" id="div_input">
+    <p class="alert alert-primary">हम समझते हैं कि आपके डोमेन उपयोगकर्ताओं को सुरक्षित रखना अत्यंत महत्वपूर्ण है, इसलिए
+      हमारे पास डोमेन प्राधिकरण को सत्यापित करने के तीन शानदार तरीके हैं - का उपयोग
+      करना<strong>डीएनएस</strong>,<strong>एचटीएमएल</strong>, और<strong>ईमेल</strong>. हमारा लक्ष्य आपके लिए अपनी
+      आवश्यकताओं के अनुरूप सर्वोत्तम विधि चुनना आसान बनाना है।<br /><br />
+      <strong>डीएनएस</strong>: पहली विधि में आपके डोमेन की DNS सेटिंग्स में एक विशेष रिकॉर्ड जोड़ना शामिल है। यह आपके
+      डोमेन को यह पुष्टि करने के लिए गुप्त रूप से हाथ मिलाने जैसा है कि यह वास्तविक सौदा है। हम प्रक्रिया में आपका
+      मार्गदर्शन करेंगे, और एक बार यह पूरा हो जाने पर, आपके डोमेन की पहचान कुछ ही समय में सत्यापित हो जाएगी!<br /><br />
+      <strong>एचटीएमएल</strong>: यदि आप अधिक व्यावहारिक दृष्टिकोण पसंद करते हैं, तो हमने आपको कवर कर लिया है! बस अपनी
+      वेबसाइट की रूट डायरेक्टरी में एक अद्वितीय कोड के साथ एक HTML फ़ाइल जोड़ें। यह एक डिजिटल झंडा लगाने जैसा है जो कहता
+      है "हां, यह मेरा डोमेन है!"। हम झंडे की जाँच करेंगे, और यदि वह वहाँ है, तो आप जाने के लिए तैयार हैं!<br /><br />
+      <strong>ईमेल</strong>: अंत में, उन लोगों के लिए जो ईमेल की सुविधा पसंद करते हैं, हम सीधे आपके इनबॉक्स में एक
+      सत्यापन लिंक भेज सकते हैं। लिंक पर क्लिक करें और वॉइला, आपका डोमेन अधिकृत है! यह अपना पसंदीदा ईमेल खोलने और एक बटन
+      टैप करने जितना आसान है।<br /><br />
+      याद रखें, हम इस प्रक्रिया को यथासंभव सहज और मैत्रीपूर्ण बनाने के लिए यहां हैं। तो वह तरीका चुनें जो आपके लिए सबसे
+      अच्छा काम करता है, और आइए उस डोमेन को अधिकृत करें! 🎉<br /><br />
+    </p>
+    <form id="defaultForm" method="post" onload="choices();" role="form">
+      <div class="form-group">
+        <input autocapitalize="off" autocorrect="off" autofocus="true" class="form-control" data-val="true"
+          data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" id="eventName" maxlength="255"
+          name="edhu" placeholder="Enter a valid domain name ...(e.g.: your-domain.com)" spellcheck="false"
+          type="text" />
+        <span class="input-group-btn">
+        </span>
+      </div>
+      <br />
+    </form>
+  </div>
+  <div align="center">
+    <button class="btn btn-primary btn-lg" id="alertMe" type="submit">सत्यापन प्रक्रिया प्रारंभ करें<span
+        class="glyphicon glyphicon-ok" id="alertMe_i1"></span>
+    </button>
+  </div>
+  <div align="center" hidden="false" id="status">
+    <button class="btn btn-primary btn-lg"> सत्यापन प्रारंभ किया जा रहा है...<em class="fa fa-spinner fa-spin"></em>
+    </button>
+  </div>
+  <input id="hid1" name="hid1" readonly="" type="hidden">
 
-<div id="div_s1">
-<div align="center" id="lbl_1">
-<div id="d1"></div>
-</div>
-<div class="selectContainer container" id="s1">
-<select class="form-control input-nl2" data-style="btn-primary" id="strat" name="strat">
-<option selected="" value="ver">उपलब्ध सत्यापन विधियों में से एक का चयन करें...</option>
-<option value="email">ईमेल आधारित सत्यापन</option>
-<option value="dns_txt">डीएनएस टेक्स्ट आधारित सत्यापन</option>
-<option value="html">HTML पेज आधारित सत्यापन</option>
-</select>
-<br/>
-</div>
-</div>
-<div align="center" class="alert alert-primary container" id="div_dns" role="alert" style=" border-radius: 5px;border:2px solid #6daae0;">
-<strong>DNS TXT रिकॉर्ड आधारित सत्यापन.!</strong> कृपया नीचे दिखाए अनुसार अपने DNS में एक अस्थायी TXT रिकॉर्ड बनाएं।<br/>
-<br/>
-<form id="dns_form" method="post">
-<div class="input-group" id="div2">
-<span class="input-group-addon">
-<em class="fa fa-bullseye"></em>
-</span>
-<input autocapitalize="off" autofocus="true" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !" data-val-minlength-min="3" id="edhu_dns" maxlength="255" name="edhu_dns" readonly=""/>
-</div>
-<br/>
-<div align="left" class="input-group">
-<input class="form-control input-lg" id="txt_dns" placeholder="Email address to receive the exposed data" type="email"/>
-<span class="input-group-btn">
-<button class="btn btn-lg btn-primary" id="searchMe_d" type="submit"> सत्यापित करें<span class="glyphicon glyphicon-ok" id="searchMe_d_i1">
-</span></button>
-</span>
-</div>
-</form>
-</div>
-<div align="center" class="container alert alert-primary" id="div_meta" role="alert" style=" border-radius: 5px;border:2px solid #6daae0;">
-<strong>मेटा टैग आधारित सत्यापन.!</strong> कृपया नीचे दिखाए अनुसार अपने होम पेज में एक अस्थायी मेटा डेटा टैग बनाएं।<br/>
-<br/>
-<form id="meta_form" method="post">
-<div class="input-group" id="div2">
-<span class="input-group-addon">
-<em class="fa fa-bullseye"></em>
-</span>
-<input autocapitalize="off" autofocus="true" class="form-control" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !" data-val-minlength-min="3" id="edhu_meta" maxlength="255" name="edhu_meta" readonly=""/>
-</div>
-<br/>
-<div align="left" class="input-group">
-<input class="form-control input-lg" id="txt_email_m" placeholder="Email address to receive the exposed data" type="email"/>
-<span class="input-group-btn">
-<button class="btn btn-lg btn-primary" id="searchMe_m" type="submit"> सत्यापित करें<span class="glyphicon glyphicon-ok" id="searchMe_m_i1">
-</span></button>
-</span>
-</div>
-</form>
-</div>
-<div align="center" class="alert alert-primary container" id="div_html" role="alert" style="border-radius: 5px;border:2px solid #6daae0;">
-<strong>HTML फ़ाइल आधारित सत्यापन!</strong> कृपया अपनी रूट निर्देशिका में नीचे दिखाए गए मानों के साथ एक अस्थायी फ़ाइल बनाएं और फिर सत्यापित करें पर क्लिक करें।<br/><br/>
-<form id="html_form" method="post">
-<div class="form-group row align-items-center">
-<label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filename">फ़ाइल का नाम:</label>
-<div class="col-sm-9">
-<input class="form-control input-lg input-field" data-val="true" id="edhu_html_filename" name="edhu_html_filename" readonly="" type="text"/>
-</div>
-<div class="col-sm-1">
-<button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filename" type="button"><i class="fas fa-copy"></i> प्रतिलिपि</button>
-</div>
-</div>
-<div class="form-group row align-items-center">
-<label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filecontent">फ़ाइल सामग्री:</label>
-<div class="col-sm-9">
-<input class="form-control input-lg input-field" data-val="true" id="edhu_html_filecontent" name="edhu_html_filecontent" readonly="" type="text"/>
-</div>
-<div class="col-sm-1">
-<button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filecontent" type="button"><i class="fas fa-copy"></i> प्रतिलिपि</button>
-</div>
-</div>
-<div align="left" class="input-group">
-<input class="form-control input-lg" id="txt_email_h" placeholder="Email address to receive the exposed data" type="email"/>
-<span class="input-group-btn">
-<button class="btn btn-lg btn-primary" id="searchMe_h" type="submit"> सत्यापित करें<span class="glyphicon glyphicon-ok" id="searchMe_h_i1"></span>
-</button>
-</span>
-</div>
-</form>
-</div>
-<div align="center" class="container alert alert-danger" id="dang" role="alert">
-</div>
-<div align="center" class="alert alert-primary container" id="div_email" role="alert" style="border-radius: 5px;border:2px solid #6daae0;">
-<strong>ईमेल</strong> आधारित सत्यापन प्रदान किए गए डोमेन को मान्य करना आसान है, आप आधिकारिक ईमेल संपर्कों में ईमेल प्राप्त कर सकते हैं। कृपया ईमेल चुनें और फिर क्लिक करें<strong>सत्यापित करें</strong>.<br/>
-<br/>
-<form id="email_form" method="post">
-<div class="input-group" id="div1">
-<span class="input-group-addon">
-<em class="fa fa-envelope"></em>
-</span>
-<select class="form-control input-group input-lg" id="sel1">
-<option>कृपया सत्यापन ईमेल प्राप्त करने के लिए उपयुक्त ईमेल का चयन करें:</option>
-</select>
-</div>
-<br/>
-<div align="left" class="input-group">
-<input class="form-control input-lg" id="txt_email_e" placeholder="Email address to receive the exposed data" type="email"/>
-<span class="input-group-btn">
-<button class="btn btn-lg btn-primary" id="searchMe_e" type="submit"> सत्यापित करें<span class="glyphicon glyphicon-ok" id="searchMe_e_i1">
-</span></button>
-</span>
-</div>
-</form>
-</div>
-<div class="container" id="div_t1">
-<div style=" border-radius: 5px;border:2px solid #6daae0;">
-<div class="sp1">
-<table class="table table-striped table-condensed">
-<thead>
-<tr>
-<th>कदम</th>
-<th>कार्रवाई</th>
-<th>स्पष्टीकरण</th>
-<th>स्थिति</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> #1</td>
-<td> डोमेन नाम</td>
-<td> एक वैध डोमेन नाम दर्ज करें</td>
-<td>
-<span class="label label-success">पुरा होना।</span>
-</td>
-</tr>
-<tr>
-<td> #2</td>
-<td>सत्यापन विकल्प</td>
-<td>ईमेल, डीएनएस, एचटीएमएल आदि के आधार पर सत्यापन विकल्प चुनें</td>
-<div id="div_suc1">
-<td>
-<span class="label label-warning">लंबित</span>
-</td>
-</div>
-</tr>
-<tr>
-<td> #3</td>
-<td>पूर्ण सत्यापन</td>
-<td>चयनित विकल्प के अनुसार सत्यापन प्रक्रिया सफलतापूर्वक पूर्ण करें</td>
-<td>
-<span class="label label-warning">लंबित</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="progress">
-<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" class="progress-bar progress-bar-success progress-bar-striped active" id="pr1" role="progressbar" style="width:20%"> 20% पूर्ण (सफलता)</div>
-</div>
-</div>
-</div>
-</div>
-<div class="container" id="div_t3">
-<div style=" border-radius: 5px;border:2px solid #6daae0;">
-<div class="sp1">
-<table class="table table-striped table-condensed">
-<thead>
-<tr>
-<th>कदम</th>
-<th>कार्रवाई</th>
-<th>स्पष्टीकरण</th>
-<th>स्थिति</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> #1</td>
-<td> डोमेन नाम</td>
-<td> एक मान्य डोमेन नाम दर्ज करें</td>
-<td>
-<span class="label label-success">पुरा होना।</span>
-</td>
-</tr>
-<tr>
-<td> #2</td>
-<td>सत्यापन विधि</td>
-<td>ईमेल, डीएनएस, एचटीएमएल आदि के आधार पर सत्यापन विकल्प चुनें</td>
-<div id="div_suc2">
-<td>
-<span class="label label-success">पुरा होना।</span>
-</td>
-</div>
-</tr>
-<tr>
-<td> #3</td>
-<td>पूर्ण सत्यापन</td>
-<td>चयनित विधि के अनुसार सत्यापन प्रक्रिया को सफलतापूर्वक पूरा करें</td>
-<td>
-<span class="label label-danger">असफल</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="progress">
-<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100" class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%"> 100% पूर्ण (विफलता)</div>
-</div>
-</div>
-<div align="center">
-<button class="btn btn-primary btn-lg" onclick="window.location.reload();">पुनः प्रयास करें</button>
-<br/>
-</div>
-<br/>
-</div>
-</div>
-<div class="container" id="div_t4">
-<div style=" border-radius: 5px;border:2px solid #6daae0;">
-<div class="sp1">
-<table class="table table-striped table-condensed">
-<thead>
-<tr>
-<th>कदम</th>
-<th>कार्रवाई</th>
-<th>स्पष्टीकरण</th>
-<th>स्थिति</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> #1</td>
-<td> डोमेन नाम</td>
-<td> एक वैध डोमेन नाम दर्ज करें</td>
-<td>
-<span class="label label-success">पुरा होना।</span>
-</td>
-</tr>
-<tr>
-<td> #2</td>
-<td>सत्यापन विधि</td>
-<td>ईमेल, डीएनएस, एचटीएमएल आदि के आधार पर सत्यापन विकल्प चुनें</td>
-<div id="div_suc2">
-<td>
-<span class="label label-success">पुरा होना।</span>
-</td>
-</div>
-</tr>
-<tr>
-<td> #3</td>
-<td>पूर्ण सत्यापन</td>
-<td>चयनित विधि के अनुसार सत्यापन प्रक्रिया को सफलतापूर्वक पूरा करें</td>
-<td>
-<span class="label label-success">सफलता</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="progress">
-<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%"> 100% पूर्ण (सफलता)</div>
-</div>
-<div align="center" class="alert alert-success" id="succ" role="alert">
-<em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
-<br/>
-<strong>उत्कृष्ट !</strong> हमने सफलतापूर्वक सत्यापन कर लिया है और उल्लंघन डेटा के साथ एक ईमेल भेजा गया है। !
-               </div>
-</div>
-</div>
-</div>
-<div class="container" id="div_t2">
-<div style="border-radius: 5px;border:2px solid #6daae0;">
-<div class="sp1">
-<table class="table table-striped table-condensed">
-<thead>
-<tr>
-<th>कदम</th>
-<th>कार्रवाई</th>
-<th>स्पष्टीकरण</th>
-<th>स्थिति</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> #1</td>
-<td> डोमेन नाम</td>
-<td> एक मान्य डोमेन नाम दर्ज करें</td>
-<td>
-<span class="label label-success">पुरा होना।</span>
-</td>
-</tr>
-<tr>
-<td> #2</td>
-<td>सत्यापन विधि</td>
-<td>ईमेल, डीएनएस, एचटीएमएल आदि के आधार पर सत्यापन विकल्प चुनें</td>
-<div id="div_suc2">
-<td>
-<span class="label label-success">पुरा होना।</span>
-</td>
-</div>
-</tr>
-<tr>
-<td> #3</td>
-<td>पूर्ण सत्यापन</td>
-<td>चयनित विधि के अनुसार सत्यापन प्रक्रिया को सफलतापूर्वक पूरा करें</td>
-<td>
-<span class="label label-warning">लंबित</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="progress">
-<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:60%"> 60% पूर्ण (सफलता)</div>
-</div>
-</div>
-<br/>
-<div align="center" class="alert alert-success" hidden="false" id="succ" role="alert">
-<em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
-<br/>
-<strong>उत्कृष्ट !</strong> हमने सफलतापूर्वक सत्यापन कर लिया है और उल्लंघन डेटा के साथ एक ईमेल भेजा गया है। !
+  <div id="div_s1">
+    <div align="center" id="lbl_1">
+      <div id="d1"></div>
+    </div>
+    <div class="selectContainer container" id="s1">
+      <select class="form-control input-nl2" data-style="btn-primary" id="strat" name="strat">
+        <option selected="" value="ver">उपलब्ध सत्यापन विधियों में से एक का चयन करें...</option>
+        <option value="email">ईमेल आधारित सत्यापन</option>
+        <option value="dns_txt">डीएनएस टेक्स्ट आधारित सत्यापन</option>
+        <option value="html">HTML पेज आधारित सत्यापन</option>
+      </select>
+      <br />
+    </div>
+  </div>
+  <div align="center" class="alert alert-primary container" id="div_dns" role="alert"
+    style=" border-radius: 5px;border:2px solid #6daae0;">
+    <strong>DNS TXT रिकॉर्ड आधारित सत्यापन.!</strong> कृपया नीचे दिखाए अनुसार अपने DNS में एक अस्थायी TXT रिकॉर्ड
+    बनाएं।<br />
+    <br />
+    <form id="dns_form" method="post">
+      <div class="input-group" id="div2">
+        <span class="input-group-addon">
+          <em class="fa fa-bullseye"></em>
+        </span>
+        <input autocapitalize="off" autofocus="true" class="form-control" data-val="true"
+          data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !"
+          data-val-minlength-min="3" id="edhu_dns" maxlength="255" name="edhu_dns" readonly="" />
       </div>
-<div align="center" class="alert alert-info" hidden="false" id="info" role="alert">
-<strong>उफ़!</strong> क्या आप कृपया कुछ समय बाद पुनः प्रयास कर सकते हैं।
+      <br />
+      <div align="left" class="input-group">
+        <input class="form-control input-lg" id="txt_dns" placeholder="Email address to receive the exposed data"
+          type="email" />
+        <span class="input-group-btn">
+          <button class="btn btn-lg btn-primary" id="searchMe_d" type="submit"> सत्यापित करें<span
+              class="glyphicon glyphicon-ok" id="searchMe_d_i1">
+            </span></button>
+        </span>
       </div>
-<div align="center" class="alert alert-danger" hidden="false" id="dang" role="alert">
-<strong>उफ़!</strong> डोमेन सत्यापन सफल नहीं हुआ. !
+    </form>
+  </div>
+  <div align="center" class="container alert alert-primary" id="div_meta" role="alert"
+    style=" border-radius: 5px;border:2px solid #6daae0;">
+    <strong>मेटा टैग आधारित सत्यापन.!</strong> कृपया नीचे दिखाए अनुसार अपने होम पेज में एक अस्थायी मेटा डेटा टैग
+    बनाएं।<br />
+    <br />
+    <form id="meta_form" method="post">
+      <div class="input-group" id="div2">
+        <span class="input-group-addon">
+          <em class="fa fa-bullseye"></em>
+        </span>
+        <input autocapitalize="off" autofocus="true" class="form-control" data-val="true"
+          data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !"
+          data-val-minlength-min="3" id="edhu_meta" maxlength="255" name="edhu_meta" readonly="" />
       </div>
-<div align="center" class="container alert alert-danger" hidden="false" id="f1" role="alert">
-<h3> कृपया पूरा करें<strong>चुनौती</strong> और फिर पुनः प्रयास करें!</h3>
-</div>
-<script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-<script src="/static/scripts/domain.js"></script>
-<script src="/static/scripts/common.js"></script>
-<script>
-         var clipboard = new ClipboardJS('.copy-btn');
-         
-         clipboard.on('success', function(e) {
-             e.trigger.textContent = 'Copied!';
-             setTimeout(function() {
-                 e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
-             }, 10000);
-             e.clearSelection();
-         });
-         
-         clipboard.on('error', function(e) {
-             e.trigger.textContent = 'Failed!';
-             setTimeout(function() {
-                 e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
-             }, 10000);
-         });
-         
-         	
+      <br />
+      <div align="left" class="input-group">
+        <input class="form-control input-lg" id="txt_email_m" placeholder="Email address to receive the exposed data"
+          type="email" />
+        <span class="input-group-btn">
+          <button class="btn btn-lg btn-primary" id="searchMe_m" type="submit"> सत्यापित करें<span
+              class="glyphicon glyphicon-ok" id="searchMe_m_i1">
+            </span></button>
+        </span>
+      </div>
+    </form>
+  </div>
+  <div align="center" class="alert alert-primary container" id="div_html" role="alert"
+    style="border-radius: 5px;border:2px solid #6daae0;">
+    <strong>HTML फ़ाइल आधारित सत्यापन!</strong> कृपया अपनी रूट निर्देशिका में नीचे दिखाए गए मानों के साथ एक अस्थायी
+    फ़ाइल बनाएं और फिर सत्यापित करें पर क्लिक करें।<br /><br />
+    <form id="html_form" method="post">
+      <div class="form-group row align-items-center">
+        <label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filename">फ़ाइल का नाम:</label>
+        <div class="col-sm-9">
+          <input class="form-control input-lg input-field" data-val="true" id="edhu_html_filename"
+            name="edhu_html_filename" readonly="" type="text" />
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filename" type="button"><i
+              class="fas fa-copy"></i> प्रतिलिपि</button>
+        </div>
+      </div>
+      <div class="form-group row align-items-center">
+        <label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filecontent">फ़ाइल सामग्री:</label>
+        <div class="col-sm-9">
+          <input class="form-control input-lg input-field" data-val="true" id="edhu_html_filecontent"
+            name="edhu_html_filecontent" readonly="" type="text" />
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filecontent"
+            type="button"><i class="fas fa-copy"></i> प्रतिलिपि</button>
+        </div>
+      </div>
+      <div align="left" class="input-group">
+        <input class="form-control input-lg" id="txt_email_h" placeholder="Email address to receive the exposed data"
+          type="email" />
+        <span class="input-group-btn">
+          <button class="btn btn-lg btn-primary" id="searchMe_h" type="submit"> सत्यापित करें<span
+              class="glyphicon glyphicon-ok" id="searchMe_h_i1"></span>
+          </button>
+        </span>
+      </div>
+    </form>
+  </div>
+  <div align="center" class="container alert alert-danger" id="dang" role="alert">
+  </div>
+  <div align="center" class="alert alert-primary container" id="div_email" role="alert"
+    style="border-radius: 5px;border:2px solid #6daae0;">
+    <strong>ईमेल</strong> आधारित सत्यापन प्रदान किए गए डोमेन को मान्य करना आसान है, आप आधिकारिक ईमेल संपर्कों में ईमेल
+    प्राप्त कर सकते हैं। कृपया ईमेल चुनें और फिर क्लिक करें<strong>सत्यापित करें</strong>.<br />
+    <br />
+    <form id="email_form" method="post">
+      <div class="input-group" id="div1">
+        <span class="input-group-addon">
+          <em class="fa fa-envelope"></em>
+        </span>
+        <select class="form-control input-group input-lg" id="sel1">
+          <option>कृपया सत्यापन ईमेल प्राप्त करने के लिए उपयुक्त ईमेल का चयन करें:</option>
+        </select>
+      </div>
+      <br />
+      <div align="left" class="input-group">
+        <input class="form-control input-lg" id="txt_email_e" placeholder="Email address to receive the exposed data"
+          type="email" />
+        <span class="input-group-btn">
+          <button class="btn btn-lg btn-primary" id="searchMe_e" type="submit"> सत्यापित करें<span
+              class="glyphicon glyphicon-ok" id="searchMe_e_i1">
+            </span></button>
+        </span>
+      </div>
+    </form>
+  </div>
+  <div class="container" id="div_t1">
+    <div style=" border-radius: 5px;border:2px solid #6daae0;">
+      <div class="sp1">
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>कदम</th>
+              <th>कार्रवाई</th>
+              <th>स्पष्टीकरण</th>
+              <th>स्थिति</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> #1</td>
+              <td> डोमेन नाम</td>
+              <td> एक वैध डोमेन नाम दर्ज करें</td>
+              <td>
+                <span class="label label-success">पुरा होना।</span>
+              </td>
+            </tr>
+            <tr>
+              <td> #2</td>
+              <td>सत्यापन विकल्प</td>
+              <td>ईमेल, डीएनएस, एचटीएमएल आदि के आधार पर सत्यापन विकल्प चुनें</td>
+              <div id="div_suc1">
+                <td>
+                  <span class="label label-warning">लंबित</span>
+                </td>
+              </div>
+            </tr>
+            <tr>
+              <td> #3</td>
+              <td>पूर्ण सत्यापन</td>
+              <td>चयनित विकल्प के अनुसार सत्यापन प्रक्रिया सफलतापूर्वक पूर्ण करें</td>
+              <td>
+                <span class="label label-warning">लंबित</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="progress">
+          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20"
+            class="progress-bar progress-bar-success progress-bar-striped active" id="pr1" role="progressbar"
+            style="width:20%"> 20% पूर्ण (सफलता)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" id="div_t3">
+    <div style=" border-radius: 5px;border:2px solid #6daae0;">
+      <div class="sp1">
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>कदम</th>
+              <th>कार्रवाई</th>
+              <th>स्पष्टीकरण</th>
+              <th>स्थिति</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> #1</td>
+              <td> डोमेन नाम</td>
+              <td> एक मान्य डोमेन नाम दर्ज करें</td>
+              <td>
+                <span class="label label-success">पुरा होना।</span>
+              </td>
+            </tr>
+            <tr>
+              <td> #2</td>
+              <td>सत्यापन विधि</td>
+              <td>ईमेल, डीएनएस, एचटीएमएल आदि के आधार पर सत्यापन विकल्प चुनें</td>
+              <div id="div_suc2">
+                <td>
+                  <span class="label label-success">पुरा होना।</span>
+                </td>
+              </div>
+            </tr>
+            <tr>
+              <td> #3</td>
+              <td>पूर्ण सत्यापन</td>
+              <td>चयनित विधि के अनुसार सत्यापन प्रक्रिया को सफलतापूर्वक पूरा करें</td>
+              <td>
+                <span class="label label-danger">असफल</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="progress">
+          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100"
+            class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%">
+            100% पूर्ण (विफलता)</div>
+        </div>
+      </div>
+      <div align="center">
+        <button class="btn btn-primary btn-lg" onclick="window.location.reload();">पुनः प्रयास करें</button>
+        <br />
+      </div>
+      <br />
+    </div>
+  </div>
+  <div class="container" id="div_t4">
+    <div style=" border-radius: 5px;border:2px solid #6daae0;">
+      <div class="sp1">
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>कदम</th>
+              <th>कार्रवाई</th>
+              <th>स्पष्टीकरण</th>
+              <th>स्थिति</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> #1</td>
+              <td> डोमेन नाम</td>
+              <td> एक वैध डोमेन नाम दर्ज करें</td>
+              <td>
+                <span class="label label-success">पुरा होना।</span>
+              </td>
+            </tr>
+            <tr>
+              <td> #2</td>
+              <td>सत्यापन विधि</td>
+              <td>ईमेल, डीएनएस, एचटीएमएल आदि के आधार पर सत्यापन विकल्प चुनें</td>
+              <div id="div_suc2">
+                <td>
+                  <span class="label label-success">पुरा होना।</span>
+                </td>
+              </div>
+            </tr>
+            <tr>
+              <td> #3</td>
+              <td>पूर्ण सत्यापन</td>
+              <td>चयनित विधि के अनुसार सत्यापन प्रक्रिया को सफलतापूर्वक पूरा करें</td>
+              <td>
+                <span class="label label-success">सफलता</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="progress">
+          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100"
+            class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%">
+            100% पूर्ण (सफलता)</div>
+        </div>
+        <div align="center" class="alert alert-success" id="succ" role="alert">
+          <em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
+          <br />
+          <strong>उत्कृष्ट !</strong> हमने सफलतापूर्वक सत्यापन कर लिया है और उल्लंघन डेटा के साथ एक ईमेल भेजा गया है। !
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" id="div_t2">
+    <div style="border-radius: 5px;border:2px solid #6daae0;">
+      <div class="sp1">
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>कदम</th>
+              <th>कार्रवाई</th>
+              <th>स्पष्टीकरण</th>
+              <th>स्थिति</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> #1</td>
+              <td> डोमेन नाम</td>
+              <td> एक मान्य डोमेन नाम दर्ज करें</td>
+              <td>
+                <span class="label label-success">पुरा होना।</span>
+              </td>
+            </tr>
+            <tr>
+              <td> #2</td>
+              <td>सत्यापन विधि</td>
+              <td>ईमेल, डीएनएस, एचटीएमएल आदि के आधार पर सत्यापन विकल्प चुनें</td>
+              <div id="div_suc2">
+                <td>
+                  <span class="label label-success">पुरा होना।</span>
+                </td>
+              </div>
+            </tr>
+            <tr>
+              <td> #3</td>
+              <td>पूर्ण सत्यापन</td>
+              <td>चयनित विधि के अनुसार सत्यापन प्रक्रिया को सफलतापूर्वक पूरा करें</td>
+              <td>
+                <span class="label label-warning">लंबित</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="progress">
+          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="60"
+            class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:60%">
+            60% पूर्ण (सफलता)</div>
+        </div>
+      </div>
+      <br />
+      <div align="center" class="alert alert-success" hidden="false" id="succ" role="alert">
+        <em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
+        <br />
+        <strong>उत्कृष्ट !</strong> हमने सफलतापूर्वक सत्यापन कर लिया है और उल्लंघन डेटा के साथ एक ईमेल भेजा गया है। !
+      </div>
+      <div align="center" class="alert alert-info" hidden="false" id="info" role="alert">
+        <strong>उफ़!</strong> क्या आप कृपया कुछ समय बाद पुनः प्रयास कर सकते हैं।
+      </div>
+      <div align="center" class="alert alert-danger" hidden="false" id="dang" role="alert">
+        <strong>उफ़!</strong> डोमेन सत्यापन सफल नहीं हुआ. !
+      </div>
+      <div align="center" class="container alert alert-danger" hidden="false" id="f1" role="alert">
+        <h3> कृपया पूरा करें<strong>चुनौती</strong> और फिर पुनः प्रयास करें!</h3>
+      </div>
+      <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+      <script src="/static/scripts/domain.js"></script>
+      <script src="/static/scripts/common.js"></script>
+      <script>
+        var clipboard = new ClipboardJS('.copy-btn');
+
+        clipboard.on('success', function (e) {
+          e.trigger.textContent = 'Copied!';
+          setTimeout(function () {
+            e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+          }, 10000);
+          e.clearSelection();
+        });
+
+        clipboard.on('error', function (e) {
+          e.trigger.textContent = 'Failed!';
+          setTimeout(function () {
+            e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+          }, 10000);
+        });
+
+
       </script>
-<div class="container text-center" style="font-family:Poppins">
-<footer>
-<aside>
-<hr/>
-<p> 
-सहायता की जरूरत है? मुझे deva[@]xposedornot.com पर ईमेल करें या यहां मेरे साथ सीधी बातचीत शेड्यूल करें।
-<br/><br/></p>
-<hr/>
-</aside>
-</footer>
-</div>
-</div></div></input></body>
+      <div class="container text-center" style="font-family:Poppins">
+        <footer>
+          <aside>
+            <hr />
+            <p>
+              सहायता की जरूरत है? मुझे deva[@]xposedornot.com पर ईमेल करें या यहां मेरे साथ सीधी बातचीत शेड्यूल करें।
+              <br /><br />
+            </p>
+            <hr />
+          </aside>
+        </footer>
+      </div>
+    </div>
+  </div></input>
+</body>
+
 </html>

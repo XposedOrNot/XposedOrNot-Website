@@ -1,163 +1,166 @@
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-<title>XposedOrNot: сводка о подверженности домену</title>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="XposedOrNot ?" name="description"/>
-<meta content="Devanand Premkumar" name="author"/>
-<link href="favicon.ico" rel="icon" type="image/x-icon"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet"/>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-<script crossorigin="anonymous" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link async="" defer="" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all" rel="stylesheet" type="text/css"/>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css" integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ==" rel="stylesheet">
-<script crossorigin="anonymous" integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ==" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-<link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css"/>
-<style type="text/css">
-         .btn-circle.btn-xl {
-         width: 130px;
-         height: 130px;
-         padding: 10px 16px;
-         border-radius: 65px;
-         font-size: 28px;
-         text-align: center;
-         }
-      </style>
-<script>
-         (function (h, o, t, j, a, r) {
-    h.hj = h.hj || function () {
-        (h.hj.q = h.hj.q || []).push(arguments)
-    };
-    h._hjSettings = {
-        hjid: 1613245,
-        hjsv: 6
-    };
-    a = o.getElementsByTagName('head')[0];
-    r = o.createElement('script');
-    r.async = 1;
-    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-    a.appendChild(r);
-})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-  (function () {
-    var script = document.createElement("script");
-    script.onload = () => {
-      window.GrafanaFaroWebSdk.initializeFaro({
-        url: 'https://faro-collector-prod-us-east-0.grafana.net/collect/bafccf6af158ab3e03d190abce675a94',
-        app: {
-          name: 'xonniepub',
-          version: "1.0.0",
-        },
-      });
-    };
-    script.src =
-      "https://unpkg.com/@grafana/faro-web-sdk@^1.0.0/dist/bundle/faro-web-sdk.iife.js";
-    document.head.appendChild(script);
-  })();
-      </script>
-</link></link></head>
-<body>
-<div class="kbanner">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-<a class="navbar-brand" href="https://xposedornot.com"><span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">Экспоуздорнот</span>
-<span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Общественная версия</span></a>
-<button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbarNavDropdown">
-<ul class="navbar-nav navbar-right">
-<li class="nav-item active">
-<a class="nav-link" href="password.html">Пароль<span class="sr-only">(текущий)</span></a>
-</li>
-<li class="nav-item active">
-<a class="nav-link" href="api_doc.html">API</a>
-</li>
-<li class="nav-item active">
-<a class="nav-link" href="https://blog.xposedornot.com/">Блог</a>
-</li>
-<li class="nav-item dropdown active">
-<a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMenuLink">
-                     Дополнительные инструменты
-                     </a>
-<div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-<a class="dropdown-item" href="xposed.html">Обнаруженные нарушения</a>
-<a class="dropdown-item" href="shield.html">Защита конфиденциальности</a>
-<a class="dropdown-item" href="domain.html">Проверка домена</a>
-<a class="dropdown-item" href="timeline.html">Нарушения временной шкалы</a>
-</div>
-</li>
-</ul>
-</div>
-</nav>
-          
-      </div>
-<div class="jumbotron">
-<div align="center" class="container">
-<h1>Сводная информация о подверженности домену</h1>
-<br/>
-<p>
-               Чтобы просмотреть сводку потенциальных утечек данных на уровне домена, введите свое доменное имя.
-            </p>
-</div>
-</div>
-<div align="center" class="container" id="div_input">
-<form id="defaultForm" method="post" onload="yourfunction();" role="form">
-<div class="form-group">
-<input autocapitalize="off" autocorrect="off" autofocus="true" class="form-control name" data-val="true" data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" id="eventName" maxlength="255" name="edhu" placeholder="Enter a valid domain name ...(e.g.: your-awesome-domain.com)" spellcheck="false" type="text"/>
-<br/>
-<button class="btn btn-primary btn-lg" id="alertMe" type="submit">Получите мне подробную информацию о нарушении</button> 
-<img align="center" alt="XposedOrNot Logo" id="logo" src="//logo.clearbit.com/xposedornot.com" style="display: none;"/>
-</div>
-<br/>
-</form></div>
 
-<hr/>
-<div align="center" class="container" id="dom" style="display: none;">
-<div class="row">
-<div class="col-sm">
-<br/>
-<h3> Электронная почта раскрыта</h3>
-<br/>
-<h4>
-<button class="btn btn-danger btn-circle btn-xl" id="b" type="button">0</button>
-</h4>
-</div>
-<div class="col-sm">
-<br/>
-<h3> Пасты обнажены</h3>
-<br/>
-<h4>
-<button class="btn btn-danger btn-circle btn-xl" id="p" type="button">0</button>
-</h4>
-</div>
-<div class="col-sm">
-<br/>
-<h3> Общий</h3>
-<br/>
-<h4>
-<button class="btn btn-danger btn-circle btn-xl" id="t" type="button">0</button>
-</h4>
-<br/>
-</div>
-</div>
-<hr/>
-<div align="center" class="alert alert-info" id="info" role="alert" style="display: none;">
-<strong>Упс!</strong> Можете ли вы попробовать еще раз через некоторое время?
+<head>
+  <meta charset="utf-8" />
+  <title>XposedOrNot: сводка о подверженности домену</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="XposedOrNot ?" name="description" />
+  <meta content="Devanand Premkumar" name="author" />
+  <link href="favicon.ico" rel="icon" type="image/x-icon" />
+  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
+  <script crossorigin="anonymous"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link async="" defer=""
+    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all"
+    rel="stylesheet" type="text/css" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <link crossorigin="anonymous"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+    integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+    rel="stylesheet">
+  <script crossorigin="anonymous"
+    integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+    .btn-circle.btn-xl {
+      width: 130px;
+      height: 130px;
+      padding: 10px 16px;
+      border-radius: 65px;
+      font-size: 28px;
+      text-align: center;
+    }
+  </style>
+
+  </link>
+  </link>
+</head>
+
+<body>
+  <div class="kbanner">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+      <a class="navbar-brand" href="https://xposedornot.com"><span
+          style="font-size: 1.5em; font-weight: bold; display: block; color: white;">Экспоуздорнот</span>
+        <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Общественная
+          версия</span></a>
+      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
+        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav navbar-right">
+          <li class="nav-item active">
+            <a class="nav-link" href="password.html">Пароль<span class="sr-only">(текущий)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="api_doc.html">API</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://blog.xposedornot.com/">Блог</a>
+          </li>
+          <li class="nav-item dropdown active">
+            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+              href="#" id="navbarDropdownMenuLink">
+              Дополнительные инструменты
+            </a>
+            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+              <a class="dropdown-item" href="xposed.html">Обнаруженные нарушения</a>
+              <a class="dropdown-item" href="shield.html">Защита конфиденциальности</a>
+              <a class="dropdown-item" href="domain.html">Проверка домена</a>
+              <a class="dropdown-item" href="timeline.html">Нарушения временной шкалы</a>
+            </div>
+          </li>
+        </ul>
       </div>
-<div align="center" class="alert alert-success" id="succ" role="alert" style="display: none;"><em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
-<br/> <strong>Отличный !</strong> Похоже, ни одно из писем этого домена не было замечено в утечках данных, загруженных в XposeOrNot.
+    </nav>
+     
+  </div>
+  <div class="jumbotron">
+    <div align="center" class="container">
+      <h1>Сводная информация о подверженности домену</h1>
+      <br />
+      <p>
+        Чтобы просмотреть сводку потенциальных утечек данных на уровне домена, введите свое доменное имя.
+      </p>
+    </div>
+  </div>
+  <div align="center" class="container" id="div_input">
+    <form id="defaultForm" method="post" onload="yourfunction();" role="form">
+      <div class="form-group">
+        <input autocapitalize="off" autocorrect="off" autofocus="true" class="form-control name" data-val="true"
+          data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" id="eventName" maxlength="255"
+          name="edhu" placeholder="Enter a valid domain name ...(e.g.: your-awesome-domain.com)" spellcheck="false"
+          type="text" />
+        <br />
+        <button class="btn btn-primary btn-lg" id="alertMe" type="submit">Получите мне подробную информацию о
+          нарушении</button>
+        <img align="center" alt="XposedOrNot Logo" id="logo" src="//logo.clearbit.com/xposedornot.com"
+          style="display: none;" />
       </div>
-<div align="center" class="alert alert-danger" id="dang" role="alert" style="display: none;">
-<em class="fa fa-times-circle-o" style="color:red;font-size: 78px;"></em>
-<br/>
-<h4> <strong>Упс!</strong> Данные загружены в<strong>Экспоуздорнот</strong> в базе более 50+ записей по этому домену. Записи обрезаны для краткости.<br/></h4>
-<br/> Если вы хотите узнать больше об открытых данных, пожалуйста,<strong><a href="domain.html">подтвердить право собственности на домен</a> </strong>и получите его прямо на свой адрес электронной почты для<strong>БЕСПЛАТНО</strong>.
+      <br />
+    </form>
+  </div>
+
+  <hr />
+  <div align="center" class="container" id="dom" style="display: none;">
+    <div class="row">
+      <div class="col-sm">
+        <br />
+        <h3> Электронная почта раскрыта</h3>
+        <br />
+        <h4>
+          <button class="btn btn-danger btn-circle btn-xl" id="b" type="button">0</button>
+        </h4>
       </div>
-<a href="https://clearbit.com">Логотипы предоставлены Clearbit</a>
-<script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-<script src="/static/scripts/domains.js"></script>
-<script src="/static/scripts/common.js"></script>
-</div></body>
+      <div class="col-sm">
+        <br />
+        <h3> Пасты обнажены</h3>
+        <br />
+        <h4>
+          <button class="btn btn-danger btn-circle btn-xl" id="p" type="button">0</button>
+        </h4>
+      </div>
+      <div class="col-sm">
+        <br />
+        <h3> Общий</h3>
+        <br />
+        <h4>
+          <button class="btn btn-danger btn-circle btn-xl" id="t" type="button">0</button>
+        </h4>
+        <br />
+      </div>
+    </div>
+    <hr />
+    <div align="center" class="alert alert-info" id="info" role="alert" style="display: none;">
+      <strong>Упс!</strong> Можете ли вы попробовать еще раз через некоторое время?
+    </div>
+    <div align="center" class="alert alert-success" id="succ" role="alert" style="display: none;"><em
+        class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
+      <br /> <strong>Отличный !</strong> Похоже, ни одно из писем этого домена не было замечено в утечках данных,
+      загруженных в XposeOrNot.
+    </div>
+    <div align="center" class="alert alert-danger" id="dang" role="alert" style="display: none;">
+      <em class="fa fa-times-circle-o" style="color:red;font-size: 78px;"></em>
+      <br />
+      <h4> <strong>Упс!</strong> Данные загружены в<strong>Экспоуздорнот</strong> в базе более 50+ записей по этому
+        домену. Записи обрезаны для краткости.<br /></h4>
+      <br /> Если вы хотите узнать больше об открытых данных, пожалуйста,<strong><a href="domain.html">подтвердить право
+          собственности на домен</a> </strong>и получите его прямо на свой адрес электронной почты
+      для<strong>БЕСПЛАТНО</strong>.
+    </div>
+    <a href="https://clearbit.com">Логотипы предоставлены Clearbit</a>
+    <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script src="/static/scripts/domains.js"></script>
+    <script src="/static/scripts/common.js"></script>
+  </div>
+</body>
+
 </html>
