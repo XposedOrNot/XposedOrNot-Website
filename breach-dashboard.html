@@ -359,6 +359,168 @@
       .buttons-label {
          color: blue;
       }
+      
+      /* xonPlus Modal Styling */
+      .xonplus-modal {
+         border-radius: 15px;
+         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+         border: none;
+         overflow: hidden;
+      }
+      
+      .xonplus-header {
+         background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+         border-bottom: none;
+         color: white;
+         padding: 1.5rem;
+      }
+      
+      .xonplus-header .modal-title {
+         color: white;
+         font-weight: 600;
+      }
+      
+      .xonplus-header .text-muted {
+         color: rgba(255, 255, 255, 0.8) !important;
+      }
+      
+      .xonplus-header .close {
+         color: white;
+         opacity: 0.8;
+         text-shadow: none;
+         font-size: 1.5rem;
+      }
+      
+      .xonplus-header .close:hover {
+         opacity: 1;
+         color: white;
+      }
+      
+      .xonplus-body {
+         padding: 2rem;
+         background: #f8f9fa;
+      }
+      
+      .xonplus-body .lead {
+         color: #2c3e50;
+         font-weight: 500;
+      }
+      
+      .feature-item {
+         padding: 1rem;
+         background: white;
+         border-radius: 10px;
+         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+         transition: transform 0.3s ease, box-shadow 0.3s ease;
+         height: 100%;
+      }
+      
+      .feature-item:hover {
+         transform: translateY(-3px);
+         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      }
+      
+      .feature-item h6 {
+         color: #2c3e50;
+         font-weight: 600;
+         margin-bottom: 0.5rem;
+      }
+      
+      .xonplus-footer {
+         background: white;
+         border-top: 1px solid #e9ecef;
+         padding: 1.5rem 2rem;
+      }
+      
+      .xonplus-footer .btn {
+         border-radius: 25px;
+         padding: 0.75rem 2rem;
+         font-weight: 600;
+         transition: all 0.3s ease;
+         border-width: 2px;
+      }
+      
+      .xonplus-footer .btn-outline-primary {
+         border-color: #3498db;
+         color: #3498db;
+      }
+      
+      .xonplus-footer .btn-outline-primary:hover {
+         background: #3498db;
+         border-color: #3498db;
+         color: #ffffff !important;
+         transform: translateY(-2px);
+         box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+      }
+      
+      .xonplus-footer .btn-primary {
+         background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+         border-color: #3498db;
+         box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      }
+      
+      .xonplus-footer .btn-primary:hover {
+         background: linear-gradient(135deg, #2980b9 0%, #1c5d8b 100%);
+         border-color: #2980b9;
+         transform: translateY(-2px);
+         box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+      }
+      
+      /* Dark theme support for xonPlus modal */
+      [data-theme="dark"] .xonplus-modal {
+         background: #2c3e50;
+         color: #ecf0f1;
+      }
+      
+      [data-theme="dark"] .xonplus-header {
+         background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+      }
+      
+      [data-theme="dark"] .xonplus-body {
+         background: #34495e;
+         color: #ecf0f1;
+      }
+      
+      [data-theme="dark"] .xonplus-body .lead {
+         color: #ecf0f1;
+      }
+      
+      [data-theme="dark"] .feature-item {
+         background: #2c3e50;
+         color: #ecf0f1;
+         border: 1px solid #34495e;
+      }
+      
+      [data-theme="dark"] .feature-item h6 {
+         color: #ecf0f1;
+      }
+      
+      [data-theme="dark"] .xonplus-footer {
+         background: #2c3e50;
+         border-top-color: #34495e;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+         .xonplus-header,
+         .xonplus-body,
+         .xonplus-footer {
+            padding: 1rem;
+         }
+         
+         .feature-item {
+            margin-bottom: 1rem;
+         }
+         
+         .xonplus-footer .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+         }
+         
+         .xonplus-footer .btn.mr-3 {
+            margin-right: 0 !important;
+         }
+      }
    </style>
 
 </head>
@@ -783,6 +945,75 @@
          </div>
       </div>
    </div>
+   
+   <!-- xonPlus Migration Modal -->
+   <div class="modal fade" id="xonPlusModal" tabindex="-1" role="dialog" aria-labelledby="xonPlusModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content xonplus-modal">
+            <div class="modal-header xonplus-header">
+               <div class="d-flex align-items-center">
+                  <div id="xonPlusModalIcon" class="mr-3">
+                     <i class="fa fa-rocket" style="color: #3498db; font-size: 2.5rem;"></i>
+                  </div>
+                  <div>
+                     <h4 class="modal-title mb-1" id="xonPlusModalLabel">🚀 Upgrade to xonPlus</h4>
+                     <h5 class="text-muted mb-0" id="xonPlusModalTitle">Advanced Integration</h5>
+                  </div>
+               </div>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body xonplus-body">
+               <div class="text-center mb-4">
+                  <p class="lead" id="xonPlusModalDescription">
+                     Enhanced notification features are now available in xonPlus - our commercial platform.
+                  </p>
+               </div>
+               
+               <div class="row text-center mb-4">
+                  <div class="col-md-3 col-6 mb-3">
+                     <div class="feature-item">
+                        <i class="fa fa-bell text-primary mb-2" style="font-size: 2rem;"></i>
+                        <h6>Advanced Alerting</h6>
+                        <small class="text-muted">Real-time notifications</small>
+                     </div>
+                  </div>
+                  <div class="col-md-3 col-6 mb-3">
+                     <div class="feature-item">
+                        <i class="fa fa-link text-primary mb-2" style="font-size: 2rem;"></i>
+                        <h6>Custom Webhooks</h6>
+                        <small class="text-muted">Flexible integrations</small>
+                     </div>
+                  </div>
+                  <div class="col-md-3 col-6 mb-3">
+                     <div class="feature-item">
+                        <i class="fa fa-filter text-primary mb-2" style="font-size: 2rem;"></i>
+                        <h6>Smart Filtering</h6>
+                        <small class="text-muted">Customizable rules</small>
+                     </div>
+                  </div>
+                  <div class="col-md-3 col-6 mb-3">
+                     <div class="feature-item">
+                        <i class="fa fa-headset text-primary mb-2" style="font-size: 2rem;"></i>
+                        <h6>Priority Support</h6>
+                        <small class="text-muted">24/7 assistance</small>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer xonplus-footer justify-content-center">
+               <a href="https://plus.xposedornot.com" target="_blank" class="btn btn-outline-primary btn-lg mr-3">
+                  <i class="fa fa-info-circle mr-2"></i>Learn More
+               </a>
+               <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" class="btn btn-primary btn-lg">
+                  <i class="fa fa-rocket mr-2"></i>Try xonPlus
+               </a>
+            </div>
+         </div>
+      </div>
+   </div>
+   
    <div>
       <div id="details"></div>
    </div>

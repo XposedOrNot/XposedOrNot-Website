@@ -19,7 +19,7 @@ $.LoadingOverlaySetup({
 $.LoadingOverlay("show");
 
 $(document).ready(function () {
-    $('.btn-lg.btn-primary').click(function () {
+    $('.btn-lg.btn-primary').not('#xonPlusModal .btn-primary').click(function () {
         var newUrl = 'api_key_management.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
         window.location.href = newUrl;
     });
@@ -523,8 +523,8 @@ function addDomainSummaryToTable(domainSummary, email, token) {
                 <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Success</button></td>
                 <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Email</button></td>
                 <td>
-                    <button type="button" class="btn btn-outline-primary" onclick="window.open('${teamsUrl}', '_blank')"><em class='fa fa-users' style='color:blue;font-size: 20px;'> &nbsp</em>Teams</button>
-                    <button type="button" class="btn btn-outline-primary" onclick="window.open('${slackUrl}', '_blank')"><em class='fa fa-comments' style='color:red;font-size: 20px;'> &nbsp</em>Slack</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="showXonPlusModal('teams')"><em class='fa fa-users' style='color:blue;font-size: 20px;'> &nbsp</em>Teams</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="showXonPlusModal('slack')"><em class='fa fa-comments' style='color:red;font-size: 20px;'> &nbsp</em>Slack</button>
                 </td>
             </tr>`;
         tbody.append(rowHTML);
@@ -702,4 +702,25 @@ function initializePhishingButton() {
             domainDropdown.classList.remove('show');
         }
     });
+}
+
+// Function to show xonPlus migration modal
+function showXonPlusModal(service) {
+    const modal = $('#xonPlusModal');
+    const modalTitle = modal.find('#xonPlusModalTitle');
+    const modalIcon = modal.find('#xonPlusModalIcon');
+    const modalDescription = modal.find('#xonPlusModalDescription');
+    
+    // Update modal content based on service type
+    if (service === 'teams') {
+        modalTitle.text('Microsoft Teams Integration');
+        modalIcon.html('<i class="fa fa-users" style="color: #0078d4; font-size: 2.5rem;"></i>');
+        modalDescription.text('Get real-time breach notifications directly in your Microsoft Teams channels with advanced filtering and custom webhook support.');
+    } else if (service === 'slack') {
+        modalTitle.text('Slack Integration');
+        modalIcon.html('<i class="fa fa-comments" style="color: #4a154b; font-size: 2.5rem;"></i>');
+        modalDescription.text('Receive instant breach alerts in your Slack workspace with customizable message formatting and priority levels.');
+    }
+    
+    modal.modal('show');
 }
