@@ -541,7 +541,7 @@ googleLink.addEventListener("click", function (event) {
 });
 
 function updateApiCall(timeFilter) {
-    const emailVerificationUrl = `https://api.xposedornot.com/v2/send_domain_breaches?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&time_filter=${timeFilter}`;
+    const emailVerificationUrl = `https://api.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&time_filter=${timeFilter}`;
     $.LoadingOverlay("show");
 
     $.ajax(emailVerificationUrl)
