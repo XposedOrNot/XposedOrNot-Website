@@ -176,8 +176,11 @@ $.ajax(emailVerificationUrl)
         } else if (n.status === 400) {
             $.LoadingOverlay("hide");
             $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're not authenticated properly.");
-            window.location.replace("http://xposedornot.com");
+            window.location.replace("dashboard.html");
             $("#db-s").show();
+        } else if (n.status === 401) {
+            $.LoadingOverlay("hide");
+            window.location.replace("dashboard.html");
         }
     });
 
@@ -623,8 +626,11 @@ function updateApiCall(timeFilter) {
             } else if (n.status === 400) {
                 $.LoadingOverlay("hide");
                 $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're not authenticated properly.");
-                window.location.replace("http://xposedornot.com");
+                window.location.replace("dashboard.html");
                 $("#db-s").show();
+            } else if (n.status === 401) {
+                $.LoadingOverlay("hide");
+                window.location.replace("dashboard.html");
             }
         });
 }
