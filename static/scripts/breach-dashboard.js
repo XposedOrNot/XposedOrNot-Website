@@ -309,7 +309,14 @@ function addBreachesToTable(breaches) {
     const tableBody = table.find('tbody');
     tableBody.empty();
 
-    for (let breach in breaches) {
+    // Convert breaches object to array and sort by 'added' timestamp (descending)
+    const breachesArray = Object.entries(breaches).sort((a, b) => {
+        const addedA = a[1].added || '';
+        const addedB = b[1].added || '';
+        return addedB.localeCompare(addedA); // Descending order
+    });
+
+    for (let [breach, breachData] of breachesArray) {
         const row = $('<tr>');
 
 
@@ -324,7 +331,7 @@ function addBreachesToTable(breaches) {
 
 
         const cellRecords = $('<td>');
-        let records = breaches[breach].xposed_records;
+        let records = breachData.xposed_records;
         if (records && !isNaN(records)) {
             cellRecords.text(parseInt(records).toLocaleString());
         }
@@ -332,7 +339,7 @@ function addBreachesToTable(breaches) {
 
 
         const cellDesc = $('<td style="min-width: 250px;">');
-        const breachDescription = breaches[breach].xposure_desc || '';
+        const breachDescription = breachData.xposure_desc || '';
         const trimmedDesc = breachDescription.length > 200 ?
             breachDescription.substring(0, 200) + '...' :
             breachDescription;
@@ -371,7 +378,7 @@ function addBreachesToTable(breaches) {
 
 
         const cellData = $('<td style="min-width: 200px;">');
-        let breaches_xposed_data = breaches[breach].xposed_data;
+        let breaches_xposed_data = breachData.xposed_data;
         let dataArray = breaches_xposed_data.split(";");
         let displayData = dataArray.join(", ");
 
@@ -410,10 +417,10 @@ function addBreachesToTable(breaches) {
 
         const cellPasswordrisk = $('<td>');
         const span = $('<span>', {
-            text: breaches[breach].password_risk || ''
+            text: breachData.password_risk || ''
         });
 
-        switch (breaches[breach].password_risk) {
+        switch (breachData.password_risk) {
             case 'plaintext':
                 span.addClass('alert alert-danger');
                 break;
@@ -445,7 +452,7 @@ function addBreachesToTable(breaches) {
         responsive: true,
         scrollX: true,
         autoWidth: false,
-        order: [[0, 'desc']],
+        order: [],
         columnDefs: [
             {
                 targets: [1, 4],
@@ -473,6 +480,15 @@ function addBreachesDetailsToTable(breachesDetails) {
 
 
     const breachesData = window.breachesData || {};
+
+    // Sort breachesDetails by 'added' timestamp from breach info (descending)
+    breachesDetails.sort((a, b) => {
+        const breachInfoA = breachesData[a.breach] || {};
+        const breachInfoB = breachesData[b.breach] || {};
+        const addedA = breachInfoA.added || '';
+        const addedB = breachInfoB.added || '';
+        return addedB.localeCompare(addedA); // Descending order
+    });
 
     breachesDetails.forEach(breachDetail => {
         const row = $('<tr>');
@@ -509,7 +525,7 @@ function addBreachesDetailsToTable(breachesDetails) {
         initComplete: function () {
             $(".dt-buttons").prepend('<span class="buttons-label">Export as: &nbsp;</span>');
         },
-        order: [[0, 'asc']]
+        order: []
     });
 }
 
