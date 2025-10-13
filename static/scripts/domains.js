@@ -56,11 +56,11 @@ $(document).ready(function () {
                             });
 
                             $('#breach-count').text(totalBreaches);
-                            $('#record-count').text(totalRecords >= 1000 ? "1000+" : totalRecords);
-                            $('#email-count').text(totalEmails >= 1000 ? "1000+" : totalEmails);
+                            $('#record-count').text(totalRecords >= 10000 ? "10000+" : totalRecords);
+                            $('#email-count').text(totalEmails >= 10000 ? "10000+" : totalEmails);
                             $('#last-exposure').text(lastExposure);
 
-                            if (totalRecords >= 1000 || totalEmails >= 1000) {
+                            if (totalRecords >= 10000 || totalEmails >= 10000) {
                                 $('#note').show();
                             } else {
                                 $('#note').hide();
