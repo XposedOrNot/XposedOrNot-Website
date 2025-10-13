@@ -488,26 +488,6 @@ function runCounter(element, endValue, duration) {
     });
 }
 
-const headingElement = $("#heading");
-const colors = ["#FFC0CB"];
-const replacementWords = ["private", "confidential", "sensitive"];
-let currentIndex = 0;
-let iterationCount = 0;
-let intervalId;
-
-intervalId = setInterval(() => {
-    const currentWord = replacementWords[currentIndex];
-    const nextWord = replacementWords[(currentIndex + 1) % replacementWords.length];
-    headingElement.html(headingElement.html().replace(currentWord, `<span style="color:${colors[0]}">${nextWord}</span>`));
-
-    currentIndex = (currentIndex + 1) % replacementWords.length;
-    iterationCount++;
-
-    if (iterationCount >= 9) {
-        clearInterval(intervalId);
-    }
-}, 2000);
-
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let circles = [];
