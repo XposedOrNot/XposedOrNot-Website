@@ -380,7 +380,7 @@ function processSearchResponse(response, email) {
 
         const breaches = breachSummary.split(";");
         for (let i = 0; i < breaches.length; i++) {
-            warningMessage += '<a rel="noopener" target="_blank" title="Click here for more details..." href=xposed.html#' + breaches[i] + '>' + breaches[i] + '</a>';
+            warningMessage += '<a rel="noopener" target="_blank" title="Click here for more details..." href=breach.html#' + breaches[i] + '>' + breaches[i] + '</a>';
             if (i !== breaches.length - 1) {
                 warningMessage += ', ';
             }

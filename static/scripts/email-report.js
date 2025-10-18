@@ -420,7 +420,7 @@ var j = $.ajax(edutu)
                         'cnt': breaches_cnt
                     })
                     n2 = n2 + "<div>   <b><span class='notser'>" + breaches_xposed_date + "</span></b><br><br>   <div class='row'>      <div class='col-sm-4'> <img height=75 width=150 src='"
-                    n2 = n2 + breaches_logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='xposed.html#" + breaches_id + "' target='_blank'>"
+                    n2 = n2 + breaches_logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='breach.html#" + breaches_id + "' target='_blank'>"
                     n2 = n2 + breaches_id + "</font></strong></h3>         </a>      </div>      <div class='col-sm-4'>         <img height=75 width=75 src='"
                     n2 = n2 + '/static/logos/industry/' + breaches_industry + ".png' title='"
                     n2 = n2 + breaches_industry + ' Industry'
