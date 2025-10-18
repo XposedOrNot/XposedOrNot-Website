@@ -1529,7 +1529,7 @@ $(document).ajaxStart(function () {
 
 function generateBreachDetailHtml(breach, isSensitive) {
     let html = "<div>   <b><span class='notser'>" + breach.xposed_date + "</span></b><br><br>   <div class='row'>      <div class='col-sm-4'> <img height=75 width=100 src='";
-    html += breach.logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='xposed.html#" + breach.breach + "' target='_blank'>";
+    html += breach.logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='breach.html#" + breach.breach + "' target='_blank'>";
     html += breach.breach + "</font></strong></h3>         </a>      </div>      <div class='col-sm-4'>         <img height=75 width=75 src='";
     html += 'static/logos/industry/' + breach.industry + ".png' title='";
     html += breach.industry + ' Industry';
