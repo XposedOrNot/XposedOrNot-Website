@@ -66,7 +66,7 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
     analysisText += "<ol>";
 
     if (plaintextBreaches.length > 0 || easyToCrackBreaches.length > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Compromised Passwords (${plaintextBreaches.length + easyToCrackBreaches.length} Breaches):</strong></span><ul>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>🔐 Compromised Passwords (${plaintextBreaches.length + easyToCrackBreaches.length} Breaches):</strong></span><ul>`;
         if (plaintextBreaches.length > 0) {
             analysisText += `<li>Breaches with plain text passwords: ${plaintextBreaches.join(', ')}.</li>`;
         }
@@ -77,36 +77,36 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
     }
 
     if (piiBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Personal Information Exposure (${piiBreachesCount} Occurrences):</strong></span> Your personal details might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Monitor for unusual activities that could indicate identity theft or fraud.</li><br>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>👤 Personal Information Exposure (${piiBreachesCount} Occurrences):</strong></span> Your personal details might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Monitor for unusual activities that could indicate identity theft or fraud.</li><br>`;
     }
 
     if (emailBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Email Addresses and Phishing Risks (${emailBreachesCount} Occurrences):</strong></span> Your email address might be used in phishing attempts.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with emails from unknown sources and avoid clicking on suspicious links.</li><br>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>📧 Email Addresses and Phishing Risks (${emailBreachesCount} Occurrences):</strong></span> Your email address might be used in phishing attempts.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with emails from unknown sources and avoid clicking on suspicious links.</li><br>`;
     }
 
     if (communicationBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Communication and Social Interactions (${communicationBreachesCount} Occurrences):</strong></span> Your communication details may be at risk.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with your online interactions and consider updating privacy settings on social platforms.</li><br>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>💬 Communication and Social Interactions (${communicationBreachesCount} Occurrences):</strong></span> Your communication details may be at risk.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with your online interactions and consider updating privacy settings on social platforms.</li><br>`;
     }
 
     if (demographicsBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>Demographics (${demographicsBreachesCount} Occurrences):</strong></span> Sensitive demographic information might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Review and secure any accounts that may contain detailed personal information to prevent identity theft.</li><br>`;
+        analysisText += `<li><span style='color: ${categoryColor};'><strong>📊 Demographics (${demographicsBreachesCount} Occurrences):</strong></span> Sensitive demographic information might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Review and secure any accounts that may contain detailed personal information to prevent identity theft.</li><br>`;
     }
 
     analysisText += "</ol>";
 
-    analysisText += `<p><strong>Your Risk Score:</strong> <span class='alert alert-${getAlertType(riskLabel)}' style='padding: 2px 8px; display: inline-block; margin: 0;'><strong>${riskLabel}</strong></span><br><br><strong>Our Recommendations:</strong><br>`;
+    analysisText += `<p><strong>Your Risk Score:</strong> <span class='alert alert-${getAlertType(riskLabel)}' style='padding: 2px 8px; display: inline-block; margin: 0;'><strong>${riskLabel}</strong></span><br><br><strong>Our Recommendations:</strong> `;
     switch (riskLabel) {
         case 'Low':
-            analysisText += "🟢 Stay vigilant and proactive in securing your data.";
+            analysisText += "<span style='display: inline-block;'>🟢 Stay vigilant and proactive in securing your data.</span>";
             break;
         case 'Medium':
-            analysisText += "🟠 Enhance your security measures and remain alert.";
+            analysisText += "<span style='display: inline-block;'>🟠 Enhance your security measures and remain alert.</span>";
             break;
         case 'High':
-            analysisText += "🔴 Urgently review and fortify your security practices.";
+            analysisText += "<span style='display: inline-block;'>🔴 Urgently review and fortify your security practices.</span>";
             break;
         default:
-            analysisText += "🔵 Regularly assess and update your security settings.";
+            analysisText += "<span style='display: inline-block;'>🔵 Regularly assess and update your security settings.</span>";
     }
     analysisText += "</p></div>";
     return analysisText;
@@ -260,7 +260,7 @@ var j = $.ajax(url)
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
-                ['Risk Score', 0]
+                ['Risk Score', Math.round(riskScore)]
             ]);
 
             // Responsive options based on screen size
@@ -276,22 +276,62 @@ var j = $.ajax(url)
                 redFrom: 67,
                 redTo: 100,
                 minorTicks: 5,
-                max: 100
+                max: 100,
+                majorTicks: ['0', '20', '40', '60', '80', '100']
             };
 
             var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
 
-            chart.draw(data, options);
-            setInterval(function () {
-                data.setValue(0, 1, Math.round(riskScore))
-                chart.draw(data, options);
-            }, 1000);
+            // Apply text color styles after chart is drawn
+            const applyTextColor = function() {
+                const isDarkMode = document.body.classList.contains('dark-mode') ||
+                                  document.documentElement.getAttribute('data-theme') === 'dark';
+                const chartDiv = document.getElementById('chart_div');
+                if (chartDiv) {
+                    // Target all text elements in the SVG including the number value
+                    const textElements = chartDiv.querySelectorAll('svg text');
+                    textElements.forEach(text => {
+                        text.setAttribute('fill', isDarkMode ? '#ffffff' : '#000000');
+                        text.style.fill = isDarkMode ? '#ffffff' : '#000000';
+                        text.style.fontWeight = '600';
+                    });
+                }
+            };
 
+            // Draw chart once with the actual risk score
+            chart.draw(data, options);
+
+            // Apply text color after initial draw
+            setTimeout(applyTextColor, 150);
+
+            // Redraw on window resize
             window.addEventListener('resize', function () {
                 const isMobile = window.innerWidth <= 767;
                 options.width = isMobile ? 300 : 500;
                 options.height = isMobile ? 200 : 300;
                 chart.draw(data, options);
+                setTimeout(applyTextColor, 150);
+            });
+
+            // Watch for dark mode changes and update text color
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme') {
+                        setTimeout(applyTextColor, 50);
+                    }
+                });
+            });
+
+            // Observe body class changes (for .dark-mode class)
+            observer.observe(document.body, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+
+            // Observe documentElement data-theme changes
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-theme']
             });
         }
 
