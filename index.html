@@ -326,8 +326,6 @@
             <div class="password-row">
                <div class="password-left">
                   <div class="password-text">
-                     <img src="/static/images/why-xon.png" class="img-fluid pass2" alt="XposedOrNot Security Features"
-                        width="600" height="400" loading="lazy">
                      <p align="justify">
                         <strong>XposedOrNot</strong> helps you stay protected in today's digital world. We monitor your
                         email 24/7 and instantly notify you if it appears in any data breaches, giving you the power
@@ -348,7 +346,18 @@
                   </div>
                </div>
                <div class="password-right">
-                  <img src="/static/images/why-xon.png" class="img-fluid pass" alt="">
+                  <div class="video-container">
+                     <video class="img-fluid pass" controls loop style="max-width: 500px; width: 100%; height: 400px;" id="xon-video">
+                        <source src="/static/xon-video.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                     </video>
+                     <div class="video-play-button" id="play-button">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                           <circle cx="50" cy="50" r="45" fill="rgba(63, 113, 243, 0.9)" stroke="white" stroke-width="2"/>
+                           <polygon points="40,30 40,70 70,50" fill="white"/>
+                        </svg>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
@@ -629,6 +638,39 @@ We'll help you take quick action to protect your accounts. This service is compl
       <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
       <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
       <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+      <script>
+         // Video play button functionality
+         document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('xon-video');
+            const playButton = document.getElementById('play-button');
+
+            if (video && playButton) {
+               // Hide play button when video starts playing
+               video.addEventListener('play', function() {
+                  playButton.classList.add('hide');
+               });
+
+               // Show play button when video is paused
+               video.addEventListener('pause', function() {
+                  playButton.classList.remove('hide');
+               });
+
+               // Click on play button to play video
+               playButton.addEventListener('click', function() {
+                  video.play();
+               });
+
+               // Click on video to toggle play/pause
+               video.addEventListener('click', function() {
+                  if (video.paused) {
+                     video.play();
+                  } else {
+                     video.pause();
+                  }
+               });
+            }
+         });
+      </script>
 </body>
 
 </html>
