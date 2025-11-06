@@ -61,8 +61,11 @@
         <div class="row mb-4">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Filters</h5>
+                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                            <i class="fas fa-redo"></i> Clear All Filters
+                        </button>
                     </div>
                     <div class="card-body">
                         <div class="filter-row">
@@ -118,20 +121,6 @@
                 <div class="summary-tile">
                     <h5>Unique Emails</h5>
                     <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Breach Visualization</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="visualization"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -207,16 +196,44 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="mb-0">Breach Visualization</h5>
+                            <span class="badge bg-info" id="filterBadge" style="display: none;">Filtered View</span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
+                                <i class="fas fa-undo"></i> Reset View
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
+                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
+                                <span id="vizToggleText">Collapse</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" id="visualizationCard">
+                        <div id="visualization"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
     <footer class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center">
-                    <a href="/privacy.html" style="color: var(--text-color);">Privacy Policy</a>
+            <div class="row align-items-center">
+                <div class="col-md-6 text-start">
+                    <a href="/privacy.html" class="footer-link">Privacy Policy</a>
+                    <span class="mx-2">|</span>
+                    <a href="/terms.html" class="footer-link">Terms of Service</a>
                 </div>
-                <div class="col-md-4 text-end">
+                <div class="col-md-6 text-end">
                     <button class="theme-toggle" id="themeToggle">
                         <i class="fas fa-sun"></i>
                         <span>Dark Mode</span>
