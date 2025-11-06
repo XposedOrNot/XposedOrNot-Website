@@ -3,6 +3,9 @@ let filteredData = null;
 let breachTable = null;
 let expandedNodes = new Set();
 let emailTypeahead = null;
+let currentZoom = null;
+let currentSvg = null;
+let nodeToCenterOnLoad = null;
 
 
 function initializeTheme() {
@@ -33,6 +36,32 @@ function initializeTheme() {
 }
 
 
+function initializeVisualizationToggle() {
+    const toggleBtn = document.getElementById('toggleVisualization');
+    const vizCard = document.getElementById('visualizationCard');
+    const vizIcon = document.getElementById('vizToggleIcon');
+    const vizText = document.getElementById('vizToggleText');
+
+    toggleBtn.addEventListener('click', () => {
+        const isCollapsed = vizCard.classList.contains('collapsed');
+
+        if (isCollapsed) {
+            vizCard.classList.remove('collapsed');
+            vizIcon.className = 'fas fa-chevron-up';
+            vizText.textContent = 'Collapse';
+            toggleBtn.classList.remove('collapsed');
+        } else {
+            vizCard.classList.add('collapsed');
+            vizIcon.className = 'fas fa-chevron-down';
+            vizText.textContent = 'Expand';
+            toggleBtn.classList.add('collapsed');
+        }
+    });
+
+    document.getElementById('resetVisualization').addEventListener('click', clearAllFilters);
+}
+
+
 function showLoading() {
     document.getElementById('loadingOverlay').style.display = 'flex';
 }
@@ -54,6 +83,7 @@ function getUrlParams() {
 async function init() {
     showLoading();
     initializeTheme();
+    initializeVisualizationToggle();
 
     const params = getUrlParams();
     if (!params.email || !params.token) {
@@ -79,6 +109,7 @@ async function init() {
         initializeVisualization();
         initializeDataTable();
         updateTop10Lists();
+        updateClearAllButtonState();
 
     } catch (error) {
         console.error('Error initializing application:', error);
@@ -177,6 +208,32 @@ function setupFilterListeners() {
         updateFilterActiveState(emailFilter);
         filterData();
     });
+
+
+    document.getElementById('clearAllFilters').addEventListener('click', clearAllFilters);
+}
+
+
+function clearAllFilters() {
+    document.getElementById('emailFilter').value = '';
+    document.getElementById('domainFilter').value = '';
+    document.getElementById('breachFilter').value = '';
+    document.getElementById('yearFilter').value = '';
+
+    expandedNodes.clear();
+    nodeToCenterOnLoad = null; // Clear centering target
+
+    ['emailFilter', 'domainFilter', 'breachFilter', 'yearFilter'].forEach(id => {
+        const element = document.getElementById(id);
+        element.classList.remove('filter-active');
+    });
+
+    filteredData = allData;
+    updateSummaryTiles();
+    updateVisualization();
+    updateDataTable();
+    updateTop10Lists();
+    updateClearAllButtonState();
 }
 
 
@@ -185,6 +242,35 @@ function updateFilterActiveState(element) {
         element.classList.add('filter-active');
     } else {
         element.classList.remove('filter-active');
+    }
+    updateClearAllButtonState();
+}
+
+
+function updateClearAllButtonState() {
+    const clearAllBtn = document.getElementById('clearAllFilters');
+    const resetVizBtn = document.getElementById('resetVisualization');
+    const filterBadge = document.getElementById('filterBadge');
+
+    const hasActiveFilters =
+        document.getElementById('emailFilter').value !== '' ||
+        document.getElementById('domainFilter').value !== '' ||
+        document.getElementById('breachFilter').value !== '' ||
+        document.getElementById('yearFilter').value !== '' ||
+        expandedNodes.size > 0;
+
+    if (hasActiveFilters) {
+        clearAllBtn.classList.remove('btn-outline-primary');
+        clearAllBtn.classList.add('btn-primary');
+
+        resetVizBtn.style.display = 'inline-flex';
+        filterBadge.style.display = 'inline-block';
+    } else {
+        clearAllBtn.classList.remove('btn-primary');
+        clearAllBtn.classList.add('btn-outline-primary');
+
+        resetVizBtn.style.display = 'none';
+        filterBadge.style.display = 'none';
     }
 }
 
@@ -235,6 +321,7 @@ function filterData() {
     updateVisualization();
     updateDataTable();
     updateTop10Lists();
+    updateClearAllButtonState();
 }
 
 
@@ -341,21 +428,6 @@ function updateVisualizationSize() {
 
 function updateVisualization() {
     const container = document.getElementById('visualization');
-    const width = Math.max(800, container.clientWidth);
-    const height = container.clientHeight;
-
-
-    d3.select('#visualization svg').html('');
-
-    const nodeIcons = {
-        domain: '\uf0ac',
-        email: '\uf0e0',
-        breach: '\uf3ed'
-    };
-
-    const defs = d3.select('#visualization svg').append('defs');
-    defs.append('style')
-        .text(`@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');`);
 
     const nodes = [];
     const links = [];
@@ -363,20 +435,20 @@ function updateVisualization() {
     const domains = [...new Set(filteredData.Breaches_Details.map(item => item.domain))];
     domains.forEach(domain => {
         const emailCount = filteredData.Breaches_Details.filter(item => item.domain === domain).length;
-        nodes.push({ id: domain, type: 'domain', label: `${domain} (${emailCount})` });
+        nodes.push({ id: domain, type: 'domain', label: `${domain} (${emailCount})`, emailCount: emailCount });
     });
 
     const breaches = [...new Set(filteredData.Breaches_Details.map(item => item.breach))];
     breaches.forEach(breach => {
         const emailCount = filteredData.Breaches_Details.filter(item => item.breach === breach).length;
-        nodes.push({ id: breach, type: 'breach', label: `${breach} (${emailCount})` });
+        nodes.push({ id: breach, type: 'breach', label: `${breach} (${emailCount})`, emailCount: emailCount });
     });
 
     filteredData.Breaches_Details.forEach(item => {
         const shouldShowEmail = expandedNodes.has(item.breach) || expandedNodes.has(item.domain);
         if (shouldShowEmail) {
             if (!nodes.find(n => n.id === item.email)) {
-                nodes.push({ id: item.email, type: 'email', label: item.email });
+                nodes.push({ id: item.email, type: 'email', label: item.email, emailCount: 1 });
             }
             links.push({ source: item.domain, target: item.email });
             links.push({ source: item.email, target: item.breach });
@@ -387,13 +459,141 @@ function updateVisualization() {
 
     const nodeCount = nodes.length;
     const isLargeDataset = nodeCount > 100;
+    const isVeryLargeDataset = nodeCount > 500;
+
+    const breachAndDomainNodes = nodes.filter(n => n.type === 'breach' || n.type === 'domain');
+    const emailCounts = breachAndDomainNodes.map(n => n.emailCount || 1);
+    const minEmails = Math.min(...emailCounts);
+    const maxEmails = Math.max(...emailCounts);
+
+    function getDynamicFontSize(emailCount, type) {
+        if (!emailCount) return type === 'email' ? 9 : 11;
+
+        if (emailCount <= 5) {
+            return type === 'breach' ? 14 : (type === 'domain' ? 13 : 10);
+        }
+        else if (emailCount <= 20) {
+            return type === 'breach' ? 12 : (type === 'domain' ? 11 : 9);
+        }
+        else if (emailCount <= 50) {
+            return type === 'breach' ? 10 : (type === 'domain' ? 10 : 8);
+        }
+        else {
+            return type === 'breach' ? 9 : (type === 'domain' ? 9 : 8);
+        }
+    }
+
+    function getDynamicNodeRadius(emailCount, type) {
+        if (!emailCount) return type === 'domain' ? 12 : (type === 'breach' ? 10 : 8);
+
+        if (emailCount <= 5) {
+            return type === 'domain' ? 18 : (type === 'breach' ? 15 : 10);
+        }
+        else if (emailCount <= 20) {
+            return type === 'domain' ? 16 : (type === 'breach' ? 13 : 10);
+        }
+        else if (emailCount <= 50) {
+            return type === 'domain' ? 14 : (type === 'breach' ? 11 : 10);
+        }
+        else {
+            return type === 'domain' ? 12 : (type === 'breach' ? 10 : 10);
+        }
+    }
+
+    function getDynamicLabelLength(emailCount, type) {
+        if (!emailCount) return type === 'email' ? 30 : 20;
+
+        if (emailCount <= 5) {
+            return type === 'breach' ? 40 : (type === 'domain' ? 35 : 35);
+        }
+        else if (emailCount <= 20) {
+            return type === 'breach' ? 30 : (type === 'domain' ? 25 : 30);
+        }
+        else if (emailCount <= 50) {
+            return type === 'breach' ? 20 : (type === 'domain' ? 20 : 25);
+        }
+        else {
+            return type === 'breach' ? 15 : (type === 'domain' ? 15 : 20);
+        }
+    }
+
+    const baseWidth = Math.max(1400, container.clientWidth);
+    const baseHeight = 600;
+
+    const hasExpandedNodes = expandedNodes.size > 0;
+    const expansionMultiplier = hasExpandedNodes ? 4 : 3;
+
+    let width, height;
+    if (isVeryLargeDataset) {
+        width = Math.max(baseWidth, nodeCount * 2.5);
+        height = Math.max(baseHeight, nodeCount * 2);
+    } else if (isLargeDataset) {
+        width = Math.max(baseWidth, nodeCount * 3);
+        height = Math.max(baseHeight, nodeCount * 2.5);
+    } else {
+        width = Math.max(baseWidth, nodeCount * expansionMultiplier);
+        height = Math.max(baseHeight, nodeCount * expansionMultiplier);
+    }
+
+    const padding = 100;
+    width += padding * 2;
+    height += padding * 2;
+
+    d3.select('#visualization svg').remove();
+
+    const nodeIcons = {
+        domain: '\uf0ac',
+        email: '\uf0e0',
+        breach: '\uf3ed'
+    };
+
+    const svg = d3.select('#visualization')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    currentSvg = svg;
+
+    const defs = svg.append('defs');
+    defs.append('style')
+        .text(`@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');`);
+
+    const linkDistance = isVeryLargeDataset ? 100 : (isLargeDataset ? 150 : 120);
+    const chargeStrength = isVeryLargeDataset ? -400 : (isLargeDataset ? -600 : -500);
+
+    let centerX = width / 2;
+    let centerY = height / 2;
+
+    if (expandedNodes.size === 1) {
+        const expandedNodeId = Array.from(expandedNodes)[0];
+        const expandedNode = nodes.find(n => n.id === expandedNodeId);
+        if (expandedNode && expandedNode.type === 'domain') {
+            centerX = width / 2;
+            centerY = height / 3; // Slightly higher to show breaches below
+        } else if (expandedNode && expandedNode.type === 'breach') {
+            centerX = width / 2;
+            centerY = height / 2;
+        }
+    }
 
     const simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(isLargeDataset ? 200 : 150))
-        .force('charge', d3.forceManyBody().strength(isLargeDataset ? -800 : -500))
-        .force('center', d3.forceCenter(width / 2, height / 2));
-
-    const svg = d3.select('#visualization svg');
+        .force('link', d3.forceLink(links)
+            .id(d => d.id)
+            .distance(linkDistance)
+            .strength(0.5)) // Slightly weaker links = less oscillation
+        .force('charge', d3.forceManyBody().strength(chargeStrength))
+        .force('center', d3.forceCenter(centerX, centerY))
+        .force('collision', d3.forceCollide()
+            .radius(d => {
+                const nodeRadius = getDynamicNodeRadius(d.emailCount, d.type);
+                const textPadding = d.emailCount <= 5 ? 40 : 25;
+                return nodeRadius + textPadding;
+            })
+            .strength(0.8)   // Stronger collision = less overlap
+            .iterations(2))  // More collision iterations = better stability
+        .alphaDecay(0.05)    // Faster decay = quicker settling (default: 0.0228)
+        .alphaMin(0.001)     // Stop simulation sooner (default: 0.001)
+        .velocityDecay(0.6); // More friction = less bouncing (default: 0.4)
 
     svg.append('defs').selectAll('marker')
         .data(['end'])
@@ -409,112 +609,8 @@ function updateVisualization() {
         .attr('d', 'M0,-5L10,0L0,5')
         .attr('fill', '#999');
 
-    const link = svg.append('g')
-        .selectAll('line')
-        .data(links)
-        .enter()
-        .append('line')
-        .attr('class', 'link')
-        .attr('marker-end', 'url(#arrow)')
-        .attr('stroke-width', d => {
-            return (d.source.type === 'domain' && d.target.type === 'breach') ? 2 : 1;
-        });
-
-    const nodeGroup = svg.append('g')
-        .selectAll('g')
-        .data(nodes)
-        .enter()
-        .append('g')
-        .attr('class', d => `node-group ${expandedNodes.has(d.id) ? 'expanded' : ''}`)
-        .call(d3.drag()
-            .on('start', dragstarted)
-            .on('drag', dragged)
-            .on('end', dragended))
-        .on('click', (event, d) => handleNodeClick(event, d));
-
-    nodeGroup.append('circle')
-        .attr('r', d => {
-            switch (d.type) {
-                case 'domain': return 15;
-                case 'breach': return 12;
-                case 'email': return 10;
-                default: return 10;
-            }
-        })
-        .attr('fill', d => {
-            switch (d.type) {
-                case 'domain': return '#28a745';
-                case 'email': return '#0d6efd';
-                case 'breach': return '#dc3545';
-                default: return '#999';
-            }
-        })
-        .attr('stroke', d => expandedNodes.has(d.id) ? '#ffc107' : '#fff')
-        .attr('stroke-width', d => expandedNodes.has(d.id) ? 3 : 1.5);
-
-    nodeGroup.append('text')
-        .attr('class', 'fa')
-        .attr('font-family', 'FontAwesome')
-        .attr('font-size', d => {
-            switch (d.type) {
-                case 'domain': return '14px';
-                case 'breach': return '12px';
-                case 'email': return '10px';
-                default: return '10px';
-            }
-        })
-        .attr('fill', '#fff')
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'central')
-        .text(d => nodeIcons[d.type]);
-
-    nodeGroup.append('text')
-        .text(d => {
-            if (d.type === 'email' && !expandedNodes.has(d.id) &&
-                !expandedNodes.has(getConnectedBreach(d.id)) &&
-                !expandedNodes.has(getConnectedDomain(d.id))) {
-                return '';
-            }
-            const maxLength = d.type === 'email' ? 30 : 20;
-            const label = d.label.length > maxLength ? d.label.substring(0, maxLength) + '...' : d.label;
-            return label;
-        })
-        .attr('x', d => d.type === 'email' ? 12 : 18)
-        .attr('y', 4)
-        .attr('font-size', d => d.type === 'email' ? '8px' : '10px')
-        .attr('font-family', 'Arial')
-        .attr('fill', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#e9ecef' : '#000')
-        .attr('stroke', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'none' : '#ffffff')
-        .attr('stroke-width', '1px')
-        .attr('paint-order', 'stroke')
-        .attr('pointer-events', 'none');
-
-    nodeGroup.append('title')
-        .text(d => `${d.type}: ${d.label}`);
-
-    simulation.on('tick', () => {
-        link
-            .attr('x1', d => d.source.x)
-            .attr('y1', d => d.source.y)
-            .attr('x2', d => d.target.x)
-            .attr('y2', d => d.target.y);
-
-        nodeGroup
-            .attr('transform', d => `translate(${d.x},${d.y})`);
-    });
-
-    function getConnectedBreach(emailId) {
-        const connection = filteredData.Breaches_Details.find(item => item.email === emailId);
-        return connection ? connection.breach : null;
-    }
-
-    function getConnectedDomain(emailId) {
-        const connection = filteredData.Breaches_Details.find(item => item.email === emailId);
-        return connection ? connection.domain : null;
-    }
-
     function dragstarted(event) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
+        if (!event.active) simulation.alphaTarget(0.1).restart();
         event.subject.fx = event.subject.x;
         event.subject.fy = event.subject.y;
     }
@@ -528,16 +624,159 @@ function updateVisualization() {
         if (!event.active) simulation.alphaTarget(0);
         event.subject.fx = null;
         event.subject.fy = null;
+
+        simulation.alpha(0.3);
     }
 
+    const g = svg.append('g');
+
+    svg.selectAll('line').remove();
+    svg.selectAll('.node-group').remove();
+
+    const link = g.append('g')
+        .selectAll('line')
+        .data(links)
+        .enter()
+        .append('line')
+        .attr('class', 'link')
+        .attr('marker-end', 'url(#arrow)')
+        .attr('stroke-width', d => {
+            return (d.source.type === 'domain' && d.target.type === 'breach') ? 2 : 1;
+        });
+
+    const nodeGroup = g.append('g')
+        .selectAll('g')
+        .data(nodes)
+        .enter()
+        .append('g')
+        .attr('class', d => `node-group ${expandedNodes.has(d.id) ? 'expanded' : ''}`)
+        .call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended))
+        .on('click', (event, d) => handleNodeClick(event, d));
+
+    nodeGroup.append('circle')
+        .attr('r', d => getDynamicNodeRadius(d.emailCount, d.type))
+        .attr('fill', d => {
+            switch (d.type) {
+                case 'domain': return '#28a745';
+                case 'email': return '#0d6efd';
+                case 'breach': return '#dc3545';
+                default: return '#999';
+            }
+        })
+        .attr('stroke', d => expandedNodes.has(d.id) ? '#ffc107' : '#fff')
+        .attr('stroke-width', d => {
+            if (d.emailCount <= 5) return expandedNodes.has(d.id) ? 3 : 2;
+            return expandedNodes.has(d.id) ? 3 : 1.5;
+        });
+
+    nodeGroup.append('text')
+        .attr('class', 'fa')
+        .attr('font-family', 'FontAwesome')
+        .attr('font-size', d => {
+            const baseSize = getDynamicFontSize(d.emailCount, d.type);
+            return `${baseSize - 2}px`;
+        })
+        .attr('fill', '#fff')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .text(d => nodeIcons[d.type]);
+
+    nodeGroup.append('text')
+        .text(d => {
+            if (d.type === 'email' && !expandedNodes.has(d.id) &&
+                !expandedNodes.has(getConnectedBreach(d.id)) &&
+                !expandedNodes.has(getConnectedDomain(d.id))) {
+                return '';
+            }
+            const maxLength = getDynamicLabelLength(d.emailCount, d.type);
+            const label = d.label.length > maxLength ? d.label.substring(0, maxLength) + '...' : d.label;
+            return label;
+        })
+        .attr('x', d => {
+            const radius = getDynamicNodeRadius(d.emailCount, d.type);
+            return radius + 5;
+        })
+        .attr('y', 4)
+        .attr('font-size', d => `${getDynamicFontSize(d.emailCount, d.type)}px`)
+        .attr('font-family', 'Arial')
+        .attr('font-weight', d => {
+            return (d.emailCount && d.emailCount <= 5) ? 'bold' : 'normal';
+        })
+        .attr('fill', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#e9ecef' : '#000')
+        .attr('stroke', () => document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'none' : '#ffffff')
+        .attr('stroke-width', '1px')
+        .attr('paint-order', 'stroke')
+        .attr('pointer-events', 'none');
+
+    nodeGroup.append('title')
+        .text(d => `${d.type}: ${d.label}`);
 
     const zoom = d3.zoom()
-        .scaleExtent([0.5, 2])
+        .scaleExtent([0.3, 3])
+        .filter(function(event) {
+            return event.type !== 'wheel' && (event.type === 'mousedown' || event.type === 'touchstart' || event.type === 'dblclick');
+        })
         .on('zoom', (event) => {
-            svg.selectAll('g').attr('transform', event.transform);
+            g.attr('transform', event.transform);
         });
 
     svg.call(zoom);
+    currentZoom = zoom;
+
+    function centerNode(node) {
+        const container = document.getElementById('visualization');
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+
+        const scale = 1; // Keep current scale or set to 1 for no zoom
+        const x = containerWidth / 2 - node.x * scale;
+        const y = containerHeight / 2 - node.y * scale;
+
+        svg.transition()
+            .duration(750)
+            .call(zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
+    }
+
+    simulation.on('tick', () => {
+        link
+            .attr('x1', d => d.source.x)
+            .attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x)
+            .attr('y2', d => d.target.y);
+
+        nodeGroup
+            .attr('transform', d => `translate(${d.x},${d.y})`);
+    });
+
+    if (nodeCount < 100) {
+        simulation.tick(50); // Pre-compute 50 iterations
+        simulation.restart();
+    }
+
+    if (nodeToCenterOnLoad) {
+        const nodeToCenter = nodes.find(n => n.id === nodeToCenterOnLoad);
+        if (nodeToCenter) {
+            setTimeout(() => {
+                centerNode(nodeToCenter);
+                nodeToCenterOnLoad = null; // Clear after centering
+            }, 500); // Wait 500ms for initial positioning
+        } else {
+            nodeToCenterOnLoad = null;
+        }
+    }
+
+    function getConnectedBreach(emailId) {
+        const connection = filteredData.Breaches_Details.find(item => item.email === emailId);
+        return connection ? connection.breach : null;
+    }
+
+    function getConnectedDomain(emailId) {
+        const connection = filteredData.Breaches_Details.find(item => item.email === emailId);
+        return connection ? connection.domain : null;
+    }
 }
 
 
@@ -638,6 +877,7 @@ function handleNodeClick(event, d) {
             expandedNodes.delete(d.id);
         } else {
             expandedNodes.add(d.id);
+            nodeToCenterOnLoad = d.id;
         }
 
 
