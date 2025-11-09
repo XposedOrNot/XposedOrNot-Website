@@ -301,6 +301,60 @@
          border-top-color: #8e44ad;
       }
 
+      /* Real-Time Breach Alerts Section */
+      .breach-alerts-section {
+         border-left: 5px solid #e74c3c;
+      }
+
+      .pending-alert {
+         background-color: #fff5f5 !important;
+         transition: all 0.3s ease;
+      }
+
+      .pending-alert:hover {
+         background-color: #ffe0e0 !important;
+         transform: translateX(5px);
+      }
+
+      .acknowledge-btn {
+         transition: all 0.3s ease;
+      }
+
+      .acknowledge-btn:hover {
+         transform: scale(1.1);
+         box-shadow: 0 3px 10px rgba(46, 204, 113, 0.3);
+      }
+
+      @keyframes pulse {
+         0%, 100% {
+            opacity: 1;
+         }
+         50% {
+            opacity: 0.6;
+         }
+      }
+
+      /* Dark mode support for breach alerts */
+      [data-theme="dark"] .breach-alerts-section {
+         border-left-color: #e74c3c;
+      }
+
+      [data-theme="dark"] .pending-alert {
+         background-color: #3d1f1f !important;
+      }
+
+      [data-theme="dark"] .pending-alert:hover {
+         background-color: #4d2626 !important;
+      }
+
+      [data-theme="dark"] .alert-header-section h3 {
+         color: #ff6b6b !important;
+      }
+
+      [data-theme="dark"] #breach_alerts_table thead {
+         background-color: #c0392b !important;
+      }
+
       /* Extend container width by 100px on each side */
       .container {
          max-width: 1340px !important; /* Default 1140px + 200px */
@@ -731,6 +785,121 @@
                      </div>
                   </div>
 
+                  <!-- Real-Time Breach Alerts Section -->
+                  <div class="xon-row-area">
+                     <div class="container">
+                        <div class="row">
+                           <div style="width:100%">
+                              <div class="xon-row-left breach-alerts-section" style="height:auto; width:100%">
+                                 <div class="alert-header-section">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                       <div>
+                                          <h3 style="margin: 0; color: #e74c3c; font-weight: 600;">
+                                             <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+                                             Real-Time Breach Alerts
+                                          </h3>
+                                          <p style="margin: 5px 0 0 0; font-size: 14px; color: #7f8c8d;">
+                                             New breaches requiring your acknowledgment
+                                          </p>
+                                       </div>
+                                       <div class="alert-badge">
+                                          <span class="badge badge-danger" style="font-size: 16px; padding: 8px 15px; border-radius: 20px;">
+                                             2 Pending
+                                          </span>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="table-responsive-wrapper">
+                                    <table id="breach_alerts_table" class="table table-striped table-bordered" style="width:100%">
+                                       <thead style="background-color: #e74c3c; color: white;">
+                                          <tr>
+                                             <th style="width: 15%;">Alert Time</th>
+                                             <th style="width: 20%;">Breach Name</th>
+                                             <th style="width: 12%;">Severity</th>
+                                             <th style="width: 15%;">Affected Count</th>
+                                             <th style="width: 23%;">Description</th>
+                                             <th style="width: 10%;">Status</th>
+                                             <th style="width: 5%;">Action</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr class="alert-row pending-alert">
+                                             <td>
+                                                <strong>Nov 9, 2025</strong><br>
+                                                <small style="color: #7f8c8d;">10:23 AM</small>
+                                             </td>
+                                             <td>
+                                                <strong style="color: #2c3e50;">TechCorp Database</strong><br>
+                                                <small style="color: #7f8c8d;">techcorp.com</small>
+                                             </td>
+                                             <td>
+                                                <span class="badge" style="background-color: #e74c3c; color: white; padding: 5px 10px; border-radius: 12px;">
+                                                   <i class="fas fa-fire"></i> Critical
+                                                </span>
+                                             </td>
+                                             <td>
+                                                <strong style="color: #e74c3c;">1,247</strong> emails<br>
+                                                <small style="color: #7f8c8d;">3 domains</small>
+                                             </td>
+                                             <td style="font-size: 13px;">
+                                                Credentials, email addresses, and personal information exposed in recent data breach
+                                             </td>
+                                             <td>
+                                                <span class="badge badge-warning" style="padding: 6px 12px; border-radius: 15px; animation: pulse 2s infinite;">
+                                                   <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                             </td>
+                                             <td style="text-align: center;">
+                                                <button class="btn btn-sm btn-success acknowledge-btn"
+                                                   data-breach="TechCorp Database"
+                                                   style="padding: 5px 10px; border-radius: 5px; font-weight: 500;">
+                                                   <i class="fas fa-check"></i>
+                                                </button>
+                                             </td>
+                                          </tr>
+                                          <tr class="alert-row pending-alert">
+                                             <td>
+                                                <strong>Nov 8, 2025</strong><br>
+                                                <small style="color: #7f8c8d;">03:45 PM</small>
+                                             </td>
+                                             <td>
+                                                <strong style="color: #2c3e50;">CloudServices Leak</strong><br>
+                                                <small style="color: #7f8c8d;">cloudservices.io</small>
+                                             </td>
+                                             <td>
+                                                <span class="badge" style="background-color: #f39c12; color: white; padding: 5px 10px; border-radius: 12px;">
+                                                   <i class="fas fa-exclamation-circle"></i> High
+                                                </span>
+                                             </td>
+                                             <td>
+                                                <strong style="color: #f39c12;">823</strong> emails<br>
+                                                <small style="color: #7f8c8d;">2 domains</small>
+                                             </td>
+                                             <td style="font-size: 13px;">
+                                                Email addresses and hashed passwords found on dark web forums
+                                             </td>
+                                             <td>
+                                                <span class="badge badge-warning" style="padding: 6px 12px; border-radius: 15px; animation: pulse 2s infinite;">
+                                                   <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                             </td>
+                                             <td style="text-align: center;">
+                                                <button class="btn btn-sm btn-success acknowledge-btn"
+                                                   data-breach="CloudServices Leak"
+                                                   style="padding: 5px 10px; border-radius: 5px; font-weight: 500;">
+                                                   <i class="fas fa-check"></i>
+                                                </button>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
                   <div class="xon-row2-area">
                      <div class="container">
                         <div class="row">
@@ -1155,6 +1324,61 @@
                isDropdownVisible = false;
                domainDropdown.style.display = 'none';
             }
+         });
+      });
+
+      // Breach Alert Acknowledgment Handler
+      document.addEventListener('DOMContentLoaded', function () {
+         const acknowledgeButtons = document.querySelectorAll('.acknowledge-btn');
+
+         acknowledgeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+               const breachName = this.getAttribute('data-breach');
+               const row = this.closest('tr');
+
+               // Confirm acknowledgment
+               if (confirm(`Are you sure you want to acknowledge the "${breachName}" breach alert?\n\nThis will mark the alert as reviewed and notify your team.`)) {
+                  // Update status badge
+                  const statusCell = row.querySelector('td:nth-child(6)');
+                  statusCell.innerHTML = '<span class="badge badge-success" style="padding: 6px 12px; border-radius: 15px;"><i class="fas fa-check-circle"></i> Acknowledged</span>';
+
+                  // Update action button
+                  this.innerHTML = '<i class="fas fa-check-double"></i>';
+                  this.classList.remove('btn-success');
+                  this.classList.add('btn-secondary');
+                  this.disabled = true;
+
+                  // Remove pending background
+                  row.classList.remove('pending-alert');
+                  row.style.backgroundColor = '#f0fff4';
+
+                  // Update pending count
+                  const badge = document.querySelector('.alert-badge .badge-danger');
+                  const currentCount = parseInt(badge.textContent.match(/\d+/)[0]);
+                  const newCount = currentCount - 1;
+
+                  if (newCount > 0) {
+                     badge.textContent = `${newCount} Pending`;
+                  } else {
+                     badge.textContent = 'All Clear';
+                     badge.classList.remove('badge-danger');
+                     badge.classList.add('badge-success');
+                  }
+
+                  // Show success message
+                  const successMsg = document.createElement('div');
+                  successMsg.className = 'alert alert-success';
+                  successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
+                  successMsg.innerHTML = `<strong>Success!</strong> Alert for "${breachName}" has been acknowledged.`;
+                  document.body.appendChild(successMsg);
+
+                  setTimeout(() => {
+                     successMsg.style.transition = 'opacity 0.5s';
+                     successMsg.style.opacity = '0';
+                     setTimeout(() => successMsg.remove(), 500);
+                  }, 3000);
+               }
+            });
          });
       });
    </script>
