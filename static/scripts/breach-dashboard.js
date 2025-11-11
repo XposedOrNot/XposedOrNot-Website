@@ -161,6 +161,11 @@ $.ajax(emailVerificationUrl)
             initializePhishingButton();
         }
 
+        // Populate dynamic alerts if available
+        if (myjson.Alert_Management) {
+            populateDynamicAlerts(myjson.Alert_Management);
+        }
+
         $.LoadingOverlay("hide");
     })
     .fail(function (n) {
@@ -627,6 +632,11 @@ function updateApiCall(timeFilter) {
                 initializePhishingButton();
             }
 
+            // Populate dynamic alerts if available
+            if (myjson.Alert_Management) {
+                populateDynamicAlerts(myjson.Alert_Management);
+            }
+
             $.LoadingOverlay("hide");
         })
         .fail(function (n) {
@@ -732,7 +742,7 @@ function showXonPlusModal(service) {
     const modalTitle = modal.find('#xonPlusModalTitle');
     const modalIcon = modal.find('#xonPlusModalIcon');
     const modalDescription = modal.find('#xonPlusModalDescription');
-    
+
     // Update modal content based on service type
     if (service === 'teams') {
         modalTitle.text('Microsoft Teams Integration');
@@ -743,6 +753,505 @@ function showXonPlusModal(service) {
         modalIcon.html('<i class="fa fa-comments" style="color: #4a154b; font-size: 2.5rem;"></i>');
         modalDescription.text('Receive instant breach alerts in your Slack workspace with customizable message formatting and priority levels.');
     }
-    
+
     modal.modal('show');
 }
+
+// Function to populate dynamic alert management table
+function populateDynamicAlerts(alertManagement) {
+    if (!alertManagement || !alertManagement.summary || !alertManagement.alerts) {
+        console.warn('No Alert_Management data found in API response');
+        $('#dynamic-alert-badge').text('No Alerts').removeClass('badge-danger badge-warning').addClass('badge-success');
+        return;
+    }
+
+    const summary = alertManagement.summary;
+    const alerts = alertManagement.alerts;
+
+    // Update badge
+    const pendingCount = summary.pending_count || 0;
+    const totalAlerts = summary.total_alerts || 0;
+    const badge = $('#dynamic-alert-badge');
+
+    if (pendingCount > 0) {
+        badge.text(`${pendingCount} Pending`).removeClass('badge-success badge-secondary').addClass('badge-danger');
+    } else if (totalAlerts > 0) {
+        badge.text('All Acknowledged').removeClass('badge-danger badge-secondary').addClass('badge-success');
+    } else {
+        badge.text('No Alerts').removeClass('badge-danger badge-warning').addClass('badge-secondary');
+    }
+
+    // Populate table
+    const tbody = $('#dynamic_alerts_tbody');
+    tbody.empty();
+
+    if (alerts.length === 0) {
+        tbody.append('<tr><td colspan="7" class="text-center">No alerts to display</td></tr>');
+        return;
+    }
+
+    // Sort alerts by alert_time (most recent first)
+    alerts.sort((a, b) => new Date(b.alert_time) - new Date(a.alert_time));
+
+    // Get breach details from Detailed_Breach_Info for record counts
+    const breachDetails = myjson && myjson.Detailed_Breach_Info ? myjson.Detailed_Breach_Info : {};
+
+    alerts.forEach(alert => {
+        const alertDate = new Date(alert.alert_time);
+        const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+        const formattedDate = alertDate.toLocaleDateString('en-US', dateOptions);
+        const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' };
+        const formattedTime = alertDate.toLocaleTimeString('en-US', timeOptions);
+
+        // Get breach record count from Detailed_Breach_Info
+        let breachRecordCount = 'N/A';
+        if (breachDetails[alert.breach_id] && breachDetails[alert.breach_id].xposed_records) {
+            const records = parseInt(breachDetails[alert.breach_id].xposed_records);
+            if (!isNaN(records)) {
+                breachRecordCount = records.toLocaleString() + ' records';
+            }
+        }
+
+        // Determine severity badge
+        let severityBadge = '';
+        let severityIcon = '';
+        if (alert.severity === 'Critical') {
+            severityBadge = 'background-color: #e74c3c; color: white;';
+            severityIcon = '<i class="fas fa-fire"></i>';
+        } else if (alert.severity === 'High') {
+            severityBadge = 'background-color: #f39c12; color: white;';
+            severityIcon = '<i class="fas fa-exclamation-circle"></i>';
+        } else if (alert.severity === 'Medium') {
+            severityBadge = 'background-color: #f1c40f; color: white;';
+            severityIcon = '<i class="fas fa-exclamation-triangle"></i>';
+        } else {
+            severityBadge = 'background-color: #3498db; color: white;';
+            severityIcon = '<i class="fas fa-info-circle"></i>';
+        }
+
+        // Determine status
+        const isPending = alert.status === 'Pending';
+        const rowClass = isPending ? 'pending-alert' : '';
+        const statusBadge = isPending
+            ? '<span class="badge badge-warning" style="padding: 6px 12px; border-radius: 15px; animation: pulse 2s infinite;"><i class="fas fa-clock"></i> Pending</span>'
+            : '<span class="badge badge-success" style="padding: 6px 12px; border-radius: 15px;"><i class="fas fa-check-circle"></i> Acknowledged</span>';
+
+        // Action button
+        const actionButton = isPending
+            ? `<button class="btn btn-sm btn-danger dynamic-acknowledge-btn" data-alert-id="${alert.alert_id}" data-breach="${alert.breach_name}" title="Acknowledge this alert" style="padding: 5px 10px; border-radius: 5px; font-weight: 500;"><i class="fas fa-check"></i></button>`
+            : `<button class="btn btn-sm btn-warning dynamic-unacknowledge-btn" data-alert-id="${alert.alert_id}" data-breach="${alert.breach_name}" title="Un-acknowledge this alert" style="padding: 5px 10px; border-radius: 5px; font-weight: 500; background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); border: none; color: white;"><i class="fas fa-undo"></i></button>`;
+
+        // Truncate description
+        const truncatedDesc = alert.description.length > 100
+            ? alert.description.substring(0, 100) + '...'
+            : alert.description;
+
+        const row = `
+            <tr class="alert-row ${rowClass}" data-alert-id="${alert.alert_id}">
+                <td class="alert-time" data-timestamp="${alert.alert_time}">
+                    <strong class="alert-date">${formattedDate}</strong><br>
+                    <small class="alert-time-detail" style="color: #7f8c8d;">${formattedTime}</small>
+                </td>
+                <td>
+                    <strong style="color: #2c3e50;">${alert.breach_name}</strong><br>
+                    <small style="color: #7f8c8d;">${breachRecordCount}</small>
+                </td>
+                <td>
+                    <span class="badge" style="${severityBadge} padding: 5px 10px; border-radius: 12px;">
+                        ${severityIcon} ${alert.severity}
+                    </span>
+                </td>
+                <td>
+                    <strong style="color: #e74c3c;">${alert.affected_email_count}</strong> emails<br>
+                    <small style="color: #7f8c8d;">1 domain</small>
+                </td>
+                <td style="font-size: 13px;">
+                    ${truncatedDesc}
+                </td>
+                <td>
+                    ${statusBadge}
+                </td>
+                <td style="text-align: center;">
+                    ${actionButton}
+                </td>
+            </tr>
+        `;
+
+        tbody.append(row);
+    });
+}
+
+// Dynamic Alert Acknowledgment Handler - Show Modal
+let pendingAcknowledgment = null;
+
+$(document).on('click', '.dynamic-acknowledge-btn', function() {
+    const alertId = $(this).data('alert-id');
+    const breachName = $(this).data('breach');
+    const button = $(this);
+    const row = button.closest('tr');
+
+    // Store reference for confirmation
+    pendingAcknowledgment = {
+        alertId: alertId,
+        breachName: breachName,
+        button: button,
+        row: row
+    };
+
+    // Update modal content
+    $('#modal-breach-name').text(breachName);
+    $('#modal-alert-id').text(alertId);
+
+    // Show modal
+    $('#acknowledgeAlertModal').modal('show');
+});
+
+// Handle Confirm Button in Modal
+$('#confirmAcknowledgeBtn').on('click', function() {
+    if (!pendingAcknowledgment) return;
+
+    const { alertId, breachName, button, row } = pendingAcknowledgment;
+    const confirmBtn = $(this);
+    const cancelBtn = $('#acknowledgeAlertModal').find('.btn-secondary');
+
+    // Disable buttons and show loading state
+    confirmBtn.prop('disabled', true);
+    cancelBtn.prop('disabled', true);
+    confirmBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Processing...');
+
+    // Make API call to acknowledge the alert
+    const apiUrl = `https://api.xposedornot.com/v1/update_alert_status?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+
+    $.ajax({
+        url: apiUrl,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            alert_id: alertId,
+            status: 'Acknowledged'
+        }),
+        success: function(response) {
+            // Close modal
+            $('#acknowledgeAlertModal').modal('hide');
+
+            // Update status badge
+            const statusCell = row.find('td:nth-child(6)');
+            statusCell.html('<span class="badge badge-success" style="padding: 6px 12px; border-radius: 15px;"><i class="fas fa-check-circle"></i> Acknowledged</span>');
+
+            // Update action button
+            button.html('<i class="fas fa-check-double"></i>');
+            button.removeClass('btn-danger dynamic-acknowledge-btn');
+            button.addClass('btn-success');
+            button.prop('disabled', true);
+
+            // Remove pending background
+            row.removeClass('pending-alert');
+            row.css('background-color', '#f0fff4');
+
+            // Update pending count in badge
+            const badge = $('#dynamic-alert-badge');
+            const currentText = badge.text();
+            const match = currentText.match(/(\d+)\s+Pending/);
+
+            if (match) {
+                const currentCount = parseInt(match[1]);
+                const newCount = currentCount - 1;
+
+                if (newCount > 0) {
+                    badge.text(`${newCount} Pending`);
+                } else {
+                    badge.text('All Acknowledged');
+                    badge.removeClass('badge-danger');
+                    badge.addClass('badge-success');
+                }
+            }
+
+            // Show success message
+            const successMsg = $('<div>', {
+                class: 'alert alert-success',
+                css: {
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    zIndex: 9999,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                },
+                html: `<strong>Success!</strong> Alert for "${breachName}" has been acknowledged.<br><small>Acknowledged by: ${response.acknowledged_by || email}</small>`
+            });
+
+            $('body').append(successMsg);
+
+            setTimeout(() => {
+                successMsg.css({
+                    transition: 'opacity 0.5s',
+                    opacity: '0'
+                });
+                setTimeout(() => successMsg.remove(), 500);
+            }, 4000);
+
+            // Clear pending acknowledgment
+            pendingAcknowledgment = null;
+
+            // Reset button state
+            confirmBtn.prop('disabled', false);
+            cancelBtn.prop('disabled', false);
+            confirmBtn.html('<i class="fas fa-check mr-1"></i>Acknowledge');
+        },
+        error: function(xhr, status, error) {
+            // Close modal
+            $('#acknowledgeAlertModal').modal('hide');
+
+            // Show error message
+            let errorMessage = 'Failed to acknowledge alert. Please try again.';
+
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            } else if (xhr.status === 401) {
+                errorMessage = 'Authentication failed. Please log in again.';
+            } else if (xhr.status === 404) {
+                errorMessage = 'Alert not found.';
+            } else if (xhr.status === 400) {
+                errorMessage = 'Invalid request. Please refresh and try again.';
+            }
+
+            const errorMsg = $('<div>', {
+                class: 'alert alert-danger',
+                css: {
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    zIndex: 9999,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                },
+                html: `<strong>Error!</strong> ${errorMessage}`
+            });
+
+            $('body').append(errorMsg);
+
+            setTimeout(() => {
+                errorMsg.css({
+                    transition: 'opacity 0.5s',
+                    opacity: '0'
+                });
+                setTimeout(() => errorMsg.remove(), 500);
+            }, 5000);
+
+            // Clear pending acknowledgment
+            pendingAcknowledgment = null;
+
+            // Reset button state
+            confirmBtn.prop('disabled', false);
+            cancelBtn.prop('disabled', false);
+            confirmBtn.html('<i class="fas fa-check mr-1"></i>Acknowledge');
+        }
+    });
+});
+
+// Clear pending acknowledgment when modal is dismissed
+$('#acknowledgeAlertModal').on('hidden.bs.modal', function() {
+    pendingAcknowledgment = null;
+
+    // Reset button state in case modal was closed during processing
+    const confirmBtn = $('#confirmAcknowledgeBtn');
+    const cancelBtn = $('#acknowledgeAlertModal').find('.btn-secondary');
+
+    confirmBtn.prop('disabled', false);
+    cancelBtn.prop('disabled', false);
+    confirmBtn.html('<i class="fas fa-check mr-1"></i>Acknowledge');
+});
+
+// ===============================================
+// UN-ACKNOWLEDGE ALERT HANDLERS
+// ===============================================
+
+// Dynamic Alert Un-acknowledgment Handler - Show Modal
+let pendingUnacknowledgment = null;
+
+$(document).on('click', '.dynamic-unacknowledge-btn', function() {
+    const alertId = $(this).data('alert-id');
+    const breachName = $(this).data('breach');
+    const button = $(this);
+    const row = button.closest('tr');
+
+    // Store reference for confirmation
+    pendingUnacknowledgment = {
+        alertId: alertId,
+        breachName: breachName,
+        button: button,
+        row: row
+    };
+
+    // Update modal content
+    $('#unack-modal-breach-name').text(breachName);
+    $('#unack-modal-alert-id').text(alertId);
+
+    // Show modal
+    $('#unacknowledgeAlertModal').modal('show');
+});
+
+// Handle Confirm Button in Un-acknowledge Modal
+$('#confirmUnacknowledgeBtn').on('click', function() {
+    if (!pendingUnacknowledgment) return;
+
+    const { alertId, breachName, button, row } = pendingUnacknowledgment;
+    const confirmBtn = $(this);
+    const cancelBtn = $('#unacknowledgeAlertModal').find('.btn-secondary');
+
+    // Disable buttons and show loading state
+    confirmBtn.prop('disabled', true);
+    cancelBtn.prop('disabled', true);
+    confirmBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Processing...');
+
+    // Make API call to un-acknowledge the alert
+    const apiUrl = `https://api.xposedornot.com/v1/update_alert_status?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+
+    $.ajax({
+        url: apiUrl,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            alert_id: alertId,
+            status: 'Pending'
+        }),
+        success: function(response) {
+            // Close modal
+            $('#unacknowledgeAlertModal').modal('hide');
+
+            // Update status badge
+            const statusCell = row.find('td:nth-child(6)');
+            statusCell.html('<span class="badge badge-warning" style="padding: 6px 12px; border-radius: 15px; animation: pulse 2s infinite;"><i class="fas fa-clock"></i> Pending</span>');
+
+            // Update action button back to acknowledge button
+            button.html('<i class="fas fa-check"></i>');
+            button.removeClass('btn-warning dynamic-unacknowledge-btn');
+            button.addClass('btn-danger dynamic-acknowledge-btn');
+            button.attr('title', 'Acknowledge this alert');
+            button.css({
+                'background': '',
+                'border': '',
+                'color': ''
+            });
+
+            // Add pending background
+            row.addClass('pending-alert');
+            row.css('background-color', '');
+
+            // Update pending count in badge
+            const badge = $('#dynamic-alert-badge');
+            const currentText = badge.text();
+
+            if (currentText === 'All Acknowledged') {
+                // Was all acknowledged, now we have 1 pending
+                badge.text('1 Pending');
+                badge.removeClass('badge-success');
+                badge.addClass('badge-danger');
+            } else {
+                // Increment pending count
+                const match = currentText.match(/(\d+)\s+Pending/);
+                if (match) {
+                    const currentCount = parseInt(match[1]);
+                    const newCount = currentCount + 1;
+                    badge.text(`${newCount} Pending`);
+                } else {
+                    badge.text('1 Pending');
+                    badge.removeClass('badge-success badge-secondary');
+                    badge.addClass('badge-danger');
+                }
+            }
+
+            // Show success message
+            const successMsg = $('<div>', {
+                class: 'alert alert-warning',
+                css: {
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    zIndex: 9999,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    color: '#856404',
+                    backgroundColor: '#fff3cd',
+                    borderColor: '#ffeaa7'
+                },
+                html: `<strong>Reverted!</strong> Alert for "${breachName}" has been marked as pending.<br><small>Updated by: ${response.last_updated_by || email}</small>`
+            });
+
+            $('body').append(successMsg);
+
+            setTimeout(() => {
+                successMsg.css({
+                    transition: 'opacity 0.5s',
+                    opacity: '0'
+                });
+                setTimeout(() => successMsg.remove(), 500);
+            }, 4000);
+
+            // Clear pending unacknowledgment
+            pendingUnacknowledgment = null;
+
+            // Reset button state
+            confirmBtn.prop('disabled', false);
+            cancelBtn.prop('disabled', false);
+            confirmBtn.html('<i class="fas fa-undo mr-1"></i>Un-acknowledge');
+        },
+        error: function(xhr, status, error) {
+            // Close modal
+            $('#unacknowledgeAlertModal').modal('hide');
+
+            // Show error message
+            let errorMessage = 'Failed to un-acknowledge alert. Please try again.';
+
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            } else if (xhr.status === 401) {
+                errorMessage = 'Authentication failed. Please log in again.';
+            } else if (xhr.status === 404) {
+                errorMessage = 'Alert not found.';
+            } else if (xhr.status === 400) {
+                errorMessage = 'Invalid request. Please refresh and try again.';
+            }
+
+            const errorMsg = $('<div>', {
+                class: 'alert alert-danger',
+                css: {
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    zIndex: 9999,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                },
+                html: `<strong>Error!</strong> ${errorMessage}`
+            });
+
+            $('body').append(errorMsg);
+
+            setTimeout(() => {
+                errorMsg.css({
+                    transition: 'opacity 0.5s',
+                    opacity: '0'
+                });
+                setTimeout(() => errorMsg.remove(), 500);
+            }, 5000);
+
+            // Clear pending unacknowledgment
+            pendingUnacknowledgment = null;
+
+            // Reset button state
+            confirmBtn.prop('disabled', false);
+            cancelBtn.prop('disabled', false);
+            confirmBtn.html('<i class="fas fa-undo mr-1"></i>Un-acknowledge');
+        }
+    });
+});
+
+// Clear pending unacknowledgment when modal is dismissed
+$('#unacknowledgeAlertModal').on('hidden.bs.modal', function() {
+    pendingUnacknowledgment = null;
+
+    // Reset button state in case modal was closed during processing
+    const confirmBtn = $('#confirmUnacknowledgeBtn');
+    const cancelBtn = $('#unacknowledgeAlertModal').find('.btn-secondary');
+
+    confirmBtn.prop('disabled', false);
+    cancelBtn.prop('disabled', false);
+    confirmBtn.html('<i class="fas fa-undo mr-1"></i>Un-acknowledge');
+});

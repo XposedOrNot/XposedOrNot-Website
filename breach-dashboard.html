@@ -785,7 +785,7 @@
                      </div>
                   </div>
 
-                  <!-- Real-Time Breach Alerts Section -->
+                  <!-- Dynamic Alert Management Section from API -->
                   <div class="xon-row-area">
                      <div class="container">
                         <div class="row">
@@ -803,14 +803,14 @@
                                           </p>
                                        </div>
                                        <div class="alert-badge">
-                                          <span class="badge badge-danger" style="font-size: 16px; padding: 8px 15px; border-radius: 20px;">
-                                             2 Pending
+                                          <span id="dynamic-alert-badge" class="badge badge-secondary" style="font-size: 16px; padding: 8px 15px; border-radius: 20px;">
+                                             Loading...
                                           </span>
                                        </div>
                                     </div>
                                  </div>
                                  <div class="table-responsive-wrapper">
-                                    <table id="breach_alerts_table" class="table table-striped table-bordered" style="width:100%">
+                                    <table id="dynamic_breach_alerts_table" class="table table-striped table-bordered" style="width:100%">
                                        <thead style="background-color: #e74c3c; color: white;">
                                           <tr>
                                              <th style="width: 15%;">Alert Time</th>
@@ -822,75 +822,8 @@
                                              <th style="width: 5%;">Action</th>
                                           </tr>
                                        </thead>
-                                       <tbody>
-                                          <tr class="alert-row pending-alert">
-                                             <td>
-                                                <strong>Nov 9, 2025</strong><br>
-                                                <small style="color: #7f8c8d;">10:23 AM</small>
-                                             </td>
-                                             <td>
-                                                <strong style="color: #2c3e50;">TechCorp Database</strong><br>
-                                                <small style="color: #7f8c8d;">techcorp.com</small>
-                                             </td>
-                                             <td>
-                                                <span class="badge" style="background-color: #e74c3c; color: white; padding: 5px 10px; border-radius: 12px;">
-                                                   <i class="fas fa-fire"></i> Critical
-                                                </span>
-                                             </td>
-                                             <td>
-                                                <strong style="color: #e74c3c;">1,247</strong> emails<br>
-                                                <small style="color: #7f8c8d;">3 domains</small>
-                                             </td>
-                                             <td style="font-size: 13px;">
-                                                Credentials, email addresses, and personal information exposed in recent data breach
-                                             </td>
-                                             <td>
-                                                <span class="badge badge-warning" style="padding: 6px 12px; border-radius: 15px; animation: pulse 2s infinite;">
-                                                   <i class="fas fa-clock"></i> Pending
-                                                </span>
-                                             </td>
-                                             <td style="text-align: center;">
-                                                <button class="btn btn-sm btn-success acknowledge-btn"
-                                                   data-breach="TechCorp Database"
-                                                   style="padding: 5px 10px; border-radius: 5px; font-weight: 500;">
-                                                   <i class="fas fa-check"></i>
-                                                </button>
-                                             </td>
-                                          </tr>
-                                          <tr class="alert-row pending-alert">
-                                             <td>
-                                                <strong>Nov 8, 2025</strong><br>
-                                                <small style="color: #7f8c8d;">03:45 PM</small>
-                                             </td>
-                                             <td>
-                                                <strong style="color: #2c3e50;">CloudServices Leak</strong><br>
-                                                <small style="color: #7f8c8d;">cloudservices.io</small>
-                                             </td>
-                                             <td>
-                                                <span class="badge" style="background-color: #f39c12; color: white; padding: 5px 10px; border-radius: 12px;">
-                                                   <i class="fas fa-exclamation-circle"></i> High
-                                                </span>
-                                             </td>
-                                             <td>
-                                                <strong style="color: #f39c12;">823</strong> emails<br>
-                                                <small style="color: #7f8c8d;">2 domains</small>
-                                             </td>
-                                             <td style="font-size: 13px;">
-                                                Email addresses and hashed passwords found on dark web forums
-                                             </td>
-                                             <td>
-                                                <span class="badge badge-warning" style="padding: 6px 12px; border-radius: 15px; animation: pulse 2s infinite;">
-                                                   <i class="fas fa-clock"></i> Pending
-                                                </span>
-                                             </td>
-                                             <td style="text-align: center;">
-                                                <button class="btn btn-sm btn-success acknowledge-btn"
-                                                   data-breach="CloudServices Leak"
-                                                   style="padding: 5px 10px; border-radius: 5px; font-weight: 500;">
-                                                   <i class="fas fa-check"></i>
-                                                </button>
-                                             </td>
-                                          </tr>
+                                       <tbody id="dynamic_alerts_tbody">
+                                          <!-- Dynamic content will be populated here -->
                                        </tbody>
                                     </table>
                                  </div>
@@ -1216,7 +1149,87 @@
          </div>
       </div>
    </div>
-   
+
+   <!-- Alert Acknowledgment Modal -->
+   <div class="modal fade" id="acknowledgeAlertModal" tabindex="-1" role="dialog" aria-labelledby="acknowledgeAlertModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+            <div class="modal-header" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; border-bottom: none; border-radius: 15px 15px 0 0; padding: 1.5rem;">
+               <h5 class="modal-title" id="acknowledgeAlertModalLabel" style="font-weight: 600;">
+                  <i class="fas fa-check-circle mr-2"></i>Acknowledge Breach Alert
+               </h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; opacity: 0.8;">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body" style="padding: 2rem;">
+               <div class="text-center mb-3">
+                  <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #f39c12;"></i>
+               </div>
+               <p class="text-center" style="font-size: 1.1rem; color: #2c3e50; margin-bottom: 1.5rem;">
+                  Are you sure you want to acknowledge this breach alert?
+               </p>
+               <div class="alert alert-light" style="border-left: 4px solid #e74c3c; background-color: #fff5f5;">
+                  <strong>Breach:</strong> <span id="modal-breach-name"></span><br>
+                  <strong>Alert ID:</strong> <span id="modal-alert-id" style="font-family: monospace; font-size: 0.9rem;"></span>
+               </div>
+               <p style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 0;">
+                  <i class="fas fa-info-circle mr-1"></i>
+                  This will mark the alert as reviewed and notify your team.
+               </p>
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid #e9ecef; padding: 1rem 2rem; background-color: #f8f9fa; border-radius: 0 0 15px 15px;">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 25px; padding: 0.5rem 1.5rem; font-weight: 500;">
+                  <i class="fas fa-times mr-1"></i>Cancel
+               </button>
+               <button type="button" class="btn btn-danger" id="confirmAcknowledgeBtn" style="border-radius: 25px; padding: 0.5rem 1.5rem; font-weight: 500; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); border: none;">
+                  <i class="fas fa-check mr-1"></i>Acknowledge
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Alert Un-acknowledgment Modal -->
+   <div class="modal fade" id="unacknowledgeAlertModal" tabindex="-1" role="dialog" aria-labelledby="unacknowledgeAlertModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+            <div class="modal-header" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; border-bottom: none; border-radius: 15px 15px 0 0; padding: 1.5rem;">
+               <h5 class="modal-title" id="unacknowledgeAlertModalLabel" style="font-weight: 600;">
+                  <i class="fas fa-undo mr-2"></i>Un-acknowledge Breach Alert
+               </h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; opacity: 0.8;">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body" style="padding: 2rem;">
+               <div class="text-center mb-3">
+                  <i class="fas fa-question-circle" style="font-size: 3rem; color: #3498db;"></i>
+               </div>
+               <p class="text-center" style="font-size: 1.1rem; color: #2c3e50; margin-bottom: 1.5rem;">
+                  Do you want to mark this alert as pending again?
+               </p>
+               <div class="alert alert-light" style="border-left: 4px solid #f39c12; background-color: #fff9f5;">
+                  <strong>Breach:</strong> <span id="unack-modal-breach-name"></span><br>
+                  <strong>Alert ID:</strong> <span id="unack-modal-alert-id" style="font-family: monospace; font-size: 0.9rem;"></span>
+               </div>
+               <p style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 0;">
+                  <i class="fas fa-info-circle mr-1"></i>
+                  This will revert the alert status back to pending and require re-acknowledgment.
+               </p>
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid #e9ecef; padding: 1rem 2rem; background-color: #f8f9fa; border-radius: 0 0 15px 15px;">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 25px; padding: 0.5rem 1.5rem; font-weight: 500;">
+                  <i class="fas fa-times mr-1"></i>Cancel
+               </button>
+               <button type="button" class="btn btn-warning" id="confirmUnacknowledgeBtn" style="border-radius: 25px; padding: 0.5rem 1.5rem; font-weight: 500; background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); border: none; color: white;">
+                  <i class="fas fa-undo mr-1"></i>Un-acknowledge
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+
    <div>
       <div id="details"></div>
    </div>
@@ -1327,60 +1340,33 @@
          });
       });
 
-      // Breach Alert Acknowledgment Handler
+      // Convert alert times to user's local timezone
       document.addEventListener('DOMContentLoaded', function () {
-         const acknowledgeButtons = document.querySelectorAll('.acknowledge-btn');
+         const alertTimeCells = document.querySelectorAll('.alert-time[data-timestamp]');
 
-         acknowledgeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-               const breachName = this.getAttribute('data-breach');
-               const row = this.closest('tr');
+         alertTimeCells.forEach(cell => {
+            const timestamp = cell.getAttribute('data-timestamp');
+            const date = new Date(timestamp);
 
-               // Confirm acknowledgment
-               if (confirm(`Are you sure you want to acknowledge the "${breachName}" breach alert?\n\nThis will mark the alert as reviewed and notify your team.`)) {
-                  // Update status badge
-                  const statusCell = row.querySelector('td:nth-child(6)');
-                  statusCell.innerHTML = '<span class="badge badge-success" style="padding: 6px 12px; border-radius: 15px;"><i class="fas fa-check-circle"></i> Acknowledged</span>';
+            // Format date (e.g., "Nov 9, 2025")
+            const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+            const formattedDate = date.toLocaleDateString('en-US', dateOptions);
 
-                  // Update action button
-                  this.innerHTML = '<i class="fas fa-check-double"></i>';
-                  this.classList.remove('btn-success');
-                  this.classList.add('btn-secondary');
-                  this.disabled = true;
+            // Format time with timezone (e.g., "10:23 AM PST")
+            const timeOptions = {
+               hour: 'numeric',
+               minute: '2-digit',
+               hour12: true,
+               timeZoneName: 'short'
+            };
+            const formattedTime = date.toLocaleTimeString('en-US', timeOptions);
 
-                  // Remove pending background
-                  row.classList.remove('pending-alert');
-                  row.style.backgroundColor = '#f0fff4';
-
-                  // Update pending count
-                  const badge = document.querySelector('.alert-badge .badge-danger');
-                  const currentCount = parseInt(badge.textContent.match(/\d+/)[0]);
-                  const newCount = currentCount - 1;
-
-                  if (newCount > 0) {
-                     badge.textContent = `${newCount} Pending`;
-                  } else {
-                     badge.textContent = 'All Clear';
-                     badge.classList.remove('badge-danger');
-                     badge.classList.add('badge-success');
-                  }
-
-                  // Show success message
-                  const successMsg = document.createElement('div');
-                  successMsg.className = 'alert alert-success';
-                  successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
-                  successMsg.innerHTML = `<strong>Success!</strong> Alert for "${breachName}" has been acknowledged.`;
-                  document.body.appendChild(successMsg);
-
-                  setTimeout(() => {
-                     successMsg.style.transition = 'opacity 0.5s';
-                     successMsg.style.opacity = '0';
-                     setTimeout(() => successMsg.remove(), 500);
-                  }, 3000);
-               }
-            });
+            // Update the cell content
+            cell.querySelector('.alert-date').textContent = formattedDate;
+            cell.querySelector('.alert-time-detail').textContent = formattedTime;
          });
       });
+
    </script>
 </body>
 
