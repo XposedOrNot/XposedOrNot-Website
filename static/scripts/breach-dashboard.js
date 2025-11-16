@@ -759,9 +759,16 @@ function showXonPlusModal(service) {
 
 // Function to populate dynamic alert management table
 function populateDynamicAlerts(alertManagement) {
+    const alertSection = $('.breach-alerts-section');
+    const alertIcon = $('.alert-section-icon');
+    const alertDescription = $('.alert-section-description');
+
     if (!alertManagement || !alertManagement.summary || !alertManagement.alerts) {
         console.warn('No Alert_Management data found in API response');
         $('#dynamic-alert-badge').text('No Alerts').removeClass('badge-danger badge-warning').addClass('badge-success');
+        alertSection.addClass('no-alerts');
+        alertIcon.removeClass('fa-exclamation-triangle').addClass('fa-check-circle');
+        alertDescription.text('All clear - no pending breach alerts');
         return;
     }
 
@@ -775,10 +782,19 @@ function populateDynamicAlerts(alertManagement) {
 
     if (pendingCount > 0) {
         badge.text(`${pendingCount} Pending`).removeClass('badge-success badge-secondary').addClass('badge-danger');
+        alertSection.removeClass('no-alerts');
+        alertIcon.removeClass('fa-check-circle').addClass('fa-exclamation-triangle');
+        alertDescription.text('New breaches requiring your acknowledgment');
     } else if (totalAlerts > 0) {
         badge.text('All Acknowledged').removeClass('badge-danger badge-secondary').addClass('badge-success');
+        alertSection.addClass('no-alerts');
+        alertIcon.removeClass('fa-exclamation-triangle').addClass('fa-check-circle');
+        alertDescription.text('All breach alerts have been acknowledged');
     } else {
         badge.text('No Alerts').removeClass('badge-danger badge-warning').addClass('badge-secondary');
+        alertSection.addClass('no-alerts');
+        alertIcon.removeClass('fa-exclamation-triangle').addClass('fa-check-circle');
+        alertDescription.text('All clear - no pending breach alerts');
     }
 
     // Populate table
@@ -787,6 +803,7 @@ function populateDynamicAlerts(alertManagement) {
 
     if (alerts.length === 0) {
         tbody.append('<tr><td colspan="7" class="text-center">No alerts to display</td></tr>');
+        alertSection.addClass('no-alerts');
         return;
     }
 
@@ -950,6 +967,9 @@ $('#confirmAcknowledgeBtn').on('click', function() {
 
             // Update pending count in badge
             const badge = $('#dynamic-alert-badge');
+            const alertSection = $('.breach-alerts-section');
+            const alertIcon = $('.alert-section-icon');
+            const alertDescription = $('.alert-section-description');
             const currentText = badge.text();
             const match = currentText.match(/(\d+)\s+Pending/);
 
@@ -959,10 +979,16 @@ $('#confirmAcknowledgeBtn').on('click', function() {
 
                 if (newCount > 0) {
                     badge.text(`${newCount} Pending`);
+                    alertSection.removeClass('no-alerts');
+                    alertIcon.removeClass('fa-check-circle').addClass('fa-exclamation-triangle');
+                    alertDescription.text('New breaches requiring your acknowledgment');
                 } else {
                     badge.text('All Acknowledged');
                     badge.removeClass('badge-danger');
                     badge.addClass('badge-success');
+                    alertSection.addClass('no-alerts');
+                    alertIcon.removeClass('fa-exclamation-triangle').addClass('fa-check-circle');
+                    alertDescription.text('All breach alerts have been acknowledged');
                 }
             }
 
@@ -1138,6 +1164,9 @@ $('#confirmUnacknowledgeBtn').on('click', function() {
 
             // Update pending count in badge
             const badge = $('#dynamic-alert-badge');
+            const alertSection = $('.breach-alerts-section');
+            const alertIcon = $('.alert-section-icon');
+            const alertDescription = $('.alert-section-description');
             const currentText = badge.text();
 
             if (currentText === 'All Acknowledged') {
@@ -1145,6 +1174,9 @@ $('#confirmUnacknowledgeBtn').on('click', function() {
                 badge.text('1 Pending');
                 badge.removeClass('badge-success');
                 badge.addClass('badge-danger');
+                alertSection.removeClass('no-alerts');
+                alertIcon.removeClass('fa-check-circle').addClass('fa-exclamation-triangle');
+                alertDescription.text('New breaches requiring your acknowledgment');
             } else {
                 // Increment pending count
                 const match = currentText.match(/(\d+)\s+Pending/);
@@ -1152,10 +1184,16 @@ $('#confirmUnacknowledgeBtn').on('click', function() {
                     const currentCount = parseInt(match[1]);
                     const newCount = currentCount + 1;
                     badge.text(`${newCount} Pending`);
+                    alertSection.removeClass('no-alerts');
+                    alertIcon.removeClass('fa-check-circle').addClass('fa-exclamation-triangle');
+                    alertDescription.text('New breaches requiring your acknowledgment');
                 } else {
                     badge.text('1 Pending');
                     badge.removeClass('badge-success badge-secondary');
                     badge.addClass('badge-danger');
+                    alertSection.removeClass('no-alerts');
+                    alertIcon.removeClass('fa-check-circle').addClass('fa-exclamation-triangle');
+                    alertDescription.text('New breaches requiring your acknowledgment');
                 }
             }
 
