@@ -304,6 +304,33 @@
       /* Real-Time Breach Alerts Section */
       .breach-alerts-section {
          border-left: 5px solid #e74c3c;
+         transition: all 0.4s ease;
+      }
+
+      /* No alerts state - green/neutral styling */
+      .breach-alerts-section.no-alerts {
+         border-left-color: #2ecc71;
+      }
+
+      .breach-alerts-section.no-alerts .alert-header-section h3 {
+         color: #2ecc71 !important;
+      }
+
+      .breach-alerts-section.no-alerts thead {
+         background-color: #2ecc71 !important;
+      }
+
+      /* Icon and text transitions */
+      .alert-section-icon {
+         transition: all 0.4s ease;
+      }
+
+      .alert-section-title {
+         transition: color 0.4s ease;
+      }
+
+      .alert-section-description {
+         transition: all 0.3s ease;
       }
 
       .pending-alert {
@@ -337,6 +364,18 @@
       /* Dark mode support for breach alerts */
       [data-theme="dark"] .breach-alerts-section {
          border-left-color: #e74c3c;
+      }
+
+      [data-theme="dark"] .breach-alerts-section.no-alerts {
+         border-left-color: #27ae60;
+      }
+
+      [data-theme="dark"] .breach-alerts-section.no-alerts .alert-header-section h3 {
+         color: #2ecc71 !important;
+      }
+
+      [data-theme="dark"] .breach-alerts-section.no-alerts thead {
+         background-color: #27ae60 !important;
       }
 
       [data-theme="dark"] .pending-alert {
@@ -794,11 +833,11 @@
                                  <div class="alert-header-section">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                                        <div>
-                                          <h3 style="margin: 0; color: #e74c3c; font-weight: 600;">
-                                             <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+                                          <h3 style="margin: 0; color: #e74c3c; font-weight: 600;" class="alert-section-title">
+                                             <i class="fas fa-exclamation-triangle alert-section-icon" style="margin-right: 10px;"></i>
                                              Real-Time Breach Alerts
                                           </h3>
-                                          <p style="margin: 5px 0 0 0; font-size: 14px; color: #7f8c8d;">
+                                          <p style="margin: 5px 0 0 0; font-size: 14px; color: #7f8c8d;" class="alert-section-description">
                                              New breaches requiring your acknowledgment
                                           </p>
                                        </div>
