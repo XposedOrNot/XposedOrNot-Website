@@ -1414,38 +1414,99 @@ img.pass2 {
 
 .follow1 {
 	margin: 0px 0px 0px 0px;
-	padding: 35px;
+	padding: 35px 25px;
 	width: 100%;
-	border: 1px solid #707070;
-	border-radius: 10px;
+	border: none;
+	border-radius: 12px;
 	background: #fff;
-	-webkit-transition: 300ms;
-	-moz-transition: 300ms;
-	-ms-transition: 300ms;
-	-o-transition: 300ms;
-	transition: 300ms;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	-webkit-transition: all 300ms ease;
+	-moz-transition: all 300ms ease;
+	-ms-transition: all 300ms ease;
+	-o-transition: all 300ms ease;
+	transition: all 300ms ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.follow1::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, #3f71f3, #5b8aff);
+	opacity: 0;
+	transition: opacity 300ms ease;
 }
 
 .follow1:hover {
-	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
-	border: 1px solid transparent;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	transform: translateY(-4px);
 }
 
-.follow1 h3 {
-	margin: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
-	font-weight: 500;
-	font-size: 48px;
-	color: #4284fb;
+.follow1:hover::before {
+	opacity: 1;
 }
 
+/* Stat Icons */
+.stat-icon {
+	width: 60px;
+	height: 60px;
+	margin: 0 auto 20px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 28px;
+	transition: transform 300ms ease;
+}
+
+.follow1:hover .stat-icon {
+	transform: scale(1.1);
+}
+
+/* Color-coded stat cards */
+.stat-breaches .stat-icon {
+	background: linear-gradient(135deg, #ff6b6b, #ff8787);
+	color: #fff;
+	box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.stat-records .stat-icon {
+	background: linear-gradient(135deg, #3f71f3, #5b8aff);
+	color: #fff;
+	box-shadow: 0 4px 12px rgba(63, 113, 243, 0.3);
+}
+
+.stat-emails .stat-icon {
+	background: linear-gradient(135deg, #a855f7, #c084fc);
+	color: #fff;
+	box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+.stat-passwords .stat-icon {
+	background: linear-gradient(135deg, #10b981, #34d399);
+	color: #fff;
+	box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Stat number styling */
 .follow1 h4 {
-	margin: 50px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
-	font-weight: 500;
-	font-size: 24px;
-	color: #4284fb;
+	font-weight: 700;
+	color: #2c3e50;
+	margin: 10px 0;
 }
+
+.follow1 h6 {
+	color: #64748b;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-size: 0.85em;
+}
+
 
 .follow-row p {
 	margin: 25px 0px 0px 0px;
@@ -1652,13 +1713,10 @@ img.arrow {
 		padding: 15px;
 	}
 
-	.follow1 h3 {
-		font-size: 34px;
-	}
-
-	.follow1 h4 {
-		margin: 50px 0px 0px 0px;
-		font-size: 25px;
+	.stat-icon {
+		width: 55px;
+		height: 55px;
+		font-size: 26px;
 	}
 }
 
@@ -1670,16 +1728,13 @@ img.arrow {
 	}
 
 	.follow1 {
-		padding: 15px;
+		padding: 20px;
 	}
 
-	.follow1 h3 {
-		font-size: 28px;
-	}
-
-	.follow1 h4 {
-		margin: 30px 0px 0px 0px;
-		font-size: 17px;
+	.stat-icon {
+		width: 55px;
+		height: 55px;
+		font-size: 26px;
 	}
 
 
@@ -1706,18 +1761,24 @@ img.arrow {
 
 	.follow1 {
 		margin: 0px 0px 20px 0px;
-		padding: 15px;
+		padding: 25px 15px;
 	}
 
-	.follow1 h3 {
-		font-size: 28px;
-		text-align: center;
+	.stat-icon {
+		width: 50px;
+		height: 50px;
+		font-size: 24px;
+		margin: 0 auto 15px;
 	}
 
 	.follow1 h4 {
-		margin: 10px 0px 0px 0px;
-		font-size: 17px;
+		margin: 8px 0;
+		font-size: 24px;
 		text-align: center;
+	}
+
+	.follow1 h6 {
+		font-size: 0.8em;
 	}
 
 
@@ -2366,9 +2427,21 @@ img.cup {
 }
 
 [data-theme="dark"] .follow1 {
-	color: ##9fc0e0;
+	color: #9fc0e0;
+	background-color: #1a1f3a;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
 
-	background-color: #0e0f19;
+[data-theme="dark"] .follow1:hover {
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .follow1 h4 {
+	color: #ffffff;
+}
+
+[data-theme="dark"] .follow1 h6 {
+	color: #9fc0e0;
 }
 
 [data-theme="dark"] .footer {
@@ -2683,21 +2756,28 @@ img.cup {
 
 .modern-search-button {
 	border: none;
-	background: #f5f7fa;
-	color: #3f71f3;
+	background: linear-gradient(135deg, #3f71f3, #5b8aff);
+	color: #fff;
 	padding: 18px 35px;
 	font-size: 16px;
+	font-weight: 600;
 	border-radius: 0 50px 50px 0;
 	cursor: pointer;
 	transition: all 0.3s ease;
 	font-family: 'Poppins', sans-serif;
-	font-weight: 500;
-	min-width: 120px;
+	min-width: 140px;
+	box-shadow: 0 4px 12px rgba(63, 113, 243, 0.25);
+	margin-left: 2px;
 }
 
 .modern-search-button:hover {
-	background: #3f71f3;
-	color: #fff;
+	background: linear-gradient(135deg, #2d5cd4, #3f71f3);
+	box-shadow: 0 6px 20px rgba(63, 113, 243, 0.4);
+	transform: translateX(2px);
+}
+
+.modern-search-button:active {
+	transform: translateX(2px) scale(0.98);
 }
 
 
@@ -2714,6 +2794,16 @@ img.cup {
 [data-theme="dark"] .modern-search-input::placeholder {
 	color: #6daae0;
 	opacity: 0.7;
+}
+
+[data-theme="dark"] .modern-search-button {
+	background: linear-gradient(135deg, #4284fb, #6a9fff);
+	box-shadow: 0 4px 12px rgba(66, 132, 251, 0.3);
+}
+
+[data-theme="dark"] .modern-search-button:hover {
+	background: linear-gradient(135deg, #5b8aff, #4284fb);
+	box-shadow: 0 6px 20px rgba(66, 132, 251, 0.5);
 }
 
 [data-theme="dark"] .modern-search-input:focus {
@@ -2858,4 +2948,68 @@ img.cup {
 
 .modal.show .modal-dialog {
 	transform: none;
+}
+
+/* Footer Styles */
+.footer-columns {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 0 30px 0;
+	gap: 60px;
+	text-align: left;
+	padding: 0 40px;
+}
+
+.footer-group {
+	flex: 1;
+	min-width: 0;
+}
+
+.footer-group h6 {
+	color: #2c3e50 !important;
+	font-size: 0.95em !important;
+	margin-bottom: 15px !important;
+	font-weight: 700 !important;
+	text-transform: uppercase;
+	letter-spacing: 0.8px;
+	opacity: 1 !important;
+}
+
+.footer-group a.footer-link {
+	display: block;
+	margin-bottom: 8px;
+	padding: 6px 10px;
+	border-radius: 4px;
+	transition: all 0.3s ease;
+	opacity: 0.8;
+}
+
+.footer-group a.footer-link:hover {
+	opacity: 1;
+	background-color: rgba(63, 113, 243, 0.15);
+	padding-left: 14px;
+	color: #3f71f3 !important;
+}
+
+@media (max-width: 768px) {
+	.footer-columns {
+		flex-direction: column;
+		text-align: center;
+		gap: 30px;
+		padding: 0 20px;
+	}
+
+	.footer-group a.footer-link:hover {
+		padding-left: 10px;
+		background-color: rgba(63, 113, 243, 0.15);
+	}
+}
+
+/* Dark mode support for footer */
+[data-theme="dark"] .footer-group h6 {
+	color: #ffffff !important;
+}
+
+[data-theme="dark"] .footer-group a.footer-link:hover {
+	background-color: rgba(63, 113, 243, 0.2);
 }
