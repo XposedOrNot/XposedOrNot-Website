@@ -80,7 +80,7 @@
       }
 
       .container {
-         max-width: 1200px;
+         max-width: 1400px;
          padding: 2rem;
       }
 
@@ -90,22 +90,27 @@
 
       .button-link {
          display: inline-block;
-         padding: 12px 24px;
+         padding: 14px 28px;
          color: #fff;
-         background-color: var(--primary-color);
+         background: linear-gradient(135deg, #3f71f3, #5b8aff);
          text-decoration: none;
          border-radius: 8px;
          transition: all 0.3s ease;
          border: none;
-         font-weight: 500;
+         font-weight: 600;
+         box-shadow: 0 4px 12px rgba(63, 113, 243, 0.25);
       }
 
       .button-link:hover {
-         background-color: var(--hover-color);
+         background: linear-gradient(135deg, #2d5cd4, #3f71f3);
          transform: translateY(-2px);
-         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-         color: #212529;
+         box-shadow: 0 6px 20px rgba(63, 113, 243, 0.4);
+         color: #fff;
          text-decoration: none;
+      }
+
+      .button-link i {
+         margin-right: 0.5rem;
       }
 
       .panel {
@@ -118,12 +123,13 @@
       }
 
       .panel-heading {
-         background-color: var(--primary-color);
-         color: white;
+         background-color: var(--panel-bg);
+         color: var(--text-color);
          padding: 1.5rem;
          font-size: 1.25rem;
          font-weight: 600;
          border-radius: 12px 12px 0 0;
+         border-bottom: 2px solid var(--primary-color);
       }
 
       .panel-body {
@@ -189,6 +195,18 @@
          margin: 1.5rem 0;
          border-radius: 0 8px 8px 0;
          box-shadow: inset 0 1px 2px rgba(0, 0, 0, .05);
+         position: relative;
+      }
+
+      blockquote .code-block-wrapper {
+         margin: 0;
+      }
+
+      blockquote pre {
+         margin: 0;
+         background: transparent;
+         border: none;
+         padding: 0;
       }
 
       [data-theme="dark"] pre {
@@ -209,16 +227,17 @@
       .custom-switch {
          position: fixed;
          bottom: 2rem;
-         right: 2rem;
-         background: none;
-         padding: 0.5rem;
+         left: 2rem;
+         background: var(--panel-bg);
+         padding: 0.75rem 1rem;
          border-radius: 8px;
          z-index: 1000;
          width: auto;
          display: inline-flex;
          align-items: center;
-         justify-content: flex-end;
-         float: right;
+         gap: 0.5rem;
+         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+         border: 1px solid var(--border-color);
       }
 
       .custom-switch label {
@@ -264,18 +283,265 @@
          background: var(--hover-color);
       }
 
+      .info-card {
+         background: var(--panel-bg);
+         border: 1px solid var(--border-color);
+         border-radius: 12px;
+         padding: 1.5rem;
+         text-align: center;
+         transition: all 0.3s ease;
+         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card:hover {
+         transform: translateY(-4px);
+         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-card h4 {
+         margin: 0.5rem 0;
+         color: var(--text-color);
+         font-size: 1.1em;
+         font-weight: 600;
+      }
+
+      .info-card p {
+         margin: 0;
+         font-size: 0.9em;
+         color: var(--secondary-color);
+      }
+
+      .info-card code {
+         background: var(--code-bg);
+         padding: 0.2rem 0.5rem;
+         border-radius: 4px;
+         font-size: 0.85em;
+      }
+
+      .toc-link {
+         color: var(--text-color);
+         text-decoration: none;
+         display: block;
+         padding: 0.5rem;
+         border-radius: 6px;
+         transition: all 0.2s ease;
+         font-size: 0.95em;
+      }
+
+      .toc-link:hover {
+         background: var(--code-bg);
+         color: var(--primary-color);
+         text-decoration: none;
+         padding-left: 0.75rem;
+      }
+
+      .toc-link i {
+         margin-right: 0.5rem;
+         width: 20px;
+         display: inline-block;
+      }
+
+      .http-badge {
+         display: inline-block;
+         padding: 0.25rem 0.75rem;
+         border-radius: 4px;
+         font-size: 0.75em;
+         font-weight: 700;
+         margin-right: 0.5rem;
+         text-transform: uppercase;
+         letter-spacing: 0.5px;
+      }
+
+      .http-get {
+         background: linear-gradient(135deg, #10b981, #34d399);
+         color: white;
+      }
+
+      .http-post {
+         background: linear-gradient(135deg, #f59e0b, #fbbf24);
+         color: white;
+      }
+
+      @media (max-width: 992px) {
+         #api-toc {
+            display: none;
+         }
+      }
+
+      .code-block-wrapper {
+         position: relative;
+      }
+
+      .copy-button {
+         position: absolute;
+         top: 50%;
+         right: 0.5rem;
+         transform: translateY(-50%);
+         background: var(--primary-color);
+         color: white;
+         border: none;
+         padding: 0.5rem 1rem;
+         border-radius: 6px;
+         cursor: pointer;
+         font-size: 0.85em;
+         transition: all 0.3s ease;
+         opacity: 0.8;
+      }
+
+      .copy-button:hover {
+         opacity: 1;
+         background: var(--hover-color);
+         color: #212529;
+      }
+
+      .copy-button.copied {
+         background: #10b981 !important;
+         color: white !important;
+      }
+
+      /* Footer Styles */
+      .footer-columns {
+         display: flex;
+         justify-content: space-between;
+         margin: 0 0 30px 0;
+         gap: 60px;
+         text-align: left;
+         padding: 0 40px;
+      }
+
+      .footer-group {
+         flex: 1;
+         min-width: 0;
+      }
+
+      .footer-group h6 {
+         color: #2c3e50 !important;
+         font-size: 0.95em !important;
+         margin-bottom: 15px !important;
+         font-weight: 700 !important;
+         text-transform: uppercase;
+         letter-spacing: 0.8px;
+         opacity: 1 !important;
+      }
+
+      .footer-group a.footer-link {
+         display: block;
+         margin-bottom: 8px;
+         padding: 6px 10px;
+         border-radius: 4px;
+         transition: all 0.3s ease;
+         opacity: 0.8;
+         text-decoration: none;
+         color: var(--text-color);
+      }
+
+      .footer-group a.footer-link:hover {
+         opacity: 1;
+         background-color: rgba(63, 113, 243, 0.15);
+         padding-left: 14px;
+         color: #3f71f3 !important;
+         text-decoration: none;
+      }
+
+      [data-theme="dark"] .footer-group h6 {
+         color: #ffffff !important;
+      }
+
+      [data-theme="dark"] .footer-group a.footer-link:hover {
+         background-color: rgba(63, 113, 243, 0.2);
+      }
+
+      /* Back to top button */
+      #backToTop {
+         display: none;
+         position: fixed;
+         bottom: 2rem;
+         right: 2rem;
+         background: linear-gradient(135deg, #3f71f3, #5b8aff);
+         color: white;
+         border: none;
+         width: 50px;
+         height: 50px;
+         border-radius: 50%;
+         cursor: pointer;
+         box-shadow: 0 4px 12px rgba(63, 113, 243, 0.3);
+         transition: all 0.3s ease;
+         z-index: 999;
+         font-size: 1.2em;
+      }
+
+      #backToTop:hover {
+         transform: translateY(-4px);
+         box-shadow: 0 6px 20px rgba(63, 113, 243, 0.5);
+      }
+
+      /* Response codes table styling */
+      .table tbody tr {
+         transition: all 0.2s ease;
+      }
+
+      .table tbody tr:hover {
+         background-color: var(--code-bg);
+      }
+
+      .status-code-200 {
+         background-color: rgba(16, 185, 129, 0.1) !important;
+         border-left: 4px solid #10b981;
+      }
+
+      .status-code-4xx {
+         background-color: rgba(245, 158, 11, 0.1) !important;
+         border-left: 4px solid #f59e0b;
+      }
+
+      .status-code-5xx {
+         background-color: rgba(239, 68, 68, 0.1) !important;
+         border-left: 4px solid #ef4444;
+      }
+
+      @media (max-width: 768px) {
+         .footer-columns {
+            flex-direction: column;
+            text-align: center;
+            gap: 30px;
+            padding: 0 20px;
+         }
+
+         .footer-group a.footer-link:hover {
+            padding-left: 10px;
+         }
+
+         #backToTop {
+            bottom: 1rem;
+            right: 1rem;
+            width: 45px;
+            height: 45px;
+         }
+
+         .custom-switch {
+            bottom: 1rem;
+            left: 1rem;
+            padding: 0.5rem 0.75rem;
+            width: auto;
+            max-width: fit-content;
+         }
+
+         .custom-switch label {
+            font-size: 0.85em;
+         }
+      }
+
       #collapse1 {
          background-color: var(--background-color);
          color: var(--text-color);
+         display: block !important;
+         height: auto !important;
+         overflow: visible !important;
       }
 
       .panel-default {
          background-color: var(--panel-bg);
          color: var(--text-color);
-      }
-
-      .panel-heading {
-         color: white !important;
       }
 
       [data-theme="dark"] #collapse1,
@@ -285,8 +551,9 @@
       }
 
       [data-theme="dark"] .panel-heading {
-         background-color: var(--primary-color);
-         color: white !important;
+         background-color: var(--panel-bg);
+         color: var(--text-color) !important;
+         border-bottom: 2px solid var(--primary-color);
       }
    </style>
 </head>
@@ -329,19 +596,81 @@
       </nav>
    </div>
    <div class="container">
-      <div align="center">
-         To experiment with and test our API, we invite you to explore our API Playground.<br><br>
-         <h3 style="display: inline-block; margin-right: 20px;"><a href="https://api.xposedornot.com/docs"
-               target="_blank" class="button-link"> 📚 Swagger Documentation</a></h3>
-         <h3 style="display: inline-block;"><a href="https://xposedornot.docs.apiary.io" target="_blank"
-               class="button-link"> 🎮 API Playground</a></h3>
+      <div align="center" style="margin-bottom: 3rem;">
+         <h1 style="margin-bottom: 1rem;">XposedOrNot API Documentation</h1>
+         <p style="font-size: 1.1em; color: var(--secondary-color); margin-bottom: 2rem;">
+            Integrate breach detection into your application with our free, RESTful API.<br>
+            Check billions of exposed records instantly with JSON responses.
+         </p>
+
+         <!-- Key Info Cards -->
+         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; text-align: left;">
+            <div class="info-card">
+               <i class="fas fa-key" style="font-size: 2em; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+               <h4>Authentication</h4>
+               <p>Most endpoints are public. Domain endpoints require API key.</p>
+            </div>
+            <div class="info-card">
+               <i class="fas fa-tachometer-alt" style="font-size: 2em; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+               <h4>Rate Limit</h4>
+               <p>1 request per second across all endpoints.</p>
+            </div>
+            <div class="info-card">
+               <i class="fas fa-code" style="font-size: 2em; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+               <h4>Response Format</h4>
+               <p>All responses return JSON with standard HTTP codes.</p>
+            </div>
+            <div class="info-card">
+               <i class="fas fa-globe" style="font-size: 2em; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+               <h4>Base URL</h4>
+               <p><code>api.xposedornot.com</code></p>
+            </div>
+         </div>
+
+         <div style="margin-top: 2rem;">
+            <h3 style="display: inline-block; margin-right: 20px;"><a href="https://api.xposedornot.com/docs"
+                  target="_blank" class="button-link"><i class="fas fa-book"></i> Swagger Documentation</a></h3>
+            <h3 style="display: inline-block;"><a href="https://xposedornot.docs.apiary.io" target="_blank"
+                  class="button-link"><i class="fas fa-code"></i> API Playground</a></h3>
+         </div>
       </div>
       <br>
+
+      <!-- Table of Contents + Content Layout -->
+      <div style="display: flex; gap: 3rem; align-items: flex-start; max-width: 100%;">
+         <!-- Sticky TOC Sidebar -->
+         <nav id="api-toc" style="position: sticky; top: 2rem; width: 280px; flex-shrink: 0;">
+            <div style="background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+               <h4 style="margin-top: 0; margin-bottom: 1rem; color: var(--primary-color);">Quick Navigation</h4>
+               <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li style="margin-bottom: 0.75rem;">
+                     <a href="#endpoint-1" class="toc-link"><i class="fas fa-envelope"></i> Email Breach Check</a>
+                  </li>
+                  <li style="margin-bottom: 0.75rem;">
+                     <a href="#endpoint-2" class="toc-link"><i class="fas fa-chart-line"></i> Breach Analytics</a>
+                  </li>
+                  <li style="margin-bottom: 0.75rem;">
+                     <a href="#endpoint-3" class="toc-link"><i class="fas fa-key"></i> Password Check</a>
+                  </li>
+                  <li style="margin-bottom: 0.75rem;">
+                     <a href="#endpoint-4" class="toc-link"><i class="fas fa-database"></i> All Breaches</a>
+                  </li>
+                  <li style="margin-bottom: 0.75rem;">
+                     <a href="#endpoint-5" class="toc-link"><i class="fas fa-shield-alt"></i> Domain Breaches</a>
+                  </li>
+                  <li style="margin-bottom: 0.75rem;">
+                     <a href="#endpoint-6" class="toc-link"><i class="fas fa-code"></i> Response Codes</a>
+                  </li>
+               </ul>
+            </div>
+         </nav>
+
+         <!-- Main Content -->
+         <div style="flex: 1; min-width: 0;">
       <div class="panel-group" id="accordion">
          <div class="panel panel-default">
-            <div class="panel-heading"> API Quick Reference </div>
-            &nbsp; &nbsp; Last Updated: 05-Jun-2023
-            <div id="collapse1" class="panel-collapse ">
+            <div class="panel-heading"> API Quick Reference <span style="float:right; font-size:0.9em; font-weight:normal;">Last Updated: 04-Dec-2025</span></div>
+            <div id="collapse1" style="display: block;">
                <div class="panel-body">
                   <br>
                   Thank you for your interest in <strong>XposedOrNot</strong>. The goal is to keep our API as accessible
@@ -360,8 +689,9 @@
                   user-friendly environment.
                   <br>
                   <hr>
-                  <div class="alert alert-primary" role="alert">
+                  <div id="endpoint-1" class="alert alert-primary" role="alert">
                      <h4>
+                        <span class="http-badge http-get">GET</span>
                         <strong>1. API Call: Checking for Email Address Data Breaches</strong>
                      </h4>
                   </div>
@@ -403,8 +733,9 @@
 {"Error":"Not found"}
  </pre>
                   <hr>
-                  <div class="alert alert-primary" role="alert">
+                  <div id="endpoint-2" class="alert alert-primary" role="alert">
                      <h4>
+                        <span class="http-badge http-get">GET</span>
                         <strong>2. API Call: Data Breach Analytics for Email Addresses</strong>
                      </h4>
                   </div>
@@ -612,8 +943,9 @@
                   <p> This also means that the email searched is not found in any of the data breaches loaded in
                      XposedOrNot. </p>
                   <hr>
-                  <div class="alert alert-primary" role="alert">
+                  <div id="endpoint-3" class="alert alert-primary" role="alert">
                      <h4>
+                        <span class="http-badge http-get">GET</span>
                         <strong>3. API call to check for exposed passwords anonymously</strong>
                      </h4>
                   </div>
@@ -702,8 +1034,9 @@
         </pre>
                   <hr>
                   <hr>
-                  <div class="alert alert-primary" role="alert">
+                  <div id="endpoint-4" class="alert alert-primary" role="alert">
                      <h4>
+                        <span class="http-badge http-get">GET</span>
                         <strong>4. API call to check for all data breaches loaded in XposedOrNot</strong>
                      </h4>
                   </div>
@@ -830,9 +1163,10 @@
 		  </pre>
                   The API returns a successful response in the format of JSON only.<br>
                   <hr>
-                  <div class="alert alert-primary" role="alert">
+                  <div id="endpoint-5" class="alert alert-primary" role="alert">
                      <h4>
-                        <strong>5. API call to check for all data breaches for verfied domains</strong>
+                        <span class="http-badge http-post">POST</span>
+                        <strong>5. API call to check for all data breaches for verified domains</strong>
                      </h4>
                   </div>
                   <blockquote>
@@ -930,7 +1264,7 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                   <br><Br>
                   Remember to replace "YOUR_API_KEY" with your actual API key when making a request to the endpoint.
                   <hr>
-                  <div class="alert alert-primary" role="alert">
+                  <div id="endpoint-6" class="alert alert-primary" role="alert">
                      <h4>
                         <strong>6. API response codes</strong>
                      </h4>
@@ -951,23 +1285,23 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                         </tr>
                      </thead>
                      <tbody>
-                        <tr>
+                        <tr class="status-code-200">
                            <th scope="row">200</th>
                            <td>Success will output JSON response</td>
                         </tr>
-                        <tr>
+                        <tr class="status-code-4xx">
                            <th scope="row">401</th>
                            <td>Invalid/un-authorised API key</td>
                         </tr>
-                        <tr>
+                        <tr class="status-code-4xx">
                            <th scope="row">404</th>
                            <td>Error in input ( no data found )</td>
                         </tr>
-                        <tr>
+                        <tr class="status-code-4xx">
                            <th scope="row">429</th>
                            <td>Speed throttle hit - time to slow down</td>
                         </tr>
-                        <tr>
+                        <tr class="status-code-5xx">
                            <th scope="row">502/503</th>
                            <td>Server fault - Totally my problem to fix. Please shout across, if you see this ;)</td>
                         </tr>
@@ -990,47 +1324,60 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                </div>
             </div>
          </div>
-         <div class="container text-center">
-            <footer>
-               <aside>
-                  <br>
-                  <a style="color:#3c5fec" href="https://twitter.com/xposedornot" aria-hidden="true" target="_blank"
-                     rel="noopener">&nbsp <em class="fab fa-twitter fa-3x"></em>
-                  </a>
-                  <a style="color:#3c5fec" href="https://facebook.com/xposedornot" aria-hidden="true" target="_blank"
-                     rel="noopener">&nbsp <em class="fab fa-facebook fa-3x"></em>
-                  </a>
-                  <hr>
-                  <p>Join us in shaping this fully open source site! Contributions welcome ❤️ —check out our <a
-                        href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub </a>. </p>
-                  <br>
-                  <h3 style="display: inline-block; margin-right: 20px;"><a href="https://api.xposedornot.com/docs"
-                        target="_blank" class="button-link"> 📚 Swagger Documentation</a></h3>
-                  <h3 style="display: inline-block;"><a href="https://xposedornot.docs.apiary.io" target="_blank"
-                        class="button-link"> 🛠️ API Playground</a></h3>
-                  <style>
-                     .button-link {
-                        display: inline-block;
-                        padding: 10px 20px;
-                        color: #fff;
-                        background-color: #007BFF;
-                        text-decoration: none;
-                        border-radius: 5px;
-                        transition: background-color 0.3s ease;
-                     }
+      </div><!-- Close panel-group -->
+         </div><!-- Close main content flex item -->
+      </div><!-- Close flex container -->
 
-                     .button-link:hover {
-                        background-color: #FFBF00;
-                     }
-                  </style>
+         <div style="background: var(--panel-bg); border-top: 1px solid var(--border-color); padding: 3rem 0 2rem 0; margin-top: 4rem;">
+            <div class="container">
+               <div style="text-align:center;margin-bottom:30px;">
+                  <p>Join us in shaping this fully open source site! Contributions welcome ❤️ at our <a
+                        href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+               </div>
+
+               <div class="footer-columns">
+                  <div class="footer-group">
+                     <h6>Legal</h6>
+                     <a href="/privacy" class="footer-link">Privacy Policy</a>
+                     <a href="/terms" class="footer-link">Terms</a>
+                  </div>
+                  <div class="footer-group">
+                     <h6>Community</h6>
+                     <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+                     <a href="/our-repository" class="footer-link">Our Repository</a>
+                  </div>
+                  <div class="footer-group">
+                     <h6>Trust</h6>
+                     <a href="/transparency" class="footer-link">Transparency</a>
+                     <a href="/responsible-disclosure" class="footer-link">Responsible Disclosure</a>
+                     <a href="https://statuspage.freshping.io/66216-XposedOrNot" target="_blank" rel="noopener" class="footer-link">Status</a>
+                  </div>
+                  <div class="footer-group">
+                     <h6>Follow Us</h6>
+                     <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" name="twitter" class="footer-link">
+                        <i class="fab fa-twitter"></i> Twitter
+                     </a>
+                     <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" name="fb" class="footer-link">
+                        <i class="fab fa-facebook"></i> Facebook
+                     </a>
+                     <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" name="mastodon" class="footer-link">
+                        <i class="fab fa-mastodon"></i> Mastodon
+                     </a>
+                  </div>
+               </div>
+
+               <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+                  <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                  <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+               </div>
+            </div>
          </div>
-         <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-            <input type="checkbox" class="custom-control-input" id="darkSwitch">
-            <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
-         </div>
-         </aside>
-         </footer>
-      </div>
+
+      <!-- Back to Top Button -->
+      <button id="backToTop" title="Back to top">
+         <i class="fas fa-arrow-up"></i>
+      </button>
+
       <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
       <script type='text/javascript' src='/static/scripts/bug-min.js'></script>
       <script type='text/javascript' src='/static/scripts/api_doc.js'></script>
@@ -1083,6 +1430,89 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                document.querySelector(this.getAttribute('href')).scrollIntoView({
                   behavior: 'smooth'
                });
+            });
+         });
+
+         // Add copy buttons only to API endpoint URLs (inside blockquote)
+         document.querySelectorAll('blockquote pre').forEach(function(codeBlock) {
+            // Skip if already wrapped
+            if (codeBlock.parentElement.classList.contains('code-block-wrapper')) {
+               return;
+            }
+
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-block-wrapper';
+            codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+            wrapper.appendChild(codeBlock);
+
+            // Create copy button
+            const button = document.createElement('button');
+            button.className = 'copy-button';
+            button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            wrapper.appendChild(button);
+
+            // Add click handler
+            button.addEventListener('click', function() {
+               const code = codeBlock.textContent.trim();
+
+               // Use the modern clipboard API
+               if (navigator.clipboard && navigator.clipboard.writeText) {
+                  navigator.clipboard.writeText(code).then(function() {
+                     button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                     button.classList.add('copied');
+                     setTimeout(function() {
+                        button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                        button.classList.remove('copied');
+                     }, 2000);
+                  }).catch(function(err) {
+                     console.error('Failed to copy:', err);
+                     fallbackCopy(code, button);
+                  });
+               } else {
+                  // Fallback for older browsers
+                  fallbackCopy(code, button);
+               }
+            });
+         });
+
+         // Fallback copy function for older browsers
+         function fallbackCopy(text, button) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+               document.execCommand('copy');
+               button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+               button.classList.add('copied');
+               setTimeout(function() {
+                  button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                  button.classList.remove('copied');
+               }, 2000);
+            } catch (err) {
+               console.error('Fallback copy failed:', err);
+            }
+            document.body.removeChild(textArea);
+         }
+
+         // Back to top button functionality
+         const backToTopButton = document.getElementById('backToTop');
+
+         window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 500) {
+               backToTopButton.style.display = 'block';
+            } else {
+               backToTopButton.style.display = 'none';
+            }
+         });
+
+         backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+               top: 0,
+               behavior: 'smooth'
             });
          });
       </script>
