@@ -259,6 +259,290 @@
             font-size: 1.4rem;
          }
       }
+
+      /* Breach Data Styling */
+      .breach-list,
+      .exposed-data-list {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 4px;
+      }
+
+      .breach-list .badge,
+      .exposed-data-list .badge {
+         font-size: 0.75rem;
+         padding: 4px 8px;
+         font-weight: 500;
+      }
+
+      .badge-danger {
+         background-color: #e74c3c !important;
+         color: white !important;
+      }
+
+      /* Breach link styling */
+      .breach-link {
+         text-decoration: none !important;
+         transition: all 0.2s ease;
+      }
+
+      .breach-link:hover {
+         background-color: #c0392b !important;
+         transform: scale(1.05);
+         box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+      }
+
+      .breach-link i {
+         margin-left: 4px;
+         opacity: 0.8;
+      }
+
+      .badge-secondary {
+         background-color: #6c757d !important;
+         color: white !important;
+      }
+
+      /* Exposed data badge - dark teal for better contrast */
+      .badge-exposed {
+         background-color: #1a5276 !important;
+         color: #ffffff !important;
+         border: 1px solid #21618c;
+      }
+
+      [data-theme="dark"] .badge-danger {
+         background-color: #c0392b !important;
+      }
+
+      [data-theme="dark"] .badge-secondary {
+         background-color: #495057 !important;
+      }
+
+      [data-theme="dark"] .badge-exposed {
+         background-color: #154360 !important;
+         border-color: #1a5276 !important;
+      }
+
+      /* Table cell adjustments for new columns */
+      #vip_table td {
+         vertical-align: middle;
+      }
+
+      #vip_table td:nth-child(4),
+      #vip_table td:nth-child(5),
+      #vip_table td:nth-child(6) {
+         max-width: 200px;
+      }
+
+      /* Authentication Modal Styles */
+      .auth-modal-overlay {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: rgba(0, 0, 0, 0.7);
+         backdrop-filter: blur(5px);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         z-index: 10000;
+         animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+         from { opacity: 0; }
+         to { opacity: 1; }
+      }
+
+      .auth-modal {
+         background: linear-gradient(145deg, #ffffff, #f8f9fa);
+         border-radius: 20px;
+         padding: 40px;
+         max-width: 420px;
+         width: 90%;
+         text-align: center;
+         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+         animation: slideUp 0.4s ease;
+      }
+
+      @keyframes slideUp {
+         from {
+            opacity: 0;
+            transform: translateY(30px);
+         }
+         to {
+            opacity: 1;
+            transform: translateY(0);
+         }
+      }
+
+      .auth-modal-icon {
+         width: 80px;
+         height: 80px;
+         background: linear-gradient(145deg, #e74c3c, #c0392b);
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         margin: 0 auto 25px;
+         box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+      }
+
+      .auth-modal-icon i {
+         font-size: 36px;
+         color: white;
+      }
+
+      .auth-modal-title {
+         font-size: 1.5rem;
+         font-weight: 600;
+         color: #2c3e50;
+         margin-bottom: 15px;
+      }
+
+      .auth-modal-message {
+         color: #7f8c8d;
+         font-size: 1rem;
+         margin-bottom: 25px;
+         line-height: 1.6;
+      }
+
+      .auth-modal-countdown {
+         font-size: 0.95rem;
+         color: #95a5a6;
+         margin-bottom: 15px;
+      }
+
+      .auth-modal-countdown span {
+         font-weight: 700;
+         color: #e74c3c;
+         font-size: 1.1rem;
+      }
+
+      .auth-modal-progress {
+         height: 6px;
+         background: #ecf0f1;
+         border-radius: 3px;
+         overflow: hidden;
+         margin-bottom: 25px;
+      }
+
+      .auth-modal-progress-bar {
+         height: 100%;
+         background: linear-gradient(90deg, #3498db, #2980b9);
+         border-radius: 3px;
+         width: 100%;
+         animation: progressShrink 5s linear forwards;
+      }
+
+      @keyframes progressShrink {
+         from { width: 100%; }
+         to { width: 0%; }
+      }
+
+      .auth-modal-btn {
+         background: linear-gradient(145deg, #3498db, #2980b9);
+         color: white !important;
+         padding: 12px 30px;
+         border-radius: 30px;
+         font-weight: 500;
+         text-decoration: none !important;
+         display: inline-block;
+         transition: all 0.3s ease;
+         box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      .auth-modal-btn:hover {
+         transform: translateY(-2px);
+         box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+         background: linear-gradient(145deg, #2980b9, #1f6dad);
+      }
+
+      /* Dark mode for auth modal */
+      [data-theme="dark"] .auth-modal {
+         background: linear-gradient(145deg, #1e2235, #181b2d);
+      }
+
+      [data-theme="dark"] .auth-modal-title {
+         color: #ecf0f1;
+      }
+
+      [data-theme="dark"] .auth-modal-message {
+         color: #95a5a6;
+      }
+
+      [data-theme="dark"] .auth-modal-progress {
+         background: #2c3e50;
+      }
+
+      /* Back to Dashboard Button */
+      .back-btn-wrapper {
+         text-align: center;
+         padding: 30px 0;
+      }
+
+      .btn-back-dashboard {
+         position: relative;
+         display: inline-flex;
+         align-items: center;
+         gap: 12px;
+         padding: 14px 32px;
+         font-size: 1rem;
+         font-weight: 600;
+         color: #2c3e50;
+         background: #ffffff;
+         border: 2px solid #3498db;
+         border-radius: 50px;
+         text-decoration: none !important;
+         overflow: hidden;
+         transition: all 0.3s ease;
+         z-index: 1;
+         box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+      }
+
+      .btn-back-dashboard::before {
+         content: '';
+         position: absolute;
+         top: 100%;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+         transition: all 0.3s ease;
+         z-index: -1;
+      }
+
+      .btn-back-dashboard:hover::before {
+         top: 0;
+      }
+
+      .btn-back-dashboard:hover {
+         color: #ffffff !important;
+         transform: translateY(-3px);
+         box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+         border-color: #2980b9;
+      }
+
+      .btn-back-dashboard i {
+         font-size: 1.1em;
+         transition: transform 0.3s ease;
+      }
+
+      .btn-back-dashboard:hover i {
+         transform: translateX(-4px);
+      }
+
+      /* Dark mode for back button */
+      [data-theme="dark"] .btn-back-dashboard {
+         background: #1e2235;
+         color: #ecf0f1;
+         border-color: #3498db;
+      }
+
+      [data-theme="dark"] .btn-back-dashboard:hover {
+         color: #ffffff !important;
+         background: transparent;
+      }
    </style>
    <link href="https://cdn.datatables.net/v/bs4/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.css" rel="stylesheet" />
    <script src="https://cdn.datatables.net/v/bs4/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script>
@@ -376,7 +660,7 @@
                   <div class="col-md-3 col-6 mb-3">
                      <div class="metric-box">
                         <div class="metric-header">
-                           <h2>Total Exposed</h2>
+                           <h2>🎯 Total Exposed</h2>
                         </div>
                         <p id="metric-total">...</p>
                      </div>
@@ -384,7 +668,7 @@
                   <div class="col-md-3 col-6 mb-3">
                      <div class="metric-box">
                         <div class="metric-header">
-                           <h2>C-Suite</h2>
+                           <h2>👔 C-Suite</h2>
                         </div>
                         <p id="metric-csuite">...</p>
                      </div>
@@ -392,7 +676,7 @@
                   <div class="col-md-3 col-6 mb-3">
                      <div class="metric-box">
                         <div class="metric-header">
-                           <h2>VP</h2>
+                           <h2>💼 VP</h2>
                         </div>
                         <p id="metric-vp">...</p>
                      </div>
@@ -400,7 +684,7 @@
                   <div class="col-md-3 col-6 mb-3">
                      <div class="metric-box">
                         <div class="metric-header">
-                           <h2>Directors</h2>
+                           <h2>📋 Directors</h2>
                         </div>
                         <p id="metric-director">...</p>
                      </div>
@@ -429,6 +713,9 @@
                               <th>Domain</th>
                               <th>Email Address</th>
                               <th>VIP Level</th>
+                              <th>Breach Name</th>
+                              <th>Breach Date</th>
+                              <th>Exposed Data</th>
                            </tr>
                         </thead>
                         <tbody id="vip_tbody">
@@ -439,6 +726,9 @@
                               <th>Domain</th>
                               <th>Email Address</th>
                               <th>VIP Level</th>
+                              <th>Breach Name</th>
+                              <th>Breach Date</th>
+                              <th>Exposed Data</th>
                            </tr>
                         </tfoot>
                      </table>
@@ -457,14 +747,12 @@
 
    <!-- Back to Dashboard Button -->
    <div class="xon">
-      <div>
-         <div>
-            <br>
-            <div align="center">
-               <a id="back-to-dashboard" href="breach-dashboard.html" class="btn-lg" style="background-color:#3498db;color:white;border:none;margin:0 10px;text-decoration:none;">
-                  <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
-               </a>
-            </div>
+      <div class="container">
+         <div class="back-btn-wrapper">
+            <a id="back-to-dashboard" href="breach-dashboard.html" class="btn-back-dashboard">
+               <i class="fas fa-arrow-left"></i>
+               <span>Back to Dashboard</span>
+            </a>
          </div>
       </div>
    </div>
@@ -506,6 +794,26 @@
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"
       integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
+   <!-- Authentication Modal -->
+   <div id="auth-modal" class="auth-modal-overlay" style="display: none;">
+      <div class="auth-modal">
+         <div class="auth-modal-icon">
+            <i class="fas fa-shield-alt"></i>
+         </div>
+         <h3 class="auth-modal-title">Authentication Required</h3>
+         <p class="auth-modal-message" id="auth-modal-message">Please access this page from the main dashboard.</p>
+         <div class="auth-modal-countdown">
+            Redirecting in <span id="auth-countdown">5</span> seconds...
+         </div>
+         <div class="auth-modal-progress">
+            <div class="auth-modal-progress-bar" id="auth-progress-bar"></div>
+         </div>
+         <a href="dashboard.html" class="btn auth-modal-btn">
+            <i class="fas fa-sign-in-alt mr-2"></i>Go to Dashboard Now
+         </a>
+      </div>
+   </div>
+
    <script src="/static/scripts/vip-dashboard.js"></script>
    <script src="/static/scripts/common.js"></script>
    <div class="back-to-top">

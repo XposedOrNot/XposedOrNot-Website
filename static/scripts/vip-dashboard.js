@@ -20,8 +20,41 @@ try {
 
 // Validate authentication
 if (!email || !token || email === '0' || token === '0') {
-    alert('Authentication required. Please access this page from the main dashboard.');
-    window.location.href = 'dashboard.html';
+    showAuthModal('Authentication required. Please access this page from the main dashboard.');
+}
+
+/**
+ * Show authentication modal with countdown and redirect
+ */
+function showAuthModal(message, redirectUrl) {
+    redirectUrl = redirectUrl || 'dashboard.html';
+
+    // Wait for DOM to be ready
+    $(function() {
+        $('#auth-modal-message').text(message);
+        $('#auth-modal').show();
+
+        // Reset and start progress bar animation
+        var progressBar = $('#auth-progress-bar');
+        progressBar.css('animation', 'none');
+        progressBar[0].offsetHeight; // Trigger reflow
+        progressBar.css('animation', 'progressShrink 5s linear forwards');
+
+        // Countdown timer
+        var countdown = 5;
+        var countdownEl = $('#auth-countdown');
+        countdownEl.text(countdown);
+
+        var countdownInterval = setInterval(function() {
+            countdown--;
+            countdownEl.text(countdown);
+
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = redirectUrl;
+            }
+        }, 1000);
+    });
 }
 
 // Setup loading overlay (same as breach-dashboard)
@@ -33,13 +66,19 @@ $.LoadingOverlaySetup({
 });
 
 // Configuration
-var API_BASE_URL = 'https://xon-api-test.xposedornot.com/v1';
+var API_BASE_URL = 'https://api.xposedornot.com/v1';
 
 // Store domains list for dropdown
 var availableDomains = [];
 
 // DataTable instance
 var vipTable = null;
+
+// Custom DataTables sorting for data-sort attribute
+$.fn.dataTable.ext.type.order['html-data-sort-pre'] = function(data) {
+    var match = data.match(/data-sort="([^"]+)"/);
+    return match ? match[1] : data;
+};
 
 $(document).ready(function() {
     // Set back to dashboard link with email and token
@@ -70,7 +109,7 @@ function initDataTable() {
             buttons: ['csv', 'excel', 'pdf']
         }],
         pageLength: 25,
-        order: [[2, 'asc'], [0, 'asc']],
+        order: [[4, 'desc'], [0, 'asc']],  // Sort by breach date (newest first), then domain
         responsive: true,
         scrollX: true,
         autoWidth: false,
@@ -79,7 +118,16 @@ function initDataTable() {
             zeroRecords: "No matching records found"
         },
         columnDefs: [
-            { targets: 2, width: '150px' }
+            { targets: 0, width: '120px' },  // Domain
+            { targets: 1, width: '200px' },  // Email
+            { targets: 2, width: '100px' },  // VIP Level
+            { targets: 3, width: '150px' },  // Breach Name
+            {
+                targets: 4,
+                width: '120px',
+                type: 'html-data-sort'  // Use data-sort attribute for sorting
+            },
+            { targets: 5, width: '200px' }   // Exposed Data
         ]
     });
 }
@@ -211,11 +259,30 @@ function processMultiDomainResponse(response) {
         var domainData = domains[domainName];
         if (domainData.seniority_data && domainData.seniority_data.length > 0) {
             domainData.seniority_data.forEach(function(item) {
-                allVipData.push({
-                    domain: domainName,
-                    email: item.email,
-                    seniority: item.seniority
-                });
+                var breaches = item.breaches || [];
+                if (breaches.length === 0) {
+                    // No breaches - still show the person
+                    allVipData.push({
+                        domain: domainName,
+                        email: item.email,
+                        seniority: item.seniority,
+                        breach_name: null,
+                        breach_date: null,
+                        xposed_data: []
+                    });
+                } else {
+                    // One row per breach
+                    breaches.forEach(function(breach) {
+                        allVipData.push({
+                            domain: domainName,
+                            email: item.email,
+                            seniority: item.seniority,
+                            breach_name: breach.breach_name,
+                            breach_date: breach.breach_date,
+                            xposed_data: breach.xposed_data || []
+                        });
+                    });
+                }
             });
         }
 
@@ -243,13 +310,33 @@ function processSingleDomainResponse(response) {
     var seniorityData = response.seniority_data || [];
     var counts = response.counts || {};
 
-    // Build table data
-    var tableData = seniorityData.map(function(item) {
-        return {
-            domain: domainName,
-            email: item.email,
-            seniority: item.seniority
-        };
+    // Build table data - one row per breach
+    var tableData = [];
+    seniorityData.forEach(function(item) {
+        var breaches = item.breaches || [];
+        if (breaches.length === 0) {
+            // No breaches - still show the person
+            tableData.push({
+                domain: domainName,
+                email: item.email,
+                seniority: item.seniority,
+                breach_name: null,
+                breach_date: null,
+                xposed_data: []
+            });
+        } else {
+            // One row per breach
+            breaches.forEach(function(breach) {
+                tableData.push({
+                    domain: domainName,
+                    email: item.email,
+                    seniority: item.seniority,
+                    breach_name: breach.breach_name,
+                    breach_date: breach.breach_date,
+                    xposed_data: breach.xposed_data || []
+                });
+            });
+        }
     });
 
     // Update metrics
@@ -308,10 +395,17 @@ function updateTable(data) {
     // Add rows to table
     data.forEach(function(item) {
         var vipBadge = getVipBadge(item.seniority);
+        var breachName = formatBreachName(item.breach_name);
+        var breachDate = formatBreachDate(item.breach_date);
+        var exposedData = formatExposedData(item.xposed_data);
+
         vipTable.row.add([
             item.domain,
             item.email,
-            vipBadge
+            vipBadge,
+            breachName,
+            breachDate,
+            exposedData
         ]);
     });
 
@@ -331,6 +425,159 @@ function getVipBadge(seniority) {
 
     var label = vipLabels[seniority] || seniority;
     return '<span class="badge badge-vip-level badge-' + seniority + '">' + label + '</span>';
+}
+
+/**
+ * Format single breach name with link
+ */
+function formatBreachName(breachName) {
+    if (!breachName) {
+        return '<span class="text-muted">No breaches</span>';
+    }
+
+    var breachUrl = 'https://xposedornot.com/breach#' + encodeURIComponent(breachName);
+    return '<a href="' + breachUrl + '" target="_blank" class="badge badge-danger breach-link">' +
+           escapeHtml(breachName) + ' <i class="fas fa-external-link-alt fa-xs"></i></a>';
+}
+
+/**
+ * Format single breach date with sortable value
+ */
+function formatBreachDate(breachDate) {
+    if (!breachDate) {
+        return '<span class="text-muted" data-sort="0">-</span>';
+    }
+
+    var sortValue = parseDateToSortable(breachDate);
+    return '<span class="badge badge-secondary" data-sort="' + sortValue + '">' + escapeHtml(breachDate) + '</span>';
+}
+
+/**
+ * Convert date string like "November 2018" to sortable format "201811"
+ */
+function parseDateToSortable(dateStr) {
+    var months = {
+        'january': '01', 'february': '02', 'march': '03', 'april': '04',
+        'may': '05', 'june': '06', 'july': '07', 'august': '08',
+        'september': '09', 'october': '10', 'november': '11', 'december': '12'
+    };
+
+    var parts = dateStr.toLowerCase().split(' ');
+    if (parts.length === 2) {
+        var month = months[parts[0]] || '01';
+        var year = parts[1];
+        return year + month;
+    }
+    return '000000';
+}
+
+/**
+ * Format exposed data types as HTML badges with emojis
+ */
+function formatExposedData(xposedData) {
+    if (!xposedData || xposedData.length === 0) {
+        return '<span class="text-muted">-</span>';
+    }
+
+    // Get unique data types
+    var uniqueData = [];
+    xposedData.forEach(function(dataType) {
+        if (uniqueData.indexOf(dataType) === -1) {
+            uniqueData.push(dataType);
+        }
+    });
+
+    var html = '<div class="exposed-data-list">';
+    uniqueData.forEach(function(dataType) {
+        var emoji = getDataTypeEmoji(dataType);
+        html += '<span class="badge badge-exposed mr-1 mb-1">' + emoji + ' ' + escapeHtml(dataType) + '</span>';
+    });
+    html += '</div>';
+    return html;
+}
+
+/**
+ * Get emoji for exposed data type
+ */
+function getDataTypeEmoji(dataType) {
+    var lowerType = dataType.toLowerCase();
+
+    // Personal Identification
+    if (lowerType.includes('name') || lowerType.includes('gender') ||
+        lowerType.includes('photo') || lowerType.includes('avatar') ||
+        lowerType.includes('nationality') || lowerType.includes('birth')) {
+        return '👤';
+    }
+
+    // Communication
+    if (lowerType.includes('email') || lowerType.includes('phone') ||
+        lowerType.includes('messenger') || lowerType.includes('message')) {
+        return '📧';
+    }
+
+    // Security
+    if (lowerType.includes('password') || lowerType.includes('security question') ||
+        lowerType.includes('credential')) {
+        return '🔒';
+    }
+
+    // Financial
+    if (lowerType.includes('credit') || lowerType.includes('bank') ||
+        lowerType.includes('payment') || lowerType.includes('financial') ||
+        lowerType.includes('balance')) {
+        return '💳';
+    }
+
+    // Geographic/Location
+    if (lowerType.includes('address') || lowerType.includes('location') ||
+        lowerType.includes('geographic') || lowerType.includes('city') ||
+        lowerType.includes('country') || lowerType.includes('zip')) {
+        return '📍';
+    }
+
+    // Social Media
+    if (lowerType.includes('social media') || lowerType.includes('social connection') ||
+        lowerType.includes('profile')) {
+        return '🌐';
+    }
+
+    // Employment/Education
+    if (lowerType.includes('employer') || lowerType.includes('occupation') ||
+        lowerType.includes('job') || lowerType.includes('education') ||
+        lowerType.includes('work')) {
+        return '🎓';
+    }
+
+    // Device/Network
+    if (lowerType.includes('ip address') || lowerType.includes('device') ||
+        lowerType.includes('browser') || lowerType.includes('user agent')) {
+        return '🖥️';
+    }
+
+    // Health
+    if (lowerType.includes('health') || lowerType.includes('medical') ||
+        lowerType.includes('fitness')) {
+        return '🩺';
+    }
+
+    // Demographics
+    if (lowerType.includes('age') || lowerType.includes('ethnicit') ||
+        lowerType.includes('marital')) {
+        return '👥';
+    }
+
+    // Default
+    return '📋';
+}
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(text) {
+    if (!text) return '';
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 /**
@@ -358,11 +605,8 @@ function handleApiError(xhr) {
     switch (xhr.status) {
         case 400:
         case 401:
-            errorMessage = 'Authentication failed. Please log in again.';
-            setTimeout(function() {
-                window.location.href = 'dashboard.html';
-            }, 2000);
-            break;
+            showAuthModal('Your session has expired or is invalid. Please log in again to continue.');
+            return;
         case 404:
             errorMessage = 'No data found for the selected filters.';
             showEmptyState();
