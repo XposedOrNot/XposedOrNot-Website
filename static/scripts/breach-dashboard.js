@@ -10,6 +10,9 @@ try {
     window.location.replace("https://xposedornot.com");
 }
 
+// Validate authentication - check if email and token are present
+var authValid = email && token && email !== '0' && token !== '0' && email !== 'undefined' && token !== 'undefined';
+
 $.LoadingOverlaySetup({
     background: "rgba(0, 0, 0, 0.5)",
     image: "static/images/shield-alt.svg",
@@ -17,6 +20,48 @@ $.LoadingOverlaySetup({
     imageColor: "#6daae0"
 });
 $.LoadingOverlay("show");
+
+/**
+ * Show authentication modal with countdown and redirect
+ */
+function showAuthModal(message, redirectUrl) {
+    redirectUrl = redirectUrl || 'dashboard.html';
+
+    // Hide loading overlay if visible
+    $.LoadingOverlay("hide");
+
+    // Wait for DOM to be ready
+    $(function() {
+        $('#auth-modal-message').text(message);
+        $('#auth-modal').show();
+
+        // Reset and start progress bar animation
+        var progressBar = $('#auth-progress-bar');
+        progressBar.css('animation', 'none');
+        progressBar[0].offsetHeight; // Trigger reflow
+        progressBar.css('animation', 'authProgressShrink 5s linear forwards');
+
+        // Countdown timer
+        var countdown = 5;
+        var countdownEl = $('#auth-countdown');
+        countdownEl.text(countdown);
+
+        var countdownInterval = setInterval(function() {
+            countdown--;
+            countdownEl.text(countdown);
+
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = redirectUrl;
+            }
+        }, 1000);
+    });
+}
+
+// Show auth modal if validation failed
+if (!authValid) {
+    showAuthModal('Authentication required. Please access this page from the main dashboard.');
+}
 
 $(document).ready(function () {
     $('.btn-lg.btn-primary').not('#xonPlusModal .btn-primary').click(function () {
@@ -91,6 +136,11 @@ s = '<div align="center" class="alert alert-primary"><strong>Data Breaches Detai
 $("#email").html(s);
 $("#email_details").html(s);
 
+// Don't make API calls if auth is invalid
+if (!authValid) {
+    $.LoadingOverlay("hide");
+} else {
+
 var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_domain_breaches?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 
 var myjson;
@@ -101,10 +151,12 @@ $.ajax(emailVerificationUrl)
         if (myjson) {
             var domains = new Set();
             var exposedEmails = new Set();
-            myjson.Breaches_Details.forEach(function (detail) {
-                domains.add(detail.domain);
-                exposedEmails.add(detail.email);
-            });
+            if (myjson.Breaches_Details && Array.isArray(myjson.Breaches_Details)) {
+                myjson.Breaches_Details.forEach(function (detail) {
+                    domains.add(detail.domain);
+                    exposedEmails.add(detail.email);
+                });
+            }
 
             $('#exposed-domains').text(domains.size.toLocaleString());
             $('#exposed-emails').text(exposedEmails.size.toLocaleString());
@@ -179,16 +231,16 @@ $.ajax(emailVerificationUrl)
             $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
             $("#db-s").show();
         } else if (n.status === 400) {
-            $.LoadingOverlay("hide");
-            $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're not authenticated properly.");
-            window.location.replace("dashboard.html");
-            $("#db-s").show();
+            showAuthModal('Your session is invalid. Please log in again to continue.');
         } else if (n.status === 401) {
-            $.LoadingOverlay("hide");
-            window.location.replace("dashboard.html");
+            showAuthModal('Your session has expired. Please log in again to continue.');
+        } else {
+            // Catch-all for other errors that might be auth-related
+            showAuthModal('An error occurred. Please log in again to continue.');
         }
     });
 
+} // End of authValid check
 
 function updateSenioritySummary(senioritySummary) {
     if (senioritySummary) {
@@ -650,18 +702,21 @@ function updateApiCall(timeFilter) {
                 $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
                 $("#db-s").show();
             } else if (n.status === 400) {
-                $.LoadingOverlay("hide");
-                $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're not authenticated properly.");
-                window.location.replace("dashboard.html");
-                $("#db-s").show();
+                showAuthModal('Your session is invalid. Please log in again to continue.');
             } else if (n.status === 401) {
-                $.LoadingOverlay("hide");
-                window.location.replace("dashboard.html");
+                showAuthModal('Your session has expired. Please log in again to continue.');
+            } else {
+                // Catch-all for other errors
+                showAuthModal('An error occurred. Please log in again to continue.');
             }
         });
 }
 
 $('#data-filter').change(function () {
+    if (!authValid) {
+        showAuthModal('Authentication required. Please log in to continue.');
+        return;
+    }
     const selectedValue = $(this).val();
     updateApiCall(selectedValue);
 });
@@ -1030,10 +1085,14 @@ $('#confirmAcknowledgeBtn').on('click', function() {
             // Show error message
             let errorMessage = 'Failed to acknowledge alert. Please try again.';
 
+            // Handle auth errors with modal
+            if (xhr.status === 401) {
+                showAuthModal('Your session has expired. Please log in again to continue.');
+                return;
+            }
+
             if (xhr.responseJSON && xhr.responseJSON.message) {
                 errorMessage = xhr.responseJSON.message;
-            } else if (xhr.status === 401) {
-                errorMessage = 'Authentication failed. Please log in again.';
             } else if (xhr.status === 404) {
                 errorMessage = 'Alert not found.';
             } else if (xhr.status === 400) {
@@ -1238,10 +1297,14 @@ $('#confirmUnacknowledgeBtn').on('click', function() {
             // Show error message
             let errorMessage = 'Failed to un-acknowledge alert. Please try again.';
 
+            // Handle auth errors with modal
+            if (xhr.status === 401) {
+                showAuthModal('Your session has expired. Please log in again to continue.');
+                return;
+            }
+
             if (xhr.responseJSON && xhr.responseJSON.message) {
                 errorMessage = xhr.responseJSON.message;
-            } else if (xhr.status === 401) {
-                errorMessage = 'Authentication failed. Please log in again.';
             } else if (xhr.status === 404) {
                 errorMessage = 'Alert not found.';
             } else if (xhr.status === 400) {
