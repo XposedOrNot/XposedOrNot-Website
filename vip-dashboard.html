@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <title>XposedOrNot: VIP Dashboard</title>
+   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+   <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+   <link rel=stylesheet
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset'
+      type=text/css media=all>
+   <link href="/static/css/style.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+   <script src="/static/scripts/utils.js"></script>
+   <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
+   <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="description" content="XposedOrNot: View VIP exposure data for your verified domains">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="author" content="Devanand Premkumar">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <style>
+      /* Filter Section Styling */
+      .filter-section {
+         display: flex;
+         gap: 20px;
+         align-items: center;
+         flex-wrap: wrap;
+      }
+
+      .filter-group {
+         display: flex;
+         flex-direction: column;
+         gap: 5px;
+      }
+
+      .filter-group label {
+         font-weight: 500;
+         color: #2c3e50;
+         font-size: 0.9rem;
+      }
+
+      .filter-select {
+         min-width: 200px;
+         height: 42px;
+         padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+         font-size: 0.95rem;
+         border: 2px solid #3498db;
+         border-radius: 8px;
+         background-color: #fff;
+         color: #2c3e50;
+         cursor: pointer;
+         transition: all 0.3s ease;
+      }
+
+      .filter-select:focus {
+         outline: none;
+         border-color: #2980b9;
+         box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      .filter-select:hover {
+         border-color: #2980b9;
+      }
+
+      [data-theme="dark"] .filter-group label {
+         color: #ecf0f1;
+      }
+
+      [data-theme="dark"] .filter-select {
+         background-color: #2c3e50;
+         color: #ecf0f1;
+         border-color: #3498db;
+      }
+
+      [data-theme="dark"] .filter-select:focus {
+         box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+      }
+
+      /* Container width extension */
+      .container {
+         max-width: 1340px !important;
+      }
+
+      @media (min-width: 992px) and (max-width: 1199px) {
+         .container {
+            max-width: 1160px !important;
+         }
+      }
+
+      @media (min-width: 768px) and (max-width: 991px) {
+         .container {
+            max-width: 920px !important;
+         }
+      }
+
+      @media (min-width: 576px) and (max-width: 767px) {
+         .container {
+            max-width: 740px !important;
+         }
+      }
+
+      /* Metric Box Styling */
+      [data-theme="dark"] .metric-box {
+         background: #0e0f19 !important;
+         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4) !important;
+         border: 1px solid #2a2f4a !important;
+      }
+
+      [data-theme="dark"] .metric-box:hover {
+         box-shadow: 0 12px 24px rgba(109, 170, 224, 0.2) !important;
+         transform: translateY(-5px);
+      }
+
+      [data-theme="dark"] .metric-header {
+         background: linear-gradient(145deg, #1e2235, #181b2d) !important;
+      }
+
+      [data-theme="dark"] .metric-box h2 {
+         color: #9fc0e0 !important;
+      }
+
+      [data-theme="dark"] .metric-box p {
+         color: #6daae0 !important;
+      }
+
+      /* VIP Badge Colors */
+      .badge-c_suite {
+         background-color: #e74c3c !important;
+         color: white !important;
+      }
+
+      .badge-vp {
+         background-color: #9b59b6 !important;
+         color: white !important;
+      }
+
+      .badge-director {
+         background-color: #3498db !important;
+         color: white !important;
+      }
+
+      .badge-vip-level {
+         padding: 6px 12px;
+         border-radius: 20px;
+         font-size: 0.85rem;
+         font-weight: 500;
+         text-transform: capitalize;
+      }
+
+      /* Table Styling */
+      #vip_table tbody tr {
+         transition: all 0.2s ease;
+      }
+
+      #vip_table tbody tr:hover {
+         background-color: rgba(52, 152, 219, 0.1) !important;
+      }
+
+      [data-theme="dark"] #vip_table tbody tr:hover {
+         background-color: rgba(52, 152, 219, 0.2) !important;
+      }
+
+      [data-theme="dark"] #vip_table tbody tr td {
+         border: 1px solid #4a5568 !important;
+         color: #ecf0f1 !important;
+      }
+
+      [data-theme="dark"] #vip_table {
+         border-color: #4a5568 !important;
+      }
+
+      /* Page Header Styling */
+      .page-header {
+         margin-bottom: 30px;
+         padding-top: 20px;
+      }
+
+      .page-header h1 {
+         font-size: 1.8rem;
+         font-weight: 600;
+         color: #2c3e50;
+         margin: 0;
+      }
+
+      .page-header p {
+         color: #7f8c8d;
+         margin: 5px 0 0 0;
+         font-size: 0.95rem;
+      }
+
+      [data-theme="dark"] .page-header h1 {
+         color: #ecf0f1;
+      }
+
+      [data-theme="dark"] .page-header p {
+         color: #95a5a6;
+      }
+
+      /* Empty State */
+      .empty-state {
+         text-align: center;
+         padding: 60px 20px;
+         color: #7f8c8d;
+      }
+
+      .empty-state i {
+         font-size: 4rem;
+         margin-bottom: 20px;
+         color: #bdc3c7;
+      }
+
+      .empty-state h3 {
+         color: #2c3e50;
+         margin-bottom: 10px;
+      }
+
+      [data-theme="dark"] .empty-state h3 {
+         color: #ecf0f1;
+      }
+
+      [data-theme="dark"] .empty-state i {
+         color: #4a5568;
+      }
+
+      /* Loading state */
+      .loading-spinner {
+         display: inline-block;
+         width: 20px;
+         height: 20px;
+         border: 3px solid rgba(52, 152, 219, 0.3);
+         border-radius: 50%;
+         border-top-color: #3498db;
+         animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+         to { transform: rotate(360deg); }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+         .filter-section {
+            flex-direction: column;
+            align-items: stretch;
+         }
+
+         .filter-select {
+            width: 100%;
+         }
+
+         .page-header h1 {
+            font-size: 1.4rem;
+         }
+      }
+   </style>
+   <link href="https://cdn.datatables.net/v/bs4/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.css" rel="stylesheet" />
+   <script src="https://cdn.datatables.net/v/bs4/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+</head>
+
+<body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
+   <div class="mobileheader-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12">
+               <nav class="navbar navbar-expand-lg navbar-light">
+                  <a class="navbar-brand" href="index.html">
+                     <p>XposedorNot</p>
+                  </a>
+                  <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse"
+                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                     aria-label="Toggle navigation">
+                     <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                     </span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="navbar-nav mr-auto"></ul>
+                     <div class="main-menu-part">
+                        <ul>
+                           <li>
+                              <a href="password.html">Password</a>
+                           </li>
+                           <li>
+                              <a href="faq.html">FAQ</a>
+                           </li>
+                           <li>
+                              <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+   </div>
+   <header class="header-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-3 col-md-3">
+               <div class="header-left">
+                  <a href="https://XposedOrNot.com">
+                     <p>XposedorNot</p>
+                  </a>
+               </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+               <div class="header-right">
+                  <ul>
+                     <li>
+                        <a href="">API</a>
+                     </li>
+                     <li>
+                        <a href="faq.html">FAQ</a>
+                     </li>
+                     <li>
+                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </header>
+
+   <!-- Page Header and Filters -->
+   <div class="xon-row-area-min">
+      <div class="container">
+         <div class="row align-items-center">
+            <div class="col-12 col-md-4 mb-3 mb-md-0">
+               <div class="page-header">
+                  <h1><i class="fas fa-crown mr-2"></i>VIP Dashboard</h1>
+                  <p>Executive exposure analysis across your domains</p>
+               </div>
+            </div>
+            <div class="col-12 col-md-8">
+               <div class="filter-section justify-content-md-end">
+                  <div class="filter-group">
+                     <label for="domain-filter"><i class="fas fa-globe mr-1"></i>Domain</label>
+                     <select id="domain-filter" class="filter-select custom-select">
+                        <option value="all">All Domains</option>
+                        <!-- Domains will be populated dynamically -->
+                     </select>
+                  </div>
+                  <div class="filter-group">
+                     <label for="vip-filter"><i class="fas fa-user-shield mr-1"></i>VIP Level</label>
+                     <select id="vip-filter" class="filter-select custom-select">
+                        <option value="all">All Levels</option>
+                        <option value="c_suite">C-Suite</option>
+                        <option value="vp">VP</option>
+                        <option value="director">Director</option>
+                     </select>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Metrics Section -->
+   <div class="xon-row-area-min">
+      <div class="container">
+         <div class="row">
+            <div class="container mt-4">
+               <div class="row text-center">
+                  <div class="col-md-3 col-6 mb-3">
+                     <div class="metric-box">
+                        <div class="metric-header">
+                           <h2>Total Exposed</h2>
+                        </div>
+                        <p id="metric-total">...</p>
+                     </div>
+                  </div>
+                  <div class="col-md-3 col-6 mb-3">
+                     <div class="metric-box">
+                        <div class="metric-header">
+                           <h2>C-Suite</h2>
+                        </div>
+                        <p id="metric-csuite">...</p>
+                     </div>
+                  </div>
+                  <div class="col-md-3 col-6 mb-3">
+                     <div class="metric-box">
+                        <div class="metric-header">
+                           <h2>VP</h2>
+                        </div>
+                        <p id="metric-vp">...</p>
+                     </div>
+                  </div>
+                  <div class="col-md-3 col-6 mb-3">
+                     <div class="metric-box">
+                        <div class="metric-header">
+                           <h2>Directors</h2>
+                        </div>
+                        <p id="metric-director">...</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Data Table Section -->
+   <div class="xon-row-area">
+      <div class="container">
+         <div class="row">
+            <div style="width:100%">
+               <div class="xon-row-left" style="height:auto; width:100%">
+                  <div class="xon-row-left_a">
+                     <div align="center" class="alert alert-primary">
+                        <strong><i class="fas fa-table mr-2"></i>VIP Exposure Details</strong>
+                     </div>
+                  </div>
+                  <div class="table-responsive-wrapper">
+                     <table id="vip_table" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                           <tr>
+                              <th>Domain</th>
+                              <th>Email Address</th>
+                              <th>VIP Level</th>
+                           </tr>
+                        </thead>
+                        <tbody id="vip_tbody">
+                           <!-- Dynamic content will be populated here -->
+                        </tbody>
+                        <tfoot>
+                           <tr>
+                              <th>Domain</th>
+                              <th>Email Address</th>
+                              <th>VIP Level</th>
+                           </tr>
+                        </tfoot>
+                     </table>
+                  </div>
+                  <!-- Empty State -->
+                  <div id="empty-state" class="empty-state" style="display: none;">
+                     <i class="fas fa-search"></i>
+                     <h3>No Data Found</h3>
+                     <p>No VIP data available for the selected filters.</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Back to Dashboard Button -->
+   <div class="xon">
+      <div>
+         <div>
+            <br>
+            <div align="center">
+               <a id="back-to-dashboard" href="breach-dashboard.html" class="btn-lg" style="background-color:#3498db;color:white;border:none;margin:0 10px;text-decoration:none;">
+                  <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+               </a>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Footer -->
+   <div class="container text-center" style="font-family:Poppins">
+      <footer>
+         <aside>
+            <hr>
+            <a style="color:#3c5fec" href="https://twitter.com/xposedornot" target="_blank" rel="noopener"
+               name="twitter">&nbsp Check us out at <em class="fab fa-twitter fa-3x"></em>
+            </a>
+            <a style="color:#3c5fec" href="https://facebook.com/xposedornot" target="_blank" rel="noopener"
+               name="fb">&nbsp and <em class="fab fa-facebook fa-3x"></em>
+            </a>
+            <br> <br>
+            <p>Join us in shaping this fully open source site! Contributions welcome - check out our <a
+                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub </a>. </p>
+            <hr>
+            <div style="width:30%;Text-align:center;float:left;">
+               <a style="color:blue" href="privacy">Privacy Policy</a> - <a style="color:blue"
+                  href="responsible-disclosure"> Responsible Disclosure</a>
+            </div>
+            <p>
+            <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
+               <input type="checkbox" class="custom-control-input" id="darkSwitch">
+               <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+            </div>
+            </p>
+         </aside>
+      </footer>
+   </div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"
+      integrity="sha512-8cU710tp3iH9RniUh6fq5zJsGnjLzOWLWdZqBMLtqaoZUA6AWIE34lwMB3ipUNiTBP5jEZKY95SfbNnQ8cCKvA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"
+      integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
+   <script src="/static/scripts/vip-dashboard.js"></script>
+   <script src="/static/scripts/common.js"></script>
+   <div class="back-to-top">
+      <i class="fas fa-arrow-up"></i>
+   </div>
+</body>
+
+</html>
