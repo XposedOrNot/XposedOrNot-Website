@@ -119,6 +119,12 @@ $(document).ready(function () {
         window.location.href = analysisUrl;
     });
 
+    // VIP Dashboard button handlers
+    $('.vip-btn, .vip-btn-bottom').click(function () {
+        var vipUrl = 'vip-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+        window.location.href = vipUrl;
+    });
+
 
     $('.utility-buttons .btn-utility').click(function (e) {
         const buttonType = $(this).attr('class').split(' ')[2];
