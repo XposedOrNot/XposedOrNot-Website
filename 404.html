@@ -2,53 +2,280 @@
 <html lang="en">
    <head>
       <meta charset="utf-8">
-      <title>XposedOrNot: Page Not Found... </title>
+      <title>XposedOrNot: Page Not Found</title>
       <meta http-equiv="refresh" content="30; URL=https://XposedOrNot.com" />
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="description" content="XposedOrNot ?">
+      <meta name="description" content="XposedOrNot - Page not found">
       <meta name="author" content="Devanand Premkumar">
       <link rel="icon" href="favicon.ico" type="image/x-icon" />
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-      <link rel=stylesheet href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset' type=text/css media=all defer async>
-      <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
-      <link href="static/css/style.css" type="text/css" rel="stylesheet" defer>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+      <link href="static/css/style.css" type="text/css" rel="stylesheet">
       <style>
-         .btn-orange {
-         background-color: #FFA500; 
-         color: white; 
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
          }
-         .btn-orange:hover {
-         background-color: #ff8c00; 
-         color: white;
+         body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+         }
+         .error-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+         }
+         .error-content {
+            text-align: center;
+            max-width: 600px;
+         }
+         .error-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+         }
+         .ascii-art {
+            display: none;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.2;
+            color: #6daae0;
+            white-space: pre;
+            animation: search 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(109, 170, 224, 0.3);
+         }
+         @keyframes search {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(10px) rotate(5deg); }
+            50% { transform: translateX(0) rotate(0deg); }
+            75% { transform: translateX(-10px) rotate(-5deg); }
+         }
+         .magnify-glass {
+            animation: glassGlow 1.5s ease-in-out infinite alternate;
+         }
+         @keyframes glassGlow {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; text-shadow: 0 0 15px rgba(109, 170, 224, 0.6); }
+         }
+         @media (min-width: 992px) {
+            .ascii-art {
+               display: block;
+            }
+         }
+         .error-code {
+            font-size: 150px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3c5fec 0%, #6daae0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+         }
+         .error-icon {
+            font-size: 80px;
+            color: #6daae0;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+         }
+         @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+         }
+         .error-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+         }
+         .error-message {
+            font-size: 16px;
+            color: #6c757d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+         }
+         .error-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+         }
+         .btn-home {
+            background: linear-gradient(135deg, #3c5fec 0%, #6daae0 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+         }
+         .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(60, 95, 236, 0.4);
+            color: white;
+            text-decoration: none;
+         }
+         .btn-blog {
+            background: transparent;
+            color: #3c5fec;
+            border: 2px solid #3c5fec;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+         }
+         .btn-blog:hover {
+            background: #3c5fec;
+            color: white;
+            text-decoration: none;
+         }
+         .redirect-notice {
+            margin-top: 30px;
+            padding: 15px 25px;
+            background: rgba(109, 170, 224, 0.1);
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+         }
+         .redirect-notice i {
+            color: #6daae0;
+            animation: spin 2s linear infinite;
+         }
+         @keyframes spin {
+            100% { transform: rotate(360deg); }
+         }
+         .redirect-notice span {
+            color: #6c757d;
+            font-size: 14px;
+         }
+
+         /* Dark mode styles */
+         [data-theme="dark"] .error-container {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+         }
+         [data-theme="dark"] .ascii-art {
+            color: #6daae0;
+            text-shadow: 0 0 15px rgba(109, 170, 224, 0.4);
+         }
+         [data-theme="dark"] .error-title {
+            color: #ffffff;
+         }
+         [data-theme="dark"] .error-message {
+            color: #9fc0e0;
+         }
+         [data-theme="dark"] .redirect-notice {
+            background: rgba(109, 170, 224, 0.15);
+         }
+         [data-theme="dark"] .redirect-notice span {
+            color: #9fc0e0;
+         }
+         [data-theme="dark"] .btn-blog {
+            color: #6daae0;
+            border-color: #6daae0;
+         }
+         [data-theme="dark"] .btn-blog:hover {
+            background: #6daae0;
+            color: #1a1a2e;
+         }
+
+         /* Footer styles */
+         .footer {
+            padding: 40px 0 30px;
+            background: #ffffff;
+            border-top: 1px solid #ebedef;
+         }
+         .footer p { color: #3a4b5e; }
+         .footer a { color: #3c5fec; }
+         .footer-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 60px;
+            text-align: left;
+            padding: 0 40px;
+         }
+         .footer-group { flex: 1; min-width: 0; }
+         .footer-group h6 {
+            color: #2c3e50 !important;
+            font-size: 0.95em !important;
+            margin-bottom: 15px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+         }
+         .footer-group a.footer-link {
+            display: block;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            color: #3a4b5e;
+            text-decoration: none;
+         }
+         .footer-group a.footer-link:hover {
+            background-color: rgba(63, 113, 243, 0.15);
+            padding-left: 14px;
+            color: #3f71f3 !important;
+         }
+         @media (max-width: 768px) {
+            .footer-columns {
+               flex-direction: column;
+               text-align: center;
+               gap: 30px;
+               padding: 0 20px;
+            }
+            .error-code { font-size: 100px; }
+            .error-icon { font-size: 60px; }
+            .error-title { font-size: 22px; }
+         }
+
+         /* Dark mode footer */
+         [data-theme="dark"] .footer {
+            background: #1a1a2e;
+            border-top-color: #2d2d44;
+         }
+         [data-theme="dark"] .footer p { color: #9fc0e0; }
+         [data-theme="dark"] .footer-group h6 { color: #ffffff !important; }
+         [data-theme="dark"] .footer-group a.footer-link { color: #9fc0e0; }
+         [data-theme="dark"] .footer-group a.footer-link:hover {
+            background-color: rgba(63, 113, 243, 0.2);
+            color: #6daae0 !important;
          }
       </style>
-   <script src="/static/scripts/other-libraries.js" defer></script>
    </head>
    <body>
       <div class="kbanner">
          <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
             <a class="navbar-brand" href="https://xposedornot.com">XposedOrNot</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-               <ul class="navbar-nav navbar-right">
+               <ul class="navbar-nav ml-auto">
                   <li class="nav-item active">
-                     <a class="nav-link" href="password.html">Password &nbsp; <span class="sr-only">(current)</span>
-                     </a>
+                     <a class="nav-link" href="password.html">Password</a>
                   </li>
                   <li class="nav-item active">
-                     <a class="nav-link" href="api_doc.html">API &nbsp;</a>
+                     <a class="nav-link" href="api_doc.html">API</a>
                   </li>
                   <li class="nav-item active">
-                     <a class="nav-link" href="https://blog.xposedornot.com/">Blog &nbsp;</a>
+                     <a class="nav-link" href="https://blog.xposedornot.com/">Blog</a>
                   </li>
                   <li class="nav-item dropdown active">
-                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> XoN </a>
+                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">XoN</a>
                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
                         <a class="dropdown-item" href="shield.html">Privacy Shield</a>
@@ -59,29 +286,48 @@
                </ul>
             </div>
          </nav>
-         &nbsp;
       </div>
-      <div class="jumbotron" style="background-color:#6daae0">
-         <div class="container" align="center">
-            <h1>
-               <em class="far fa-frown-open fa-3x"></em>
-            </h1>
-            <br>
-            <br>
-            <p>Precious, oh my precious! <br>
-               <br>Unfortunately I am not able to find the page your looking for. Till I find that one, let me re-direct you to the home page.
+
+      <div class="error-container">
+         <div class="error-wrapper">
+            <div class="ascii-art">
+<span class="magnify-glass">      .---.
+    /     \
+   |  ◉    |
+   |    ◉  |
+    \     /
+     '---'</span>
+        \
+         \
+          O
+          |
+         /|\
+        / | \
+</div>
+            <div class="error-content">
+               <div class="error-code">404</div>
+            <div class="error-icon">
+               <i class="far fa-compass"></i>
+            </div>
+            <h1 class="error-title">Oops! Page Not Found</h1>
+            <p class="error-message">
+               The page you're looking for seems to have wandered off into the digital void.
+               Don't worry, even the best explorers lose their way sometimes.
             </p>
+            <div class="error-actions">
+               <a href="https://xposedornot.com" class="btn-home">
+                  <i class="fas fa-home"></i>&nbsp; Back to Home
+               </a>
+               <a href="https://blog.xposedornot.com/" class="btn-blog">
+                  <i class="fas fa-book-open"></i>&nbsp; Visit Blog
+               </a>
+            </div>
+            <div class="redirect-notice">
+               <i class="fas fa-sync-alt"></i>
+               <span>Redirecting to homepage in 30 seconds...</span>
+            </div>
+            </div>
          </div>
-      </div>
-      <div class="container" align="center">
-         <h3>
-            <em class="fa fa-spinner fa-pulse fa-3x fa-fw"></em>
-            <span class="sr-only">Loading...</span>
-         </h3>
-         <button onclick="window.location.href='https://xposedornot.com'" class="btn btn-orange btn-lg">Home</button>
-         <button onclick="window.location.href='https://blog.xposedornot.com/'" class="btn btn-primary btn-lg">Blog</button>
-         </span>
-      </div>
       </div>
 
       <div class="footer">
@@ -121,11 +367,16 @@
                   </a>
                </div>
             </div>
+
+            <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+               <input type="checkbox" class="custom-control-input" id="darkSwitch">
+               <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+            </div>
          </div>
       </div>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
       <script src="static/scripts/common.js"></script>
    </body>
