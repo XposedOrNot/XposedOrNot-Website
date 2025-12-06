@@ -953,10 +953,11 @@
          <div class="container alert alert-danger" role="alert" id="f1" hidden="false" align="center">
             <h3> Please complete the <strong>challenge</strong> and then re-try again ! </h3>
          </div>
+      </div>
+   </div>
 
-         <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+   <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
          <script src="/static/scripts/domain.js"></script>
-         <script src="/static/scripts/common.js"></script>
          <script>
             var clipboard = new ClipboardJS('.copy-btn');
 
@@ -1056,20 +1057,134 @@
                });
             });
          </script>
-         <div class="container text-center" style="font-family:Poppins">
-            <footer>
-               <aside>
-                  <hr>
-                  <p>
-                     Need assistance? Email me at deva[@]xposedornot.com or schedule a direct chat with me here.
-                     <br><br>
-                  </p>
-                  <hr>
-               </aside>
+         <style>
+            .footer { padding: 40px 0 30px; background: #f8f9fa; border-top: 1px solid #ebedef; margin-top: 40px; width: 100%; }
+            .footer p { color: #3a4b5e; }
+            .footer-columns { display: flex; justify-content: space-between; gap: 60px; text-align: left; padding: 0 40px; }
+            .footer-group { flex: 1; min-width: 0; }
+            .footer-group h6 { color: #2c3e50 !important; font-size: 0.95em !important; margin-bottom: 15px !important; font-weight: 700 !important; text-transform: uppercase; letter-spacing: 0.8px; }
+            .footer-group a.footer-link { display: block; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; transition: all 0.3s ease; color: #3a4b5e; text-decoration: none; }
+            .footer-group a.footer-link:hover { background-color: rgba(63, 113, 243, 0.15); padding-left: 14px; color: #3f71f3 !important; }
+            @media (max-width: 768px) { .footer-columns { flex-direction: column; text-align: center; gap: 30px; padding: 0 20px; } }
+            /* Dark mode styles */
+            [data-theme="dark"] .footer { background: #1a1a2e; border-top-color: #2d2d44; }
+            [data-theme="dark"] .footer p { color: #9fc0e0; }
+            [data-theme="dark"] .footer-group h6 { color: #ffffff !important; }
+            [data-theme="dark"] .footer-group a.footer-link { color: #9fc0e0; }
+            [data-theme="dark"] .footer-group a.footer-link:hover { background-color: rgba(63, 113, 243, 0.2); color: #6daae0 !important; }
 
-            </footer>
+            /* Dark mode for verification containers */
+            [data-theme="dark"] #div_dns,
+            [data-theme="dark"] #div_html,
+            [data-theme="dark"] #div_meta,
+            [data-theme="dark"] #div_email {
+               background: #1e2a3a !important;
+               border-color: #3d5a80 !important;
+               color: #e0e0e0 !important;
+            }
+            [data-theme="dark"] .verification-info { background-color: rgba(30, 42, 58, 0.9) !important; }
+            [data-theme="dark"] .verification-info h5 { color: #ffffff !important; }
+            [data-theme="dark"] #div_dns .alert-warning,
+            [data-theme="dark"] #div_html .alert-info,
+            [data-theme="dark"] #div_html .alert-success,
+            [data-theme="dark"] #div_email .alert-info {
+               background-color: rgba(40, 55, 75, 0.8) !important;
+               border-color: #3d5a80 !important;
+               color: #e0e0e0 !important;
+            }
+            [data-theme="dark"] #div_dns a,
+            [data-theme="dark"] #div_html a,
+            [data-theme="dark"] #div_email a { color: #6daae0 !important; }
+            [data-theme="dark"] #div_dns .form-control,
+            [data-theme="dark"] #div_html .form-control,
+            [data-theme="dark"] #div_meta .form-control,
+            [data-theme="dark"] #div_email .form-control {
+               background-color: #2d3e50 !important;
+               border-color: #3d5a80 !important;
+               color: #e0e0e0 !important;
+            }
+            [data-theme="dark"] #div_dns .form-control::placeholder,
+            [data-theme="dark"] #div_html .form-control::placeholder,
+            [data-theme="dark"] #div_email .form-control::placeholder { color: #8899aa !important; }
+            [data-theme="dark"] #div_dns label,
+            [data-theme="dark"] #div_html label,
+            [data-theme="dark"] #div_email label { color: #e0e0e0 !important; }
+            [data-theme="dark"] #div_dns code,
+            [data-theme="dark"] #div_html code { background-color: #2d3e50; color: #ff9f9f; }
+            [data-theme="dark"] .btn-outline-primary { border-color: #6daae0 !important; color: #6daae0 !important; }
+            [data-theme="dark"] .btn-outline-primary:hover { background-color: #6daae0 !important; color: #1a1a2e !important; }
+
+            /* Dark mode for initial verification container */
+            [data-theme="dark"] #div_input .alert-primary {
+               background: #1e2a3a !important;
+               border-color: #3d5a80 !important;
+               color: #e0e0e0 !important;
+            }
+            [data-theme="dark"] #div_input .alert-primary h4 { color: #ffffff !important; }
+            [data-theme="dark"] #div_input .alert-primary p { color: #c0c0c0 !important; }
+            [data-theme="dark"] #div_input .verification-steps ol > li { color: #6daae0 !important; }
+            [data-theme="dark"] #div_input .verification-steps ul li { color: #c0c0c0 !important; }
+            [data-theme="dark"] #div_input .verification-steps strong { color: #ffffff !important; }
+            [data-theme="dark"] #div_input .guide-link { color: #6daae0 !important; }
+            [data-theme="dark"] .domain-input {
+               background-color: #2d3e50 !important;
+               border-color: #3d5a80 !important;
+               color: #e0e0e0 !important;
+            }
+            [data-theme="dark"] .domain-input::placeholder { color: #8899aa !important; }
+            [data-theme="dark"] .verification-select {
+               background-color: #2d3e50 !important;
+               border-color: #3d5a80 !important;
+               color: #e0e0e0 !important;
+            }
+            [data-theme="dark"] #s1 label { color: #9fc0e0 !important; }
+         </style>
+         <div class="footer">
+            <div class="container">
+               <div style="text-align:center;margin-bottom:30px;">
+                  <p>Join us in shaping this fully open source site! Contributions welcome ❤️ at our <a
+                        href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+               </div>
+
+               <div class="footer-columns">
+                  <div class="footer-group">
+                     <h6>Legal</h6>
+                     <a href="privacy" class="footer-link">Privacy Policy</a>
+                     <a href="terms" class="footer-link">Terms</a>
+                  </div>
+                  <div class="footer-group">
+                     <h6>Community</h6>
+                     <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+                     <a href="our-repository" class="footer-link">Our Repository</a>
+                  </div>
+                  <div class="footer-group">
+                     <h6>Trust</h6>
+                     <a href="transparency" class="footer-link">Transparency</a>
+                     <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
+                     <a href="https://statuspage.freshping.io/66216-XposedOrNot" target="_blank" rel="noopener" class="footer-link">Status</a>
+                  </div>
+                  <div class="footer-group">
+                     <h6>Follow Us</h6>
+                     <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                        <i class="fab fa-twitter"></i> Twitter
+                     </a>
+                     <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                        <i class="fab fa-facebook"></i> Facebook
+                     </a>
+                     <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                        <i class="fab fa-mastodon"></i> Mastodon
+                     </a>
+                  </div>
+               </div>
+
+               <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+                  <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                  <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+               </div>
+            </div>
          </div>
 
+   <script src="/static/scripts/common.js"></script>
 </body>
 
 </html>
