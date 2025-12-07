@@ -82,16 +82,32 @@
             flex-wrap: wrap;
         }
 
-        #search-input,
-        #timeline-dropdown {
+        #search-input {
             border-radius: var(--border-radius);
-            padding: 0.75rem 1.25rem;
+            padding: 0.875rem 1rem;
             border: 1px solid #e2e8f0;
             background-color: #f8fafc;
-            font-size: 1rem;
+            font-size: 0.875rem;
+            line-height: 1.4;
             transition: var(--transition);
             flex: 1;
             min-width: 200px;
+            min-height: 48px;
+        }
+
+        #timeline-dropdown {
+            border-radius: var(--border-radius);
+            padding: 0.875rem 1rem;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            transition: var(--transition);
+            flex: 0 0 auto;
+            width: auto;
+            min-width: 160px;
+            min-height: 48px;
+            cursor: pointer;
         }
 
         #search-input:focus,
@@ -123,7 +139,7 @@
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            padding-right: 100px;
+            padding-right: 220px;
         }
 
         .news-date {
@@ -136,6 +152,12 @@
             font-size: 0.875rem;
             color: var(--text-secondary);
             font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .news-date .relative-time {
+            color: var(--primary-color);
+            font-weight: 600;
         }
 
         .news-summary {
@@ -419,10 +441,76 @@
                 );
             }
 
+            function filterByTimeline(data) {
+                const timeline = $('#timeline-dropdown').val();
+                if (timeline === 'all') return data;
+
+                const now = new Date();
+                let cutoffDate;
+
+                switch (timeline) {
+                    case 'day':
+                        cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+                        break;
+                    case 'week':
+                        cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                        break;
+                    case 'month':
+                        cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                        break;
+                    case 'quarter':
+                        cutoffDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+                        break;
+                    case 'year':
+                        cutoffDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+                        break;
+                    default:
+                        return data;
+                }
+
+                return data.filter(news => new Date(news.date) >= cutoffDate);
+            }
+
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const day = String(date.getDate()).padStart(2, '0');
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+                return `${day}-${month}-${year}`;
+            }
+
+            function getRelativeTime(dateString) {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffSecs = Math.floor(diffMs / 1000);
+                const diffMins = Math.floor(diffSecs / 60);
+                const diffHours = Math.floor(diffMins / 60);
+                const diffDays = Math.floor(diffHours / 24);
+                const diffWeeks = Math.floor(diffDays / 7);
+                const diffMonths = Math.floor(diffDays / 30);
+                const diffYears = Math.floor(diffDays / 365);
+
+                if (diffSecs < 60) return 'Just now';
+                if (diffMins < 60) return diffMins === 1 ? '1 minute ago' : `${diffMins} minutes ago`;
+                if (diffHours < 24) return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+                if (diffDays < 7) return diffDays === 1 ? 'Yesterday' : `${diffDays} days ago`;
+                if (diffWeeks < 4) return diffWeeks === 1 ? '1 week ago' : `${diffWeeks} weeks ago`;
+                if (diffMonths < 12) return diffMonths === 1 ? '1 month ago' : `${diffMonths} months ago`;
+                return diffYears === 1 ? '1 year ago' : `${diffYears} years ago`;
+            }
+
             function displayPaginatedNews() {
                 const searchText = $('#search-input').val();
-                const filteredData = searchText ? filterNews(searchText) : sortedData;
-                const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+                let filteredData = filterByTimeline(sortedData);
+                if (searchText) {
+                    filteredData = filteredData.filter(news =>
+                        news.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                        news.summary.toLowerCase().includes(searchText.toLowerCase())
+                    );
+                }
+                const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
 
                 updatePagination(totalPages);
 
@@ -437,13 +525,15 @@
                     return;
                 }
                 newsItems.forEach(news => {
+                    const formattedDate = formatDate(news.date);
+                    const relativeTime = getRelativeTime(news.date);
                     $('#news-container').append(`
                         <div class="news-item">
-                            <div class="news-date">${news.date}</div>
+                            <div class="news-date">${formattedDate} <span class="relative-time">· ${relativeTime}</span></div>
                             <h5>${news.title}</h5>
                             <p class="news-summary">${news.summary}</p>
                             <a href="${news.url}" target="_blank" class="news-link">
-                                Read Full Article 
+                                Read Full Article
                                 <i class="fas fa-external-link-alt"></i>
                             </a>
                         </div>
