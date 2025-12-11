@@ -335,6 +335,18 @@
          padding-left: 0.75rem;
       }
 
+      .toc-link.active {
+         background: rgba(13, 110, 253, 0.15);
+         color: var(--primary-color);
+         font-weight: 600;
+         border-left: 3px solid var(--primary-color);
+         padding-left: calc(0.5rem - 3px);
+      }
+
+      [data-theme="dark"] .toc-link.active {
+         background: rgba(13, 110, 253, 0.25);
+      }
+
       .toc-link i {
          margin-right: 0.5rem;
          width: 20px;
@@ -1515,6 +1527,34 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                behavior: 'smooth'
             });
          });
+
+         // TOC Scroll Spy functionality
+         const tocLinks = document.querySelectorAll('#api-toc .toc-link');
+         const sections = document.querySelectorAll('[id^="endpoint-"]');
+
+         function updateActiveLink() {
+            let currentSection = '';
+            const scrollPosition = window.scrollY + 150; // Offset for better detection
+
+            sections.forEach(section => {
+               const sectionTop = section.offsetTop;
+               const sectionHeight = section.offsetHeight || 200;
+
+               if (scrollPosition >= sectionTop) {
+                  currentSection = section.getAttribute('id');
+               }
+            });
+
+            tocLinks.forEach(link => {
+               link.classList.remove('active');
+               if (link.getAttribute('href') === '#' + currentSection) {
+                  link.classList.add('active');
+               }
+            });
+         }
+
+         window.addEventListener('scroll', updateActiveLink);
+         window.addEventListener('load', updateActiveLink);
       </script>
 </body>
 
