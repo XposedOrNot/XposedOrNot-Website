@@ -646,15 +646,76 @@
                   class="button-link"><i class="fas fa-code"></i> API Playground</a></h3>
          </div>
       </div>
+
+      <!-- SDK Section - moved outside centered div -->
+      <div id="sdk-section" style="margin-top: 3rem; margin-bottom: 2rem; position: relative; z-index: 100;">
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">Official SDKs</h2>
+            <p style="text-align: center; color: var(--secondary-color); margin-bottom: 2rem;">
+               Use our official libraries to integrate XposedOrNot into your applications with just a few lines of code.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+               <!-- NPM SDK -->
+               <div class="panel" style="margin-bottom: 0;">
+                  <div class="panel-heading" style="display: flex; align-items: center; gap: 0.75rem;">
+                     <i class="fab fa-npm" style="font-size: 1.5em; color: #CB3837;"></i>
+                     Node.js / JavaScript
+                  </div>
+                  <div class="panel-body">
+                     <p style="margin-bottom: 1rem;"><strong>Install via npm:</strong></p>
+                     <pre style="margin-bottom: 1.5rem;">npm install xposedornot</pre>
+                     <p style="margin-bottom: 1rem;"><strong>Quick Example:</strong></p>
+                     <pre>const { XposedOrNot } = require('xposedornot');
+
+const xon = new XposedOrNot();
+
+// Check email for breaches
+const result = await xon.checkEmail('test@example.com');
+console.log(result);</pre>
+                     <p style="margin-top: 1.5rem;">
+                        <a href="https://www.npmjs.com/package/xposedornot" target="_blank" rel="noopener" class="button-link" style="padding: 10px 20px; font-size: 0.9em;">
+                           <i class="fas fa-external-link-alt"></i> View on npmjs.com
+                        </a>
+                     </p>
+                  </div>
+               </div>
+               <!-- PyPI SDK -->
+               <div class="panel" style="margin-bottom: 0;">
+                  <div class="panel-heading" style="display: flex; align-items: center; gap: 0.75rem;">
+                     <i class="fab fa-python" style="font-size: 1.5em; color: #3776AB;"></i>
+                     Python
+                  </div>
+                  <div class="panel-body">
+                     <p style="margin-bottom: 1rem;"><strong>Install via pip:</strong></p>
+                     <pre style="margin-bottom: 1.5rem;">pip install xposedornot</pre>
+                     <p style="margin-bottom: 1rem;"><strong>Quick Example:</strong></p>
+                     <pre>from xposedornot import XposedOrNot
+
+xon = XposedOrNot()
+
+# Check email for breaches
+result = xon.check_email('test@example.com')
+print(result)</pre>
+                     <p style="margin-top: 1.5rem;">
+                        <a href="https://pypi.org/project/xposedornot/" target="_blank" rel="noopener" class="button-link" style="padding: 10px 20px; font-size: 0.9em;">
+                           <i class="fas fa-external-link-alt"></i> View on PyPI
+                        </a>
+                     </p>
+                  </div>
+               </div>
+            </div>
+      </div>
       <br>
 
       <!-- Table of Contents + Content Layout -->
       <div style="display: flex; gap: 3rem; align-items: flex-start; max-width: 100%;">
          <!-- Sticky TOC Sidebar -->
-         <nav id="api-toc" style="position: sticky; top: 2rem; width: 280px; flex-shrink: 0;">
+         <nav id="api-toc" style="position: sticky; top: 2rem; width: 280px; flex-shrink: 0; z-index: 1;">
             <div style="background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
                <h4 style="margin-top: 0; margin-bottom: 1rem; color: var(--primary-color);">Quick Navigation</h4>
                <ul style="list-style: none; padding: 0; margin: 0;">
+                  <li style="margin-bottom: 0.75rem;">
+                     <a href="#sdk-section" class="toc-link"><i class="fas fa-cube"></i> Official SDKs</a>
+                  </li>
                   <li style="margin-bottom: 0.75rem;">
                      <a href="#endpoint-1" class="toc-link"><i class="fas fa-envelope"></i> Email Breach Check</a>
                   </li>
@@ -1530,7 +1591,7 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
 
          // TOC Scroll Spy functionality
          const tocLinks = document.querySelectorAll('#api-toc .toc-link');
-         const sections = document.querySelectorAll('[id^="endpoint-"]');
+         const sections = document.querySelectorAll('[id^="endpoint-"], #sdk-section');
 
          function updateActiveLink() {
             let currentSection = '';
