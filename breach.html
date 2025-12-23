@@ -375,41 +375,195 @@
         }
 
         .action-section {
-            background: linear-gradient(135deg, #3f71f3, #4284fb);
+            background: linear-gradient(135deg, #f5f8ff 0%, #e8f0fe 100%);
+            border: 1px solid #c5d7fc;
             border-radius: 15px;
-            padding: 35px;
-            color: #fff;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        [data-theme="dark"] .action-section {
+            background: linear-gradient(135deg, #181b2d 0%, #1e2235 100%);
+            border-color: rgba(63, 113, 243, 0.2);
+        }
+
+        .action-header {
             text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .action-icon-wrapper {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #3f71f3, #4284fb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .action-icon-wrapper i {
+            font-size: 30px;
+            color: #fff;
         }
 
         .action-section h3 {
             font-size: 28px;
-            margin-bottom: 20px;
+            font-weight: 600;
+            color: #3a4b5e;
+            margin-bottom: 10px;
         }
 
-        .action-list {
-            text-align: left;
-            max-width: 600px;
-            margin: 20px auto;
+        [data-theme="dark"] .action-section h3 {
+            color: #9fc0e0;
         }
 
-        .action-item {
-            display: flex;
-            align-items: start;
-            margin-bottom: 15px;
+        .action-subtitle {
             font-size: 16px;
+            color: #666;
+            margin: 0;
         }
 
-        .action-item i {
-            color: #fff;
-            margin-right: 12px;
-            margin-top: 3px;
+        [data-theme="dark"] .action-subtitle {
+            color: #9fc0e0;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .action-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #ccc;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] .action-card {
+            background: #1e2235;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-card.urgent {
+            border-left-color: #dc3545;
+        }
+
+        .action-card.high {
+            border-left-color: #fd7e14;
+        }
+
+        .action-card.medium {
+            border-left-color: #ffc107;
+        }
+
+        .action-card.info {
+            border-left-color: #17a2b8;
+        }
+
+        .action-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .action-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
+            color: #fff;
+        }
+
+        .action-card.urgent .action-card-icon {
+            background: #dc3545;
+        }
+
+        .action-card.high .action-card-icon {
+            background: #fd7e14;
+        }
+
+        .action-card.medium .action-card-icon {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .action-card.info .action-card-icon {
+            background: #17a2b8;
+        }
+
+        .action-priority {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .action-card.urgent .action-priority {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .action-card.high .action-priority {
+            background: rgba(253, 126, 20, 0.1);
+            color: #fd7e14;
+        }
+
+        .action-card.medium .action-priority {
+            background: rgba(255, 193, 7, 0.15);
+            color: #d39e00;
+        }
+
+        .action-card.info .action-priority {
+            background: rgba(23, 162, 184, 0.1);
+            color: #17a2b8;
+        }
+
+        .action-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #3a4b5e;
+            margin-bottom: 10px;
+        }
+
+        [data-theme="dark"] .action-card h4 {
+            color: #9fc0e0;
+        }
+
+        .action-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+            margin: 0;
+        }
+
+        [data-theme="dark"] .action-card p {
+            color: #9fc0e0;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 30px;
         }
 
         .btn-primary-custom {
-            background: #fff;
-            color: #3f71f3;
+            background: linear-gradient(135deg, #3f71f3, #4284fb);
+            color: #fff;
             padding: 15px 40px;
             border-radius: 50px;
             font-size: 18px;
@@ -423,19 +577,19 @@
 
         .btn-primary-custom:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 20px rgba(63, 113, 243, 0.4);
             text-decoration: none;
-            color: #3f71f3;
+            color: #fff;
         }
 
         .btn-secondary-custom {
             background: transparent;
-            color: #fff;
+            color: #3f71f3;
             padding: 15px 40px;
             border-radius: 50px;
             font-size: 18px;
             font-weight: 600;
-            border: 2px solid #fff;
+            border: 2px solid #3f71f3;
             margin: 10px;
             text-decoration: none;
             display: inline-block;
@@ -443,9 +597,19 @@
         }
 
         .btn-secondary-custom:hover {
-            background: #fff;
-            color: #3f71f3;
+            background: #3f71f3;
+            color: #fff;
             text-decoration: none;
+        }
+
+        [data-theme="dark"] .btn-secondary-custom {
+            color: #4284fb;
+            border-color: #4284fb;
+        }
+
+        [data-theme="dark"] .btn-secondary-custom:hover {
+            background: #4284fb;
+            color: #fff;
         }
 
         .reference-link {
@@ -787,30 +951,56 @@
 
             <!-- Action Section -->
             <div class="action-section">
-                <h3>What Should You Do?</h3>
-                <div class="action-list">
-                    <div class="action-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Check if your email was exposed using our search tool</span>
+                <div class="action-header">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-user-shield"></i>
                     </div>
-                    <div class="action-item">
-                        <i class="fas fa-key"></i>
-                        <span>Change your password immediately if you have an account</span>
+                    <h3>What Should You Do?</h3>
+                    <p class="action-subtitle">Follow these recommended steps to protect yourself after this breach</p>
+                </div>
+                <div class="action-grid">
+                    <div class="action-card urgent">
+                        <div class="action-card-header">
+                            <div class="action-card-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <span class="action-priority">Urgent</span>
+                        </div>
+                        <h4>Change Your Passwords</h4>
+                        <p>Immediately update passwords for accounts associated with this breach. Use strong, unique passwords with at least 12 characters including numbers and symbols.</p>
                     </div>
-                    <div class="action-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Enable two-factor authentication (2FA) on all important accounts</span>
+                    <div class="action-card high">
+                        <div class="action-card-header">
+                            <div class="action-card-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <span class="action-priority">High Priority</span>
+                        </div>
+                        <h4>Enable Two-Factor Authentication</h4>
+                        <p>Add an extra layer of security by enabling 2FA on all supported accounts. Use authenticator apps like Google Authenticator or Authy for better protection.</p>
                     </div>
-                    <div class="action-item">
-                        <i class="fas fa-eye"></i>
-                        <span>Monitor your accounts for suspicious activity</span>
+                    <div class="action-card medium">
+                        <div class="action-card-header">
+                            <div class="action-card-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <span class="action-priority">Recommended</span>
+                        </div>
+                        <h4>Monitor Your Accounts</h4>
+                        <p>Keep a close watch on your accounts for unauthorized access or suspicious activity. Set up login alerts and review account activity regularly.</p>
                     </div>
-                    <div class="action-item">
-                        <i class="fas fa-lock"></i>
-                        <span>Never reuse passwords across different websites</span>
+                    <div class="action-card info">
+                        <div class="action-card-header">
+                            <div class="action-card-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <span class="action-priority">Best Practice</span>
+                        </div>
+                        <h4>Use a Password Manager</h4>
+                        <p>Never reuse passwords across services. Consider using a reputable password manager to generate and store unique passwords for each account securely.</p>
                     </div>
                 </div>
-                <div style="margin-top: 30px;">
+                <div class="action-buttons">
                     <a href="/" class="btn-primary-custom">
                         <i class="fas fa-search"></i> Check Your Email
                     </a>
