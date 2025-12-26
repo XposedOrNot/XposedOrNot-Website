@@ -27,7 +27,7 @@ try {
     email = decodeURIComponent($.urlParam('email'));
     token = decodeURIComponent($.urlParam('token'));
 } catch (e) {
-    window.location.replace("http://xposedornot.com");
+    window.location.replace("https://xposedornot.com");
 }
 
 s = '<div align="center" class="alert alert-primary"><strong>Overall Data Breaches Summary For Email: ' + email + '</strong></div></p>'
@@ -54,7 +54,7 @@ var emailVerificationPromise = $.ajax(emailVerificationUrl)
 
         if (status === "Fail") {
 
-            window.location.replace("http://xposedornot.com");
+            window.location.replace("https://xposedornot.com");
         } else {
             const jsonData = response;
             const dataArr = [];
