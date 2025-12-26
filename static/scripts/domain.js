@@ -1,3 +1,13 @@
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function IsValidDomain() {
     var domainName = $('#eventName').val();
     if (domainName) {
@@ -108,7 +118,7 @@ $("#strat").change(function () {
         $('#edhu_html_filename').val($('#hid1').val() + '.html');
         var filename = $('#edhu_html_filename').val();
         var url = 'https://' + domainName + '/' + filename;
-        $('#html_text').html("Verification file should be reachable at: " + url + "<br>");
+        $('#html_text').html("Verification file should be reachable at: " + escapeHtml(url) + "<br>");
         $('#edhu_html_filecontent').val('xon_verification=' + $('#hid1').val())
     }
 

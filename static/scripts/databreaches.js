@@ -1,3 +1,13 @@
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 const data = [{
     cat: 2023,
     name: 'D3',
@@ -147,7 +157,7 @@ function drawGraph(data) {
             div.transition()
                 .duration(0)
                 .style("opacity", 190);
-            div.html("<b>" + d.name + "</b><br><img width=50px src=" + d.icon + "></img><br><br>" + d.desc + "<br><br>").style("left", (d3.event.pageX) + "px")
+            div.html("<b>" + escapeHtml(d.name) + "</b><br><img width=50px src=\"" + escapeHtml(d.icon) + "\"><br><br>" + escapeHtml(d.desc) + "<br><br>").style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         })
         .on("mousemove", function(d) {
@@ -174,7 +184,7 @@ function drawGraph(data) {
             div.transition()
                 .duration(0)
                 .style("opacity", 190);
-            div.html("<h3>" + d.name + "</h3><br><img width=50px src=" + d.icon + "></img><br><br>" + d.desc + "<br><br>").style("left", (d3.event.pageX) + "px")
+            div.html("<h3>" + escapeHtml(d.name) + "</h3><br><img width=50px src=\"" + escapeHtml(d.icon) + "\"><br><br>" + escapeHtml(d.desc) + "<br><br>").style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         })
         .on("mousemove", function(d) {

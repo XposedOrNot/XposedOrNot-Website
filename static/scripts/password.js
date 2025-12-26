@@ -1,3 +1,13 @@
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
@@ -83,13 +93,13 @@ $(document).ready(function () {
         $("#succ").show();
         $("#spins").show();
         $("#alert_").show();
-        $('#data_email').html(email);
+        $('#data_email').text(email);
         $('#data_breach').html('No breaches found !');
 
         if (!email || !domain) {
             document.getElementById("hhead").className = "modal-header-danger";
             document.getElementById("dismiss").className = "btn btn-danger";
-            $('#data_email').html(email);
+            $('#data_email').text(email);
             $('#data_breach').html('Not a valid email to check');
             $("#succ").hide();
             $("#spins").hide();
@@ -138,7 +148,7 @@ $(document).ready(function () {
                     $("#mbody").show();
                     $("#spins").hide();
                     $("#succ").html("You are currently being throttled. Please slow down and try again !")
-                    $('#data_email').html(email);
+                    $('#data_email').text(email);
                 }
             })
             .fail(function (response) {
@@ -146,7 +156,7 @@ $(document).ready(function () {
                     $("#mbody").show();
                     $("#spins").hide();
                     $("#succ").html("You are currently being throttled. Please slow down and try again !")
-                    $('#data_email').html(email);
+                    $('#data_email').text(email);
                 } else if (response.status === 502 || response.status === 504) {
                     document.getElementById("hhead").className = "modal-header-danger";
                     $("#mbody").show();
@@ -155,12 +165,12 @@ $(document).ready(function () {
                     $("#spins").hide();
                     $("#succ").hide();
                     $("#info").html("Embarassing ! Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time.<br><br>Regret the inconvenience caused !")
-                    $('#data_email').html(email);
+                    $('#data_email').text(email);
                 } else {
                     $("#mbody").show();
                     $("#spins").hide();
                     $("#warn").hide();
-                    $('#data_email').html(email);
+                    $('#data_email').text(email);
                     $('#data_breach').html('No breaches found !');
                     $("#ssvisible").html('<h2>Search results for you</h2>');
                 }

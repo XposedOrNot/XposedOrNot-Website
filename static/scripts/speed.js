@@ -1,3 +1,13 @@
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 window.onload = function () {
     setTimeout(function () {
         var t = performance.timing;
@@ -39,9 +49,9 @@ $(document).ready(function () {
                 $('#succ').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">No breaches found for this email</span>')
             } else {
                 nn = $('#succ').html()
-                $('#succ').html(nn + "<br>[ * ] Checking Initiated for email <strong>" + str + " </strong>")
+                $('#succ').html(nn + "<br>[ * ] Checking Initiated for email <strong>" + escapeHtml(str) + " </strong>")
                 nn = $('#succ').html()
-                $('#succ').html(nn + "<br>[ * ] Identified data breaches <strong>: " + l + " </strong>")
+                $('#succ').html(nn + "<br>[ * ] Identified data breaches <strong>: " + escapeHtml(String(l)) + " </strong>")
                 nn = $('#succ').html()
                 $('#succ').html(nn + "<br>[ * ] Search completed at <strong>: " + time1 + " </strong>")
                 nn = $('#succ').html()
@@ -58,7 +68,7 @@ $(document).ready(function () {
             } else if (n.status === 502) {
                 $("#succ").html("<h2>Oops unexpected error...</h2>");
             } else {
-                $('#data_email').html('<b>Searched Email </b> <span class="badge" style="float:right">' + str + '</span>')
+                $('#data_email').html('<b>Searched Email </b> <span class="badge" style="float:right">' + escapeHtml(str) + '</span>')
             }
         })
 

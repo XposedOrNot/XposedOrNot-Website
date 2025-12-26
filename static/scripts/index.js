@@ -215,11 +215,11 @@ $(document).ready(function () {
 
 
 function updateEmailBadge(email) {
-    $('#data_email').html('<b>Searched Email </b> <span class="badge" style="float:right">' + email + '</span>');
+    $('#data_email').html('<b>Searched Email </b> <span class="badge" style="float:right">' + escapeHtml(email) + '</span>');
 }
 
 function updateBreachBadge(text) {
-    $('#data_breach').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">' + text + '</span>');
+    $('#data_breach').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">' + escapeHtml(text) + '</span>');
 }
 
 
@@ -334,7 +334,7 @@ function processSearchResponse(response, email) {
         $('#data_email')
             .removeClass('alert-primary alert-danger')
             .addClass('alert-success')
-            .html('<b>Searched Email </b> <span class="badge bg-success text-white" style="float:right">' + email + '</span>');
+            .html('<b>Searched Email </b> <span class="badge bg-success text-white" style="float:right">' + escapeHtml(email) + '</span>');
 
         $('#data_breach')
             .removeClass('alert-primary alert-danger')
@@ -369,7 +369,7 @@ function processSearchResponse(response, email) {
         $('#data_email')
             .removeClass('alert-primary alert-success')
             .addClass('alert-danger')
-            .html('<b>Searched Email </b> <span class="badge bg-danger text-white" style="float:right">' + email + '</span>');
+            .html('<b>Searched Email </b> <span class="badge bg-danger text-white" style="float:right">' + escapeHtml(email) + '</span>');
 
         let warningMessage = 'Below shown are the data breaches in which this email was exposed:   <br><br>';
         $("#detailedReport").show();
@@ -380,7 +380,7 @@ function processSearchResponse(response, email) {
 
         const breaches = breachSummary.split(";");
         for (let i = 0; i < breaches.length; i++) {
-            warningMessage += '<a rel="noopener" target="_blank" title="Click here for more details..." href=breach.html#' + breaches[i] + '>' + breaches[i] + '</a>';
+            warningMessage += '<a rel="noopener" target="_blank" title="Click here for more details..." href="breach.html#' + encodeURIComponent(breaches[i]) + '">' + escapeHtml(breaches[i]) + '</a>';
             if (i !== breaches.length - 1) {
                 warningMessage += ', ';
             }
@@ -397,7 +397,7 @@ function processSearchResponse(response, email) {
         warningMessage += '<br><br>' + 'Searched email has been exposed in public pastes shown below <br>';
         const pastes = jsonResponse.PastesSummary.tweet_id.split(";");
         for (let i = 0; i < pastes.length; i++) {
-            warningMessage += '<a rel="noopener" target="_blank" title="Click here to open" href=https://pastebin.com/' + pastes[i] + '>' + pastes[i] + '</a>';
+            warningMessage += '<a rel="noopener" target="_blank" title="Click here to open" href="https://pastebin.com/' + encodeURIComponent(pastes[i]) + '">' + escapeHtml(pastes[i]) + '</a>';
             if (i !== pastes.length - 1) {
                 warningMessage += ' ; ';
             }
@@ -413,7 +413,7 @@ function processSearchError(error, email) {
         $("#mbody").show();
         $("#spins").hide();
         $("#succ").html("You are currently being throttled. Please slow down and try again !");
-        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${email}</span>`);
+        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${escapeHtml(email)}</span>`);
     } else if (error.status === 502) {
         $("#hhead").addClass("modal-header-primary");
         $("#dismiss").addClass("btn btn-primary");
@@ -422,7 +422,7 @@ function processSearchError(error, email) {
         $("#hhead").addClass("modal-header-danger");
         $("#ssvisible").html("<h2>Oops unexpected error...</h2>");
         $("#info").html("Embarassing and looks like something is not right at server end. I have notified the right person to check on this. Please try again after some time.");
-        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${email}</span>`);
+        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${escapeHtml(email)}</span>`);
     } else {
         $("#hhead").attr("class", "modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
@@ -430,7 +430,7 @@ function processSearchError(error, email) {
         $("#mbody").show();
         $("#ssvisible").html("<h2>Search results for you</h2>");
         $("#spins, #warn").hide();
-        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${email}</span>`);
+        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${escapeHtml(email)}</span>`);
         $('#data_breach').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">No breaches found!</span>');
     }
 }

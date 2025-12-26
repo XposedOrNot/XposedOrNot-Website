@@ -1,3 +1,13 @@
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 $.LoadingOverlaySetup({
     background: "rgba(0, 0, 0, 0.5)",
     image: "/static/images/shield-alt.svg",
@@ -123,7 +133,7 @@ try {
     window.location.replace("https://xposedornot.com");
 }
 
-const emailHeader = (category) => `<div align="center" class="alert alert-primary"><strong>${category} For Email: ${email}</strong></div></p>`;
+const emailHeader = (category) => `<div align="center" class="alert alert-primary"><strong>${escapeHtml(category)} For Email: ${escapeHtml(email)}</strong></div></p>`;
 
 $("#email").html(emailHeader("Data Breaches Quick Information"));
 $("#email_sensitive").html(emailHeader('<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed.">?</span>&nbsp;&nbsp; 🔥 Sensitive Data Breaches Summary'));

@@ -1,3 +1,13 @@
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
@@ -30,11 +40,11 @@ try {
     window.location.replace("https://xposedornot.com");
 }
 
-s = '<div align="center" class="alert alert-primary"><strong>Overall Data Breaches Summary For Email: ' + email + '</strong></div></p>'
+s = '<div align="center" class="alert alert-primary"><strong>Overall Data Breaches Summary For Email: ' + escapeHtml(email) + '</strong></div></p>'
 $("#email").html(s)
-s = '<div align="center" class="alert alert-danger"><strong>Sensitive Data Breaches Summary For Email: ' + email + '</strong></div></p>'
+s = '<div align="center" class="alert alert-danger"><strong>Sensitive Data Breaches Summary For Email: ' + escapeHtml(email) + '</strong></div></p>'
 $("#email_sensitive").html(s)
-s = '<div align="center" class="alert alert-primary"><strong>Exposed Pastes Summary For Email: ' + email + '</strong></div></p>'
+s = '<div align="center" class="alert alert-primary"><strong>Exposed Pastes Summary For Email: ' + escapeHtml(email) + '</strong></div></p>'
 $("#paste").html(s)
 var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_verification?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 
