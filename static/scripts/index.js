@@ -459,25 +459,67 @@ const pastesCountElement = $("#p1");
 const pastesRecordsElement = $("#p2");
 const breachesCountElement = $("#b1");
 const breachesRecordsElement = $("#b2");
+
+// Viewport-triggered counter animation
+let metricsData = null;
+let countersStarted = false;
+
+function startCounters() {
+    if (countersStarted || !metricsData) return;
+    countersStarted = true;
+
+    let pastesCount = parseInt(metricsData.Pastes_Count.replace(/,/g, ''), 10);
+    let pastesRecords = parseInt(metricsData.Pastes_Records, 10);
+    let breachesCount = parseInt(metricsData.Breaches_Count, 10);
+    let breachesRecords = parseInt(metricsData.Breaches_Records, 10);
+
+    runCounter(pastesCountElement, pastesCount, 10000, function () {
+        $(pastesCountElement).text(pastesCount.toLocaleString());
+    });
+    runCounter(pastesRecordsElement, pastesRecords, 10000, function () {
+        $(pastesRecordsElement).text(pastesRecords.toLocaleString());
+    });
+    runCounter(breachesCountElement, breachesCount, 10000, function () {
+        $(breachesCountElement).text(breachesCount.toLocaleString());
+    });
+    runCounter(breachesRecordsElement, breachesRecords, 10000, function () {
+        $(breachesRecordsElement).text(breachesRecords.toLocaleString());
+    });
+}
+
+// Set up Intersection Observer for the stats section
+const statsSection = document.querySelector('.follow');
+if (statsSection) {
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.3 // trigger when 30% visible
+    };
+
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                startCounters();
+                statsObserver.disconnect(); // Stop observing once triggered
+            }
+        });
+    }, observerOptions);
+
+    statsObserver.observe(statsSection);
+}
+
+// Fetch metrics data
 $.ajax(apiUrl)
     .done(function (response) {
-        let pastesCount = parseInt(response.Pastes_Count.replace(/,/g, ''), 10);
-        let pastesRecords = parseInt(response.Pastes_Records, 10);
-        let breachesCount = parseInt(response.Breaches_Count, 10);
-        let breachesRecords = parseInt(response.Breaches_Records, 10);
-
-        runCounter(pastesCountElement, pastesCount, 10000, function () {
-            $(pastesCountElement).text(pastesCount.toLocaleString());
-        });
-        runCounter(pastesRecordsElement, pastesRecords, 10000, function () {
-            $(pastesRecordsElement).text(pastesRecords.toLocaleString());
-        });
-        runCounter(breachesCountElement, breachesCount, 10000, function () {
-            $(breachesCountElement).text(breachesCount.toLocaleString());
-        });
-        runCounter(breachesRecordsElement, breachesRecords, 10000, function () {
-            $(breachesRecordsElement).text(breachesRecords.toLocaleString());
-        });
+        metricsData = response;
+        // If section is already visible (e.g., user scrolled fast or section is in initial viewport)
+        if (statsSection) {
+            const rect = statsSection.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            if (isVisible) {
+                startCounters();
+            }
+        }
     });
 
 function runCounter(element, endValue, duration) {
