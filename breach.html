@@ -1265,8 +1265,8 @@
             // Header
             document.getElementById('breach-logo').src = breach.logo || '/static/images/xon.png';
             document.getElementById('breach-logo').alt = `${breach.breachID} logo`;
-            document.getElementById('breach-name').textContent = breach.breachID;
-            document.getElementById('breach-domain').textContent = breach.domain;
+            document.getElementById('breach-name').innerHTML = breach.breachID + (!breach.searchable ? ' <span style="font-size: 0.7em;" title="Sensitive Breach">🔥</span>' : '');
+            document.getElementById('breach-domain').innerHTML = '<i class="fas fa-globe" style="font-size: 0.8em; margin-right: 8px; opacity: 0.7;"></i>' + breach.domain;
 
             // Statistics
             document.getElementById('exposed-records').textContent = formatNumber(breach.exposedRecords);
@@ -1295,7 +1295,7 @@
             });
 
             // Details
-            document.getElementById('searchable').innerHTML = formatStatus(breach.searchable);
+            document.getElementById('searchable').innerHTML = formatStatus(breach.searchable) + (!breach.searchable ? ' <span class="badge-status badge-danger" style="margin-left: 8px;"><i class="fas fa-fire"></i> Sensitive</span>' : '');
             document.getElementById('verified').innerHTML = formatStatus(breach.verified);
             document.getElementById('sensitive').innerHTML = formatSensitiveStatus(breach.sensitive);
             document.getElementById('password-risk-detail').innerHTML = formatPasswordRisk(breach.passwordRisk);
