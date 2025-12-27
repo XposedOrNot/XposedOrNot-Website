@@ -8,6 +8,7 @@
     <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="static.hotjar.com">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta property="og:title" content="XposedOrNot: Data Breaches Repository" />
     <meta name="description"
@@ -207,6 +208,10 @@
 
         image.breach-logo {
             pointer-events: none;
+        }
+
+        .breach {
+            transition: transform 0.3s ease-out;
         }
 
         .page-title {
@@ -483,19 +488,17 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/static/scripts/other-libraries.js" defer></script>
 </head>
 
 <body>
     <div id="loadingOverlay"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(17, 24, 39, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999;">
         <div style="text-align: center;">
-            <div class="spinner"
-                style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;">
-            </div>
-            <p style="margin-top: 10px; font-weight: bold;">Loading visualization...</p>
+            <i class="fas fa-spinner fa-spin fa-3x" style="color: #3b82f6;"></i>
+            <p style="margin-top: 15px; font-weight: 600; color: #e5e7eb; font-size: 1.1rem;">Loading visualization...</p>
         </div>
     </div>
 
@@ -716,6 +719,7 @@
                 .padding(0.1);
 
             const colorPalettes = {
+                2026: ['#4CC9F0', '#4895EF', '#4361EE', '#3F37C9', '#3A0CA3'].reverse(),
                 2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
                 2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
                 2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),
@@ -732,8 +736,8 @@
                 2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),
                 2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),
                 2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),
-                2009: ['#795548', '#6D4C41', '#5D4037', '#4E342E', '#3E2723'].reverse(),
-                2008: ['#607D8B', '#546E7A', '#455A64', '#37474F', '#263238'].reverse(),
+                2009: ['#06D6A0', '#05C793', '#04B886', '#03A879', '#029A6C'].reverse(),
+                2008: ['#F72585', '#E71D7C', '#D71573', '#C70D6A', '#B70561'].reverse(),
                 2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()
             };
 
@@ -838,6 +842,23 @@
                 const isHighDensity = !isSpecialYear && yearData.length > 30;
                 const isVeryHighDensity = !isSpecialYear && yearData.length > 45;
 
+                // Assign fixed target centers to prevent jittery movement
+                const centers2020 = [width * 0.2, width * 0.4, width * 0.6, width * 0.8];
+                const centers2019 = [width * 0.25, width * 0.5, width * 0.75];
+                const centersDefault = [width * 0.25, width * 0.5, width * 0.75];
+
+                yearData.forEach((d, idx) => {
+                    if (is2020) {
+                        d.targetCenter = centers2020[idx % centers2020.length];
+                    } else if (is2019) {
+                        d.targetCenter = centers2019[idx % centers2019.length];
+                    } else if (isVeryFewBreaches) {
+                        d.targetCenter = width / 2;
+                    } else {
+                        d.targetCenter = centersDefault[idx % centersDefault.length];
+                    }
+                });
+
                 // Initial positioning
                 yearData.forEach((d) => {
                     if (is2020) {
@@ -881,22 +902,7 @@
                 });
 
                 const yearSimulation = d3.forceSimulation(yearData)
-                    .force("x", d3.forceX(d => {
-                        if (is2020) {
-                            // Multiple centers for 2020, spread wider
-                            const centers = [width * 0.2, width * 0.4, width * 0.6, width * 0.8];
-                            return centers[Math.floor(Math.random() * centers.length)];
-                        } else if (is2019) {
-                            // Three centers for 2019
-                            const centers = [width * 0.25, width * 0.5, width * 0.75];
-                            return centers[Math.floor(Math.random() * centers.length)];
-                        } else if (isVeryFewBreaches) {
-                            return width / 2;
-                        } else {
-                            const centers = [width * 0.25, width * 0.5, width * 0.75];
-                            return centers[Math.floor(Math.random() * centers.length)];
-                        }
-                    }).strength(
+                    .force("x", d3.forceX(d => d.targetCenter).strength(
                         is2020 ? 0.005 :
                             is2019 ? 0.007 :
                                 isVeryFewBreaches ? 0.2 :
@@ -938,24 +944,6 @@
                                 is2019 ? 0.7 :
                                     isHighDensity ? 0.5 : 0.4
                         )))
-                    .force("random", alpha => {
-                        if (isVeryFewBreaches) return;
-                        yearData.forEach(d => {
-                            const randomChance =
-                                is2020 ? 0.7 :
-                                    is2019 ? 0.5 :
-                                        isHighDensity ? 0.4 : 0.2;
-
-                            if (Math.random() < randomChance) {
-                                const jitter =
-                                    is2020 ? 20 :
-                                        is2019 ? 15 :
-                                            isHighDensity ? 12 : 6;
-                                d.x += (Math.random() - 0.5) * alpha * jitter;
-                                d.y += (Math.random() - 0.5) * alpha * jitter;
-                            }
-                        });
-                    })
                     .alpha(0.95)
                     .alphaDecay(
                         is2020 ? 0.003 :
@@ -988,15 +976,15 @@
                         const nodes = sim.nodes();
                         if (nodes.length === 0) return;
 
-                        // Jitter 20% of nodes randomly
-                        const jitterCount = Math.ceil(nodes.length * 0.2);
+                        // Jitter 15% of nodes randomly for subtle movement
+                        const jitterCount = Math.ceil(nodes.length * 0.15);
                         const nodesToJitter = d3.shuffle(nodes).slice(0, jitterCount);
 
                         nodesToJitter.forEach(node => {
                             // Random angle between 0 and 2π (full circle)
                             const angle = Math.random() * Math.PI * 2;
-                            // Random distance between 0.5 and 2
-                            const distance = 0.5 + Math.random() * 1.5;
+                            // Reduced distance for smoother movement
+                            const distance = 0.2 + Math.random() * 0.5;
 
                             // Calculate x and y movements using trigonometry
                             const dx = Math.cos(angle) * distance;
@@ -1007,32 +995,23 @@
                             node.y += dy;
                         });
 
-                        // Restart simulation with a gentle alpha value
-                        sim.alpha(0.15).restart();
+                        // Restart simulation with a lower alpha for gentler movement
+                        sim.alpha(0.05).restart();
                     });
                 } catch (error) {
                     console.error("Error in jitter function:", error);
                 }
             }
 
-            const jitterInterval = setInterval(addJitter, 1500);
+            const jitterInterval = setInterval(addJitter, 3000);
 
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     clearInterval(jitterInterval);
                 } else {
                     if (!jitterInterval) {
-                        setInterval(addJitter, 1500);
+                        setInterval(addJitter, 3000);
                     }
-                }
-            });
-
-            window.addEventListener('scroll', () => {
-                if (!window.jitterScrollTimeout) {
-                    window.jitterScrollTimeout = setTimeout(() => {
-                        addJitter();
-                        window.jitterScrollTimeout = null;
-                    }, 100);
                 }
             });
 

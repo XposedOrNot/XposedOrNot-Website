@@ -285,12 +285,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(17, 24, 39, 0.95);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            flex-direction: column;
         }
 
         .spinner {
@@ -322,14 +322,14 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
     <div id="loadingOverlay">
-        <div class="spinner"></div>
-        <p style="margin-top: 15px; color: white; font-weight: bold;">Loading data breaches...</p>
+        <i class="fas fa-spinner fa-spin fa-3x" style="color: #3b82f6;"></i>
+        <p style="margin-top: 15px; color: #e5e7eb; font-weight: 600; font-size: 1.1rem;">Loading visualization...</p>
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-custom">
@@ -367,6 +367,7 @@
     <script>
         let allBreachData = [];
         const colorPalettes = {
+            2026: ['#4CC9F0', '#4895EF', '#4361EE', '#3F37C9', '#3A0CA3'].reverse(),
             2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
             2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
             2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),
@@ -383,8 +384,8 @@
             2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),
             2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),
             2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),
-            2009: ['#795548', '#6D4C41', '#5D4037', '#4E342E', '#3E2723'].reverse(),
-            2008: ['#607D8B', '#546E7A', '#455A64', '#37474F', '#263238'].reverse(),
+            2009: ['#06D6A0', '#05C793', '#04B886', '#03A879', '#029A6C'].reverse(),
+            2008: ['#F72585', '#E71D7C', '#D71573', '#C70D6A', '#B70561'].reverse(),
             2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()
         };
         const defaultPalette = ['#748FFC', '#4C6EF5', '#4263EB', '#3B5BDB', '#364FC7'].reverse();
