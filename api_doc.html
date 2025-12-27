@@ -1,788 +1,1054 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta name="description" content="XposedOrNot: API Documentation ">
-   <meta name="author" content="Devanand Premkumar">
-   <meta content="XposedOrNot: API Documentation for Developers" property="og:title" />
-   <meta name="description"
-      content="Access XposedOrNot's API documentation for seamless integration. Explore endpoints, usage examples, and developer-friendly guides." />
-   <meta name="twitter:card" content="summary_large_image">
-   <meta name="twitter:site" content="@XposedOrNot">
-   <meta name="twitter:title" content="XposedOrNot API Reference">
-   <meta name="twitter:description"
-      content="Access XposedOrNot's API documentation for seamless integration. Explore endpoints, usage examples, and developer-friendly guides.">
-   <meta name="twitter:image" content="https://xposedornot.com/static/images/api_reference.png">
-   <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
-   <title>XposedOrNot API Documentation - Check Data Breaches & Password Security</title>
-   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
-   <link rel="dns-prefetch" href="static.hotjar.com">
-   <meta name="description"
-      content="Comprehensive API documentation for XposedOrNot. Check email breaches, password security, and domain-level data exposure. Free, RESTful API with JSON responses.">
-   <meta property="og:title" content="XposedOrNot API Documentation - Data Breach & Security APIs">
-   <meta property="og:description"
-      content="Access XposedOrNot's powerful APIs to check data breaches, password security, and domain-level exposures. Developer-friendly documentation with examples.">
-   <meta property="og:type" content="website">
-   <meta property="og:url" content="https://xposedornot.com/api_doc.html">
-   <meta name="keywords"
-      content="API documentation, data breach API, password security, email breach detection, cybersecurity API, domain security, REST API, JSON API, security integration">
-   <link rel="canonical" href="https://xposedornot.com/api_doc.html">
-   <meta http-equiv="content-language" content="en">
-   <meta name="robots" content="index, follow">
-   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-   <link rel=stylesheet
-      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset'
-      type=text/css media=all defer async>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
-      integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="XposedOrNot: API Documentation " />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta
+      content="XposedOrNot: API Documentation for Developers"
+      property="og:title"
+    />
+    <meta
+      name="description"
+      content="Access XposedOrNot's API documentation for seamless integration. Explore endpoints, usage examples, and developer-friendly guides."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="XposedOrNot API Reference" />
+    <meta
+      name="twitter:description"
+      content="Access XposedOrNot's API documentation for seamless integration. Explore endpoints, usage examples, and developer-friendly guides."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/api_reference.png"
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <title>
+      XposedOrNot API Documentation - Check Data Breaches & Password Security
+    </title>
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <meta
+      name="description"
+      content="Comprehensive API documentation for XposedOrNot. Check email breaches, password security, and domain-level data exposure. Free, RESTful API with JSON responses."
+    />
+    <meta
+      property="og:title"
+      content="XposedOrNot API Documentation - Data Breach & Security APIs"
+    />
+    <meta
+      property="og:description"
+      content="Access XposedOrNot's powerful APIs to check data breaches, password security, and domain-level exposures. Developer-friendly documentation with examples."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/api_doc.html" />
+    <meta
+      name="keywords"
+      content="API documentation, data breach API, password security, email breach detection, cybersecurity API, domain security, REST API, JSON API, security integration"
+    />
+    <link rel="canonical" href="https://xposedornot.com/api_doc.html" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-      crossorigin="anonymous"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"
-      integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer>
-   <script src="/static/scripts/other-libraries.js" defer></script>
-   <style>
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer />
+    <script src="/static/scripts/other-libraries.js" defer></script>
+    <style>
       :root {
-         --primary-color: #007BFF;
-         --secondary-color: #6c757d;
-         --background-color: #ffffff;
-         --text-color: #212529;
-         --border-color: #dee2e6;
-         --hover-color: #FFBF00;
-         --code-bg: #f6f8fa;
-         --panel-bg: #f8f9fa;
-         --code-text: #24292e;
+        --primary-color: #007bff;
+        --secondary-color: #6c757d;
+        --background-color: #ffffff;
+        --text-color: #212529;
+        --border-color: #dee2e6;
+        --hover-color: #ffbf00;
+        --code-bg: #f6f8fa;
+        --panel-bg: #f8f9fa;
+        --code-text: #24292e;
       }
 
       [data-theme="dark"] {
-         --primary-color: #0d6efd;
-         --secondary-color: #adb5bd;
-         --background-color: #212529;
-         --text-color: #f8f9fa;
-         --border-color: #495057;
-         --hover-color: #ffd43b;
-         --code-bg: #1a1d20;
-         --panel-bg: #343a40;
-         --code-text: #e9ecef;
+        --primary-color: #0d6efd;
+        --secondary-color: #adb5bd;
+        --background-color: #212529;
+        --text-color: #f8f9fa;
+        --border-color: #495057;
+        --hover-color: #ffd43b;
+        --code-bg: #1a1d20;
+        --panel-bg: #343a40;
+        --code-text: #e9ecef;
       }
 
       body {
-         font-family: 'Poppins', sans-serif;
-         line-height: 1.6;
-         color: var(--text-color);
-         background-color: var(--background-color);
-         transition: all 0.3s ease;
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        transition: all 0.3s ease;
       }
 
       .container {
-         max-width: 1400px;
-         padding: 2rem;
+        max-width: 1400px;
+        padding: 2rem;
       }
 
       .kbanner {
-         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
       .button-link {
-         display: inline-block;
-         padding: 14px 28px;
-         color: #fff;
-         background: linear-gradient(135deg, #3f71f3, #5b8aff);
-         text-decoration: none;
-         border-radius: 8px;
-         transition: all 0.3s ease;
-         border: none;
-         font-weight: 600;
-         box-shadow: 0 4px 12px rgba(63, 113, 243, 0.25);
+        display: inline-block;
+        padding: 14px 28px;
+        color: #fff;
+        background: linear-gradient(135deg, #3f71f3, #5b8aff);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(63, 113, 243, 0.25);
       }
 
       .button-link:hover {
-         background: linear-gradient(135deg, #2d5cd4, #3f71f3);
-         transform: translateY(-2px);
-         box-shadow: 0 6px 20px rgba(63, 113, 243, 0.4);
-         color: #fff;
-         text-decoration: none;
+        background: linear-gradient(135deg, #2d5cd4, #3f71f3);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(63, 113, 243, 0.4);
+        color: #fff;
+        text-decoration: none;
       }
 
       .button-link i {
-         margin-right: 0.5rem;
+        margin-right: 0.5rem;
       }
 
       .panel {
-         background: var(--panel-bg);
-         border-radius: 12px;
-         border: 1px solid var(--border-color);
-         margin-bottom: 2rem;
-         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-         overflow: hidden;
+        background: var(--panel-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
       }
 
       .panel-heading {
-         background-color: var(--panel-bg);
-         color: var(--text-color);
-         padding: 1.5rem;
-         font-size: 1.25rem;
-         font-weight: 600;
-         border-radius: 12px 12px 0 0;
-         border-bottom: 2px solid var(--primary-color);
+        background-color: var(--panel-bg);
+        color: var(--text-color);
+        padding: 1.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 2px solid var(--primary-color);
       }
 
       .panel-body {
-         padding: 2rem;
+        padding: 2rem;
       }
 
       pre {
-         background-color: var(--code-bg);
-         border-radius: 8px;
-         padding: 1.5rem;
-         margin: 1rem 0;
-         overflow-x: auto;
-         border: 1px solid var(--border-color);
-         color: var(--code-text);
-         box-shadow: inset 0 1px 2px rgba(0, 0, 0, .05);
+        background-color: var(--code-bg);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        overflow-x: auto;
+        border: 1px solid var(--border-color);
+        color: var(--code-text);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
       }
 
       .alert {
-         border-radius: 8px;
-         padding: 1.5rem;
-         margin: 1.5rem 0;
-         border: none;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: none;
       }
 
       .alert-primary {
-         background-color: rgba(13, 110, 253, 0.1);
-         border-left: 4px solid var(--primary-color);
+        background-color: rgba(13, 110, 253, 0.1);
+        border-left: 4px solid var(--primary-color);
       }
 
       [data-theme="dark"] .alert-primary {
-         background-color: rgba(13, 110, 253, 0.2);
+        background-color: rgba(13, 110, 253, 0.2);
       }
 
       [data-theme="dark"] .alert-primary h4 {
-         color: #ffffff;
+        color: #ffffff;
       }
 
       .alert-danger {
-         background-color: rgba(220, 53, 69, 0.1);
-         border-left: 4px solid #dc3545;
+        background-color: rgba(220, 53, 69, 0.1);
+        border-left: 4px solid #dc3545;
       }
 
       .table {
-         border-radius: 8px;
-         overflow: hidden;
-         margin: 1.5rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 1.5rem 0;
       }
 
       .table th {
-         background-color: var(--primary-color);
-         color: white;
+        background-color: var(--primary-color);
+        color: white;
       }
 
       .table td,
       .table th {
-         padding: 1rem;
+        padding: 1rem;
       }
 
       blockquote {
-         background-color: var(--code-bg);
-         border-left: 4px solid var(--primary-color);
-         padding: 1.5rem;
-         margin: 1.5rem 0;
-         border-radius: 0 8px 8px 0;
-         box-shadow: inset 0 1px 2px rgba(0, 0, 0, .05);
-         position: relative;
+        background-color: var(--code-bg);
+        border-left: 4px solid var(--primary-color);
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        position: relative;
       }
 
       blockquote .code-block-wrapper {
-         margin: 0;
+        margin: 0;
       }
 
       blockquote pre {
-         margin: 0;
-         background: transparent;
-         border: none;
-         padding: 0;
+        margin: 0;
+        background: transparent;
+        border: none;
+        padding: 0;
       }
 
       [data-theme="dark"] pre {
-         background-color: #1a1d20;
-         color: #e9ecef;
-         border-color: #495057;
+        background-color: #1a1d20;
+        color: #e9ecef;
+        border-color: #495057;
       }
 
       [data-theme="dark"] code {
-         color: #e9ecef;
+        color: #e9ecef;
       }
 
       [data-theme="dark"] blockquote {
-         background-color: #1a1d20;
-         color: #e9ecef;
+        background-color: #1a1d20;
+        color: #e9ecef;
       }
 
       .custom-switch {
-         position: fixed;
-         bottom: 2rem;
-         left: 2rem;
-         background: var(--panel-bg);
-         padding: 0.75rem 1rem;
-         border-radius: 8px;
-         z-index: 1000;
-         width: auto;
-         display: inline-flex;
-         align-items: center;
-         gap: 0.5rem;
-         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-         border: 1px solid var(--border-color);
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+        background: var(--panel-bg);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        z-index: 1000;
+        width: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: 1px solid var(--border-color);
       }
 
       .custom-switch label {
-         color: var(--text-color);
-         margin-left: 0.5rem;
-         white-space: nowrap;
+        color: var(--text-color);
+        margin-left: 0.5rem;
+        white-space: nowrap;
       }
 
       html {
-         scroll-behavior: smooth;
+        scroll-behavior: smooth;
       }
 
       @media (max-width: 768px) {
-         .container {
-            padding: 1rem;
-         }
+        .container {
+          padding: 1rem;
+        }
 
-         .panel-body {
-            padding: 1rem;
-         }
+        .panel-body {
+          padding: 1rem;
+        }
 
-         .custom-switch {
-            bottom: 1rem;
-            right: 1rem;
-         }
+        .custom-switch {
+          bottom: 1rem;
+          right: 1rem;
+        }
       }
 
       ::-webkit-scrollbar {
-         width: 8px;
-         height: 8px;
+        width: 8px;
+        height: 8px;
       }
 
       ::-webkit-scrollbar-track {
-         background: var(--background-color);
+        background: var(--background-color);
       }
 
       ::-webkit-scrollbar-thumb {
-         background: var(--primary-color);
-         border-radius: 4px;
+        background: var(--primary-color);
+        border-radius: 4px;
       }
 
       ::-webkit-scrollbar-thumb:hover {
-         background: var(--hover-color);
+        background: var(--hover-color);
       }
 
       .info-card {
-         background: var(--panel-bg);
-         border: 1px solid var(--border-color);
-         border-radius: 12px;
-         padding: 1.5rem;
-         text-align: center;
-         transition: all 0.3s ease;
-         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: var(--panel-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       }
 
       .info-card:hover {
-         transform: translateY(-4px);
-         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
       }
 
       .info-card h4 {
-         margin: 0.5rem 0;
-         color: var(--text-color);
-         font-size: 1.1em;
-         font-weight: 600;
+        margin: 0.5rem 0;
+        color: var(--text-color);
+        font-size: 1.1em;
+        font-weight: 600;
       }
 
       .info-card p {
-         margin: 0;
-         font-size: 0.9em;
-         color: var(--secondary-color);
+        margin: 0;
+        font-size: 0.9em;
+        color: var(--secondary-color);
       }
 
       .info-card code {
-         background: var(--code-bg);
-         padding: 0.2rem 0.5rem;
-         border-radius: 4px;
-         font-size: 0.85em;
+        background: var(--code-bg);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.85em;
       }
 
       .toc-link {
-         color: var(--text-color);
-         text-decoration: none;
-         display: block;
-         padding: 0.5rem;
-         border-radius: 6px;
-         transition: all 0.2s ease;
-         font-size: 0.95em;
+        color: var(--text-color);
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.95em;
       }
 
       .toc-link:hover {
-         background: var(--code-bg);
-         color: var(--primary-color);
-         text-decoration: none;
-         padding-left: 0.75rem;
+        background: var(--code-bg);
+        color: var(--primary-color);
+        text-decoration: none;
+        padding-left: 0.75rem;
       }
 
       .toc-link.active {
-         background: rgba(13, 110, 253, 0.15);
-         color: var(--primary-color);
-         font-weight: 600;
-         border-left: 3px solid var(--primary-color);
-         padding-left: calc(0.5rem - 3px);
+        background: rgba(13, 110, 253, 0.15);
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left: 3px solid var(--primary-color);
+        padding-left: calc(0.5rem - 3px);
       }
 
       [data-theme="dark"] .toc-link.active {
-         background: rgba(13, 110, 253, 0.25);
+        background: rgba(13, 110, 253, 0.25);
       }
 
       .toc-link i {
-         margin-right: 0.5rem;
-         width: 20px;
-         display: inline-block;
+        margin-right: 0.5rem;
+        width: 20px;
+        display: inline-block;
       }
 
       .http-badge {
-         display: inline-block;
-         padding: 0.25rem 0.75rem;
-         border-radius: 4px;
-         font-size: 0.75em;
-         font-weight: 700;
-         margin-right: 0.5rem;
-         text-transform: uppercase;
-         letter-spacing: 0.5px;
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.75em;
+        font-weight: 700;
+        margin-right: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       .http-get {
-         background: linear-gradient(135deg, #10b981, #34d399);
-         color: white;
+        background: linear-gradient(135deg, #10b981, #34d399);
+        color: white;
       }
 
       .http-post {
-         background: linear-gradient(135deg, #f59e0b, #fbbf24);
-         color: white;
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        color: white;
       }
 
       @media (max-width: 992px) {
-         #api-toc {
-            display: none;
-         }
+        #api-toc {
+          display: none;
+        }
       }
 
       .code-block-wrapper {
-         position: relative;
+        position: relative;
       }
 
       .copy-button {
-         position: absolute;
-         top: 50%;
-         right: 0.5rem;
-         transform: translateY(-50%);
-         background: var(--primary-color);
-         color: white;
-         border: none;
-         padding: 0.5rem 1rem;
-         border-radius: 6px;
-         cursor: pointer;
-         font-size: 0.85em;
-         transition: all 0.3s ease;
-         opacity: 0.8;
+        position: absolute;
+        top: 50%;
+        right: 0.5rem;
+        transform: translateY(-50%);
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85em;
+        transition: all 0.3s ease;
+        opacity: 0.8;
       }
 
       .copy-button:hover {
-         opacity: 1;
-         background: var(--hover-color);
-         color: #212529;
+        opacity: 1;
+        background: var(--hover-color);
+        color: #212529;
       }
 
       .copy-button.copied {
-         background: #10b981 !important;
-         color: white !important;
+        background: #10b981 !important;
+        color: white !important;
       }
 
       /* Footer Styles */
       .footer-columns {
-         display: flex;
-         justify-content: space-between;
-         margin: 0 0 30px 0;
-         gap: 60px;
-         text-align: left;
-         padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 0 30px 0;
+        gap: 60px;
+        text-align: left;
+        padding: 0 40px;
       }
 
       .footer-group {
-         flex: 1;
-         min-width: 0;
+        flex: 1;
+        min-width: 0;
       }
 
       .footer-group h6 {
-         color: #2c3e50 !important;
-         font-size: 0.95em !important;
-         margin-bottom: 15px !important;
-         font-weight: 700 !important;
-         text-transform: uppercase;
-         letter-spacing: 0.8px;
-         opacity: 1 !important;
+        color: #2c3e50 !important;
+        font-size: 0.95em !important;
+        margin-bottom: 15px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        opacity: 1 !important;
       }
 
       .footer-group a.footer-link {
-         display: block;
-         margin-bottom: 8px;
-         padding: 6px 10px;
-         border-radius: 4px;
-         transition: all 0.3s ease;
-         opacity: 0.8;
-         text-decoration: none;
-         color: var(--text-color);
+        display: block;
+        margin-bottom: 8px;
+        padding: 6px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+        text-decoration: none;
+        color: var(--text-color);
       }
 
       .footer-group a.footer-link:hover {
-         opacity: 1;
-         background-color: rgba(63, 113, 243, 0.15);
-         padding-left: 14px;
-         color: #3f71f3 !important;
-         text-decoration: none;
+        opacity: 1;
+        background-color: rgba(63, 113, 243, 0.15);
+        padding-left: 14px;
+        color: #3f71f3 !important;
+        text-decoration: none;
       }
 
       [data-theme="dark"] .footer-group h6 {
-         color: #ffffff !important;
+        color: #ffffff !important;
       }
 
       [data-theme="dark"] .footer-group a.footer-link:hover {
-         background-color: rgba(63, 113, 243, 0.2);
+        background-color: rgba(63, 113, 243, 0.2);
       }
 
       /* Back to top button */
       #backToTop {
-         display: none;
-         position: fixed;
-         bottom: 2rem;
-         right: 2rem;
-         background: linear-gradient(135deg, #3f71f3, #5b8aff);
-         color: white;
-         border: none;
-         width: 50px;
-         height: 50px;
-         border-radius: 50%;
-         cursor: pointer;
-         box-shadow: 0 4px 12px rgba(63, 113, 243, 0.3);
-         transition: all 0.3s ease;
-         z-index: 999;
-         font-size: 1.2em;
+        display: none;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, #3f71f3, #5b8aff);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(63, 113, 243, 0.3);
+        transition: all 0.3s ease;
+        z-index: 999;
+        font-size: 1.2em;
       }
 
       #backToTop:hover {
-         transform: translateY(-4px);
-         box-shadow: 0 6px 20px rgba(63, 113, 243, 0.5);
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(63, 113, 243, 0.5);
       }
 
       /* Response codes table styling */
       .table tbody tr {
-         transition: all 0.2s ease;
+        transition: all 0.2s ease;
       }
 
       .table tbody tr:hover {
-         background-color: var(--code-bg);
+        background-color: var(--code-bg);
       }
 
       .status-code-200 {
-         background-color: rgba(16, 185, 129, 0.1) !important;
-         border-left: 4px solid #10b981;
+        background-color: rgba(16, 185, 129, 0.1) !important;
+        border-left: 4px solid #10b981;
       }
 
       .status-code-4xx {
-         background-color: rgba(245, 158, 11, 0.1) !important;
-         border-left: 4px solid #f59e0b;
+        background-color: rgba(245, 158, 11, 0.1) !important;
+        border-left: 4px solid #f59e0b;
       }
 
       .status-code-5xx {
-         background-color: rgba(239, 68, 68, 0.1) !important;
-         border-left: 4px solid #ef4444;
+        background-color: rgba(239, 68, 68, 0.1) !important;
+        border-left: 4px solid #ef4444;
       }
 
       @media (max-width: 768px) {
-         .footer-columns {
-            flex-direction: column;
-            text-align: center;
-            gap: 30px;
-            padding: 0 20px;
-         }
+        .footer-columns {
+          flex-direction: column;
+          text-align: center;
+          gap: 30px;
+          padding: 0 20px;
+        }
 
-         .footer-group a.footer-link:hover {
-            padding-left: 10px;
-         }
+        .footer-group a.footer-link:hover {
+          padding-left: 10px;
+        }
 
-         #backToTop {
-            bottom: 1rem;
-            right: 1rem;
-            width: 45px;
-            height: 45px;
-         }
+        #backToTop {
+          bottom: 1rem;
+          right: 1rem;
+          width: 45px;
+          height: 45px;
+        }
 
-         .custom-switch {
-            bottom: 1rem;
-            left: 1rem;
-            padding: 0.5rem 0.75rem;
-            width: auto;
-            max-width: fit-content;
-         }
+        .custom-switch {
+          bottom: 1rem;
+          left: 1rem;
+          padding: 0.5rem 0.75rem;
+          width: auto;
+          max-width: fit-content;
+        }
 
-         .custom-switch label {
-            font-size: 0.85em;
-         }
+        .custom-switch label {
+          font-size: 0.85em;
+        }
       }
 
       #collapse1 {
-         background-color: var(--background-color);
-         color: var(--text-color);
-         display: block !important;
-         height: auto !important;
-         overflow: visible !important;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
       }
 
       .panel-default {
-         background-color: var(--panel-bg);
-         color: var(--text-color);
+        background-color: var(--panel-bg);
+        color: var(--text-color);
       }
 
       [data-theme="dark"] #collapse1,
       [data-theme="dark"] .panel-default {
-         background-color: var(--background-color);
-         color: var(--text-color);
+        background-color: var(--background-color);
+        color: var(--text-color);
       }
 
       [data-theme="dark"] .panel-heading {
-         background-color: var(--panel-bg);
-         color: var(--text-color) !important;
-         border-bottom: 2px solid var(--primary-color);
+        background-color: var(--panel-bg);
+        color: var(--text-color) !important;
+        border-bottom: 2px solid var(--primary-color);
       }
-   </style>
-</head>
+    </style>
+  </head>
 
-<body>
-   <div class="kbanner">
+  <body>
+    <div class="kbanner">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-         <a class="navbar-brand" href="https://xposedornot.com"><span
-               style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-            <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Community
-               Edition</span></a>
-         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-         </button>
-         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav navbar-right">
-               <li class="nav-item active">
-                  <a class="nav-link" href="password.html">Password &nbsp; <span class="sr-only">(current)</span>
-                  </a>
-               </li>
-               <li class="nav-item active">
-                  <a class="nav-link" href="faq.html">FAQ &nbsp;</a>
-               </li>
-               <li class="nav-item active">
-                  <a class="nav-link" href="https://blog.xposedornot.com/">Blog &nbsp;</a>
-               </li>
-               <li class="nav-item dropdown active">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                     aria-haspopup="true" aria-expanded="false"> More Tools </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                     <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
-                     <a class="dropdown-item" href="shield.html">Privacy Shield</a>
-                     <a class="dropdown-item" href="domain.html">Domain Verification</a>
-                     <a class="dropdown-item" href="domains.html">Domain-level Search</a>
-                  </div>
-               </li>
-            </ul>
-         </div>
+        <a class="navbar-brand" href="https://xposedornot.com"
+          ><span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              margin-top: -1px;
+            "
+            >Community Edition</span
+          ></a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password.html"
+                >Password &nbsp; <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="faq.html">FAQ &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >Blog &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                More Tools
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
+                <a class="dropdown-item" href="shield.html">Privacy Shield</a>
+                <a class="dropdown-item" href="domain.html"
+                  >Domain Verification</a
+                >
+                <a class="dropdown-item" href="domains.html"
+                  >Domain-level Search</a
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
       </nav>
-   </div>
-   <div class="container">
-      <div align="center" style="margin-bottom: 3rem;">
-         <h1 style="margin-bottom: 1rem;">XposedOrNot API Documentation</h1>
-         <p style="font-size: 1.1em; color: var(--secondary-color); margin-bottom: 2rem;">
-            Integrate breach detection into your application with our free, RESTful API.<br>
-            Check billions of exposed records instantly with JSON responses.
-         </p>
+    </div>
+    <div class="container">
+      <div align="center" style="margin-bottom: 3rem">
+        <h1 style="margin-bottom: 1rem">XposedOrNot API Documentation</h1>
+        <p
+          style="
+            font-size: 1.1em;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+          "
+        >
+          Integrate breach detection into your application with our free,
+          RESTful API.<br />
+          Check billions of exposed records instantly with JSON responses.
+        </p>
 
-         <!-- Key Info Cards -->
-         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; text-align: left;">
-            <div class="info-card">
-               <i class="fas fa-key" style="font-size: 2em; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-               <h4>Authentication</h4>
-               <p>Most endpoints are public. Domain endpoints require API key.</p>
-            </div>
-            <div class="info-card">
-               <i class="fas fa-tachometer-alt" style="font-size: 2em; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-               <h4>Rate Limit</h4>
-               <p>1 request per second across all endpoints.</p>
-            </div>
-            <div class="info-card">
-               <i class="fas fa-code" style="font-size: 2em; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-               <h4>Response Format</h4>
-               <p>All responses return JSON with standard HTTP codes.</p>
-            </div>
-            <div class="info-card">
-               <i class="fas fa-globe" style="font-size: 2em; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-               <h4>Base URL</h4>
-               <p><code>api.xposedornot.com</code></p>
-            </div>
-         </div>
+        <!-- Key Info Cards -->
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+          "
+        >
+          <div class="info-card">
+            <i
+              class="fas fa-key"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>Authentication</h4>
+            <p>Most endpoints are public. Domain endpoints require API key.</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-tachometer-alt"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>Rate Limit</h4>
+            <p>1 request per second across all endpoints.</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-code"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>Response Format</h4>
+            <p>All responses return JSON with standard HTTP codes.</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-globe"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>Base URL</h4>
+            <p><code>api.xposedornot.com</code></p>
+          </div>
+        </div>
 
-         <div style="margin-top: 2rem;">
-            <h3 style="display: inline-block; margin-right: 20px;"><a href="https://api.xposedornot.com/docs"
-                  target="_blank" class="button-link"><i class="fas fa-book"></i> Swagger Documentation</a></h3>
-            <h3 style="display: inline-block;"><a href="https://xposedornot.docs.apiary.io" target="_blank"
-                  class="button-link"><i class="fas fa-code"></i> API Playground</a></h3>
-         </div>
+        <div style="margin-top: 2rem">
+          <h3 style="display: inline-block; margin-right: 20px">
+            <a
+              href="https://api.xposedornot.com/docs"
+              target="_blank"
+              class="button-link"
+              ><i class="fas fa-book"></i> Swagger Documentation</a
+            >
+          </h3>
+          <h3 style="display: inline-block">
+            <a
+              href="https://xposedornot.docs.apiary.io"
+              target="_blank"
+              class="button-link"
+              ><i class="fas fa-code"></i> API Playground</a
+            >
+          </h3>
+        </div>
       </div>
 
       <!-- SDK Section - moved outside centered div -->
-      <div id="sdk-section" style="margin-top: 3rem; margin-bottom: 2rem; position: relative; z-index: 100;">
-            <h2 style="text-align: center; margin-bottom: 1.5rem;">Official SDKs</h2>
-            <p style="text-align: center; color: var(--secondary-color); margin-bottom: 2rem;">
-               Use our official libraries to integrate XposedOrNot into your applications with just a few lines of code.
-            </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-               <!-- NPM SDK -->
-               <div class="panel" style="margin-bottom: 0;">
-                  <div class="panel-heading" style="display: flex; align-items: center; gap: 0.75rem;">
-                     <i class="fab fa-npm" style="font-size: 1.5em; color: #CB3837;"></i>
-                     Node.js / JavaScript
-                  </div>
-                  <div class="panel-body">
-                     <p style="margin-bottom: 1rem;"><strong>Install via npm:</strong></p>
-                     <pre style="margin-bottom: 1.5rem;">npm install xposedornot</pre>
-                     <p style="margin-bottom: 1rem;"><strong>Quick Example:</strong></p>
-                     <pre>const { XposedOrNot } = require('xposedornot');
+      <div
+        id="sdk-section"
+        style="
+          margin-top: 3rem;
+          margin-bottom: 2rem;
+          position: relative;
+          z-index: 100;
+        "
+      >
+        <h2 style="text-align: center; margin-bottom: 1.5rem">Official SDKs</h2>
+        <p
+          style="
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+          "
+        >
+          Use our official libraries to integrate XposedOrNot into your
+          applications with just a few lines of code.
+        </p>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+          "
+        >
+          <!-- NPM SDK -->
+          <div class="panel" style="margin-bottom: 0">
+            <div
+              class="panel-heading"
+              style="display: flex; align-items: center; gap: 0.75rem"
+            >
+              <i
+                class="fab fa-npm"
+                style="font-size: 1.5em; color: #cb3837"
+              ></i>
+              Node.js / JavaScript
+            </div>
+            <div class="panel-body">
+              <p style="margin-bottom: 1rem">
+                <strong>Install via npm:</strong>
+              </p>
+              <pre style="margin-bottom: 1.5rem">npm install xposedornot</pre>
+              <p style="margin-bottom: 1rem"><strong>Quick Example:</strong></p>
+              <pre>
+const { XposedOrNot } = require('xposedornot');
 
 const xon = new XposedOrNot();
 
 // Check email for breaches
 const result = await xon.checkEmail('test@example.com');
-console.log(result);</pre>
-                     <p style="margin-top: 1.5rem;">
-                        <a href="https://www.npmjs.com/package/xposedornot" target="_blank" rel="noopener" class="button-link" style="padding: 10px 20px; font-size: 0.9em;">
-                           <i class="fas fa-external-link-alt"></i> View on npmjs.com
-                        </a>
-                     </p>
-                  </div>
-               </div>
-               <!-- PyPI SDK -->
-               <div class="panel" style="margin-bottom: 0;">
-                  <div class="panel-heading" style="display: flex; align-items: center; gap: 0.75rem;">
-                     <i class="fab fa-python" style="font-size: 1.5em; color: #3776AB;"></i>
-                     Python
-                  </div>
-                  <div class="panel-body">
-                     <p style="margin-bottom: 1rem;"><strong>Install via pip:</strong></p>
-                     <pre style="margin-bottom: 1.5rem;">pip install xposedornot</pre>
-                     <p style="margin-bottom: 1rem;"><strong>Quick Example:</strong></p>
-                     <pre>from xposedornot import XposedOrNot
+console.log(result);</pre
+              >
+              <p style="margin-top: 1.5rem">
+                <a
+                  href="https://www.npmjs.com/package/xposedornot"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em"
+                >
+                  <i class="fas fa-external-link-alt"></i> View on npmjs.com
+                </a>
+              </p>
+            </div>
+          </div>
+          <!-- PyPI SDK -->
+          <div class="panel" style="margin-bottom: 0">
+            <div
+              class="panel-heading"
+              style="display: flex; align-items: center; gap: 0.75rem"
+            >
+              <i
+                class="fab fa-python"
+                style="font-size: 1.5em; color: #3776ab"
+              ></i>
+              Python
+            </div>
+            <div class="panel-body">
+              <p style="margin-bottom: 1rem">
+                <strong>Install via pip:</strong>
+              </p>
+              <pre style="margin-bottom: 1.5rem">pip install xposedornot</pre>
+              <p style="margin-bottom: 1rem"><strong>Quick Example:</strong></p>
+              <pre>
+from xposedornot import XposedOrNot
 
 xon = XposedOrNot()
 
 # Check email for breaches
 result = xon.check_email('test@example.com')
-print(result)</pre>
-                     <p style="margin-top: 1.5rem;">
-                        <a href="https://pypi.org/project/xposedornot/" target="_blank" rel="noopener" class="button-link" style="padding: 10px 20px; font-size: 0.9em;">
-                           <i class="fas fa-external-link-alt"></i> View on PyPI
-                        </a>
-                     </p>
-                  </div>
-               </div>
+print(result)</pre
+              >
+              <p style="margin-top: 1.5rem">
+                <a
+                  href="https://pypi.org/project/xposedornot/"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em"
+                >
+                  <i class="fas fa-external-link-alt"></i> View on PyPI
+                </a>
+              </p>
             </div>
+          </div>
+        </div>
       </div>
-      <br>
+      <br />
 
       <!-- Table of Contents + Content Layout -->
-      <div style="display: flex; gap: 3rem; align-items: flex-start; max-width: 100%;">
-         <!-- Sticky TOC Sidebar -->
-         <nav id="api-toc" style="position: sticky; top: 2rem; width: 280px; flex-shrink: 0; z-index: 1;">
-            <div style="background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
-               <h4 style="margin-top: 0; margin-bottom: 1rem; color: var(--primary-color);">Quick Navigation</h4>
-               <ul style="list-style: none; padding: 0; margin: 0;">
-                  <li style="margin-bottom: 0.75rem;">
-                     <a href="#sdk-section" class="toc-link"><i class="fas fa-cube"></i> Official SDKs</a>
-                  </li>
-                  <li style="margin-bottom: 0.75rem;">
-                     <a href="#endpoint-1" class="toc-link"><i class="fas fa-envelope"></i> Email Breach Check</a>
-                  </li>
-                  <li style="margin-bottom: 0.75rem;">
-                     <a href="#endpoint-2" class="toc-link"><i class="fas fa-chart-line"></i> Breach Analytics</a>
-                  </li>
-                  <li style="margin-bottom: 0.75rem;">
-                     <a href="#endpoint-3" class="toc-link"><i class="fas fa-key"></i> Password Check</a>
-                  </li>
-                  <li style="margin-bottom: 0.75rem;">
-                     <a href="#endpoint-4" class="toc-link"><i class="fas fa-database"></i> All Breaches</a>
-                  </li>
-                  <li style="margin-bottom: 0.75rem;">
-                     <a href="#endpoint-5" class="toc-link"><i class="fas fa-shield-alt"></i> Domain Breaches</a>
-                  </li>
-                  <li style="margin-bottom: 0.75rem;">
-                     <a href="#endpoint-6" class="toc-link"><i class="fas fa-code"></i> Response Codes</a>
-                  </li>
-               </ul>
-            </div>
-         </nav>
+      <div
+        style="
+          display: flex;
+          gap: 3rem;
+          align-items: flex-start;
+          max-width: 100%;
+        "
+      >
+        <!-- Sticky TOC Sidebar -->
+        <nav
+          id="api-toc"
+          style="
+            position: sticky;
+            top: 2rem;
+            width: 280px;
+            flex-shrink: 0;
+            z-index: 1;
+          "
+        >
+          <div
+            style="
+              background: var(--panel-bg);
+              border: 1px solid var(--border-color);
+              border-radius: 12px;
+              padding: 1.5rem;
+            "
+          >
+            <h4
+              style="
+                margin-top: 0;
+                margin-bottom: 1rem;
+                color: var(--primary-color);
+              "
+            >
+              Quick Navigation
+            </h4>
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li style="margin-bottom: 0.75rem">
+                <a href="#sdk-section" class="toc-link"
+                  ><i class="fas fa-cube"></i> Official SDKs</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-1" class="toc-link"
+                  ><i class="fas fa-envelope"></i> Email Breach Check</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-2" class="toc-link"
+                  ><i class="fas fa-chart-line"></i> Breach Analytics</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-3" class="toc-link"
+                  ><i class="fas fa-key"></i> Password Check</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-4" class="toc-link"
+                  ><i class="fas fa-database"></i> All Breaches</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-5" class="toc-link"
+                  ><i class="fas fa-shield-alt"></i> Domain Breaches</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-6" class="toc-link"
+                  ><i class="fas fa-code"></i> Response Codes</a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
 
-         <!-- Main Content -->
-         <div style="flex: 1; min-width: 0;">
-      <div class="panel-group" id="accordion">
-         <div class="panel panel-default">
-            <div class="panel-heading"> API Quick Reference <span style="float:right; font-size:0.9em; font-weight:normal;">Last Updated: 04-Dec-2025</span></div>
-            <div id="collapse1" style="display: block;">
-               <div class="panel-body">
-                  <br>
-                  Thank you for your interest in <strong>XposedOrNot</strong>. The goal is to keep our API as accessible
-                  and responsive as possible, making it a valuable tool for everyone. Hosted directly on <strong>Google
-                     Infrastructure</strong> and robustly cached by <strong>Cloudflare</strong>, the <strong>XposedOrNot
-                     API</strong> offers rapid responses for any queries, regardless of their origin point. <br><Br>
-                  The <strong>XposedOrNot API</strong> adheres to the principles of <strong>REST architecture</strong>.
-                  It returns <strong>JSON-encoded responses</strong> and utilizes <strong>standard HTTP response
-                     codes</strong>. For the majority of our API routes, there are no authentication requirements,
-                  ensuring easy access and simplicity of use. However, please note that our specific <strong>API route
-                     used for querying domain-related data requires an API key authorization</strong>. This measure is
-                  in place to ensure that only verified owners or authorities of the specified domains can access this
-                  sensitive information.<br><br>
-                  For experimentation and testing purposes, I warmly invite you to explore our API Playground. Here,
-                  you'll have the opportunity to familiarize yourself with the functionality of the XposedOrNot API in a
-                  user-friendly environment.
-                  <br>
-                  <hr>
+        <!-- Main Content -->
+        <div style="flex: 1; min-width: 0">
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                API Quick Reference
+                <span
+                  style="float: right; font-size: 0.9em; font-weight: normal"
+                  >Last Updated: 04-Dec-2025</span
+                >
+              </div>
+              <div id="collapse1" style="display: block">
+                <div class="panel-body">
+                  <br />
+                  Thank you for your interest in <strong>XposedOrNot</strong>.
+                  The goal is to keep our API as accessible and responsive as
+                  possible, making it a valuable tool for everyone. Hosted
+                  directly on <strong>Google Infrastructure</strong> and
+                  robustly cached by <strong>Cloudflare</strong>, the
+                  <strong>XposedOrNot API</strong> offers rapid responses for
+                  any queries, regardless of their origin point. <br /><br />
+                  The <strong>XposedOrNot API</strong> adheres to the principles
+                  of <strong>REST architecture</strong>. It returns
+                  <strong>JSON-encoded responses</strong> and utilizes
+                  <strong>standard HTTP response codes</strong>. For the
+                  majority of our API routes, there are no authentication
+                  requirements, ensuring easy access and simplicity of use.
+                  However, please note that our specific
+                  <strong
+                    >API route used for querying domain-related data requires an
+                    API key authorization</strong
+                  >. This measure is in place to ensure that only verified
+                  owners or authorities of the specified domains can access this
+                  sensitive information.<br /><br />
+                  For experimentation and testing purposes, I warmly invite you
+                  to explore our API Playground. Here, you'll have the
+                  opportunity to familiarize yourself with the functionality of
+                  the XposedOrNot API in a user-friendly environment.
+                  <br />
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
-                     <h4>
-                        <span class="http-badge http-get">GET</span>
-                        <strong>1. API Call: Checking for Email Address Data Breaches</strong>
-                     </h4>
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >1. API Call: Checking for Email Address Data
+                        Breaches</strong
+                      >
+                    </h4>
                   </div>
                   <p>
-                     This user-friendly API quickly checks if an email address has been involved in any known data
-                     breaches. It searches a comprehensive database of breaches and alerts you if the email is at risk.
-                     <br><br>
-                     This tool is invaluable for maintaining digital security and understanding the breach history of an
-                     email. It's a step towards better digital safety and awareness.
+                    This user-friendly API quickly checks if an email address
+                    has been involved in any known data breaches. It searches a
+                    comprehensive database of breaches and alerts you if the
+                    email is at risk.
+                    <br /><br />
+                    This tool is invaluable for maintaining digital security and
+                    understanding the breach history of an email. It's a step
+                    towards better digital safety and awareness.
                   </p>
-                  <br><strong>API Endpoint:</strong>
+                  <br /><strong>API Endpoint:</strong>
                   <blockquote>
-                     <pre>https://api.xposedornot.com/v1/check-email/[test@example.com]</pre>
+                    <pre>
+https://api.xposedornot.com/v1/check-email/[test@example.com]</pre
+                    >
                   </blockquote>
                   <strong> Example of Successful Breach Detection: </strong>
-                  When a breach is detected, you'll receive a JSON response like this:
+                  When a breach is detected, you'll receive a JSON response like
+                  this:
                   <pre>
  {
   "breaches": [
@@ -799,65 +1065,109 @@ print(result)</pre>
     ]
   ]
 }
-		  </pre>
-                  The response is in JSON format, making it simple to parse with any scripting language. This lets you
-                  easily integrate the data into your applications.
-                  <br> <strong>Response When No Breach is Found:</strong><br>
-                  If the email address is not found in any breach database, you will get the following JSON response:
+		  </pre
+                  >
+                  The response is in JSON format, making it simple to parse with
+                  any scripting language. This lets you easily integrate the
+                  data into your applications.
+                  <br />
+                  <strong>Response When No Breach is Found:</strong><br />
+                  If the email address is not found in any breach database, you
+                  will get the following JSON response:
                   <pre>
 {"Error":"Not found"}
- </pre>
-                  <hr>
+ </pre
+                  >
+                  <hr />
                   <div id="endpoint-2" class="alert alert-primary" role="alert">
-                     <h4>
-                        <span class="http-badge http-get">GET</span>
-                        <strong>2. API Call: Data Breach Analytics for Email Addresses</strong>
-                     </h4>
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >2. API Call: Data Breach Analytics for Email
+                        Addresses</strong
+                      >
+                    </h4>
                   </div>
                   <p>
-                     Our API offers an in-depth analysis of an email address's data breach history. It reveals when and
-                     where breaches occurred, providing essential analytics to gauge the impact and severity of these
-                     incidents. This tool is key for understanding data exposure levels and enhancing security
-                     strategies.
+                    Our API offers an in-depth analysis of an email address's
+                    data breach history. It reveals when and where breaches
+                    occurred, providing essential analytics to gauge the impact
+                    and severity of these incidents. This tool is key for
+                    understanding data exposure levels and enhancing security
+                    strategies.
                   </p>
-                  <br><strong>API Endpoint:</strong>
+                  <br /><strong>API Endpoint:</strong>
                   <blockquote>
-                     <pre>https://api.xposedornot.com/v1/breach-analytics?email=[email-address]</pre>
+                    <pre>
+https://api.xposedornot.com/v1/breach-analytics?email=[email-address]</pre
+                    >
                   </blockquote>
 
-                  <p>The API responds with two possible outcomes: success or failure. Below are the key components of a
-                     successful response:</p>
-                  <br>
+                  <p>
+                    The API responds with two possible outcomes: success or
+                    failure. Below are the key components of a successful
+                    response:
+                  </p>
+                  <br />
                   <ul>
-                     <li><strong>BreachesSummary:</strong> Get a quick overview of all breaches tied to the email
-                        address, including a list of affected sites. Ideal for a fast check on breach history.</li>
-                     <br>
-                     <li><strong>ExposedBreaches:</strong> Receive detailed information on each breach, including the
-                        breached entity's name, description, domain, industry, risk level, references, exposed data
-                        types, and the year and number of records exposed. This helps assess the specifics and
-                        seriousness of each breach.</li>
-                     <br>
-                     <li><strong>BreachMetrics:</strong> This component offers analytics about the breaches, such as
-                        affected industries, password strength, risk score, data types exposed, and a yearly breakdown.
-                        This data is crucial for understanding the full impact of the breaches.</li>
-                     <br>
-                     <li><strong>xposed_data:</strong> Gain insight into the specific data types exposed in the
-                        breaches, such as names, photos, nationalities, etc. This helps in understanding the nature and
-                        extent of personal data exposure.</li>
-                     <br>
-                     <li><strong>PastesSummary:</strong> Provides an overview of 'paste' breaches (data exposures on
-                        public pastebin-like services), including a count and the most recent occurrence. It's a quick
-                        way to gauge exposure on these platforms.</li>
-                     <br>
-                     <li><strong>ExposedPastes & PasteMetrics:</strong> These components give detailed information and a
-                        yearly analysis of paste breaches, allowing for a deeper understanding of exposure trends over
-                        time.</li>
-                     <br>
+                    <li>
+                      <strong>BreachesSummary:</strong> Get a quick overview of
+                      all breaches tied to the email address, including a list
+                      of affected sites. Ideal for a fast check on breach
+                      history.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>ExposedBreaches:</strong> Receive detailed
+                      information on each breach, including the breached
+                      entity's name, description, domain, industry, risk level,
+                      references, exposed data types, and the year and number of
+                      records exposed. This helps assess the specifics and
+                      seriousness of each breach.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>BreachMetrics:</strong> This component offers
+                      analytics about the breaches, such as affected industries,
+                      password strength, risk score, data types exposed, and a
+                      yearly breakdown. This data is crucial for understanding
+                      the full impact of the breaches.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>xposed_data:</strong> Gain insight into the
+                      specific data types exposed in the breaches, such as
+                      names, photos, nationalities, etc. This helps in
+                      understanding the nature and extent of personal data
+                      exposure.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>PastesSummary:</strong> Provides an overview of
+                      'paste' breaches (data exposures on public pastebin-like
+                      services), including a count and the most recent
+                      occurrence. It's a quick way to gauge exposure on these
+                      platforms.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>ExposedPastes & PasteMetrics:</strong> These
+                      components give detailed information and a yearly analysis
+                      of paste breaches, allowing for a deeper understanding of
+                      exposure trends over time.
+                    </li>
+                    <br />
                   </ul>
-                  <p>This comprehensive suite of analytics tools offers a deep dive into the data breach history of any
-                     email, providing the insights needed for better digital security management.</p>
-                  <br>
-                  <strong>Sample JSON output on successfully finding a matching record: </strong>
+                  <p>
+                    This comprehensive suite of analytics tools offers a deep
+                    dive into the data breach history of any email, providing
+                    the insights needed for better digital security management.
+                  </p>
+                  <br />
+                  <strong
+                    >Sample JSON output on successfully finding a matching
+                    record:
+                  </strong>
                   <pre>
 
 {
@@ -999,39 +1309,64 @@ print(result)</pre>
     "tmpstmp": ""
   }
 }
-	       </pre>
-                  A few of the data points used in the BreachMetrics are as follows:
+	       </pre
+                  >
+                  A few of the data points used in the BreachMetrics are as
+                  follows:
                   <ol>
-                     <li>Industry wise classification</li>
-                     This gives you the count of the breaches exposed in top-19 industries. <br>
-                     <li>Password strength</li>
-                     This gives you the count of breaches that had passwords that are 1. Easy to Crack, 2. Plain Text
-                     passwords & 3. Strong and safe password hashes used. <br>
-                     <li>Year-wise details</li>
-                     This gives you the historical data of data breaches starting from the year 2010 until now. <br>
+                    <li>Industry wise classification</li>
+                    This gives you the count of the breaches exposed in top-19
+                    industries.
+                    <br />
+                    <li>Password strength</li>
+                    This gives you the count of breaches that had passwords that
+                    are 1. Easy to Crack, 2. Plain Text passwords & 3. Strong
+                    and safe password hashes used.
+                    <br />
+                    <li>Year-wise details</li>
+                    This gives you the historical data of data breaches starting
+                    from the year 2010 until now.
+                    <br />
                   </ol>
-                  <br>
-                  <strong>Sample output on not finding the matching email address:</strong>
+                  <br />
+                  <strong
+                    >Sample output on not finding the matching email
+                    address:</strong
+                  >
                   <pre>
 {  "Error": "Not found"}
- </pre>
-                  <p> This also means that the email searched is not found in any of the data breaches loaded in
-                     XposedOrNot. </p>
-                  <hr>
+ </pre
+                  >
+                  <p>
+                    This also means that the email searched is not found in any
+                    of the data breaches loaded in XposedOrNot.
+                  </p>
+                  <hr />
                   <div id="endpoint-3" class="alert alert-primary" role="alert">
-                     <h4>
-                        <span class="http-badge http-get">GET</span>
-                        <strong>3. API call to check for exposed passwords anonymously</strong>
-                     </h4>
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >3. API call to check for exposed passwords
+                        anonymously</strong
+                      >
+                    </h4>
                   </div>
-                  <p>If you're interested in checking for exposed passwords, this API is perfect for you. It provides
-                     results in two forms: successful or unsuccessful. Imagine you want to check the widely used
-                     password "123456" - this API can help.</p>
-                  <br>
+                  <p>
+                    If you're interested in checking for exposed passwords, this
+                    API is perfect for you. It provides results in two forms:
+                    successful or unsuccessful. Imagine you want to check the
+                    widely used password "123456" - this API can help.
+                  </p>
+                  <br />
                   <blockquote>
-                     <pre>https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre>
+                    <pre>
+https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre
+                    >
                   </blockquote>
-                  <strong>Sample JSON output on successfully finding a matching password hash: </strong>
+                  <strong
+                    >Sample JSON output on successfully finding a matching
+                    password hash:
+                  </strong>
                   <pre>
  {
   "SearchPassAnon": {
@@ -1041,86 +1376,133 @@ print(result)</pre>
     "wordlist": 0
   }
 }
- </pre>
+ </pre
+                  >
 
-                  <p>The API delivers results in a JSON format, which is more informative than a simple yes/no. This
-                     detailed output enables further analysis and enhancement of the extensive list of real-time exposed
-                     passwords.</p>
-                  <br>
+                  <p>
+                    The API delivers results in a JSON format, which is more
+                    informative than a simple yes/no. This detailed output
+                    enables further analysis and enhancement of the extensive
+                    list of real-time exposed passwords.
+                  </p>
+                  <br />
                   <h4>Output Structure Guide:</h4>
-                  <br>
+                  <br />
                   <ul>
-                     <li><strong>"anon" Element:</strong> Every password hash in our database includes the "anon"
-                        element. This is to ensure privacy for users who want to search while remaining anonymous.</li>
-                     <li><strong>"char" Element:</strong> This element provides a breakdown of the password's
-                        characteristics, like length, use of letters, numbers, and special characters. This is
-                        especially useful for understanding password strength and whether it meets various website
-                        requirements.</li>
+                    <li>
+                      <strong>"anon" Element:</strong> Every password hash in
+                      our database includes the "anon" element. This is to
+                      ensure privacy for users who want to search while
+                      remaining anonymous.
+                    </li>
+                    <li>
+                      <strong>"char" Element:</strong> This element provides a
+                      breakdown of the password's characteristics, like length,
+                      use of letters, numbers, and special characters. This is
+                      especially useful for understanding password strength and
+                      whether it meets various website requirements.
+                    </li>
                   </ul>
-                  <p>This API is not only useful for identifying exposed passwords but also helps in developing
-                     stronger, more secure password policies.</p>
-                  <br> The following table explains a bit more about the characteristics in simple terms : <br>
-                  <br>
-                  <table class="table table-condensed table-striped table-bordered table-hover">
-                     <tr>
-                        <td> Digits </td>
-                        <td> Count of numbers </td>
-                     </tr>
-                     <tr>
-                        <td> Alphabets </td>
-                        <td> Count of alphabets </td>
-                     </tr>
-                     <tr>
-                        <td> Special chars </td>
-                        <td> Count of special chars </td>
-                     </tr>
-                     <tr>
-                        <td> Length </td>
-                        <td> Length of the password </td>
-                     </tr>
+                  <p>
+                    This API is not only useful for identifying exposed
+                    passwords but also helps in developing stronger, more secure
+                    password policies.
+                  </p>
+                  <br />
+                  The following table explains a bit more about the
+                  characteristics in simple terms : <br />
+                  <br />
+                  <table
+                    class="table table-condensed table-striped table-bordered table-hover"
+                  >
+                    <tr>
+                      <td>Digits</td>
+                      <td>Count of numbers</td>
+                    </tr>
+                    <tr>
+                      <td>Alphabets</td>
+                      <td>Count of alphabets</td>
+                    </tr>
+                    <tr>
+                      <td>Special chars</td>
+                      <td>Count of special chars</td>
+                    </tr>
+                    <tr>
+                      <td>Length</td>
+                      <td>Length of the password</td>
+                    </tr>
                   </table>
-                  The last one <strong>"count"</strong> denotes the number of times, this password was observed in the
-                  collected exposed data breaches. For a comprehensive list of all exposed websites, please visit <a
-                     href="xposed.html">
-                     <strong>Xposed websites in XON</strong>
-                  </a>. <br>
-                  <br> Also, one other point to note is the use of <a href="https://en.wikipedia.org/wiki/SHA-3"
-                     target="_blank" rel="noopener">
-                     <strong>SHA3 Keccak-512</strong>
-                  </a> hashing for searching and storing data in XON. Traditional hashing algorithms like MD5 and SHA1
-                  are currently deprecated and also considering the enormous number of records exposed, I have gone
-                  ahead with <strong>SHA3 Keccak-512</strong> algorithm. Keccak-512 hashes are 128 characters long. <br>
-                  <br> Please check the simple and easy-to-use <a href="/samples/index.html" target="_blank">
-                     <strong>sample login screen, </strong>
-                  </a>making use of this API. <br>
-                  <br> Two sample Keccak-512 hashes given for easy reference: <br>
-                  <br> Keccak-512("test")
+                  The last one <strong>"count"</strong> denotes the number of
+                  times, this password was observed in the collected exposed
+                  data breaches. For a comprehensive list of all exposed
+                  websites, please visit
+                  <a href="xposed.html">
+                    <strong>Xposed websites in XON</strong> </a
+                  >. <br />
+                  <br />
+                  Also, one other point to note is the use of
+                  <a
+                    href="https://en.wikipedia.org/wiki/SHA-3"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <strong>SHA3 Keccak-512</strong>
+                  </a>
+                  hashing for searching and storing data in XON. Traditional
+                  hashing algorithms like MD5 and SHA1 are currently deprecated
+                  and also considering the enormous number of records exposed, I
+                  have gone ahead with
+                  <strong>SHA3 Keccak-512</strong> algorithm. Keccak-512 hashes
+                  are 128 characters long. <br />
+                  <br />
+                  Please check the simple and easy-to-use
+                  <a href="/samples/index.html" target="_blank">
+                    <strong>sample login screen, </strong> </a
+                  >making use of this API. <br />
+                  <br />
+                  Two sample Keccak-512 hashes given for easy reference: <br />
+                  <br />
+                  Keccak-512("test")
                   <strong>
-                     <pre>1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre>
+                    <pre>
+1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre
+                    >
                   </strong>
-                  <br> Keccak-512("pass")
+                  <br />
+                  Keccak-512("pass")
                   <strong>
-                     <pre>adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre>
+                    <pre>
+adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre
+                    >
                   </strong>
-                  <br>
-                  <strong>Sample output on not finding the matching password hash:</strong>
+                  <br />
+                  <strong
+                    >Sample output on not finding the matching password
+                    hash:</strong
+                  >
                   <pre>
             {  "Error": "Not found"}
-        </pre>
-                  <hr>
-                  <hr>
+        </pre
+                  >
+                  <hr />
+                  <hr />
                   <div id="endpoint-4" class="alert alert-primary" role="alert">
-                     <h4>
-                        <span class="http-badge http-get">GET</span>
-                        <strong>4. API call to check for all data breaches loaded in XposedOrNot</strong>
-                     </h4>
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >4. API call to check for all data breaches loaded in
+                        XposedOrNot</strong
+                      >
+                    </h4>
                   </div>
                   <blockquote>
-                     <pre>https://api.xposedornot.com/v1/breaches</pre>
+                    <pre>https://api.xposedornot.com/v1/breaches</pre>
                   </blockquote>
-                  The API returns a successful response in the format of JSON only.<br>
-                  <br>This JSON can be easily parsed by all scripting languages for easy interpretation and to extract
-                  data elements to be used in your respective applications. <br>
+                  The API returns a successful response in the format of JSON
+                  only.<br />
+                  <br />This JSON can be easily parsed by all scripting
+                  languages for easy interpretation and to extract data elements
+                  to be used in your respective applications. <br />
                   <pre>
    {
   "exposedBreaches": [
@@ -1208,11 +1590,15 @@ print(result)</pre>
     },
 
     and so on...
-	       </pre>
-                  <br>Furthermore you can also send a parameter like a domain and filter the results to dispay content
-                  specific to that breach. <br>
+	       </pre
+                  >
+                  <br />Furthermore you can also send a parameter like a domain
+                  and filter the results to dispay content specific to that
+                  breach. <br />
                   <blockquote>
-                     <pre>https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre>
+                    <pre>
+https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre
+                    >
                   </blockquote>
                   <pre>
 
@@ -1235,46 +1621,60 @@ print(result)</pre>
   ],
   "status": "success"
 }
-		  </pre>
-                  The API returns a successful response in the format of JSON only.<br>
-                  <hr>
+		  </pre
+                  >
+                  The API returns a successful response in the format of JSON
+                  only.<br />
+                  <hr />
                   <div id="endpoint-5" class="alert alert-primary" role="alert">
-                     <h4>
-                        <span class="http-badge http-post">POST</span>
-                        <strong>5. API call to check for all data breaches for verified domains</strong>
-                     </h4>
+                    <h4>
+                      <span class="http-badge http-post">POST</span>
+                      <strong
+                        >5. API call to check for all data breaches for verified
+                        domains</strong
+                      >
+                    </h4>
                   </div>
                   <blockquote>
-                     <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
+                    <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
                   </blockquote>
-                  This is a POST request and requires the valid API key to be included in the header with the key
-                  'x-api-key'. This endpoint does not accept any request body, hence, the content length header should
-                  be set to '0'.
-                  <br>
-                  ** For validated domains, API key is available in the <a href="dashboard.html">dashboard</a>.
-                  <br><br>
+                  This is a POST request and requires the valid API key to be
+                  included in the header with the key 'x-api-key'. This endpoint
+                  does not accept any request body, hence, the content length
+                  header should be set to '0'.
+                  <br />
+                  ** For validated domains, API key is available in the
+                  <a href="dashboard.html">dashboard</a>. <br /><br />
                   Sample API request using curl:
                   <blockquote>
-                     <pre>
+                    <pre>
 curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/    
-	       </pre>
+	       </pre
+                    >
                   </blockquote>
-                  The response of the API is in JSON format. The main key 'metrics' contains details about the breach.
-                  Below are the description of each sub-key in 'metrics':<br><br>
-                  1.<strong>Breach_Summary</strong>: This field provides a summary of the number of breaches per
-                  organization.<br>
-                  2.<strong>Breaches_Details</strong>: This is an array containing detailed information about each
-                  individual breach, including the name of the breached organization, the domain, and the email address
-                  associated with the breach.<br>
-                  3.<strong>Detailed_Breach_Info</strong>: This field contains a detailed summary of the breaches,
-                  including the date of the breach, the logo of the organization, whether or not the password was at
-                  risk, whether the breach is searchable, the type of data exposed, the total number of records exposed,
-                  and a description of the breach.<br>
-                  4.<strong>Domain_Summary</strong>: This provides a summary of the number of breaches per domain.<br>
-                  5.<strong>Top10_Breaches</strong>: This field provides a list of the top 10 breaches.<br>
-                  6.<strong>Yearly_Metrics</strong>: This field provides a yearly breakdown of the number of breaches
-                  from 2010 to the present year.<br>
-                  <br>Sample output is given for easy reference.<br>
+                  The response of the API is in JSON format. The main key
+                  'metrics' contains details about the breach. Below are the
+                  description of each sub-key in 'metrics':<br /><br />
+                  1.<strong>Breach_Summary</strong>: This field provides a
+                  summary of the number of breaches per organization.<br />
+                  2.<strong>Breaches_Details</strong>: This is an array
+                  containing detailed information about each individual breach,
+                  including the name of the breached organization, the domain,
+                  and the email address associated with the breach.<br />
+                  3.<strong>Detailed_Breach_Info</strong>: This field contains a
+                  detailed summary of the breaches, including the date of the
+                  breach, the logo of the organization, whether or not the
+                  password was at risk, whether the breach is searchable, the
+                  type of data exposed, the total number of records exposed, and
+                  a description of the breach.<br />
+                  4.<strong>Domain_Summary</strong>: This provides a summary of
+                  the number of breaches per domain.<br />
+                  5.<strong>Top10_Breaches</strong>: This field provides a list
+                  of the top 10 breaches.<br />
+                  6.<strong>Yearly_Metrics</strong>: This field provides a
+                  yearly breakdown of the number of breaches from 2010 to the
+                  present year.<br />
+                  <br />Sample output is given for easy reference.<br />
                   <pre>
 {
   "metrics": {
@@ -1325,300 +1725,381 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
   "status": "success"
 }
 
-	       </pre>
-                  <strong> Error Handling</strong>: In case of an invalid or missing API key, the response would be as
-                  follows:
+	       </pre
+                  >
+                  <strong> Error Handling</strong>: In case of an invalid or
+                  missing API key, the response would be as follows:
                   <pre>
 {
   "message":"Invalid or missing API key",
   "status":"error"
 }
-	       </pre>
-                  The <strong>message</strong> field will contain a description of the error, and the
-                  <strong>status</strong> field will contain the string "error" to indicate that an error has occurred.
-                  <br><Br>
-                  Remember to replace "YOUR_API_KEY" with your actual API key when making a request to the endpoint.
-                  <hr>
+	       </pre
+                  >
+                  The <strong>message</strong> field will contain a description
+                  of the error, and the <strong>status</strong> field will
+                  contain the string "error" to indicate that an error has
+                  occurred. <br /><br />
+                  Remember to replace "YOUR_API_KEY" with your actual API key
+                  when making a request to the endpoint.
+                  <hr />
                   <div id="endpoint-6" class="alert alert-primary" role="alert">
-                     <h4>
-                        <strong>6. API response codes</strong>
-                     </h4>
-                     <br>
+                    <h4>
+                      <strong>6. API response codes</strong>
+                    </h4>
+                    <br />
                   </div>
-                  XposedOrNot API uses conventional HTTP response codes to indicate the success or failure of an API
-                  request. In general: Codes in the 2xx range indicate success. Codes in the 4xx range indicate an error
-                  that failed given the information provided (e.g., wrong parameters, insufficient query options, wrong
-                  url etc). Codes in the 5xx range indicate an error with XposedOrNot's server. <br>
-                  <br> In other words, codes in the 4xx range indicate an user error(You) and 5xx indicates a server
-                  error(Me). <br>
-                  <br>
-                  <table class="table table-hover table-bordered ">
-                     <thead class="thead-light">
-                        <tr>
-                           <th scope="col">Code</th>
-                           <th scope="col">Description</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr class="status-code-200">
-                           <th scope="row">200</th>
-                           <td>Success will output JSON response</td>
-                        </tr>
-                        <tr class="status-code-4xx">
-                           <th scope="row">401</th>
-                           <td>Invalid/un-authorised API key</td>
-                        </tr>
-                        <tr class="status-code-4xx">
-                           <th scope="row">404</th>
-                           <td>Error in input ( no data found )</td>
-                        </tr>
-                        <tr class="status-code-4xx">
-                           <th scope="row">429</th>
-                           <td>Speed throttle hit - time to slow down</td>
-                        </tr>
-                        <tr class="status-code-5xx">
-                           <th scope="row">502/503</th>
-                           <td>Server fault - Totally my problem to fix. Please shout across, if you see this ;)</td>
-                        </tr>
-                     </tbody>
+                  XposedOrNot API uses conventional HTTP response codes to
+                  indicate the success or failure of an API request. In general:
+                  Codes in the 2xx range indicate success. Codes in the 4xx
+                  range indicate an error that failed given the information
+                  provided (e.g., wrong parameters, insufficient query options,
+                  wrong url etc). Codes in the 5xx range indicate an error with
+                  XposedOrNot's server. <br />
+                  <br />
+                  In other words, codes in the 4xx range indicate an user
+                  error(You) and 5xx indicates a server error(Me). <br />
+                  <br />
+                  <table class="table table-hover table-bordered">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="status-code-200">
+                        <th scope="row">200</th>
+                        <td>Success will output JSON response</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">401</th>
+                        <td>Invalid/un-authorised API key</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">404</th>
+                        <td>Error in input ( no data found )</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">429</th>
+                        <td>Speed throttle hit - time to slow down</td>
+                      </tr>
+                      <tr class="status-code-5xx">
+                        <th scope="row">502/503</th>
+                        <td>
+                          Server fault - Totally my problem to fix. Please shout
+                          across, if you see this ;)
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                   <div class="alert alert-danger" role="alert">
-                     <strong>Note: </strong>Search queries for Passwords are not restricted by time or count. <br>
-                     <br>
-                     <em class="fas fa-exclamation-triangle" style="font-size:28px;color:red"></em> There will be a
-                     threshold of 1 query per second for each and every API request. Request you to be kindly cognizant
-                     of that and then re-try with a slow mode or sleep model. <br>
-                     <br> Folks who regularly try to misuse or abuse this API for their own nefarious purposes will be
-                     kicked into deep dark dungeons by the not-so-famous <a onclick="jsfunction()"
-                        href="javascript:void(0);">xGuardian</a>. You are warned. <br>
-                     <br>
-                     <em class="fa fa-bug" aria-hidden="true" style="font-size:28px;color:red"></em> If you came across
-                     a bug in the API, feel free to message me at Twitter or email me. I would be more than happy to
-                     acknowledge and remediate the same for the benefit of all users.
+                    <strong>Note: </strong>Search queries for Passwords are not
+                    restricted by time or count. <br />
+                    <br />
+                    <em
+                      class="fas fa-exclamation-triangle"
+                      style="font-size: 28px; color: red"
+                    ></em>
+                    There will be a threshold of 1 query per second for each and
+                    every API request. Request you to be kindly cognizant of
+                    that and then re-try with a slow mode or sleep model. <br />
+                    <br />
+                    Folks who regularly try to misuse or abuse this API for
+                    their own nefarious purposes will be kicked into deep dark
+                    dungeons by the not-so-famous
+                    <a onclick="jsfunction()" href="javascript:void(0);"
+                      >xGuardian</a
+                    >. You are warned. <br />
+                    <br />
+                    <em
+                      class="fa fa-bug"
+                      aria-hidden="true"
+                      style="font-size: 28px; color: red"
+                    ></em>
+                    If you came across a bug in the API, feel free to message me
+                    at Twitter or email me. I would be more than happy to
+                    acknowledge and remediate the same for the benefit of all
+                    users.
                   </div>
-               </div>
+                </div>
+              </div>
             </div>
-         </div>
-      </div><!-- Close panel-group -->
-         </div><!-- Close main content flex item -->
-      </div><!-- Close flex container -->
+          </div>
+          <!-- Close panel-group -->
+        </div>
+        <!-- Close main content flex item -->
+      </div>
+      <!-- Close flex container -->
+    </div>
+    <!-- Close container -->
 
-         <div style="background: var(--panel-bg); border-top: 1px solid var(--border-color); padding: 3rem 0 2rem 0; margin-top: 4rem;">
-            <div class="container">
-               <div style="text-align:center;margin-bottom:30px;">
-                  <p>Join us in shaping this fully open source site! Contributions welcome ❤️ at our <a
-                        href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
-               </div>
+    <div
+      style="
+        background: var(--panel-bg);
+        border-top: 1px solid var(--border-color);
+        padding: 3rem 0 2rem 0;
+        margin-top: 4rem;
+      "
+    >
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Join us in shaping this fully open source site! Contributions
+            welcome ❤️ at our
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >.
+          </p>
+        </div>
 
-               <div class="footer-columns">
-                  <div class="footer-group">
-                     <h6>Legal</h6>
-                     <a href="/privacy" class="footer-link">Privacy Policy</a>
-                     <a href="/terms" class="footer-link">Terms</a>
-                  </div>
-                  <div class="footer-group">
-                     <h6>Community</h6>
-                     <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
-                     <a href="/our-repository" class="footer-link">Our Repository</a>
-                  </div>
-                  <div class="footer-group">
-                     <h6>Trust</h6>
-                     <a href="/transparency" class="footer-link">Transparency</a>
-                     <a href="/responsible-disclosure" class="footer-link">Responsible Disclosure</a>
-                     <a href="https://statuspage.freshping.io/66216-XposedOrNot" target="_blank" rel="noopener" class="footer-link">Status</a>
-                  </div>
-                  <div class="footer-group">
-                     <h6>Follow Us</h6>
-                     <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" name="twitter" class="footer-link">
-                        <i class="fab fa-twitter"></i> Twitter
-                     </a>
-                     <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" name="fb" class="footer-link">
-                        <i class="fab fa-facebook"></i> Facebook
-                     </a>
-                     <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" name="mastodon" class="footer-link">
-                        <i class="fab fa-mastodon"></i> Mastodon
-                     </a>
-                  </div>
-               </div>
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Legal</h6>
+            <a href="/privacy" class="footer-link">Privacy Policy</a>
+            <a href="/terms" class="footer-link">Terms</a>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+            <a href="/our-repository" class="footer-link">Our Repository</a>
+          </div>
+          <div class="footer-group">
+            <h6>Trust</h6>
+            <a href="/transparency" class="footer-link">Transparency</a>
+            <a href="/responsible-disclosure" class="footer-link"
+              >Responsible Disclosure</a
+            >
+            <a
+              href="https://statuspage.freshping.io/66216-XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Status</a
+            >
+          </div>
+          <div class="footer-group">
+            <h6>Follow Us</h6>
+            <a
+              href="https://twitter.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              name="twitter"
+              class="footer-link"
+            >
+              <i class="fab fa-twitter"></i> Twitter
+            </a>
+            <a
+              href="https://facebook.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              name="fb"
+              class="footer-link"
+            >
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a
+              href="https://infosec.exchange/@XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              name="mastodon"
+              class="footer-link"
+            >
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+          </div>
+        </div>
 
-               <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
-                  <input type="checkbox" class="custom-control-input" id="darkSwitch">
-                  <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
-               </div>
-            </div>
-         </div>
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+        </div>
+      </div>
+    </div>
 
-      <!-- Back to Top Button -->
-      <button id="backToTop" title="Back to top">
-         <i class="fas fa-arrow-up"></i>
-      </button>
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Back to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
 
-      <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-      <script type='text/javascript' src='/static/scripts/bug-min.js'></script>
-      <script type='text/javascript' src='/static/scripts/api_doc.js'></script>
-      <script src="/static/scripts/common.js"></script>
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+    ></script>
+    <script type="text/javascript" src="/static/scripts/bug-min.js"></script>
+    <script type="text/javascript" src="/static/scripts/api_doc.js"></script>
+    <script src="/static/scripts/common.js"></script>
 
-      <script type="application/ld+json">
+    <script type="application/ld+json">
       {
-          "@context": "https://schema.org",
-          "@type": "TechnicalArticle",
-          "headline": "XposedOrNot API Documentation",
-          "description": "Complete documentation for XposedOrNot's security APIs including email breach detection, password security verification, and domain exposure analysis.",
-          "author": {
-              "@type": "Person",
-              "name": "Devanand Premkumar"
-          },
-          "publisher": {
-              "@type": "Organization",
-              "name": "XposedOrNot",
-              "logo": {
-                  "@type": "ImageObject",
-                  "url": "https://xposedornot.com/static/images/xon.png"
-              }
+        "@context": "https://schema.org",
+        "@type": "TechnicalArticle",
+        "headline": "XposedOrNot API Documentation",
+        "description": "Complete documentation for XposedOrNot's security APIs including email breach detection, password security verification, and domain exposure analysis.",
+        "author": {
+          "@type": "Person",
+          "name": "Devanand Premkumar"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "XposedOrNot",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://xposedornot.com/static/images/xon.png"
           }
+        }
       }
-      </script>
-      <script>
+    </script>
+    <script>
+      const darkSwitch = document.getElementById("darkSwitch");
+      const theme = localStorage.getItem("theme");
 
-         const darkSwitch = document.getElementById('darkSwitch');
-         const theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        darkSwitch.checked = theme === "dark";
+      }
 
-         if (theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            darkSwitch.checked = theme === 'dark';
-         }
+      darkSwitch.addEventListener("change", function (e) {
+        if (e.target.checked) {
+          document.documentElement.setAttribute("data-theme", "dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+          localStorage.setItem("theme", "light");
+        }
+      });
 
-         darkSwitch.addEventListener('change', function (e) {
-            if (e.target.checked) {
-               document.documentElement.setAttribute('data-theme', 'dark');
-               localStorage.setItem('theme', 'dark');
-            } else {
-               document.documentElement.setAttribute('data-theme', 'light');
-               localStorage.setItem('theme', 'light');
-            }
-         });
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
 
+      // Add copy buttons only to API endpoint URLs (inside blockquote)
+      document.querySelectorAll("blockquote pre").forEach(function (codeBlock) {
+        // Skip if already wrapped
+        if (codeBlock.parentElement.classList.contains("code-block-wrapper")) {
+          return;
+        }
 
-         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-               e.preventDefault();
-               document.querySelector(this.getAttribute('href')).scrollIntoView({
-                  behavior: 'smooth'
-               });
-            });
-         });
+        // Create wrapper
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block-wrapper";
+        codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+        wrapper.appendChild(codeBlock);
 
-         // Add copy buttons only to API endpoint URLs (inside blockquote)
-         document.querySelectorAll('blockquote pre').forEach(function(codeBlock) {
-            // Skip if already wrapped
-            if (codeBlock.parentElement.classList.contains('code-block-wrapper')) {
-               return;
-            }
+        // Create copy button
+        const button = document.createElement("button");
+        button.className = "copy-button";
+        button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+        wrapper.appendChild(button);
 
-            // Create wrapper
-            const wrapper = document.createElement('div');
-            wrapper.className = 'code-block-wrapper';
-            codeBlock.parentNode.insertBefore(wrapper, codeBlock);
-            wrapper.appendChild(codeBlock);
+        // Add click handler
+        button.addEventListener("click", function () {
+          const code = codeBlock.textContent.trim();
 
-            // Create copy button
-            const button = document.createElement('button');
-            button.className = 'copy-button';
-            button.innerHTML = '<i class="fas fa-copy"></i> Copy';
-            wrapper.appendChild(button);
-
-            // Add click handler
-            button.addEventListener('click', function() {
-               const code = codeBlock.textContent.trim();
-
-               // Use the modern clipboard API
-               if (navigator.clipboard && navigator.clipboard.writeText) {
-                  navigator.clipboard.writeText(code).then(function() {
-                     button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                     button.classList.add('copied');
-                     setTimeout(function() {
-                        button.innerHTML = '<i class="fas fa-copy"></i> Copy';
-                        button.classList.remove('copied');
-                     }, 2000);
-                  }).catch(function(err) {
-                     console.error('Failed to copy:', err);
-                     fallbackCopy(code, button);
-                  });
-               } else {
-                  // Fallback for older browsers
-                  fallbackCopy(code, button);
-               }
-            });
-         });
-
-         // Fallback copy function for older browsers
-         function fallbackCopy(text, button) {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-999999px';
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-               document.execCommand('copy');
-               button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-               button.classList.add('copied');
-               setTimeout(function() {
+          // Use the modern clipboard API
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard
+              .writeText(code)
+              .then(function () {
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                button.classList.add("copied");
+                setTimeout(function () {
                   button.innerHTML = '<i class="fas fa-copy"></i> Copy';
-                  button.classList.remove('copied');
-               }, 2000);
-            } catch (err) {
-               console.error('Fallback copy failed:', err);
-            }
-            document.body.removeChild(textArea);
-         }
+                  button.classList.remove("copied");
+                }, 2000);
+              })
+              .catch(function (err) {
+                console.error("Failed to copy:", err);
+                fallbackCopy(code, button);
+              });
+          } else {
+            // Fallback for older browsers
+            fallbackCopy(code, button);
+          }
+        });
+      });
 
-         // Back to top button functionality
-         const backToTopButton = document.getElementById('backToTop');
+      // Fallback copy function for older browsers
+      function fallbackCopy(text, button) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand("copy");
+          button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          button.classList.add("copied");
+          setTimeout(function () {
+            button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            button.classList.remove("copied");
+          }, 2000);
+        } catch (err) {
+          console.error("Fallback copy failed:", err);
+        }
+        document.body.removeChild(textArea);
+      }
 
-         window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 500) {
-               backToTopButton.style.display = 'block';
-            } else {
-               backToTopButton.style.display = 'none';
-            }
-         });
+      // Back to top button functionality
+      const backToTopButton = document.getElementById("backToTop");
 
-         backToTopButton.addEventListener('click', function() {
-            window.scrollTo({
-               top: 0,
-               behavior: 'smooth'
-            });
-         });
+      window.addEventListener("scroll", function () {
+        if (window.pageYOffset > 500) {
+          backToTopButton.style.display = "block";
+        } else {
+          backToTopButton.style.display = "none";
+        }
+      });
 
-         // TOC Scroll Spy functionality
-         const tocLinks = document.querySelectorAll('#api-toc .toc-link');
-         const sections = document.querySelectorAll('[id^="endpoint-"], #sdk-section');
+      backToTopButton.addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
 
-         function updateActiveLink() {
-            let currentSection = '';
-            const scrollPosition = window.scrollY + 150; // Offset for better detection
+      // TOC Scroll Spy functionality
+      const tocLinks = document.querySelectorAll("#api-toc .toc-link");
+      const sections = document.querySelectorAll(
+        '[id^="endpoint-"], #sdk-section',
+      );
 
-            sections.forEach(section => {
-               const sectionTop = section.offsetTop;
-               const sectionHeight = section.offsetHeight || 200;
+      function updateActiveLink() {
+        let currentSection = "";
+        const scrollPosition = window.scrollY + 150; // Offset for better detection
 
-               if (scrollPosition >= sectionTop) {
-                  currentSection = section.getAttribute('id');
-               }
-            });
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight || 200;
 
-            tocLinks.forEach(link => {
-               link.classList.remove('active');
-               if (link.getAttribute('href') === '#' + currentSection) {
-                  link.classList.add('active');
-               }
-            });
-         }
+          if (scrollPosition >= sectionTop) {
+            currentSection = section.getAttribute("id");
+          }
+        });
 
-         window.addEventListener('scroll', updateActiveLink);
-         window.addEventListener('load', updateActiveLink);
-      </script>
-</body>
+        tocLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#" + currentSection) {
+            link.classList.add("active");
+          }
+        });
+      }
 
+      window.addEventListener("scroll", updateActiveLink);
+      window.addEventListener("load", updateActiveLink);
+    </script>
+  </body>
 </html>
