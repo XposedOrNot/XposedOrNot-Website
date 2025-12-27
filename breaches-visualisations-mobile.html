@@ -124,6 +124,214 @@
             font-size: 13px;
         }
 
+        /* Bottom Sheet Styles */
+        .bottom-sheet-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .bottom-sheet-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #1e1e26 0%, #15151a 100%);
+            border-radius: 20px 20px 0 0;
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 70vh;
+            overflow: hidden;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .bottom-sheet.active {
+            transform: translateY(0);
+        }
+
+        .bottom-sheet-handle {
+            width: 40px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin: 12px auto;
+            cursor: grab;
+        }
+
+        .bottom-sheet-content {
+            padding: 0 20px 30px;
+            overflow-y: auto;
+            max-height: calc(70vh - 30px);
+        }
+
+        .bs-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .bs-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+        }
+
+        .bs-title-section {
+            flex: 1;
+        }
+
+        .bs-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f8f9fa;
+            margin: 0 0 4px 0;
+        }
+
+        .bs-meta {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bs-industry-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .bs-records-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .bs-records-label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .bs-records-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f8f9fa;
+        }
+
+        .bs-progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .bs-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .bs-description {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .bs-close-btn {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 12px;
+            color: #f8f9fa;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .bs-close-btn:active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Footer Styles for Dark Background */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px 15px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer p {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .footer a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        .footer-columns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .footer-group h6 {
+            color: #f8f9fa;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .footer-group .footer-link {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            padding: 4px 0;
+            transition: color 0.2s ease;
+        }
+
+        .footer-group .footer-link:hover {
+            color: #60a5fa;
+        }
+
+        .footer-group .footer-link i {
+            margin-right: 6px;
+            width: 16px;
+        }
+
         .year-section {
             margin-bottom: 15px;
             border-radius: 8px;
@@ -187,24 +395,53 @@
 
         .breach-circle {
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            transition: filter 0.3s ease-in-out;
             filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3));
+            animation: glow 4s ease-in-out infinite;
+        }
+
+        .breach-group {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.5));
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .breach-logo {
             pointer-events: none;
         }
 
+        .breach-circle:active {
+            filter: drop-shadow(0 8px 24px rgba(59, 130, 246, 0.7)) brightness(1.2);
+        }
+
+        .breach-group:hover .breach-circle,
+        .breach-group:focus .breach-circle {
+            filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.6)) brightness(1.1);
+        }
+
         .breach-title {
-            font-size: 12px;
-            text-align: center;
-            margin-top: 5px;
-            color: white;
+            font-size: 11px;
+            fill: #e5e7eb;
             font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
         }
 
         .page-title {
@@ -363,6 +600,17 @@
     <div id="timelineContainer"></div>
 
     <div class="tooltip" id="tooltip" style="display: none;"></div>
+
+    <!-- Bottom Sheet Overlay -->
+    <div class="bottom-sheet-overlay" id="bottomSheetOverlay"></div>
+
+    <!-- Bottom Sheet -->
+    <div class="bottom-sheet" id="bottomSheet">
+        <div class="bottom-sheet-handle"></div>
+        <div class="bottom-sheet-content" id="bottomSheetContent">
+            <!-- Content will be injected by JavaScript -->
+        </div>
+    </div>
 
     <script>
         let allBreachData = [];
@@ -587,15 +835,39 @@
                     const x = col * (containerWidth / breachesPerRow) + (containerWidth / breachesPerRow) / 2;
                     const y = row * rowHeight + maxCircleSize;
                     return `translate(${x}, ${y})`;
-                });
+                })
+                .style('animation-delay', (d, i) => `${i * 0.05}s`);
 
             breaches.append('circle')
                 .attr('class', 'breach-circle')
                 .attr('r', d => circleSize(d.count))
                 .attr('fill', (d, i) => `url(#gradient-${year}-${i})`)
                 .attr('data-breach', d => d.name)
+                .style('animation-delay', (d, i) => `${(i % 8) * 0.5}s`)
                 .on('click', function (event, d) {
                     showTooltip(event, d, palette[0]);
+                })
+                .each(function(d, i) {
+                    // Add subtle random floating animation
+                    const circle = d3.select(this);
+                    const duration = 3 + Math.random() * 2; // 3-5 seconds
+                    const dx = 2 + Math.random() * 4; // 2-6px horizontal
+                    const dy = 2 + Math.random() * 4; // 2-6px vertical
+                    const startDelay = Math.random() * 2;
+
+                    circle.append('animate')
+                        .attr('attributeName', 'cx')
+                        .attr('values', `0;${dx};0;${-dx};0`)
+                        .attr('dur', `${duration}s`)
+                        .attr('repeatCount', 'indefinite')
+                        .attr('begin', `${startDelay}s`);
+
+                    circle.append('animate')
+                        .attr('attributeName', 'cy')
+                        .attr('values', `0;${-dy};0;${dy};0`)
+                        .attr('dur', `${duration * 1.3}s`)
+                        .attr('repeatCount', 'indefinite')
+                        .attr('begin', `${startDelay + 0.5}s`);
                 });
 
             breaches.append('image')
@@ -615,38 +887,97 @@
         }
 
         function showTooltip(event, breach, color) {
-            const tooltip = document.getElementById('tooltip');
+            const bottomSheet = document.getElementById('bottomSheet');
+            const bottomSheetOverlay = document.getElementById('bottomSheetOverlay');
+            const bottomSheetContent = document.getElementById('bottomSheetContent');
 
-            const tooltipContent = `
-                <div class="tooltip-title" style="border-color: ${color}">
-                    ${breach.name} <span style="opacity: 0.8; font-size: 0.9em;">(${breach.year})</span>
+            // Calculate progress bar width (max 100M for full bar)
+            const maxRecords = 100000000;
+            const progressWidth = Math.min((breach.count / maxRecords) * 100, 100);
+
+            const content = `
+                <div class="bs-header">
+                    <img src="${breach.logo}" alt="${breach.name}" class="bs-logo" onerror="this.style.display='none'">
+                    <div class="bs-title-section">
+                        <h3 class="bs-title">${breach.name}</h3>
+                        <div class="bs-meta">
+                            <span>${breach.year}</span>
+                            <span class="bs-industry-tag" style="background: ${color}30; color: ${color}">
+                                ${breach.industry || 'Unknown'}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <img src="${breach.logo}" alt="Logo" class="tooltip-logo">
-                <div class="tooltip-description">
-                    ${breach.description}
+
+                <div class="bs-records-section">
+                    <div class="bs-records-label">Records Exposed</div>
+                    <div class="bs-records-value" style="color: ${color}">${d3.format(",")(breach.count)}</div>
+                    <div class="bs-progress-bar">
+                        <div class="bs-progress-fill" style="width: ${progressWidth}%; background: ${color}"></div>
+                    </div>
                 </div>
-                <div class="tooltip-stats" style="background: ${color}20; color: ${color}; border: 1px solid ${color}40">
-                    Records exposed: ${d3.format(",")(breach.count)}
-                </div>
+
+                <div class="bs-description">${breach.description}</div>
+
+                <button class="bs-close-btn" onclick="closeBottomSheet()">Close</button>
             `;
 
-            tooltip.innerHTML = tooltipContent;
-            tooltip.style.borderLeft = `4px solid ${color}`;
-            tooltip.style.display = 'block';
-            tooltip.style.opacity = '1';
+            bottomSheetContent.innerHTML = content;
 
-            document.addEventListener('click', closeTooltip);
+            // Show bottom sheet
+            bottomSheet.classList.add('active');
+            bottomSheetOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
 
-            function closeTooltip(e) {
-                if (!tooltip.contains(e.target) && e.target !== event.currentTarget) {
-                    tooltip.style.opacity = '0';
-                    setTimeout(() => {
-                        tooltip.style.display = 'none';
-                    }, 300);
-                    document.removeEventListener('click', closeTooltip);
-                }
-            }
+            // Prevent event bubbling
+            event.stopPropagation();
         }
+
+        function closeBottomSheet() {
+            const bottomSheet = document.getElementById('bottomSheet');
+            const bottomSheetOverlay = document.getElementById('bottomSheetOverlay');
+
+            bottomSheet.classList.remove('active');
+            bottomSheetOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on overlay click
+        document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('bottomSheetOverlay');
+            overlay.addEventListener('click', closeBottomSheet);
+
+            // Swipe to dismiss
+            let startY = 0;
+            let currentY = 0;
+            const bottomSheet = document.getElementById('bottomSheet');
+            const handle = bottomSheet.querySelector('.bottom-sheet-handle');
+
+            handle.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+                bottomSheet.style.transition = 'none';
+            });
+
+            handle.addEventListener('touchmove', function(e) {
+                currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+                if (diff > 0) {
+                    bottomSheet.style.transform = `translateY(${diff}px)`;
+                }
+            });
+
+            handle.addEventListener('touchend', function(e) {
+                bottomSheet.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                const diff = currentY - startY;
+                if (diff > 100) {
+                    closeBottomSheet();
+                } else {
+                    bottomSheet.style.transform = 'translateY(0)';
+                }
+                startY = 0;
+                currentY = 0;
+            });
+        });
 
         function filterByIndustry(industry) {
             document.getElementById('loadingOverlay').style.display = 'flex';
