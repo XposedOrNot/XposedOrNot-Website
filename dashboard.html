@@ -1,499 +1,662 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-   <meta charset="utf-8">
-   <title>XposedOrNot CxO Dashboard - Manage Data Breach Monitoring Across Domains</title>
-   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
-   <link rel="dns-prefetch" href="static.hotjar.com">
-   <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
-   <link rel=stylesheet
-      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset'
-      type=text/css media=all>
-   <link href="/static/css/style.css" type="text/css" rel="stylesheet">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      XposedOrNot CxO Dashboard - Manage Data Breach Monitoring Across Domains
+    </title>
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
+      type="text/css"
+      media="all"
+    />
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
       integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
-   <script src="/static/scripts/utils.js"></script>
-   <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
-   <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
-   <link rel="stylesheet" href="/static/css/jquery.hortree.min.css">
-   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description"
-      content="XposedOrNot CxO Dashboard - Secure, passwordless access to monitor and manage data breaches across your organization's domains. Get real-time alerts and comprehensive breach reports.">
-   <meta name="keywords" content="data breach monitoring, domain security, CxO dashboard, cybersecurity, breach alerts">
-   <meta property="og:title" content="XposedOrNot CxO Dashboard - Data Breach Monitoring">
-   <meta property="og:description"
-      content="Secure dashboard for monitoring data breaches across your organization's domains. Get real-time alerts and comprehensive breach reports.">
-   <meta property="og:type" content="website">
-   <meta property="og:url" content="https://xposedornot.com/dashboard">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="author" content="Devanand Premkumar">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script src="/static/scripts/utils.js"></script>
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/jquery.hortree.min.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
+    />
+    <meta
+      name="description"
+      content="XposedOrNot CxO Dashboard - Secure, passwordless access to monitor and manage data breaches across your organization's domains. Get real-time alerts and comprehensive breach reports."
+    />
+    <meta
+      name="keywords"
+      content="data breach monitoring, domain security, CxO dashboard, cybersecurity, breach alerts"
+    />
+    <meta
+      property="og:title"
+      content="XposedOrNot CxO Dashboard - Data Breach Monitoring"
+    />
+    <meta
+      property="og:description"
+      content="Secure dashboard for monitoring data breaches across your organization's domains. Get real-time alerts and comprehensive breach reports."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/dashboard" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="Devanand Premkumar" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"
-      referrerpolicy="no-referrer"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
       integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-   <script src="/static/scripts/utils.js"></script>
-   <script src="/static/scripts/other-libraries.js"></script>
-   <script src="/static/scripts/common.js"></script>
-   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
-   <style>
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+    <script src="/static/scripts/utils.js"></script>
+    <script src="/static/scripts/other-libraries.js"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+    ></script>
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb"
+      async
+      defer
+    ></script>
+    <style>
       body {
-         background-color: #f5f5f5;
+        background-color: #f5f5f5;
       }
 
       .navbar {
-         margin-bottom: 20px;
+        margin-bottom: 20px;
       }
 
       .card {
-         box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
-         transition: all 0.3s ease;
+        box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
+        transition: all 0.3s ease;
       }
 
       .card:hover {
-         transform: translateY(-2px);
-         box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.3);
       }
 
       .form-control:focus {
-         border-color: #007bff;
-         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
       }
 
       .btn-primary {
-         transition: all 0.3s ease;
-         position: relative;
-         overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
       }
 
       .btn-primary:hover {
-         transform: translateY(-1px);
+        transform: translateY(-1px);
       }
-
 
       .alert {
-         border-radius: 8px;
-         padding: 1rem;
-         margin-top: 1rem;
-         opacity: 0;
-         transform: translateY(20px);
-         transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 1rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
       }
 
       .alert.show {
-         opacity: 1;
-         transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
       }
-
 
       .tooltip-inner {
-         max-width: 300px;
-         padding: 8px 12px;
-         font-size: 0.9rem;
+        max-width: 300px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
       }
-
 
       .alert.show {
-         opacity: 1;
-         transform: translateY(0);
-         display: block !important;
+        opacity: 1;
+        transform: translateY(0);
+        display: block !important;
       }
 
-
       @media (max-width: 575.98px) {
-         .input-group.flex-wrap input.form-control {
-            width: 100%;
-            border-radius: 4px !important;
-         }
+        .input-group.flex-wrap input.form-control {
+          width: 100%;
+          border-radius: 4px !important;
+        }
 
-         .input-group-append .btn {
-            margin-top: 10px;
-            border-radius: 4px !important;
-         }
+        .input-group-append .btn {
+          margin-top: 10px;
+          border-radius: 4px !important;
+        }
       }
 
       .form-control.is-valid {
-         border-color: #28a745 !important;
-         box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
-         background-image: none !important;
+        border-color: #28a745 !important;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+        background-image: none !important;
       }
 
       .form-control.is-invalid {
-         border-color: #dc3545 !important;
-         box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
-         background-image: none !important;
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+        background-image: none !important;
       }
 
-
       .form-control-feedback {
-         display: none !important;
+        display: none !important;
       }
 
       /* Dark Mode Styles */
       [data-theme="dark"] {
-         background-color: #0e0f19 !important;
-         color: #9fc0e0;
+        background-color: #0e0f19 !important;
+        color: #9fc0e0;
       }
 
       [data-theme="dark"] .card {
-         background-color: #181b2d;
-         color: #9fc0e0;
-         box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+        background-color: #181b2d;
+        color: #9fc0e0;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
       }
 
       [data-theme="dark"] .card:hover {
-         box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.5);
+        box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.5);
       }
 
       [data-theme="dark"] .form-control {
-         background-color: #252a3d;
-         border-color: #3a3f56;
-         color: #e0e0e0;
+        background-color: #252a3d;
+        border-color: #3a3f56;
+        color: #e0e0e0;
       }
 
       [data-theme="dark"] .form-control:focus {
-         border-color: #4d7cc9;
-         box-shadow: 0 0 0 0.2rem rgba(77, 124, 201, 0.25);
+        border-color: #4d7cc9;
+        box-shadow: 0 0 0 0.2rem rgba(77, 124, 201, 0.25);
       }
 
       [data-theme="dark"] .btn-primary {
-         background-color: #3a5ca0;
-         border-color: #4d7cc9;
+        background-color: #3a5ca0;
+        border-color: #4d7cc9;
       }
 
       [data-theme="dark"] .btn-primary:hover {
-         background-color: #4d7cc9;
+        background-color: #4d7cc9;
       }
 
       [data-theme="dark"] h3,
       [data-theme="dark"] p {
-         color: #9fc0e0;
+        color: #9fc0e0;
       }
 
       [data-theme="dark"] .custom-control-label {
-         color: #9fc0e0;
+        color: #9fc0e0;
       }
-   </style>
-</head>
+    </style>
+  </head>
 
-<body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
-   <div class="mobileheader-area">
+  <body
+    data-gr-c-s-loaded="true"
+    class=""
+    style=""
+    data-new-gr-c-s-check-loaded="8.884.0"
+    data-gr-ext-installed=""
+  >
+    <div class="mobileheader-area">
       <div class="container">
-         <div class="row">
-            <div class="col-lg-12">
-               <nav class="navbar navbar-expand-lg navbar-light">
-                  <a class="navbar-brand abs" href="#" style="text-decoration: none;">
-                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-                     <span
-                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
-                        Edition</span>
-                  </a>
-                  <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse"
-                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                     aria-label="Toggle navigation">
-                     <span class="hamburger-box">
-                        <span class="hamburger-inner"></span>
-                     </span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav mr-auto"></ul>
-                     <div class="main-menu-part">
-                        <ul>
-                           <li>
-                              <a href="password.html">Password</a>
-                           </li>
-                           <li>
-                              <a href="faq.html">FAQ</a>
-                           </li>
-                           <li>
-                              <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
-                           </li>
-                           <li>
-                              <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
-                                 <em class="fab fa-twitter"></em>
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </nav>
-            </div>
-         </div>
-      </div>
-   </div>
-   <header class="header-area">
-      <div class="container">
-         <div class="row">
-            <div class="col-lg-3 col-md-3">
-               <div class="header-left">
-                  <a href="https://XposedOrNot.com">
-                     <p>XposedorNot</p>
-                  </a>
-               </div>
-            </div>
-            <div class="col-lg-9 col-md-9">
-               <div class="header-right">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a
+                class="navbar-brand abs"
+                href="#"
+                style="text-decoration: none"
+              >
+                <span
+                  style="
+                    font-size: 1.5em;
+                    font-weight: bold;
+                    display: block;
+                    color: white;
+                  "
+                  >XposedOrNot</span
+                >
+                <span
+                  style="
+                    font-size: 0.8em;
+                    display: block;
+                    color: white;
+                    opacity: 0.85;
+                    margin-top: -10px;
+                  "
+                  >Community Edition</span
+                >
+              </a>
+              <button
+                class="hamburger hamburger--squeeze navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="main-menu-part">
                   <ul>
-                     <li>
-                        <a href="password.html">Password</a>
-                     </li>
-                     <li>
-                        <a href="faq.html">FAQ</a>
-                     </li>
-                     <li>
-                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
-                     </li>
-                     <li>
-                        <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
-                           <em class="fab fa-twitter"></em>
-                        </a>
-                     </li>
+                    <li>
+                      <a href="password.html">Password</a>
+                    </li>
+                    <li>
+                      <a href="faq.html">FAQ</a>
+                    </li>
+                    <li>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://blog.xposedornot.com/"
+                        >Blog</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://twitter.com/XposedOrNot"
+                      >
+                        <em class="fab fa-twitter"></em>
+                      </a>
+                    </li>
                   </ul>
-               </div>
-            </div>
-         </div>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
       </div>
-   </header>
-   <div class="container">
-      <div class="row justify-content-center align-items-center" style="min-height:80vh">
-         <div class="col-12 col-md-10 col-lg-10 col-xl-8">
-            <h3 class="text-center mb-4">CxO Dashboard Access</h3>
-            <p class="text-center mb-5">Access your organization's data breach monitoring dashboard.<br>This service is only available for verified domains.</p>
-
-            <div class="card">
-               <div class="card-body p-4">
-                  <form id="emailForm">
-                     <div class="form-group">
-                        <label for="email" class="sr-only">Email address</label>
-                        <div class="input-group flex-wrap">
-                           <input type="email" class="form-control form-control-lg mb-2 mb-sm-0" id="email" name="email"
-                              placeholder="Enter your email address" data-toggle="tooltip" data-placement="top"
-                              title="Enter the email associated with your domain to receive a secure dashboard link" autofocus>
-                           <div class="input-group-append w-100 w-sm-auto">
-                              <button type="submit" class="btn btn-primary btn-lg w-100" id="submitButton">
-                                 <span id="submitText">Get Access</span>
-                                 <span id="submitSpinner" class="spinner-border spinner-border-sm d-none"
-                                    role="status"></span>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                  </form>
-
-                  <div class="alert alert-info text-center mt-4 mb-3 show" style="display: block !important;">
-                     <i class="fas fa-info-circle mr-2"></i>
-                     <strong>New to this service?</strong> Start by <a href="/domain.html" class="alert-link font-weight-bold">verifying your domain ownership</a> to unlock dashboard access.
-                  </div>
-
-                  <div id="rateLimitMessage" class="alert alert-warning" role="alert" style="display: none;">
-                     <i class="fas fa-exclamation-triangle mr-2"></i>
-                     <strong>Please wait:</strong> Too many attempts. Try again in a few minutes.
-                  </div>
-                  <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
-                     <i class="fas fa-check-circle mr-2"></i>
-                     <strong>Success!</strong> Check your email for the dashboard link.
-                  </div>
-                  <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;">
-                     <i class="fas fa-times-circle mr-2"></i>
-                     <strong>Error:</strong> Unable to process request. Please try again.
-                  </div>
-               </div>
+    </div>
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header-left">
+              <a href="https://XposedOrNot.com">
+                <p>XposedorNot</p>
+              </a>
             </div>
-         </div>
+          </div>
+          <div class="col-lg-9 col-md-9">
+            <div class="header-right">
+              <ul>
+                <li>
+                  <a href="password.html">Password</a>
+                </li>
+                <li>
+                  <a href="faq.html">FAQ</a>
+                </li>
+                <li>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://blog.xposedornot.com/"
+                    >Blog</a
+                  >
+                </li>
+                <li>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://twitter.com/XposedOrNot"
+                  >
+                    <em class="fab fa-twitter"></em>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-   </div>
-   <script>
+    </header>
+    <div class="container">
+      <div
+        class="row justify-content-center align-items-center"
+        style="min-height: 80vh"
+      >
+        <div class="col-12 col-md-10 col-lg-10 col-xl-8">
+          <h3 class="text-center mb-4">CxO Dashboard Access</h3>
+          <p class="text-center mb-5">
+            Access your organization's data breach monitoring dashboard.<br />This
+            service is only available for verified domains.
+          </p>
+
+          <div class="card">
+            <div class="card-body p-4">
+              <form id="emailForm">
+                <div class="form-group">
+                  <label for="email" class="sr-only">Email address</label>
+                  <div class="input-group flex-wrap">
+                    <input
+                      type="email"
+                      class="form-control form-control-lg mb-2 mb-sm-0"
+                      id="email"
+                      name="email"
+                      placeholder="Enter your email address"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Enter the email associated with your domain to receive a secure dashboard link"
+                      autofocus
+                    />
+                    <div class="input-group-append w-100 w-sm-auto">
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-lg w-100"
+                        id="submitButton"
+                      >
+                        <span id="submitText">Get Access</span>
+                        <span
+                          id="submitSpinner"
+                          class="spinner-border spinner-border-sm d-none"
+                          role="status"
+                        ></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <div
+                class="alert alert-info text-center mt-4 mb-3 show"
+                style="display: block !important"
+              >
+                <i class="fas fa-info-circle mr-2"></i>
+                <strong>New to this service?</strong> Start by
+                <a href="/domain.html" class="alert-link font-weight-bold"
+                  >verifying your domain ownership</a
+                >
+                to unlock dashboard access.
+              </div>
+
+              <div
+                id="rateLimitMessage"
+                class="alert alert-warning"
+                role="alert"
+                style="display: none"
+              >
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <strong>Please wait:</strong> Too many attempts. Try again in a
+                few minutes.
+              </div>
+              <div
+                id="successMessage"
+                class="alert alert-success"
+                role="alert"
+                style="display: none"
+              >
+                <i class="fas fa-check-circle mr-2"></i>
+                <strong>Success!</strong> Check your email for the dashboard
+                link.
+              </div>
+              <div
+                id="errorMessage"
+                class="alert alert-danger"
+                role="alert"
+                style="display: none"
+              >
+                <i class="fas fa-times-circle mr-2"></i>
+                <strong>Error:</strong> Unable to process request. Please try
+                again.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
       $(document).ready(function () {
-         $('[data-toggle="tooltip"]').tooltip({
-            trigger: 'hover',
-            container: 'body'
-         });
+        $('[data-toggle="tooltip"]').tooltip({
+          trigger: "hover",
+          container: "body",
+        });
 
-         function validateEmail(email) {
-            const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!email) return false;
-            if (!regex.test(email)) return false;
+        function validateEmail(email) {
+          const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          if (!email) return false;
+          if (!regex.test(email)) return false;
 
-            const [localPart, domain] = email.split('@');
-            if (domain.length < 4) return false;
+          const [localPart, domain] = email.split("@");
+          if (domain.length < 4) return false;
 
-            return true;
-         }
+          return true;
+        }
 
-         let initialLoad = true;
+        let initialLoad = true;
 
-         $('#emailForm').bootstrapValidator({
-            live: 'enabled',
-            trigger: 'blur change',
+        $("#emailForm")
+          .bootstrapValidator({
+            live: "enabled",
+            trigger: "blur change",
             feedbackIcons: false,
             fields: {
-               email: {
-                  validators: {
-                     callback: {
-                        message: 'Please enter a valid email address',
-                        callback: function (value) {
-                           if (initialLoad) {
-                              initialLoad = false;
-                              return true;
-                           }
-                           return validateEmail(value);
-                        }
-                     }
-                  }
-               }
-            }
-         }).on('status.field.bv', function (e, data) {
+              email: {
+                validators: {
+                  callback: {
+                    message: "Please enter a valid email address",
+                    callback: function (value) {
+                      if (initialLoad) {
+                        initialLoad = false;
+                        return true;
+                      }
+                      return validateEmail(value);
+                    },
+                  },
+                },
+              },
+            },
+          })
+          .on("status.field.bv", function (e, data) {
             const $field = data.element;
-            const isValid = data.status === 'VALID';
-            const button = $('#submitButton');
+            const isValid = data.status === "VALID";
+            const button = $("#submitButton");
 
-            $field.removeClass('is-valid is-invalid');
+            $field.removeClass("is-valid is-invalid");
             if (!initialLoad && $field.val()) {
-               $field.addClass(isValid ? 'is-valid' : 'is-invalid');
+              $field.addClass(isValid ? "is-valid" : "is-invalid");
             }
-            button.prop('disabled', !isValid);
-         });
+            button.prop("disabled", !isValid);
+          });
 
-         $('#submitButton').prop('disabled', true);
+        $("#submitButton").prop("disabled", true);
 
-         $('#email').on('input', function () {
-            const $field = $(this);
-            const isValid = validateEmail($field.val());
+        $("#email").on("input", function () {
+          const $field = $(this);
+          const isValid = validateEmail($field.val());
 
-            $field.removeClass('is-valid is-invalid');
-            if ($field.val()) {
-               $field.addClass(isValid ? 'is-valid' : 'is-invalid');
-            }
-            $('#submitButton').prop('disabled', !isValid);
-         });
+          $field.removeClass("is-valid is-invalid");
+          if ($field.val()) {
+            $field.addClass(isValid ? "is-valid" : "is-invalid");
+          }
+          $("#submitButton").prop("disabled", !isValid);
+        });
 
-         function showAlert(alertId) {
-            $('.alert').hide().removeClass('show');
-            $(alertId).show().addClass('show');
-         }
+        function showAlert(alertId) {
+          $(".alert").hide().removeClass("show");
+          $(alertId).show().addClass("show");
+        }
 
-         $('#emailForm').on('submit', function (e) {
-            e.preventDefault();
-            var $submitButton = $('#submitButton');
-            var $submitText = $('#submitText');
-            var $submitSpinner = $('#submitSpinner');
-            var $email = $('#email');
-            var emailValue = $email.val();
+        $("#emailForm").on("submit", function (e) {
+          e.preventDefault();
+          var $submitButton = $("#submitButton");
+          var $submitText = $("#submitText");
+          var $submitSpinner = $("#submitSpinner");
+          var $email = $("#email");
+          var emailValue = $email.val();
 
-            if (!validateEmail(emailValue)) {
-               showAlert('#errorMessage');
-               return;
-            }
+          if (!validateEmail(emailValue)) {
+            showAlert("#errorMessage");
+            return;
+          }
 
-            $submitButton.prop('disabled', true);
-            $email.prop('disabled', true);
-            $submitText.hide();
-            $submitSpinner.removeClass('d-none').addClass('d-inline-block');
-            $.ajax({
-               url: 'https://api.xposedornot.com/v1/domain-alert/' + emailValue,
-               type: 'GET',
-               success: function (response) {
-                  showAlert('#successMessage');
-                  $email.val('').removeClass('is-valid is-invalid');
-               },
-               error: function (error) {
-                  if (error.status === 429) {
-                     showAlert('#rateLimitMessage');
-                  } else {
-                     showAlert('#errorMessage');
-                  }
-               },
-               complete: function () {
-                  $submitButton.prop('disabled', false);
-                  $email.prop('disabled', false);
-                  $submitText.show();
-                  $submitSpinner.removeClass('d-inline-block').addClass('d-none');
-               }
-            });
-         });
+          $submitButton.prop("disabled", true);
+          $email.prop("disabled", true);
+          $submitText.hide();
+          $submitSpinner.removeClass("d-none").addClass("d-inline-block");
+          $.ajax({
+            url: "https://api.xposedornot.com/v1/domain-alert/" + emailValue,
+            type: "GET",
+            success: function (response) {
+              showAlert("#successMessage");
+              $email.val("").removeClass("is-valid is-invalid");
+            },
+            error: function (error) {
+              if (error.status === 429) {
+                showAlert("#rateLimitMessage");
+              } else {
+                showAlert("#errorMessage");
+              }
+            },
+            complete: function () {
+              $submitButton.prop("disabled", false);
+              $email.prop("disabled", false);
+              $submitText.show();
+              $submitSpinner.removeClass("d-inline-block").addClass("d-none");
+            },
+          });
+        });
 
-         $('#emailForm').on('reset', function () {
-            const $field = $('#email');
-            $field.removeClass('is-valid is-invalid');
-            $('#submitButton').prop('disabled', true);
-         });
+        $("#emailForm").on("reset", function () {
+          const $field = $("#email");
+          $field.removeClass("is-valid is-invalid");
+          $("#submitButton").prop("disabled", true);
+        });
 
+        const darkSwitch = document.getElementById("darkSwitch");
+        const theme = localStorage.getItem("darkSwitch");
 
-         const darkSwitch = document.getElementById('darkSwitch');
-         const theme = localStorage.getItem('darkSwitch');
+        if (theme === "dark") {
+          document.body.setAttribute("data-theme", "dark");
+          darkSwitch.checked = true;
+        }
 
-
-         if (theme === 'dark') {
-            document.body.setAttribute('data-theme', 'dark');
-            darkSwitch.checked = true;
-         }
-
-
-         darkSwitch.addEventListener('change', function (e) {
-            if (e.target.checked) {
-               document.body.setAttribute('data-theme', 'dark');
-               localStorage.setItem('darkSwitch', 'dark');
-            } else {
-               document.body.removeAttribute('data-theme');
-               localStorage.removeItem('darkSwitch');
-            }
-         });
+        darkSwitch.addEventListener("change", function (e) {
+          if (e.target.checked) {
+            document.body.setAttribute("data-theme", "dark");
+            localStorage.setItem("darkSwitch", "dark");
+          } else {
+            document.body.removeAttribute("data-theme");
+            localStorage.removeItem("darkSwitch");
+          }
+        });
       });
-   </script>
-   <div class="footer">
+    </script>
+    <div class="footer">
       <div class="container">
-         <div style="text-align:center;margin-bottom:30px;">
-            <p>Join us in shaping this fully open source site! Contributions welcome ❤️ at our <a
-                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
-         </div>
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Join us in shaping this fully open source site! Contributions
+            welcome ❤️ at our
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >.
+          </p>
+        </div>
 
-         <div class="footer-columns">
-            <div class="footer-group">
-               <h6>Legal</h6>
-               <a href="privacy" class="footer-link">Privacy Policy</a>
-               <a href="terms" class="footer-link">Terms</a>
-            </div>
-            <div class="footer-group">
-               <h6>Community</h6>
-               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
-               <a href="our-repository" class="footer-link">Our Repository</a>
-            </div>
-            <div class="footer-group">
-               <h6>Trust</h6>
-               <a href="transparency" class="footer-link">Transparency</a>
-               <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
-               <a href="https://statuspage.freshping.io/66216-XposedOrNot" target="_blank" rel="noopener" class="footer-link">Status</a>
-            </div>
-            <div class="footer-group">
-               <h6>Follow Us</h6>
-               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                  <i class="fab fa-twitter"></i> Twitter
-               </a>
-               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                  <i class="fab fa-facebook"></i> Facebook
-               </a>
-               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-                  <i class="fab fa-mastodon"></i> Mastodon
-               </a>
-            </div>
-         </div>
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Legal</h6>
+            <a href="privacy" class="footer-link">Privacy Policy</a>
+            <a href="terms" class="footer-link">Terms</a>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+            <a href="our-repository" class="footer-link">Our Repository</a>
+          </div>
+          <div class="footer-group">
+            <h6>Trust</h6>
+            <a href="transparency" class="footer-link">Transparency</a>
+            <a href="responsible-disclosure" class="footer-link"
+              >Responsible Disclosure</a
+            >
+            <a
+              href="https://statuspage.freshping.io/66216-XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Status</a
+            >
+          </div>
+          <div class="footer-group">
+            <h6>Follow Us</h6>
+            <a
+              href="https://twitter.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
+              <i class="fab fa-twitter"></i> Twitter
+            </a>
+            <a
+              href="https://facebook.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a
+              href="https://infosec.exchange/@XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+          </div>
+        </div>
 
-         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
-            <input type="checkbox" class="custom-control-input" id="darkSwitch">
-            <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
-         </div>
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+        </div>
       </div>
-   </div>
-</body>
-
+    </div>
+  </body>
 </html>
