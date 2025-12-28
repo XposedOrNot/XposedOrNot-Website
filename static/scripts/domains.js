@@ -149,6 +149,12 @@ $(document).ready(function () {
     }
 
     function triggerConfetti() {
+        // Check if confetti library is loaded
+        if (typeof confetti !== 'function') {
+            console.warn('Confetti library not loaded');
+            return;
+        }
+
         const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
         const duration = 3000;
 

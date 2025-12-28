@@ -250,6 +250,12 @@ const ALERT_MESSAGES = {
 };
 
 function fireConfetti() {
+    // Check if confetti library is loaded
+    if (typeof confetti !== 'function') {
+        console.warn('Confetti library not loaded');
+        return;
+    }
+
     // Vibrant color palette
     const colors = [
         '#FF6B6B',  // Coral red

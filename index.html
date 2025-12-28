@@ -1,658 +1,1063 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      XposedOrNot - Check Your Email for Data Breaches | Free Security Tool
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
+    />
+    <meta
+      name="description"
+      content="Free tool to check if your email was exposed in data breaches. Get instant alerts, monitor multiple emails, and protect your digital identity with XposedOrNot's comprehensive security features."
+    />
+    <meta
+      name="keywords"
+      content="data breach checker, email security, password security, breach monitoring, cybersecurity tool"
+    />
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
 
-<head>
-   <meta charset="utf-8">
-   <title>XposedOrNot - Check Your Email for Data Breaches | Free Security Tool</title>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description"
-      content="Free tool to check if your email was exposed in data breaches. Get instant alerts, monitor multiple emails, and protect your digital identity with XposedOrNot's comprehensive security features.">
-   <meta name="keywords"
-      content="data breach checker, email security, password security, breach monitoring, cybersecurity tool">
-   <meta name="author" content="Devanand Premkumar">
-   <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
-   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
-   <link rel="dns-prefetch" href="static.hotjar.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com">
+    <meta
+      property="og:title"
+      content="XposedOrNot - Check Your Email for Data Breaches | Free Security Tool"
+    />
+    <meta
+      property="og:description"
+      content="Free tool to check if your email was exposed in data breaches. Get instant alerts and protect your digital identity."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta property="og:image:alt" content="XposedOrNot Logo" />
+    <meta property="og:url" content="https://xposedornot.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:locale:alternate" content="es_ES" />
 
-   <meta property="og:title" content="XposedOrNot - Check Your Email for Data Breaches | Free Security Tool" />
-   <meta property="og:description"
-      content="Free tool to check if your email was exposed in data breaches. Get instant alerts and protect your digital identity." />
-   <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
-   <meta property="og:image:alt" content="XposedOrNot Logo" />
-   <meta property="og:url" content="https://xposedornot.com" />
-   <meta property="og:type" content="website" />
-   <meta property="og:site_name" content="XposedOrNot" />
-   <meta property="og:locale" content="en_US" />
-   <meta property="og:locale:alternate" content="zh_CN" />
-   <meta property="og:locale:alternate" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta
+      name="twitter:title"
+      content="Check Your Email for Data Breaches - XposedOrNot"
+    />
+    <meta
+      name="twitter:description"
+      content="Free tool to verify email exposure in data breaches. Get instant alerts and protect your digital identity."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="XposedOrNot Security Tool Interface"
+    />
 
-   <meta name="twitter:card" content="summary_large_image">
-   <meta name="twitter:site" content="@XposedOrNot">
-   <meta name="twitter:creator" content="@DevaOnBreaches">
-   <meta name="twitter:title" content="Check Your Email for Data Breaches - XposedOrNot">
-   <meta name="twitter:description"
-      content="Free tool to verify email exposure in data breaches. Get instant alerts and protect your digital identity.">
-   <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
-   <meta name="twitter:image:alt" content="XposedOrNot Security Tool Interface">
-
-   <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
       integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous" />
-   <link rel="stylesheet"
-      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset' type="text/css"
-      media="all">
-   <link rel="author" href="humans.txt" />
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
+      type="text/css"
+      media="all"
+    />
+    <link rel="author" href="humans.txt" />
 
-   <script src="/static/scripts/other-libraries.js" defer></script>
+    <script src="/static/scripts/other-libraries.js" defer></script>
 
-   <link rel="preload" href="/static/css/style-new.css" as="style">
-   <link rel="preload" href="/static/scripts/index.js" as="script">
+    <link rel="preload" href="/static/css/style-new.css" as="style" />
+    <link rel="preload" href="/static/scripts/index.js" as="script" />
 
-   <script type="application/ld+json">
-   {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "XposedOrNot",
-      "url": "https://xposedornot.com",
-      "logo": "https://xposedornot.com/static/images/xon.png",
-      "sameAs": [
-         "https://twitter.com/XposedOrNot",
-         "https://facebook.com/xposedornot",
-         "https://infosec.exchange/@XposedOrNot"
-      ]
-   }
-   </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "XposedOrNot",
+        "url": "https://xposedornot.com",
+        "logo": "https://xposedornot.com/static/images/xon.png",
+        "sameAs": [
+          "https://twitter.com/XposedOrNot",
+          "https://facebook.com/xposedornot",
+          "https://infosec.exchange/@XposedOrNot"
+        ]
+      }
+    </script>
 
-
-   <script type="application/ld+json">
-   {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "XposedOrNot",
-      "url": "https://xposedornot.com",
-      "potentialAction": {
-         "@type": "SearchAction",
-         "target": {
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "XposedOrNot",
+        "url": "https://xposedornot.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
             "@type": "EntryPoint",
             "urlTemplate": "https://xposedornot.com/search?email={email}"
-         },
-         "query-input": "required name=email"
+          },
+          "query-input": "required name=email"
+        }
       }
-   }
-   </script>
+    </script>
 
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "XposedOrNot",
+        "applicationCategory": "SecurityApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Email breach checking",
+          "Password security verification",
+          "Real-time breach alerts",
+          "Domain monitoring"
+        ]
+      }
+    </script>
 
-   <script type="application/ld+json">
-   {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "XposedOrNot",
-      "applicationCategory": "SecurityApplication",
-      "offers": {
-         "@type": "Offer",
-         "price": "0",
-         "priceCurrency": "USD"
-      },
-      "featureList": [
-         "Email breach checking",
-         "Password security verification",
-         "Real-time breach alerts",
-         "Domain monitoring"
-      ]
-   }
-   </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://xposedornot.com"
+          }
+        ]
+      }
+    </script>
 
-   <script type="application/ld+json">
-   {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-         "@type": "ListItem",
-         "position": 1,
-         "name": "Home",
-         "item": "https://xposedornot.com"
-      }]
-   }
-   </script>
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="theme-color" content="#3f71f3" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="XposedOrNot" />
 
-   <meta name="robots" content="index, follow">
-   <meta name="googlebot" content="index, follow">
-   <meta name="theme-color" content="#3f71f3">
-   <meta name="mobile-web-app-capable" content="yes">
-   <meta name="apple-mobile-web-app-capable" content="yes">
-   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-   <meta name="apple-mobile-web-app-title" content="XposedOrNot">
-
-   <style>
+    <style>
       @keyframes pulse {
-         0% {
-            transform: scale(1);
-         }
+        0% {
+          transform: scale(1);
+        }
 
-         50% {
-            transform: scale(1.05);
-         }
+        50% {
+          transform: scale(1.05);
+        }
 
-         100% {
-            transform: scale(1);
-         }
+        100% {
+          transform: scale(1);
+        }
       }
 
       .new-badge {
-         background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-         color: white;
-         padding: 2px 8px;
-         border-radius: 12px;
-         font-size: 0.7em;
-         font-weight: bold;
-         margin-left: 8px;
-         position: relative;
-         display: inline-block;
-         animation: pulse 2s infinite;
+        background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.7em;
+        font-weight: bold;
+        margin-left: 8px;
+        position: relative;
+        display: inline-block;
+        animation: pulse 2s infinite;
       }
-   </style>
-</head>
+    </style>
+  </head>
 
-<body data-spy="scroll" data-target=".menu" data-offset="50">
-   <div class="xon">
+  <body data-spy="scroll" data-target=".menu" data-offset="50">
+    <div class="xon">
       <div class="searchMe">
-         <div class="banner" id="banner">
-            <canvas id="canvas"></canvas>
-            <div class="grid">
-               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
-                  <a class="navbar-brand abs" href="#" style="text-decoration: none;">
-                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-                     <span
-                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
-                        Edition</span>
-                  </a>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
-                     <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="navbar-collapse collapse" id="collapsingNavbar">
-                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active px-4">
-                           <a class="nav-link" href="password.html">Password</a>
-                        </li>
-                        <li class="nav-item active px-4">
-                           <a class="nav-link" href="faq.html">FAQ</a>
-                        </li>
-                        <li class="nav-item active px-4">
-                           <a class="nav-link" href="https://plus.xposedornot.com" target="_blank">xonPlus</a>
-                        </li>
-                        <li class="nav-item active px-4">
-                           <a class="nav-link" href="api_doc.html">API</a>
-                        </li>
-                        <li class="nav-item active dropdown px-4">
-                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                              id="navbarDropdownMenuLink" role="button"> Language <i class="fas fa-caret-down"></i></a>
-                           <style>
-                              .dropdown-toggle::after {
-                                 display: none;
-                              }
-                           </style>
-                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
-                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
-                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
-                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
-                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
-                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
-                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
-                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
-                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
-                           </div>
-                        </li>
+        <div class="banner" id="banner">
+          <canvas id="canvas"></canvas>
+          <div class="grid">
+            <nav
+              class="navbar navbar-expand-md navbar-dark justify-content-center"
+            >
+              <a
+                class="navbar-brand abs"
+                href="#"
+                style="text-decoration: none"
+              >
+                <span
+                  style="
+                    font-size: 1.5em;
+                    font-weight: bold;
+                    display: block;
+                    color: white;
+                  "
+                  >XposedOrNot</span
+                >
+                <span
+                  style="
+                    font-size: 0.8em;
+                    display: block;
+                    color: white;
+                    opacity: 0.85;
+                    margin-top: -10px;
+                  "
+                  >Community Edition</span
+                >
+              </a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapsingNavbar"
+              >
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="navbar-collapse collapse" id="collapsingNavbar">
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active px-4">
+                    <a class="nav-link" href="password.html">Password</a>
+                  </li>
+                  <li class="nav-item active px-4">
+                    <a class="nav-link" href="faq.html">FAQ</a>
+                  </li>
+                  <li class="nav-item active px-4">
+                    <a
+                      class="nav-link"
+                      href="https://plus.xposedornot.com"
+                      target="_blank"
+                      >xonPlus</a
+                    >
+                  </li>
+                  <li class="nav-item active px-4">
+                    <a class="nav-link" href="api_doc.html">API</a>
+                  </li>
+                  <li class="nav-item active dropdown px-4">
+                    <a
+                      aria-expanded="false"
+                      class="nav-link dropdown-toggle"
+                      data-toggle="dropdown"
+                      href="#"
+                      id="navbarDropdownMenuLink"
+                      role="button"
+                    >
+                      Language <i class="fas fa-caret-down"></i
+                    ></a>
+                    <style>
+                      .dropdown-toggle::after {
+                        display: none;
+                      }
+                    </style>
+                    <div
+                      aria-labelledby="navbarDropdownMenuLink"
+                      class="dropdown-menu"
+                    >
+                      <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                      <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                      <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                      <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                      <a class="dropdown-item" href="/pt/"
+                        >Português (Portuguese)</a
+                      >
+                      <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                      <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                      <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                      <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </nav>
 
-                     </ul>
-                  </div>
-               </nav>
+            <div class="banner-row">
+              <div class="banner-left">
+                <div class="banner-text">
+                  <form id="search" method="post" action="/">
+                    <h1 id="heading" align="center">
+                      Discover If Your Email Was Exposed in Data Breaches
+                    </h1>
+                    <p align="center">
+                      Search billions of exposed records instantly. Get
+                      real-time alerts to protect your accounts.
+                    </p>
+                    <br />
+                    <div class="form mail-box">
+                      <div class="modern-search-container">
+                        <input
+                          autofocus
+                          class="modern-search-input"
+                          type="email"
+                          placeholder="your@email.com"
+                          id="edhu"
+                          aria-label="Email address to check for data breaches"
+                        />
+                        <button
+                          class="modern-search-button"
+                          type="submit"
+                          id="searchMe"
+                          aria-label="Check for data breaches"
+                        >
+                          Check Now
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <p
+                    style="
+                      font-size: 0.75em;
+                      color: rgba(255, 255, 255, 0.7);
+                      margin: 12px 0 8px 0;
+                      text-align: center;
+                      white-space: nowrap;
+                    "
+                  >
+                    By using this service, you agree to our
+                    <a
+                      href="terms"
+                      target="_blank"
+                      rel="noopener"
+                      style="
+                        display: inline !important;
+                        color: rgba(255, 255, 255, 0.9);
+                        text-decoration: underline;
+                        margin: 0 !important;
+                      "
+                      >Terms</a
+                    >
+                    and
+                    <a
+                      href="privacy"
+                      target="_blank"
+                      rel="noopener"
+                      style="
+                        display: inline !important;
+                        color: rgba(255, 255, 255, 0.9);
+                        text-decoration: underline;
+                        margin: 0 !important;
+                      "
+                      >Privacy Policy</a
+                    >.
+                  </p>
 
-               <div class="banner-row">
-                  <div class="banner-left">
-                     <div class="banner-text">
-                        <form id=" search" method="post" action="/">
-                           <h1 id="heading" align="center">Discover If Your Email Was Exposed in Data Breaches</h1>
-                           <p align="center">Search billions of exposed records instantly. Get real-time alerts to protect your accounts.</p>
-                           <br>
-                           <div class="form mail-box">
-                              <div class="modern-search-container">
-                                 <input autofocus class="modern-search-input" type="email"
-                                    placeholder="your@email.com" id="edhu"
-                                    aria-label="Email address to check for data breaches">
-                                 <button class="modern-search-button" type="submit" id="searchMe"
-                                    aria-label="Check for data breaches">
-                                    Check Now
-                                 </button>
-                              </div>
-                           </div>
-                        </form>
-                        <p style="font-size: 0.75em; color: rgba(255,255,255,0.7); margin: 12px 0 8px 0; text-align: center; white-space: nowrap;">By using this service, you agree to our <a href="terms" target="_blank" rel="noopener" style="display: inline !important; color: rgba(255,255,255,0.9); text-decoration: underline; margin: 0 !important;">Terms</a> and <a href="privacy" target="_blank" rel="noopener" style="display: inline !important; color: rgba(255,255,255,0.9); text-decoration: underline; margin: 0 !important;">Privacy Policy</a>.</p>
-
-                        <div class="modal fade" id="vidModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-                           aria-hidden="true">
-                           <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                 <div class="modal-body">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                       <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <div class="embed-responsive embed-responsive-16by9">
-                                       <iframe class="embed-responsive-item" src="" id="video"
-                                          allowscriptaccess="always" allow="autoplay"></iframe>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
+                  <div
+                    class="modal fade"
+                    id="vidModal"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="ModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                          <div class="embed-responsive embed-responsive-16by9">
+                            <iframe
+                              class="embed-responsive-item"
+                              src=""
+                              id="video"
+                              allowscriptaccess="always"
+                              allow="autoplay"
+                            ></iframe>
+                          </div>
                         </div>
-                     </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="banner-right banner-text add-row">
-                     <h4 align="center" style="color:#3f71f3">Free Tools for All</h4>
-                     <div class="add-flex">
-                        <a href="shield.html" class="adds">
-                           <div class="add1">
-                              <h5>Privacy Shield</h5>
-                              <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                              <span class="tooltip-text">Enable Privacy Shield to protect your email from public
-                                 searches.</span>
-                           </div>
-                        </a>
-                        <a href="domains.html" class="adds">
-                           <div class="add1">
-                              <h5>Get Company Insights</h5>
-                              <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                              <span class="tooltip-text">Get a high-level overview of data breach incidents for your
-                                 domain.</span>
-                           </div>
-                        </a>
-                     </div>
-                     <div class="add-flex">
-                        <a href="dashboard.html" class="adds">
-                           <div class="add1">
-                              <h5>CXO Dashboard</h5>
-                              <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                              <span class="tooltip-text">Monitor data breaches across all validated domains and access
-                                 detailed summaries.</span>
-                           </div>
-                        </a>
-                        <a href="domains-phishing.html" class="adds">
-                           <div class="add1">
-                              <h5>Phishing Scanner <span class="new-badge">NEW</span></h5>
-                              <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                              <span class="tooltip-text">Check if your domain is being used for phishing attacks and get
-                                 detailed security insights.</span>
-                           </div>
-                        </a>
-                     </div>
-                     <div class="add-flex add-flex2">
-                        <a href="domain.html" class="adds">
-                           <div class="add1">
-                              <h5>Domain Verification</h5>
-                              <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                              <span class="tooltip-text">Verify your domain authority swiftly through DNS, email, or
-                                 HTML in just three steps.</span>
-                           </div>
-                        </a>
-                        <a href="xposed.html" class="adds">
-                           <div class="add1">
-                              <h5>Data Breaches</h5>
-                              <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                              <span class="tooltip-text">Dive into comprehensive details of all data breaches, including
-                                 sources and data points.</span>
-                           </div>
-                        </a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="password">
-         <div class="container">
-
-            <h5 align="center" style="color:#3f71f3">
-               How XposedOrNot Keeps You Safe
-               <p><i class="fas fa-arrow-down blueArrow"></i></p>
-               <strong>
-            </h5>
-            <div class="password-row">
-               <div class="password-left">
-                  <div class="password-text">
-                     <p align="justify">
-                        <strong>XposedOrNot</strong> helps you stay protected in today's digital world. We monitor your
-                        email 24/7 and instantly notify you if it appears in any data breaches, giving you the power
-                        to act quickly and secure your information. <br><br>Designed with privacy at its core,
-                        XposedOrNot ensures your data is never stored or shared unnecessarily.
-                        <br><br>
-                        As a community-driven, open-source platform, we're committed to full transparency. You can
-                        explore how everything works, review our code, and even contribute by submitting improvements or
-                        sharing breach data.
-                        <br><br>
-                        Don't wait for a breach to happen. <strong><a href="#" id="mySignUp" data-toggle="modal"
-                              data-target="#alertMeModal">Get free alerts</a> and protect your
-                           digital identity today!</strong>
-                        <Br>
-                        <br>
-                        Got questions? Our comprehensive <a href="faq.html">FAQs</a> are here to help.
-                     </p>
-                  </div>
-               </div>
-               <div class="password-right">
-                  <div class="video-container">
-                     <video class="img-fluid pass" controls loop style="max-width: 500px; width: 100%; height: 400px;" id="xon-video">
-                        <source src="/static/xon-video.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                     </video>
-                  </div>
-               </div>
-            </div>
-         </div>
-
-      </div>
-      <div class="follow">
-         <div class="container" align="center">
-            <h2 style="color:#3f71f3">All-Time Statistics of Data Breaches in XposedOrNot</h2>
-            <p style="margin-top: 15px; margin-bottom: 25px;">Trusted by thousands to monitor their digital safety</p>
-            <div class="follow-row">
-               <div class="follow-flex">
-                  <div class="follow1 stat-breaches">
-                     <div class="stat-icon">
-                        <i class="fas fa-shield-alt"></i>
-                     </div>
-                     <h4>
-                        <div id="b1"></div>
-                     </h4>
-                     <h6>Data Breaches</h6>
-                  </div>
-                  <div class="follow1 stat-records">
-                     <div class="stat-icon">
-                        <i class="fas fa-database"></i>
-                     </div>
-                     <h4>
-                        <div id="b2"></div>
-                     </h4>
-                     <h6>Exposed Records</h6>
-                  </div>
-                  <div class="follow1 stat-emails">
-                     <div class="stat-icon">
-                        <i class="fas fa-envelope-open"></i>
-                     </div>
-                     <h4>
-                        <div id="p1"></div>
-                     </h4>
-                     <h6>Exposed Emails</h6>
-                  </div>
-                  <div class="follow1 stat-passwords">
-                     <div class="stat-icon">
-                        <i class="fas fa-key"></i>
-                     </div>
-                     <h4>
-                        <div id="p2"></div>
-                     </h4>
-                     <h6>Exposed Passwords</h6>
-                  </div>
-               </div>
-               <p>Please follow <a href="https://twitter.com/XposedOrNot" target="_blank" rel="noopener"
-                     name="twitter">XposedOrNot</a> on Twitter for data-breach alerts and notifications. </p>
-            </div>
-         </div>
-         <hr>
-      </div>
-      <div class="add">
-         <div class="container">
-            <h2 style="color:#3f71f3">Free Security & Privacy Tools</h2>
-            <div class="add-row1">
-               <div class="add-flex">
-                  <a href="password.html" class="adds">
-                     <div class="add1">
-                        <h5>Passwords Checking</h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Secure your data by verifying if your passwords have been exposed or
-                           leaked.</span>
-                     </div>
-                  </a>
+                </div>
+              </div>
+              <div class="banner-right banner-text add-row">
+                <h4 align="center" style="color: #3f71f3">
+                  Free Tools for All
+                </h4>
+                <div class="add-flex">
                   <a href="shield.html" class="adds">
-                     <div class="add1">
-                        <h5>Privacy Shield</h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Enable Privacy Shield to protect your email from public
-                           searches.</span>
-                     </div>
+                    <div class="add1">
+                      <h5>Privacy Shield</h5>
+                      <img
+                        src="/static/images/arrow-left.png"
+                        class="img-fluid arrow"
+                        alt=""
+                      />
+                      <span class="tooltip-text"
+                        >Enable Privacy Shield to protect your email from public
+                        searches.</span
+                      >
+                    </div>
                   </a>
                   <a href="domains.html" class="adds">
-                     <div class="add1">
-                        <h5>Get Company Insights</h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Get a high-level overview of data breach incidents for your
-                           domain.</span>
-                     </div>
+                    <div class="add1">
+                      <h5>Get Company Insights</h5>
+                      <img
+                        src="/static/images/arrow-left.png"
+                        class="img-fluid arrow"
+                        alt=""
+                      />
+                      <span class="tooltip-text"
+                        >Get a high-level overview of data breach incidents for
+                        your domain.</span
+                      >
+                    </div>
                   </a>
-               </div>
-               <div class="add-flex add-flex2">
-                  <a href="domain.html" class="adds">
-                     <div class="add1">
-                        <h5>Domain Verification</h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Verify your domain authority swiftly through DNS, email, or HTML in
-                           just three steps.</span>
-                     </div>
-                  </a>
-                  <a href="breaches-visualisations.html" class="adds">
-                     <div class="add1">
-                        <h5>Breaches Visualisation</h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Visualize the scale of all loaded data breaches with detailed
-                           infographics.</span>
-                     </div>
-                  </a>
-                  <a href="xposed.html" class="adds">
-                     <div class="add1">
-                        <h5>Data Breaches</h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Dive into comprehensive details of all data breaches loaded in
-                           Xposedornot, including sources and data points.</span>
-                     </div>
-                  </a>
-               </div>
-               <br>
-               <div class="add-flex">
+                </div>
+                <div class="add-flex">
                   <a href="dashboard.html" class="adds">
-                     <div class="add1">
-                        <h5>CXO Dashboard</h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Monitor data breaches across all validated domains and access
-                           detailed summaries at your fingertips.</span>
-                     </div>
+                    <div class="add1">
+                      <h5>CXO Dashboard</h5>
+                      <img
+                        src="/static/images/arrow-left.png"
+                        class="img-fluid arrow"
+                        alt=""
+                      />
+                      <span class="tooltip-text"
+                        >Monitor data breaches across all validated domains and
+                        access detailed summaries.</span
+                      >
+                    </div>
                   </a>
                   <a href="domains-phishing.html" class="adds">
-                     <div class="add1">
-                        <h5>Phishing Scanner <span class="new-badge">NEW</span></h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Check if your domain is being used for phishing attacks and get
-                           detailed security insights.</span>
-                     </div>
+                    <div class="add1">
+                      <h5>
+                        Phishing Scanner <span class="new-badge">NEW</span>
+                      </h5>
+                      <img
+                        src="/static/images/arrow-left.png"
+                        class="img-fluid arrow"
+                        alt=""
+                      />
+                      <span class="tooltip-text"
+                        >Check if your domain is being used for phishing attacks
+                        and get detailed security insights.</span
+                      >
+                    </div>
                   </a>
-                  <a href="xonPulse.html" class="adds">
-                     <div class="add1">
-                        <h5>Security News</h5>
-                        <img src="/static/images/arrow-left.png" class="img-fluid arrow" alt="">
-                        <span class="tooltip-text">Stay updated with the latest data breaches, security alerts, and cybersecurity news.</span>
-                     </div>
+                </div>
+                <div class="add-flex add-flex2">
+                  <a href="domain.html" class="adds">
+                    <div class="add1">
+                      <h5>Domain Verification</h5>
+                      <img
+                        src="/static/images/arrow-left.png"
+                        class="img-fluid arrow"
+                        alt=""
+                      />
+                      <span class="tooltip-text"
+                        >Verify your domain authority swiftly through DNS,
+                        email, or HTML in just three steps.</span
+                      >
+                    </div>
                   </a>
-               </div>
+                  <a href="xposed.html" class="adds">
+                    <div class="add1">
+                      <h5>Data Breaches</h5>
+                      <img
+                        src="/static/images/arrow-left.png"
+                        class="img-fluid arrow"
+                        alt=""
+                      />
+                      <span class="tooltip-text"
+                        >Dive into comprehensive details of all data breaches,
+                        including sources and data points.</span
+                      >
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="password">
+        <div class="container">
+          <h5 align="center" style="color: #3f71f3">
+            How XposedOrNot Keeps You Safe
+            <p><i class="fas fa-arrow-down blueArrow"></i></p>
+          </h5>
+          <div class="password-row">
+            <div class="password-left">
+              <div class="password-text">
+                <p align="justify">
+                  <strong>XposedOrNot</strong> helps you stay protected in
+                  today's digital world. We monitor your email 24/7 and
+                  instantly notify you if it appears in any data breaches,
+                  giving you the power to act quickly and secure your
+                  information. <br /><br />Designed with privacy at its core,
+                  XposedOrNot ensures your data is never stored or shared
+                  unnecessarily. <br /><br />
+                  As a community-driven, open-source platform, we're committed
+                  to full transparency. You can explore how everything works,
+                  review our code, and even contribute by submitting
+                  improvements or sharing breach data.
+                  <br /><br />
+                  Don't wait for a breach to happen.
+                  <strong
+                    ><a
+                      href="#"
+                      id="mySignUp"
+                      data-toggle="modal"
+                      data-target="#alertMeModal"
+                      >Get free alerts</a
+                    >
+                    and protect your digital identity today!</strong
+                  >
+                  <br />
+                  <br />
+                  Got questions? Our comprehensive
+                  <a href="faq.html">FAQs</a> are here to help.
+                </p>
+              </div>
+            </div>
+            <div class="password-right">
+              <div class="video-container">
+                <video
+                  class="img-fluid pass"
+                  controls
+                  loop
+                  style="max-width: 500px; width: 100%; height: 400px"
+                  id="xon-video"
+                >
+                  <source src="/static/xon-video.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="follow">
+        <div class="container" align="center">
+          <h2 style="color: #3f71f3">
+            All-Time Statistics of Data Breaches in XposedOrNot
+          </h2>
+          <p style="margin-top: 15px; margin-bottom: 25px">
+            Trusted by thousands to monitor their digital safety
+          </p>
+          <div class="follow-row">
+            <div class="follow-flex">
+              <div class="follow1 stat-breaches">
+                <div class="stat-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>
+                  <div id="b1"></div>
+                </h4>
+                <h6>Data Breaches</h6>
+              </div>
+              <div class="follow1 stat-records">
+                <div class="stat-icon">
+                  <i class="fas fa-database"></i>
+                </div>
+                <h4>
+                  <div id="b2"></div>
+                </h4>
+                <h6>Exposed Records</h6>
+              </div>
+              <div class="follow1 stat-emails">
+                <div class="stat-icon">
+                  <i class="fas fa-envelope-open"></i>
+                </div>
+                <h4>
+                  <div id="p1"></div>
+                </h4>
+                <h6>Exposed Emails</h6>
+              </div>
+              <div class="follow1 stat-passwords">
+                <div class="stat-icon">
+                  <i class="fas fa-key"></i>
+                </div>
+                <h4>
+                  <div id="p2"></div>
+                </h4>
+                <h6>Exposed Passwords</h6>
+              </div>
             </div>
             <p>
-               <a href="#">XposedOrNot</a> security and privacy tools are <u>always <b>FREE</b>
-               </u> for everyone to benefit.
+              Please follow
+              <a
+                href="https://twitter.com/XposedOrNot"
+                target="_blank"
+                rel="noopener"
+                name="twitter"
+                >XposedOrNot</a
+              >
+              on Twitter for data-breach alerts and notifications.
             </p>
-         </div>
+          </div>
+        </div>
+        <hr />
       </div>
-   </div>
-   <div class="footer">
+      <div class="add">
+        <div class="container">
+          <h2 style="color: #3f71f3">Free Security & Privacy Tools</h2>
+          <div class="add-row1">
+            <div class="add-flex">
+              <a href="password.html" class="adds">
+                <div class="add1">
+                  <h5>Passwords Checking</h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Secure your data by verifying if your passwords have been
+                    exposed or leaked.</span
+                  >
+                </div>
+              </a>
+              <a href="shield.html" class="adds">
+                <div class="add1">
+                  <h5>Privacy Shield</h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Enable Privacy Shield to protect your email from public
+                    searches.</span
+                  >
+                </div>
+              </a>
+              <a href="domains.html" class="adds">
+                <div class="add1">
+                  <h5>Get Company Insights</h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Get a high-level overview of data breach incidents for your
+                    domain.</span
+                  >
+                </div>
+              </a>
+            </div>
+            <div class="add-flex add-flex2">
+              <a href="domain.html" class="adds">
+                <div class="add1">
+                  <h5>Domain Verification</h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Verify your domain authority swiftly through DNS, email, or
+                    HTML in just three steps.</span
+                  >
+                </div>
+              </a>
+              <a href="breaches-visualisations.html" class="adds">
+                <div class="add1">
+                  <h5>Breaches Visualisation</h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Visualize the scale of all loaded data breaches with
+                    detailed infographics.</span
+                  >
+                </div>
+              </a>
+              <a href="xposed.html" class="adds">
+                <div class="add1">
+                  <h5>Data Breaches</h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Dive into comprehensive details of all data breaches loaded
+                    in Xposedornot, including sources and data points.</span
+                  >
+                </div>
+              </a>
+            </div>
+            <br />
+            <div class="add-flex">
+              <a href="dashboard.html" class="adds">
+                <div class="add1">
+                  <h5>CXO Dashboard</h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Monitor data breaches across all validated domains and
+                    access detailed summaries at your fingertips.</span
+                  >
+                </div>
+              </a>
+              <a href="domains-phishing.html" class="adds">
+                <div class="add1">
+                  <h5>Phishing Scanner <span class="new-badge">NEW</span></h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Check if your domain is being used for phishing attacks and
+                    get detailed security insights.</span
+                  >
+                </div>
+              </a>
+              <a href="xonPulse.html" class="adds">
+                <div class="add1">
+                  <h5>Security News</h5>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >Stay updated with the latest data breaches, security
+                    alerts, and cybersecurity news.</span
+                  >
+                </div>
+              </a>
+            </div>
+          </div>
+          <p>
+            <a href="#">XposedOrNot</a> security and privacy tools are
+            <u>always <b>FREE</b> </u> for everyone to benefit.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
       <div class="container">
-         <div style="text-align:center;margin-bottom:30px;">
-            <p>Join us in shaping this fully open source site! Contributions welcome ❤️ at our <a
-                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
-         </div>
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Join us in shaping this fully open source site! Contributions
+            welcome ❤️ at our
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >.
+          </p>
+        </div>
 
-         <div class="footer-columns">
-            <div class="footer-group">
-               <h6>Legal</h6>
-               <a href="privacy" class="footer-link">Privacy Policy</a>
-               <a href="terms" class="footer-link">Terms</a>
-            </div>
-            <div class="footer-group">
-               <h6>Community</h6>
-               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
-               <a href="our-repository" class="footer-link">Our Repository</a>
-            </div>
-            <div class="footer-group">
-               <h6>Trust</h6>
-               <a href="transparency" class="footer-link">Transparency</a>
-               <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
-               <a href="https://statuspage.freshping.io/66216-XposedOrNot" target="_blank" rel="noopener" class="footer-link">Status</a>
-            </div>
-            <div class="footer-group">
-               <h6>Follow Us</h6>
-               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" name="twitter" class="footer-link">
-                  <i class="fab fa-twitter"></i> Twitter
-               </a>
-               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" name="fb" class="footer-link">
-                  <i class="fab fa-facebook"></i> Facebook
-               </a>
-               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" name="mastodon" class="footer-link">
-                  <i class="fab fa-mastodon"></i> Mastodon
-               </a>
-            </div>
-         </div>
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Legal</h6>
+            <a href="privacy" class="footer-link">Privacy Policy</a>
+            <a href="terms" class="footer-link">Terms</a>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+            <a href="our-repository" class="footer-link">Our Repository</a>
+          </div>
+          <div class="footer-group">
+            <h6>Trust</h6>
+            <a href="transparency" class="footer-link">Transparency</a>
+            <a href="responsible-disclosure" class="footer-link"
+              >Responsible Disclosure</a
+            >
+            <a
+              href="https://statuspage.freshping.io/66216-XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Status</a
+            >
+          </div>
+          <div class="footer-group">
+            <h6>Follow Us</h6>
+            <a
+              href="https://twitter.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              name="twitter"
+              class="footer-link"
+            >
+              <i class="fab fa-twitter"></i> Twitter
+            </a>
+            <a
+              href="https://facebook.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              name="fb"
+              class="footer-link"
+            >
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a
+              href="https://infosec.exchange/@XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              name="mastodon"
+              class="footer-link"
+            >
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+          </div>
+        </div>
 
-         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
-            <input type="checkbox" class="custom-control-input" id="darkSwitch">
-            <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
-         </div>
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+        </div>
       </div>
-   </div>
-   </div>
-   <div class="modal fade" id="alertMeModal" tabindex="-1" role="dialog" aria-labelledby="alertMeModalLabel"
-      aria-hidden="true">
+    </div>
+    <div
+      class="modal fade"
+      id="alertMeModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="alertMeModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog" role="document">
-         <div class="modal-content">
-            <div id="h2head" class="modal-header modal-header-primary">
-               <h3 class="modal-title" id="alertMeModalLabel">Alert Me </h3>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-               </button>
-            </div>
-            <div class="modal-body">
-               <form>
-                  <div class="form-group">
-                     <label for="recipient-name" class="form-control-label">
-                        <b>Email to monitor:</b>
-                     </label>
-                     <input type="text" class="form-control" id="recipient-name">
-                  </div>
-                  <div class="form-group">
-                     <label for="message-text" class="form-control-label">
-                        <b>Service Details:</b>
-                     </label>
-                     <textarea disabled class="form-control" id="message-text" rows="4"
-                        style="padding: 10px; line-height: 1.5;">
+        <div class="modal-content">
+          <div id="h2head" class="modal-header modal-header-primary">
+            <h3 class="modal-title" id="alertMeModalLabel">Alert Me</h3>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="recipient-name" class="form-control-label">
+                  <b>Email to monitor:</b>
+                </label>
+                <input type="text" class="form-control" id="recipient-name" />
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="form-control-label">
+                  <b>Service Details:</b>
+                </label>
+                <textarea
+                  disabled
+                  class="form-control"
+                  id="message-text"
+                  rows="4"
+                  style="padding: 10px; line-height: 1.5"
+                >
 Get instant notifications whenever your email appears in new data breaches. 
 
 We'll help you take quick action to protect your accounts. This service is completely free.
-                     </textarea>
-                  </div>
-                  <div class="form-group">
-                     <div id="turns"></div>
-                  </div>
-               </form>
-            </div>
-            <div class="modal-footer">
-               <button id="alertMe" type="button" class="btn btn-primary"><i id="alertMe_i2"
-                     class="fa fa-bell ring"></i><span id="alertMe_i1"></span>&nbsp;Alert Me
-               </button>
-               <button style="display: none;" data-dismiss="modal" id="alertMeClose" type="button"
-                  class="btn btn-success">Close </button>
-            </div>
-         </div>
+                     </textarea
+                >
+              </div>
+              <div class="form-group">
+                <div id="turns"></div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="alertMe" type="button" class="btn btn-primary">
+              <i id="alertMe_i2" class="fa fa-bell ring"></i
+              ><span id="alertMe_i1"></span>&nbsp;Alert Me
+            </button>
+            <button
+              style="display: none"
+              data-dismiss="modal"
+              id="alertMeClose"
+              type="button"
+              class="btn btn-success"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       </div>
-   </div>
-   <div class="modal" id="thedudalModal" tabindex="-1" role="dialog" aria-labelledby="thedudalModalLabel"
-      aria-hidden="true">
+    </div>
+    <div
+      class="modal"
+      id="thedudalModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="thedudalModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog" role="document">
-         <div class="modal-content">
-            <div align="center" id="hhead" class="modal-header modal-header-success" style="padding:35px 35px;">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-               <h2>
-                  <div id="imz_s" visible="false"></div>
-                  <div id="imz_f" visible="false">
-                     <i class="glyphicon glyphicon-fire"></i>
-                  </div>
-               </h2>
-               </i>
-               <div id=spins>
-                  <i class="fa fa-spinner fa-spin" style="font-size:72px;color:#fff"></i>
-               </div>
-               <div id="ssvisible">
-                  <h2>Your Results</h2>
-               </div>
+        <div class="modal-content">
+          <div
+            align="center"
+            id="hhead"
+            class="modal-header modal-header-success"
+            style="padding: 35px 35px"
+          >
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            >
+              &times;
+            </button>
+            <h2>
+              <div id="imz_s" visible="false"></div>
+              <div id="imz_f" visible="false">
+                <i class="glyphicon glyphicon-fire"></i>
+              </div>
+            </h2>
+            <div id="spins">
+              <i
+                class="fa fa-spinner fa-spin"
+                style="font-size: 72px; color: #fff"
+              ></i>
             </div>
-            <div id=mbody visible="false" class="modal-body" style="padding:40px 50px;">
-               <div class="alert alert-primary" role="alert" id="data_email">
-                  <b>Email Address Checked</b>
-               </div>
-               <div class="alert alert-primary" role="alert" id="data_breach">
-                  <b>Data Breaches Found</b>
-               </div>
-               <div class="alert alert-danger" role="alert" id="warn" align="center">
-                  <strong>Important Notice</strong>
-                  <br>
-               </div>
-               <div class="alert alert-success" role="alert" id="succ" align="center">
-                  <strong>Security Status</strong>
-                  <br>
-               </div>
-               <div align="center" id="alert_">
-                  <button type="button" id="dismiss" class="btn btn-primary" data-toggle="modal"
-                     data-target="#alertMeModal">
-                     <i class="fa fa-bell ring"></i>
-                     <b>Alert me of data breaches</b>
-                  </button>
-                  <button type="button" id="detailedReport" class="btn btn-primary" style="display: none;">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-cursor" viewBox="0 0 16 16">
-                        <path
-                           d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z" />
-                     </svg>
-                     <b>&nbsp;Detailed Report</b>
-                  </button>
-               </div>
+            <div id="ssvisible">
+              <h2>Your Results</h2>
             </div>
-         </div>
+          </div>
+          <div
+            id="mbody"
+            visible="false"
+            class="modal-body"
+            style="padding: 40px 50px"
+          >
+            <div class="alert alert-primary" role="alert" id="data_email">
+              <b>Email Address Checked</b>
+            </div>
+            <div class="alert alert-primary" role="alert" id="data_breach">
+              <b>Data Breaches Found</b>
+            </div>
+            <div
+              class="alert alert-danger"
+              role="alert"
+              id="warn"
+              align="center"
+            >
+              <strong>Important Notice</strong>
+              <br />
+            </div>
+            <div
+              class="alert alert-success"
+              role="alert"
+              id="succ"
+              align="center"
+            >
+              <strong>Security Status</strong>
+              <br />
+            </div>
+            <div align="center" id="alert_">
+              <button
+                type="button"
+                id="dismiss"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#alertMeModal"
+              >
+                <i class="fa fa-bell ring"></i>
+                <b>Alert me of data breaches</b>
+              </button>
+              <button
+                type="button"
+                id="detailedReport"
+                class="btn btn-primary"
+                style="display: none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-cursor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z"
+                  />
+                </svg>
+                <b>&nbsp;Detailed Report</b>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
-         integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
-         integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
-         crossorigin="anonymous"></script>
-      <script src="/static/scripts/index.js"></script>
-      <script src="/static/scripts/common.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.min.js"
-         integrity="sha512-n4mkhsTTwnEox+TGRnxJmtvrU+Rgec7NUjrHmZE7RlYOim+XLwgMMe1/jovYl/Eh24hvPLKgX0QGdPfATAphqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
-      <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-</body>
-
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
+      integrity="sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="/static/scripts/index.js"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb"
+      async
+      defer
+    ></script>
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+    ></script>
+  </body>
 </html>

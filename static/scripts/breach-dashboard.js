@@ -504,12 +504,226 @@ function addBreachesToTable(breaches) {
     }
 
 
+    // Get summary stats for PDF
+    var totalBreaches = Object.keys(breaches).length;
+    var totalRecords = 0;
+    for (var key in breaches) {
+        var records = parseInt(breaches[key].xposed_records) || 0;
+        totalRecords += records;
+    }
+
+    // Get domain names from myjson if available
+    var domainNames = [];
+    if (typeof myjson !== 'undefined' && myjson && myjson.Domain_Summary) {
+        domainNames = Object.keys(myjson.Domain_Summary);
+    }
+
     table.DataTable({
         dom: '<"top"<"d-flex align-items-center justify-content-between"lB>f>rtip',
         buttons: [{
             extend: 'collection',
             text: 'Export',
-            buttons: ['csv', 'excel', 'pdf']
+            buttons: [
+                'csv',
+                'excel',
+                {
+                    extend: 'pdf',
+                    title: '',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    exportOptions: {
+                        columns: [0, 1, 4]
+                    },
+                    customize: function(doc) {
+                        // Set document metadata
+                        doc.info = {
+                            title: 'XposedOrNot - Data Breaches Summary Report',
+                            author: 'XposedOrNot',
+                            subject: 'Data Breaches Summary',
+                            creator: 'XposedOrNot Dashboard'
+                        };
+
+                        // Define styles
+                        doc.styles.tableHeader = {
+                            bold: true,
+                            fontSize: 10,
+                            color: 'white',
+                            fillColor: '#3498db',
+                            alignment: 'left',
+                            margin: [5, 8, 5, 8]
+                        };
+                        doc.styles.tableBodyEven = {
+                            fontSize: 9,
+                            fillColor: '#f8f9fa'
+                        };
+                        doc.styles.tableBodyOdd = {
+                            fontSize: 9,
+                            fillColor: '#ffffff'
+                        };
+
+                        // Header with logo, date and time
+                        var header = {
+                            columns: [
+                                {
+                                    text: 'XposedOrNot',
+                                    style: {
+                                        fontSize: 24,
+                                        bold: true,
+                                        color: '#3498db'
+                                    },
+                                    width: '*'
+                                },
+                                {
+                                    text: [
+                                        { text: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) },
+                                        { text: '  |  ' },
+                                        { text: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) }
+                                    ],
+                                    style: {
+                                        fontSize: 10,
+                                        color: '#7f8c8d',
+                                        alignment: 'right'
+                                    },
+                                    width: 'auto'
+                                }
+                            ],
+                            margin: [0, 0, 0, 10]
+                        };
+
+                        // Domain info
+                        var domainInfo = {
+                            text: [
+                                { text: 'Domain: ', style: { fontSize: 10, color: '#7f8c8d' } },
+                                { text: domainNames.length > 0 ? domainNames.join(', ') : 'All Monitored Domains', style: { fontSize: 10, bold: true, color: '#2980b9' } }
+                            ],
+                            margin: [0, 0, 0, 8]
+                        };
+
+                        // Title
+                        var title = {
+                            text: 'Data Breaches Summary Report',
+                            style: {
+                                fontSize: 16,
+                                bold: true,
+                                color: '#2c3e50'
+                            },
+                            margin: [0, 0, 0, 15]
+                        };
+
+                        // Summary section - blue theme
+                        var summary = {
+                            table: {
+                                widths: ['*', '*', '*'],
+                                body: [
+                                    [
+                                        {
+                                            text: [
+                                                { text: 'Total Breaches\n', style: { fontSize: 9, color: '#7f8c8d' } },
+                                                { text: totalBreaches.toLocaleString(), style: { fontSize: 18, bold: true, color: '#2980b9' } }
+                                            ],
+                                            alignment: 'center',
+                                            margin: [0, 10, 0, 10],
+                                            border: [false, false, true, false]
+                                        },
+                                        {
+                                            text: [
+                                                { text: 'Total Records Exposed\n', style: { fontSize: 9, color: '#7f8c8d' } },
+                                                { text: totalRecords.toLocaleString(), style: { fontSize: 18, bold: true, color: '#3498db' } }
+                                            ],
+                                            alignment: 'center',
+                                            margin: [0, 10, 0, 10],
+                                            border: [false, false, true, false]
+                                        },
+                                        {
+                                            text: [
+                                                { text: 'Domains Monitored\n', style: { fontSize: 9, color: '#7f8c8d' } },
+                                                { text: domainNames.length > 0 ? domainNames.length.toString() : '-', style: { fontSize: 18, bold: true, color: '#1abc9c' } }
+                                            ],
+                                            alignment: 'center',
+                                            margin: [0, 10, 0, 10],
+                                            border: [false, false, false, false]
+                                        }
+                                    ]
+                                ]
+                            },
+                            layout: {
+                                hLineWidth: function() { return 0; },
+                                vLineWidth: function(i) { return i > 0 && i < 3 ? 1 : 0; },
+                                vLineColor: function() { return '#ecf0f1'; }
+                            },
+                            margin: [0, 0, 0, 20]
+                        };
+
+                        // Separator line
+                        var separator = {
+                            canvas: [
+                                {
+                                    type: 'line',
+                                    x1: 0, y1: 0,
+                                    x2: 770, y2: 0,
+                                    lineWidth: 1,
+                                    lineColor: '#3498db'
+                                }
+                            ],
+                            margin: [0, 0, 0, 15]
+                        };
+
+                        // Table section header
+                        var tableTitle = {
+                            text: 'Breach Details',
+                            style: {
+                                fontSize: 12,
+                                bold: true,
+                                color: '#2c3e50'
+                            },
+                            margin: [0, 0, 0, 10]
+                        };
+
+                        // Rebuild content array
+                        var existingTable = doc.content[0];
+                        if (existingTable && existingTable.table) {
+                            existingTable.table.widths = ['40%', '20%', '40%'];
+                            existingTable.layout = {
+                                hLineWidth: function(i, node) {
+                                    return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                                },
+                                vLineWidth: function() { return 0.5; },
+                                hLineColor: function(i) { return i === 0 ? '#3498db' : '#ecf0f1'; },
+                                vLineColor: function() { return '#ecf0f1'; },
+                                paddingLeft: function() { return 8; },
+                                paddingRight: function() { return 8; },
+                                paddingTop: function() { return 6; },
+                                paddingBottom: function() { return 6; }
+                            };
+                        }
+
+                        doc.content = [header, domainInfo, title, summary, separator, tableTitle, existingTable];
+
+                        // Footer
+                        doc.footer = function(currentPage, pageCount) {
+                            return {
+                                columns: [
+                                    {
+                                        text: 'XposedOrNot.com - Data Breach Monitoring',
+                                        style: { fontSize: 8, color: '#95a5a6' },
+                                        alignment: 'left',
+                                        margin: [40, 10, 0, 0]
+                                    },
+                                    {
+                                        text: 'Page ' + currentPage + ' of ' + pageCount,
+                                        style: { fontSize: 8, color: '#95a5a6' },
+                                        alignment: 'right',
+                                        margin: [0, 10, 40, 0]
+                                    }
+                                ]
+                            };
+                        };
+
+                        // Page margins
+                        doc.pageMargins = [40, 40, 40, 50];
+                    }
+                }
+            ]
         }],
         pageLength: 10,
         responsive: true,
@@ -564,7 +778,8 @@ function addBreachesDetailsToTable(breachesDetails) {
 
 
         const breachInfo = breachesData[breachDetail.breach];
-        const exposedData = breachInfo ? breachInfo.xposed_data : '';
+        const exposedDataRaw = breachInfo ? breachInfo.xposed_data : '';
+        const exposedData = exposedDataRaw.split(';').join(', ');
         row.append($('<td>').text(exposedData));
 
         tableBody.append(row);
@@ -573,12 +788,211 @@ function addBreachesDetailsToTable(breachesDetails) {
 
     $('#exposed-records').text(totalRecords.toLocaleString());
 
+    // Get unique domains and emails for PDF summary
+    var uniqueDomains = new Set();
+    var uniqueEmails = new Set();
+    breachesDetails.forEach(function(detail) {
+        if (detail.domain) uniqueDomains.add(detail.domain);
+        if (detail.email) uniqueEmails.add(detail.email);
+    });
+
+    // Get domain names array for display
+    var domainNamesArray = Array.from(uniqueDomains);
+
     table.DataTable({
         dom: '<"top"<"d-flex align-items-center justify-content-between"lB>f>rtip',
         buttons: [{
             extend: 'collection',
             text: 'Export',
-            buttons: ['csv', 'excel', 'pdf']
+            buttons: [
+                'csv',
+                'excel',
+                {
+                    extend: 'pdf',
+                    title: '',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    customize: function(doc) {
+                        // Set document metadata
+                        doc.info = {
+                            title: 'XposedOrNot - Exposed Emails Report',
+                            author: 'XposedOrNot',
+                            subject: 'Exposed Emails Details',
+                            creator: 'XposedOrNot Dashboard'
+                        };
+
+                        // Define styles - blue theme
+                        doc.styles.tableHeader = {
+                            bold: true,
+                            fontSize: 10,
+                            color: 'white',
+                            fillColor: '#3498db',
+                            alignment: 'left'
+                        };
+
+                        // Header with logo, date and time
+                        var header = {
+                            columns: [
+                                {
+                                    text: 'XposedOrNot',
+                                    style: {
+                                        fontSize: 24,
+                                        bold: true,
+                                        color: '#3498db'
+                                    },
+                                    width: '*'
+                                },
+                                {
+                                    text: [
+                                        { text: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) },
+                                        { text: '  |  ' },
+                                        { text: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) }
+                                    ],
+                                    style: {
+                                        fontSize: 10,
+                                        color: '#7f8c8d',
+                                        alignment: 'right'
+                                    },
+                                    width: 'auto'
+                                }
+                            ],
+                            margin: [0, 0, 0, 10]
+                        };
+
+                        // Domain info
+                        var domainInfo = {
+                            text: [
+                                { text: 'Domain: ', style: { fontSize: 10, color: '#7f8c8d' } },
+                                { text: domainNamesArray.length > 0 ? domainNamesArray.join(', ') : 'All Monitored Domains', style: { fontSize: 10, bold: true, color: '#2980b9' } }
+                            ],
+                            margin: [0, 0, 0, 8]
+                        };
+
+                        // Title
+                        var title = {
+                            text: 'Exposed Emails Detailed Report',
+                            style: {
+                                fontSize: 16,
+                                bold: true,
+                                color: '#2c3e50'
+                            },
+                            margin: [0, 0, 0, 15]
+                        };
+
+                        // Summary section - blue theme
+                        var summary = {
+                            table: {
+                                widths: ['*', '*', '*'],
+                                body: [
+                                    [
+                                        {
+                                            text: [
+                                                { text: 'Total Records\n', style: { fontSize: 9, color: '#7f8c8d' } },
+                                                { text: totalRecords.toLocaleString(), style: { fontSize: 16, bold: true, color: '#2980b9' } }
+                                            ],
+                                            alignment: 'center',
+                                            margin: [0, 8, 0, 8],
+                                            border: [false, false, true, false]
+                                        },
+                                        {
+                                            text: [
+                                                { text: 'Unique Emails\n', style: { fontSize: 9, color: '#7f8c8d' } },
+                                                { text: uniqueEmails.size.toLocaleString(), style: { fontSize: 16, bold: true, color: '#3498db' } }
+                                            ],
+                                            alignment: 'center',
+                                            margin: [0, 8, 0, 8],
+                                            border: [false, false, true, false]
+                                        },
+                                        {
+                                            text: [
+                                                { text: 'Domains\n', style: { fontSize: 9, color: '#7f8c8d' } },
+                                                { text: uniqueDomains.size.toLocaleString(), style: { fontSize: 16, bold: true, color: '#1abc9c' } }
+                                            ],
+                                            alignment: 'center',
+                                            margin: [0, 8, 0, 8],
+                                            border: [false, false, false, false]
+                                        }
+                                    ]
+                                ]
+                            },
+                            layout: {
+                                hLineWidth: function() { return 0; },
+                                vLineWidth: function(i) { return i > 0 && i < 3 ? 1 : 0; },
+                                vLineColor: function() { return '#ecf0f1'; }
+                            },
+                            margin: [0, 0, 0, 20]
+                        };
+
+                        // Separator line - blue theme
+                        var separator = {
+                            canvas: [
+                                {
+                                    type: 'line',
+                                    x1: 0, y1: 0,
+                                    x2: 770, y2: 0,
+                                    lineWidth: 1,
+                                    lineColor: '#3498db'
+                                }
+                            ],
+                            margin: [0, 0, 0, 15]
+                        };
+
+                        // Table section header
+                        var tableTitle = {
+                            text: 'Email Exposure Details',
+                            style: {
+                                fontSize: 12,
+                                bold: true,
+                                color: '#2c3e50'
+                            },
+                            margin: [0, 0, 0, 10]
+                        };
+
+                        // Rebuild content array
+                        var existingTable = doc.content[0];
+                        if (existingTable && existingTable.table) {
+                            existingTable.table.widths = ['25%', '35%', '40%'];
+                            existingTable.layout = {
+                                hLineWidth: function(i, node) {
+                                    return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                                },
+                                vLineWidth: function() { return 0.5; },
+                                hLineColor: function(i) { return i === 0 ? '#3498db' : '#ecf0f1'; },
+                                vLineColor: function() { return '#ecf0f1'; },
+                                paddingLeft: function() { return 8; },
+                                paddingRight: function() { return 8; },
+                                paddingTop: function() { return 6; },
+                                paddingBottom: function() { return 6; }
+                            };
+                        }
+
+                        doc.content = [header, domainInfo, title, summary, separator, tableTitle, existingTable];
+
+                        // Footer
+                        doc.footer = function(currentPage, pageCount) {
+                            return {
+                                columns: [
+                                    {
+                                        text: 'XposedOrNot.com - Confidential Breach Report',
+                                        style: { fontSize: 8, color: '#95a5a6' },
+                                        alignment: 'left',
+                                        margin: [40, 10, 0, 0]
+                                    },
+                                    {
+                                        text: 'Page ' + currentPage + ' of ' + pageCount,
+                                        style: { fontSize: 8, color: '#95a5a6' },
+                                        alignment: 'right',
+                                        margin: [0, 10, 40, 0]
+                                    }
+                                ]
+                            };
+                        };
+
+                        // Page margins
+                        doc.pageMargins = [40, 40, 40, 50];
+                    }
+                }
+            ]
         }],
         pageLength: 10,
         lengthMenu: [5, 10, 25, 50],

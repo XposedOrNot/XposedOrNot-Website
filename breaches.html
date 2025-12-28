@@ -1,292 +1,439 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <title>XposedOrNot: Data Breaches Repository</title>
-    <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="static.hotjar.com">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
-        integrity="sha256-WAOxUbkU+9qPVKvGJ723tdHhdYpM+f4Cu3dRX3n/pJk=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css"
-        integrity="sha256-v+ex7zIH5oYcixLP5gZNDkFNnXWSdPnBQAsbh6X42vc=" crossorigin="anonymous">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description"
-        content="Explore XposedOrNot's comprehensive data breach repository. Find detailed information on breaches to safeguard your personal and corporate data.">
-    <meta name="author" content="Devanand Premkumar">
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
+      integrity="sha256-WAOxUbkU+9qPVKvGJ723tdHhdYpM+f4Cu3dRX3n/pJk="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css"
+      integrity="sha256-v+ex7zIH5oYcixLP5gZNDkFNnXWSdPnBQAsbh6X42vc="
+      crossorigin="anonymous"
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Explore XposedOrNot's comprehensive data breach repository. Find detailed information on breaches to safeguard your personal and corporate data."
+    />
+    <meta name="author" content="Devanand Premkumar" />
     <meta property="og:title" content="XposedOrNot: Data Breaches Repository" />
-    <meta property="og:description"
-        content="Explore XposedOrNot's comprehensive data breach repository. Find detailed information on breaches to safeguard your personal and corporate data." />
-    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta
+      property="og:description"
+      content="Explore XposedOrNot's comprehensive data breach repository. Find detailed information on breaches to safeguard your personal and corporate data."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
     <meta property="og:url" content="https://xposedornot.com/data_breaches" />
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@XposedOrNot">
-    <meta name="twitter:title" content="XposedOrNot: Data Breaches Repository">
-    <meta name="twitter:description"
-        content="Explore XposedOrNot's comprehensive data breach repository. Find detailed information on breaches to safeguard your personal and corporate data.">
-    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta
+      name="twitter:title"
+      content="XposedOrNot: Data Breaches Repository"
+    />
+    <meta
+      name="twitter:description"
+      content="Explore XposedOrNot's comprehensive data breach repository. Find detailed information on breaches to safeguard your personal and corporate data."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
 
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel=stylesheet
-        href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset'
-        type=text/css media=all defer async>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
-        integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
-        crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"
-        integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
-        crossorigin="anonymous"></script>
-    <link href="static/css/style.css" type="text/css" rel="stylesheet" defer>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+      integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"
+      integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+      crossorigin="anonymous"
+    ></script>
+    <link href="static/css/style.css" type="text/css" rel="stylesheet" />
     <script src="/static/scripts/other-libraries.js" defer></script>
     <style>
-        .btn-label {
-            cursor: default;
-            background-color: #f7f7f7;
-            border: none;
-            padding: 6px 12px;
-            vertical-align: middle;
-            margin-right: 4px;
-        }
+      .btn-label {
+        cursor: default;
+        background-color: #f7f7f7;
+        border: none;
+        padding: 6px 12px;
+        vertical-align: middle;
+        margin-right: 4px;
+      }
 
-        .dt-buttons {
-            float: right;
-        }
+      .dt-buttons {
+        float: right;
+      }
 
-        .header,
-        .footer {
-            background-color: #f7f7f7;
-            padding: 10px;
-            text-align: center;
-        }
+      .header,
+      .footer {
+        background-color: #f7f7f7;
+        padding: 10px;
+        text-align: center;
+      }
 
-        [data-theme="dark"] .header,
-        [data-theme="dark"] .footer {
-            background-color: #181b2d;
-            color: #9fc0e0;
-        }
+      [data-theme="dark"] .header,
+      [data-theme="dark"] .footer {
+        background-color: #181b2d;
+        color: #9fc0e0;
+      }
 
-        [data-theme="dark"] .sorting_1 {
-            background-color: #0e0f19 !important;
-            color: #9fc0e0 !important;
-        }
+      [data-theme="dark"] .sorting_1 {
+        background-color: #0e0f19 !important;
+        color: #9fc0e0 !important;
+      }
 
-        .container {
-            padding: 20px;
-        }
+      .container {
+        padding: 20px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="kbanner">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-            <a class="navbar-brand" href="https://xposedornot.com"><span
-                    style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Community
-                    Edition</span></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav navbar-right">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="password.html">Password &nbsp; <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="api_doc.html">API &nbsp;</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="https://blog.xposedornot.com/">Blog &nbsp;</a>
-                    </li>
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"> More Tools </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
-                            <a class="dropdown-item" href="shield.html">Privacy Shield</a>
-                            <a class="dropdown-item" href="domain.html">Domain Verification</a>
-                            <a class="dropdown-item" href="domains.html">Domain-level Search</a>
-                            <a class="dropdown-item" href="timeline.html">Breaches Timeline</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+        <a class="navbar-brand" href="https://xposedornot.com"
+          ><span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              margin-top: -1px;
+            "
+            >Community Edition</span
+          ></a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password.html"
+                >Password &nbsp; <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="api_doc.html">API &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >Blog &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                More Tools
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
+                <a class="dropdown-item" href="shield.html">Privacy Shield</a>
+                <a class="dropdown-item" href="domain.html"
+                  >Domain Verification</a
+                >
+                <a class="dropdown-item" href="domains.html"
+                  >Domain-level Search</a
+                >
+                <a class="dropdown-item" href="timeline.html"
+                  >Breaches Timeline</a
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
     <div class="header">
-        <h1>XposedOrNot: Data Breaches</h1>
+      <h1>XposedOrNot: Data Breaches</h1>
     </div>
     <div>
-        <table id="example" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Breach ID</th>
-                    <th>Breach Date</th>
-                    <th>Domain</th>
-                    <th>Exposed Data</th>
-                    <th>Exposed Records</th>
-                    <th>Description</th>
-                    <th>Industry</th>
-                    <th>Password Risk</th>
-                    <th>Searchable</th>
-                    <th>Sensitive</th>
-                    <th>Verified</th>
-                </tr>
-            </thead>
-        </table>
+      <table id="example" class="display" style="width: 100%">
+        <thead>
+          <tr>
+            <th>Breach ID</th>
+            <th>Breach Date</th>
+            <th>Domain</th>
+            <th>Exposed Data</th>
+            <th>Exposed Records</th>
+            <th>Description</th>
+            <th>Industry</th>
+            <th>Password Risk</th>
+            <th>Searchable</th>
+            <th>Sensitive</th>
+            <th>Verified</th>
+          </tr>
+        </thead>
+      </table>
     </div>
     <div class="footer">
-        <p> XposesdOrNot.com</p>
+      <p>XposesdOrNot.com</p>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"
-        integrity="sha256-s+IGOQWIhMyylwPABPBE89mzWrAmYL7J+XDfd8OFGkw=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"
-        integrity="sha256-gj6W8GoTPOEuNkgqM74QniHnLzM7XV9yaBjWvrKyqRk=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"
-        integrity="sha256-cR5JPzKqV52boupVw5odXlSxHNu69UvdVucXc6ae3xg=" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"
+      integrity="sha256-s+IGOQWIhMyylwPABPBE89mzWrAmYL7J+XDfd8OFGkw="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"
+      integrity="sha256-gj6W8GoTPOEuNkgqM74QniHnLzM7XV9yaBjWvrKyqRk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"
+      integrity="sha256-cR5JPzKqV52boupVw5odXlSxHNu69UvdVucXc6ae3xg="
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"
-        integrity="sha256-0dNL0IOjFHlDoEXWz1C2r576jm9Gk1Om2fq7CaQ4bbc=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"
-        integrity="sha256-Q8nGY82s7O2658kTOGeD4TY7yPvcmkxhO00av5ioP5U=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"
-        integrity="sha256-NBvwW+MLMC5EkYNxfdlM7nqZQFOZ9GiWfIsg5sQ7V7g=" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"
+      integrity="sha256-0dNL0IOjFHlDoEXWz1C2r576jm9Gk1Om2fq7CaQ4bbc="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"
+      integrity="sha256-Q8nGY82s7O2658kTOGeD4TY7yPvcmkxhO00av5ioP5U="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"
+      integrity="sha256-NBvwW+MLMC5EkYNxfdlM7nqZQFOZ9GiWfIsg5sQ7V7g="
+      crossorigin="anonymous"
+    ></script>
     <script>
-        function formatYesNo(data, reverse = false) {
-            const displayData = data ? "Yes" : "No";
-            if ((!reverse && data) || (reverse && !data)) {
-                return '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' + displayData + '</span>';
-            } else {
-                return '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' + displayData + '</span>';
-            }
+      function formatYesNo(data, reverse = false) {
+        const displayData = data ? "Yes" : "No";
+        if ((!reverse && data) || (reverse && !data)) {
+          return (
+            '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' +
+            displayData +
+            "</span>"
+          );
+        } else {
+          return (
+            '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' +
+            displayData +
+            "</span>"
+          );
         }
+      }
 
-        function formatPasswordRisk(data) {
-            if (data === "plaintext" || data === "easytocrack") {
-                return '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
-            } else {
-                return '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' + data + '</span>';
-            }
+      function formatPasswordRisk(data) {
+        if (data === "plaintext" || data === "easytocrack") {
+          return (
+            '<span style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 15px;">' +
+            data +
+            "</span>"
+          );
+        } else {
+          return (
+            '<span style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 15px;">' +
+            data +
+            "</span>"
+          );
         }
+      }
 
-        function formatDescription(data) {
-            if (data.split(' ').length > 40) {
-                return data.split(' ').slice(0, 40).join(' ') + '... <a href="#" class="readMore">Read more</a><span style="display: none;">' + data + '</span>';
-            } else {
-                return data;
-            }
+      function formatDescription(data) {
+        if (data.split(" ").length > 40) {
+          return (
+            data.split(" ").slice(0, 40).join(" ") +
+            '... <a href="#" class="readMore">Read more</a><span style="display: none;">' +
+            data +
+            "</span>"
+          );
+        } else {
+          return data;
         }
-        $(document).ready(function () {
-            $('#example').DataTable({
-                ajax: {
-                    url: 'https://api.xposedornot.com/v1/breaches',
-                    dataSrc: 'exposedBreaches',
-                    error: function (xhr, error, thrown) {
-                        console.error("Error occurred: ", xhr, error, thrown);
-                    }
-                },
-                columns: [
-                    { data: 'breachID' },
-                    {
-                        data: 'breachedDate',
-                        render: function (data) {
-                            var date = new Date(data);
-                            return date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long' });
-                        },
-                        type: 'date'
-                    },
-                    { data: 'domain' },
-                    {
-                        data: 'exposedData',
-                        render: function (data) {
-                            return data.join(', ');
-                        }
-                    },
-                    {
-                        data: 'exposedRecords',
-                        render: $.fn.dataTable.render.number(',', '.')
-                    },
-                    {
-                        data: 'exposureDescription',
-                        render: function (data) {
-                            return formatDescription(data);
-                        }
-                    },
-                    { data: 'industry' },
-                    {
-                        data: 'passwordRisk',
-                        render: function (data) {
-                            return formatPasswordRisk(data);
-                        }
-                    },
-                    {
-                        data: 'searchable',
-                        render: function (data) {
-                            return formatYesNo(data);
-                        }
-                    },
-                    {
-                        data: 'sensitive',
-                        render: function (data) {
-                            return formatYesNo(data, true);
-                        }
-                    },
-                    {
-                        data: 'verified',
-                        render: function (data) {
-                            return formatYesNo(data);
-                        }
-                    }
-                ],
-                order: [[1, 'desc']],
-                dom: 'Blfrtip',
-                buttons: [
-                    {
-                        extend: 'colvis',
-                        postfixButtons: ['colvisRestore'],
-                        text: 'Select Columns',
-                        className: 'pull-right'
-                    },
-                    'csvHtml5', 'excelHtml5',
-                ],
-                initComplete: function () {
-                    $(".dt-buttons").prepend('<button class="btn btn-label">Export:</button> ');
-                },
-                language: {
-                    buttons: {
-                        colvis: 'Select Columns'
-                    }
-                }
-            });
-
-            $('#example').on('click', '.readMore', function (e) {
-                e.preventDefault();
-                $(this).parent().html($(this).next().text());
-            });
+      }
+      $(document).ready(function () {
+        $("#example").DataTable({
+          ajax: {
+            url: "https://api.xposedornot.com/v1/breaches",
+            dataSrc: "exposedBreaches",
+            error: function (xhr, error, thrown) {
+              console.error("Error occurred: ", xhr, error, thrown);
+            },
+          },
+          columns: [
+            { data: "breachID" },
+            {
+              data: "breachedDate",
+              render: function (data) {
+                var date = new Date(data);
+                return date.toLocaleDateString("en-GB", {
+                  year: "numeric",
+                  month: "long",
+                });
+              },
+              type: "date",
+            },
+            { data: "domain" },
+            {
+              data: "exposedData",
+              render: function (data) {
+                return data.join(", ");
+              },
+            },
+            {
+              data: "exposedRecords",
+              render: $.fn.dataTable.render.number(",", "."),
+            },
+            {
+              data: "exposureDescription",
+              render: function (data) {
+                return formatDescription(data);
+              },
+            },
+            { data: "industry" },
+            {
+              data: "passwordRisk",
+              render: function (data) {
+                return formatPasswordRisk(data);
+              },
+            },
+            {
+              data: "searchable",
+              render: function (data) {
+                return formatYesNo(data);
+              },
+            },
+            {
+              data: "sensitive",
+              render: function (data) {
+                return formatYesNo(data, true);
+              },
+            },
+            {
+              data: "verified",
+              render: function (data) {
+                return formatYesNo(data);
+              },
+            },
+          ],
+          order: [[1, "desc"]],
+          dom: "Blfrtip",
+          buttons: [
+            {
+              extend: "colvis",
+              postfixButtons: ["colvisRestore"],
+              text: "Select Columns",
+              className: "pull-right",
+            },
+            "csvHtml5",
+            "excelHtml5",
+          ],
+          initComplete: function () {
+            $(".dt-buttons").prepend(
+              '<button class="btn btn-label">Export:</button> ',
+            );
+          },
+          language: {
+            buttons: {
+              colvis: "Select Columns",
+            },
+          },
         });
+
+        $("#example").on("click", ".readMore", function (e) {
+          e.preventDefault();
+          $(this).parent().html($(this).next().text());
+        });
+      });
     </script>
 
     <div class="footer">
       <div class="container">
-        <div style="text-align:center;margin-bottom:30px;">
-          <p>Join us in shaping this fully open source site! Contributions welcome ❤️ at our <a
-                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Join us in shaping this fully open source site! Contributions
+            welcome ❤️ at our
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >.
+          </p>
         </div>
 
         <div class="footer-columns">
@@ -303,18 +450,41 @@
           <div class="footer-group">
             <h6>Trust</h6>
             <a href="transparency" class="footer-link">Transparency</a>
-            <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
-            <a href="https://statuspage.freshping.io/66216-XposedOrNot" target="_blank" rel="noopener" class="footer-link">Status</a>
+            <a href="responsible-disclosure" class="footer-link"
+              >Responsible Disclosure</a
+            >
+            <a
+              href="https://statuspage.freshping.io/66216-XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >Status</a
+            >
           </div>
           <div class="footer-group">
             <h6>Follow Us</h6>
-            <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <a
+              href="https://twitter.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
               <i class="fab fa-twitter"></i> Twitter
             </a>
-            <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <a
+              href="https://facebook.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
               <i class="fab fa-facebook"></i> Facebook
             </a>
-            <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+            <a
+              href="https://infosec.exchange/@XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
               <i class="fab fa-mastodon"></i> Mastodon
             </a>
           </div>
@@ -322,8 +492,11 @@
       </div>
     </div>
 
-    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+    ></script>
     <script src="/static/scripts/common.js"></script>
-</body>
-
+  </body>
 </html>
