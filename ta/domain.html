@@ -1,531 +1,1655 @@
-<html lang="en">
+<!doctype html>
+<html lang="ta">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<head>
-  <meta charset="utf-8" />
-  <title>XposedOrNot: டொமைன் சரிபார்ப்பு</title>
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="Domain Verification: XposedOrNot" name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <link href="favicon.ico" rel="icon" type="image/x-icon" />
-  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script crossorigin="anonymous"
-    integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-    referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
-    integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
-    rel="stylesheet">
-  <script crossorigin="anonymous"
-    integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <title>XposedOrNot - டொமைன் சரிபார்ப்பு | தரவு மீறல் கண்காணிப்பு</title>
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <meta
+      name="description"
+      content="விரிவான தரவு மீறல் கண்காணிப்பை அணுக உங்கள் டொமைன் உரிமையை சரிபார்க்கவும். DNS மற்றும் HTML கோப்பு சரிபார்ப்பு உள்ளிட்ட பல சரிபார்ப்பு முறைகள் கிடைக்கின்றன."
+    />
+    <meta
+      name="keywords"
+      content="domain verification, data breach monitoring, cybersecurity, DNS verification, HTML verification, website security"
+    />
 
-  <style>
-    .input-field {
-      margin-right: -20px;
-    }
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/ta/domain.html" />
+    <meta property="og:title" content="XposedOrNot - டொமைன் சரிபார்ப்பு" />
+    <meta
+      property="og:description"
+      content="XposedOrNot இன் தரவு மீறல் கண்காணிப்பு சேவைக்கான பாதுகாப்பான டொமைன் சரிபார்ப்பு செயல்முறை."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon-og.png"
+    />
 
-    .copy-btn {
-      padding: 0.5rem 0.5rem;
-      width: auto;
-      margin-left: -30px;
-    }
-  </style>
-  </link>
-  </link>
-</head>
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://xposedornot.com/ta/domain.html"
+    />
+    <meta
+      property="twitter:title"
+      content="XposedOrNot - டொமைன் சரிபார்ப்பு"
+    />
+    <meta
+      property="twitter:description"
+      content="XposedOrNot இன் விரிவான தரவு மீறல் கண்காணிப்புடன் உங்கள் டொமைனைப் பாதுகாக்கவும்."
+    />
+    <meta
+      property="twitter:image"
+      content="https://xposedornot.com/static/images/xon-og.png"
+    />
 
-<body style="color:#3c5fec;font-family: 'Poppins', sans-serif;">
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com"><span
-          style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-        <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">சமூக
-          பதிப்பு</span></a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password.html">கடவுச்சொல்<span class="sr-only">(தற்போதைய)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="api_doc.html">API</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">வலைப்பதிவு</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> இன்னும் கருவிகள்</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed.html">எக்ஸ்போஸ் செய்யப்பட்ட மீறல்கள்</a>
-              <a class="dropdown-item" href="shield.html">தனியுரிமை கேடயம்</a>
-              <a class="dropdown-item" href="domain.html">டொமைன் சரிபார்ப்பு</a>
-              <a class="dropdown-item" href="domains.html">டொமைன்-நிலை தேடல்</a>
-              <a class="dropdown-item" href="timeline.html">காலக்கெடுவை மீறுகிறது</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-     
-  </div>
-  <div class="jumbotron" id="d1">
-    <div class="container">
-      <h1>டொமைன் சரிபார்ப்பு மற்றும் சரிபார்ப்பு</h1>
-      <br />
-      <p align="center"> உங்கள் டொமைனில் தரவு மீறல் வெளிப்பாட்டின் அளவை மதிப்பிட, இவற்றைப் பின்பற்றவும்<strong>மூன்று
-          எளிய படிகள்</strong>உங்கள் தகவலை சரிபார்க்க.</p>
+    <link rel="canonical" href="https://xposedornot.com/ta/domain.html" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "XposedOrNot - டொமைன் சரிபார்ப்பு",
+        "description": "தரவு மீறல் கண்காணிப்பு சேவைக்கான பாதுகாப்பான டொமைன் சரிபார்ப்பு செயல்முறை.",
+        "publisher": {
+          "@type": "Organization",
+          "name": "XposedOrNot",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://xposedornot.com/static/images/logo.png"
+          }
+        }
+      }
+    </script>
+
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+      integrity="sha512-kBFfSXuTKZcABVouRYGnUo35KKa1FBrYgwG4PAx7Z2Heroknm0ca2Fm2TosdrrI356EDHMW383S3ISrwKcVPUw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+      integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"
+      integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer />
+    <script src="/static/scripts/other-libraries.js" defer></script>
+    <style>
+      .input-field {
+        margin-right: -20px;
+      }
+
+      .copy-btn {
+        padding: 0.5rem 0.5rem;
+        width: auto;
+        margin-left: -30px;
+        transition: all 0.3s ease;
+      }
+
+      .copy-btn:hover {
+        background-color: #4caf50;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .verification-info {
+        text-align: left;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+      }
+
+      .badge {
+        padding: 6px 12px;
+        font-weight: 500;
+        margin-left: 10px;
+      }
+
+      .alert ul {
+        text-align: left;
+        margin-top: 10px;
+      }
+
+      .alert ul li {
+        margin-bottom: 5px;
+      }
+
+      .fa-2x {
+        margin-right: 12px;
+      }
+
+      .list-unstyled li {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .alert-light {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+      }
+
+      code {
+        background-color: #f1f1f1;
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #e83e8c;
+        font-family: monospace;
+      }
+
+      .fa-lightbulb {
+        color: #ffc107;
+      }
+
+      .verification-info .alert {
+        text-align: left;
+      }
+
+      .verification-info .alert ul li {
+        margin-bottom: 10px;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+      }
+
+      #html_text {
+        font-family: monospace;
+        font-size: 1.1em;
+        word-break: break-all;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .verify-arrow {
+        display: inline-block;
+        margin-left: 10px;
+        color: #155724;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .verify-arrow:hover {
+        color: #0056b3;
+      }
+
+      .verification-steps {
+        text-align: left;
+        margin: 20px auto;
+        max-width: 600px;
+      }
+
+      .verification-steps ol {
+        margin-bottom: 0;
+        padding-left: 20px;
+      }
+
+      .verification-steps ol > li {
+        margin-bottom: 15px;
+        color: #004085;
+      }
+
+      .verification-steps ul {
+        margin-top: 10px;
+        list-style-type: none;
+        padding-left: 20px;
+      }
+
+      .verification-steps ul li {
+        margin: 8px 0;
+        color: #004085;
+      }
+
+      .verification-steps i {
+        margin-right: 8px;
+        width: 16px;
+      }
+
+      .guide-link {
+        display: inline-block;
+        margin-left: 8px;
+        color: #0056b3;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .guide-link:hover {
+        color: #003d82;
+      }
+
+      .guide-link i {
+        font-size: 0.8em;
+      }
+
+      .domain-input-container {
+        text-align: center !important;
+        margin: 20px auto !important;
+        max-width: 600px !important;
+      }
+
+      .domain-input {
+        max-width: 500px !important;
+        margin: 0 auto !important;
+        padding: 12px 15px !important;
+        font-size: 16px !important;
+        border: 2px solid #6daae0 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.3s ease !important;
+        height: auto !important;
+        background-color: white !important;
+      }
+
+      .domain-input:focus {
+        border-color: #3c5fec !important;
+        box-shadow: 0 0 0 3px rgba(108, 170, 224, 0.25) !important;
+        outline: none !important;
+      }
+
+      .domain-input::placeholder {
+        color: #8898aa !important;
+        font-size: 14px !important;
+        opacity: 0.8 !important;
+      }
+
+      .selectContainer {
+        text-align: center !important;
+        margin: 20px auto !important;
+        max-width: 600px !important;
+      }
+
+      .verification-header {
+        text-align: left !important;
+        margin-bottom: 12px !important;
+        padding: 0 10px !important;
+      }
+
+      #label_srategy {
+        display: block !important;
+        color: #004085 !important;
+        font-weight: 600 !important;
+        font-size: 16px !important;
+        margin-bottom: 0 !important;
+      }
+
+      #label_srategy i {
+        color: #6daae0 !important;
+        margin-right: 8px !important;
+      }
+
+      .domain-label {
+        display: inline-block !important;
+        margin-left: 4px !important;
+        color: #0056b3 !important;
+        font-weight: bold !important;
+        font-size: 16px !important;
+      }
+
+      [data-theme="dark"] #label_srategy,
+      [data-theme="dark"] .domain-label {
+        color: #9fc0e0 !important;
+      }
+
+      .verification-select {
+        max-width: 500px !important;
+        margin: 0 auto !important;
+        padding: 12px 15px !important;
+        font-size: 16px !important;
+        border: 2px solid #6daae0 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.3s ease !important;
+        height: auto !important;
+        background-color: white !important;
+        cursor: pointer !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236daae0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+        background-repeat: no-repeat !important;
+        background-position: right 15px center !important;
+        background-size: 15px !important;
+        padding-right: 45px !important;
+      }
+
+      .verification-select:focus {
+        border-color: #3c5fec !important;
+        box-shadow: 0 0 0 3px rgba(108, 170, 224, 0.25) !important;
+        outline: none !important;
+      }
+
+      .verification-select option {
+        padding: 10px !important;
+        font-size: 16px !important;
+      }
+
+      .verification-select option:first-child {
+        color: #8898aa !important;
+      }
+
+      .input-lg.is-valid {
+        border-color: #28a745 !important;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+      }
+
+      .input-lg.is-invalid {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+      }
+
+      .form-control.success-validation {
+        background-image: none !important;
+      }
+
+      .input-group {
+        position: relative;
+        width: 100%;
+        margin-bottom: 30px;
+      }
+
+      .input-group .form-control {
+        width: calc(100% - 120px);
+        height: 46px;
+        float: left;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .input-group-btn {
+        float: left;
+        width: 120px;
+      }
+
+      .input-group-btn .btn {
+        width: 100%;
+        height: 46px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .input-group:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .validation-message {
+        position: absolute;
+        left: 0;
+        top: 100%;
+        margin-top: 5px;
+        color: #dc3545;
+        font-size: 12px;
+        width: 100%;
+      }
+
+      .form-control.is-valid {
+        border-color: #28a745;
+      }
+
+      .form-control.is-invalid {
+        border-color: #dc3545;
+      }
+    </style>
+  </head>
+
+  <body style="color: #3c5fec; font-family: &quot;Poppins&quot;, sans-serif">
+    <div class="kbanner">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+        <a class="navbar-brand" href="index.html"
+          ><span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              margin-top: -1px;
+            "
+            >சமூக பதிப்பு</span
+          ></a
+        >
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password.html"
+                >கடவுச்சொல் &nbsp; <span class="sr-only">(தற்போதைய)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="api_doc.html">API &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >வலைப்பதிவு &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                இன்னும் கருவிகள்
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed.html">எக்ஸ்போஸ் செய்யப்பட்ட மீறல்கள்</a>
+                <a class="dropdown-item" href="shield.html">தனியுரிமை கேடயம்</a>
+                <a class="dropdown-item" href="domain.html"
+                  >டொமைன் சரிபார்ப்பு</a
+                >
+                <a class="dropdown-item" href="domains.html"
+                  >டொமைன்-நிலை தேடல்</a
+                >
+                <a class="dropdown-item" href="timeline.html"
+                  >மீறல்கள் காலவரிசை</a
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      &nbsp;
     </div>
-  </div>
-  <div class="container" id="div_input">
-    <p class="alert alert-primary">உங்கள் டொமைன் பயனர்களைப் பாதுகாப்பாக வைத்திருப்பது மிகவும் முக்கியமானது என்பதை
-      நாங்கள் புரிந்துகொள்கிறோம், எனவே டொமைன் அங்கீகாரத்தைச் சரிபார்க்க மூன்று அருமையான வழிகள் எங்களிடம் உள்ளன -
-      பயன்படுத்தி<strong>டிஎன்எஸ்</strong>,<strong>HTML</strong>, மற்றும்<strong>மின்னஞ்சல்</strong>. உங்கள் தேவைகளுக்கு
-      ஏற்ற சிறந்த முறையைத் தேர்ந்தெடுப்பதை எளிதாக்குவதே எங்கள் குறிக்கோள்.<br /><br />
-      <strong>டிஎன்எஸ்</strong>: முதல் முறையில் உங்கள் டொமைனின் DNS அமைப்புகளில் ஒரு சிறப்பு பதிவைச் சேர்ப்பது அடங்கும்.
-      இது உண்மையான ஒப்பந்தம் என்பதை உறுதிப்படுத்த உங்கள் டொமைனுக்கு ரகசிய கைகுலுக்கலை வழங்குவது போன்றது. செயல்முறையின்
-      மூலம் நாங்கள் உங்களுக்கு வழிகாட்டுவோம், அது முடிந்ததும், உங்கள் டொமைனின் அடையாளம் எந்த நேரத்திலும்
-      சரிபார்க்கப்படும்!<br /><br />
-      <strong>HTML</strong>: நீங்கள் இன்னும் நடைமுறை அணுகுமுறையை விரும்பினால், நாங்கள் உங்களுக்கு பாதுகாப்பு
-      அளித்துள்ளோம்! உங்கள் இணையதளத்தின் ரூட் டைரக்டரியில் தனித்துவமான குறியீட்டைக் கொண்ட HTML கோப்பைச் சேர்க்கவும். இது
-      "ஆமாம், இது எனது டொமைன்!" என்று ஒரு டிஜிட்டல் கொடியை நடுவது போன்றது. நாங்கள் கொடியை சரிபார்ப்போம், அது இருந்தால்,
-      நீங்கள் செல்லுங்கள்!<br /><br />
-      <strong>மின்னஞ்சல்</strong>: கடைசியாக, மின்னஞ்சலின் வசதியை விரும்புவோருக்கு, உங்கள் இன்பாக்ஸுக்கு நேராக
-      சரிபார்ப்பு இணைப்பை நாங்கள் அனுப்பலாம். இணைப்பைக் கிளிக் செய்து, உங்கள் டொமைன் அங்கீகரிக்கப்பட்டது! உங்களுக்குப்
-      பிடித்த மின்னஞ்சலைத் திறந்து பட்டனைத் தட்டுவது போல இது எளிமையானது.<br /><br />
-      நினைவில் கொள்ளுங்கள், இந்த செயல்முறையை முடிந்தவரை மென்மையாகவும் நட்பாகவும் செய்ய நாங்கள் இங்கு வந்துள்ளோம். எனவே
-      உங்களுக்குச் சிறப்பாகச் செயல்படும் முறையைத் தேர்ந்தெடுத்து, அந்த டொமைனை அங்கீகரிப்போம்! 🎉<br /><br />
-    </p>
-    <form id="defaultForm" method="post" onload="choices();" role="form">
-      <div class="form-group">
-        <input autocapitalize="off" autocorrect="off" autofocus="true" class="form-control" data-val="true"
-          data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" id="eventName" maxlength="255"
-          name="edhu" placeholder="Enter a valid domain name ...(e.g.: your-domain.com)" spellcheck="false"
-          type="text" />
-        <span class="input-group-btn">
-        </span>
+    <div class="jumbotron" id="d1">
+      <div class="container">
+        <h1>டொமைன் சரிபார்ப்பு & சரிபார்ப்பு</h1>
+        <br />
+        <p align="center">
+          உங்கள் டொமைன் உரிமையை சரிபார்க்கவும் மீறல் கண்காணிப்பை அணுகவும், இந்த
+          <strong>மூன்று எளிய படிகளைப்</strong> பின்பற்றவும்:
+        </p>
       </div>
-      <br />
-    </form>
-  </div>
-  <div align="center">
-    <button class="btn btn-primary btn-lg" id="alertMe" type="submit">சரிபார்ப்பு செயல்முறையைத் தொடங்கவும்<span
-        class="glyphicon glyphicon-ok" id="alertMe_i1"></span>
-    </button>
-  </div>
-  <div align="center" hidden="false" id="status">
-    <button class="btn btn-primary btn-lg"> சரிபார்ப்பை துவக்குகிறது...<em class="fa fa-spinner fa-spin"></em>
-    </button>
-  </div>
-  <input id="hid1" name="hid1" readonly="" type="hidden">
-
-  <div id="div_s1">
-    <div align="center" id="lbl_1">
-      <div id="d1"></div>
     </div>
-    <div class="selectContainer container" id="s1">
-      <select class="form-control input-nl2" data-style="btn-primary" id="strat" name="strat">
-        <option selected="" value="ver">கிடைக்கக்கூடிய சரிபார்ப்பு முறைகளில் ஒன்றைத் தேர்ந்தெடுக்கவும்...</option>
-        <option value="email">மின்னஞ்சல் அடிப்படையிலான சரிபார்ப்பு</option>
-        <option value="dns_txt">DNS உரை அடிப்படையிலான சரிபார்ப்பு</option>
-        <option value="html">HTML பக்க அடிப்படையிலான சரிபார்ப்பு</option>
-      </select>
-      <br />
-    </div>
-  </div>
-  <div align="center" class="alert alert-primary container" id="div_dns" role="alert"
-    style=" border-radius: 5px;border:2px solid #6daae0;">
-    <strong>DNS TXT பதிவு அடிப்படையிலான சரிபார்ப்பு.!</strong> கீழே காட்டப்பட்டுள்ளபடி உங்கள் DNS இல் தற்காலிக TXT பதிவை
-    உருவாக்கவும்.<br />
-    <br />
-    <form id="dns_form" method="post">
-      <div class="input-group" id="div2">
-        <span class="input-group-addon">
-          <em class="fa fa-bullseye"></em>
-        </span>
-        <input autocapitalize="off" autofocus="true" class="form-control" data-val="true"
-          data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !"
-          data-val-minlength-min="3" id="edhu_dns" maxlength="255" name="edhu_dns" readonly="" />
-      </div>
-      <br />
-      <div align="left" class="input-group">
-        <input class="form-control input-lg" id="txt_dns" placeholder="Email address to receive the exposed data"
-          type="email" />
-        <span class="input-group-btn">
-          <button class="btn btn-lg btn-primary" id="searchMe_d" type="submit"> சரிபார்க்கவும்<span
-              class="glyphicon glyphicon-ok" id="searchMe_d_i1">
-            </span></button>
-        </span>
-      </div>
-    </form>
-  </div>
-  <div align="center" class="container alert alert-primary" id="div_meta" role="alert"
-    style=" border-radius: 5px;border:2px solid #6daae0;">
-    <strong>மெட்டா டேக் அடிப்படையிலான சரிபார்ப்பு.!</strong> கீழே காட்டப்பட்டுள்ளபடி உங்கள் முகப்புப் பக்கத்தில்
-    தற்காலிக META டேட்டா டேக்கை உருவாக்கவும்.<br />
-    <br />
-    <form id="meta_form" method="post">
-      <div class="input-group" id="div2">
-        <span class="input-group-addon">
-          <em class="fa fa-bullseye"></em>
-        </span>
-        <input autocapitalize="off" autofocus="true" class="form-control" data-val="true"
-          data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !"
-          data-val-minlength-min="3" id="edhu_meta" maxlength="255" name="edhu_meta" readonly="" />
-      </div>
-      <br />
-      <div align="left" class="input-group">
-        <input class="form-control input-lg" id="txt_email_m" placeholder="Email address to receive the exposed data"
-          type="email" />
-        <span class="input-group-btn">
-          <button class="btn btn-lg btn-primary" id="searchMe_m" type="submit"> சரிபார்க்கவும்<span
-              class="glyphicon glyphicon-ok" id="searchMe_m_i1">
-            </span></button>
-        </span>
-      </div>
-    </form>
-  </div>
-  <div align="center" class="alert alert-primary container" id="div_html" role="alert"
-    style="border-radius: 5px;border:2px solid #6daae0;">
-    <strong>HTML கோப்பு அடிப்படையிலான சரிபார்ப்பு!</strong> கீழே காட்டப்பட்டுள்ளபடி மதிப்புகளுடன் உங்கள் ரூட்
-    கோப்பகத்தில் ஒரு தற்காலிக கோப்பை உருவாக்கவும், பின்னர் சரிபார்க்கவும் என்பதைக் கிளிக் செய்யவும்.<br /><br />
-    <form id="html_form" method="post">
-      <div class="form-group row align-items-center">
-        <label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filename">கோப்பு பெயர்:</label>
-        <div class="col-sm-9">
-          <input class="form-control input-lg input-field" data-val="true" id="edhu_html_filename"
-            name="edhu_html_filename" readonly="" type="text" />
-        </div>
-        <div class="col-sm-1">
-          <button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filename" type="button"><i
-              class="fas fa-copy"></i> நகலெடுக்கவும்</button>
+    <div class="container" id="div_input">
+      <div
+        class="alert alert-primary"
+        style="border-radius: 5px; border: 2px solid #6daae0"
+      >
+        <h4 class="mb-3">டொமைன் சரிபார்ப்பு</h4>
+        <p>
+          உங்கள் டொமைன் உரிமையை சரிபார்க்கவும் மீறல் கண்காணிப்பை அணுகவும், இந்த
+          எளிய படிகளைப் பின்பற்றவும்:
+        </p>
+        <div class="verification-steps">
+          <ol>
+            <li>கீழே உங்கள் டொமைன் பெயரை உள்ளிடவும்</li>
+            <li>
+              உங்களுக்கு விருப்பமான சரிபார்ப்பு முறையைத் தேர்ந்தெடுக்கவும்:
+              <ul>
+                <li>
+                  <i class="fas fa-shield-alt"></i>
+                  <strong>DNS சரிபார்ப்பு</strong> - மிகவும் பாதுகாப்பான முறை (10 நிமிடம்)
+                  <a
+                    href="https://blog.xposedornot.com/data-breach-monitoring-simplified-dns-verification/"
+                    target="_blank"
+                    class="guide-link"
+                    title="DNS சரிபார்ப்பு வழிகாட்டியைப் பார்க்கவும்"
+                  >
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </li>
+                <li>
+                  <i class="fas fa-file-code"></i>
+                  <strong>HTML சரிபார்ப்பு</strong> - மாற்று முறை (15 நிமிடம்)
+                  <a
+                    href="https://blog.xposedornot.com/html-verification/"
+                    target="_blank"
+                    class="guide-link"
+                    title="HTML சரிபார்ப்பு வழிகாட்டியைப் பார்க்கவும்"
+                  >
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>நீங்கள் தேர்ந்தெடுத்த முறைக்கான வழிகாட்டுதல்களைப் பின்பற்றவும்</li>
+          </ol>
         </div>
       </div>
-      <div class="form-group row align-items-center">
-        <label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filecontent">கோப்பு உள்ளடக்கம்:</label>
-        <div class="col-sm-9">
-          <input class="form-control input-lg input-field" data-val="true" id="edhu_html_filecontent"
-            name="edhu_html_filecontent" readonly="" type="text" />
+      <form id="defaultForm" method="post" role="form" onload="choices()">
+        <div class="form-group domain-input-container">
+          <input
+            type="text"
+            class="form-control input-nl2 name domain-input"
+            id="eventName"
+            name="name"
+            autocapitalize="off"
+            autocorrect="off"
+            data-val="true"
+            data-val-maxlength="Maximum is only 255 ! "
+            data-val-minlength-min="4"
+            maxlength="255"
+            placeholder="உங்கள் டொமைன் பெயரை உள்ளிடவும் (எ.கா., example.com)"
+            spellcheck="false"
+            autofocus="true"
+          />
         </div>
-        <div class="col-sm-1">
-          <button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filecontent"
-            type="button"><i class="fas fa-copy"></i> நகலெடுக்கவும்</button>
-        </div>
-      </div>
-      <div align="left" class="input-group">
-        <input class="form-control input-lg" id="txt_email_h" placeholder="Email address to receive the exposed data"
-          type="email" />
-        <span class="input-group-btn">
-          <button class="btn btn-lg btn-primary" id="searchMe_h" type="submit"> சரிபார்க்கவும்<span
-              class="glyphicon glyphicon-ok" id="searchMe_h_i1"></span>
+        <br />
+        <div align="center">
+          <button id="alertMe" type="submit" class="btn btn-primary btn-lg">
+            சரிபார்ப்பு செயல்முறையைத் தொடங்கு
+            <span id="alertMe_i1" class="glyphicon glyphicon-ok"></span>
           </button>
-        </span>
-      </div>
-    </form>
-  </div>
-  <div align="center" class="container alert alert-danger" id="dang" role="alert">
-  </div>
-  <div align="center" class="alert alert-primary container" id="div_email" role="alert"
-    style="border-radius: 5px;border:2px solid #6daae0;">
-    <strong>மின்னஞ்சல்</strong> வழங்கப்பட்ட டொமைனைச் சரிபார்க்க அடிப்படை சரிபார்ப்பு எளிதானது, நீங்கள் அதிகாரப்பூர்வ
-    மின்னஞ்சல் தொடர்புகளில் மின்னஞ்சல்களைப் பெறலாம். மின்னஞ்சலைத் தேர்ந்தெடுத்து கிளிக்
-    செய்யவும்<strong>சரிபார்க்கவும்</strong>.<br />
-    <br />
-    <form id="email_form" method="post">
-      <div class="input-group" id="div1">
-        <span class="input-group-addon">
-          <em class="fa fa-envelope"></em>
-        </span>
-        <select class="form-control input-group input-lg" id="sel1">
-          <option>சரிபார்ப்பு மின்னஞ்சலைப் பெற, பொருத்தமான மின்னஞ்சலைத் தேர்ந்தெடுக்கவும்:</option>
-        </select>
-      </div>
-      <br />
-      <div align="left" class="input-group">
-        <input class="form-control input-lg" id="txt_email_e" placeholder="Email address to receive the exposed data"
-          type="email" />
-        <span class="input-group-btn">
-          <button class="btn btn-lg btn-primary" id="searchMe_e" type="submit"> சரிபார்க்கவும்<span
-              class="glyphicon glyphicon-ok" id="searchMe_e_i1">
-            </span></button>
-        </span>
-      </div>
-    </form>
-  </div>
-  <div class="container" id="div_t1">
-    <div style=" border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>படிகள்</th>
-              <th>செயல்</th>
-              <th>விளக்கம்</th>
-              <th>நிலை</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> # 1</td>
-              <td> டொமைன் பெயர்</td>
-              <td> சரியான டொமைன் பெயரை உள்ளிடவும்</td>
-              <td>
-                <span class="label label-success">நிறைவு</span>
-              </td>
-            </tr>
-            <tr>
-              <td> # 2</td>
-              <td>சரிபார்ப்பு விருப்பங்கள்</td>
-              <td>மின்னஞ்சல், DNS, html போன்றவற்றின் அடிப்படையில் சரிபார்ப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</td>
-              <div id="div_suc1">
-                <td>
-                  <span class="label label-warning">நிலுவையில் உள்ளது</span>
-                </td>
-              </div>
-            </tr>
-            <tr>
-              <td> # 3</td>
-              <td>முழுமையான சரிபார்ப்பு</td>
-              <td>தேர்ந்தெடுக்கப்பட்ட விருப்பத்தின்படி சரிபார்ப்பு செயல்முறையை வெற்றிகரமாக முடிக்கவும்</td>
-              <td>
-                <span class="label label-warning">நிலுவையில் உள்ளது</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="progress">
-          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20"
-            class="progress-bar progress-bar-success progress-bar-striped active" id="pr1" role="progressbar"
-            style="width:20%"> 20% முடிந்தது (வெற்றி)</div>
         </div>
-      </div>
+        <div id="status" align="center" hidden="false">
+          <button class="btn btn-primary btn-lg">
+            சரிபார்ப்பைத் தொடங்குகிறது ...
+            <em class="fa fa-spinner fa-spin"></em>
+          </button>
+        </div>
+        <input type="hidden" name="hid1" id="hid1" readonly />
+      </form>
     </div>
-  </div>
-  <div class="container" id="div_t3">
-    <div style=" border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>படிகள்</th>
-              <th>செயல்</th>
-              <th>விளக்கம்</th>
-              <th>நிலை</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> # 1</td>
-              <td> டொமைன் பெயர்</td>
-              <td> சரியான டொமைன் பெயரை உள்ளிடவும்</td>
-              <td>
-                <span class="label label-success">நிறைவு</span>
-              </td>
-            </tr>
-            <tr>
-              <td> # 2</td>
-              <td>சரிபார்ப்பு முறை</td>
-              <td>மின்னஞ்சல், DNS, html போன்றவற்றின் அடிப்படையில் சரிபார்ப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</td>
-              <div id="div_suc2">
-                <td>
-                  <span class="label label-success">நிறைவு</span>
-                </td>
-              </div>
-            </tr>
-            <tr>
-              <td> # 3</td>
-              <td>முழுமையான சரிபார்ப்பு</td>
-              <td>தேர்ந்தெடுக்கப்பட்ட முறையின்படி சரிபார்ப்பு செயல்முறையை வெற்றிகரமாக முடிக்கவும்</td>
-              <td>
-                <span class="label label-danger">தோல்வி</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="progress">
-          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100"
-            class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%">
-            100% முழுமையானது (தோல்வி)</div>
+    <div id="div_s1">
+        <div align="center" id="lbl_1">
+          <div id="d1"></div>
         </div>
-      </div>
-      <div align="center">
-        <button class="btn btn-primary btn-lg" onclick="window.location.reload();">மீண்டும் முயற்சிக்கவும்</button>
-        <br />
-      </div>
-      <br />
-    </div>
-  </div>
-  <div class="container" id="div_t4">
-    <div style=" border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>படிகள்</th>
-              <th>செயல்</th>
-              <th>விளக்கம்</th>
-              <th>நிலை</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> # 1</td>
-              <td> டொமைன் பெயர்</td>
-              <td> சரியான டொமைன் பெயரை உள்ளிடவும்</td>
-              <td>
-                <span class="label label-success">நிறைவு</span>
-              </td>
-            </tr>
-            <tr>
-              <td> # 2</td>
-              <td>சரிபார்ப்பு முறை</td>
-              <td>மின்னஞ்சல், DNS, html போன்றவற்றின் அடிப்படையில் சரிபார்ப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</td>
-              <div id="div_suc2">
-                <td>
-                  <span class="label label-success">நிறைவு</span>
-                </td>
-              </div>
-            </tr>
-            <tr>
-              <td> # 3</td>
-              <td>முழுமையான சரிபார்ப்பு</td>
-              <td>தேர்ந்தெடுக்கப்பட்ட முறையின்படி சரிபார்ப்பு செயல்முறையை வெற்றிகரமாக முடிக்கவும்</td>
-              <td>
-                <span class="label label-success">வெற்றி</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="progress">
-          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100"
-            class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%">
-            100% முழுமையானது (வெற்றி)</div>
-        </div>
-        <div align="center" class="alert alert-success" id="succ" role="alert">
-          <em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
+        <div
+          class="selectContainer container"
+          id="s1"
+          style="margin: 20px auto !important; max-width: 800px !important"
+        >
+          <div class="d-flex align-items-center justify-content-center">
+            <label
+              id="label_srategy"
+              for="strat"
+              class="mb-0 mr-2"
+              style="white-space: nowrap; color: #9fc0e0"
+            >
+              சரிபார்ப்பு முறை
+              <span
+                class="domain-label"
+                id="domain-display"
+                style="display: inline-block; color: #9fc0e0; font-weight: bold"
+                >example.com</span
+              >
+            </label>
+            <select
+              name="strat"
+              id="strat"
+              class="form-control input-nl2 verification-select"
+              data-style="btn-primary"
+            >
+              <option value="ver" selected>
+                கிடைக்கும் முறைகளில் ஒன்றைத் தேர்ந்தெடுக்கவும் ...
+              </option>
+              <option value="dns_txt">DNS உரை அடிப்படையிலான சரிபார்ப்பு</option>
+              <option value="html">HTML பக்க அடிப்படையிலான சரிபார்ப்பு</option>
+            </select>
+          </div>
           <br />
-          <strong>சிறப்பானது !</strong> நாங்கள் வெற்றிகரமாகச் சரிபார்த்துள்ளோம், மேலும் மீறல் தரவுகளுடன் மின்னஞ்சல்
-          அனுப்பப்பட்டது. !
         </div>
       </div>
-    </div>
-  </div>
-  <div class="container" id="div_t2">
-    <div style="border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>படிகள்</th>
-              <th>செயல்</th>
-              <th>விளக்கம்</th>
-              <th>நிலை</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> # 1</td>
-              <td> டொமைன் பெயர்</td>
-              <td> சரியான டொமைன் பெயரை உள்ளிடவும்</td>
-              <td>
-                <span class="label label-success">நிறைவு</span>
-              </td>
-            </tr>
-            <tr>
-              <td> # 2</td>
-              <td>சரிபார்ப்பு முறை</td>
-              <td>மின்னஞ்சல், DNS, html போன்றவற்றின் அடிப்படையில் சரிபார்ப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</td>
-              <div id="div_suc2">
-                <td>
-                  <span class="label label-success">நிறைவு</span>
-                </td>
-              </div>
-            </tr>
-            <tr>
-              <td> # 3</td>
-              <td>முழுமையான சரிபார்ப்பு</td>
-              <td>தேர்ந்தெடுக்கப்பட்ட முறையின்படி சரிபார்ப்பு செயல்முறையை வெற்றிகரமாக முடிக்கவும்</td>
-              <td>
-                <span class="label label-warning">நிலுவையில் உள்ளது</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="progress">
-          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="60"
-            class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:60%">
-            60% முடிந்தது (வெற்றி)</div>
+      <div
+        class="alert alert-primary container"
+        role="alert"
+        id="div_dns"
+        align="center"
+        style="border-radius: 5px; border: 2px solid #6daae0"
+      >
+        <div class="verification-info">
+          <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-shield-alt fa-2x text-primary mr-2"></i>
+            <h5 class="mb-0">DNS TXT சரிபார்ப்பு</h5>
+            <span class="badge badge-warning ml-2">மேம்பட்டது</span>
+          </div>
+          <div class="alert alert-warning mt-2">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>முக்கிய குறிப்புகள்:</strong>
+            <ul class="mb-0">
+              <li>
+                முழு சரிபார்ப்பு செயல்முறையின் போதும் இந்தப் பக்கத்தைத் திறந்து வைக்கவும்
+              </li>
+              <li>
+                சரிபார்ப்பு விசைகள் ஒவ்வொரு முயற்சியிலும் மாறும் - எப்போதும் காட்டப்படும் சமீபத்திய விசையைப் பயன்படுத்தவும்
+              </li>
+              <li>DNS பரப்புதலுக்காக காத்திருக்கவும் (10-30 நிமிடங்கள் ஆகலாம்)</li>
+              <li>
+                சரிபார் என்பதைக் கிளிக் செய்வதற்கு முன் உங்கள் TXT பதிவு தெரியும் என்பதை உறுதிப்படுத்த
+                <a href="https://mxtoolbox.com/TXTLookup.aspx" target="_blank"
+                  >MX Toolbox</a
+                >
+                போன்ற கருவிகளைப் பயன்படுத்தவும்
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <br />
-      <div align="center" class="alert alert-success" hidden="false" id="succ" role="alert">
-        <em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
+        <strong
+          ><a
+            href="https://blog.xposedornot.com/data-breach-monitoring-simplified-dns-verification/"
+            target="_blank"
+            >DNS TXT<sup><i class="fas fa-info-circle"></i></sup
+          ></a>
+          பதிவு அடிப்படையிலான சரிபார்ப்பு!</strong
+        >
+        கீழே காட்டப்பட்டுள்ளபடி உங்கள் DNS இல் தற்காலிக TXT பதிவை உருவாக்கவும். <br />
         <br />
-        <strong>சிறப்பானது !</strong> நாங்கள் வெற்றிகரமாகச் சரிபார்த்துள்ளோம், மேலும் மீறல் தரவுகளுடன் மின்னஞ்சல்
-        அனுப்பப்பட்டது. !
+        <form id="dns_form" method="post">
+          <div class="form-group row align-items-center">
+            <label for="edhu_dns" class="col-form-label col-sm-2 text-sm-end"
+              >DNS TXT பதிவு:</label
+            >
+            <div class="col-sm-9">
+              <input
+                class="form-control input-lg input-field"
+                autocapitalize="off"
+                data-val="true"
+                data-val-maxlength="Maximum is only 255 ! "
+                data-val-maxlength-max="255"
+                data-val-minlength="Minimum is &#39;3&#39;!"
+                data-val-minlength-min="3"
+                id="edhu_dns"
+                maxlength="255"
+                name="edhu_dns"
+                autofocus="true"
+                readonly
+              />
+            </div>
+            <div class="col-sm-1">
+              <button
+                class="btn btn-outline-primary copy-btn"
+                type="button"
+                data-clipboard-target="#edhu_dns"
+              >
+                <i class="fas fa-copy"></i> நகலெடு
+              </button>
+            </div>
+          </div>
+          <br />
+          <div align="left" class="input-group">
+            <input
+              class="form-control input-lg"
+              type="text"
+              id="txt_dns"
+              placeholder="வெளிப்படுத்தப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
+              type="email"
+            />
+            <span class="input-group-btn">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary"
+              >
+                சரிபார் &nbsp;
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
+            </span>
+            <div class="validation-message"></div>
+          </div>
+        </form>
       </div>
-      <div align="center" class="alert alert-info" hidden="false" id="info" role="alert">
-        <strong>அச்சச்சோ !</strong> சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கலாமே.
+      <div
+        class="container alert alert-primary"
+        role="alert"
+        id="div_meta"
+        align="center"
+        style="border-radius: 5px; border: 2px solid #6daae0"
+      >
+        <strong>META குறிச்சொல் அடிப்படையிலான சரிபார்ப்பு!</strong> கீழே காட்டப்பட்டுள்ளபடி
+        உங்கள் முகப்புப் பக்கத்தில் தற்காலிக META தரவு குறிச்சொல்லை உருவாக்கவும். <br />
+        <br />
+        <form id="meta_form" method="post">
+          <div class="input-group" id="div2">
+            <span class="input-group-addon">
+              <em class="fa fa-bullseye"></em>
+            </span>
+            <input
+              class="form-control input-lg"
+              autocapitalize="off"
+              class="form-control"
+              data-val="true"
+              data-val-maxlength="Maximum is only 255 ! "
+              data-val-maxlength-max="255"
+              data-val-minlength="Minimum is &#39;3&#39;!"
+              data-val-minlength-min="3"
+              id="edhu_meta"
+              maxlength="255"
+              name="edhu_meta"
+              autofocus="true"
+              readonly
+            />
+          </div>
+          <br />
+          <div align="left" class="input-group">
+            <input
+              class="form-control input-lg"
+              type="text"
+              id="txt_email_m"
+              placeholder="வெளிப்படுத்தப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
+              type="email"
+            />
+            <span class="input-group-btn">
+              <button
+                type="submit"
+                id="searchMe_m"
+                class="btn btn-lg btn-primary"
+              >
+                சரிபார் &nbsp;
+                <span id="searchMe_m_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
+            </span>
+            <div class="validation-message"></div>
+          </div>
+        </form>
       </div>
-      <div align="center" class="alert alert-danger" hidden="false" id="dang" role="alert">
-        <strong>அச்சச்சோ !</strong> டொமைன் சரிபார்ப்பு வெற்றிபெறவில்லை. !
-      </div>
-      <div align="center" class="container alert alert-danger" hidden="false" id="f1" role="alert">
-        <h3> தயவுசெய்து முடிக்கவும்<strong>சவால்</strong> பின்னர் மீண்டும் முயற்சிக்கவும்!</h3>
-      </div>
-      <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-      <script src="/static/scripts/domain.js"></script>
-      <script src="/static/scripts/common.js"></script>
-      <script>
-        var clipboard = new ClipboardJS('.copy-btn');
+      <div
+        class="alert alert-primary container"
+        role="alert"
+        id="div_html"
+        align="center"
+        style="border-radius: 5px; border: 2px solid #6daae0"
+      >
+        <div class="verification-info">
+          <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-file-code fa-2x text-primary mr-2"></i>
+            <h5 class="mb-0">HTML சரிபார்ப்பு</h5>
+            <span class="badge badge-info ml-2">எளிய பதிவேற்றம்</span>
+          </div>
+          <div class="alert alert-info mt-2">
+            <i class="fas fa-info-circle"></i>
+            <strong>எளிய படிகள்:</strong>
+            <ul class="mb-0">
+              <li>கீழே காட்டப்பட்ட சரியான பெயருடன் ஒரு புதிய கோப்பை உருவாக்கவும்</li>
+              <li>சரிபார்ப்பு குறியீட்டை அப்படியே நகலெடுக்கவும்</li>
+              <li>இந்தக் கோப்பை உங்கள் இணையதளத்தின் ரூட் டைரக்டரியில் பதிவேற்றவும்</li>
+              <li>
+                கோப்பு இங்கே அணுகக்கூடியதாக இருக்க வேண்டும்:
+                <code>https://yourdomain.com/[filename-below]</code>
+              </li>
+            </ul>
+          </div>
+          <div class="alert alert-success mt-2">
+            <i class="fas fa-link"></i>
+            <strong>உங்கள் சரிபார்ப்பு URL:</strong><br />
+            <span id="html_text"></span>
+            <a
+              href="#"
+              id="verify_link"
+              target="_blank"
+              class="verify-arrow"
+              title="சரிபார்ப்பு URL ஐ புதிய சாளரத்தில் திறக்கவும்"
+            >
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </div>
+        </div>
 
-        clipboard.on('success', function (e) {
-          e.trigger.textContent = 'Copied!';
+        <form id="html_form" method="post">
+          <div class="form-group row align-items-center">
+            <label
+              for="edhu_html_filename"
+              class="col-form-label col-sm-2 text-sm-end"
+              >கோப்பு பெயர்:</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control input-lg input-field"
+                data-val="true"
+                id="edhu_html_filename"
+                name="edhu_html_filename"
+                readonly
+              />
+            </div>
+            <div class="col-sm-1">
+              <button
+                class="btn btn-outline-primary copy-btn"
+                type="button"
+                data-clipboard-target="#edhu_html_filename"
+              >
+                <i class="fas fa-copy"></i> நகலெடு
+              </button>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label
+              for="edhu_html_filecontent"
+              class="col-form-label col-sm-2 text-sm-end"
+              >கோப்பு உள்ளடக்கம்:</label
+            >
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control input-lg input-field"
+                data-val="true"
+                id="edhu_html_filecontent"
+                name="edhu_html_filecontent"
+                readonly
+              />
+            </div>
+            <div class="col-sm-1">
+              <button
+                class="btn btn-outline-primary copy-btn"
+                type="button"
+                data-clipboard-target="#edhu_html_filecontent"
+              >
+                <i class="fas fa-copy"></i> நகலெடு
+              </button>
+            </div>
+          </div>
+          <div align="left" class="input-group">
+            <input
+              class="form-control input-lg"
+              type="text"
+              id="txt_email_h"
+              placeholder="வெளிப்படுத்தப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
+            />
+            <span class="input-group-btn">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary"
+                disabled
+              >
+                சரிபார் &nbsp; <i class="fas fa-check"></i>
+              </button>
+            </span>
+            <div class="validation-message"></div>
+          </div>
+        </form>
+      </div>
+      <div
+        class="container alert alert-danger"
+        role="alert"
+        id="dang"
+        align="center"
+      ></div>
+      <div
+        class="alert alert-primary container"
+        role="alert"
+        id="div_email"
+        align="center"
+        style="border-radius: 5px; border: 2px solid #6daae0"
+      >
+        <div class="verification-info">
+          <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-envelope fa-2x text-primary mr-2"></i>
+            <h5 class="mb-0">மின்னஞ்சல் சரிபார்ப்பு</h5>
+            <span class="badge badge-success ml-2">எளிதான முறை</span>
+          </div>
+          <div class="alert alert-info mt-2">
+            <i class="fas fa-info-circle"></i>
+            <strong>முக்கியம்:</strong> சரிபார்ப்பு மின்னஞ்சல்கள் உங்கள் டொமைனின் DNS பதிவுகளில்
+            பட்டியலிடப்பட்ட மின்னஞ்சல் முகவரிகளுக்கு மட்டுமே அனுப்பப்படும் (admin@yourdomain.com போன்றவை).
+            இந்த மின்னஞ்சல் கணக்குகளுக்கு அணுகல் இருந்தால் மட்டுமே இந்த முறையைத் தேர்ந்தெடுக்கவும்.
+          </div>
+        </div>
+        <strong>மின்னஞ்சல்</strong> அடிப்படையிலான சரிபார்ப்பு, அதிகாரப்பூர்வ மின்னஞ்சல்
+        தொடர்புகளில் மின்னஞ்சல்களைப் பெற முடிந்தால் டொமைனை எளிதாக சரிபார்க்கலாம்.
+        மின்னஞ்சலைத் தேர்ந்தெடுத்து <strong>சரிபார்</strong> என்பதைக் கிளிக் செய்யவும். <br />
+        <br />
+        <form id="email_form" method="post">
+          <div class="input-group" id="div1">
+            <span class="input-group-addon">
+              <em class="fa fa-envelope"></em>
+            </span>
+            <select class="form-control input-group input-lg" id="sel1">
+              <option>
+                சரிபார்ப்பு மின்னஞ்சலைப் பெற பொருத்தமான மின்னஞ்சலைத் தேர்ந்தெடுக்கவும் :
+              </option>
+            </select>
+          </div>
+          <br />
+          <div align="left" class="input-group">
+            <input
+              class="form-control input-lg"
+              type="text"
+              id="txt_email_e"
+              placeholder="வெளிப்படுத்தப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
+            />
+            <span class="input-group-btn">
+              <button
+                type="submit"
+                id="searchMe_e"
+                class="btn btn-lg btn-primary"
+                disabled
+              >
+                சரிபார் &nbsp; <i class="fas fa-check"></i>
+              </button>
+            </span>
+            <div class="validation-message"></div>
+          </div>
+        </form>
+      </div>
+      <div class="container" id="div_t1">
+        <div style="border-radius: 5px; border: 2px solid #6daae0">
+          <div class="sp1">
+            <table class="table table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>படிகள்</th>
+                  <th>செயல்</th>
+                  <th>விளக்கம்</th>
+                  <th>நிலை</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td># 1</td>
+                  <td>டொமைன் பெயர்</td>
+                  <td>சரியான டொமைன் பெயரை உள்ளிடவும்</td>
+                  <td>
+                    <span class="label label-success">முடிந்தது</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td># 2</td>
+                  <td>சரிபார்ப்பு விருப்பங்கள்</td>
+                  <td>DNS, HTML போன்றவற்றின் அடிப்படையில் சரிபார்ப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</td>
+                  <div id="div_suc1">
+                    <td>
+                      <span class="label label-warning">நிலுவையில்</span>
+                    </td>
+                  </div>
+                </tr>
+                <tr>
+                  <td># 3</td>
+                  <td>சரிபார்ப்பை முடிக்கவும்</td>
+                  <td>
+                    தேர்ந்தெடுக்கப்பட்ட விருப்பத்தின்படி சரிபார்ப்பு செயல்முறையை வெற்றிகரமாக முடிக்கவும்
+                  </td>
+                  <td>
+                    <span class="label label-warning">நிலுவையில்</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="progress">
+              <div
+                id="pr1"
+                class="progress-bar progress-bar-success progress-bar-striped active"
+                role="progressbar"
+                aria-valuenow="20"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 20%"
+              >
+                20% முடிந்தது (வெற்றி)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container" id="div_t3">
+        <div style="border-radius: 5px; border: 2px solid #6daae0">
+          <div class="sp1">
+            <table class="table table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>படிகள்</th>
+                  <th>செயல்</th>
+                  <th>விளக்கம்</th>
+                  <th>நிலை</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td># 1</td>
+                  <td>டொமைன் பெயர்</td>
+                  <td>சரியான டொமைன் பெயரை உள்ளிடவும்</td>
+                  <td>
+                    <span class="label label-success">முடிந்தது</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td># 2</td>
+                  <td>சரிபார்ப்பு முறை</td>
+                  <td>DNS, HTML போன்றவற்றின் அடிப்படையில் சரிபார்ப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</td>
+                  <div id="div_suc2">
+                    <td>
+                      <span class="label label-success">முடிந்தது</span>
+                    </td>
+                  </div>
+                </tr>
+                <tr>
+                  <td># 3</td>
+                  <td>சரிபார்ப்பை முடிக்கவும்</td>
+                  <td>
+                    தேர்ந்தெடுக்கப்பட்ட முறையின்படி சரிபார்ப்பு செயல்முறையை வெற்றிகரமாக முடிக்கவும்
+                  </td>
+                  <td>
+                    <span class="label label-danger">தோல்வி</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="progress">
+              <div
+                class="progress-bar progress-bar-danger progress-bar-striped active"
+                role="progressbar"
+                aria-valuenow="100"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 100%"
+              >
+                100% முடிந்தது (தோல்வி)
+              </div>
+            </div>
+          </div>
+          <div align="center">
+            <button
+              class="btn btn-primary btn-lg"
+              onClick="window.location.reload();"
+            >
+              மீண்டும் முயற்சிக்கவும்
+            </button>
+            <br />
+          </div>
+          <br />
+        </div>
+      </div>
+      <div class="container" id="div_t4">
+        <div style="border-radius: 5px; border: 2px solid #6daae0">
+          <div class="sp1">
+            <table class="table table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>படிகள்</th>
+                  <th>செயல்</th>
+                  <th>விளக்கம்</th>
+                  <th>நிலை</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td># 1</td>
+                  <td>டொமைன் பெயர்</td>
+                  <td>சரியான டொமைன் பெயரை உள்ளிடவும்</td>
+                  <td>
+                    <span class="label label-success">முடிந்தது</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td># 2</td>
+                  <td>சரிபார்ப்பு முறை</td>
+                  <td>DNS, HTML போன்றவற்றின் அடிப்படையில் சரிபார்ப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</td>
+                  <div id="div_suc2">
+                    <td>
+                      <span class="label label-success">முடிந்தது</span>
+                    </td>
+                  </div>
+                </tr>
+                <tr>
+                  <td># 3</td>
+                  <td>சரிபார்ப்பை முடிக்கவும்</td>
+                  <td>
+                    தேர்ந்தெடுக்கப்பட்ட முறையின்படி சரிபார்ப்பு செயல்முறையை வெற்றிகரமாக முடிக்கவும்
+                  </td>
+                  <td>
+                    <span class="label label-success">வெற்றி</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="progress">
+              <div
+                class="progress-bar progress-bar-success progress-bar-striped active"
+                role="progressbar"
+                aria-valuenow="100"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 100%"
+              >
+                100% முடிந்தது (வெற்றி)
+              </div>
+            </div>
+            <div
+              class="alert alert-success"
+              role="alert"
+              id="succ"
+              align="center"
+            >
+              <em
+                class="fa fa-check-circle"
+                style="color: green; font-size: 78px"
+              ></em>
+              <br />
+              <strong>சிறப்பு!</strong> நாங்கள் வெற்றிகரமாக சரிபார்த்தோம், மீறல் தரவுகளுடன் மின்னஞ்சல் அனுப்பப்பட்டது!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container" id="div_t2">
+        <div style="border-radius: 5px; border: 2px solid #6daae0">
+          <div class="sp1">
+            <table class="table table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>படிகள்</th>
+                  <th>செயல்</th>
+                  <th>விளக்கம்</th>
+                  <th>நிலை</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td># 1</td>
+                  <td>டொமைன் பெயர்</td>
+                  <td>சரியான டொமைன் பெயரை உள்ளிடவும்</td>
+                  <td>
+                    <span class="label label-success">முடிந்தது</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td># 2</td>
+                  <td>சரிபார்ப்பு முறை</td>
+                  <td>DNS, HTML போன்றவற்றின் அடிப்படையில் சரிபார்ப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</td>
+                  <div id="div_suc2">
+                    <td>
+                      <span class="label label-success">முடிந்தது</span>
+                    </td>
+                  </div>
+                </tr>
+                <tr>
+                  <td># 3</td>
+                  <td>சரிபார்ப்பை முடிக்கவும்</td>
+                  <td>
+                    தேர்ந்தெடுக்கப்பட்ட முறையின்படி சரிபார்ப்பு செயல்முறையை வெற்றிகரமாக முடிக்கவும்
+                  </td>
+                  <td>
+                    <span class="label label-warning">நிலுவையில்</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="progress">
+              <div
+                class="progress-bar progress-bar-success progress-bar-striped active"
+                role="progressbar"
+                aria-valuenow="60"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 60%"
+              >
+                60% முடிந்தது (வெற்றி)
+              </div>
+            </div>
+          </div>
+          <br />
+          <div
+            hidden="false"
+            class="alert alert-success"
+            role="alert"
+            id="succ"
+            align="center"
+          >
+            <em
+              class="fa fa-check-circle"
+              style="color: green; font-size: 78px"
+            ></em>
+            <br />
+            <strong>சிறப்பு!</strong> நாங்கள் வெற்றிகரமாக சரிபார்த்தோம், மீறல் தரவுகளுடன் மின்னஞ்சல் அனுப்பப்பட்டது!
+          </div>
+          <div
+            hidden="false"
+            class="alert alert-info"
+            role="alert"
+            id="info"
+            align="center"
+          >
+            <strong>அச்சச்சோ!</strong> சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்.
+          </div>
+          <div
+            hidden="false"
+            class="alert alert-danger"
+            role="alert"
+            id="dang"
+            align="center"
+          >
+            <strong>அச்சச்சோ!</strong> டொமைன் சரிபார்ப்பு வெற்றிபெறவில்லை!
+          </div>
+          <div
+            class="container alert alert-danger"
+            role="alert"
+            id="f1"
+            hidden="false"
+            align="center"
+          >
+            <h3>
+              <strong>சவாலை</strong> முடித்துவிட்டு மீண்டும் முயற்சிக்கவும்!
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <script
+        defer
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+      ></script>
+      <script src="/static/scripts/domain.js"></script>
+      <script>
+        var clipboard = new ClipboardJS(".copy-btn");
+
+        clipboard.on("success", function (e) {
+          e.trigger.textContent = "நகலெடுக்கப்பட்டது!";
           setTimeout(function () {
-            e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            e.trigger.innerHTML = '<i class="fas fa-copy"></i> நகலெடு';
           }, 10000);
           e.clearSelection();
         });
 
-        clipboard.on('error', function (e) {
-          e.trigger.textContent = 'Failed!';
+        clipboard.on("error", function (e) {
+          e.trigger.textContent = "தோல்வி!";
           setTimeout(function () {
-            e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            e.trigger.innerHTML = '<i class="fas fa-copy"></i> நகலெடு';
           }, 10000);
         });
 
+        function updateVerificationLink() {
+          const verifyLink = document.getElementById("verify_link");
+          const htmlText = document.getElementById("html_text").textContent;
+          if (htmlText) {
+            const url = htmlText.match(/https:\/\/[^\s]+/);
+            if (url) {
+              verifyLink.href = url[0];
+              verifyLink.style.display = "inline-block";
+            } else {
+              verifyLink.style.display = "none";
+            }
+          } else {
+            verifyLink.style.display = "none";
+          }
+        }
 
+        const observer = new MutationObserver(updateVerificationLink);
+        observer.observe(document.getElementById("html_text"), {
+          childList: true,
+          characterData: true,
+          subtree: true,
+        });
+
+        function updateDomainLabel() {
+          const domain = document.getElementById("eventName").value;
+          const domainDisplay = document.getElementById("domain-display");
+          if (domain) {
+            domainDisplay.textContent = domain;
+            domainDisplay.parentElement.style.display = "block";
+          } else {
+            domainDisplay.textContent = "";
+            domainDisplay.parentElement.style.display = "none";
+          }
+        }
+
+        document
+          .getElementById("eventName")
+          .addEventListener("input", updateDomainLabel);
+        document
+          .getElementById("eventName")
+          .addEventListener("change", updateDomainLabel);
+
+        function validateEmail(email) {
+          const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          return regex.test(email);
+        }
+
+        function setupEmailValidation(inputId, buttonId) {
+          const input = document.getElementById(inputId);
+          const button = document.getElementById(buttonId);
+          const messageContainer = input
+            .closest(".input-group")
+            .querySelector(".validation-message");
+
+          input.addEventListener("input", function () {
+            const isValid = validateEmail(this.value);
+
+            this.classList.remove("is-valid", "is-invalid");
+            this.classList.add(isValid ? "is-valid" : "is-invalid");
+
+            if (messageContainer) {
+              messageContainer.textContent = isValid
+                ? ""
+                : "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்";
+            }
+
+            button.disabled = !isValid;
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          setupEmailValidation("txt_email_h", "searchMe_h");
+          setupEmailValidation("txt_email_e", "searchMe_e");
+          setupEmailValidation("txt_email_m", "searchMe_m");
+          setupEmailValidation("txt_dns", "searchMe_d");
+
+          ["email_form", "html_form", "meta_form", "dns_form"].forEach(
+            (formId) => {
+              const form = document.getElementById(formId);
+              if (form) {
+                form.addEventListener("submit", function (e) {
+                  e.preventDefault();
+                  const emailInput = this.querySelector('input[type="text"]');
+                  if (emailInput && validateEmail(emailInput.value)) {
+                  }
+                });
+              }
+            },
+          );
+        });
       </script>
-      <div class="container text-center" style="font-family:Poppins">
-        <footer>
-          <aside>
-            <hr />
-            <p>
-              உதவி தேவையா? deva[@]xposedornot.com இல் எனக்கு மின்னஞ்சல் அனுப்பவும் அல்லது என்னுடன் நேரடி அரட்டையை இங்கே
-              திட்டமிடவும்.
-              <br /><br />
-            </p>
-            <hr />
-          </aside>
-        </footer>
+      <style>
+        .footer {
+          padding: 40px 0 30px;
+          background: #f8f9fa;
+          border-top: 1px solid #ebedef;
+          margin-top: 40px;
+          width: 100%;
+        }
+        .footer p {
+          color: #3a4b5e;
+        }
+        .footer-columns {
+          display: flex;
+          justify-content: space-between;
+          gap: 60px;
+          text-align: left;
+          padding: 0 40px;
+        }
+        .footer-group {
+          flex: 1;
+          min-width: 0;
+        }
+        .footer-group h6 {
+          color: #2c3e50 !important;
+          font-size: 0.95em !important;
+          margin-bottom: 15px !important;
+          font-weight: 700 !important;
+          text-transform: uppercase;
+          letter-spacing: 0.8px;
+        }
+        .footer-group a.footer-link {
+          display: block;
+          margin-bottom: 8px;
+          padding: 6px 10px;
+          border-radius: 4px;
+          transition: all 0.3s ease;
+          color: #3a4b5e;
+          text-decoration: none;
+        }
+        .footer-group a.footer-link:hover {
+          background-color: rgba(63, 113, 243, 0.15);
+          padding-left: 14px;
+          color: #3f71f3 !important;
+        }
+        @media (max-width: 768px) {
+          .footer-columns {
+            flex-direction: column;
+            text-align: center;
+            gap: 30px;
+            padding: 0 20px;
+          }
+        }
+        [data-theme="dark"] .footer {
+          background: #1a1a2e;
+          border-top-color: #2d2d44;
+        }
+        [data-theme="dark"] .footer p {
+          color: #9fc0e0;
+        }
+        [data-theme="dark"] .footer-group h6 {
+          color: #ffffff !important;
+        }
+        [data-theme="dark"] .footer-group a.footer-link {
+          color: #9fc0e0;
+        }
+        [data-theme="dark"] .footer-group a.footer-link:hover {
+          background-color: rgba(63, 113, 243, 0.2);
+          color: #6daae0 !important;
+        }
+        [data-theme="dark"] #div_dns,
+        [data-theme="dark"] #div_html,
+        [data-theme="dark"] #div_meta,
+        [data-theme="dark"] #div_email {
+          background: #1e2a3a !important;
+          border-color: #3d5a80 !important;
+          color: #e0e0e0 !important;
+        }
+        [data-theme="dark"] .verification-info {
+          background-color: rgba(30, 42, 58, 0.9) !important;
+        }
+        [data-theme="dark"] .verification-info h5 {
+          color: #ffffff !important;
+        }
+        [data-theme="dark"] #div_dns .alert-warning,
+        [data-theme="dark"] #div_html .alert-info,
+        [data-theme="dark"] #div_html .alert-success,
+        [data-theme="dark"] #div_email .alert-info {
+          background-color: rgba(40, 55, 75, 0.8) !important;
+          border-color: #3d5a80 !important;
+          color: #e0e0e0 !important;
+        }
+        [data-theme="dark"] #div_dns a,
+        [data-theme="dark"] #div_html a,
+        [data-theme="dark"] #div_email a {
+          color: #6daae0 !important;
+        }
+        [data-theme="dark"] #div_dns .form-control,
+        [data-theme="dark"] #div_html .form-control,
+        [data-theme="dark"] #div_meta .form-control,
+        [data-theme="dark"] #div_email .form-control {
+          background-color: #2d3e50 !important;
+          border-color: #3d5a80 !important;
+          color: #e0e0e0 !important;
+        }
+        [data-theme="dark"] #div_dns .form-control::placeholder,
+        [data-theme="dark"] #div_html .form-control::placeholder,
+        [data-theme="dark"] #div_email .form-control::placeholder {
+          color: #8899aa !important;
+        }
+        [data-theme="dark"] #div_dns label,
+        [data-theme="dark"] #div_html label,
+        [data-theme="dark"] #div_email label {
+          color: #e0e0e0 !important;
+        }
+        [data-theme="dark"] #div_dns code,
+        [data-theme="dark"] #div_html code {
+          background-color: #2d3e50;
+          color: #ff9f9f;
+        }
+        [data-theme="dark"] .btn-outline-primary {
+          border-color: #6daae0 !important;
+          color: #6daae0 !important;
+        }
+        [data-theme="dark"] .btn-outline-primary:hover {
+          background-color: #6daae0 !important;
+          color: #1a1a2e !important;
+        }
+        [data-theme="dark"] #div_input .alert-primary {
+          background: #1e2a3a !important;
+          border-color: #3d5a80 !important;
+          color: #e0e0e0 !important;
+        }
+        [data-theme="dark"] #div_input .alert-primary h4 {
+          color: #ffffff !important;
+        }
+        [data-theme="dark"] #div_input .alert-primary p {
+          color: #c0c0c0 !important;
+        }
+        [data-theme="dark"] #div_input .verification-steps ol > li {
+          color: #6daae0 !important;
+        }
+        [data-theme="dark"] #div_input .verification-steps ul li {
+          color: #c0c0c0 !important;
+        }
+        [data-theme="dark"] #div_input .verification-steps strong {
+          color: #ffffff !important;
+        }
+        [data-theme="dark"] #div_input .guide-link {
+          color: #6daae0 !important;
+        }
+        [data-theme="dark"] .domain-input {
+          background-color: #2d3e50 !important;
+          border-color: #3d5a80 !important;
+          color: #e0e0e0 !important;
+        }
+        [data-theme="dark"] .domain-input::placeholder {
+          color: #8899aa !important;
+        }
+        [data-theme="dark"] .verification-select {
+          background-color: #2d3e50 !important;
+          border-color: #3d5a80 !important;
+          color: #e0e0e0 !important;
+        }
+        [data-theme="dark"] #s1 label {
+          color: #9fc0e0 !important;
+        }
+      </style>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ எங்கள்
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            > இல்.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>சட்டம்</h6>
+            <a href="privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
+            <a href="terms" class="footer-link">விதிமுறைகள்</a>
+          </div>
+          <div class="footer-group">
+            <h6>சமூகம்</h6>
+            <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
+            <a href="/our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+          </div>
+          <div class="footer-group">
+            <h6>நம்பகத்தன்மை</h6>
+            <a href="transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
+            <a href="responsible-disclosure" class="footer-link"
+              >பொறுப்பான வெளிப்படுத்தல்</a
+            >
+            <a
+              href="https://statuspage.freshping.io/66216-XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >நிலை</a
+            >
+          </div>
+          <div class="footer-group">
+            <h6>எங்களைப் பின்தொடரவும்</h6>
+            <a
+              href="https://twitter.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
+              <i class="fab fa-twitter"></i> Twitter
+            </a>
+            <a
+              href="https://facebook.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a
+              href="https://infosec.exchange/@XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+            >
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
+        </div>
       </div>
     </div>
-  </div></input>
-</body>
 
+    <script src="/static/scripts/common.js"></script>
+  </body>
 </html>

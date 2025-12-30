@@ -1,331 +1,267 @@
-<html lang="en">
-
-<head>
+<!doctype html>
+<html lang="ta">
+  <head>
     <meta charset="utf-8" />
-    <title>XposedOrNot : தரவு மீறல் களஞ்சியம்</title>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
-    <meta content="width=device-width, maximum-scale=5.0, initial-scale=1.0" name="viewport" />
-    <meta content="XposedOrNot : Verify if your email is exposed in any data breach" name="description" />
-    <meta content="Devanand Premkumar" name="author" />
-    <meta content="XposedOrNot: Xposed Websites Repository" property="og:title">
-    <meta content="summary" name="twitter:card" />
-    <meta content="@XposedOrNot" name="twitter:site" />
-    <meta content="@DevaOnBreaches" name="twitter:creator" />
-    <meta content="How secure is your email from exposed data breaches" name="twitter:title" />
-    <meta content="Please check if your email has been compromised in any data breach.
-         Verify how secure is your email from exposed data breaches. Be Aware &amp; Stay Safe!"
-        name="twitter:description" />
-    <meta content="/static/images/xon.png" name="twitter:image" />
-    <link href="cdn.jsdelivr.net" rel="dns-prefetch" />
-    <link href="cdnjs.cloudflare.com" rel="dns-prefetch" />
-    <link href="static.hotjar.com" rel="dns-prefetch" />
-    <link href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="favicon.ico" rel="shortcut icon" type="image/ico">
-    <link defer="" href="/static/css/style-new.css" rel="stylesheet" type="text/css" />
-    <link defer="" href="/static/css/style-timeline.css" rel="stylesheet" type="text/css" />
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
-        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" rel="stylesheet" />
-    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset"
-        media="all" rel="stylesheet" type="text/css" />
-    <link defer="" href="/static/css/xon-report.css" rel="stylesheet" type="text/css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>XposedOrNot: தரவு மீறல்கள் களஞ்சியம்</title>
+    <meta
+      name="description"
+      content="XposedOrNot இன் விரிவான தரவு மீறல்கள் களஞ்சியத்தை ஆராயுங்கள். உங்கள் தனிப்பட்ட மற்றும் நிறுவன தரவைப் பாதுகாக்க மீறல்கள் பற்றிய விரிவான தகவல்களைக் கண்டறியுங்கள்."
+    />
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+    <meta
+      content="XposedOrNot: விரிவான தரவு மீறல்கள் களஞ்சியம்"
+      property="og:title"
+    />
+    <meta
+      content="XposedOrNot இன் விரிவான தரவு மீறல்கள் களஞ்சியத்தை ஆராயுங்கள். உங்கள் தனிப்பட்ட மற்றும் நிறுவன தரவைப் பாதுகாக்க மீறல்கள் பற்றிய விரிவான தகவல்களைக் கண்டறியுங்கள்."
+      property="og:description"
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta
+      name="twitter:title"
+      content="XposedOrNot: விரிவான தரவு மீறல்கள் களஞ்சியம்"
+    />
+    <meta
+      name="twitter:description"
+      content="XposedOrNot இன் விரிவான தரவு மீறல்கள் களஞ்சியத்தை ஆராயுங்கள். உங்கள் தனிப்பட்ட மற்றும் நிறுவன தரவைப் பாதுகாக்க மீறல்கள் பற்றிய விரிவான தகவல்களைக் கண்டறியுங்கள்."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
 
-    </link>
-    </link>
-    </meta>
-</head>
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
 
-<body data-offset="50" data-spy="scroll" data-target=".menu">
-    <div class="xon">
-        <div class="searchMe">
-            <div class="banner">
-                <div class="grid">
-                    <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
-                        <a class="navbar-brand abs" href="#">XposedOrNot</a>
-                        <button class="navbar-toggler" data-target="#collapsingNavbar" data-toggle="collapse"
-                            type="button">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="navbar-collapse collapse" id="collapsingNavbar">
-                            <ul class="navbar-nav ml-auto">
-                                <li class="nav-item active px-4">
-                                    <a class="nav-link" href="password.html">கடவுச்சொல்</a>
-                                </li>
-                                <li class="nav-item active px-4">
-                                    <a class="nav-link" href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
-                                </li>
-                                <li class="nav-item active px-4">
-                                    <a class="nav-link" href="https://blog.xposedornot.com">வலைப்பதிவு</a>
-                                </li>
-                                <li class="nav-item active px-4">
-                                    <a class="nav-link" href="api_doc.html">API</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <div align="center" class="header">
-                        <h1 style="color: white;">வெளிப்படுத்தப்பட்ட தரவு மீறல்கள்</h1>
-                    </div>
-                    <div class="btn-group btn-group-lg" id="floating-button">
-                        <button class="btn-lg btn-primary" id="table-view-button"
-                            style="background-color:#FC9E11;color:white" type="button">
-                            <em class="fa fa-table"></em>அட்டவணை பார்வை
-                        </button>
-                    </div>
-                    <div class="container py-5">
-                        <div class="main-timeline-4 text-white">
-                        </div>
-                    </div>
-                </div>
-                <div class="footer">
-                    <div class="container">
-                        <div class="footer-row">
-                            <p>இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள்
-                                வரவேற்கப்படுகின்றன ❤️ —எங்களை பார்க்கவும்<a href="https://github.com/XposedOrNot"
-                                    rel="noopener" target="_blank">கிட்ஹப்</a>.</p>
-                            <ul>
-                                <a href="https://twitter.com/xposedornot" name="twitter" rel="noopener"
-                                    style="color:#3c5fec" target="_blank">
-                                    <i class="fab fa-twitter fa-3x"></i>
-                                </a>
-                                <a href="https://facebook.com/xposedornot" name="fb" rel="noopener"
-                                    style="color:#3c5fec" target="_blank">
-                                    <i class="fab fa-facebook fa-3x"></i>
-                                </a>
-                            </ul>
-                        </div>
-                        <br />
-                        <div class="footer-row" style="width:70%;Text-align:center;float:left;">
-                            <a href="privacy">தனியுரிமைக் கொள்கை</a>
-                            <a href="responsible-disclosure"> பொறுப்பான வெளிப்பாடு</a>
-                            <a href="hof"> வாழ்த்தரங்கம்</a>
-                        </div>
-                    </div>
-                </div>
-                <script crossorigin="anonymous"
-                    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-                    referrerpolicy="no-referrer"
-                    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                <script crossorigin="anonymous"
-                    integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
-                    src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
-                <script crossorigin="anonymous"
-                    integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
-                    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
-                <script crossorigin="anonymous" integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc="
-                    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"></script>
-                <script src="/static/scripts/common.js"></script>
-                <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-                <script>
-                    $.LoadingOverlaySetup({
-                        background: "rgba(0, 0, 0, 0.5)",
-                        image: "/static/images/shield-alt.svg",
-                        imageAnimation: "1s fadein",
-                        imageColor: "#6daae0"
-                    });
+    <!-- Styles -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"
+      integrity="sha256-d/193zMcyZUwruClurTkAXN/g5rqawa2b9+czcJFqjY="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/static/css/xposed.css" />
 
-                    $.LoadingOverlay("show");
+    <!-- Scripts -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+    <script
+      src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"
+      integrity="sha256-7EJ2UCFkHg8JTMgwnT9PmYr71oaDwAgBKsEaQTmELuY="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/static/scripts/xposed.js"></script>
+  </head>
 
+  <body>
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-content">
+        <a href="index.html" class="brand">
+          <div>
+            <div class="brand-logo">XposedOrNot</div>
+            <div class="brand-sub">தரவு மீறல்கள்</div>
+          </div>
+        </a>
+      </div>
+    </header>
 
-                    document.addEventListener('DOMContentLoaded', function () {
-                        function fetchBreaches() {
-                            fetch('https://api.xposedornot.com/v1/breaches')
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Network response was not ok');
-                                    }
-                                    return response.json();
-                                })
-                                .then(data => {
-                                    renderBreaches(data['Exposed Breaches']);
-                                    $.LoadingOverlay("hide");
-                                })
-                                .catch(error => {
-                                    console.error('There has been a problem with your fetch operation:', error);
-                                    $.LoadingOverlay("hide");
-                                });
-                        }
-
-                        function createBreachElement(breach) {
-                            const container = document.createElement('div');
-                            container.className = "timeline-4";
-                            container.id = breach['Breach ID'].replace(/\s+/g, '-')//.toLowerCase();
-
-                            const card = document.createElement('div');
-                            card.className = "card gradient-custom-4";
-
-                            const cardBody = document.createElement('div');
-                            cardBody.className = "card-body p-4";
-
-                            const logo = document.createElement('img');
-                            logo.src = breach['Logo'];
-                            logo.alt = breach['Breach ID'];
-                            logo.width = 100;
-                            logo.height = 100;
-
-                            const title = document.createElement('h4');
-                            const titleLink = document.createElement('a');
-                            titleLink.href = "#" + breach['Breach ID'].replace(/\s+/g, '-')//.toLowerCase();
-                            titleLink.textContent = breach['Breach ID'];
-                            title.appendChild(titleLink);
-
-                            const date = document.createElement('p');
-                            date.className = "small mb-4";
-                            const breachDate = new Date(breach['Breached Date']);
-                            date.textContent = breachDate.toLocaleString('default', { month: 'long' }) + ' ' + breachDate.getFullYear();
-
-                            const description = document.createElement('p');
-                            description.textContent = breach['Exposure Description'];
-
-                            const table = document.createElement('table');
-                            table.className = "table-striped table-bordered table-hover";
-                            const recordsRow = createTableRow("Exposed records", breach['Exposed Records'].toLocaleString());
-                            const dataRow = createTableRow("Exposed data", formatExposedData(breach['Exposed Data']));
-                            table.appendChild(recordsRow);
-                            table.appendChild(dataRow);
-
-                            cardBody.appendChild(logo);
-                            cardBody.appendChild(title);
-                            cardBody.appendChild(date);
-                            cardBody.appendChild(description);
-                            cardBody.appendChild(table);
-                            cardBody.appendChild(document.createElement('br'));
-
-                            const referenceTitle = document.createElement('strong');
-                            referenceTitle.textContent = "Reference URL(s):";
-                            cardBody.appendChild(referenceTitle);
-                            cardBody.appendChild(document.createElement('br'));
-
-                            const referenceElement = breach['ReferenceURL'] ? document.createElement('a') : document.createElement('span');
-                            referenceElement.textContent = breach['ReferenceURL'] ? breach['ReferenceURL'] : 'No references found.';
-                            if (breach['ReferenceURL']) {
-                                referenceElement.href = breach['ReferenceURL'];
-                            }
-                            referenceElement.className = "reference-url";
-                            cardBody.appendChild(referenceElement);
-                            cardBody.appendChild(document.createElement('br'));
-                            cardBody.appendChild(document.createElement('br'));
-
-                            const badgesContainer = document.createElement('div');
-                            const searchableBadge = createBadge('Searchable', breach['Searchable'] === "Yes");
-                            const verifiedBadge = createBadge('Verified', breach['Verified'] === "Yes");
-                            const breachBadge = createBadge('Data Breach', true);
-
-                            badgesContainer.appendChild(searchableBadge);
-                            badgesContainer.appendChild(verifiedBadge);
-                            badgesContainer.appendChild(breachBadge);
-
-                            cardBody.appendChild(badgesContainer);
-                            card.appendChild(cardBody);
-                            container.appendChild(card);
-
-                            return container;
-                        }
-
-                        function formatExposedData(data) {
-                            return data.split(';').join(', ');
-                        }
-
-                        function createBadge(type, isActive) {
-                            const badge = document.createElement('span');
-                            let badgeText = type;
-
-                            if (type === 'Searchable') {
-                                badgeText = isActive ? "Searchable" : "Not Searchable";
-                                badge.className = isActive ? "ver" : "notver";
-                            } else if (type === 'Verified') {
-                                badgeText = isActive ? "Verified" : "Not Verified";
-                                badge.className = isActive ? "ver" : "notver";
-                            } else if (type === 'Data Breach') {
-                                badgeText = "Data Breach";
-                                badge.className = "notser";
-                            }
-
-                            badge.textContent = badgeText;
-
-                            return badge;
-                        }
-
-                        function createTableRow(label, value) {
-                            const row = document.createElement('tr');
-                            const labelTd = document.createElement('td');
-                            labelTd.innerHTML = `<strong>${label}</strong>`;
-                            const valueTd = document.createElement('td');
-                            valueTd.textContent = value;
-                            row.appendChild(labelTd);
-                            row.appendChild(valueTd);
-                            return row;
-                        }
-
-                        function renderBreaches(breaches) {
-                            breaches.sort((a, b) => {
-                                const dateA = new Date(a['Breached Date']);
-                                const dateB = new Date(b['Breached Date']);
-                                return dateB - dateA;
-                            });
-
-                            const mainTimeline = document.querySelector('.main-timeline-4');
-                            mainTimeline.innerHTML = '';
-                            breaches.forEach((breach, index) => {
-                                const breachElement = createBreachElement(breach);
-                                breachElement.classList.add(index % 2 === 0 ? 'left-4' : 'right-4');
-                                mainTimeline.appendChild(breachElement);
-                            });
-
-                            scrollToHash();
-                        }
-
-                        function scrollToHash() {
-                            const hash = window.location.hash.replace(/^#/, '');
-                            if (hash) {
-                                const targetElement = document.getElementById(hash);
-                                if (targetElement) {
-                                    targetElement.scrollIntoView();
-                                } else {
-                                    console.warn(`Element with ID '${hash}' not found.`);
-                                }
-                            }
-                        }
-
-                        fetchBreaches();
-                    });
-
-                    //$.LoadingOverlay("hide");
-                    var floatingButton = document.getElementById('floating-button');
-                    var topPos = 100;
-                    floatingButton.style.position = 'fixed';
-                    floatingButton.style.top = '10px';
-                    floatingButton.style.right = '20px';
-
-                    document.addEventListener('scroll', function () {
-                        var y = window.pageYOffset;
-                        if (y > 0) {
-                            floatingButton.style.position = 'fixed';
-                            floatingButton.style.top = '10px';
-                            floatingButton.style.right = '20px';
-                        } else {
-                            floatingButton.style.position = 'absolute';
-                            floatingButton.style.top = topPos + 'px';
-                            floatingButton.style.right = '20px';
-                        }
-                    });
-                    document.getElementById("table-view-button").addEventListener("click", function () {
-                        window.location.href = 'breaches.html';
-                    })
-
-                    $(document).ajaxStart(function () {
-                        $.LoadingOverlay("show");
-                    }).ajaxStop(function () {
-                        $.LoadingOverlay("hide");
-                    });
-
-
-                </script>
-            </div>
+    <!-- Main Content -->
+    <main class="xposed-content">
+      <div class="container-fluid px-4">
+        <!-- Page Title -->
+        <div class="page-title">
+          <h1><i class="fas fa-shield-alt"></i>தரவு மீறல்கள் அடைவு</h1>
+          <p>
+            எங்கள் விரிவான தரவு மீறல்கள் தரவுத்தளத்தில் உலாவி தேடுங்கள்
+          </p>
         </div>
-    </div>
-</body>
 
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-database"></i>
+            </div>
+            <div class="stat-label">மொத்த மீறல்கள்</div>
+            <div class="stat-value" id="stat-total">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-label">வெளிப்படுத்தப்பட்ட பதிவுகள்</div>
+            <div class="stat-value" id="stat-records">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-industry"></i>
+            </div>
+            <div class="stat-label">பாதிக்கப்பட்ட தொழில்கள்</div>
+            <div class="stat-value" id="stat-industries">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="stat-label">இந்த ஆண்டு</div>
+            <div class="stat-value" id="stat-recent">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+          <div class="filter-row">
+            <div class="filter-group" style="flex: 2">
+              <label for="filter-search"
+                ><i class="fas fa-search"></i> தேடல்</label
+              >
+              <input
+                type="text"
+                id="filter-search"
+                placeholder="பெயர், டொமைன் அல்லது விளக்கத்தால் தேடுங்கள்..."
+              />
+            </div>
+            <div class="filter-group">
+              <label for="filter-industry"
+                ><i class="fas fa-building"></i> தொழில்</label
+              >
+              <select id="filter-industry">
+                <option value="">அனைத்து தொழில்கள்</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filter-year"
+                ><i class="fas fa-calendar"></i> ஆண்டு</label
+              >
+              <select id="filter-year">
+                <option value="">அனைத்து ஆண்டுகள்</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filter-risk"
+                ><i class="fas fa-lock"></i> கடவுச்சொல் ஆபத்து</label
+              >
+              <select id="filter-risk">
+                <option value="">அனைத்து ஆபத்து நிலைகள்</option>
+                <option value="plaintext">எளிய உரை</option>
+                <option value="easytocrack">எளிதில் உடைக்கக்கூடியது</option>
+                <option value="hardtocrack">கடினமாக உடைக்கக்கூடியது</option>
+                <option value="unknown">தெரியாது</option>
+              </select>
+            </div>
+            <button type="button" id="btn-reset" class="btn-reset">
+              <i class="fas fa-undo"></i> மீட்டமை
+            </button>
+          </div>
+        </div>
+
+        <!-- DataTable Card -->
+        <div class="table-card">
+          <div class="table-card-header">
+            <div class="header-left">
+              <i class="fas fa-list"></i>
+              <h3>அனைத்து தரவு மீறல்கள்</h3>
+            </div>
+            <span class="record-count"
+              ><span id="total-count">0</span> மீறல்கள் கண்டறியப்பட்டன</span
+            >
+          </div>
+
+          <!-- Loading Overlay -->
+          <div id="loading-overlay" class="loading-overlay">
+            <i class="fas fa-spinner fa-spin fa-3x"></i>
+          </div>
+
+          <!-- Table Container -->
+          <div id="table-container" style="display: none">
+            <table id="breachesTable" class="display" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>லோகோ</th>
+                  <th>மீறல்</th>
+                  <th>தொழில்</th>
+                  <th>பதிவுகள்</th>
+                  <th>தேதி</th>
+                  <th>கடவுச்சொல் ஆபத்து</th>
+                  <th>நிலை</th>
+                  <th>செயல்</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="xposed-footer">
+      <div class="container-fluid px-4">
+        <p>
+          &copy; 2026
+          <a href="https://xposedornot.com" target="_blank">XposedOrNot.com</a>
+        </p>
+        <p class="footer-links">
+          <a href="privacy" target="_blank">தனியுரிமை</a>
+          <span class="separator">|</span>
+          <a href="terms" target="_blank">விதிமுறைகள்</a>
+          <span class="separator">|</span>
+          <a href="api_doc.html" target="_blank">API</a>
+          <span class="separator">|</span>
+          <a href="https://blog.xposedornot.com" target="_blank">வலைப்பதிவு</a>
+        </p>
+        <div class="custom-control custom-switch dark-mode-toggle">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
+        </div>
+      </div>
+    </footer>
+
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+    ></script>
+    <script src="/static/scripts/common.js"></script>
+  </body>
 </html>

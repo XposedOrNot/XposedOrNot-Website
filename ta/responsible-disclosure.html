@@ -1,230 +1,415 @@
-<html lang="en">
+<!doctype html>
+<html lang="ta">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <meta name="description" content="XposedOrNot: பொறுப்பான வெளிப்படுத்தல் - பாதுகாப்பு பாதிப்புகளை பொறுப்பான முறையில் வெளிப்படுத்துவதற்கான வழிகாட்டுதல்கள்" />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta property="og:title" content="பொறுப்பான வெளிப்படுத்தல்" />
+    <meta
+      property="og:description"
+      content="XposedOrNot இன் பாதுகாப்பு பாதிப்புகளை பொறுப்பான முறையில் வெளிப்படுத்துவதற்கான வழிகாட்டுதல்கள்."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta
+      property="og:url"
+      content="https://xposedornot.com/ta/responsible-disclosure.html"
+    />
+    <meta property="og:type" content="website" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="XposedOrNot: Responsible Disclosure" name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <link href="favicon.ico" rel="icon" type="image/x-icon" />
-  <title>பொறுப்பான வெளிப்பாடு</title>
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
-    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-    referrerpolicy="no-referrer" rel="stylesheet">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script crossorigin="anonymous"
-    integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-    referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <script crossorigin="anonymous"
-    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-    referrerpolicy="no-referrer"
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="பொறுப்பான வெளிப்படுத்தல்" />
+    <meta
+      name="twitter:description"
+      content="XposedOrNot இன் பாதுகாப்பு பாதிப்புகளை பொறுப்பான முறையில் வெளிப்படுத்துவதற்கான வழிகாட்டுதல்கள்."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
 
-  </link>
-  </link>
-</head>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <title>XposedOrNot: பொறுப்பான வெளிப்படுத்தல்</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <script src="/static/scripts/other-libraries.js" defer></script>
+  </head>
 
-<body>
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com">XposedOrNot</a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password.html">கடவுச்சொல்<span class="sr-only">(தற்போதைய)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">வலைப்பதிவு</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> இன்னும் கருவிகள்</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed.html">எக்ஸ்போஸ் செய்யப்பட்ட மீறல்கள்</a>
-              <a class="dropdown-item" href="shield.html">தனியுரிமை கேடயம்</a>
-              <a class="dropdown-item" href="domain.html">டொமைன் சரிபார்ப்பு</a>
-              <a class="dropdown-item" href="domains.html">டொமைன்-நிலை தேடல்</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <div class="container">
-    <div class="panel-group" id="accordion">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-parent="#accordion" data-toggle="collapse" href="#collapse1">
-              <h1>
-                <strong>பிழைகள் மற்றும் பாதிப்புகளின் பொறுப்பான வெளிப்பாடு</strong>
-              </h1>
-            </a>
-          </h4>
+  <body>
+    <div class="kbanner">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark bg-primary kbanner"
+        style="min-height: 70px; padding-top: 0.5rem; padding-bottom: 0.5rem"
+      >
+        <a
+          class="navbar-brand"
+          href="index.html"
+          style="text-decoration: none"
+        >
+          <span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+              line-height: 1.2;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              line-height: 1;
+            "
+            >சமூக பதிப்பு</span
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="வழிசெலுத்தலை மாற்று"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password.html"
+                >கடவுச்சொல் &nbsp; <span class="sr-only">(தற்போதைய)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள் &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >வலைப்பதிவு &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                இன்னும் கருவிகள்
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed.html">வெளிப்படுத்தப்பட்ட மீறல்கள்</a>
+                <a class="dropdown-item" href="shield.html">தனியுரிமைக் கேடயம்</a>
+                <a class="dropdown-item" href="domain.html"
+                  >டொமைன் சரிபார்ப்பு</a
+                >
+                <a class="dropdown-item" href="domains.html"
+                  >டொமைன்-நிலை தேடல்</a
+                >
+              </div>
+            </li>
+          </ul>
         </div>
-        <div class="panel-collapse" id="collapse1">
+      </nav>
+    </div>
+    <div class="container">
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse"
+                data-parent="#accordion"
+                href="#collapse1"
+              >
+                <h1>
+                  <strong
+                    >பிழைகள் & பாதிப்புகளின் பொறுப்பான வெளிப்படுத்தல்</strong
+                  >
+                </h1>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse">
+            <div class="panel-body">
+              <strong>கடைசியாகப் புதுப்பிக்கப்பட்டது: 26-ஆகஸ்ட்-2025</strong>
+              <br />
+              <br />வணக்கம், பிழை வேட்டைக்காரர்களே! XposedOrNot (XON) ஐ பாதுகாப்பாகவும் பாதுகாப்பாகவும் வைத்திருக்க எங்களுக்கு உதவ நீங்கள் இங்கு வந்துள்ளீர்கள் என்பதில் நாங்கள் மிகவும் மகிழ்ச்சியடைகிறோம். அனைவரும் நன்றாக விளையாடுவதை உறுதிசெய்யவும், எங்கள் சேவைகள், இணையதளம் மற்றும் நெட்வொர்க்கை எந்தவிதமான தொல்லைதரும் பிழைகள் அல்லது பாதிப்புகளில் இருந்து பாதுகாப்பாக வைத்திருக்கவும் இந்த பொறுப்பான வெளிப்படுத்தல் கொள்கையை அமைத்துள்ளேன். <br /><br />
+              எனது கவனம் தேவை என்று ஏதேனும் ஒன்றை நீங்கள் கண்டால், வேகமான புல்லட்டை விட வேகமாக அதைச் சரிசெய்வதற்கு, பொறுப்புடன் விசாரித்து புகாரளிப்பதில் உங்கள் ஒத்துழைப்பை நான் பாராட்டுகிறேன். பாதுகாப்பு பாதிப்புகளை வெளிப்படுத்துவதில் உங்கள் உதவி, எங்கள் பயனர்கள் அனைவரையும் பாதுகாப்பாகவும் ஆரோக்கியமாகவும் வைத்திருக்க உதவுகிறது. <br /><br />
+              <h2>
+                <strong>புகாரளிப்பதற்கான வழிகாட்டுதல்கள்:</strong>
+              </h2>
+              <br />
+              பிழை அல்லது பாதிப்பைப் புகாரளிக்கும்போது, பின்வருவனவற்றைச் சேர்ப்பதை உறுதிசெய்யவும்:
+              <ol>
+                <li>
+                  ஸ்கிரீன் கேப்சர்கள் அல்லது அவுட்புட் டேட்டா போன்ற சில ஆதாரங்களுடன், பிழை அல்லது பாதிப்பு பற்றிய தெளிவான விளக்கம். வெட்கப்பட வேண்டாம், நீங்கள் கண்டுபிடித்ததைப் பார்க்க நாங்கள் விரும்புகிறோம்!
+                </li>
+                <li>
+                  பாதிப்பின் சாத்தியமான தாக்கத்தின் விளக்கம், நாங்கள் எதைக் கையாளுகிறோம் என்பதை அறிவோம்.
+                </li>
+                <li>
+                  உங்கள் விருப்பமான பெயர் அல்லது கைப்பிடியின் மூலம் எங்களின் XON செக்யூரிட்டி ரிசர்ச்சர் ஹால் ஆஃப் ஃபேமில் உங்களுக்குத் தகுதியான அங்கீகாரத்தை நாங்கள் வழங்க முடியும்.
+                </li>
+                <li>
+                  சிக்கலை மறுஉருவாக்கம் செய்வதற்கான சரியான படிகள், இதன் மூலம் நாம் அதை நம் முடிவில் பிரதிபலிக்க முடியும்.
+                </li>
+                <li>
+                  கருத்துக்கான வீடியோ ஆதாரம் உங்களிடம் இருந்தால் எப்போதும் பாராட்டப்படும்.
+                </li>
+                <li>
+                  இயங்குதளங்கள், இயக்க முறைமைகள், பதிப்புகள், IP முகவரிகள் அல்லது URLகள் பற்றிய ஏதேனும் தொடர்புடைய தகவல்.
+                </li>
+                <li>
+                  தரவுகளை பதிவு செய்தல் அல்லது தடமறிதல் போன்ற ஆதாரங்களை ஆதரிப்பது எப்போதும் உதவியாக இருக்கும்.
+                </li>
+                <li>
+                  சிக்கல் எந்தளவுக்கு சுரண்டக்கூடியதாக இருக்கும் என்பது பற்றிய உங்கள் மதிப்பீடு. சுரண்டல் அளவுகோலில் 10க்கு 10 என்றால் நாங்கள் உங்களை மதிப்பிட மாட்டோம்.
+                </li>
+              </ol>
+              ஒரு அற்புதமான பிழை வேட்டையாடுபவராக இருப்பதற்கும், XposedOrNot (XON) ஐ பாதுகாப்பாகவும் ஒலியாகவும் வைத்திருக்க எங்களுக்கு உதவியதற்கு நன்றி!
+              <br /><br />
+              <h2>
+                <strong>செல்லுபடியாகும் சமர்ப்பிப்புகள்</strong>
+              </h2>
+              <br />
+              <ol>
+                <li>உள்ளூர் அல்லது தொலை கோப்பு சேர்த்தல்</li>
+                <li>அங்கீகார பைபாஸ்</li>
+                <li>டைரக்டரி டிராவர்சல்</li>
+                <li>அங்கீகரிக்கப்படாத/நோக்கமில்லாத தரவு கசிவு</li>
+                <li>ரிமோட் குறியீடு செயல்படுத்தல் (RCE)</li>
+                <li>SQL/XXE இன்ஜெக்ஷன் மற்றும் கமாண்ட் இன்ஜெக்ஷன்</li>
+                <li>கிராஸ்-சைட் ஸ்கிரிப்டிங் (XSS)</li>
+                <li>சர்வர் சைட் ரிக்வெஸ்ட் ஃபோர்ஜரி (SSRF)</li>
+                <li>சர்வர்கள் அல்லது API இல் தவறான உள்ளமைவு சிக்கல்கள்</li>
+                <li>அங்கீகாரம் மற்றும் அதிகாரமளிப்பு தொடர்பான சிக்கல்கள்</li>
+                <li>கிராஸ் சைட் ரிக்வெஸ்ட் ஃபோர்ஜரி (CSRF)</li>
+              </ol>
+              <br />
+              <h2>
+                <strong>ஸ்கோப்பில் உள்ள டொமைன்கள்</strong>
+              </h2>
+              <br />
+              <p><strong>முதன்மை டொமைன்:</strong> xposedornot.com</p>
+              <p>
+                <strong>துணை டொமைன்கள்:</strong> xposedornot.com இன் அனைத்து துணை டொமைன்களும் (*.xposedornot.com)
+              </p>
+              <br />
+              <p>
+                <em
+                  >இதில் api.xposedornot.com, passwords.xposedornot.com, plus.xposedornot.com மற்றும் எதிர்கால துணை டொமைன்கள் அனைத்தும் அடங்கும், ஆனால் இவை மட்டுமல்ல.</em
+                >
+              </p>
+              <br />
+              <h2>
+                <strong>தகவலின் பயன்பாடுகள்</strong>
+              </h2>
+              <br />
+              உங்களையும் எங்கள் சேவைகளையும் பற்றிய அனைத்து தகவல்களையும் ரகசியமாக வைத்திருப்பதாக உறுதியளிக்கிறோம். எனவே, தயவுசெய்து, எங்கள் அணிக்கு வெளியே யாரிடமும் தகவல்களைப் பகிர வேண்டாம்!<br />
+              <br />
+              இணையத்தைப் பாதுகாப்பான இடமாக மாற்றுவதில் நாங்கள் அனைவரும் ஈடுபட்டுள்ளோம், அதை அடைய எங்களுக்கு உதவும் பாதுகாப்பு ஆய்வாளர்களைப் பாராட்டுகிறோம். எனவே, அந்த முயற்சியின் ஒரு பகுதியாக இருந்த உங்களுக்கு மிக்க நன்றி! நீங்கள் கண்டறிந்த பிழைகள் அல்லது பாதிப்புகளை பொறுப்புடன் வெளிப்படுத்துவதன் மூலம், எங்கள் பயனர்களையும் அவர்களின் தரவையும் பாதுகாக்க எங்களுக்கு உதவுகிறீர்கள்.<br />
+              <br />
+              <h2>
+                <strong>ஏற்றுக்கொள்ளக்கூடிய பயன்பாட்டுக் கொள்கை</strong>
+              </h2>
+              <br />
+              ஒரு எச்சரிக்கை - இது உங்களின் வழக்கமான பக் பவுண்டி புரோகிராம் அல்ல, இதில் பாதிப்பு சமர்ப்பிப்புகளுக்கு நாங்கள் பண வெகுமதிகளை வழங்குகிறோம். நாங்கள் பணம் சம்பாதிக்கவில்லை (இன்னும்). எவ்வாறாயினும், நீங்கள் எங்களிடம் முக்கியமான ஒன்றைப் புகாரளித்தால், அதற்குப் பதிலாக நாங்கள் உங்களுக்கு அன்பையும் பாராட்டையும் காட்டுவோம்!<br />
+              <br />
+              அதை நெறிமுறையாக வைத்திருப்பதை உறுதிப்படுத்திக் கொள்ளுங்கள், சரியா? நீங்கள் இணையத்தின் ஒரு நல்ல குடிமகனாக செயல்படுவீர்கள் என்றும் எங்களின் ஏற்றுக்கொள்ளக்கூடிய பயன்பாட்டுக் கொள்கையில் நாங்கள் வகுத்துள்ள விதிகளைப் பின்பற்றுவீர்கள் என்றும் எதிர்பார்க்கிறோம். ஆனால் நீங்கள் அதைச் செய்தால், எங்கள் ஹால் ஆஃப் ஃபேம் பக்கத்தில் நாங்கள் உங்களுக்கு சில அங்கீகாரத்தை மகிழ்ச்சியுடன் வழங்குவோம் - இது ஹாலிவுட் வாக் ஆஃப் ஃபேமின் எங்கள் பதிப்பைப் போன்றது, ஆனால் பாதுகாப்பு ஆராய்ச்சியாளர்களுக்கு. எனவே மேலே செல்லுங்கள், உங்கள் திறமைகளை வெளிப்படுத்துங்கள் மற்றும் அனைவருக்கும் XposedOrNot பாதுகாப்பான இடமாக மாற்ற எங்களுக்கு உதவுங்கள்!<br />
+              <br />
+              <h2>
+                <strong>பிழை நிருபர்கள் - எதிர்பார்ப்புகள்</strong>
+              </h2>
+              <br />
+              பிழை வேட்டைக்காரர்களே, XposedOrNot அனைவருக்கும் பாதுகாப்பான இடமாக மாற்ற எங்களுக்கு உதவுவதில் உங்களைக் கொண்டிருப்பதில் நாங்கள் மகிழ்ச்சியடைகிறோம்! நீங்கள் தொடங்குவதற்கு முன், உங்களிடமிருந்து நாங்கள் எதிர்பார்க்கும் சில விஷயங்கள் இதோ: <br /><br />
+              <ol>
+                <li>
+                  XposedOrNot அல்லது எங்கள் பயனர்களை புண்படுத்தும் அல்லது சீர்குலைக்கும் எதையும் செய்ய வேண்டாம்.
+                </li>
+                <li>
+                  உங்கள் அறிக்கையைப் பெற்ற 1-3 நாட்களுக்குள் நாங்கள் உங்களுக்கு ஒப்புகையை அனுப்புவோம்.
+                </li>
+                <li>
+                  எங்கள் பயனர்களின் தனியுரிமைக்கு மதிப்பளித்து, அவர்களின் கணக்குகளைச் சுற்றி வளைக்க முயற்சிக்காதீர்கள்.
+                </li>
+                <li>உங்கள் சொந்த கணக்குகள் மற்றும் மின்னஞ்சல் முகவரிகளை மட்டும் சோதிக்கவும்.</li>
+                <li>
+                  எங்கள் வெப்சர்வர் அல்லது API க்கான அணுகலை உங்களுக்கு வழங்கும் முக்கியமான பாதிப்பை நீங்கள் கண்டால், தயவுசெய்து அங்கேயே நிறுத்தி, நாங்கள் பொறுப்பேற்க அனுமதிக்கவும்.
+                </li>
+                <li>
+                  நாங்கள் அதைத் தீர்க்கும் வரை சிக்கலைப் பற்றிய எந்த விவரங்களையும் பகிர வேண்டாம்.
+                </li>
+                <li>
+                  தனிப்பட்ட ஆதாயத்திற்காக நீங்கள் பாதிப்பைப் பயன்படுத்த முயற்சித்தால், உங்கள் புகாரை நாங்கள் தகுதி நீக்கம் செய்ய வேண்டும்.
+                </li>
+              </ol>
+              <br />
+              எங்கள் தளத்தை பாதுகாப்பாக வைத்திருக்க உதவுவதில் உங்கள் ஒத்துழைப்பை நாங்கள் பாராட்டுகிறோம். XposedOrNot சிறந்ததாக மாற்ற ஒன்றாக வேலை செய்வோம்!
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse in panel-collapse"
+                data-parent="#accordion"
+                href="#collapse25"
+              >
+                <strong>புகாரளிப்பு வழிகாட்டுதல்கள்</strong>
+              </a>
+            </h4>
+          </div>
           <div class="panel-body">
-            <strong>கடைசியாகப் புதுப்பிக்கப்பட்டது: 08-மார்ச்-2021</strong>
+            எங்களுக்காகக் கவனித்ததற்கு நன்றி! XposedOrNot இல் பிழை அல்லது பாதுகாப்பு பாதிப்பை நீங்கள் கண்டறிந்தால், அதைப் பற்றி நாங்கள் கேட்க விரும்புகிறோம். நீங்கள் மின்னஞ்சல் மூலம் புகாரளிக்கலாம்
+            <strong>deva @ xposedornot.com</strong> அல்லது எங்களுக்கு ட்வீட் செய்யவும்
+            <strong>@DevaOnBreaches</strong>. <br />
             <br />
-            <br />ஏய், பிழை வேட்டைக்காரர்கள்! XposedOrNot (XON) ஐ பாதுகாப்பாகவும் பாதுகாப்பாகவும் வைத்திருக்க எங்களுக்கு
-            உதவ நீங்கள் இங்கு வந்துள்ளீர்கள் என்பதில் நாங்கள் மிகவும் மகிழ்ச்சியடைகிறோம். அனைவரும் நன்றாக விளையாடுவதை
-            உறுதிசெய்யவும், எங்கள் சேவைகள், இணையதளம் மற்றும் நெட்வொர்க்கை எந்தவிதமான தொல்லைதரும் பிழைகள் அல்லது
-            பாதிப்புகளில் இருந்து பாதுகாப்பாக வைத்திருக்கவும் இந்த பொறுப்பான வெளிப்படுத்தல் கொள்கையை
-            அமைத்துள்ளேன்.<br /><br />
-            எனது கவனம் தேவை என்று ஏதேனும் ஒன்றை நீங்கள் கண்டால், வேகமான புல்லட்டை விட வேகமாக அதைச் சரிசெய்வதற்கு,
-            பொறுப்புடன் விசாரித்து புகாரளிப்பதில் உங்கள் ஒத்துழைப்பை நான் பாராட்டுகிறேன். பாதுகாப்பு பாதிப்புகளை
-            வெளிப்படுத்துவதில் உங்கள் உதவி, எங்கள் பயனர்கள் அனைவரையும் பாதுகாப்பாகவும், ஆரோக்கியமாகவும் வைத்திருக்க
-            உதவுகிறது.<br /><br />
-            <h2>
-              <strong>புகாரளிப்பதற்கான வழிகாட்டுதல்கள்:</strong>
-            </h2>
-            <br /> பிழை அல்லது பாதிப்பைப் புகாரளிக்கும்போது, பின்வருவனவற்றைச் சேர்ப்பதை உறுதிசெய்யவும்:
-            <ol>
-              <li> ஸ்கிரீன் கேப்சர்கள் அல்லது அவுட்புட் டேட்டா போன்ற சில ஆதாரங்களுடன், பிழை அல்லது பாதிப்பு பற்றிய
-                தெளிவான விளக்கம். வெட்கப்பட வேண்டாம், நீங்கள் கண்டுபிடித்ததைப் பார்க்க நாங்கள் விரும்புகிறோம்!</li>
-              <li> பாதிப்பின் சாத்தியமான தாக்கத்தின் விளக்கம், நாங்கள் எதைக் கையாளுகிறோம் என்பதை அறிவோம்.</li>
-              <li> உங்கள் விருப்பமான பெயர் அல்லது கைப்பிடியின் மூலம் எங்களின் XON செக்யூரிட்டி ரிசர்சர் ஹால் ஆஃப்
-                ஃபேமில் உங்களுக்குத் தகுதியான அங்கீகாரத்தை நாங்கள் வழங்க முடியும்.</li>
-              <li> சிக்கலை மறுஉருவாக்கம் செய்வதற்கான சரியான படிகள், இதன் மூலம் நாம் அதை நம் முடிவில் பிரதிபலிக்க
-                முடியும்.</li>
-              <li> கருத்துக்கான வீடியோ ஆதாரம் உங்களிடம் இருந்தால் எப்போதும் பாராட்டப்படும்.</li>
-              <li> இயங்குதளங்கள், இயக்க முறைமைகள், பதிப்புகள், IP முகவரிகள் அல்லது URLகள் பற்றிய ஏதேனும் தொடர்புடைய
-                தகவல்.</li>
-              <li> தரவுகளை பதிவு செய்தல் அல்லது தடமறிதல் போன்ற ஆதாரங்களை ஆதரிப்பது எப்போதும் உதவியாக இருக்கும்.</li>
-              <li> பிரச்சினை எந்தளவுக்கு சுரண்டக்கூடியதாக இருக்கும் என்பது பற்றிய உங்கள் மதிப்பீடு. சுரண்டல் அளவுகோலில்
-                10க்கு 10 என்றால் நாங்கள் உங்களை மதிப்பிட மாட்டோம்.</li>
-            </ol>
-            ஒரு அற்புதமான பிழை வேட்டையாடுபவராக இருப்பதற்கும், XposedOrNot (XON) ஐ பாதுகாப்பாகவும் ஒலியாகவும் வைத்திருக்க
-            எங்களுக்கு உதவியதற்கு நன்றி!<br /><br />
-            <h2>
-              <strong>செல்லுபடியாகும் சமர்ப்பிப்புகள்</strong>
-            </h2>
+            மின்னஞ்சல்: deva @ xposedornot.com <br />
+            Twitter:
+            <a href="https://twitter.com/devaonbreaches">DevaOnBreaches </a>
             <br />
-            <ol>
-              <li> உள்ளூர் அல்லது தொலை கோப்பு சேர்த்தல்</li>
-              <li> அங்கீகார பைபாஸ்</li>
-              <li> டைரக்டரி டிராவர்சல்</li>
-              <li> அங்கீகரிக்கப்படாத/நோக்கமில்லாத தரவு கசிவு</li>
-              <li> ரிமோட் குறியீடு செயல்படுத்தல் (RCE)</li>
-              <li> SQL/XXE ஊசி மற்றும் கட்டளை ஊசி</li>
-              <li> கிராஸ்-சைட் ஸ்கிரிப்டிங் (XSS)</li>
-              <li> சர்வர் பக்க கோரிக்கை மோசடி (SSRF)</li>
-              <li> சர்வர்கள் அல்லது API இல் தவறான உள்ளமைவு சிக்கல்கள்</li>
-              <li> அங்கீகாரம் மற்றும் அங்கீகாரம் தொடர்பான சிக்கல்கள்</li>
-              <li> குறுக்கு தள கோரிக்கை போலிகள் (CSRF)</li>
-            </ol>
             <br />
-            <h2>
-              <strong> ஸ்கோப் டொமைன்களில்</strong>
-            </h2>
-            <br />
-            <ol>
-              <li>https://xposedornot.com</li>
-              <li>https://api.xposedornot.com</li>
-              <li>https://passwords.xposedornot.com</li>
-            </ol>
-            <br />
-            <h2>
-              <strong> தகவலின் பயன்பாடுகள்</strong>
-            </h2>
-            <br />
-            உங்களையும் எங்கள் சேவைகளையும் பற்றிய அனைத்து தகவல்களையும் ரகசியமாக வைத்திருப்பதாக உறுதியளிக்கிறோம். எனவே,
-            தயவு செய்து, எங்கள் அணிக்கு வெளியே யாரிடமும் பீன்ஸ் கொட்டாதீர்கள்!<br />
-            <br />
-            இணையத்தைப் பாதுகாப்பான இடமாக மாற்றுவதில் நாங்கள் அனைவரும் ஈடுபட்டுள்ளோம், அதை அடைய எங்களுக்கு உதவும்
-            பாதுகாப்பு ஆய்வாளர்களைப் பாராட்டுகிறோம். எனவே, அந்த முயற்சியின் ஒரு பகுதியாக இருந்த உங்களுக்கு மிக்க நன்றி!
-            நீங்கள் கண்டறிந்த பிழைகள் அல்லது பாதிப்புகளை பொறுப்புடன் வெளிப்படுத்துவதன் மூலம், எங்கள் பயனர்களையும்
-            அவர்களின் தரவையும் பாதுகாக்க எங்களுக்கு உதவுகிறீர்கள்.<br />
-            <br />
-            <h2>
-              <strong> ஏற்றுக்கொள்ளக்கூடிய பயன்பாட்டுக் கொள்கை</strong>
-            </h2>
-            <br />
-            ஒரு எச்சரிக்கை - இது உங்களின் வழக்கமான பக் பவுண்டி புரோகிராம் அல்ல, இதில் பாதிப்பு சமர்ப்பிப்புகளுக்கு
-            நாங்கள் பண வெகுமதிகளை வழங்குகிறோம். நாங்கள் பணம் சம்பாதிக்கவில்லை (இன்னும்). எவ்வாறாயினும், நீங்கள்
-            எங்களிடம் முக்கியமான ஒன்றைப் புகாரளித்தால், அதற்குப் பதிலாக நாங்கள் உங்களுக்கு அன்பையும் பாராட்டையும்
-            காட்டுவோம்!<br />
-            <br />
-            அதை நெறிமுறையாக வைத்திருப்பதை உறுதிப்படுத்திக் கொள்ளுங்கள், சரியா? நீங்கள் இணையத்தின் ஒரு நல்ல குடிமகனாக
-            செயல்படுவீர்கள் என்றும் எங்களின் ஏற்றுக்கொள்ளக்கூடிய பயன்பாட்டுக் கொள்கையில் நாங்கள் வகுத்துள்ள விதிகளைப்
-            பின்பற்றுவீர்கள் என்றும் எதிர்பார்க்கிறோம். ஆனால் நீங்கள் அதைச் செய்தால், எங்கள் ஹால் ஆஃப் ஃபேம் பக்கத்தில்
-            நாங்கள் உங்களுக்கு சில அங்கீகாரத்தை மகிழ்ச்சியுடன் வழங்குவோம் - இது ஹாலிவுட் வாக் ஆஃப் ஃபேமின் எங்கள்
-            பதிப்பைப் போன்றது, ஆனால் பாதுகாப்பு ஆராய்ச்சியாளர்களுக்கு. எனவே மேலே செல்லுங்கள், உங்கள் திறமைகளை
-            வெளிப்படுத்துங்கள் மற்றும் அனைவருக்கும் XposedOrNot பாதுகாப்பான இடமாக மாற்ற எங்களுக்கு உதவுங்கள்!<br />
-            <br />
-            <h2>
-              <strong> பிழை நிருபர்கள் - எதிர்பார்ப்புகள்</strong>
-            </h2>
-            <br />
-            பிழை வேட்டைக்காரர்களே, XposedOrNot அனைவருக்கும் பாதுகாப்பான இடமாக மாற்ற எங்களுக்கு உதவுவதில் உங்களைக்
-            கொண்டிருப்பதில் நாங்கள் மகிழ்ச்சியடைகிறோம்! நீங்கள் தொடங்குவதற்கு முன், உங்களிடமிருந்து நாங்கள்
-            எதிர்பார்க்கும் சில விஷயங்கள் இதோ:<br /><br />
-            <ol>
-              <li> XposedOrNot அல்லது எங்கள் பயனர்களை புண்படுத்தும் அல்லது சீர்குலைக்கும் எதையும் செய்ய வேண்டாம்.</li>
-              <li> உங்கள் அறிக்கையைப் பெற்ற 1-3 நாட்களுக்குள் நாங்கள் உங்களுக்கு ஒப்புகையை அனுப்புவோம்.</li>
-              <li> எங்கள் பயனர்களின் தனியுரிமைக்கு மதிப்பளித்து, அவர்களின் கணக்குகளைச் சுற்றி வளைக்க முயற்சிக்காதீர்கள்.
-              </li>
-              <li> உங்கள் சொந்த கணக்குகள் மற்றும் மின்னஞ்சல் முகவரிகளை மட்டும் சோதிக்கவும்.</li>
-              <li> எங்கள் வெப்சர்வர் அல்லது ஏபிஐக்கான அணுகலை உங்களுக்கு வழங்கும் முக்கியமான பாதிப்பை நீங்கள் கண்டால்,
-                தயவு செய்து அங்கேயே நிறுத்தி, நாங்கள் பொறுப்பேற்க அனுமதிக்கவும்.</li>
-              <li> நாங்கள் அதைத் தீர்க்கும் வரை சிக்கலைப் பற்றிய எந்த விவரங்களையும் பகிர வேண்டாம்.</li>
-              <li> தனிப்பட்ட ஆதாயத்திற்காக நீங்கள் பாதிப்பைப் பயன்படுத்த முயற்சித்தால், உங்கள் புகாரை நாங்கள் தகுதி
-                நீக்கம் செய்ய வேண்டும்.</li>
-            </ol>
-            <br />
-            எங்கள் தளத்தை பாதுகாப்பாக வைத்திருக்க உதவுவதில் உங்கள் ஒத்துழைப்பை நாங்கள் பாராட்டுகிறோம். XposedOrNot
-            சிறந்ததாக மாற்ற ஒன்றாக வேலை செய்வோம்!
           </div>
         </div>
       </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-parent="#accordion" data-toggle="collapse in panel-collapse" href="#collapse25">
-              <strong>அறிக்கை வழிகாட்டுதல்கள்</strong>
-            </a>
-          </h4>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ எங்கள்
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub</a
+            > இல்.
+          </p>
         </div>
-        <div class="panel-body"> எங்களுக்காகக் காத்திருந்ததற்கு நன்றி! XposedOrNot இல் பிழை அல்லது பாதுகாப்பு பாதிப்பை
-          நீங்கள் கண்டறிந்தால், அதைப் பற்றி நாங்கள் கேட்க விரும்புகிறோம். நீங்கள் மின்னஞ்சல் மூலம்
-          புகாரளிக்கலாம்<strong>தேவா @ xposedornot.com</strong> அல்லது எங்களுக்கு ட்வீட் செய்யவும்@DevaOnBreaches.<br />
-          <br /> மின்னஞ்சல்: தேவா @ xposedornot.com<br /> Twitter:<a
-            href="https://twitter.com/devaonbreaches">தேவாஒன்பிரீச்ஸ்</a>
-          <br />
-          <br />
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>சட்டம்</h6>
+            <a href="privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
+            <a href="terms" class="footer-link">விதிமுறைகள்</a>
+          </div>
+          <div class="footer-group">
+            <h6>சமூகம்</h6>
+            <a href="https://blog.xposedornot.com" target="_blank" rel="noopener noreferrer" class="footer-link">வலைப்பதிவு</a>
+            <a href="our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+          </div>
+          <div class="footer-group">
+            <h6>நம்பகத்தன்மை</h6>
+            <a href="transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
+            <a href="responsible-disclosure" class="footer-link"
+              >பொறுப்பான வெளிப்படுத்தல்</a
+            >
+            <a
+              href="https://statuspage.freshping.io/66216-XposedOrNot"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+              >நிலை</a
+            >
+          </div>
+          <div class="footer-group">
+            <h6>எங்களைப் பின்தொடரவும்</h6>
+            <a
+              href="https://twitter.com/xposedornot"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              <i class="fab fa-twitter"></i> Twitter
+            </a>
+            <a
+              href="https://facebook.com/xposedornot"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a
+              href="https://infosec.exchange/@XposedOrNot"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
         </div>
       </div>
     </div>
-  </div>
-
-
-  <div class="container text-center">
-    <footer>
-      <aside>
-        <p>இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ —எங்களை
-          பாருங்கள்<a href="https://github.com/XposedOrNot" rel="noopener" target="_blank">கிட்ஹப்</a>.</p>
-      </aside>
-      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-        <input class="custom-control-input" id="darkSwitch" type="checkbox" />
-        <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
-      </div>
-    </footer>
-  </div>
-  <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-  <script src="/static/scripts/common.js"></script>
-</body>
-
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+    ></script>
+    <script src="/static/scripts/common.js"></script>
+  </body>
 </html>

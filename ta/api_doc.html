@@ -1,120 +1,1027 @@
-<html lang="en">
+<!doctype html>
+<html lang="ta">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="XposedOrNot: API ஆவணம் - மின்னஞ்சல் மீறல் கண்டறிதல், கடவுச்சொல் பாதுகாப்பு மற்றும் டொமைன் வெளிப்பாடு பகுப்பாய்வுக்கான APIகள்." />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta
+      content="XposedOrNot: டெவலப்பர்களுக்கான API ஆவணம்"
+      property="og:title"
+    />
+    <meta
+      name="description"
+      content="XposedOrNot இன் API ஆவணத்தை அணுகவும். இறுதிப்புள்ளிகள், பயன்பாட்டு எடுத்துக்காட்டுகள் மற்றும் டெவலப்பர்-நட்பு வழிகாட்டிகளை ஆராயுங்கள்."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="XposedOrNot API குறிப்பு" />
+    <meta
+      name="twitter:description"
+      content="XposedOrNot இன் API ஆவணத்தை அணுகவும். இறுதிப்புள்ளிகள், பயன்பாட்டு எடுத்துக்காட்டுகள் மற்றும் டெவலப்பர்-நட்பு வழிகாட்டிகளை ஆராயுங்கள்."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/api_reference.png"
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <title>
+      XposedOrNot API ஆவணம் - தரவு மீறல்கள் & கடவுச்சொல் பாதுகாப்பை சரிபார்க்கவும்
+    </title>
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <meta
+      property="og:description"
+      content="XposedOrNot இன் சக்திவாய்ந்த APIகளை அணுகி தரவு மீறல்கள், கடவுச்சொல் பாதுகாப்பு மற்றும் டொமைன்-நிலை வெளிப்பாடுகளை சரிபார்க்கவும்."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/ta/api_doc.html" />
+    <meta
+      name="keywords"
+      content="API ஆவணம், தரவு மீறல் API, கடவுச்சொல் பாதுகாப்பு, மின்னஞ்சல் மீறல் கண்டறிதல், சைபர் பாதுகாப்பு API, REST API, JSON API"
+    />
+    <link rel="canonical" href="https://xposedornot.com/ta/api_doc.html" />
+    <meta http-equiv="content-language" content="ta" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer />
+    <script src="/static/scripts/other-libraries.js" defer></script>
+    <style>
+      :root {
+        --primary-color: #007bff;
+        --secondary-color: #6c757d;
+        --background-color: #ffffff;
+        --text-color: #212529;
+        --border-color: #dee2e6;
+        --hover-color: #ffbf00;
+        --code-bg: #f6f8fa;
+        --panel-bg: #f8f9fa;
+        --code-text: #24292e;
+      }
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="XposedOrNot: API Documentation " name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <meta content="XposedOrNot: API Documentation for Developers" property="og:title">
-  <title>XposedOrNot API குறிப்பு</title>
-  <link href="favicon.ico" rel="icon" type="image/x-icon" />
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script crossorigin="anonymous"
-    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+      [data-theme="dark"] {
+        --primary-color: #0d6efd;
+        --secondary-color: #adb5bd;
+        --background-color: #212529;
+        --text-color: #f8f9fa;
+        --border-color: #495057;
+        --hover-color: #ffd43b;
+        --code-bg: #1a1d20;
+        --panel-bg: #343a40;
+        --code-text: #e9ecef;
+      }
 
-  </link>
-  </meta>
-</head>
+      body {
+        font-family: "Poppins", sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        transition: all 0.3s ease;
+      }
 
-<body>
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com"><span
-          style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-        <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">சமூக
-          பதிப்பு</span></a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password.html">கடவுச்சொல்<span class="sr-only">(தற்போதைய)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">வலைப்பதிவு</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> இன்னும் கருவிகள்</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed.html">எக்ஸ்போஸ் செய்யப்பட்ட மீறல்கள்</a>
-              <a class="dropdown-item" href="shield.html">தனியுரிமை கேடயம்</a>
-              <a class="dropdown-item" href="domain.html">டொமைன் சரிபார்ப்பு</a>
-              <a class="dropdown-item" href="domains.html">டொமைன்-நிலை தேடல்</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <div class="container">
-    <div align="center">
-      எங்கள் API ஐப் பரிசோதிக்கவும் சோதிக்கவும், எங்கள் API விளையாட்டு மைதானத்தை ஆராய உங்களை அழைக்கிறோம்.<br /><br />
-      <h3><a class="button-link" href="https://xposedornot.docs.apiary.io" target="_blank"> 🎮 API விளையாட்டு
-          மைதானம்</a></h3>
+      .container {
+        max-width: 1400px;
+        padding: 2rem;
+      }
+
+      .kbanner {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .button-link {
+        display: inline-block;
+        padding: 14px 28px;
+        color: #fff;
+        background: linear-gradient(135deg, #3f71f3, #5b8aff);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(63, 113, 243, 0.25);
+      }
+
+      .button-link:hover {
+        background: linear-gradient(135deg, #2d5cd4, #3f71f3);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(63, 113, 243, 0.4);
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .button-link i {
+        margin-right: 0.5rem;
+      }
+
+      .panel {
+        background: var(--panel-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+      }
+
+      .panel-heading {
+        background-color: var(--panel-bg);
+        color: var(--text-color);
+        padding: 1.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 2px solid var(--primary-color);
+      }
+
+      .panel-body {
+        padding: 2rem;
+      }
+
+      pre {
+        background-color: var(--code-bg);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        overflow-x: auto;
+        border: 1px solid var(--border-color);
+        color: var(--code-text);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .alert {
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: none;
+      }
+
+      .alert-primary {
+        background-color: rgba(13, 110, 253, 0.1);
+        border-left: 4px solid var(--primary-color);
+      }
+
+      [data-theme="dark"] .alert-primary {
+        background-color: rgba(13, 110, 253, 0.2);
+      }
+
+      [data-theme="dark"] .alert-primary h4 {
+        color: #ffffff;
+      }
+
+      .alert-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        border-left: 4px solid #dc3545;
+      }
+
+      .table {
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 1.5rem 0;
+      }
+
+      .table th {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .table td,
+      .table th {
+        padding: 1rem;
+      }
+
+      blockquote {
+        background-color: var(--code-bg);
+        border-left: 4px solid var(--primary-color);
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        position: relative;
+      }
+
+      blockquote .code-block-wrapper {
+        margin: 0;
+      }
+
+      blockquote pre {
+        margin: 0;
+        background: transparent;
+        border: none;
+        padding: 0;
+      }
+
+      [data-theme="dark"] pre {
+        background-color: #1a1d20;
+        color: #e9ecef;
+        border-color: #495057;
+      }
+
+      [data-theme="dark"] code {
+        color: #e9ecef;
+      }
+
+      [data-theme="dark"] blockquote {
+        background-color: #1a1d20;
+        color: #e9ecef;
+      }
+
+      .custom-switch {
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+        background: var(--panel-bg);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        z-index: 1000;
+        width: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: 1px solid var(--border-color);
+      }
+
+      .custom-switch label {
+        color: var(--text-color);
+        margin-left: 0.5rem;
+        white-space: nowrap;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .panel-body {
+          padding: 1rem;
+        }
+
+        .custom-switch {
+          bottom: 1rem;
+          right: 1rem;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--background-color);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--hover-color);
+      }
+
+      .info-card {
+        background: var(--panel-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-card h4 {
+        margin: 0.5rem 0;
+        color: var(--text-color);
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+
+      .info-card p {
+        margin: 0;
+        font-size: 0.9em;
+        color: var(--secondary-color);
+      }
+
+      .info-card code {
+        background: var(--code-bg);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.85em;
+      }
+
+      .toc-link {
+        color: var(--text-color);
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 0.95em;
+      }
+
+      .toc-link:hover {
+        background: var(--code-bg);
+        color: var(--primary-color);
+        text-decoration: none;
+        padding-left: 0.75rem;
+      }
+
+      .toc-link.active {
+        background: rgba(13, 110, 253, 0.15);
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left: 3px solid var(--primary-color);
+        padding-left: calc(0.5rem - 3px);
+      }
+
+      [data-theme="dark"] .toc-link.active {
+        background: rgba(13, 110, 253, 0.25);
+      }
+
+      .toc-link i {
+        margin-right: 0.5rem;
+        width: 20px;
+        display: inline-block;
+      }
+
+      .http-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.75em;
+        font-weight: 700;
+        margin-right: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .http-get {
+        background: linear-gradient(135deg, #10b981, #34d399);
+        color: white;
+      }
+
+      .http-post {
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        color: white;
+      }
+
+      @media (max-width: 992px) {
+        #api-toc {
+          display: none;
+        }
+      }
+
+      .code-block-wrapper {
+        position: relative;
+      }
+
+      .copy-button {
+        position: absolute;
+        top: 50%;
+        right: 0.5rem;
+        transform: translateY(-50%);
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85em;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      }
+
+      .copy-button:hover {
+        opacity: 1;
+        background: var(--hover-color);
+        color: #212529;
+      }
+
+      .copy-button.copied {
+        background: #10b981 !important;
+        color: white !important;
+      }
+
+      /* Footer Styles */
+      .footer-columns {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 0 30px 0;
+        gap: 60px;
+        text-align: left;
+        padding: 0 40px;
+      }
+
+      .footer-group {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .footer-group h6 {
+        color: #2c3e50 !important;
+        font-size: 0.95em !important;
+        margin-bottom: 15px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        opacity: 1 !important;
+      }
+
+      .footer-group a.footer-link {
+        display: block;
+        margin-bottom: 8px;
+        padding: 6px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+        text-decoration: none;
+        color: var(--text-color);
+      }
+
+      .footer-group a.footer-link:hover {
+        opacity: 1;
+        background-color: rgba(63, 113, 243, 0.15);
+        padding-left: 14px;
+        color: #3f71f3 !important;
+        text-decoration: none;
+      }
+
+      [data-theme="dark"] .footer-group h6 {
+        color: #ffffff !important;
+      }
+
+      [data-theme="dark"] .footer-group a.footer-link:hover {
+        background-color: rgba(63, 113, 243, 0.2);
+      }
+
+      /* Back to top button */
+      #backToTop {
+        display: none;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, #3f71f3, #5b8aff);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(63, 113, 243, 0.3);
+        transition: all 0.3s ease;
+        z-index: 999;
+        font-size: 1.2em;
+      }
+
+      #backToTop:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(63, 113, 243, 0.5);
+      }
+
+      /* Response codes table styling */
+      .table tbody tr {
+        transition: all 0.2s ease;
+      }
+
+      .table tbody tr:hover {
+        background-color: var(--code-bg);
+      }
+
+      .status-code-200 {
+        background-color: rgba(16, 185, 129, 0.1) !important;
+        border-left: 4px solid #10b981;
+      }
+
+      .status-code-4xx {
+        background-color: rgba(245, 158, 11, 0.1) !important;
+        border-left: 4px solid #f59e0b;
+      }
+
+      .status-code-5xx {
+        background-color: rgba(239, 68, 68, 0.1) !important;
+        border-left: 4px solid #ef4444;
+      }
+
+      @media (max-width: 768px) {
+        .footer-columns {
+          flex-direction: column;
+          text-align: center;
+          gap: 30px;
+          padding: 0 20px;
+        }
+
+        .footer-group a.footer-link:hover {
+          padding-left: 10px;
+        }
+
+        #backToTop {
+          bottom: 1rem;
+          right: 1rem;
+          width: 45px;
+          height: 45px;
+        }
+
+        .custom-switch {
+          bottom: 1rem;
+          left: 1rem;
+          padding: 0.5rem 0.75rem;
+          width: auto;
+          max-width: fit-content;
+        }
+
+        .custom-switch label {
+          font-size: 0.85em;
+        }
+      }
+
+      #collapse1 {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+
+      .panel-default {
+        background-color: var(--panel-bg);
+        color: var(--text-color);
+      }
+
+      [data-theme="dark"] #collapse1,
+      [data-theme="dark"] .panel-default {
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+
+      [data-theme="dark"] .panel-heading {
+        background-color: var(--panel-bg);
+        color: var(--text-color) !important;
+        border-bottom: 2px solid var(--primary-color);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="kbanner">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+        <a class="navbar-brand" href="index.html"
+          ><span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              margin-top: -1px;
+            "
+            >சமூக பதிப்பு</span
+          ></a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password.html"
+                >கடவுச்சொல் &nbsp; <span class="sr-only">(தற்போதைய)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள் &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >வலைப்பதிவு &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                இன்னும் கருவிகள்
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed.html">எக்ஸ்போஸ் செய்யப்பட்ட மீறல்கள்</a>
+                <a class="dropdown-item" href="shield.html">தனியுரிமை கேடயம்</a>
+                <a class="dropdown-item" href="domain.html"
+                  >டொமைன் சரிபார்ப்பு</a
+                >
+                <a class="dropdown-item" href="domains.html"
+                  >டொமைன்-நிலை தேடல்</a
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
-    <br />
-    <div class="panel-group" id="accordion">
-      <div class="panel panel-default">
-        <div class="panel-heading"> API விரைவு குறிப்பு</div>
-        கடைசியாக புதுப்பிக்கப்பட்டது: 05-ஜூன்-2023
-        <div class="panel-collapse" id="collapse1">
-          <div class="panel-body">
-            <br />
-            உங்கள் ஆர்வத்திற்கு நன்றி<strong>XposedOrNot</strong>. எங்கள் API ஐ முடிந்தவரை அணுகக்கூடியதாகவும்
-            பதிலளிக்கக்கூடியதாகவும் வைத்திருப்பதே குறிக்கோள், இது அனைவருக்கும் மதிப்புமிக்க கருவியாக அமைகிறது. நேரடியாக
-            நடத்தப்பட்டது<strong>கூகுள் உள்கட்டமைப்பு</strong> மற்றும் வலுவாக தற்காலிக
-            சேமிப்பு<strong>கிளவுட்ஃப்ளேர்</strong>, தி<strong>XposedOrNot API</strong> எந்த வினவல்களுக்கும் அவற்றின்
-            தோற்றப் புள்ளியைப் பொருட்படுத்தாமல் விரைவான பதில்களை வழங்குகிறது.<br /><br />
-            தி<strong>XposedOrNot API</strong> என்ற கொள்கைகளை கடைபிடிக்கிறது<strong>REST கட்டிடக்கலை</strong>. அது
-            திரும்புகிறது<strong>JSON-குறியீடு செய்யப்பட்ட பதில்கள்</strong> மற்றும் பயன்படுத்துகிறது<strong>நிலையான
-              HTTP மறுமொழி குறியீடுகள்</strong>. எங்களின் பெரும்பாலான API வழிகளுக்கு, அங்கீகாரத் தேவைகள் எதுவும் இல்லை,
-            இது எளிதான அணுகல் மற்றும் பயன்பாட்டின் எளிமையை உறுதி செய்கிறது. இருப்பினும், எங்கள் குறிப்பிட்டதை நினைவில்
-            கொள்க<strong>டொமைன் தொடர்பான தரவை வினவுவதற்குப் பயன்படுத்தப்படும் API வழிக்கு API விசை அங்கீகாரம்
-              தேவை</strong>. குறிப்பிட்ட டொமைன்களின் சரிபார்க்கப்பட்ட உரிமையாளர்கள் அல்லது அதிகாரிகள் மட்டுமே இந்த
-            முக்கியமான தகவலை அணுக முடியும் என்பதை உறுதிப்படுத்த இந்த நடவடிக்கை உள்ளது.<br /><br />
-            பரிசோதனை மற்றும் சோதனை நோக்கங்களுக்காக, எங்கள் API விளையாட்டு மைதானத்தை ஆராய உங்களை அன்புடன் அழைக்கிறேன்.
-            இங்கே, பயனர் நட்பு சூழலில் XposedOrNot API இன் செயல்பாட்டைப் பற்றி அறிந்துகொள்ள உங்களுக்கு வாய்ப்பு
-            கிடைக்கும்.
-            <br />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>1. API அழைப்பு: மின்னஞ்சல் முகவரி தரவு மீறல்களைச் சரிபார்க்கிறது</strong>
-              </h4>
+    <div class="container">
+      <div align="center" style="margin-bottom: 3rem">
+        <h1 style="margin-bottom: 1rem">XposedOrNot API ஆவணம்</h1>
+        <p
+          style="
+            font-size: 1.1em;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+          "
+        >
+          எங்கள் இலவச, RESTful API மூலம் மீறல் கண்டறிதலை உங்கள் பயன்பாட்டில் ஒருங்கிணைக்கவும்.<br />
+          JSON பதில்களுடன் பில்லியன் கணக்கான வெளிப்படுத்தப்பட்ட பதிவுகளை உடனடியாக சரிபார்க்கவும்.
+        </p>
+
+        <!-- Key Info Cards -->
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+          "
+        >
+          <div class="info-card">
+            <i
+              class="fas fa-key"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>அங்கீகாரம்</h4>
+            <p>பெரும்பாலான இறுதிப்புள்ளிகள் பொதுவானவை. டொமைன் இறுதிப்புள்ளிகளுக்கு API விசை தேவை.</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-tachometer-alt"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>வேக வரம்பு</h4>
+            <p>அனைத்து இறுதிப்புள்ளிகளிலும் வினாடிக்கு 1 கோரிக்கை.</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-code"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>பதில் வடிவம்</h4>
+            <p>அனைத்து பதில்களும் நிலையான HTTP குறியீடுகளுடன் JSON ஐ திருப்பி அனுப்பும்.</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-globe"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>அடிப்படை URL</h4>
+            <p><code>api.xposedornot.com</code></p>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem">
+          <h3 style="display: inline-block; margin-right: 20px">
+            <a
+              href="https://api.xposedornot.com/docs"
+              target="_blank"
+              class="button-link"
+              ><i class="fas fa-book"></i> Swagger ஆவணம்</a
+            >
+          </h3>
+          <h3 style="display: inline-block">
+            <a
+              href="https://xposedornot.docs.apiary.io"
+              target="_blank"
+              class="button-link"
+              ><i class="fas fa-code"></i> API விளையாட்டு மைதானம்</a
+            >
+          </h3>
+        </div>
+      </div>
+
+      <!-- SDK Section -->
+      <div
+        id="sdk-section"
+        style="
+          margin-top: 3rem;
+          margin-bottom: 2rem;
+          position: relative;
+          z-index: 100;
+        "
+      >
+        <h2 style="text-align: center; margin-bottom: 1.5rem">அதிகாரப்பூர்வ SDKகள்</h2>
+        <p
+          style="
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+          "
+        >
+          சில வரி குறியீட்டுடன் XposedOrNot ஐ உங்கள் பயன்பாடுகளில் ஒருங்கிணைக்க எங்கள் அதிகாரப்பூர்வ நூலகங்களைப் பயன்படுத்தவும்.
+        </p>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+          "
+        >
+          <!-- NPM SDK -->
+          <div class="panel" style="margin-bottom: 0">
+            <div
+              class="panel-heading"
+              style="display: flex; align-items: center; gap: 0.75rem"
+            >
+              <i
+                class="fab fa-npm"
+                style="font-size: 1.5em; color: #cb3837"
+              ></i>
+              Node.js / JavaScript
             </div>
-            <p>
-              இந்த பயனர் நட்பு API, மின்னஞ்சல் முகவரி ஏதேனும் அறியப்பட்ட தரவு மீறல்களில் ஈடுபட்டுள்ளதா என்பதை விரைவாகச்
-              சரிபார்க்கிறது. இது மீறல்களின் விரிவான தரவுத்தளத்தைத் தேடுகிறது மற்றும் மின்னஞ்சல் ஆபத்தில் இருந்தால்
-              உங்களை எச்சரிக்கும்.
-              <br /><br />
-              டிஜிட்டல் பாதுகாப்பைப் பேணுவதற்கும் மின்னஞ்சலின் மீறல் வரலாற்றைப் புரிந்துகொள்வதற்கும் இந்தக் கருவி
-              விலைமதிப்பற்றது. இது சிறந்த டிஜிட்டல் பாதுகாப்பு மற்றும் விழிப்புணர்வுக்கான ஒரு படியாகும்.
-            </p>
-            <br /><strong>API இறுதிப்புள்ளி:</strong>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/check-email/[test@example.com]</pre>
-            </blockquote>
-            <strong> வெற்றிகரமான மீறல் கண்டறிதலின் எடுத்துக்காட்டு:</strong>
-            மீறல் கண்டறியப்பட்டால், இது போன்ற JSON பதிலைப் பெறுவீர்கள்:
-            <pre>
+            <div class="panel-body">
+              <p style="margin-bottom: 1rem">
+                <strong>npm வழியாக நிறுவவும்:</strong>
+              </p>
+              <pre style="margin-bottom: 1.5rem">npm install xposedornot</pre>
+              <p style="margin-bottom: 1rem"><strong>விரைவு எடுத்துக்காட்டு:</strong></p>
+              <pre>
+const { XposedOrNot } = require('xposedornot');
+
+const xon = new XposedOrNot();
+
+// மின்னஞ்சலை மீறல்களுக்காக சரிபார்க்கவும்
+const result = await xon.checkEmail('test@example.com');
+console.log(result);</pre
+              >
+              <p style="margin-top: 1.5rem">
+                <a
+                  href="https://www.npmjs.com/package/xposedornot"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em"
+                >
+                  <i class="fas fa-external-link-alt"></i> npmjs.com இல் காண்க
+                </a>
+              </p>
+            </div>
+          </div>
+          <!-- PyPI SDK -->
+          <div class="panel" style="margin-bottom: 0">
+            <div
+              class="panel-heading"
+              style="display: flex; align-items: center; gap: 0.75rem"
+            >
+              <i
+                class="fab fa-python"
+                style="font-size: 1.5em; color: #3776ab"
+              ></i>
+              Python
+            </div>
+            <div class="panel-body">
+              <p style="margin-bottom: 1rem">
+                <strong>pip வழியாக நிறுவவும்:</strong>
+              </p>
+              <pre style="margin-bottom: 1.5rem">pip install xposedornot</pre>
+              <p style="margin-bottom: 1rem"><strong>விரைவு எடுத்துக்காட்டு:</strong></p>
+              <pre>
+from xposedornot import XposedOrNot
+
+xon = XposedOrNot()
+
+# மின்னஞ்சலை மீறல்களுக்காக சரிபார்க்கவும்
+result = xon.check_email('test@example.com')
+print(result)</pre
+              >
+              <p style="margin-top: 1.5rem">
+                <a
+                  href="https://pypi.org/project/xposedornot/"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em"
+                >
+                  <i class="fas fa-external-link-alt"></i> PyPI இல் காண்க
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <!-- Table of Contents + Content Layout -->
+      <div
+        style="
+          display: flex;
+          gap: 3rem;
+          align-items: flex-start;
+          max-width: 100%;
+        "
+      >
+        <!-- Sticky TOC Sidebar -->
+        <nav
+          id="api-toc"
+          style="
+            position: sticky;
+            top: 2rem;
+            width: 280px;
+            flex-shrink: 0;
+            z-index: 1;
+          "
+        >
+          <div
+            style="
+              background: var(--panel-bg);
+              border: 1px solid var(--border-color);
+              border-radius: 12px;
+              padding: 1.5rem;
+            "
+          >
+            <h4
+              style="
+                margin-top: 0;
+                margin-bottom: 1rem;
+                color: var(--primary-color);
+              "
+            >
+              விரைவு வழிசெலுத்தல்
+            </h4>
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li style="margin-bottom: 0.75rem">
+                <a href="#sdk-section" class="toc-link"
+                  ><i class="fas fa-cube"></i> அதிகாரப்பூர்வ SDKகள்</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-1" class="toc-link"
+                  ><i class="fas fa-envelope"></i> மின்னஞ்சல் மீறல் சரிபார்ப்பு</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-2" class="toc-link"
+                  ><i class="fas fa-chart-line"></i> மீறல் பகுப்பாய்வு</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-3" class="toc-link"
+                  ><i class="fas fa-key"></i> கடவுச்சொல் சரிபார்ப்பு</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-4" class="toc-link"
+                  ><i class="fas fa-database"></i> அனைத்து மீறல்கள்</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-5" class="toc-link"
+                  ><i class="fas fa-shield-alt"></i> டொமைன் மீறல்கள்</a
+                >
+              </li>
+              <li style="margin-bottom: 0.75rem">
+                <a href="#endpoint-6" class="toc-link"
+                  ><i class="fas fa-code"></i> பதில் குறியீடுகள்</a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div style="flex: 1; min-width: 0">
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                API விரைவு குறிப்பு
+                <span
+                  style="float: right; font-size: 0.9em; font-weight: normal"
+                  >கடைசியாக புதுப்பிக்கப்பட்டது: 04-டிச-2025</span
+                >
+              </div>
+              <div id="collapse1" style="display: block">
+                <div class="panel-body">
+                  <br />
+                  <strong>XposedOrNot</strong> இல் உங்கள் ஆர்வத்திற்கு நன்றி.
+                  எங்கள் API ஐ முடிந்தவரை அணுகக்கூடியதாகவும் பதிலளிக்கக்கூடியதாகவும் வைத்திருப்பதே குறிக்கோள், இது அனைவருக்கும் மதிப்புமிக்க கருவியாக அமைகிறது.
+                  <strong>Google உள்கட்டமைப்பில்</strong> நேரடியாக நடத்தப்பட்டு <strong>Cloudflare</strong> ஆல் வலுவாக தற்காலிக சேமிக்கப்படுகிறது,
+                  <strong>XposedOrNot API</strong> எந்த வினவல்களுக்கும் அவற்றின் தோற்றப் புள்ளியைப் பொருட்படுத்தாமல் விரைவான பதில்களை வழங்குகிறது.
+                  <br /><br />
+                  <strong>XposedOrNot API</strong> <strong>REST கட்டிடக்கலை</strong> கொள்கைகளை கடைபிடிக்கிறது. இது
+                  <strong>JSON-குறியீடு செய்யப்பட்ட பதில்களை</strong> திருப்பி அனுப்புகிறது மற்றும்
+                  <strong>நிலையான HTTP மறுமொழி குறியீடுகளைப்</strong> பயன்படுத்துகிறது. எங்களின் பெரும்பாலான API வழிகளுக்கு அங்கீகாரத் தேவைகள் எதுவும் இல்லை.
+                  இருப்பினும், எங்கள் குறிப்பிட்ட
+                  <strong>டொமைன் தொடர்பான தரவை வினவுவதற்குப் பயன்படுத்தப்படும் API வழிக்கு API விசை அங்கீகாரம் தேவை</strong>.
+                  <br /><br />
+                  பரிசோதனை மற்றும் சோதனை நோக்கங்களுக்காக, எங்கள் API விளையாட்டு மைதானத்தை ஆராய உங்களை அன்புடன் அழைக்கிறேன்.
+                  <br />
+                  <hr />
+                  <div id="endpoint-1" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >1. API அழைப்பு: மின்னஞ்சல் முகவரி தரவு மீறல்களைச் சரிபார்க்கிறது</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    இந்த பயனர் நட்பு API, மின்னஞ்சல் முகவரி ஏதேனும் அறியப்பட்ட தரவு மீறல்களில் ஈடுபட்டுள்ளதா என்பதை விரைவாகச் சரிபார்க்கிறது.
+                    இது மீறல்களின் விரிவான தரவுத்தளத்தைத் தேடுகிறது மற்றும் மின்னஞ்சல் ஆபத்தில் இருந்தால் உங்களை எச்சரிக்கும்.
+                    <br /><br />
+                    டிஜிட்டல் பாதுகாப்பைப் பேணுவதற்கும் மின்னஞ்சலின் மீறல் வரலாற்றைப் புரிந்துகொள்வதற்கும் இந்தக் கருவி விலைமதிப்பற்றது.
+                  </p>
+                  <br /><strong>API இறுதிப்புள்ளி:</strong>
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/check-email/[test@example.com]</pre
+                    >
+                  </blockquote>
+                  <strong>வெற்றிகரமான மீறல் கண்டறிதலின் எடுத்துக்காட்டு:</strong>
+                  மீறல் கண்டறியப்பட்டால், இது போன்ற JSON பதிலைப் பெறுவீர்கள்:
+                  <pre>
  {
   "breaches": [
     [
@@ -130,65 +1037,74 @@
     ]
   ]
 }
-		  </pre>
-            பதில் JSON வடிவத்தில் உள்ளது, எந்த ஸ்கிரிப்டிங் மொழியுடனும் அலசுவதை எளிதாக்குகிறது. உங்கள் பயன்பாடுகளில்
-            தரவை எளிதாக ஒருங்கிணைக்க இது உங்களை அனுமதிக்கிறது.
-            <br /> <strong>எந்த மீறலும் காணப்படாதபோது பதில்:</strong><br />
-            எந்த மீறல் தரவுத்தளத்திலும் மின்னஞ்சல் முகவரி காணப்படவில்லை என்றால், பின்வரும் JSON பதிலைப் பெறுவீர்கள்:
-            <pre>
+		  </pre
+                  >
+                  பதில் JSON வடிவத்தில் உள்ளது, எந்த ஸ்கிரிப்டிங் மொழியுடனும் அலசுவதை எளிதாக்குகிறது.
+                  <br />
+                  <strong>எந்த மீறலும் காணப்படாதபோது பதில்:</strong><br />
+                  எந்த மீறல் தரவுத்தளத்திலும் மின்னஞ்சல் முகவரி காணப்படவில்லை என்றால், பின்வரும் JSON பதிலைப் பெறுவீர்கள்:
+                  <pre>
 {"Error":"Not found"}
- </pre>
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>2. API அழைப்பு: மின்னஞ்சல் முகவரிகளுக்கான தரவு மீறல் பகுப்பாய்வு</strong>
-              </h4>
-            </div>
-            <p>
-              எங்கள் API ஆனது மின்னஞ்சல் முகவரியின் தரவு மீறல் வரலாற்றின் ஆழமான பகுப்பாய்வை வழங்குகிறது. எப்போது, எங்கு
-              மீறல்கள் நிகழ்ந்தன என்பதை இது வெளிப்படுத்துகிறது, இந்த சம்பவங்களின் தாக்கம் மற்றும் தீவிரத்தை அளவிடுவதற்கு
-              அத்தியாவசிய பகுப்பாய்வுகளை வழங்குகிறது. தரவு வெளிப்பாடு நிலைகளைப் புரிந்துகொள்வதற்கும் பாதுகாப்பு உத்திகளை
-              மேம்படுத்துவதற்கும் இந்தக் கருவி முக்கியமானது.
-            </p>
-            <br /><strong>API இறுதிப்புள்ளி:</strong>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breach-analytics/[email-address]</pre>
-            </blockquote>
-            <p>API இரண்டு சாத்தியமான விளைவுகளுடன் பதிலளிக்கிறது: வெற்றி அல்லது தோல்வி. வெற்றிகரமான பதிலின் முக்கிய
-              கூறுகள் கீழே உள்ளன:</p>
-            <br />
-            <ul>
-              <li><strong>மீறல்கள் சுருக்கம்:</strong> பாதிக்கப்பட்ட தளங்களின் பட்டியல் உட்பட, மின்னஞ்சல் முகவரியுடன்
-                இணைக்கப்பட்டுள்ள அனைத்து மீறல்களின் விரைவான மேலோட்டத்தைப் பெறவும். மீறல் வரலாற்றை விரைவாகச் சரிபார்க்க
-                ஏற்றது.</li>
-              <br />
-              <li><strong>வெளிப்படுத்தப்பட்ட மீறல்கள்:</strong> மீறப்பட்ட நிறுவனத்தின் பெயர், விளக்கம், டொமைன்,
-                தொழில்துறை, இடர் நிலை, குறிப்புகள், வெளிப்படுத்தப்பட்ட தரவு வகைகள் மற்றும் வெளிப்படுத்தப்பட்ட பதிவுகளின்
-                ஆண்டு மற்றும் எண்ணிக்கை உட்பட ஒவ்வொரு மீறலின் விரிவான தகவலைப் பெறவும். இது ஒவ்வொரு மீறலின்
-                பிரத்தியேகங்களையும் தீவிரத்தன்மையையும் மதிப்பிட உதவுகிறது.</li>
-              <br />
-              <li><strong>ப்ரீச்மெட்ரிக்ஸ்:</strong> பாதிக்கப்பட்ட தொழில்கள், கடவுச்சொல் வலிமை, ஆபத்து மதிப்பெண்,
-                வெளிப்படுத்தப்பட்ட தரவு வகைகள் மற்றும் வருடாந்திர முறிவு போன்ற மீறல்கள் பற்றிய பகுப்பாய்வுகளை இந்தக்
-                கூறு வழங்குகிறது. மீறல்களின் முழு தாக்கத்தையும் புரிந்து கொள்ள இந்தத் தரவு முக்கியமானது.</li>
-              <br />
-              <li><strong>xposed_data:</strong> பெயர்கள், புகைப்படங்கள், தேசியங்கள் போன்ற மீறல்களில் வெளிப்படும்
-                குறிப்பிட்ட தரவு வகைகளைப் பற்றிய நுண்ணறிவைப் பெறுங்கள். இது தனிப்பட்ட தரவு வெளிப்பாட்டின் தன்மை மற்றும்
-                அளவைப் புரிந்துகொள்ள உதவுகிறது.</li>
-              <br />
-              <li><strong>சுருக்கம்:</strong> 'பேஸ்ட்' மீறல்களின் (பொது பேஸ்ட்பின் போன்ற சேவைகளின் தரவு வெளிப்பாடுகள்),
-                எண்ணிக்கை மற்றும் மிக சமீபத்திய நிகழ்வு உட்பட மேலோட்டத்தை வழங்குகிறது. இந்த பிளாட்ஃபார்ம்களில்
-                வெளிப்பாட்டைக் கண்டறிய இது ஒரு விரைவான வழியாகும்.</li>
-              <br />
-              <li><strong>வெளிப்பட்ட பேஸ்ட்கள் &amp; பேஸ்ட்மெட்ரிக்ஸ்:</strong> இந்த கூறுகள் விரிவான தகவல் மற்றும்
-                பேஸ்ட் மீறல்கள் பற்றிய வருடாந்திர பகுப்பாய்வை வழங்குகின்றன, இது காலப்போக்கில் வெளிப்பாடு போக்குகளை ஆழமாக
-                புரிந்துகொள்ள அனுமதிக்கிறது.</li>
-              <br />
-            </ul>
-            <p>இந்த விரிவான பகுப்பாய்வுக் கருவிகள் எந்த மின்னஞ்சலின் தரவு மீறல் வரலாற்றையும் ஆழமாகப் படிக்கவைத்து,
-              சிறந்த டிஜிட்டல் பாதுகாப்பு நிர்வாகத்திற்குத் தேவையான நுண்ணறிவுகளை வழங்குகிறது.</p>
-            <br />
-            <strong>பொருத்தமான பதிவை வெற்றிகரமாகக் கண்டறிவதற்கான மாதிரி JSON வெளியீடு:</strong>
-            <pre>
+ </pre
+                  >
+                  <hr />
+                  <div id="endpoint-2" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >2. API அழைப்பு: மின்னஞ்சல் முகவரிகளுக்கான தரவு மீறல் பகுப்பாய்வு</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    எங்கள் API ஆனது மின்னஞ்சல் முகவரியின் தரவு மீறல் வரலாற்றின் ஆழமான பகுப்பாய்வை வழங்குகிறது.
+                    எப்போது, எங்கு மீறல்கள் நிகழ்ந்தன என்பதை இது வெளிப்படுத்துகிறது, இந்த சம்பவங்களின் தாக்கம் மற்றும் தீவிரத்தை அளவிடுவதற்கு அத்தியாவசிய பகுப்பாய்வுகளை வழங்குகிறது.
+                  </p>
+                  <br /><strong>API இறுதிப்புள்ளி:</strong>
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/breach-analytics?email=[email-address]</pre
+                    >
+                  </blockquote>
+
+                  <p>
+                    API இரண்டு சாத்தியமான விளைவுகளுடன் பதிலளிக்கிறது: வெற்றி அல்லது தோல்வி. வெற்றிகரமான பதிலின் முக்கிய கூறுகள் கீழே உள்ளன:
+                  </p>
+                  <br />
+                  <ul>
+                    <li>
+                      <strong>BreachesSummary:</strong> மின்னஞ்சல் முகவரியுடன் இணைக்கப்பட்டுள்ள அனைத்து மீறல்களின் விரைவான மேலோட்டத்தைப் பெறவும், பாதிக்கப்பட்ட தளங்களின் பட்டியல் உட்பட.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>ExposedBreaches:</strong> மீறப்பட்ட நிறுவனத்தின் பெயர், விளக்கம், டொமைன், தொழில்துறை, இடர் நிலை, குறிப்புகள், வெளிப்படுத்தப்பட்ட தரவு வகைகள் மற்றும் வெளிப்படுத்தப்பட்ட பதிவுகளின் ஆண்டு மற்றும் எண்ணிக்கை உட்பட ஒவ்வொரு மீறலின் விரிவான தகவலைப் பெறவும்.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>BreachMetrics:</strong> பாதிக்கப்பட்ட தொழில்கள், கடவுச்சொல் வலிமை, ஆபத்து மதிப்பெண், வெளிப்படுத்தப்பட்ட தரவு வகைகள் மற்றும் வருடாந்திர முறிவு போன்ற மீறல்கள் பற்றிய பகுப்பாய்வுகளை இந்தக் கூறு வழங்குகிறது.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>xposed_data:</strong> பெயர்கள், புகைப்படங்கள், தேசியங்கள் போன்ற மீறல்களில் வெளிப்படும் குறிப்பிட்ட தரவு வகைகளைப் பற்றிய நுண்ணறிவைப் பெறுங்கள்.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>PastesSummary:</strong> 'பேஸ்ட்' மீறல்களின் (பொது பேஸ்ட்பின் போன்ற சேவைகளின் தரவு வெளிப்பாடுகள்), எண்ணிக்கை மற்றும் மிக சமீபத்திய நிகழ்வு உட்பட மேலோட்டத்தை வழங்குகிறது.
+                    </li>
+                    <br />
+                    <li>
+                      <strong>ExposedPastes & PasteMetrics:</strong> இந்த கூறுகள் விரிவான தகவல் மற்றும் பேஸ்ட் மீறல்கள் பற்றிய வருடாந்திர பகுப்பாய்வை வழங்குகின்றன.
+                    </li>
+                    <br />
+                  </ul>
+                  <p>
+                    இந்த விரிவான பகுப்பாய்வுக் கருவிகள் எந்த மின்னஞ்சலின் தரவு மீறல் வரலாற்றையும் ஆழமாகப் படிக்கவைத்து, சிறந்த டிஜிட்டல் பாதுகாப்பு நிர்வாகத்திற்குத் தேவையான நுண்ணறிவுகளை வழங்குகிறது.
+                  </p>
+                  <br />
+                  <strong
+                    >பொருத்தமான பதிவை வெற்றிகரமாகக் கண்டறிவதற்கான மாதிரி JSON வெளியீடு:
+                  </strong>
+                  <pre>
 
 {
   "BreachMetrics": {
@@ -197,29 +1113,7 @@
       [
         [          "elec",          1        ],
         [          "misc",          0        ],
-        [          "mini",          0        ],
-        [          "musi",          0        ],
-        [          "manu",          0        ],
-        [          "ener",          0        ],
-        [          "news",          0        ],
-        [          "ente",          0        ],
-        [          "hosp",          0        ],
-        [          "heal",          0        ],
-        [          "food",          0        ],
-        [          "phar",          0        ],
-        [          "educ",          0        ],
-        [          "cons",          0        ],
-        [          "agri",          0        ],
-        [          "tele",          0        ],
-        [          "info",          0        ],
-        [          "tran",          0        ],
-        [          "aero",          0        ],
-        [          "fina",          0        ],
-        [          "reta",          0        ],
-        [          "nonp",          0        ],
-        [          "govt",          0        ],
-        [          "spor",          0        ],
-        [          "envi",          0        ]
+        ...
       ]
     ],
     "passwords_strength": [
@@ -236,90 +1130,14 @@
         "risk_score": 3
       }
     ],
-    "xposed_data": [
-      {
-        "children": [
-          {
-            "children": [
-              {
-                "colname": "level3",
-                "group": "A",
-                "name": "data_Usernames",
-                "value": 1
-              }
-            ],
-            "colname": "level2",
-            "name": "👤 Personal Identification"
-          },
-          {
-            "children": [
-              {
-                "colname": "level3",
-                "group": "D",
-                "name": "data_Passwords",
-                "value": 1
-              }
-            ],
-            "colname": "level2",
-            "name": "🔒 Security Practices"
-          },
-          {
-            "children": [
-              {
-                "colname": "level3",
-                "group": "F",
-                "name": "data_Email addresses",
-                "value": 1
-              }
-            ],
-            "colname": "level2",
-            "name": "📞 Communication and Social Interactions"
-          }
-        ]
-      }
-    ],
-    "yearwise_details": [
-      {
-        "y2007": 0,
-        "y2008": 0,
-        "y2009": 0,
-        "y2010": 0,
-        "y2011": 0,
-        "y2012": 0,
-        "y2013": 0,
-        "y2014": 0,
-        "y2015": 1,
-        "y2016": 0,
-        "y2017": 0,
-        "y2018": 0,
-        "y2019": 0,
-        "y2020": 0,
-        "y2021": 0,
-        "y2022": 0,
-        "y2023": 0
-      }
-    ]
+    "xposed_data": [...],
+    "yearwise_details": [...]
   },
   "BreachesSummary": {
     "site": "SweClockers"
   },
   "ExposedBreaches": {
-    "breaches_details": [
-      {
-        "breach": "SweClockers",
-        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords—which were stored using a combination of MD5 and SHA512—were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
-        "domain": "sweclockers.com",
-        "industry": "Electronics",
-        "logo": "Sweclockers.png",
-        "password_risk": "hardtocrack",
-        "references": "",
-        "searchable": "Yes",
-        "verified": "Yes",
-        "xposed_data": "Usernames;Email addresses;Passwords",
-        "xposed_date": "2015",
-        "xposed_records": 254967
-      }
-    ]
+    "breaches_details": [...]
   },
   "ExposedPastes": null,
   "PasteMetrics": null,
@@ -329,39 +1147,53 @@
     "tmpstmp": ""
   }
 }
-	       </pre>
-            ப்ரீச்மெட்ரிக்ஸில் பயன்படுத்தப்படும் சில தரவுப் புள்ளிகள் பின்வருமாறு:
-            <ol>
-              <li>தொழில் வாரியான வகைப்பாடு</li>
-              இது சிறந்த 19 தொழில்களில் வெளிப்படும் மீறல்களின் எண்ணிக்கையை உங்களுக்கு வழங்குகிறது.<br />
-              <li>கடவுச்சொல் வலிமை</li>
-              கடவுச்சொற்களைக் கொண்ட மீறல்களின் எண்ணிக்கையை இது உங்களுக்கு வழங்குகிறது, அவை 1. சிதைப்பது எளிது, 2. எளிய
-              உரை கடவுச்சொற்கள் &amp; 3. வலுவான மற்றும் பாதுகாப்பான கடவுச்சொல் ஹாஷ்கள் பயன்படுத்தப்படுகின்றன.<br />
-              <li>ஆண்டு வாரியான விவரங்கள்</li>
-              இது 2010 ஆம் ஆண்டு தொடங்கி தற்போது வரையிலான தரவு மீறல்களின் வரலாற்றுத் தரவை உங்களுக்கு வழங்குகிறது.<br />
-            </ol>
-            <br />
-            <strong>பொருந்தக்கூடிய மின்னஞ்சல் முகவரியைக் கண்டுபிடிக்கவில்லை என்பதற்கான மாதிரி வெளியீடு:</strong>
-            <pre>
+	       </pre
+                  >
+                  BreachMetrics இல் பயன்படுத்தப்படும் சில தரவுப் புள்ளிகள் பின்வருமாறு:
+                  <ol>
+                    <li>தொழில் வாரியான வகைப்பாடு</li>
+                    இது சிறந்த 19 தொழில்களில் வெளிப்படும் மீறல்களின் எண்ணிக்கையை உங்களுக்கு வழங்குகிறது.
+                    <br />
+                    <li>கடவுச்சொல் வலிமை</li>
+                    கடவுச்சொற்களைக் கொண்ட மீறல்களின் எண்ணிக்கையை இது உங்களுக்கு வழங்குகிறது: 1. சிதைப்பது எளிது, 2. எளிய உரை கடவுச்சொற்கள், 3. வலுவான மற்றும் பாதுகாப்பான கடவுச்சொல் ஹாஷ்கள்.
+                    <br />
+                    <li>ஆண்டு வாரியான விவரங்கள்</li>
+                    இது 2010 ஆம் ஆண்டு தொடங்கி தற்போது வரையிலான தரவு மீறல்களின் வரலாற்றுத் தரவை உங்களுக்கு வழங்குகிறது.
+                    <br />
+                  </ol>
+                  <br />
+                  <strong
+                    >பொருந்தக்கூடிய மின்னஞ்சல் முகவரியைக் கண்டுபிடிக்கவில்லை என்பதற்கான மாதிரி வெளியீடு:</strong
+                  >
+                  <pre>
 {  "Error": "Not found"}
- </pre>
-            <p> XposedOrNot இல் ஏற்றப்பட்ட தரவு மீறல்கள் எதிலும் தேடப்பட்ட மின்னஞ்சல் காணப்படவில்லை என்பதும் இதன்
-              பொருள்.</p>
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>3. அநாமதேயமாக வெளிப்படுத்தப்பட்ட கடவுச்சொற்களை சரிபார்க்க API அழைப்பு</strong>
-              </h4>
-            </div>
-            <p>வெளிப்படுத்தப்பட்ட கடவுச்சொற்களைச் சரிபார்க்க நீங்கள் ஆர்வமாக இருந்தால், இந்த API உங்களுக்கு ஏற்றது. இது
-              இரண்டு வடிவங்களில் முடிவுகளை வழங்குகிறது: வெற்றி அல்லது தோல்வி. நீங்கள் பரவலாகப் பயன்படுத்தப்படும்
-              கடவுச்சொல் "123456" ஐச் சரிபார்க்க வேண்டும் என்று கற்பனை செய்து பாருங்கள் - இந்த API உதவும்.</p>
-            <br />
-            <blockquote>
-              <pre>https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre>
-            </blockquote>
-            <strong>பொருத்தமான கடவுச்சொல் ஹாஷை வெற்றிகரமாகக் கண்டறிவதற்கான மாதிரி JSON வெளியீடு:</strong>
-            <pre>
+ </pre
+                  >
+                  <p>
+                    XposedOrNot இல் ஏற்றப்பட்ட தரவு மீறல்கள் எதிலும் தேடப்பட்ட மின்னஞ்சல் காணப்படவில்லை என்பதும் இதன் பொருள்.
+                  </p>
+                  <hr />
+                  <div id="endpoint-3" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >3. அநாமதேயமாக வெளிப்படுத்தப்பட்ட கடவுச்சொற்களை சரிபார்க்க API அழைப்பு</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    வெளிப்படுத்தப்பட்ட கடவுச்சொற்களைச் சரிபார்க்க நீங்கள் ஆர்வமாக இருந்தால், இந்த API உங்களுக்கு ஏற்றது. இது இரண்டு வடிவங்களில் முடிவுகளை வழங்குகிறது: வெற்றி அல்லது தோல்வி.
+                  </p>
+                  <br />
+                  <blockquote>
+                    <pre>
+https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre
+                    >
+                  </blockquote>
+                  <strong
+                    >பொருத்தமான கடவுச்சொல் ஹாஷை வெற்றிகரமாகக் கண்டறிவதற்கான மாதிரி JSON வெளியீடு:
+                  </strong>
+                  <pre>
  {
   "SearchPassAnon": {
     "anon": "808d63ba47",
@@ -370,139 +1202,142 @@
     "wordlist": 0
   }
 }
- </pre>
-            <p>API ஆனது JSON வடிவத்தில் முடிவுகளை வழங்குகிறது, இது ஆம்/இல்லை என்பதை விட அதிக தகவல் தருகிறது. இந்த
-              விரிவான வெளியீடு நிகழ்நேர வெளிப்படும் கடவுச்சொற்களின் விரிவான பட்டியலை மேலும் பகுப்பாய்வு செய்து
-              மேம்படுத்துகிறது.</p>
-            <br />
-            <h4>வெளியீட்டு கட்டமைப்பு வழிகாட்டி:</h4>
-            <br />
-            <ul>
-              <li><strong>"anon" உறுப்பு:</strong> எங்கள் தரவுத்தளத்தில் உள்ள ஒவ்வொரு கடவுச்சொல் ஹாஷிலும் "anon"
-                உறுப்பாகும். இது அநாமதேயமாக இருக்கும் போது தேட விரும்பும் பயனர்களுக்கு தனியுரிமையை உறுதி செய்வதாகும்.
-              </li>
-              <li><strong>"கரி" உறுப்பு:</strong> இந்த உறுப்பு நீளம், எழுத்துக்களின் பயன்பாடு, எண்கள் மற்றும் சிறப்பு
-                எழுத்துக்கள் போன்ற கடவுச்சொல்லின் பண்புகளின் முறிவை வழங்குகிறது. கடவுச்சொல் வலிமையைப்
-                புரிந்துகொள்வதற்கும், பல்வேறு இணையதளத் தேவைகளைப் பூர்த்திசெய்கிறதா என்பதைப் புரிந்துகொள்வதற்கும் இது
-                மிகவும் பயனுள்ளதாக இருக்கும்.</li>
-            </ul>
-            <p>இந்த API ஆனது வெளிப்படும் கடவுச்சொற்களை அடையாளம் காண்பதற்கு மட்டுமல்ல, வலுவான, மிகவும் பாதுகாப்பான
-              கடவுச்சொல் கொள்கைகளை உருவாக்கவும் உதவுகிறது.</p>
-            <br /> பின்வரும் அட்டவணை எளிமையான சொற்களில் பண்புகளைப் பற்றி இன்னும் கொஞ்சம் விளக்குகிறது:<br />
-            <br />
-            <table class="table table-condensed table-striped table-bordered table-hover">
-              <tr>
-                <td> இலக்கங்கள்</td>
-                <td> எண்களின் எண்ணிக்கை</td>
-              </tr>
-              <tr>
-                <td> எழுத்துக்கள்</td>
-                <td> எழுத்துக்களின் எண்ணிக்கை</td>
-              </tr>
-              <tr>
-                <td> சிறப்பு எழுத்துக்கள்</td>
-                <td> சிறப்பு எழுத்துகளின் எண்ணிக்கை</td>
-              </tr>
-              <tr>
-                <td> நீளம்</td>
-                <td> கடவுச்சொல்லின் நீளம்</td>
-              </tr>
-            </table>
-            கடைசி ஒன்று<strong>"எண்ணிக்கை"</strong> சேகரிக்கப்பட்ட அம்பலப்படுத்தப்பட்ட தரவு மீறல்களில் இந்த கடவுச்சொல்
-            காணப்பட்ட முறைகளின் எண்ணிக்கையைக் குறிக்கிறது. அனைத்து அம்பலப்படுத்தப்பட்ட வலைத்தளங்களின் விரிவான
-            பட்டியலுக்கு, தயவுசெய்து பார்வையிடவும்<a href="xposed.html">
-              <strong>XON இல் Xposed இணையதளங்கள்</strong>
-            </a>.<br />
-            <br /> மேலும், கவனிக்க வேண்டிய மற்றொரு புள்ளி பயன்பாடு ஆகும்<a href="https://en.wikipedia.org/wiki/SHA-3"
-              rel="noopener" target="_blank">
-              <strong>SHA3 கெக்காக்-512</strong>
-            </a> XON இல் தரவுகளைத் தேடுவதற்கும் சேமிப்பதற்கும் ஹாஷிங். MD5 மற்றும் SHA1 போன்ற பாரம்பரிய ஹாஷிங்
-            அல்காரிதம்கள் தற்போது நிராகரிக்கப்பட்டுள்ளன.<strong>SHA3 கெக்காக்-512</strong> அல்காரிதம். கெக்காக்-512
-            ஹாஷ்கள் 128 எழுத்துகள் நீளம் கொண்டவை.<br />
-            <br /> எளிமையான மற்றும் பயன்படுத்த எளிதானவற்றைச் சரிபார்க்கவும்<a href="/samples/index.html"
-              target="_blank">
-              <strong>மாதிரி உள்நுழைவு திரை,</strong>
-            </a>இந்த API ஐப் பயன்படுத்துகிறது.<br />
-            <br /> இரண்டு மாதிரி Keccak-512 ஹாஷ்கள் எளிதான குறிப்புக்காக கொடுக்கப்பட்டுள்ளன:<br />
-            <br /> கெக்காக்-512("சோதனை")
-            <strong>
-              <pre>1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre>
-            </strong>
-            <br /> கெக்காக்-512("பாஸ்")
-            <strong>
-              <pre>adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre>
-            </strong>
-            <br />
-            <strong>பொருந்தக்கூடிய கடவுச்சொல் ஹாஷ் கண்டுபிடிக்கப்படவில்லை என்பதற்கான மாதிரி வெளியீடு:</strong>
-            <pre>
+ </pre
+                  >
+
+                  <p>
+                    API ஆனது JSON வடிவத்தில் முடிவுகளை வழங்குகிறது, இது ஆம்/இல்லை என்பதை விட அதிக தகவல் தருகிறது.
+                  </p>
+                  <br />
+                  <h4>வெளியீட்டு கட்டமைப்பு வழிகாட்டி:</h4>
+                  <br />
+                  <ul>
+                    <li>
+                      <strong>"anon" உறுப்பு:</strong> எங்கள் தரவுத்தளத்தில் உள்ள ஒவ்வொரு கடவுச்சொல் ஹாஷிலும் "anon" உறுப்பாகும். இது அநாமதேயமாக இருக்கும் போது தேட விரும்பும் பயனர்களுக்கு தனியுரிமையை உறுதி செய்வதாகும்.
+                    </li>
+                    <li>
+                      <strong>"char" உறுப்பு:</strong> இந்த உறுப்பு நீளம், எழுத்துக்களின் பயன்பாடு, எண்கள் மற்றும் சிறப்பு எழுத்துக்கள் போன்ற கடவுச்சொல்லின் பண்புகளின் முறிவை வழங்குகிறது.
+                    </li>
+                  </ul>
+                  <p>
+                    இந்த API ஆனது வெளிப்படும் கடவுச்சொற்களை அடையாளம் காண்பதற்கு மட்டுமல்ல, வலுவான, மிகவும் பாதுகாப்பான கடவுச்சொல் கொள்கைகளை உருவாக்கவும் உதவுகிறது.
+                  </p>
+                  <br />
+                  பின்வரும் அட்டவணை எளிமையான சொற்களில் பண்புகளைப் பற்றி இன்னும் கொஞ்சம் விளக்குகிறது: <br />
+                  <br />
+                  <table
+                    class="table table-condensed table-striped table-bordered table-hover"
+                  >
+                    <tr>
+                      <td>இலக்கங்கள்</td>
+                      <td>எண்களின் எண்ணிக்கை</td>
+                    </tr>
+                    <tr>
+                      <td>எழுத்துக்கள்</td>
+                      <td>எழுத்துக்களின் எண்ணிக்கை</td>
+                    </tr>
+                    <tr>
+                      <td>சிறப்பு எழுத்துக்கள்</td>
+                      <td>சிறப்பு எழுத்துகளின் எண்ணிக்கை</td>
+                    </tr>
+                    <tr>
+                      <td>நீளம்</td>
+                      <td>கடவுச்சொல்லின் நீளம்</td>
+                    </tr>
+                  </table>
+                  கடைசி ஒன்று <strong>"count"</strong> சேகரிக்கப்பட்ட அம்பலப்படுத்தப்பட்ட தரவு மீறல்களில் இந்த கடவுச்சொல் காணப்பட்ட முறைகளின் எண்ணிக்கையைக் குறிக்கிறது. அனைத்து அம்பலப்படுத்தப்பட்ட வலைத்தளங்களின் விரிவான பட்டியலுக்கு, தயவுசெய்து பார்வையிடவும்
+                  <a href="xposed.html">
+                    <strong>XON இல் Xposed இணையதளங்கள்</strong> </a
+                  >. <br />
+                  <br />
+                  மேலும், கவனிக்க வேண்டிய மற்றொரு புள்ளி
+                  <a
+                    href="https://en.wikipedia.org/wiki/SHA-3"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <strong>SHA3 Keccak-512</strong>
+                  </a>
+                  ஹாஷிங் பயன்பாடு ஆகும். MD5 மற்றும் SHA1 போன்ற பாரம்பரிய ஹாஷிங் அல்காரிதம்கள் தற்போது நிராகரிக்கப்பட்டுள்ளன.
+                  <strong>SHA3 Keccak-512</strong> அல்காரிதம் பயன்படுத்தப்படுகிறது. Keccak-512 ஹாஷ்கள் 128 எழுத்துகள் நீளம் கொண்டவை. <br />
+                  <br />
+                  எளிமையான மற்றும் பயன்படுத்த எளிதானவற்றைச் சரிபார்க்கவும்
+                  <a href="/samples/index.html" target="_blank">
+                    <strong>மாதிரி உள்நுழைவு திரை, </strong> </a
+                  >இந்த API ஐப் பயன்படுத்துகிறது. <br />
+                  <br />
+                  இரண்டு மாதிரி Keccak-512 ஹாஷ்கள் எளிதான குறிப்புக்காக கொடுக்கப்பட்டுள்ளன: <br />
+                  <br />
+                  Keccak-512("test")
+                  <strong>
+                    <pre>
+1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre
+                    >
+                  </strong>
+                  <br />
+                  Keccak-512("pass")
+                  <strong>
+                    <pre>
+adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre
+                    >
+                  </strong>
+                  <br />
+                  <strong
+                    >பொருந்தக்கூடிய கடவுச்சொல் ஹாஷ் கண்டுபிடிக்கப்படவில்லை என்பதற்கான மாதிரி வெளியீடு:</strong
+                  >
+                  <pre>
             {  "Error": "Not found"}
-        </pre>
-            <hr />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>4. XposedOrNot இல் ஏற்றப்பட்ட அனைத்து தரவு மீறல்களையும் சரிபார்க்க API அழைப்பு</strong>
-              </h4>
-            </div>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breaches</pre>
-            </blockquote>
-            API ஆனது JSON வடிவத்தில் மட்டுமே வெற்றிகரமான பதிலை வழங்குகிறது.<br />
-            <br />இந்த JSONஐ அனைத்து ஸ்கிரிப்டிங் மொழிகளாலும் எளிதாகப் பாகுபடுத்தி எளிதாக விளக்கலாம் மற்றும் உங்கள்
-            அந்தந்த பயன்பாடுகளில் பயன்படுத்தப்படும் தரவு கூறுகளைப் பிரித்தெடுக்கலாம்.<br />
-            <pre>
-{
-  "Exposed Breaches": [
+        </pre
+                  >
+                  <hr />
+                  <hr />
+                  <div id="endpoint-4" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >4. XposedOrNot இல் ஏற்றப்பட்ட அனைத்து தரவு மீறல்களையும் சரிபார்க்க API அழைப்பு</strong
+                      >
+                    </h4>
+                  </div>
+                  <blockquote>
+                    <pre>https://api.xposedornot.com/v1/breaches</pre>
+                  </blockquote>
+                  API ஆனது JSON வடிவத்தில் மட்டுமே வெற்றிகரமான பதிலை வழங்குகிறது.<br />
+                  <br />இந்த JSON ஐ அனைத்து ஸ்கிரிப்டிங் மொழிகளாலும் எளிதாகப் பாகுபடுத்தி எளிதாக விளக்கலாம் மற்றும் உங்கள் அந்தந்த பயன்பாடுகளில் பயன்படுத்தப்படும் தரவு கூறுகளைப் பிரித்தெடுக்கலாம். <br />
+                  <pre>
+   {
+  "exposedBreaches": [
     {
-      "Breach ID": "1.4BillionRecords",
-      "Breached Date": "2017-03-01T00:00:00+00:00",
-      "Domain": "Not-Applicable",
-      "Exposed Data": "Email addresses;Names",
-      "Exposed Records": 1114303554,
-      "Exposure Description": "\"A company called 4iQ in 2017, discovered a massive database of stolen usernames and passwords that was being traded on the dark web. The database, which was referred to as the \"\"largest-ever\"\" breach at the time, contained over 1.4 billion unique username and password combinations, as well as other personal information such as email addresses and IP addresses.\"",
-      "Industry": "Entertainment",
-      "Logo": "combolist.png",
-      "Password Risk": "unknown",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "Yes"
+      "breachID": "APK.TW",
+      "breachedDate": "2022-09-01T00:00:00+00:00",
+      "domain": "apk.tw",
+      "exposedData": [
+        "Email addresses",
+        "Usernames",
+        "Passwords",
+        "IP addresses"
+      ],
+      "exposedRecords": 2457094,
+      "exposureDescription": "APK.TW, a Taiwanese Android forum...",
+      "industry": "Information Technology",
+      "logo": "https://xposedornot.com/static/logos/APKTW.png",
+      "passwordRisk": "easytocrack",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
     },
-    {
-      "Breach ID": "123RF",
-      "Breached Date": "2020-03-01T00:00:00+00:00",
-      "Domain": "123rf.com",
-      "Exposed Data": "Usernames;Email addresses;Passwords;Names;IP addresses;Physical addresses;Phone numbers",
-      "Exposed Records": 8668646,
-      "Exposure Description": "123RF Stock photo site has suffered a data breach in March 2020. The exposed database contained 8.3 million user records leaked on a hacker forum. Exposed data includes full name, email address, MD5 hashed passwords, company name, phone number, address, PayPal email if used, and IP address.",
-      "Industry": "Information Technology",
-      "Logo": "123RF.png",
-      "Password Risk": "easytocrack",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "Yes"
-    },
-    {
-      "Breach ID": "17173",
-      "Breached Date": "2011-12-01T00:00:00+00:00",
-      "Domain": "17173.com",
-      "Exposed Data": "Usernames;Passwords;Email addresses",
-      "Exposed Records": 7482441,
-      "Exposure Description": "The 17173 gaming site breach in 2011 was part of a larger series of data breaches in China, affecting nearly 100 million users. Of these, 7.5 million were from 17173. The breach exposed usernames, email addresses, and salted MD5 password hashes.",
-      "Industry": "Energy",
-      "Logo": "17173.png",
-      "Password Risk": "plaintext",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "No"
-    },
-    and so on...
-	       </pre>
-            <br />மேலும், நீங்கள் ஒரு டொமைன் போன்ற அளவுருவை அனுப்பலாம் மற்றும் அந்த மீறலுக்கான குறிப்பிட்ட உள்ளடக்கத்தை
-            அனுப்ப முடிவுகளை வடிகட்டலாம்.<br />
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre>
-            </blockquote>
-            <pre>
+    ...
+  ]
+}
+	       </pre
+                  >
+                  <br />மேலும், நீங்கள் ஒரு டொமைன் போன்ற அளவுருவை அனுப்பலாம் மற்றும் அந்த மீறலுக்கான குறிப்பிட்ட உள்ளடக்கத்தை அனுப்ப முடிவுகளை வடிகட்டலாம். <br />
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre
+                    >
+                  </blockquote>
+                  <pre>
 
 {
   "Exposed Breaches": [
@@ -510,57 +1345,52 @@
       "Breach ID": "Twitter-Scraped",
       "Breached Date": "2021-01-01T00:00:00+00:00",
       "Domain": "twitter.com",
-      "Exposed Data": "Usernames;Email addresses;Names;Geographic locations;Profile photos;Phone numbers",
+      "Exposed Data": "Usernames;Email addresses;Names;...",
       "Exposed Records": 208918735,
-      "Exposure Description": "\"The \"\"Twitter Email Addresses Leak\"\" involves a data leak of over 200 million Twitter user profiles around 2021. The leak includes email addresses, names, screen names, follow counts, and account creation dates. The data was obtained through a Twitter API vulnerability that allowed the input of email addresses and phone numbers to confirm their association with Twitter IDs.\"",
       "Industry": "Information Technology",
       "Logo": "Twitter.png",
       "Password Risk": "unknown",
       "Searchable": "Yes",
-      "Sensitive": "No",
       "Verified": "Yes"
     }
   ],
   "status": "success"
 }
-		  </pre>
-            API ஆனது JSON வடிவத்தில் மட்டுமே வெற்றிகரமான பதிலை வழங்குகிறது.<br />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>5. சரிபார்க்கப்பட்ட டொமைன்களுக்கான அனைத்து தரவு மீறல்களையும் சரிபார்க்க API அழைப்பு</strong>
-              </h4>
-            </div>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
-            </blockquote>
-            இது ஒரு POST கோரிக்கை மற்றும் 'x-api-key' விசையுடன் தலைப்பில் சரியான API விசை சேர்க்கப்பட வேண்டும். இந்த
-            இறுதிப்புள்ளி எந்த கோரிக்கை அமைப்பையும் ஏற்காது, எனவே, உள்ளடக்க நீள தலைப்பு '0' ஆக அமைக்கப்பட வேண்டும்.
-            <br />
-            ** சரிபார்க்கப்பட்ட டொமைன்களுக்கு, API விசை இதில் கிடைக்கிறது<a href="dashboard.html">டாஷ்போர்டு</a>.
-            <br /><br />
-            சுருட்டைப் பயன்படுத்தி மாதிரி API கோரிக்கை:
-            <blockquote>
-              <pre>
-curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/    
-	       </pre>
-            </blockquote>
-            API இன் பதில் JSON வடிவத்தில் உள்ளது. முக்கிய விசையான 'அளவீடுகளில்' மீறல் பற்றிய விவரங்கள் உள்ளன.
-            'அளவீடுகளில்' ஒவ்வொரு துணை விசையின் விளக்கமும் கீழே உள்ளது:<br /><br />
-            1.<strong>மீறல்_சுருக்கம்</strong>: இந்த புலம் ஒரு நிறுவனத்திற்கு ஏற்படும் மீறல்களின் எண்ணிக்கையின்
-            சுருக்கத்தை வழங்குகிறது.<br />
-            2.<strong>மீறல்கள்_விவரங்கள்</strong>: இது மீறப்பட்ட அமைப்பின் பெயர், டொமைன் மற்றும் மீறலுடன் தொடர்புடைய
-            மின்னஞ்சல் முகவரி உட்பட ஒவ்வொரு தனிப்பட்ட மீறலைப் பற்றிய விரிவான தகவலைக் கொண்ட ஒரு வரிசை.<br />
-            3.<strong>விரிவான_மீறல்_தகவல்</strong>: மீறப்பட்ட தேதி, நிறுவனத்தின் லோகோ, கடவுச்சொல் ஆபத்தில் உள்ளதா
-            இல்லையா, மீறலைத் தேடக்கூடியதா, அம்பலப்படுத்தப்பட்ட தரவு வகை, பதிவுகளின் மொத்த எண்ணிக்கை உள்ளிட்ட மீறல்களின்
-            விரிவான சுருக்கம் இந்தப் புலத்தில் உள்ளது. அம்பலமானது, மற்றும் மீறல் பற்றிய விளக்கம்.<br />
-            4.<strong>டொமைன்_சுருக்கம்</strong>: இது ஒரு டொமைனுக்கான மீறல்களின் எண்ணிக்கையின் சுருக்கத்தை
-            வழங்குகிறது.<br />
-            5.<strong>Top10_மீறல்கள்</strong>: இந்தப் புலம் முதல் 10 மீறல்களின் பட்டியலை வழங்குகிறது.<br />
-            6.<strong>ஆண்டு_அளவீடுகள்</strong>: இந்த புலம் 2010 முதல் தற்போதைய ஆண்டு வரையிலான மீறல்களின் எண்ணிக்கையின்
-            வருடாந்திர விவரத்தை வழங்குகிறது.<br />
-            <br />எளிமையான குறிப்புக்காக மாதிரி வெளியீடு கொடுக்கப்பட்டுள்ளது.<br />
-            <pre>
+		  </pre
+                  >
+                  API ஆனது JSON வடிவத்தில் மட்டுமே வெற்றிகரமான பதிலை வழங்குகிறது.<br />
+                  <hr />
+                  <div id="endpoint-5" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-post">POST</span>
+                      <strong
+                        >5. சரிபார்க்கப்பட்ட டொமைன்களுக்கான அனைத்து தரவு மீறல்களையும் சரிபார்க்க API அழைப்பு</strong
+                      >
+                    </h4>
+                  </div>
+                  <blockquote>
+                    <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
+                  </blockquote>
+                  இது ஒரு POST கோரிக்கை மற்றும் 'x-api-key' விசையுடன் தலைப்பில் சரியான API விசை சேர்க்கப்பட வேண்டும். இந்த இறுதிப்புள்ளி எந்த கோரிக்கை அமைப்பையும் ஏற்காது, எனவே, உள்ளடக்க நீள தலைப்பு '0' ஆக அமைக்கப்பட வேண்டும்.
+                  <br />
+                  ** சரிபார்க்கப்பட்ட டொமைன்களுக்கு, API விசை
+                  <a href="dashboard.html">டாஷ்போர்டில்</a> கிடைக்கிறது. <br /><br />
+                  curl ஐப் பயன்படுத்தி மாதிரி API கோரிக்கை:
+                  <blockquote>
+                    <pre>
+curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/
+	       </pre
+                    >
+                  </blockquote>
+                  API இன் பதில் JSON வடிவத்தில் உள்ளது. முக்கிய விசையான 'metrics' இல் மீறல் பற்றிய விவரங்கள் உள்ளன. 'metrics' இல் ஒவ்வொரு துணை விசையின் விளக்கமும் கீழே உள்ளது:<br /><br />
+                  1.<strong>Breach_Summary</strong>: இந்த புலம் ஒரு நிறுவனத்திற்கு ஏற்படும் மீறல்களின் எண்ணிக்கையின் சுருக்கத்தை வழங்குகிறது.<br />
+                  2.<strong>Breaches_Details</strong>: இது மீறப்பட்ட அமைப்பின் பெயர், டொமைன் மற்றும் மீறலுடன் தொடர்புடைய மின்னஞ்சல் முகவரி உட்பட ஒவ்வொரு தனிப்பட்ட மீறலைப் பற்றிய விரிவான தகவலைக் கொண்ட ஒரு வரிசை.<br />
+                  3.<strong>Detailed_Breach_Info</strong>: மீறப்பட்ட தேதி, நிறுவனத்தின் லோகோ, கடவுச்சொல் ஆபத்தில் உள்ளதா இல்லையா, மீறலைத் தேடக்கூடியதா, அம்பலப்படுத்தப்பட்ட தரவு வகை, பதிவுகளின் மொத்த எண்ணிக்கை மற்றும் மீறல் பற்றிய விளக்கம் உள்ளிட்ட மீறல்களின் விரிவான சுருக்கம் இந்தப் புலத்தில் உள்ளது.<br />
+                  4.<strong>Domain_Summary</strong>: இது ஒரு டொமைனுக்கான மீறல்களின் எண்ணிக்கையின் சுருக்கத்தை வழங்குகிறது.<br />
+                  5.<strong>Top10_Breaches</strong>: இந்தப் புலம் முதல் 10 மீறல்களின் பட்டியலை வழங்குகிறது.<br />
+                  6.<strong>Yearly_Metrics</strong>: இந்த புலம் 2010 முதல் தற்போதைய ஆண்டு வரையிலான மீறல்களின் எண்ணிக்கையின் வருடாந்திர விவரத்தை வழங்குகிறது.<br />
+                  <br />எளிமையான குறிப்புக்காக மாதிரி வெளியீடு கொடுக்கப்பட்டுள்ளது.<br />
+                  <pre>
 {
   "metrics": {
     "Breach_Summary": {
@@ -573,17 +1403,7 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
         "email": "deva[@]xposedornot.com"
       }
     ],
-    "Detailed_Breach_Info": {
-      "AerServ": {
-        "breached_date": "Tue, 01 Apr 2014 00:00:00 GMT",
-        "logo": "Aerserv.png",
-        "password_risk": "plaintext",
-        "searchable": "Yes",
-        "xposed_data": "Email Addresses",
-        "xposed_records": 64777,
-        "xposure_desc": "AerServ, an ad management platform, experienced a data breach in April 2018. This incident occurred after its acquisition by InMobi and affected more than 64,000 unique email addresses. The exposed data included contact information and passwords, which were stored as salted SHA-512 hashes. Later in 2018, the breached data was publicly posted on Twitter, prompting InMobi to acknowledge the incident "
-      }
-    },
+    "Detailed_Breach_Info": {...},
     "Domain_Summary": {
       "xposedornot.com": 1
     },
@@ -592,146 +1412,358 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
     },
     "Yearly_Metrics": {
       "2010": 0,
-      "2011": 0,
-      "2012": 0,
-      "2013": 0,
-      "2014": 1,
-      "2015": 0,
-      "2016": 0,
-      "2017": 0,
-      "2018": 0,
-      "2019": 0,
-      "2020": 0,
-      "2021": 0,
-      "2022": 0,
+      ...
       "2023": 0
     }
   },
   "status": "success"
 }
 
-	       </pre>
-            <strong>கையாளுவதில் பிழை</strong>: தவறான அல்லது API விசை விடுபட்டால், பதில் பின்வருமாறு இருக்கும்:
-            <pre>
+	       </pre
+                  >
+                  <strong>பிழை கையாளுதல்</strong>: தவறான அல்லது API விசை விடுபட்டால், பதில் பின்வருமாறு இருக்கும்:
+                  <pre>
 {
   "message":"Invalid or missing API key",
   "status":"error"
 }
-	       </pre>
-            தி<strong>செய்தி</strong> புலத்தில் பிழையின் விளக்கம் இருக்கும், மற்றும்<strong>நிலை</strong> புலத்தில் பிழை
-            ஏற்பட்டிருப்பதைக் குறிக்க "பிழை" என்ற சரம் இருக்கும்.
-            <br /><br />
-            இறுதிப்புள்ளிக்கு கோரிக்கை வைக்கும் போது "YOUR_API_KEY" ஐ உங்கள் உண்மையான API விசையுடன் மாற்ற மறக்காதீர்கள்.
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>6. API மறுமொழி குறியீடுகள்</strong>
-              </h4>
-              <br />
-            </div>
-            XposedOrNot API API கோரிக்கையின் வெற்றி அல்லது தோல்வியைக் குறிக்க வழக்கமான HTTP மறுமொழி குறியீடுகளைப்
-            பயன்படுத்துகிறது. பொதுவாக: 2xx வரம்பில் உள்ள குறியீடுகள் வெற்றியைக் குறிக்கின்றன. 4xx வரம்பில் உள்ள
-            குறியீடுகள், வழங்கப்பட்ட தகவலைக் கொடுக்கத் தவறிய பிழையைக் குறிக்கின்றன (எ.கா., தவறான அளவுருக்கள், போதுமான
-            வினவல் விருப்பங்கள், தவறான url போன்றவை). 5xx வரம்பில் உள்ள குறியீடுகள் XposedOrNot இன் சேவையகத்தில் பிழையைக்
-            குறிக்கின்றன.<br />
-            <br /> வேறு வார்த்தைகளில் கூறுவதானால், 4xx வரம்பில் உள்ள குறியீடுகள் ஒரு பயனர் பிழை (நீங்கள்) மற்றும் 5xx
-            ஒரு சேவையகப் பிழை (நான்) என்பதைக் குறிக்கிறது.<br />
-            <br />
-            <table class="table table-hover table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">குறியீடு</th>
-                  <th scope="col">விளக்கம்</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">200</th>
-                  <td>வெற்றி JSON பதிலை வெளியிடும்</td>
-                </tr>
-                <tr>
-                  <th scope="row">401</th>
-                  <td>தவறான/அங்கீகரிக்கப்படாத API விசை</td>
-                </tr>
-                <tr>
-                  <th scope="row">404</th>
-                  <td>உள்ளீட்டில் பிழை (தரவு இல்லை)</td>
-                </tr>
-                <tr>
-                  <th scope="row">429</th>
-                  <td>ஸ்பீட் த்ரோட்டில் ஹிட் - வேகத்தைக் குறைக்கும் நேரம்</td>
-                </tr>
-                <tr>
-                  <th scope="row">502/503</th>
-                  <td>சர்வர் பிழை - முற்றிலும் சரிசெய்வதில் எனது பிரச்சனை. இதைப் பார்த்தால் முழுவதும் கத்தவும்;)</td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="alert alert-danger" role="alert">
-              <strong>குறிப்பு:</strong>கடவுச்சொற்களுக்கான தேடல் வினவல்கள் நேரம் அல்லது எண்ணிக்கையால்
-              கட்டுப்படுத்தப்படவில்லை.<br />
-              <br />
-              <em class="fas fa-exclamation-triangle" style="font-size:28px;color:red"></em> ஒவ்வொரு API கோரிக்கைக்கும்
-              ஒரு வினாடிக்கு 1 வினவல் வரம்பு இருக்கும். அதைப் பற்றி தயவுசெய்து அறிந்துகொள்ளும்படி கேட்டுக்கொள்கிறேன்,
-              பிறகு மெதுவான பயன்முறை அல்லது தூக்க மாதிரியை மீண்டும் முயற்சிக்கவும்.<br />
-              <br /> இந்த ஏபிஐயை தங்கள் தீய நோக்கங்களுக்காக தவறாமல் பயன்படுத்த அல்லது தவறாகப் பயன்படுத்த முயற்சிக்கும்
-              நபர்கள், அவ்வளவு பிரபலமில்லாதவர்களால் ஆழமான இருண்ட நிலவறைகளில் உதைக்கப்படுவார்கள்.<a
-                href="javascript:void(0);" onclick="jsfunction()">x கார்டியன்</a>. நீங்கள்
-              எச்சரிக்கப்படுகிறீர்கள்.<br />
-              <br />
-              <em aria-hidden="true" class="fa fa-bug" style="font-size:28px;color:red"></em> நீங்கள் API இல் பிழையை
-              கண்டால், Twitter இல் எனக்கு செய்தி அனுப்பவும் அல்லது எனக்கு மின்னஞ்சல் அனுப்பவும். அனைத்து பயனர்களின்
-              நலனுக்காகவும் இதை ஒப்புக்கொள்வதற்கும் சரிசெய்வதற்கும் நான் மிகவும் மகிழ்ச்சியடைவேன்.
+	       </pre
+                  >
+                  <strong>message</strong> புலத்தில் பிழையின் விளக்கம் இருக்கும், மற்றும் <strong>status</strong> புலத்தில் பிழை ஏற்பட்டிருப்பதைக் குறிக்க "error" என்ற சரம் இருக்கும். <br /><br />
+                  இறுதிப்புள்ளிக்கு கோரிக்கை வைக்கும் போது "YOUR_API_KEY" ஐ உங்கள் உண்மையான API விசையுடன் மாற்ற மறக்காதீர்கள்.
+                  <hr />
+                  <div id="endpoint-6" class="alert alert-primary" role="alert">
+                    <h4>
+                      <strong>6. API மறுமொழி குறியீடுகள்</strong>
+                    </h4>
+                    <br />
+                  </div>
+                  XposedOrNot API API கோரிக்கையின் வெற்றி அல்லது தோல்வியைக் குறிக்க வழக்கமான HTTP மறுமொழி குறியீடுகளைப் பயன்படுத்துகிறது. பொதுவாக:
+                  2xx வரம்பில் உள்ள குறியீடுகள் வெற்றியைக் குறிக்கின்றன. 4xx வரம்பில் உள்ள குறியீடுகள் பயனர் பிழையைக் குறிக்கின்றன. 5xx வரம்பில் உள்ள குறியீடுகள் சேவையகப் பிழையைக் குறிக்கின்றன. <br />
+                  <br />
+                  <table class="table table-hover table-bordered">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">குறியீடு</th>
+                        <th scope="col">விளக்கம்</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="status-code-200">
+                        <th scope="row">200</th>
+                        <td>வெற்றி JSON பதிலை வெளியிடும்</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">401</th>
+                        <td>தவறான/அங்கீகரிக்கப்படாத API விசை</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">404</th>
+                        <td>உள்ளீட்டில் பிழை (தரவு இல்லை)</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">429</th>
+                        <td>வேக வரம்பு எட்டப்பட்டது - வேகத்தைக் குறைக்கும் நேரம்</td>
+                      </tr>
+                      <tr class="status-code-5xx">
+                        <th scope="row">502/503</th>
+                        <td>
+                          சேவையகப் பிழை - சரிசெய்வது எனது பிரச்சனை. இதைப் பார்த்தால் எனக்குத் தெரிவிக்கவும் ;)
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="alert alert-danger" role="alert">
+                    <strong>குறிப்பு: </strong>கடவுச்சொற்களுக்கான தேடல் வினவல்கள் நேரம் அல்லது எண்ணிக்கையால் கட்டுப்படுத்தப்படவில்லை. <br />
+                    <br />
+                    <em
+                      class="fas fa-exclamation-triangle"
+                      style="font-size: 28px; color: red"
+                    ></em>
+                    ஒவ்வொரு API கோரிக்கைக்கும் வினாடிக்கு 1 வினவல் வரம்பு இருக்கும். தயவுசெய்து அதைப் பற்றி அறிந்துகொண்டு மெதுவான பயன்முறையில் மீண்டும் முயற்சிக்கவும். <br />
+                    <br />
+                    இந்த API ஐ தங்கள் தீய நோக்கங்களுக்காக தவறாகப் பயன்படுத்த முயற்சிக்கும் நபர்கள்
+                    <a onclick="jsfunction()" href="javascript:void(0);"
+                      >xGuardian</a
+                    > ஆல் தடை செய்யப்படுவார்கள். நீங்கள் எச்சரிக்கப்படுகிறீர்கள். <br />
+                    <br />
+                    <em
+                      class="fa fa-bug"
+                      aria-hidden="true"
+                      style="font-size: 28px; color: red"
+                    ></em>
+                    நீங்கள் API இல் பிழையைக் கண்டால், Twitter இல் எனக்கு செய்தி அனுப்பவும் அல்லது மின்னஞ்சல் அனுப்பவும். அனைத்து பயனர்களின் நலனுக்காகவும் இதை ஒப்புக்கொள்வதற்கும் சரிசெய்வதற்கும் நான் மிகவும் மகிழ்ச்சியடைவேன்.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          <!-- Close panel-group -->
+        </div>
+        <!-- Close main content flex item -->
+      </div>
+      <!-- Close flex container -->
+    </div>
+    <!-- Close container -->
+
+    <div
+      style="
+        background: var(--panel-bg);
+        border-top: 1px solid var(--border-color);
+        padding: 3rem 0 2rem 0;
+        margin-top: 4rem;
+      "
+    >
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ எங்கள்
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            > இல்.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>சட்டம்</h6>
+            <a href="/ta/privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
+            <a href="/ta/terms" class="footer-link">விதிமுறைகள்</a>
+          </div>
+          <div class="footer-group">
+            <h6>சமூகம்</h6>
+            <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
+            <a href="/our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+          </div>
+          <div class="footer-group">
+            <h6>நம்பகத்தன்மை</h6>
+            <a href="/ta/transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
+            <a href="/ta/responsible-disclosure" class="footer-link"
+              >பொறுப்பான வெளிப்படுத்தல்</a
+            >
+            <a
+              href="https://statuspage.freshping.io/66216-XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >நிலை</a
+            >
+          </div>
+          <div class="footer-group">
+            <h6>எங்களைப் பின்தொடரவும்</h6>
+            <a
+              href="https://twitter.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              name="twitter"
+              class="footer-link"
+            >
+              <i class="fab fa-twitter"></i> Twitter
+            </a>
+            <a
+              href="https://facebook.com/xposedornot"
+              target="_blank"
+              rel="noopener"
+              name="fb"
+              class="footer-link"
+            >
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a
+              href="https://infosec.exchange/@XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              name="mastodon"
+              class="footer-link"
+            >
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
         </div>
       </div>
-      <div class="container text-center">
-        <footer>
-          <aside>
-            <br />
-            <a aria-hidden="true" href="https://twitter.com/xposedornot" rel="noopener" style="color:#3c5fec"
-              target="_blank">  <em class="fab fa-twitter fa-3x"></em>
-            </a>
-            <a aria-hidden="true" href="https://facebook.com/xposedornot" rel="noopener" style="color:#3c5fec"
-              target="_blank">  <em class="fab fa-facebook fa-3x"></em>
-            </a>
-            <hr />
-            <p>இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️
-              —எங்களை பாருங்கள்<a href="https://github.com/XposedOrNot" rel="noopener" target="_blank">கிட்ஹப்</a>.</p>
-            <br />
-            <h3><a class="button-link" href="https://xposedornot.docs.apiary.io" target="_blank"> 🛠️ API விளையாட்டு
-                மைதானம்</a></h3>
-            <style>
-              .button-link {
-                display: inline-block;
-                padding: 10px 20px;
-                color: #fff;
-                background-color: #007BFF;
-                text-decoration: none;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
-              }
-
-              .button-link:hover {
-                background-color: #FFBF00;
-              }
-            </style>
-          </aside>
-        </footer>
-      </div>
-      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-        <input class="custom-control-input" id="darkSwitch" type="checkbox" />
-        <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
-      </div>
-
-
     </div>
-    <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-    <script src="/static/scripts/bug-min.js" type="text/javascript"></script>
-    <script src="/static/scripts/api_doc.js" type="text/javascript"></script>
-    <script src="/static/scripts/common.js"></script>
-  </div>
-</body>
 
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="மேலே செல்">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+    ></script>
+    <script type="text/javascript" src="/static/scripts/bug-min.js"></script>
+    <script type="text/javascript" src="/static/scripts/api_doc.js"></script>
+    <script src="/static/scripts/common.js"></script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechnicalArticle",
+        "headline": "XposedOrNot API ஆவணம்",
+        "description": "XposedOrNot இன் பாதுகாப்பு APIகளுக்கான முழுமையான ஆவணம், மின்னஞ்சல் மீறல் கண்டறிதல், கடவுச்சொல் பாதுகாப்பு சரிபார்ப்பு மற்றும் டொமைன் வெளிப்பாடு பகுப்பாய்வு உட்பட.",
+        "author": {
+          "@type": "Person",
+          "name": "Devanand Premkumar"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "XposedOrNot",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://xposedornot.com/static/images/xon.png"
+          }
+        }
+      }
+    </script>
+    <script>
+      const darkSwitch = document.getElementById("darkSwitch");
+      const theme = localStorage.getItem("theme");
+
+      if (theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        darkSwitch.checked = theme === "dark";
+      }
+
+      darkSwitch.addEventListener("change", function (e) {
+        if (e.target.checked) {
+          document.documentElement.setAttribute("data-theme", "dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+          localStorage.setItem("theme", "light");
+        }
+      });
+
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      // Add copy buttons only to API endpoint URLs (inside blockquote)
+      document.querySelectorAll("blockquote pre").forEach(function (codeBlock) {
+        if (codeBlock.parentElement.classList.contains("code-block-wrapper")) {
+          return;
+        }
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block-wrapper";
+        codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+        wrapper.appendChild(codeBlock);
+
+        const button = document.createElement("button");
+        button.className = "copy-button";
+        button.innerHTML = '<i class="fas fa-copy"></i> நகலெடு';
+        wrapper.appendChild(button);
+
+        button.addEventListener("click", function () {
+          const code = codeBlock.textContent.trim();
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard
+              .writeText(code)
+              .then(function () {
+                button.innerHTML = '<i class="fas fa-check"></i> நகலெடுக்கப்பட்டது!';
+                button.classList.add("copied");
+                setTimeout(function () {
+                  button.innerHTML = '<i class="fas fa-copy"></i> நகலெடு';
+                  button.classList.remove("copied");
+                }, 2000);
+              })
+              .catch(function (err) {
+                console.error("Failed to copy:", err);
+                fallbackCopy(code, button);
+              });
+          } else {
+            fallbackCopy(code, button);
+          }
+        });
+      });
+
+      function fallbackCopy(text, button) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand("copy");
+          button.innerHTML = '<i class="fas fa-check"></i> நகலெடுக்கப்பட்டது!';
+          button.classList.add("copied");
+          setTimeout(function () {
+            button.innerHTML = '<i class="fas fa-copy"></i> நகலெடு';
+            button.classList.remove("copied");
+          }, 2000);
+        } catch (err) {
+          console.error("Fallback copy failed:", err);
+        }
+        document.body.removeChild(textArea);
+      }
+
+      // Back to top button functionality
+      const backToTopButton = document.getElementById("backToTop");
+
+      window.addEventListener("scroll", function () {
+        if (window.pageYOffset > 500) {
+          backToTopButton.style.display = "block";
+        } else {
+          backToTopButton.style.display = "none";
+        }
+      });
+
+      backToTopButton.addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      // TOC Scroll Spy functionality
+      const tocLinks = document.querySelectorAll("#api-toc .toc-link");
+      const sections = document.querySelectorAll(
+        '[id^="endpoint-"], #sdk-section',
+      );
+
+      function updateActiveLink() {
+        let currentSection = "";
+        const scrollPosition = window.scrollY + 150;
+
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight || 200;
+
+          if (scrollPosition >= sectionTop) {
+            currentSection = section.getAttribute("id");
+          }
+        });
+
+        tocLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#" + currentSection) {
+            link.classList.add("active");
+          }
+        });
+      }
+
+      window.addEventListener("scroll", updateActiveLink);
+      window.addEventListener("load", updateActiveLink);
+    </script>
+  </body>
 </html>

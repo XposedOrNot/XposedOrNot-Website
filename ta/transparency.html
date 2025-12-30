@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ta">
+
+<head>
+   <meta charset="utf-8">
+   <title>XposedOrNot வெளிப்படைத்தன்மை அறிக்கை | உங்கள் தரவை நாங்கள் எவ்வாறு கையாளுகிறோம்</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="description"
+      content="XposedOrNot உங்கள் தனியுரிமையை எவ்வாறு பாதுகாக்கிறது, மீறல் தரவை எவ்வாறு கையாளுகிறது மற்றும் எங்கள் செயல்பாடுகளில் வெளிப்படைத்தன்மையை எவ்வாறு பராமரிக்கிறது என்பதை அறியுங்கள்.">
+   <meta name="keywords"
+      content="தரவு தனியுரிமை, வெளிப்படைத்தன்மை அறிக்கை, தரவு மீறல் கையாளுதல், தனியுரிமைக் கொள்கை, பாதுகாப்பு இணக்கம்">
+   <meta name="author" content="Devanand Premkumar">
+   <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+   <link rel="dns-prefetch" href="static.hotjar.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com">
+
+   <meta property="og:title" content="XposedOrNot வெளிப்படைத்தன்மை அறிக்கை | உங்கள் தரவை நாங்கள் எவ்வாறு கையாளுகிறோம்" />
+   <meta property="og:description"
+      content="XposedOrNot உங்கள் தனியுரிமையை எவ்வாறு பாதுகாக்கிறது மற்றும் மீறல் தரவை முழு வெளிப்படைத்தன்மையுடன் எவ்வாறு கையாளுகிறது என்பதை அறியுங்கள்." />
+   <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+   <meta property="og:image:alt" content="XposedOrNot Logo" />
+   <meta property="og:url" content="https://xposedornot.com/ta/transparency" />
+   <meta property="og:type" content="website" />
+   <meta property="og:site_name" content="XposedOrNot" />
+
+   <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:site" content="@XposedOrNot">
+   <meta name="twitter:creator" content="@DevaOnBreaches">
+   <meta name="twitter:title" content="XposedOrNot வெளிப்படைத்தன்மை அறிக்கை">
+   <meta name="twitter:description"
+      content="XposedOrNot உங்கள் தனியுரிமையை எவ்வாறு பாதுகாக்கிறது மற்றும் மீறல் தரவை முழு வெளிப்படைத்தன்மையுடன் எவ்வாறு கையாளுகிறது என்பதை அறியுங்கள்.">
+   <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+   <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous" />
+   <link rel="stylesheet"
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset' type="text/css"
+      media="all">
+   <link rel="author" href="humans.txt" />
+
+   <script src="/static/scripts/other-libraries.js" defer></script>
+
+   <style>
+      #banner {
+         min-height: 150px !important;
+         padding-bottom: 30px;
+         overflow: visible !important;
+      }
+
+      .grid {
+         overflow: visible !important;
+      }
+
+      .navbar {
+         overflow: visible !important;
+      }
+
+      .dropdown-menu {
+         position: absolute !important;
+         z-index: 1050 !important;
+         max-height: none !important;
+      }
+
+      .transparency-content {
+         background-color: white;
+         padding: 60px 0;
+      }
+
+      .transparency-section {
+         max-width: 900px;
+         margin: 0 auto;
+         padding: 0 15px;
+      }
+
+      .transparency-section h2 {
+         color: #3f71f3;
+         margin-bottom: 20px;
+         font-size: 1.8em;
+         font-weight: 600;
+      }
+
+      .transparency-section h3 {
+         color: #3f71f3;
+         margin-top: 40px;
+         margin-bottom: 15px;
+         font-size: 1.4em;
+         font-weight: 600;
+      }
+
+      .transparency-section p {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         text-align: justify;
+         font-size: 1.05em;
+      }
+
+      .transparency-section ul {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         padding-left: 25px;
+      }
+
+      .transparency-section ul li {
+         margin-bottom: 10px;
+      }
+
+      .table-responsive {
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         margin-top: 30px;
+         margin-bottom: 40px;
+      }
+
+      .metrics-table {
+         width: 100%;
+         border-collapse: collapse;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+         background-color: white;
+         min-width: 600px;
+      }
+
+      .metrics-table th {
+         background-color: #3f71f3;
+         color: white;
+         padding: 15px;
+         text-align: left;
+         font-weight: 600;
+         white-space: nowrap;
+      }
+
+      .metrics-table td {
+         padding: 12px 15px;
+         border-bottom: 1px solid #e0e0e0;
+         background-color: white;
+      }
+
+      .metrics-table td:nth-child(2),
+      .metrics-table td:nth-child(3),
+      .metrics-table td:nth-child(4) {
+         text-align: center;
+      }
+
+      .metrics-table tr:hover td {
+         background-color: #f5f5f5;
+      }
+
+      .contact-box {
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         color: white;
+         padding: 30px;
+         border-radius: 10px;
+         margin: 40px 0;
+         text-align: center;
+      }
+
+      .contact-box a {
+         color: white;
+         text-decoration: underline;
+         font-weight: bold;
+      }
+
+      .highlight-box {
+         background-color: #f0f4ff;
+         border-left: 4px solid #3f71f3;
+         padding: 20px;
+         margin: 25px 0;
+         border-radius: 5px;
+      }
+
+      /* Dark mode styles */
+      [data-theme="dark"] .transparency-content {
+         background-color: #1a1a1a;
+      }
+
+      [data-theme="dark"] .transparency-section h2,
+      [data-theme="dark"] .transparency-section h3 {
+         color: #5c8aff;
+      }
+
+      [data-theme="dark"] .transparency-section p,
+      [data-theme="dark"] .transparency-section li {
+         color: #e0e0e0;
+      }
+
+      [data-theme="dark"] .metrics-table {
+         background-color: #2a2a2a;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      }
+
+      [data-theme="dark"] .metrics-table td {
+         background-color: #2a2a2a;
+         border-bottom: 1px solid #444;
+         color: #e0e0e0;
+      }
+
+      [data-theme="dark"] .metrics-table tr:hover td {
+         background-color: #333;
+      }
+
+      [data-theme="dark"] .highlight-box {
+         background-color: #2a2a4a;
+         border-left-color: #5c8aff;
+         color: #e0e0e0;
+      }
+
+      @media (max-width: 768px) {
+         .transparency-section h2 {
+            font-size: 1.5em;
+         }
+
+         .transparency-section h3 {
+            font-size: 1.2em;
+         }
+
+         .transparency-section p {
+            font-size: 1em;
+         }
+      }
+   </style>
+
+   <meta name="robots" content="index, follow">
+   <meta name="theme-color" content="#3f71f3">
+</head>
+
+<body data-spy="scroll" data-target=".menu" data-offset="50">
+   <div class="xon">
+      <div class="searchMe">
+         <div class="banner" id="banner">
+            <canvas id="canvas"></canvas>
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="index.html" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">சமூக பதிப்பு</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password.html">கடவுச்சொல்</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="https://plus.xposedornot.com" target="_blank">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc.html">API</a>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+
+      <div class="transparency-content">
+         <div class="container transparency-section">
+            <h2 align="center">வெளிப்படைத்தன்மை அறிக்கை</h2>
+         <p align="center" style="font-size: 1.1em; color: #666; margin-bottom: 50px;">
+            உங்கள் தனியுரிமையை நாங்கள் எவ்வாறு பாதுகாக்கிறோம் மற்றும் தரவு மீறல்களை பொறுப்பாக எவ்வாறு கையாளுகிறோம்
+         </p>
+
+         <h3>எங்கள் பணி</h3>
+         <p>
+            XposedOrNot ஆனது ஒரு தரவு மீறலில் அவர்களின் தனிப்பட்ட தகவல்கள் வெளிப்பட்டிருக்கும்போது மக்களுக்குப் புரிந்துகொள்ள உதவ உள்ளது. எங்கள் அணுகுமுறை பொறுப்பில் வேரூன்றியுள்ளது: பாதிக்கப்பட்ட நபர்களுக்கு மேலும் தீங்கு விளைவிக்கக்கூடிய திருடப்பட்ட தரவை மீண்டும் வெளியிடாமல் அல்லது பரப்பாமல் இந்த சேவையை வழங்குகிறோம்.
+         </p>
+         <p>
+            வெளிப்படைத்தன்மை மற்றும் பொறுப்புக்கு இடையே கவனமான சமநிலையை அடைவதே எங்கள் இலக்கு. நாங்கள் இலக்காகக் கொள்வது:
+         </p>
+         <ul>
+            <li>உங்களை பாதுகாத்துக்கொள்ள உதவும் செயல்படக்கூடிய பாதுகாப்பு நுண்ணறிவுகளை வழங்குதல், அதே நேரத்தில் உங்கள் தனியுரிமையை மதித்து தேவையற்ற தனிப்பட்ட தகவல்களை ஒருபோதும் சேமிக்காமல் இருத்தல்</li>
+            <li>பொருந்தக்கூடிய சட்டங்கள் மற்றும் ஒழுங்குமுறைகளுடன் முழு இணக்கத்தில் செயல்படுதல், அதே நேரத்தில் நிறுவனங்கள் மற்றும் மீறல்களால் பாதிக்கப்பட்ட நபர்களின் சட்டபூர்வமான உரிமைகளை மதித்தல்</li>
+            <li>எங்கள் நடைமுறைகள், கொள்கைகள் மற்றும் எங்கள் சேவையின் வரம்புகள் பற்றி முழுமையான வெளிப்படைத்தன்மையைப் பராமரித்தல்</li>
+         </ul>
+         <p>
+            எங்கள் சேவையை நீங்கள் எவ்வாறு பயன்படுத்தலாம் மற்றும் பயனர்களிடமிருந்து நாங்கள் என்ன எதிர்பார்க்கிறோம் என்பதற்கான முழுமையான விவரங்களுக்கு, எங்கள் <a href="terms.html" style="color: #3f71f3;">விதிமுறைகள் மற்றும் நிபந்தனைகள்</a>ஐப் பார்க்கவும்.
+         </p>
+
+         <h3>மீறல் தரவை நாங்கள் எவ்வாறு கையாளுகிறோம்</h3>
+         <div class="highlight-box">
+            <strong>முழுமையான மீறல் டம்ப்கள் அல்லது திருடப்பட்ட தரவை நாங்கள் ஒருபோதும் மீண்டும் வெளியிடுவதில்லை அல்லது விநியோகிப்பதில்லை.</strong>
+         </div>
+         <p>நாங்கள் உண்மையில் என்ன சேமிக்கிறோம் மற்றும் மீறல் தரவை எவ்வாறு செயலாக்குகிறோம் என்பது இங்கே:</p>
+         <ul>
+            <li>மீறல் தரவுத்தொகுப்புகளிலிருந்து மின்னஞ்சல் முகவரிகளை மட்டுமே பிரித்தெடுத்து எங்கள் தரவுத்தளத்தில் சேமிக்கிறோம். இது சமரசம் செய்யப்பட்ட தகவலின் முழு நோக்கத்தையும் தக்கவைக்காமல் தேடல் செயல்பாட்டை வழங்க அனுமதிக்கிறது.</li>
+            <li>மீறல் பெயர், நிகழ்ந்த தேதி, பாதிக்கப்பட்ட நிறுவனம் மற்றும் வெளிப்பட்ட தரவுகளின் பொதுவான வகைகள் உள்ளிட்ட பொது மீறல் மெட்டாடேட்டாவை பராமரிக்கிறோம். இந்த சூழல் தகவல் ஒவ்வொரு சம்பவத்தின் தீவிரத்தையும் நோக்கத்தையும் புரிந்துகொள்ள உங்களுக்கு உதவுகிறது.</li>
+            <li>கடவுச்சொற்கள், கிரெடிட் கார்டு எண்கள், சமூக பாதுகாப்பு எண்கள், தனிப்பட்ட அடையாள ஆவணங்கள் அல்லது அசல் மீறலின் ஒரு பகுதியாக இருந்திருக்கக்கூடிய வேறு எந்த முக்கியமான தனிப்பட்ட தரவையும் நாங்கள் சேமிப்பதில்லை. இந்த தரவு வகைகள் வேண்டுமென்றே எங்கள் அமைப்புகளிலிருந்து விலக்கப்படுகின்றன.</li>
+            <li>இந்த தேர்ந்தெடுக்கப்பட்ட அணுகுமுறை அறியப்பட்ட மீறல்களில் உங்கள் மின்னஞ்சல் தோன்றுகிறதா என்பதைச் சரிபார்க்க உங்களை அனுமதிக்கிறது, அதே நேரத்தில் பிற முக்கியமான தகவல்கள் எங்கள் உள்கட்டமைப்பிற்கு முற்றிலும் வெளியே இருப்பதை உறுதிசெய்து எங்கள் சேவை மூலம் யாரும் அணுக முடியாது.</li>
+         </ul>
+
+         <h3>தரவு குறைப்பு மற்றும் பாதுகாப்பு</h3>
+         <p>தரவு பாதுகாப்பு மற்றும் குறைப்புக்கான தொழில் சிறந்த நடைமுறைகளைப் பின்பற்றுகிறோம்:</p>
+         <ul>
+            <li>மீறல் தேடல்களை செயல்படுத்தவும் எங்கள் முக்கிய சேவையை வழங்கவும் முற்றிலும் தேவையான குறைந்தபட்ச தகவல்களை மட்டுமே பராமரிக்கிறோம். எங்கள் பயனர்களுக்கு நேரடி நோக்கத்திற்கு சேவை செய்யாத எந்தத் தரவும் சேகரிக்கப்படுவதில்லை அல்லது தக்கவைக்கப்படுவதில்லை.</li>
+            <li>அனைத்து செயல்பாடுகளும் ஓய்வு நிலையிலும் (தரவு சேமிக்கப்படும்போது) போக்குவரத்திலும் (தரவு அமைப்புகளுக்கு இடையே நகரும்போது) மறைகுறியாக்கத்தைப் பயன்படுத்தும் தனிமைப்படுத்தப்பட்ட கிளவுட் சூழல்களுக்குள் நடத்தப்படுகின்றன. இது ஒவ்வொரு கட்டத்திலும் அங்கீகரிக்கப்படாத அணுகலிலிருந்து தகவல்களைப் பாதுகாக்கிறது.</li>
+            <li>சந்தைப்படுத்தல், பகுப்பாய்வு அல்லது ஆராய்ச்சி உள்ளிட்ட எந்த நோக்கத்திற்காகவும் மூன்றாம் தரப்பினருக்கு மூல தனிப்பட்ட தரவை ஒருபோதும் பகிர்வதில்லை, விற்பதில்லை அல்லது வழங்குவதில்லை. உங்கள் தனியுரிமை நாங்கள் வர்த்தகம் செய்யும் பொருளாக இல்லை.</li>
+         </ul>
+
+         <h3>சட்டப்பூர்வ மற்றும் நீக்குதல் கோரிக்கைகள்</h3>
+         <p>எங்கள் சட்டக் கடமைகளை தீவிரமாக எடுத்துக்கொள்கிறோம் மற்றும் வெளிப்படைத்தன்மை மற்றும் சட்ட இணக்கத்தை சமநிலைப்படுத்த வேலை செய்கிறோம்:</p>
+         <ul>
+            <li>செல்லுபடியாகும் சட்ட ஆணைகள், சட்ட அமலாக்க கோரிக்கைகள் மற்றும் ஒழுங்குமுறை அதிகாரிகளின் வழிகாட்டுதல்களுக்கு உடனடியாகவும் சரியான முறையிலும் பதிலளிக்கிறோம். ஒவ்வொரு கோரிக்கையும் நடவடிக்கை எடுக்கப்படுவதற்கு முன் சட்ட தரநிலைகளை பூர்த்தி செய்கிறதா என்பதை உறுதிப்படுத்த மதிப்பாய்வு செய்யப்படுகிறது.</li>
+            <li>ஒரு மீறல் தரவுத்தொகுப்பு நீதிமன்ற தடையுத்தரவு, சட்ட கட்டுப்பாடு அல்லது செல்லுபடியாகும் நீக்குதல் கோரிக்கைக்கு உட்பட்டால், பிராந்திய சட்டங்கள் மற்றும் ஒழுங்குமுறைகளுக்கு இணங்க அந்த தகவலை முழுமையாக அடக்கலாம் அல்லது புவியியல் இருப்பிடத்தின் அடிப்படையில் அணுகலை வரம்பிடலாம்.</li>
+            <li>இந்த கோரிக்கைகள் குறித்து வெளிப்படைத்தன்மையை நம்புகிறோம். நீக்குதல் மற்றும் சட்ட கோரிக்கைகள் பற்றிய புள்ளிவிவரங்கள் கீழே உள்ள அளவீடுகள் அட்டவணையில் வெளியிடப்பட்டு, நாங்கள் பெறும் சட்ட கோரிக்கைகள் குறித்து சமூகத்திற்குத் தெரிவிக்க தொடர்ந்து புதுப்பிக்கப்படுகின்றன.</li>
+         </ul>
+         <div class="contact-box">
+            <p style="margin-bottom: 10px;"><strong>நீக்குதல் அல்லது கட்டுப்பாடு கோர வேண்டுமா?</strong></p>
+            <p style="margin-bottom: 0;">உரிமையாளர்கள் மற்றும் நிறுவனங்கள் எங்களை தொடர்புகொள்ளலாம்:<br>
+               <a href="mailto:deva@xposedornot.com">deva[@]xposedornot.com</a>
+            </p>
+         </div>
+
+         <h3>பொது-நலன் தரநிலை</h3>
+         <p>ஒரு மீறலை சேர்க்கலாமா என்பதை பின்வருவனவற்றின் அடிப்படையில் முடிவு செய்கிறோம்:</p>
+         <ul>
+            <li><strong>நம்பகமான மூல சரிபார்ப்பு:</strong> மீறல் உண்மையானதா மற்றும் சரிபார்க்கப்பட்டதா?</li>
+            <li><strong>தனிநபர்கள் மீது கணிசமான தாக்கம்:</strong> இது கணிசமான எண்ணிக்கையிலான மக்களை பாதிக்கிறதா?</li>
+            <li><strong>தொடர்ச்சியான ஆபத்து இல்லை:</strong> வெளிப்படுத்துவது தீங்கு விளைவிக்குமா அல்லது பாதுகாப்பு சிக்கல்களை உருவாக்குமா?</li>
+         </ul>
+         <p>
+            ஒரு மீறலை வெளிப்படுத்துவது தீங்கு விளைவிக்கக்கூடும் அல்லது சட்ட கட்டுப்பாட்டை மீறும் என்றால், அந்த தரவுத்தொகுப்பை விலக்குகிறோம் அல்லது வரம்பிடுகிறோம்.
+         </p>
+
+         <h3>பயனர் வினவல் தனியுரிமை</h3>
+         <p>எங்கள் தேடல் அம்சங்களைப் பயன்படுத்தும்போது உங்கள் தனியுரிமை மிக முக்கியமானது. உங்கள் அநாமதேயத்தைப் பாதுகாக்க எங்கள் அமைப்பை வடிவமைத்துள்ளோம்:</p>
+         <ul>
+            <li>தேடல் வினவல்கள் நினைவகத்தில் செயலாக்கப்படுகின்றன மற்றும் எந்த அடையாளக் காட்சியிலும் பதிவு செய்யப்படுவதில்லை. உங்கள் தேடல் முடிந்ததும், வினவல் தகவல் உங்களுடன் மீண்டும் இணைக்கக்கூடிய வகையில் தக்கவைக்கப்படுவதில்லை.</li>
+            <li>நீங்கள் தேடும் மின்னஞ்சல் முகவரிகளை சேமிப்பதில்லை, இந்த தகவலை மூன்றாம் தரப்பினருக்கு விற்பதில்லை அல்லது சந்தைப்படுத்தல் நோக்கங்களுக்கு பயன்படுத்துவதில்லை. உங்கள் தேடல்கள் தனிப்பட்டவை.</li>
+            <li>கணினி பாதுகாப்பிற்காக மட்டுமே பராமரிக்கப்பட்டு வழக்கமான அட்டவணையில் தானாகவே அழிக்கப்படும் நிலையற்ற பாதுகாப்பு பதிவுகளைத் தாண்டி IP முகவரிகளுடன் வினவல்களை தொடர்புபடுத்துவதில்லை.</li>
+         </ul>
+
+         <h3>வெளிப்படைத்தன்மை அளவீடுகள்</h3>
+         <p>
+            நாங்கள் பெற்ற நீக்குதல் மற்றும் சட்ட கோரிக்கைகள் பற்றிய புள்ளிவிவரங்கள் கீழே உள்ளன:
+         </p>
+
+         <div class="table-responsive">
+            <table class="metrics-table">
+               <thead>
+                  <tr>
+                     <th>காலம்</th>
+                     <th>நீக்குதல் கோரிக்கைகள்</th>
+                     <th>ஏற்றுக்கொள்ளப்பட்டவை</th>
+                     <th>நிராகரிக்கப்பட்டவை</th>
+                     <th>குறிப்புகள்</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>2025 Q1</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>கோரிக்கைகள் எதுவும் பெறப்படவில்லை</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q2</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>கோரிக்கைகள் எதுவும் பெறப்படவில்லை</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q3</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>கோரிக்கைகள் எதுவும் பெறப்படவில்லை</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q4</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>கோரிக்கைகள் எதுவும் பெறப்படவில்லை</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+         <div class="highlight-box">
+            <p style="margin: 0;">
+               <strong>எங்கள் வெளிப்படைத்தன்மை நடைமுறைகள் பற்றிய கேள்விகள்?</strong><br>
+               எங்கள் <a href="faq.html" style="color: #3f71f3;">அடிக்கடி கேட்கப்படும் கேள்விகள் பக்கத்தைப்</a> பார்வையிடுங்கள், எங்கள் <a href="terms.html" style="color: #3f71f3;">விதிமுறைகள் மற்றும் நிபந்தனைகள்</a>ஐப் படியுங்கள், அல்லது
+               <a href="mailto:deva@xposedornot.com" style="color: #3f71f3;">deva[@]xposedornot.com</a> வழியாக தொடர்புகொள்ளுங்கள்
+            </p>
+         </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="footer">
+      <div class="container">
+         <div style="text-align:center;margin-bottom:30px;">
+            <p>இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ எங்கள் <a
+                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> இல்.</p>
+         </div>
+
+         <div class="footer-columns">
+            <div class="footer-group">
+               <h6>சட்டம்</h6>
+               <a href="privacy.html" class="footer-link">தனியுரிமைக் கொள்கை</a>
+               <a href="terms.html" class="footer-link">விதிமுறைகள்</a>
+            </div>
+            <div class="footer-group">
+               <h6>சமூகம்</h6>
+               <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
+               <a href="our-repository.html" class="footer-link">எங்கள் களஞ்சியம்</a>
+            </div>
+            <div class="footer-group">
+               <h6>நம்பகத்தன்மை</h6>
+               <a href="transparency.html" class="footer-link">வெளிப்படைத்தன்மை</a>
+               <a href="responsible-disclosure.html" class="footer-link">பொறுப்பான வெளிப்படுத்தல்</a>
+               <a href="https://statuspage.freshping.io/66216-XposedOrNot" target="_blank" rel="noopener" class="footer-link">நிலை</a>
+            </div>
+            <div class="footer-group">
+               <h6>எங்களைப் பின்தொடரவும்</h6>
+               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                  <i class="fab fa-twitter"></i> Twitter
+               </a>
+               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                  <i class="fab fa-facebook"></i> Facebook
+               </a>
+               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                  <i class="fab fa-mastodon"></i> Mastodon
+               </a>
+            </div>
+         </div>
+
+         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+            <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
+         </div>
+      </div>
+   </div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"></script>
+   <script src="/static/scripts/common.js"></script>
+   <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+</body>
+
+</html>
