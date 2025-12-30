@@ -165,8 +165,8 @@ function initDataTable(breaches) {
             { data: '_dateSort', visible: false }
         ],
         order: [[4, 'desc']], // Sort by date descending
-        pageLength: 25,
-        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+        pageLength: -1,
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         language: {
             lengthMenu: "Show _MENU_ breaches",
             info: "Showing _START_ to _END_ of _TOTAL_ breaches",
