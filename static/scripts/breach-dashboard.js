@@ -1165,6 +1165,34 @@ function initializePhishingButton() {
         domains = [...new Set(myjson.Breaches_Details.map(detail => detail.domain))];
     }
 
+    // Populate dropdown immediately (not just on click) so hover works
+    domainDropdown.innerHTML = '';
+    if (domains.length === 1) {
+        // If only one domain, create a single clickable item
+        const item = document.createElement('div');
+        item.className = 'domain-dropdown-item';
+        item.textContent = domains[0];
+        item.addEventListener('click', () => {
+            window.open(`domains-phishing-detail.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domains[0])}`, '_blank');
+            domainDropdown.classList.remove('show');
+            domainDropdown.style.display = 'none';
+        });
+        domainDropdown.appendChild(item);
+    } else if (domains.length > 1) {
+        // If multiple domains, create items for each
+        domains.forEach(domain => {
+            const item = document.createElement('div');
+            item.className = 'domain-dropdown-item';
+            item.textContent = domain;
+            item.addEventListener('click', () => {
+                window.open(`domains-phishing-detail.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`, '_blank');
+                domainDropdown.classList.remove('show');
+                domainDropdown.style.display = 'none';
+            });
+            domainDropdown.appendChild(item);
+        });
+    }
+
     // Remove any existing event listeners
     const newPhishingBtn = phishingBtn.cloneNode(true);
     phishingBtn.parentNode.replaceChild(newPhishingBtn, phishingBtn);
@@ -1173,33 +1201,20 @@ function initializePhishingButton() {
     newPhishingBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         domainDropdown.classList.toggle('show');
+    });
 
-        // Populate domains if not already done
-        if (domainDropdown.children.length === 0) {
-            domainDropdown.innerHTML = '';
-            if (domains.length === 1) {
-                // If only one domain, create a single clickable item
-                const item = document.createElement('div');
-                item.className = 'domain-dropdown-item';
-                item.textContent = domains[0];
-                item.addEventListener('click', () => {
-                    window.open(`domains-phishing-detail.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domains[0])}`, '_blank');
-                    domainDropdown.classList.remove('show');
-                });
-                domainDropdown.appendChild(item);
-            } else {
-                // If multiple domains, create items for each
-                domains.forEach(domain => {
-                    const item = document.createElement('div');
-                    item.className = 'domain-dropdown-item';
-                    item.textContent = domain;
-                    item.addEventListener('click', () => {
-                        window.open(`domains-phishing-detail.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`, '_blank');
-                        domainDropdown.classList.remove('show');
-                    });
-                    domainDropdown.appendChild(item);
-                });
-            }
+    // Handle hover on the wrapper (button's parent)
+    const phishingBtnWrapper = newPhishingBtn.parentElement;
+
+    phishingBtnWrapper.addEventListener('mouseenter', function () {
+        if (domainDropdown.children.length > 0) {
+            domainDropdown.style.display = 'block';
+        }
+    });
+
+    phishingBtnWrapper.addEventListener('mouseleave', function () {
+        if (!domainDropdown.classList.contains('show')) {
+            domainDropdown.style.display = 'none';
         }
     });
 
@@ -1207,6 +1222,7 @@ function initializePhishingButton() {
     document.addEventListener('click', function (e) {
         if (!newPhishingBtn.contains(e.target) && !domainDropdown.contains(e.target)) {
             domainDropdown.classList.remove('show');
+            domainDropdown.style.display = 'none';
         }
     });
 }

@@ -295,7 +295,7 @@
         position: absolute;
         top: 100%;
         right: 0;
-        background: #9b59b6;
+        background: #c39bd3;
         border: 2px solid #9b59b6;
         border-radius: 8px;
         box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
@@ -303,7 +303,19 @@
         z-index: 99999;
         padding: 5px 0;
         display: none;
-        margin-top: 5px;
+        margin-top: 0;
+        padding-top: 10px;
+      }
+
+      /* Invisible bridge to maintain hover between button and dropdown */
+      .domain-dropdown::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: transparent;
       }
 
       .domain-dropdown.show {
@@ -313,12 +325,12 @@
       .domain-dropdown-item {
         padding: 10px 15px;
         cursor: pointer;
-        color: #ffffff;
+        color: #2c3e50;
         text-decoration: none;
         display: block;
         white-space: nowrap;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: #9b59b6;
+        border-bottom: 1px solid rgba(155, 89, 182, 0.2);
+        background: #c39bd3;
       }
 
       .domain-dropdown-item:last-child {
@@ -326,41 +338,43 @@
       }
 
       .domain-dropdown-item:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: #9b59b6;
         text-decoration: none;
         color: #ffffff;
       }
 
       [data-theme="dark"] .domain-dropdown,
       [data-theme="dark"] .domain-dropdown-item {
-        background: #8e44ad;
+        background: #a569bd;
         border-color: #8e44ad;
       }
 
       [data-theme="dark"] .domain-dropdown-item {
-        color: #ecf0f1;
+        color: #f8f9fa;
+        border-bottom-color: rgba(142, 68, 173, 0.3);
       }
 
       [data-theme="dark"] .domain-dropdown-item:hover {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: #8e44ad;
+        color: #ffffff;
       }
 
       /* Add a small arrow at the top of the dropdown */
       .domain-dropdown::before {
         content: "";
         position: absolute;
-        top: -6px;
+        top: 4px;
         right: 20px;
         width: 12px;
         height: 12px;
-        background: #9b59b6;
+        background: #c39bd3;
         transform: rotate(45deg);
         border-left: 2px solid #9b59b6;
         border-top: 2px solid #9b59b6;
       }
 
       [data-theme="dark"] .domain-dropdown::before {
-        background: #8e44ad;
+        background: #a569bd;
         border-left-color: #8e44ad;
         border-top-color: #8e44ad;
       }
