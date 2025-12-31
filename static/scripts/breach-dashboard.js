@@ -1104,14 +1104,9 @@ function updateApiCall(timeFilter) {
                 addBreachesToTable(breachesDetails);
             }
 
-            // Filter Breaches_Details to only include breaches that exist in Detailed_Breach_Info
-            // This is needed because the API doesn't filter Breaches_Details by time_filter
             const breachesSummary = myjson.Breaches_Details;
             if (breachesSummary) {
-                const filteredBreachesSummary = breachesSummary.filter(detail =>
-                    breachesDetails && breachesDetails[detail.breach]
-                );
-                addBreachesDetailsToTable(filteredBreachesSummary);
+                addBreachesDetailsToTable(breachesSummary);
             }
 
             const yearlyBreachHierarchy = myjson.Yearly_Breach_Hierarchy;
@@ -1134,14 +1129,7 @@ function updateApiCall(timeFilter) {
                 addDomainSummaryToTable(domainSummary, email, token);
             }
 
-            // Seniority_Summary is not filtered by the API, so we need to handle it
-            // When a time filter is applied (not 'all'), show N/A or calculate from filtered data
-            if (timeFilter === 'all') {
-                updateSenioritySummary(myjson.Seniority_Summary);
-            } else {
-                // For time-filtered views, show 0s since API doesn't provide filtered seniority data
-                updateSenioritySummary({ c_suite: 0, vp: 0, director: 0 });
-            }
+            updateSenioritySummary(myjson.Seniority_Summary);
 
             // Only initialize if button exists
             const phishingBtn = document.getElementById('phishingBtn');
