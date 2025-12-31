@@ -256,16 +256,38 @@ function updateSenioritySummary(senioritySummary) {
     }
 }
 
+// Store chart instance for proper destruction on updates
+var yearlyTrendChart = null;
+
 function g1(years, breachCounts) {
     const allZero = breachCounts.every(count => count === 0);
+    const canvas = document.getElementById('bc');
+    const parent = canvas.parentNode;
+
+    // Remove any existing "no data" banner
+    const existingBanner = parent.querySelector('.yearly-trend-banner');
+    if (existingBanner) {
+        existingBanner.remove();
+    }
+
+    // Destroy existing chart if it exists
+    if (yearlyTrendChart) {
+        yearlyTrendChart.destroy();
+        yearlyTrendChart = null;
+    }
+
     if (allZero) {
-        document.getElementById('bc').style.display = 'none';
+        canvas.style.display = 'none';
 
         const banner = document.createElement('div');
+        banner.className = 'yearly-trend-banner';
         banner.innerHTML = '<div align="center" class="alert alert-success" style="font-size: 20px; color: green;">Yay! No breaches in the recorded years.</div>';
-        document.getElementById('bc').parentNode.insertBefore(banner, document.getElementById('bc'));
+        parent.insertBefore(banner, canvas);
     } else {
-        var ctx = document.getElementById('bc').getContext('2d');
+        // Show canvas again in case it was hidden
+        canvas.style.display = '';
+
+        var ctx = canvas.getContext('2d');
         var config = {
             type: 'line',
             data: {
@@ -324,20 +346,33 @@ function g1(years, breachCounts) {
             }
         };
 
-        new Chart(ctx, config);
+        yearlyTrendChart = new Chart(ctx, config);
     }
 }
 
 function buildTopBreachesTable(breachNames, breachCounts) {
     const allZero = breachCounts.every(count => count === 0);
+    const chartDiv = document.getElementById('chart_div');
+    const parent = chartDiv.parentNode;
+
+    // Remove any existing "no data" banner
+    const existingBanner = parent.querySelector('.top-breaches-banner');
+    if (existingBanner) {
+        existingBanner.remove();
+    }
 
     if (allZero) {
-        document.getElementById('chart_div').style.display = 'none';
+        chartDiv.style.display = 'none';
+        chartDiv.innerHTML = '';
 
         const banner = document.createElement('div');
+        banner.className = 'top-breaches-banner';
         banner.innerHTML = '<div align="center" class="alert alert-success" style="font-size: 20px; color: green;">Great news! No significant breaches found.</div>';
-        document.getElementById('chart_div').parentNode.insertBefore(banner, document.getElementById('chart_div'));
+        parent.insertBefore(banner, chartDiv);
     } else {
+        // Show chart div again in case it was hidden
+        chartDiv.style.display = '';
+
         const breaches = breachNames.map((name, index) => ({
             name,
             count: breachCounts[index]
@@ -355,7 +390,7 @@ function buildTopBreachesTable(breachNames, breachCounts) {
         }
 
         tableHtml += '</table>';
-        document.getElementById('chart_div').innerHTML = tableHtml;
+        chartDiv.innerHTML = tableHtml;
     }
 }
 
@@ -1041,16 +1076,13 @@ function updateApiCall(timeFilter) {
         .done(function (n) {
             myjson = n;
 
-            if (myjson) {
-                var domains = new Set();
-                var exposedEmails = new Set();
-                myjson.Breaches_Details.forEach(function (detail) {
-                    domains.add(detail.domain);
-                    exposedEmails.add(detail.email);
-                });
-
-                $('#exposed-domains').text(domains.size.toLocaleString());
-                $('#exposed-emails').text(exposedEmails.size.toLocaleString());
+            // Use Domain_Summary for filtered counts (API filters this based on time_filter)
+            const domainSummary = myjson ? myjson.Domain_Summary : null;
+            if (domainSummary && typeof domainSummary === 'object') {
+                const domainCount = Object.keys(domainSummary).length;
+                const emailCount = Object.values(domainSummary).reduce((sum, count) => sum + count, 0);
+                $('#exposed-domains').text(domainCount.toLocaleString());
+                $('#exposed-emails').text(emailCount.toLocaleString());
             }
 
             const breachMetrics = myjson.Yearly_Metrics;
@@ -1072,9 +1104,14 @@ function updateApiCall(timeFilter) {
                 addBreachesToTable(breachesDetails);
             }
 
+            // Filter Breaches_Details to only include breaches that exist in Detailed_Breach_Info
+            // This is needed because the API doesn't filter Breaches_Details by time_filter
             const breachesSummary = myjson.Breaches_Details;
             if (breachesSummary) {
-                addBreachesDetailsToTable(breachesSummary);
+                const filteredBreachesSummary = breachesSummary.filter(detail =>
+                    breachesDetails && breachesDetails[detail.breach]
+                );
+                addBreachesDetailsToTable(filteredBreachesSummary);
             }
 
             const yearlyBreachHierarchy = myjson.Yearly_Breach_Hierarchy;
@@ -1092,11 +1129,19 @@ function updateApiCall(timeFilter) {
                 });
             }
 
-            const domainSummary = myjson.Domain_Summary;
+            // Update domain summary table (domainSummary already declared above)
             if (domainSummary && typeof domainSummary === 'object') {
                 addDomainSummaryToTable(domainSummary, email, token);
             }
-            updateSenioritySummary(myjson.Seniority_Summary);
+
+            // Seniority_Summary is not filtered by the API, so we need to handle it
+            // When a time filter is applied (not 'all'), show N/A or calculate from filtered data
+            if (timeFilter === 'all') {
+                updateSenioritySummary(myjson.Seniority_Summary);
+            } else {
+                // For time-filtered views, show 0s since API doesn't provide filtered seniority data
+                updateSenioritySummary({ c_suite: 0, vp: 0, director: 0 });
+            }
 
             // Only initialize if button exists
             const phishingBtn = document.getElementById('phishingBtn');
