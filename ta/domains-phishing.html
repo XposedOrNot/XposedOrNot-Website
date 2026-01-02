@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ta">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=no">
+  <title>XposedOrNot: உங்கள் பிராண்டை குறிவைக்கும் ஃபிஷிங் டொமைன்களைச் சரிபார்க்கவும்</title>
+  <meta name="description"
+    content="XposedOrNot மூலம் உங்கள் டொமைனுக்கு ஃபிஷிங் போலிகள் உள்ளதா எனச் சரிபார்க்கவும். உங்கள் பிராண்டை குறிவைக்கும் சாத்தியமான ஃபிஷிங் டொமைன்களின் விரிவான அறிக்கையைப் பெறுங்கள்." />
+  <meta name="author" content="Devanand Premkumar">
+  <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://static.hotjar.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta content="XposedOrNot: உங்கள் பிராண்டை குறிவைக்கும் ஃபிஷிங் டொமைன்களைச் சரிபார்க்கவும்" property="og:title">
+  <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+  <meta property="og:url" content="https://xposedornot.com/ta/domains-phishing" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@XposedOrNot">
+  <meta name="twitter:creator" content="@DevaOnBreaches">
+  <meta name="twitter:title" content="உங்கள் பிராண்டை குறிவைக்கும் ஃபிஷிங் டொமைன்களைச் சரிபார்க்கவும்">
+  <meta name="twitter:description"
+    content="XposedOrNot மூலம் உங்கள் டொமைனுக்கு ஃபிஷிங் போலிகள் உள்ளதா எனச் சரிபார்க்கவும். உங்கள் பிராண்டை குறிவைக்கும் சாத்தியமான ஃபிஷிங் டொமைன்களின் விரிவான அறிக்கையைப் பெறுங்கள்.">
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+  <script src="https://kit.fontawesome.com/00d920835c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset"
+    type="text/css" media="all">
+  <link rel="Devanand Premkumar" href="humans.txt">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
+    integrity="sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="/static/scripts/other-libraries.js" defer></script>
+  <link href="/static/css/style-domain.css" type="text/css" rel="stylesheet">
+  <link href="/static/css/responsive.css" type="text/css" rel="stylesheet">
+
+</head>
+
+<body>
+  <div class="overlay"></div>
+  <div id="content" class="blurred">
+    <div>
+      <div class="header">
+        <div class="grid">
+          <div class="header-row">
+            <a href="index.html">XposedOrNot</a>
+            <div class="header-right">
+              <ul>
+                <li><a href="password.html">கடவுச்சொல்</a></li>
+                <li><a href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a></li>
+                <li><a href="xonPulse.html">செய்திகள்</a></li>
+                <li><a href="api_doc.html">API</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu">
+        <nav class="navbar">
+          <a class="navbar-brand" href="index.html">XposedOrNot</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="வழிசெலுத்தலை மாற்று">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon icon-last"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link active" href="password.html">கடவுச்சொல்<span class="sr-only">(தற்போதைய)</span></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a></li>
+              <li class="nav-item"><a class="nav-link" href="xonPulse.html">செய்திகள்</a></li>
+              <li class="nav-item last lang"><a class="nav-link" href="api_doc.html">API</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="banner">
+        <div class="grid">
+          <div class="banner-row">
+            <h1>எங்கள் ஸ்கேன் உங்கள் பிராண்டை குறிவைக்கும்<br> <span>சாத்தியமான ஃபிஷிங் டொமைன்களைக்</span> கண்டறிந்தது</h1>
+          </div>
+        </div>
+      </div>
+      <div class="sec3">
+        <div class="grid">
+          <div class="sec3-row">
+            <h4>ஃபிஷிங் டொமைன் அறிக்கை : <b id="domain-display"></b>
+              </b><img id="logo" src="" alt="Logo" width="120"></h4>
+            <div class="updt">
+              <p>கடைசி ஸ்கேன்: <span id="last-exposure"></span></p>
+            </div>
+          </div>
+          <div class="sec3-flex">
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="/static/images/close-circle.png" alt="">
+                </div>
+                <h4 id="breach-count">--</h4>
+                <h5>மொத்தம் ஸ்கேன் செய்யப்பட்டவை</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="/static/images/document-text.png" alt="">
+                </div>
+                <h4 id="record-count">--</h4>
+                <h5>நேரடி டொமைன்கள்</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="/static/images/sms.png" alt="">
+                </div>
+                <h4 id="email-count">-</h4>
+                <h5>தனித்துவ ஃபஸர்கள்</h5>
+              </div>
+            </div>
+            <div class="web-bx1 web-bx4">
+              <div id="chart_div" style="width: 150px; height: 150px;"></div>
+            </div>
+          </div>
+          <div id="note" class="text-center mt-3" style="display: none; color: white; text-align: left !important;">
+            <small>* அறிக்கை தற்போது நேரடியாக உள்ள சாத்தியமான ஃபிஷிங் டொமைன்களைக் காட்டுகிறது. விரிவான DNS மற்றும் WHOIS தகவலைப் பார்க்க டொமைன் உரிமையை சரிபார்க்கவும்.</small>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sec4">
+        <div class="grid">
+          <div class="sec4-row">
+            <div class="sec4-text">
+              <img src="/static/images/lock.png" class="img-responsive lock" alt="">
+              <h4>இந்த உள்ளடக்கம் பூட்டப்பட்டுள்ளது, பார்க்க டொமைன் உரிமையை சரிபார்க்கவும்.</h4>
+              <a href="domain.html" target="_blank" class="verify-btn">இப்போது சரிபார்க்கவும்</a>
+            </div>
+          </div>
+        </div>
+        <div align="center"><button type="button" class="btn-modern mt-4" id="checkAnotherDomainBtn"><i class="fas fa-search"></i>மற்றொரு டொமைனைச் சரிபார்க்கவும்</button></div>
+      </div>
+      <div align="center"><a href="https://logo.dev" alt="Logo API">Logo.dev வழங்கிய லோகோக்கள்</a></div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content dark-mode">
+        <div class="modal-header">
+          <h5 class="modal-title" id="domainModalLabel">ஃபிஷிங் டொமைன்களைச் சரிபார்க்கவும்</h5>
+        </div>
+        <div class="modal-body light-mode">
+          <form id="domainForm" autocomplete="off">
+            <div class="form-group text-center">
+              <p>சாத்தியமான ஃபிஷிங் டொமைன்களை ஸ்கேன் செய்ய கீழே உங்கள் டொமைன் பெயரை உள்ளிடவும்.</p><br><br>
+              <label for="domainInput" class="sr-only">டொமைன் பெயர்</label>
+              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <div class="invalid-feedback">
+                சரியான டொமைன் பெயரை உள்ளிடவும்.
+              </div>
+              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+                டொமைனை ஸ்கேன் செய்
+                <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                  style="display:none;"></span>
+              </button>
+              <div id="errorMessage" class="error-message" style="display:none;"></div>
+            </div>
+          </form>
+          <div id="noBreachMessage" style="display: none;">
+            <div class="text-center">
+              <i class="fas fa-shield-alt fa-3x text-success"></i>
+              <h4 class="text-success mt-3"><span id="searchedDomain"
+                  class="font-weight-bold"></span> க்கு ஃபிஷிங் டொமைன்கள் இல்லை!</h4>
+              <p>உங்கள் டொமைன் ஃபிஷிங் போலிகளிலிருந்து பாதுகாப்பாக இருப்பதாகத் தெரிகிறது.</p>
+              <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>மற்றொரு டொமைனைச் சரிபார்க்கவும்</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:30px;">
+        <p>இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ எங்கள் <a
+              href="https://github.com/XposedOrNot" target="_blank" rel="noopener noreferrer">GitHub</a> இல்.</p>
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-group">
+          <h6>சட்டம்</h6>
+          <a href="privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
+          <a href="terms" class="footer-link">விதிமுறைகள்</a>
+        </div>
+        <div class="footer-group">
+          <h6>சமூகம்</h6>
+          <a href="https://blog.xposedornot.com" target="_blank" rel="noopener noreferrer" class="footer-link">வலைப்பதிவு</a>
+          <a href="our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+        </div>
+        <div class="footer-group">
+          <h6>நம்பகத்தன்மை</h6>
+          <a href="transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
+          <a href="responsible-disclosure" class="footer-link">பொறுப்பான வெளிப்படுத்தல்</a>
+          <a href="https://statuspage.freshping.io/66216-XposedOrNot" target="_blank" rel="noopener noreferrer" class="footer-link">நிலை</a>
+        </div>
+        <div class="footer-group">
+          <h6>எங்களைப் பின்தொடரவும்</h6>
+          <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <i class="fab fa-twitter"></i> Twitter
+          </a>
+          <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <i class="fab fa-facebook"></i> Facebook
+          </a>
+          <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <i class="fab fa-mastodon"></i> Mastodon
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  <script src="/static/scripts/domains-phishing.js"></script>
+  <script src="/static/scripts/common.js"></script>
+</body>
+
+</html>
