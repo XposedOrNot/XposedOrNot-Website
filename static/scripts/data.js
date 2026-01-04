@@ -133,10 +133,10 @@ try {
     window.location.replace("https://xposedornot.com");
 }
 
-const emailHeader = (category) => `<div align="center" class="alert alert-primary"><strong>${escapeHtml(category)} For Email: ${escapeHtml(email)}</strong></div></p>`;
+const emailHeader = (category, prefixHtml = '') => `<div align="center" class="alert alert-primary"><strong>${prefixHtml}${escapeHtml(category)} For Email: ${escapeHtml(email)}</strong></div></p>`;
 
 $("#email").html(emailHeader("Data Breaches Quick Information"));
-$("#email_sensitive").html(emailHeader('<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed.">?</span>&nbsp;&nbsp; 🔥 Sensitive Data Breaches Summary'));
+$("#email_sensitive").html(emailHeader('🔥 Sensitive Data Breaches Summary', '<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed.">?</span>&nbsp;&nbsp; '));
 $("#data").html(emailHeader("Your Exposed Data Sorted by Categories"));
 
 
