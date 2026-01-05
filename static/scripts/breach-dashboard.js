@@ -1045,8 +1045,6 @@ function addDomainSummaryToTable(domainSummary, email, token) {
     const tbody = $('#verified_domains_tbody');
     tbody.empty();
     for (const [domain, emailCount] of Object.entries(domainSummary)) {
-        const teamsUrl = `alert-teams.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`;
-        const slackUrl = `alert-slack.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`;
         const rowHTML = `
             <tr>
                 <td>${domain}</td>
