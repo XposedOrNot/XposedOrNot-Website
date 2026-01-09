@@ -4,7 +4,72 @@ google.charts.load('current', { 'packages': ['gauge'] });
 
 function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toISOString().replace('T', ' ').replace(/\.\d+Z$/, 'Z');
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZoneName: 'short'
+    };
+    return date.toLocaleString(undefined, options);
+}
+
+function showVerificationError(domain, errorDetail) {
+    // Hide the table section and check another domain button
+    $('.sec5').hide();
+    $('#checkAnotherDomainBtn').hide();
+
+    // Update the banner message
+    $('.banner-row h1').html('Domain <span>verification required</span>');
+
+    // Show error in sec3 area
+    document.getElementById('domain-display').textContent = domain;
+    document.getElementById('last-exposure').textContent = '--';
+    document.getElementById('breach-count').textContent = '--';
+    document.getElementById('record-count').textContent = '--';
+    document.getElementById('email-count').textContent = '--';
+
+    // Hide the chart and show error message
+    const chartDiv = document.getElementById('chart_div');
+    if (chartDiv) {
+        chartDiv.innerHTML = '';
+    }
+
+    // Get email and token from URL for links
+    const email = getUrlParameter('email');
+    const token = getUrlParameter('token');
+    let verifyUrl = 'domain.html';
+    let dashboardUrl = 'breach-dashboard.html';
+    if (email && token) {
+        verifyUrl = `domain.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`;
+        dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+    }
+
+    // Show note with error message
+    const noteDiv = document.getElementById('note');
+    if (noteDiv) {
+        noteDiv.style.display = 'block';
+        noteDiv.innerHTML = `
+            <div class="verification-error-container">
+                <div class="verification-error-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="verification-error-title">Domain Not Verified</h3>
+                <p class="verification-error-domain">${domain}</p>
+                <p class="verification-error-message">This domain has not been verified for your account. Please verify domain ownership to access the detailed phishing report.</p>
+                <div class="verification-error-actions">
+                    <a href="${verifyUrl}" class="btn-verify">
+                        <i class="fas fa-check-circle"></i> Verify Domain
+                    </a>
+                    <a href="${dashboardUrl}" class="btn-back">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        `;
+    }
 }
 
 function calculateRiskScore(data) {
@@ -107,13 +172,22 @@ async function checkDomain(domain) {
             $.LoadingOverlay("hide");
             return;
         }
+
+        const data = await response.json();
+
+        // Handle error responses with detail field
+        if (data.detail) {
+            $.LoadingOverlay("hide");
+            document.getElementById('content').classList.remove('blurred');
+            showVerificationError(domain, data.detail);
+            return;
+        }
+
         if (!response.ok) {
             alert('An error occurred while checking the domain. Please try again.');
             $.LoadingOverlay("hide");
             return;
         }
-
-        const data = await response.json();
 
         if (data.status === 'success') {
             document.getElementById('domain-display').textContent = domain;
@@ -136,6 +210,11 @@ async function checkDomain(domain) {
             document.getElementById('record-count').textContent = data.total_live;
             document.getElementById('email-count').textContent = data.unique_fuzzers || '-';
 
+            // Show fire emoji if live domains > 0
+            const fireEmoji = document.getElementById('fire-emoji');
+            if (fireEmoji) {
+                fireEmoji.style.display = data.total_live > 0 ? 'block' : 'none';
+            }
 
             const riskScore = calculateRiskScore(data);
             google.charts.setOnLoadCallback(() => {

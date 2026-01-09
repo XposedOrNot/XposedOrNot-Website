@@ -317,6 +317,8 @@ ul li.lang a {
 .sec3 {
 	margin: 0px 0px 0px 0px;
 	padding: 60px 0px 70px 0px;
+	position: relative;
+	z-index: 1;
 }
 
 .sec3-row {
@@ -338,8 +340,10 @@ ul li.lang a {
 .updt {
 	margin: 0px 0px 0px 0px;
 	padding: 10px 18px 10px 18px;
-	background: #323040;
+	background: rgba(50, 48, 64, 0.98);
 	border-radius: 40px;
+	position: relative;
+	z-index: 1;
 }
 
 .updt p {
@@ -372,11 +376,135 @@ ul li.lang a {
 	align-items: center;
 	justify-content: center;
 	transition: 300ms;
-	background: #d6303031;
+	background: rgba(50, 48, 64, 0.95);
+	position: relative;
+	z-index: 1;
 }
 
 .web-bx1:hover {
 	border: 1px solid #D63031;
+}
+
+.fire-indicator {
+	position: absolute;
+	top: -8px;
+	right: -8px;
+	font-size: 24px;
+	display: none;
+	animation: fireFlicker 0.8s ease-in-out infinite alternate;
+	filter: drop-shadow(0 0 4px rgba(255, 100, 0, 0.6));
+}
+
+@keyframes fireFlicker {
+	0% {
+		transform: scale(1) rotate(-5deg);
+	}
+	100% {
+		transform: scale(1.1) rotate(5deg);
+	}
+}
+
+/* Verification Error Styles */
+.verification-error-container {
+	text-align: center;
+	padding: 40px 30px;
+	background: linear-gradient(135deg, rgba(214, 48, 49, 0.08) 0%, rgba(50, 48, 64, 0.95) 100%);
+	border: 1px solid rgba(214, 48, 49, 0.3);
+	border-radius: 16px;
+	margin-top: 30px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.verification-error-icon {
+	width: 80px;
+	height: 80px;
+	margin: 0 auto 20px;
+	background: linear-gradient(135deg, #D63031 0%, #e74c3c 100%);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 20px rgba(214, 48, 49, 0.4);
+}
+
+.verification-error-icon i {
+	font-size: 36px;
+	color: #fff;
+}
+
+.verification-error-title {
+	color: #fff;
+	font-size: 24px;
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+.verification-error-domain {
+	color: #D63031;
+	font-size: 18px;
+	font-weight: 500;
+	font-family: monospace;
+	background: rgba(214, 48, 49, 0.15);
+	padding: 8px 16px;
+	border-radius: 8px;
+	display: inline-block;
+	margin-bottom: 16px;
+}
+
+.verification-error-message {
+	color: #aaa;
+	font-size: 15px;
+	line-height: 1.6;
+	max-width: 450px;
+	margin: 0 auto 24px;
+}
+
+.verification-error-actions {
+	display: flex;
+	gap: 16px;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.verification-error-actions .btn-verify {
+	background: linear-gradient(135deg, #D63031 0%, #c0392b 100%);
+	color: #fff !important;
+	padding: 14px 28px;
+	border-radius: 30px;
+	font-weight: 600;
+	font-size: 15px;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 15px rgba(214, 48, 49, 0.4);
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.verification-error-actions .btn-verify:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(214, 48, 49, 0.5);
+}
+
+.verification-error-actions .btn-back {
+	background: transparent;
+	color: #aaa !important;
+	padding: 14px 28px;
+	border-radius: 30px;
+	font-weight: 500;
+	font-size: 15px;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.verification-error-actions .btn-back:hover {
+	background: rgba(255, 255, 255, 0.1);
+	color: #fff !important;
+	border-color: rgba(255, 255, 255, 0.3);
 }
 
 .web-bx-icn {
@@ -1266,4 +1394,68 @@ a.verify-btn:active {
 	.footer-group a.footer-link:hover {
 		padding-left: 10px;
 	}
+}
+
+/* Scan Progress Bar Styles */
+.progress-container {
+	margin-top: 12px;
+}
+
+.progress-bar-wrapper {
+	width: 100%;
+	height: 4px;
+	background: #e0e0e0;
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.progress-bar-fill {
+	height: 100%;
+	width: 0%;
+	background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+	border-radius: 2px;
+	transition: width 0.5s ease-out;
+}
+
+.scan-status {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	margin-bottom: 12px;
+}
+
+.scan-status .spinner-border {
+	color: #667eea;
+	width: 18px;
+	height: 18px;
+}
+
+.scan-message {
+	font-size: 15px;
+	color: #333;
+	min-height: 24px;
+	font-weight: 500;
+	letter-spacing: 0.3px;
+	padding: 8px 16px;
+	background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+	border-radius: 20px;
+	display: inline-block;
+	animation: messageSlide 0.4s ease-out;
+}
+
+@keyframes messageSlide {
+	0% {
+		opacity: 0;
+		transform: translateY(-5px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInOut {
+	0% { opacity: 0.5; }
+	100% { opacity: 1; }
 }

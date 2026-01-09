@@ -15,18 +15,82 @@ document.addEventListener('DOMContentLoaded', function () {
     const chartDiv = document.getElementById('chart_div');
     const checkAnotherDomainBtn = document.getElementById('checkAnotherDomainBtn');
     const checkAnotherDomainBtnInModal = document.getElementById('checkAnotherDomainBtnInModal');
+    const scanProgress = document.getElementById('scanProgress');
+    const scanMessage = document.getElementById('scanMessage');
+    const progressBar = document.getElementById('progressBar');
+
+    // Scan messages to cycle through
+    const scanMessages = [
+        "🚀 Initializing scan...",
+        "🔤 Generating domain permutations...",
+        "⌨️ Checking for typosquatting variations...",
+        "🔍 Analyzing homograph attacks...",
+        "🌐 Scanning for lookalike domains...",
+        "📡 Checking DNS records...",
+        "✅ Validating live domains...",
+        "📋 Analyzing domain registrations...",
+        "🎣 Checking for phishing indicators...",
+        "🧠 Compiling threat intelligence...",
+        "📊 Calculating risk scores...",
+        "⏳ Finalizing results..."
+    ];
+
+    let progressInterval = null;
+    let messageInterval = null;
 
     google.charts.load('current', { 'packages': ['gauge'] });
 
     function showLoading() {
-        spinner.style.display = 'inline-block';
-        submitButton.disabled = true;
+        submitButton.style.display = 'none';
         errorMessage.style.display = 'none';
+
+        // Show progress section with spinner and messages
+        scanProgress.style.display = 'block';
+        progressBar.style.width = '0%';
+        scanMessage.textContent = scanMessages[0];
+
+        // Animate progress bar over 60 seconds
+        let progress = 0;
+        const duration = 60000; // 60 seconds
+        const intervalTime = 500; // update every 500ms
+        const increment = (100 / (duration / intervalTime)) * 0.95; // reach 95% by end
+
+        progressInterval = setInterval(() => {
+            progress = Math.min(progress + increment, 95);
+            progressBar.style.width = progress + '%';
+        }, intervalTime);
+
+        // Cycle through messages
+        let messageIndex = 0;
+        const messageChangeInterval = 5000; // change message every 5 seconds
+
+        messageInterval = setInterval(() => {
+            messageIndex = (messageIndex + 1) % scanMessages.length;
+            scanMessage.textContent = scanMessages[messageIndex];
+        }, messageChangeInterval);
     }
 
     function hideLoading() {
+        // Complete progress bar and hide
+        if (progressInterval) {
+            clearInterval(progressInterval);
+            progressInterval = null;
+        }
+        if (messageInterval) {
+            clearInterval(messageInterval);
+            messageInterval = null;
+        }
+
+        progressBar.style.width = '100%';
+        scanMessage.textContent = '✅ Scan complete!';
         spinner.style.display = 'none';
-        submitButton.disabled = false;
+
+        setTimeout(() => {
+            scanProgress.style.display = 'none';
+            progressBar.style.width = '0%';
+            spinner.style.display = 'inline-block';
+            submitButton.style.display = 'inline-block';
+        }, 500);
     }
 
     function showError(message) {
@@ -46,7 +110,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function formatDate(dateString) {
         const date = new Date(dateString);
-        return date.toISOString().replace('T', ' ').replace(/\.\d+Z$/, 'Z');
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            timeZoneName: 'short'
+        };
+        return date.toLocaleString(undefined, options);
     }
 
     function getUniqueFuzzerCount(data) {
@@ -179,6 +252,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 recordCount.textContent = data.total_live;
                 emailCount.textContent = data.unique_fuzzers || '-';
 
+                // Show fire emoji if live domains > 0
+                const fireEmoji = document.getElementById('fire-emoji');
+                if (fireEmoji) {
+                    fireEmoji.style.display = data.total_live > 0 ? 'block' : 'none';
+                }
+
 
                 const riskScore = calculateRiskScore(data);
                 google.charts.setOnLoadCallback(() => drawRiskMeter(riskScore));
@@ -209,25 +288,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    domainForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        hideError();
-        const domain = domainInput.value.trim().toLowerCase();
+    if (domainForm) {
+        domainForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            hideError();
+            const domain = domainInput.value.trim().toLowerCase();
 
-        if (!domain) {
-            showError('Please enter a domain name.');
-            return;
-        }
+            if (!domain) {
+                showError('Please enter a domain name.');
+                return;
+            }
 
 
-        const domainRegex = /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/;
-        if (!domainRegex.test(domain)) {
-            showError('Please enter a valid domain name.');
-            return;
-        }
+            const domainRegex = /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/;
+            if (!domainRegex.test(domain)) {
+                showError('Please enter a valid domain name.');
+                return;
+            }
 
-        checkDomain(domain);
-    });
+            checkDomain(domain);
+        });
+    }
 
 
     [checkAnotherDomainBtn, checkAnotherDomainBtnInModal].forEach(btn => {
@@ -245,10 +326,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    $('#domainModal').on('shown.bs.modal', function () {
-        focusInput();
-    });
-    $('#domainModal').modal('show');
+    if ($('#domainModal').length) {
+        $('#domainModal').on('shown.bs.modal', function () {
+            focusInput();
+        });
+        $('#domainModal').modal('show');
+    }
 
     function resetCounts() {
         $('#breach-count').text('-');
@@ -256,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#email-count').text('-');
         $('#last-exposure').text('--');
         $('#note').hide();
-
+        $('#fire-emoji').hide();
 
         if (typeof window.clearPhishingTable === 'function') {
             window.clearPhishingTable();
