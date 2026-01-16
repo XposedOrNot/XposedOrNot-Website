@@ -173,8 +173,8 @@ $(document).ready(function () {
         let apiUrl = apiUrlBase + encodeURIComponent(email);
         $('#recipient-name').val(email);
 
-        $("#hhead").addClass("modal-header-success");
-        $("#dismiss").addClass("btn-primary btn-success");
+        $("#hhead").attr("class", "modal-header modal-header-success");
+        $("#dismiss").attr("class", "btn btn-success");
         $("#mbody, #warn, #info").hide();
         $("#succ, #spins, #alert_").show();
         $("#ssvisible").html("<h2>Searching ...</h2>");
@@ -225,8 +225,8 @@ function updateBreachBadge(text) {
 
 
 function updateModalForInvalidEmail(email) {
-    $("#hhead").addClass("modal-header-danger");
-    $("#dismiss").addClass("btn btn-primary");
+    $("#hhead").attr("class", "modal-header modal-header-danger");
+    $("#dismiss").attr("class", "btn btn-primary");
     updateEmailBadge(email);
     updateBreachBadge('Not a valid email to check!');
     $("#succ, #spins, #warn, #alert_").hide();
@@ -333,7 +333,7 @@ function processSearchResponse(response, email) {
             'border': '2px solid #28a745'
         });
 
-        $("#hhead").attr("class", "modal-header-success");
+        $("#hhead").attr("class", "modal-header modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
         $("#ssvisible").html('<h2><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
 
@@ -364,7 +364,7 @@ function processSearchResponse(response, email) {
             'border': '2px solid #dc3545'
         });
 
-        $("#hhead").attr("class", "modal-header-danger");
+        $("#hhead").attr("class", "modal-header modal-header-danger");
         $("#dismiss").attr("class", "btn-danger btn");
         $("#ssvisible").html('<h2><i class="fas fa-exclamation-triangle fa-2x text-white"></i>&nbsp;&nbsp;Warning: Your Email Was Breached!</h2>');
         $("#warn").show();
@@ -421,16 +421,15 @@ function processSearchError(error, email) {
         $("#succ").html("You are currently being throttled. Please slow down and try again !");
         $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${escapeHtml(email)}</span>`);
     } else if (error.status === 502) {
-        $("#hhead").addClass("modal-header-primary");
-        $("#dismiss").addClass("btn btn-primary");
+        $("#hhead").attr("class", "modal-header modal-header-danger");
+        $("#dismiss").attr("class", "btn btn-primary");
         $("#mbody, #info").show();
         $("#spins, #succ").hide();
-        $("#hhead").addClass("modal-header-danger");
         $("#ssvisible").html("<h2>Oops unexpected error...</h2>");
         $("#info").html("Embarassing and looks like something is not right at server end. I have notified the right person to check on this. Please try again after some time.");
         $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${escapeHtml(email)}</span>`);
     } else {
-        $("#hhead").attr("class", "modal-header-success");
+        $("#hhead").attr("class", "modal-header modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
         $("#detailedReport").hide();
         $("#mbody").show();
