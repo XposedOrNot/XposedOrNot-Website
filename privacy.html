@@ -319,54 +319,39 @@
         <div class="footer-columns">
           <div class="footer-group">
             <h6>Legal</h6>
-            <a href="privacy" class="footer-link">Privacy Policy</a>
-            <a href="terms" class="footer-link">Terms</a>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Privacy Policy</a>
+              <a href="terms" class="footer-link">Terms</a>
+            </div>
           </div>
           <div class="footer-group">
             <h6>Community</h6>
-            <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
-            <a href="our-repository" class="footer-link">Our Repository</a>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Our Repository</a>
+            </div>
           </div>
           <div class="footer-group">
             <h6>Trust</h6>
-            <a href="transparency" class="footer-link">Transparency</a>
-            <a href="responsible-disclosure" class="footer-link"
-              >Responsible Disclosure</a
-            >
-            <a
-              href="https://stats.uptimerobot.com/3zjQkZ2Caa"
-              target="_blank"
-              rel="noopener"
-              class="footer-link"
-              >Status</a
-            >
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Transparency</a>
+              <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
+            </div>
           </div>
           <div class="footer-group">
             <h6>Follow Us</h6>
-            <a
-              href="https://twitter.com/xposedornot"
-              target="_blank"
-              rel="noopener"
-              class="footer-link"
-            >
-              <i class="fab fa-twitter"></i> Twitter
-            </a>
-            <a
-              href="https://facebook.com/xposedornot"
-              target="_blank"
-              rel="noopener"
-              class="footer-link"
-            >
-              <i class="fab fa-facebook"></i> Facebook
-            </a>
-            <a
-              href="https://infosec.exchange/@XposedOrNot"
-              target="_blank"
-              rel="noopener"
-              class="footer-link"
-            >
-              <i class="fab fa-mastodon"></i> Mastodon
-            </a>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
           </div>
         </div>
 
@@ -379,6 +364,20 @@
         </div>
       </div>
     </div>
+      <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
   </body>
   <script
     defer

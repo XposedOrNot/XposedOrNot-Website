@@ -543,3 +543,114 @@ body {
         margin-right: 0.5rem !important;
     }
 }
+
+/* Footer Columns Styles */
+.footer .container {
+    max-width: 90% !important;
+    width: 90% !important;
+}
+
+.footer-columns {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 30px 0;
+    gap: 60px;
+    text-align: left;
+    padding: 0 40px;
+}
+
+.footer-group {
+    flex: 1;
+    min-width: 0;
+}
+
+.footer-group h6 {
+    color: #2c3e50 !important;
+    font-size: 0.95em !important;
+    margin-bottom: 15px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.footer-group a.footer-link {
+    display: block;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.footer-group a.footer-link:hover {
+    opacity: 1;
+    background-color: rgba(63, 113, 243, 0.15);
+    padding-left: 14px;
+    color: #3f71f3 !important;
+    text-decoration: none;
+}
+
+.footer-links-wrapper {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .footer-columns {
+        flex-direction: column;
+        text-align: left;
+        gap: 0;
+        padding: 0;
+    }
+
+    .footer-group {
+        border-bottom: 1px solid #ebedef;
+    }
+
+    .footer-group h6 {
+        cursor: pointer;
+        padding: 15px 20px;
+        margin: 0 !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer-group h6::after {
+        content: '+';
+        font-size: 20px;
+        font-weight: 300;
+        transition: transform 0.3s ease;
+    }
+
+    .footer-group.active h6::after {
+        content: '−';
+    }
+
+    .footer-group .footer-links-wrapper {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        padding: 0 20px;
+    }
+
+    .footer-group.active .footer-links-wrapper {
+        max-height: 300px;
+        padding: 0 20px 15px 20px;
+    }
+
+    .footer-group a.footer-link {
+        text-align: left;
+    }
+
+    .footer-group a.footer-link:hover {
+        padding-left: 10px;
+    }
+}
+
+[data-theme="dark"] .footer-group h6 {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .footer-group {
+    border-bottom-color: #2a2d40;
+}

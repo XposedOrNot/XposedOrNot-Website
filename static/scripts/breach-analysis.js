@@ -9,30 +9,22 @@ let nodeToCenterOnLoad = null;
 
 
 function initializeTheme() {
-    const themeToggle = document.getElementById('themeToggle');
+    const darkSwitch = document.getElementById('darkSwitch');
     const html = document.documentElement;
-    const icon = themeToggle.querySelector('i');
 
-    function updateThemeIcon(isDark) {
-        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-    }
-
-    themeToggle.addEventListener('click', () => {
-        const isDark = html.getAttribute('data-bs-theme') === 'dark';
-        html.setAttribute('data-bs-theme', isDark ? 'light' : 'dark');
-        updateThemeIcon(!isDark);
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
-
+    darkSwitch.addEventListener('change', () => {
+        const isDark = darkSwitch.checked;
+        html.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
 
         d3.selectAll('#visualization text:not(.fa)')
-            .attr('fill', isDark ? 'light' : '#000')
+            .attr('fill', isDark ? '#fff' : '#000')
             .attr('stroke', isDark ? 'none' : '#ffffff');
     });
 
-
     const savedTheme = localStorage.getItem('theme') || 'dark';
     html.setAttribute('data-bs-theme', savedTheme);
-    updateThemeIcon(savedTheme === 'dark');
+    darkSwitch.checked = savedTheme === 'dark';
 }
 
 

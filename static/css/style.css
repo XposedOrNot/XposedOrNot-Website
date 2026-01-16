@@ -1726,9 +1726,45 @@ body {
 @media (max-width: 768px) {
 	.footer-columns {
 		flex-direction: column;
-		text-align: center;
-		gap: 30px;
+		text-align: left;
+		gap: 0;
+		padding: 0;
+	}
+
+	.footer-group {
+		border-bottom: 1px solid #ebedef;
+	}
+
+	.footer-group h6 {
+		cursor: pointer;
+		padding: 15px 20px;
+		margin: 0 !important;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.footer-group h6::after {
+		content: '+';
+		font-size: 20px;
+		font-weight: 300;
+		transition: transform 0.3s ease;
+	}
+
+	.footer-group.active h6::after {
+		content: '−';
+	}
+
+	.footer-group .footer-links-wrapper {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease;
 		padding: 0 20px;
+	}
+
+	.footer-group.active .footer-links-wrapper {
+		max-height: 300px;
+		padding: 0 20px 15px 20px;
 	}
 
 	.footer-group a.footer-link:hover {

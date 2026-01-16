@@ -231,26 +231,6 @@
         </div>
     </div>
 
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-start">
-                    <a href="/privacy.html" class="footer-link">Privacy Policy</a>
-                    <span class="mx-2">|</span>
-                    <a href="/terms.html" class="footer-link">Terms of Service</a>
-                </div>
-                <div class="col-md-6 text-end">
-                    <button class="theme-toggle" id="themeToggle">
-                        <i class="fas fa-sun"></i>
-                        <span>Dark Mode</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"
         integrity="sha512-6UofPqm0QupIL0kzS/UIzekR73/luZdC6i/kXDbWnLOJoqwklBK6519iUnShaYceJ0y4FaiPtX/hRnV/X/xlUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -290,24 +270,31 @@
         <div class="footer-columns">
           <div class="footer-group">
             <h6>Legal</h6>
-            <a href="privacy" class="footer-link">Privacy Policy</a>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Privacy Policy</a>
             <a href="terms" class="footer-link">Terms</a>
+            </div>
           </div>
           <div class="footer-group">
             <h6>Community</h6>
-            <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
             <a href="our-repository" class="footer-link">Our Repository</a>
+            </div>
           </div>
           <div class="footer-group">
             <h6>Trust</h6>
-            <a href="transparency" class="footer-link">Transparency</a>
-            <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
-            <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Transparency</a>
+              <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
+            </div>
           </div>
           <div class="footer-group">
             <h6>Follow Us</h6>
-            <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-twitter"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
               <i class="fab fa-facebook"></i> Facebook
@@ -315,7 +302,13 @@
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
               <i class="fab fa-mastodon"></i> Mastodon
             </a>
+            </div>
           </div>
+        </div>
+
+        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
         </div>
       </div>
     </div>
@@ -323,6 +316,20 @@
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
     <script src="static/scripts/common.js"></script>
     <script src="static/scripts/breach-analysis.js"></script>
-</body>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 
 </html>
