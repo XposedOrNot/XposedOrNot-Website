@@ -81,8 +81,13 @@ $.fn.dataTable.ext.type.order['html-data-sort-pre'] = function(data) {
 };
 
 $(document).ready(function() {
-    // Set back to dashboard link with email and token
-    $('#back-to-dashboard').attr('href', 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token));
+    // Set back to dashboard links with email and token
+    var dashboardUrl = 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+    $('#back-to-dashboard').attr('href', dashboardUrl);
+    $('#headerBackBtn').attr('href', dashboardUrl).on('click', function(e) {
+        e.preventDefault();
+        window.location.href = dashboardUrl;
+    });
 
     // Initialize DataTable
     initDataTable();

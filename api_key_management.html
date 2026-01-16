@@ -74,6 +74,85 @@
       .benefit-card .card-text {
          font-size: 1em;
       }
+
+      /* Back to Dashboard Button - Modern Style */
+      .back-btn-wrapper {
+         text-align: center;
+         padding: 30px 0;
+      }
+
+      .btn-back-dashboard {
+         position: relative;
+         display: inline-flex;
+         align-items: center;
+         gap: 12px;
+         padding: 14px 32px;
+         font-size: 1rem;
+         font-weight: 600;
+         color: #2c3e50;
+         background: #ffffff;
+         border: 2px solid #3498db;
+         border-radius: 50px;
+         text-decoration: none !important;
+         overflow: hidden;
+         transition: all 0.3s ease;
+         z-index: 1;
+         box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+      }
+
+      .btn-back-dashboard::before {
+         content: '';
+         position: absolute;
+         top: 100%;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+         transition: all 0.3s ease;
+         z-index: -1;
+      }
+
+      .btn-back-dashboard:hover::before {
+         top: 0;
+      }
+
+      .btn-back-dashboard:hover {
+         color: #ffffff !important;
+         transform: translateY(-3px);
+         box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+         border-color: #2980b9;
+      }
+
+      .btn-back-dashboard i {
+         font-size: 1.1em;
+         transition: transform 0.3s ease;
+      }
+
+      .btn-back-dashboard:hover i {
+         transform: translateX(-4px);
+      }
+
+      .btn-header-back {
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+         padding: 8px 20px;
+         font-size: 0.9rem;
+         font-weight: 500;
+         color: #3498db;
+         background: transparent;
+         border: 2px solid #3498db;
+         border-radius: 25px;
+         text-decoration: none !important;
+         transition: all 0.3s ease;
+      }
+
+      .btn-header-back:hover {
+         background: #3498db;
+         color: #ffffff !important;
+         transform: translateY(-2px);
+         box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+      }
    </style>
    <script src="/static/scripts/other-libraries.js" defer></script>
 </head>
@@ -134,18 +213,15 @@
                <div class="header-right">
                   <ul>
                      <li>
-                        <a href="password.html">Password</a>
+                        <a href="#" class="btn-header-back" id="headerBackBtn">
+                           <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
                      </li>
                      <li>
                         <a href="faq.html">FAQ</a>
                      </li>
                      <li>
                         <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
-                     </li>
-                     <li>
-                        <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
-                           <em class="fab fa-twitter"></em>
-                        </a>
                      </li>
                   </ul>
                </div>
@@ -242,19 +318,24 @@
          </div>
          <br><br>
          <div align="center">Please read our <a href="api_doc.html">API Documentation</a> and <a
-               href="xposedornot.apiary.com">API Playground</a> for more details.</strong></div>
-         <div align="center">
-            <button type="button" class="btn-lg btn-primary" style="background-color:#FC9E11;color:white">
-               </em>&nbsp; Back to Breaches Dashboard </button>
-         </div>
+               href="xposedornot.apiary.com">API Playground</a> for more details.</div>
       </div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
-         integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1" rel="preconnect"></script>
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
-      <script src="/static/scripts/common.js"></script>
-      <script type="text/javascript">
+   </div>
+
+   <div class="back-btn-wrapper">
+      <a href="#" class="btn-back-dashboard" id="bottomBackBtn">
+         <i class="fas fa-arrow-left"></i>
+         <span>Back to Dashboard</span>
+      </a>
+   </div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1" rel="preconnect"></script>
+   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
+   <script src="/static/scripts/common.js"></script>
+   <script type="text/javascript">
          $.urlParam = function (name) {
             var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
             return results[1] || 0;
@@ -269,9 +350,10 @@
          }
 
          $(document).ready(function () {
-            $('.btn-lg.btn-primary').click(function () {
-               var newUrl = 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
-               window.location.href = newUrl;
+            var dashboardUrl = 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+            $('#headerBackBtn, #bottomBackBtn').click(function (e) {
+               e.preventDefault();
+               window.location.href = dashboardUrl;
             });
          });
 

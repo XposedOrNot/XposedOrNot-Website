@@ -86,8 +86,15 @@ async function init() {
     }
 
 
-    document.getElementById('backToDashboard').addEventListener('click', () => {
-        window.location.href = `breach-dashboard.html?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`;
+    // Handle both header and bottom back buttons
+    const dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`;
+    document.getElementById('backToDashboard').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = dashboardUrl;
+    });
+    document.getElementById('bottomBackToDashboard').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = dashboardUrl;
     });
 
     try {
