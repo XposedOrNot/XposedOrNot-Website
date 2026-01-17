@@ -53,13 +53,6 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
       crossorigin="anonymous"
@@ -97,37 +90,502 @@
     <script src="/static/scripts/other-libraries.js" defer></script>
 
     <style>
-      /* Dark mode styles only for elements missing dark mode */
-      [data-theme="dark"] .panel-heading.p-3.mb-3 {
-        background-color: var(--dark-bg-color, #1a1f3c);
-        border-bottom: none !important;
+      /* Skip Links - Accessibility */
+      .skip-links {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        z-index: 9999;
       }
 
-      [data-theme="dark"] .panel-heading.p-3.mb-3 .panel-title a {
+      .skip-links a {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #3c5fec;
+        color: #ffffff;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: top 0.2s ease;
+      }
+
+      .skip-links a:focus {
+        position: fixed;
+        top: 0;
+        left: 20px;
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+      }
+
+      [data-theme="dark"] .skip-links a {
+        background-color: #2a3a6e;
+      }
+
+      /* Navbar Dropdown Fix */
+      .kbanner {
+        overflow: visible;
+      }
+
+      .kbanner .navbar {
+        overflow: visible;
+      }
+
+      .dropdown-menu {
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 8px 0;
+      }
+
+      .dropdown-item {
+        padding: 10px 20px;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f0f4ff;
+        color: #3c5fec;
+      }
+
+      [data-theme="dark"] .dropdown-menu {
+        background-color: #1e2340;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      [data-theme="dark"] .dropdown-item {
         color: #e1e1e1;
       }
 
-      [data-theme="dark"] .collapsed.collapse.show,
-      [data-theme="dark"] .panel-collapse.collapse.show {
+      [data-theme="dark"] .dropdown-item:hover {
+        background-color: #2a305c;
+        color: #ffffff;
+      }
+
+      /* Mobile Navbar Menu */
+      @media (max-width: 991px) {
+        .navbar-collapse {
+          background: linear-gradient(135deg, #4a7ce8 0%, #3c5fec 100%);
+          border-radius: 0 0 12px 12px;
+          margin-top: 10px;
+          padding: 10px 0;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-nav {
+          padding: 0 10px;
+        }
+
+        .navbar-nav .nav-item {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .navbar-nav .nav-item:last-child {
+          border-bottom: none;
+        }
+
+        .navbar-nav .nav-link {
+          padding: 14px 16px !important;
+          font-size: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .navbar-nav .dropdown-menu {
+          background: transparent;
+          border: none;
+          box-shadow: none;
+          padding: 0 0 10px 20px;
+          margin: 0;
+        }
+
+        .navbar-nav .dropdown-item {
+          color: rgba(255, 255, 255, 0.9);
+          padding: 10px 16px;
+          border-radius: 6px;
+          font-size: 14px;
+        }
+
+        .navbar-nav .dropdown-item:hover,
+        .navbar-nav .dropdown-item:focus {
+          background-color: rgba(255, 255, 255, 0.15);
+          color: #ffffff;
+        }
+
+        /* Dark mode mobile navbar */
+        [data-theme="dark"] .navbar-collapse {
+          background: linear-gradient(135deg, #2a3a6e 0%, #1e2952 100%);
+        }
+
+        [data-theme="dark"] .navbar-nav .nav-item {
+          border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+
+      /* Screen Reader Only - Visually Hidden */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Accordion Card Styling - Light Mode */
+      .faq-accordion {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .faq-accordion .card {
+        border: none;
+        margin-bottom: 0;
+        border-radius: 0;
+        overflow: hidden;
+        box-shadow: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .faq-accordion .card:last-child {
+        border-bottom: none;
+      }
+
+      .faq-accordion .card-header {
+        background: linear-gradient(135deg, #4a7ce8 0%, #3c5fec 100%);
+        border: none;
+        padding: 18px 24px;
+        border-radius: 0;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .faq-accordion .card-header:hover {
+        background: linear-gradient(135deg, #5a8cf0 0%, #4c6ffc 100%);
+      }
+
+      .faq-accordion .card-header h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+
+      .faq-accordion .card-header a {
+        color: #ffffff;
+        text-decoration: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .faq-accordion .card-header a::after {
+        content: '\f078';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        font-size: 14px;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .faq-accordion .card-header a[aria-expanded="true"]::after {
+        transform: rotate(180deg);
+      }
+
+      .faq-accordion .card-header a:hover {
+        color: #f0f4ff;
+      }
+
+      .faq-accordion .card-header a:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+        border-radius: 4px;
+      }
+
+      .faq-accordion .card-header a:focus-visible {
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+
+      .faq-accordion .card-body {
+        padding: 24px;
+        background-color: #ffffff;
+        font-size: 15px;
+        line-height: 1.7;
+        color: #444;
+      }
+
+      /* Typography improvements for card content */
+      .faq-accordion .card-body p {
+        margin-bottom: 1em;
+      }
+
+      .faq-accordion .card-body p:last-child {
+        margin-bottom: 0;
+      }
+
+      .faq-accordion .card-body strong {
+        color: #333;
+      }
+
+      .faq-accordion .card-body a {
+        color: #3c5fec;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .faq-accordion .card-body a:hover {
+        text-decoration: underline;
+      }
+
+      .faq-accordion .card-body ol,
+      .faq-accordion .card-body ul {
+        margin: 1em 0;
+        padding-left: 1.5em;
+      }
+
+      .faq-accordion .card-body li {
+        margin-bottom: 0.5em;
+      }
+
+      /* Dark mode - Accordion Cards */
+      [data-theme="dark"] .faq-accordion {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      }
+
+      [data-theme="dark"] .faq-accordion .card {
+        background-color: transparent;
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header {
+        background: linear-gradient(135deg, #2a3a6e 0%, #1e2952 100%);
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header:hover {
+        background: linear-gradient(135deg, #344580 0%, #283366 100%);
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header a {
+        color: #e8ecff;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header a:hover {
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header a:focus {
+        box-shadow: 0 0 0 3px rgba(107, 140, 255, 0.5);
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header a:focus-visible {
+        outline-color: #6b8cff;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-body {
+        background-color: var(--dark-bg-color, #1a1f3c);
+        color: #c8cdd8;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-body strong {
+        color: #e8ecff;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-body a {
+        color: #6b8cff;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-body a:hover {
+        color: #8aa4ff;
+      }
+
+      [data-theme="dark"] .faq-accordion .collapse.show {
         background-color: var(--dark-bg-color, #1a1f3c);
       }
 
-      [data-theme="dark"] .panel-default {
-        background-color: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
+      /* Main Content Area - Desktop alignment with TOC */
+      @media (min-width: 1201px) {
+        main.container {
+          padding-top: 30px;
+        }
       }
 
-      [data-theme="dark"] .panel-body {
-        background-color: var(--dark-bg-color, #1a1f3c) !important;
-        color: #e1e1e1 !important;
-        border-top: none !important;
-        border-bottom: none !important;
+      /* Page Header */
+      .faq-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 16px;
       }
 
+      .faq-header h1 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      .last-updated {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #6c757d;
+        background-color: #f1f3f4;
+        padding: 6px 12px;
+        border-radius: 20px;
+        white-space: nowrap;
+      }
+
+      .last-updated i {
+        font-size: 12px;
+      }
+
+      [data-theme="dark"] .last-updated {
+        background-color: #2a305c;
+        color: #a8b0cc;
+      }
+
+      @media (max-width: 576px) {
+        .faq-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .faq-header h1 {
+          font-size: 22px;
+        }
+
+        .last-updated {
+          font-size: 12px;
+          padding: 5px 10px;
+        }
+      }
+
+      /* Mobile Responsiveness - FAQ Content */
+      @media (max-width: 768px) {
+        /* Accordion mobile optimizations */
+        .faq-accordion {
+          border-radius: 8px;
+          margin: 0 -15px;
+          width: calc(100% + 30px);
+        }
+
+        .faq-accordion .card-header {
+          padding: 14px 16px;
+        }
+
+        .faq-accordion .card-header h2 {
+          font-size: 15px;
+          line-height: 1.5;
+        }
+
+        .faq-accordion .card-header a::after {
+          font-size: 12px;
+        }
+
+        .faq-accordion .card-body {
+          padding: 16px;
+          font-size: 14px;
+          line-height: 1.65;
+        }
+
+        /* Search box mobile */
+        .faq-search-container {
+          margin-bottom: 20px;
+        }
+
+        .faq-search-container::before {
+          left: 14px;
+          font-size: 14px;
+        }
+
+        .faq-search-container input {
+          padding: 12px 16px 12px 42px;
+          font-size: 14px;
+          border-radius: 10px;
+        }
+
+        /* Breadcrumb mobile */
+        .breadcrumb {
+          padding: 10px 14px;
+          font-size: 13px;
+        }
+
+        /* Back to top button mobile */
+        .back-to-top {
+          width: 44px;
+          height: 44px;
+          right: 16px;
+          bottom: 16px;
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .faq-accordion .card-header h2 {
+          font-size: 14px;
+        }
+
+        .faq-accordion .card-body {
+          padding: 14px;
+          font-size: 13px;
+        }
+
+        .faq-header h1 {
+          font-size: 20px;
+        }
+      }
+
+      /* Breadcrumb - Light Mode */
+      .breadcrumb {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px 16px;
+      }
+
+      .breadcrumb-item a {
+        color: #3c5fec;
+        font-weight: 500;
+      }
+
+      .breadcrumb-item a:hover {
+        color: #2a4bd6;
+        text-decoration: underline;
+      }
+
+      .breadcrumb-item.active {
+        color: #495057;
+        font-weight: 600;
+      }
+
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #6c757d;
+      }
+
+      /* Breadcrumb - Dark Mode */
       [data-theme="dark"] .breadcrumb {
         background-color: var(--dark-bg-color, #1a1f3c);
         border: 1px solid var(--dark-border-color, #2a305c);
+      }
+
+      [data-theme="dark"] .breadcrumb-item a {
+        color: #6b8cff;
+      }
+
+      [data-theme="dark"] .breadcrumb-item a:hover {
+        color: #8aa4ff;
       }
 
       [data-theme="dark"] .breadcrumb-item {
@@ -135,76 +593,222 @@
       }
 
       [data-theme="dark"] .breadcrumb-item.active {
-        color: #8f96b3;
+        color: #c4c9de;
+        font-weight: 600;
       }
 
       [data-theme="dark"] .breadcrumb-item + .breadcrumb-item::before {
-        color: #8f96b3;
+        color: #a8b0cc;
+      }
+
+      /* FAQ Table Styling */
+      .faq-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid #e0e6ed;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 15px 0;
+      }
+
+      .faq-table thead tr {
+        background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+      }
+
+      .faq-table th {
+        padding: 14px 16px;
+        font-weight: 600;
+        color: #2d3748;
+        text-align: left;
+        border-bottom: 2px solid #e0e6ed;
+      }
+
+      .faq-table td {
+        padding: 12px 16px;
+        color: #4a5568;
+        border-bottom: 1px solid #edf2f7;
+      }
+
+      .faq-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .faq-table tbody tr:hover {
+        background-color: #f7fafc;
+      }
+
+      /* FAQ Table - Dark Mode */
+      [data-theme="dark"] .faq-table {
+        border-color: #2a305c;
+      }
+
+      [data-theme="dark"] .faq-table thead tr {
+        background: linear-gradient(135deg, #252a4a 0%, #1e2340 100%);
+      }
+
+      [data-theme="dark"] .faq-table th {
+        color: #e2e8f0;
+        border-bottom-color: #2a305c;
+      }
+
+      [data-theme="dark"] .faq-table td {
+        color: #cbd5e0;
+        border-bottom-color: #252a4a;
+        background-color: transparent;
+      }
+
+      [data-theme="dark"] .faq-table tbody tr:hover {
+        background-color: #252a4a;
+      }
+
+      /* Table Responsive Wrapper */
+      .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 15px 0;
+      }
+
+      .table-responsive .faq-table {
+        margin: 0;
+        min-width: 500px;
+      }
+
+      /* Table Mobile Styles */
+      @media (max-width: 768px) {
+        .faq-table {
+          font-size: 13px;
+        }
+
+        .faq-table th,
+        .faq-table td {
+          padding: 10px 12px;
+        }
+
+        .faq-table td:first-child {
+          white-space: nowrap;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .faq-table {
+          font-size: 12px;
+        }
+
+        .faq-table th,
+        .faq-table td {
+          padding: 8px 10px;
+        }
       }
 
       /* FAQ Search Box */
       .faq-search-container {
-        margin-bottom: 20px;
+        margin-bottom: 24px;
+        position: relative;
+      }
+
+      .faq-search-container::before {
+        content: '\f002';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 16px;
+        pointer-events: none;
+        z-index: 1;
       }
 
       .faq-search-container input {
         width: 100%;
-        padding: 12px 20px;
-        font-size: 16px;
-        border: 2px solid #ddd;
-        border-radius: 25px;
+        padding: 14px 20px 14px 48px;
+        font-size: 15px;
+        border: 2px solid #e0e4e8;
+        border-radius: 12px;
         outline: none;
-        transition: border-color 0.3s;
+        transition: all 0.2s ease;
+        background-color: #f8f9fa;
+      }
+
+      .faq-search-container input::placeholder {
+        color: #999;
+      }
+
+      .faq-search-container input:hover {
+        border-color: #c0c8d0;
+        background-color: #ffffff;
       }
 
       .faq-search-container input:focus {
         border-color: #3c5fec;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(60, 95, 236, 0.1);
+      }
+
+      [data-theme="dark"] .faq-search-container::before {
+        color: #6b7280;
       }
 
       [data-theme="dark"] .faq-search-container input {
-        background-color: var(--dark-bg-color, #1a1f3c);
-        border-color: var(--dark-border-color, #2a305c);
+        background-color: #1e2340;
+        border-color: #2a305c;
         color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .faq-search-container input::placeholder {
+        color: #6b7280;
+      }
+
+      [data-theme="dark"] .faq-search-container input:hover {
+        border-color: #3a4070;
+        background-color: #252a4a;
       }
 
       [data-theme="dark"] .faq-search-container input:focus {
         border-color: #3c5fec;
+        background-color: #252a4a;
+        box-shadow: 0 0 0 4px rgba(60, 95, 236, 0.2);
       }
 
       .faq-no-results {
         display: none;
         padding: 20px;
         text-align: center;
-        color: #666;
+        color: #525252;
       }
 
       [data-theme="dark"] .faq-no-results {
-        color: #8f96b3;
+        color: #a8b0cc;
       }
 
       /* Floating TOC */
       .faq-toc {
         position: fixed;
-        left: 20px;
-        top: 120px;
-        width: 280px;
-        max-height: calc(100vh - 150px);
+        left: 30px;
+        top: 110px;
+        width: 260px;
+        max-height: calc(100vh - 140px);
         overflow-y: auto;
         background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e4e8;
+        border-radius: 12px;
+        padding: 18px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         z-index: 100;
         font-size: 13px;
       }
 
       .faq-toc h4 {
-        margin: 0 0 10px 0;
-        padding-bottom: 10px;
+        margin: 0 0 12px 0;
+        padding-bottom: 12px;
         border-bottom: 2px solid #3c5fec;
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 600;
+        color: #333;
+        line-height: 1.2;
       }
 
       .faq-toc ul {
@@ -240,6 +844,12 @@
       [data-theme="dark"] .faq-toc {
         background-color: var(--dark-bg-color, #1a1f3c);
         border-color: var(--dark-border-color, #2a305c);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      [data-theme="dark"] .faq-toc h4 {
+        color: #e1e1e1;
+        border-bottom-color: #4a6fdc;
       }
 
       [data-theme="dark"] .faq-toc a {
@@ -251,8 +861,15 @@
         color: #fff;
       }
 
+      /* TOC stops at footer */
+      .faq-toc.toc-stopped {
+        position: absolute;
+        top: auto;
+        bottom: 0;
+      }
+
       /* Hide TOC on smaller screens */
-      @media (max-width: 1400px) {
+      @media (max-width: 1200px) {
         .faq-toc {
           display: none;
         }
@@ -389,52 +1006,71 @@
       @media (max-width: 768px) {
         .footer-columns {
           flex-direction: column;
-          gap: 20px;
+          gap: 0;
         }
-	.footer-group {
-		border-bottom: 1px solid #ebedef;
-	}
-
-	.footer-group h6 {
-		cursor: pointer;
-		padding: 15px 20px;
-		margin: 0 !important;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.footer-group h6::after {
-		content: '+';
-		font-size: 20px;
-		font-weight: 300;
-		transition: transform 0.3s ease;
-	}
-
-	.footer-group.active h6::after {
-		content: '−';
-	}
-
-	.footer-group .footer-links-wrapper {
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height 0.3s ease;
-		padding: 0 20px;
-	}
-
-	.footer-group.active .footer-links-wrapper {
-		max-height: 300px;
-		padding: 0 20px 15px 20px;
-	}
 
         .footer-group {
-          text-align: center;
+          border-bottom: 1px solid #e0e4e8;
+          text-align: left;
+        }
+
+        .footer-group:last-child {
+          border-bottom: none;
+        }
+
+        .footer-group h6 {
+          cursor: pointer;
+          padding: 16px 20px;
+          margin: 0 !important;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 15px;
+        }
+
+        .footer-group h6::after {
+          content: '+';
+          font-size: 18px;
+          font-weight: 400;
+          color: #666;
+          transition: transform 0.3s ease;
+        }
+
+        .footer-group.active h6::after {
+          content: '−';
+        }
+
+        .footer-group .footer-links-wrapper {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+          padding: 0 20px;
+        }
+
+        .footer-group.active .footer-links-wrapper {
+          max-height: 300px;
+          padding: 0 20px 15px 20px;
+        }
+
+        /* Dark mode footer mobile */
+        [data-theme="dark"] .footer-group {
+          border-bottom-color: #2a305c;
+        }
+
+        [data-theme="dark"] .footer-group h6::after {
+          color: #8f96b3;
         }
       }
     </style>
   </head>
 
   <body>
+    <!-- Skip Links for Accessibility -->
+    <nav class="skip-links" aria-label="Skip links">
+      <a href="#main-content">Skip to main content</a>
+      <a href="#faq-list">Skip to FAQ list</a>
+    </nav>
+
     <!-- Floating Table of Contents -->
     <nav class="faq-toc" id="faqToc">
       <h4>Quick Navigation</h4>
@@ -509,7 +1145,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav navbar-right">
+          <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
               <a class="nav-link" href="password.html"
                 >Password &nbsp; <span class="sr-only">(current)</span>
@@ -535,7 +1171,7 @@
                 More Tools
               </a>
               <div
-                class="dropdown-menu"
+                class="dropdown-menu dropdown-menu-right"
                 aria-labelledby="navbarDropdownMenuLink"
               >
                 <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
@@ -555,13 +1191,14 @@
         </div>
       </nav>
     </div>
-    <main class="container">
-      <h1>
-        Frequently Asked Questions (FAQ)
-        <span style="float: right; font-size: 0.5em; font-weight: normal"
-          >Last Updated: 04-Dec-2025</span
-        >
-      </h1>
+    <main class="container" id="main-content">
+      <div class="faq-header">
+        <h1>Frequently Asked Questions (FAQ)</h1>
+        <span class="last-updated">
+          <i class="far fa-calendar-alt"></i>
+          Updated: 04-Dec-2025
+        </span>
+      </div>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -582,43 +1219,39 @@
         No FAQs found matching your search. Try different keywords.
       </div>
 
-      <div class="row">
-        <div>
-          <section
-            class="accordion-section clearfix mt-3"
-            aria-label="Question Accordions"
-          >
-            <div class="container">
-              <div
-                class="panel-group"
-                id="accordion"
-                role="tablist"
-                aria-multiselectable="true"
-              >
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading0">
-                    <h3 class="panel-title">
+      <section
+        class="accordion-section clearfix mt-3"
+        aria-label="Question Accordions"
+      >
+        <div
+          class="faq-accordion"
+          id="faq-list"
+          role="tablist"
+          aria-multiselectable="true"
+        >
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading0">
+                    <h2>
                       <a
-                        class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse0"
                         aria-expanded="true"
                         aria-controls="collapse0"
                       >
                         Q. Who am I?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse0"
-                    class="collapsed collapse show"
+                    class="collapse show"
                     role="tabpanel"
                     aria-labelledby="heading0"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       Hello, I'm, Devanand Premkumar, and I bring over two
                       decades of experience in IT and information security. My
                       career has been dedicated to helping organizations fortify
@@ -642,30 +1275,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading1">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading1">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse1"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse1"
                       >
                         Q. What is XposedOrNot (XON)?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse1"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading1"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       <strong>XposedOrNot (XON)</strong> is a practical and
                       resourceful tool designed to enable you to verify 🔍 if
                       your personal data has been implicated in a data breach.
@@ -803,30 +1436,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading2">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading2">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse2"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse2"
                       >
                         Q. How do I source these breach data?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse2"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading2"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       At XposedOrNot, I source most of our exposed data from
                       breaches that are available on the internet. These
                       breaches are typically found on various websites, and with
@@ -848,30 +1481,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading3">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading3">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse3"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse3"
                       >
                         Q. What is stored and what is not stored in XON?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse3"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading3"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       XposedOrNot is a data breach monitoring service that
                       allows users to check whether personal information has
                       been exposed in any known data breaches. I want to be
@@ -931,31 +1564,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading44">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading44">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse44"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse4"
                       >
                         Q. What kind of exposed data is presented as part of the
                         breach information?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse44"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading44"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       <p>
                         When we report on data breaches, we aim to provide a
                         comprehensive overview of the types of data that have
@@ -967,117 +1600,59 @@
                         Below is a breakdown of these categories and the types
                         of data they encompass:
                       </p>
-                      <br />
-                      <table
-                        border="1"
-                        cellpadding="5"
-                        cellspacing="0"
-                        style="padding: 10px"
-                      >
+                      <div class="table-responsive">
+                      <table class="faq-table">
+                        <caption class="sr-only">Categories of exposed data in breaches and the types of information each category includes</caption>
                         <thead>
                           <tr>
-                            <th style="padding: 10px">Category</th>
-                            <th style="padding: 10px">Types of Exposed Data</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Types of Exposed Data</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td style="padding: 10px">
-                              👤 <strong>Personal Identification</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              Names, Dates of birth, Genders, Nationalities,
-                              Photos, Profile photos, Salutations, Nicknames,
-                              Licence plates, Social media profiles, Private
-                              messages, Avatars
-                            </td>
+                            <td>👤 <strong>Personal Identification</strong></td>
+                            <td>Names, Dates of birth, Genders, Nationalities, Photos, Profile photos, Salutations, Nicknames, Licence plates, Social media profiles, Private messages, Avatars</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              💳 <strong>Financial Information</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              Account balance, Bank account numbers, Credit
-                              cards
-                            </td>
+                            <td>💳 <strong>Financial Information</strong></td>
+                            <td>Account balance, Bank account numbers, Credit cards</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              🍔 <strong>Personal Habits and Lifestyle</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              Drug habits, Spoken languages, Vehicle details,
-                              Vehicle identification numbers
-                            </td>
+                            <td>🍔 <strong>Personal Habits and Lifestyle</strong></td>
+                            <td>Drug habits, Spoken languages, Vehicle details, Vehicle identification numbers</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              🔒 <strong>Security Practices</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              Passwords, Historical passwords, Security
-                              questions and answers
-                            </td>
+                            <td>🔒 <strong>Security Practices</strong></td>
+                            <td>Passwords, Historical passwords, Security questions and answers</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              🎓 <strong>Employment and Education</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              Job applications, Employers, Occupations,
-                              Education levels
-                            </td>
+                            <td>🎓 <strong>Employment and Education</strong></td>
+                            <td>Job applications, Employers, Occupations, Education levels</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              📞
-                              <strong
-                                >Communication and Social Interactions</strong
-                              >
-                            </td>
-                            <td style="padding: 10px">
-                              Email addresses, Instant messenger identities,
-                              Phone numbers, Private messages, Social
-                              connections, Social media profiles
-                            </td>
+                            <td>📞 <strong>Communication and Social Interactions</strong></td>
+                            <td>Email addresses, Instant messenger identities, Phone numbers, Private messages, Social connections, Social media profiles</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              🖥️ <strong>Device and Network Information</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              IP addresses, Device information, Browser user
-                              agent details, Website activity
-                            </td>
+                            <td>🖥️ <strong>Device and Network Information</strong></td>
+                            <td>IP addresses, Device information, Browser user agent details, Website activity</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              🩺 <strong>Health Information</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              Personal health data, Health insurance
-                              information, Fitness levels, Smoking habits
-                            </td>
+                            <td>🩺 <strong>Health Information</strong></td>
+                            <td>Personal health data, Health insurance information, Fitness levels, Smoking habits</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              👥 <strong>Demographics</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              Age group, Age, Ethnicities, Marital statuses,
-                              Spoken languages, Sexual preferences
-                            </td>
+                            <td>👥 <strong>Demographics</strong></td>
+                            <td>Age group, Age, Ethnicities, Marital statuses, Spoken languages, Sexual preferences</td>
                           </tr>
                           <tr>
-                            <td style="padding: 10px">
-                              🗳️ <strong>Political and Social Views</strong>
-                            </td>
-                            <td style="padding: 10px">
-                              Social connections, Private messages
-                            </td>
+                            <td>🗳️ <strong>Political and Social Views</strong></td>
+                            <td>Social connections, Private messages</td>
                           </tr>
                         </tbody>
                       </table>
+                      </div>
                       <br />
                       <p>
                         Note: The data presented reflects significant exposed
@@ -1088,30 +1663,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading4">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading4">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse4"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse4"
                       >
                         Q. Can you share the sources with me to verify?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse4"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading4"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       Usually, it's not a good idea to reveal where data
                       breaches come from because of how much sensitive
                       information is at stake. However, in XON, all the data
@@ -1121,31 +1696,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading5">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading5">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse5"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse5"
                       >
                         Q. Can I get notified if my data is exposed in a data
                         breach?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse5"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading5"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       Absolutely! We offer an
                       <strong>AlertMe Service</strong> that you can use to stay
                       informed about any exposed data. You can use the AlertMe
@@ -1158,31 +1733,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading6">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading6">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse6"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse6"
                       >
                         Q. Is there any fee for searching more than one of my
                         emails/passwords?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse6"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading6"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       I don't intend to make this community edition a chargeable
                       one. You're free to make use of this service and if you
                       find it useful, please share it and spread the usage of
@@ -1195,30 +1770,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading7">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading7">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse7"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse7"
                       >
                         Q. How are breaches verified in XON?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse7"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading7"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       All the breaches exposed here are acknowledged by the
                       website owners or online media and available as
                       <a
@@ -1249,30 +1824,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading71">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading71">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse71"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse71"
                       >
                         Q. How do I classify data breaches?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse71"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading71"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       Data breaches are currently classified as follows: <br />
                       <br />
                       <strong>Data Breach</strong>: A
@@ -1313,35 +1888,35 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
+                <div class="card">
                   <div
-                    class="panel-heading p-3 mb-3"
+                    class="card-header"
                     role="tab"
                     id="heading301"
                   >
-                    <h3 class="panel-title">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse301"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse71"
                       >
                         Q. How do I calculate the data breach risk score of an
                         email?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse301"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading301"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       <strong>What is the risk score formula? </strong><br />
                       <br />
                       The <strong>risk score formula</strong> calculates a
@@ -1392,30 +1967,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading81">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading81">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse81"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse8"
                       >
                         Q. How safe and secure is XposedOrNot?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse81"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading81"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       In creating this application and website, I have taken
                       into consideration the impact of unsecured and unsafe
                       environments on data breaches and related exposure. That's
@@ -1443,30 +2018,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading89">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading89">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse89"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse8"
                       >
                         Q. Do you have a bug-bounty program?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse89"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading89"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       If you happen to discover 🔍 a bug or security
                       vulnerability, I would love 😍 to hear from you! I
                       encourage you to disclose it using the
@@ -1496,30 +2071,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading8">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading8">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse8"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse8"
                       >
                         Q. What is Alert Me service?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse8"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading8"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       AlertMe is a 💡 handy notification service that sends you
                       an email whenever a new breach is added to XposedOrNot.
                       It's a great way to stay on top of any potential exposure
@@ -1535,30 +2110,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading9">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading9">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse9"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse9"
                       >
                         Q. Is there an acceptable use policy?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse9"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading9"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       Yes! Please refer to our comprehensive documentation:
                       <br /><br />
                       •
@@ -1580,31 +2155,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading94">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading94">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse94"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse94"
                       >
                         Q. What data does XposedOrNot actually store from
                         breaches?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse94"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading94"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       We take a privacy-first approach to handling breach data.
                       Here's exactly what we store and don't store:<br /><br />
                       <strong>What we DO store:</strong><br />
@@ -1629,31 +2204,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading95">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading95">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse95"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse95"
                       >
                         Q. How does XposedOrNot handle legal and takedown
                         requests?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse95"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading95"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       We take our legal obligations seriously and operate with
                       full transparency:<br /><br />
                       • We respond promptly to valid legal orders, law
@@ -1675,31 +2250,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading96">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading96">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse96"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse96"
                       >
                         Q. Can I use the XposedOrNot API for commercial
                         purposes?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse96"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading96"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       Yes, but with certain requirements:<br /><br />
                       • You must strictly adhere to the rate limits specified in
                       our API documentation<br />
@@ -1721,35 +2296,35 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
+                <div class="card">
                   <div
-                    class="panel-heading p-3 mb-3"
+                    class="card-header"
                     role="tab"
                     id="heading100"
                   >
-                    <h3 class="panel-title">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse100"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse100"
                       >
                         Q. How do I integrate XposedOrNot into my
                         application?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse100"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading100"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       We provide official SDKs for easy integration:<br /><br />
                       <strong>Node.js / JavaScript:</strong><br />
                       <code>npm install xposedornot</code><br /><br />
@@ -1765,30 +2340,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading97">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading97">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse97"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse97"
                       >
                         Q. Are my search queries logged or tracked?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse97"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading97"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       No, your privacy is protected when you search:<br /><br />
                       • Search queries are processed in memory and are not
                       logged in any identifiable form<br />
@@ -1808,31 +2383,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading98">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading98">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse98"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse98"
                       >
                         Q. What are the limitations of XposedOrNot's breach
                         coverage?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse98"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading98"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       While we work hard to provide comprehensive breach
                       coverage, it's important to understand the limitations:<br /><br />
                       • We can only report on breaches that have been publicly
@@ -1856,31 +2431,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading99">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading99">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse99"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse99"
                       >
                         Q. Is XposedOrNot really open source? Can I
                         contribute?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse99"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading99"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       Yes! XposedOrNot is fully open source and we actively
                       welcome contributions:<br /><br />
                       • Our source code is publicly available on
@@ -1909,31 +2484,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading91">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading91">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse91"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse91"
                       >
                         Q. Why am I getting emails from
                         notifications[@]xposedornot.com?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse91"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading91"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       The emails which can be received are as follows: <br />
                       <ol type="1">
                         <li>Alert me notification confirmation <br /></li>
@@ -1954,37 +2529,37 @@
                       As this email is used only for automated notifications as
                       stated above, this email will not be monitored for inbound
                       emails. Please use the email address given in "
-                      <a href="http://localhost/XON/web/faq#collapse10">
+                      <a href="#collapse10">
                         <strong>How can I be reached</strong> </a
                       >" for response and communication.
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading92">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading92">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse92"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse92"
                       >
                         Q. How can I contribute to XposedOrNot? How can I submit
                         a data breach?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse92"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading92"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       I would love for everyone to contribute to making XON more
                       useful for the general public. Account takeovers and
                       password attacks are a real problem, and any help we can
@@ -2006,31 +2581,31 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading93">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading93">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse93"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse93"
                       >
                         Q. What kind of data logging is enabled here for public
                         searches?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse93"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading93"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       We don't store any of the data that's searched on our
                       website or API. We only collect demographic data through
                       Google Analytics, which you can opt-out of at any time.
@@ -2053,30 +2628,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading11">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading11">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse11"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse11"
                       >
                         Q. Do you support TOR?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse11"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading11"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       If you're feeling extra cautious and want to keep your
                       online presence under wraps 🕵️, we understand. You can
                       totally use the Tor Browser to check for any data breaches
@@ -2086,30 +2661,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading p-3 mb-3" role="tab" id="heading10">
-                    <h3 class="panel-title">
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading10">
+                    <h2>
                       <a
                         class="collapsed"
                         role="button"
                         title=""
                         data-toggle="collapse"
-                        data-parent="#accordion"
+                        data-parent="#faq-list"
                         href="#collapse10"
-                        aria-expanded="true"
+                        aria-expanded="false"
                         aria-controls="collapse10"
                       >
                         Q. How can I be reached?</a
                       >
-                    </h3>
+                    </h2>
                   </div>
                   <div
                     id="collapse10"
-                    class="collapsed collapse show"
+                    class="collapse"
                     role="tabpanel"
                     aria-labelledby="heading10"
                   >
-                    <div class="panel-body px-3 mb-4">
+                    <div class="card-body">
                       If you happen to stumble upon any publicly exposed data
                       breaches out there that we haven't caught yet, we'd love
                       to hear about it! Just drop an email to
@@ -2157,10 +2732,7 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-        </div>
-      </div>
+            </section>
     </main>
 
     <div class="footer">
@@ -2296,24 +2868,24 @@
         var searchTerm = $(this).val().toLowerCase().trim();
         var visibleCount = 0;
 
-        // If search is empty, show all panels
+        // If search is empty, show all cards
         if (searchTerm === "") {
-          $(".panel.panel-default").show();
+          $(".faq-accordion .card").show();
           $("#noResults").hide();
           $(".faq-toc li").show();
           return;
         }
 
-        $(".panel.panel-default").each(function () {
+        $(".faq-accordion .card").each(function () {
           var questionText = $(this)
-            .find(".panel-title a")
+            .find(".card-header h2 a")
             .text()
             .toLowerCase();
-          var answerText = $(this).find(".panel-body").text().toLowerCase();
+          var answerText = $(this).find(".card-body").text().toLowerCase();
 
-          // Also get the TOC label for this panel's collapse ID
+          // Also get the TOC label for this card's collapse ID
           var collapseId = $(this)
-            .find(".collapse, .panel-collapse")
+            .find(".collapse")
             .attr("id");
           var tocText = $('.faq-toc a[href="#' + collapseId + '"]')
             .text()
@@ -2341,8 +2913,8 @@
         // Update TOC visibility based on search
         $(".faq-toc li").each(function () {
           var targetId = $(this).find("a").attr("href");
-          var targetPanel = $(targetId).closest(".panel.panel-default");
-          if (targetPanel.is(":visible")) {
+          var targetCard = $(targetId).closest(".faq-accordion .card");
+          if (targetCard.is(":visible")) {
             $(this).show();
           } else {
             $(this).hide();
@@ -2354,15 +2926,15 @@
       $(".faq-toc a").on("click", function (e) {
         e.preventDefault();
         var targetId = $(this).attr("href");
-        var targetPanel = $(targetId).closest(".panel.panel-default");
+        var targetCard = $(targetId).closest(".faq-accordion .card");
 
         // Expand the target accordion
         $(targetId).collapse("show");
 
-        // Scroll to the panel
+        // Scroll to the card
         $("html, body").animate(
           {
-            scrollTop: targetPanel.offset().top - 100,
+            scrollTop: targetCard.offset().top - 100,
           },
           300,
         );
@@ -2376,13 +2948,13 @@
       $(window).on("scroll", function () {
         var scrollPos = $(window).scrollTop() + 150;
 
-        $(".panel.panel-default:visible").each(function () {
-          var panelTop = $(this).offset().top;
-          var panelBottom = panelTop + $(this).outerHeight();
+        $(".faq-accordion .card:visible").each(function () {
+          var cardTop = $(this).offset().top;
+          var cardBottom = cardTop + $(this).outerHeight();
 
-          if (scrollPos >= panelTop && scrollPos < panelBottom) {
+          if (scrollPos >= cardTop && scrollPos < cardBottom) {
             var collapseId = $(this)
-              .find(".panel-collapse, .collapse")
+              .find(".collapse")
               .attr("id");
             $(".faq-toc a").removeClass("active");
             $('.faq-toc a[href="#' + collapseId + '"]').addClass("active");
@@ -2394,6 +2966,30 @@
           $("#backToTop").addClass("visible");
         } else {
           $("#backToTop").removeClass("visible");
+        }
+
+        // Stop TOC before footer
+        var $toc = $(".faq-toc");
+        var $footer = $(".footer");
+
+        if ($toc.length && $footer.length && $(window).width() > 1200) {
+          var tocHeight = $toc.outerHeight();
+          var tocTop = 110; // Fixed top position
+          var footerTop = $footer.offset().top;
+          var scrollTop = $(window).scrollTop();
+          var stopPoint = footerTop - tocHeight - 30; // 30px gap from footer
+
+          if (scrollTop + tocTop > stopPoint) {
+            $toc.css({
+              'position': 'absolute',
+              'top': (stopPoint) + 'px'
+            });
+          } else {
+            $toc.css({
+              'position': 'fixed',
+              'top': tocTop + 'px'
+            });
+          }
         }
       });
 
