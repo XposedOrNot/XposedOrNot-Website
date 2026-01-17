@@ -64,13 +64,6 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
       crossorigin="anonymous"
@@ -91,7 +84,7 @@
     <style>
       :root {
         --primary-color: #007bff;
-        --secondary-color: #6c757d;
+        --secondary-color: #525252; /* Improved contrast: 7.5:1 ratio vs white */
         --background-color: #ffffff;
         --text-color: #212529;
         --border-color: #dee2e6;
@@ -99,11 +92,12 @@
         --code-bg: #f6f8fa;
         --panel-bg: #f8f9fa;
         --code-text: #24292e;
+        --link-hover: #0056b3; /* Darker blue for better contrast */
       }
 
       [data-theme="dark"] {
-        --primary-color: #0d6efd;
-        --secondary-color: #adb5bd;
+        --primary-color: #60a5fa; /* Lighter blue for dark mode - better contrast */
+        --secondary-color: #9ca3af; /* Adjusted for dark backgrounds */
         --background-color: #212529;
         --text-color: #f8f9fa;
         --border-color: #495057;
@@ -111,6 +105,7 @@
         --code-bg: #1a1d20;
         --panel-bg: #343a40;
         --code-text: #e9ecef;
+        --link-hover: #93c5fd; /* Lighter for dark mode hover */
       }
 
       body {
@@ -122,17 +117,116 @@
       }
 
       .container {
-        max-width: 1400px;
+        max-width: 1200px;
         padding: 2rem;
       }
 
       .kbanner {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: visible;
+      }
+
+      .kbanner .navbar {
+        overflow: visible;
+      }
+
+      /* Dropdown Menu Styling */
+      .dropdown-menu {
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 8px 0;
+      }
+
+      .dropdown-item {
+        padding: 10px 20px;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f0f4ff;
+        color: #3c5fec;
+      }
+
+      [data-theme="dark"] .dropdown-menu {
+        background-color: #1e2340;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      [data-theme="dark"] .dropdown-item {
+        color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .dropdown-item:hover {
+        background-color: #2a305c;
+        color: #ffffff;
+      }
+
+      /* Mobile Navbar Menu */
+      @media (max-width: 991px) {
+        .navbar-collapse {
+          background: linear-gradient(135deg, #4a7ce8 0%, #3c5fec 100%);
+          border-radius: 0 0 12px 12px;
+          margin-top: 10px;
+          padding: 10px 0;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-nav {
+          padding: 0 10px;
+        }
+
+        .navbar-nav .nav-item {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .navbar-nav .nav-item:last-child {
+          border-bottom: none;
+        }
+
+        .navbar-nav .nav-link {
+          padding: 14px 16px !important;
+          font-size: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .navbar-nav .dropdown-menu {
+          background: transparent;
+          border: none;
+          box-shadow: none;
+          padding: 0 0 10px 20px;
+          margin: 0;
+        }
+
+        .navbar-nav .dropdown-item {
+          color: rgba(255, 255, 255, 0.9);
+          padding: 10px 16px;
+          border-radius: 6px;
+          font-size: 14px;
+        }
+
+        .navbar-nav .dropdown-item:hover,
+        .navbar-nav .dropdown-item:focus {
+          background-color: rgba(255, 255, 255, 0.15);
+          color: #ffffff;
+        }
+
+        /* Dark mode mobile navbar */
+        [data-theme="dark"] .navbar-collapse {
+          background: linear-gradient(135deg, #2a3a6e 0%, #1e2952 100%);
+        }
+
+        [data-theme="dark"] .navbar-nav .nav-item {
+          border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
       }
 
       .button-link {
         display: inline-block;
-        padding: 14px 28px;
+        padding: 10px 20px;
         color: #fff;
         background: linear-gradient(135deg, #3f71f3, #5b8aff);
         text-decoration: none;
@@ -140,6 +234,7 @@
         transition: all 0.3s ease;
         border: none;
         font-weight: 600;
+        font-size: 0.9rem;
         box-shadow: 0 4px 12px rgba(63, 113, 243, 0.25);
       }
 
@@ -167,31 +262,56 @@
       .panel-heading {
         background-color: var(--panel-bg);
         color: var(--text-color);
-        padding: 1.5rem;
-        font-size: 1.25rem;
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
         font-weight: 600;
         border-radius: 12px 12px 0 0;
         border-bottom: 2px solid var(--primary-color);
       }
 
       .panel-body {
-        padding: 2rem;
+        padding: 1.5rem;
+        font-size: 0.9rem;
+        line-height: 1.65;
+      }
+
+      .panel-body p {
+        margin-bottom: 1rem;
+      }
+
+      .panel-body ul,
+      .panel-body ol {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+      }
+
+      .panel-body li {
+        margin-bottom: 0.5rem;
+      }
+
+      .panel-body h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
       }
 
       pre {
         background-color: var(--code-bg);
         border-radius: 8px;
-        padding: 1.5rem;
+        padding: 1rem 1.25rem;
         margin: 1rem 0;
         overflow-x: auto;
         border: 1px solid var(--border-color);
         color: var(--code-text);
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        font-size: 0.85rem;
+        line-height: 1.5;
       }
 
       .alert {
         border-radius: 8px;
-        padding: 1.5rem;
+        padding: 1rem 1.25rem;
         margin: 1.5rem 0;
         border: none;
       }
@@ -199,6 +319,12 @@
       .alert-primary {
         background-color: rgba(13, 110, 253, 0.1);
         border-left: 4px solid var(--primary-color);
+      }
+
+      .alert-primary h4 {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.5;
       }
 
       [data-theme="dark"] .alert-primary {
@@ -218,6 +344,7 @@
         border-radius: 8px;
         overflow: hidden;
         margin: 1.5rem 0;
+        font-size: 0.9rem;
       }
 
       .table th {
@@ -227,14 +354,14 @@
 
       .table td,
       .table th {
-        padding: 1rem;
+        padding: 0.75rem 1rem;
       }
 
       blockquote {
         background-color: var(--code-bg);
         border-left: 4px solid var(--primary-color);
-        padding: 1.5rem;
-        margin: 1.5rem 0;
+        padding: 0.75rem 1rem;
+        margin: 1rem 0;
         border-radius: 0 8px 8px 0;
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
         position: relative;
@@ -303,7 +430,85 @@
 
         .custom-switch {
           bottom: 1rem;
+          left: auto;
           right: 1rem;
+        }
+
+        /* Info cards mobile sizing */
+        .info-card {
+          padding: 1rem;
+        }
+
+        .info-card h4 {
+          font-size: 0.9rem;
+        }
+
+        .info-card p {
+          font-size: 0.8rem;
+        }
+
+        /* Code blocks overflow handling */
+        pre {
+          padding: 0.75rem;
+          font-size: 0.75rem;
+          max-width: 100%;
+          word-wrap: break-word;
+        }
+
+        blockquote {
+          padding: 0.5rem 0.75rem;
+        }
+
+        blockquote pre {
+          font-size: 0.7rem;
+        }
+
+        /* Table responsive */
+        .table {
+          font-size: 0.8rem;
+        }
+
+        .table td,
+        .table th {
+          padding: 0.5rem;
+        }
+
+        /* Alert/endpoint headers */
+        .alert {
+          padding: 0.75rem 1rem;
+        }
+
+        .alert-primary h4 {
+          font-size: 0.9rem;
+        }
+
+        .http-badge {
+          font-size: 0.65rem;
+          padding: 0.2rem 0.5rem;
+        }
+
+        /* Header adjustments */
+        h1 {
+          font-size: 1.4rem !important;
+        }
+
+        h2 {
+          font-size: 1.2rem !important;
+        }
+
+        /* SDK section */
+        .panel-heading {
+          padding: 0.75rem 1rem;
+          font-size: 0.9rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-nav {
+          padding: 0.5rem 1rem;
+        }
+
+        .breadcrumb-nav ol {
+          font-size: 0.8rem;
         }
       }
 
@@ -328,53 +533,63 @@
       .info-card {
         background: var(--panel-bg);
         border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1.5rem;
+        border-radius: 10px;
+        padding: 1.25rem;
         text-align: center;
         transition: all 0.3s ease;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       }
 
       .info-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-card i {
+        font-size: 1.5em !important;
+        margin-bottom: 0.4rem !important;
       }
 
       .info-card h4 {
-        margin: 0.5rem 0;
+        margin: 0.4rem 0;
         color: var(--text-color);
-        font-size: 1.1em;
+        font-size: 0.95rem;
         font-weight: 600;
       }
 
       .info-card p {
         margin: 0;
-        font-size: 0.9em;
+        font-size: 0.85rem;
         color: var(--secondary-color);
+        line-height: 1.4;
       }
 
       .info-card code {
         background: var(--code-bg);
-        padding: 0.2rem 0.5rem;
+        padding: 0.15rem 0.4rem;
         border-radius: 4px;
-        font-size: 0.85em;
+        font-size: 0.8rem;
       }
 
       .toc-link {
         color: var(--text-color);
         text-decoration: none;
         display: block;
-        padding: 0.5rem;
+        padding: 0.4rem 0.5rem;
         border-radius: 6px;
         transition: all 0.2s ease;
-        font-size: 0.95em;
+        font-size: 0.85rem;
       }
 
       .toc-link:hover {
         background: var(--code-bg);
-        color: var(--primary-color);
+        color: var(--link-hover);
         text-decoration: none;
         padding-left: 0.75rem;
+      }
+
+      [data-theme="dark"] .toc-link:hover {
+        color: var(--link-hover);
       }
 
       .toc-link.active {
@@ -386,7 +601,9 @@
       }
 
       [data-theme="dark"] .toc-link.active {
-        background: rgba(13, 110, 253, 0.25);
+        background: rgba(96, 165, 250, 0.2);
+        color: var(--primary-color);
+        border-left-color: var(--primary-color);
       }
 
       .toc-link i {
@@ -439,18 +656,46 @@
         cursor: pointer;
         font-size: 0.85em;
         transition: all 0.3s ease;
-        opacity: 0.8;
+        opacity: 0.95; /* Improved visibility */
       }
 
       .copy-button:hover {
         opacity: 1;
-        background: var(--hover-color);
-        color: #212529;
+        background: var(--link-hover);
+        color: white;
+        transform: translateY(-50%) scale(1.02);
+      }
+
+      .copy-button:focus {
+        outline: 2px solid white;
+        outline-offset: 2px;
       }
 
       .copy-button.copied {
         background: #10b981 !important;
         color: white !important;
+        animation: copyPulse 0.3s ease;
+      }
+
+      @keyframes copyPulse {
+        0% { transform: translateY(-50%) scale(1); }
+        50% { transform: translateY(-50%) scale(1.1); }
+        100% { transform: translateY(-50%) scale(1); }
+      }
+
+      [data-theme="dark"] .copy-button {
+        background: var(--primary-color);
+      }
+
+      [data-theme="dark"] .copy-button:hover {
+        background: var(--link-hover);
+      }
+
+      /* Table responsive wrapper */
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1rem;
       }
 
       /* Footer Styles */
@@ -565,41 +810,47 @@
           gap: 30px;
           padding: 0 20px;
         }
-	.footer-group {
-		border-bottom: 1px solid #ebedef;
-	}
 
-	.footer-group h6 {
-		cursor: pointer;
-		padding: 15px 20px;
-		margin: 0 !important;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
+        .footer-group {
+          border-bottom: 1px solid #ebedef;
+        }
 
-	.footer-group h6::after {
-		content: '+';
-		font-size: 20px;
-		font-weight: 300;
-		transition: transform 0.3s ease;
-	}
+        /* Dark mode footer borders */
+        [data-theme="dark"] .footer-group {
+          border-bottom-color: #495057;
+        }
 
-	.footer-group.active h6::after {
-		content: '−';
-	}
+        .footer-group h6 {
+          cursor: pointer;
+          padding: 15px 20px;
+          margin: 0 !important;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
 
-	.footer-group .footer-links-wrapper {
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height 0.3s ease;
-		padding: 0 20px;
-	}
+        .footer-group h6::after {
+          content: '+';
+          font-size: 20px;
+          font-weight: 300;
+          transition: transform 0.3s ease;
+        }
 
-	.footer-group.active .footer-links-wrapper {
-		max-height: 300px;
-		padding: 0 20px 15px 20px;
-	}
+        .footer-group.active h6::after {
+          content: '−';
+        }
+
+        .footer-group .footer-links-wrapper {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+          padding: 0 20px;
+        }
+
+        .footer-group.active .footer-links-wrapper {
+          max-height: 300px;
+          padding: 0 20px 15px 20px;
+        }
 
         .footer-group a.footer-link:hover {
           padding-left: 10px;
@@ -614,7 +865,8 @@
 
         .custom-switch {
           bottom: 1rem;
-          left: 1rem;
+          left: auto;
+          right: 70px; /* Position next to back-to-top button */
           padding: 0.5rem 0.75rem;
           width: auto;
           max-width: fit-content;
@@ -622,6 +874,88 @@
 
         .custom-switch label {
           font-size: 0.85em;
+        }
+      }
+
+      /* Mobile TOC - shown below 992px */
+      @media (max-width: 992px) {
+        .mobile-toc {
+          display: block;
+          background: var(--panel-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 10px;
+          padding: 1rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .mobile-toc-toggle {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 0.9rem;
+          color: var(--primary-color);
+        }
+
+        .mobile-toc-toggle::after {
+          content: '\f078';
+          font-family: 'Font Awesome 5 Free';
+          font-weight: 900;
+          font-size: 0.8rem;
+          transition: transform 0.3s ease;
+        }
+
+        .mobile-toc.expanded .mobile-toc-toggle::after {
+          transform: rotate(180deg);
+        }
+
+        .mobile-toc-content {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+        }
+
+        .mobile-toc.expanded .mobile-toc-content {
+          max-height: 500px;
+          margin-top: 1rem;
+        }
+
+        .mobile-toc-content ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.5rem;
+        }
+
+        .mobile-toc-content .toc-link {
+          font-size: 0.8rem;
+          padding: 0.5rem;
+        }
+      }
+
+      @media (min-width: 993px) {
+        .mobile-toc {
+          display: none;
+        }
+      }
+
+      /* Small mobile adjustments */
+      @media (max-width: 480px) {
+        .mobile-toc-content ul {
+          grid-template-columns: 1fr;
+        }
+
+        .button-link {
+          display: block;
+          margin-bottom: 0.5rem;
+          text-align: center;
+        }
+
+        .info-card i {
+          font-size: 1.2em !important;
         }
       }
 
@@ -649,10 +983,106 @@
         color: var(--text-color) !important;
         border-bottom: 2px solid var(--primary-color);
       }
+      /* Skip Links - Accessibility */
+      .skip-links {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        z-index: 9999;
+      }
+
+      .skip-links a {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #3c5fec;
+        color: #ffffff;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: top 0.2s ease;
+      }
+
+      .skip-links a:focus {
+        position: fixed;
+        top: 0;
+        left: 20px;
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+      }
+
+      [data-theme="dark"] .skip-links a {
+        background-color: #2a3a6e;
+      }
+
+      /* Screen Reader Only */
+      .sr-only-caption {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Breadcrumb */
+      .breadcrumb-nav {
+        background-color: var(--code-bg);
+        padding: 0.75rem 2rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .breadcrumb-nav ol {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0;
+        font-size: 0.85rem;
+      }
+
+      .breadcrumb-nav li {
+        display: flex;
+        align-items: center;
+      }
+
+      .breadcrumb-nav li:not(:last-child)::after {
+        content: '/';
+        margin: 0 0.5rem;
+        color: var(--secondary-color);
+      }
+
+      .breadcrumb-nav a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .breadcrumb-nav a:hover {
+        text-decoration: underline;
+      }
+
+      .breadcrumb-nav .current {
+        color: var(--secondary-color);
+      }
+
+      /* TOC Focus States */
+      .toc-link:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+        background: rgba(13, 110, 253, 0.1);
+      }
     </style>
   </head>
 
   <body>
+    <!-- Skip Links for Accessibility -->
+    <nav class="skip-links" aria-label="Skip links">
+      <a href="#main-content">Skip to main content</a>
+      <a href="#endpoint-1">Skip to API endpoints</a>
+    </nav>
     <div class="kbanner">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
         <a class="navbar-brand" href="https://xposedornot.com"
@@ -688,7 +1118,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav navbar-right">
+          <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
               <a class="nav-link" href="password.html"
                 >Password &nbsp; <span class="sr-only">(current)</span>
@@ -714,7 +1144,7 @@
                 More Tools
               </a>
               <div
-                class="dropdown-menu"
+                class="dropdown-menu dropdown-menu-right"
                 aria-labelledby="navbarDropdownMenuLink"
               >
                 <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
@@ -731,14 +1161,30 @@
         </div>
       </nav>
     </div>
-    <div class="container">
-      <div align="center" style="margin-bottom: 3rem">
-        <h1 style="margin-bottom: 1rem">XposedOrNot API Documentation</h1>
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/">
+            <span itemprop="name">Home</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name" class="current">API Documentation</span>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </nav>
+    <div class="container" id="main-content">
+      <div align="center" style="margin-bottom: 2rem">
+        <h1 style="margin-bottom: 0.75rem; font-size: 1.75rem">XposedOrNot API Documentation</h1>
         <p
           style="
-            font-size: 1.1em;
+            font-size: 0.95rem;
             color: var(--secondary-color);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
           "
         >
           Integrate breach detection into your application with our free,
@@ -750,9 +1196,9 @@
         <div
           style="
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
             text-align: left;
           "
         >
@@ -806,23 +1252,20 @@
           </div>
         </div>
 
-        <div style="margin-top: 2rem">
-          <h3 style="display: inline-block; margin-right: 20px">
-            <a
-              href="https://api.xposedornot.com/docs"
-              target="_blank"
-              class="button-link"
-              ><i class="fas fa-book"></i> Swagger Documentation</a
-            >
-          </h3>
-          <h3 style="display: inline-block">
-            <a
-              href="https://xposedornot.docs.apiary.io"
-              target="_blank"
-              class="button-link"
-              ><i class="fas fa-code"></i> API Playground</a
-            >
-          </h3>
+        <div style="margin-top: 1.5rem">
+          <a
+            href="https://api.xposedornot.com/docs"
+            target="_blank"
+            class="button-link"
+            style="margin-right: 12px"
+            ><i class="fas fa-book"></i> Swagger Documentation</a
+          >
+          <a
+            href="https://xposedornot.docs.apiary.io"
+            target="_blank"
+            class="button-link"
+            ><i class="fas fa-code"></i> API Playground</a
+          >
         </div>
       </div>
 
@@ -830,18 +1273,19 @@
       <div
         id="sdk-section"
         style="
-          margin-top: 3rem;
-          margin-bottom: 2rem;
+          margin-top: 2rem;
+          margin-bottom: 1.5rem;
           position: relative;
           z-index: 100;
         "
       >
-        <h2 style="text-align: center; margin-bottom: 1.5rem">Official SDKs</h2>
+        <h2 style="text-align: center; margin-bottom: 1rem; font-size: 1.4rem">Official SDKs</h2>
         <p
           style="
             text-align: center;
             color: var(--secondary-color);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
           "
         >
           Use our official libraries to integrate XposedOrNot into your
@@ -850,8 +1294,8 @@
         <div
           style="
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
           "
         >
           <!-- NPM SDK -->
@@ -938,11 +1382,29 @@ print(result)</pre
       </div>
       <br />
 
+      <!-- Mobile TOC - visible on screens below 992px -->
+      <div class="mobile-toc" id="mobile-toc">
+        <div class="mobile-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+          <span><i class="fas fa-list-ul"></i> Quick Navigation</span>
+        </div>
+        <div class="mobile-toc-content">
+          <ul>
+            <li><a href="#sdk-section" class="toc-link"><i class="fas fa-cube"></i> Official SDKs</a></li>
+            <li><a href="#endpoint-1" class="toc-link"><i class="fas fa-envelope"></i> Email Breach</a></li>
+            <li><a href="#endpoint-2" class="toc-link"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="#endpoint-3" class="toc-link"><i class="fas fa-key"></i> Password</a></li>
+            <li><a href="#endpoint-4" class="toc-link"><i class="fas fa-database"></i> All Breaches</a></li>
+            <li><a href="#endpoint-5" class="toc-link"><i class="fas fa-shield-alt"></i> Domain</a></li>
+            <li><a href="#endpoint-6" class="toc-link"><i class="fas fa-code"></i> Response Codes</a></li>
+          </ul>
+        </div>
+      </div>
+
       <!-- Table of Contents + Content Layout -->
       <div
         style="
           display: flex;
-          gap: 3rem;
+          gap: 2rem;
           align-items: flex-start;
           max-width: 100%;
         "
@@ -953,7 +1415,7 @@ print(result)</pre
           style="
             position: sticky;
             top: 2rem;
-            width: 280px;
+            width: 240px;
             flex-shrink: 0;
             z-index: 1;
           "
@@ -963,50 +1425,51 @@ print(result)</pre
               background: var(--panel-bg);
               border: 1px solid var(--border-color);
               border-radius: 12px;
-              padding: 1.5rem;
+              padding: 1rem 1.25rem;
             "
           >
             <h4
               style="
                 margin-top: 0;
-                margin-bottom: 1rem;
+                margin-bottom: 0.75rem;
                 color: var(--primary-color);
+                font-size: 0.95rem;
               "
             >
               Quick Navigation
             </h4>
             <ul style="list-style: none; padding: 0; margin: 0">
-              <li style="margin-bottom: 0.75rem">
+              <li style="margin-bottom: 0.5rem">
                 <a href="#sdk-section" class="toc-link"
                   ><i class="fas fa-cube"></i> Official SDKs</a
                 >
               </li>
-              <li style="margin-bottom: 0.75rem">
+              <li style="margin-bottom: 0.5rem">
                 <a href="#endpoint-1" class="toc-link"
                   ><i class="fas fa-envelope"></i> Email Breach Check</a
                 >
               </li>
-              <li style="margin-bottom: 0.75rem">
+              <li style="margin-bottom: 0.5rem">
                 <a href="#endpoint-2" class="toc-link"
                   ><i class="fas fa-chart-line"></i> Breach Analytics</a
                 >
               </li>
-              <li style="margin-bottom: 0.75rem">
+              <li style="margin-bottom: 0.5rem">
                 <a href="#endpoint-3" class="toc-link"
                   ><i class="fas fa-key"></i> Password Check</a
                 >
               </li>
-              <li style="margin-bottom: 0.75rem">
+              <li style="margin-bottom: 0.5rem">
                 <a href="#endpoint-4" class="toc-link"
                   ><i class="fas fa-database"></i> All Breaches</a
                 >
               </li>
-              <li style="margin-bottom: 0.75rem">
+              <li style="margin-bottom: 0.5rem">
                 <a href="#endpoint-5" class="toc-link"
                   ><i class="fas fa-shield-alt"></i> Domain Breaches</a
                 >
               </li>
-              <li style="margin-bottom: 0.75rem">
+              <li style="margin-bottom: 0.5rem">
                 <a href="#endpoint-6" class="toc-link"
                   ><i class="fas fa-code"></i> Response Codes</a
                 >
@@ -1446,9 +1909,18 @@ https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-kecc
                   The following table explains a bit more about the
                   characteristics in simple terms : <br />
                   <br />
+                  <div class="table-responsive">
                   <table
                     class="table table-condensed table-striped table-bordered table-hover"
                   >
+                    <caption class="sr-only-caption">Password characteristics breakdown</caption>
+                    <thead class="sr-only-caption">
+                      <tr>
+                        <th scope="col">Characteristic</th>
+                        <th scope="col">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                       <td>Digits</td>
                       <td>Count of numbers</td>
@@ -1465,7 +1937,9 @@ https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-kecc
                       <td>Length</td>
                       <td>Length of the password</td>
                     </tr>
+                    </tbody>
                   </table>
+                  </div>
                   The last one <strong>"count"</strong> denotes the number of
                   times, this password was observed in the collected exposed
                   data breaches. For a comprehensive list of all exposed
@@ -1794,7 +2268,9 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                   In other words, codes in the 4xx range indicate an user
                   error(You) and 5xx indicates a server error(Me). <br />
                   <br />
+                  <div class="table-responsive">
                   <table class="table table-hover table-bordered">
+                    <caption class="sr-only-caption">HTTP response codes and their meanings</caption>
                     <thead class="thead-light">
                       <tr>
                         <th scope="col">Code</th>
@@ -1827,6 +2303,7 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                       </tr>
                     </tbody>
                   </table>
+                  </div>
                   <div class="alert alert-danger" role="alert">
                     <strong>Note: </strong>Search queries for Passwords are not
                     restricted by time or count. <br />
@@ -2134,6 +2611,39 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
 
       window.addEventListener("scroll", updateActiveLink);
       window.addEventListener("load", updateActiveLink);
+
+      // TOC Footer Stop - prevent TOC from overlapping footer
+      const apiToc = document.getElementById('api-toc');
+      const footer = document.querySelector('.footer');
+
+      function updateTocPosition() {
+        if (!apiToc || !footer || window.innerWidth <= 992) return;
+
+        const tocRect = apiToc.getBoundingClientRect();
+        const footerRect = footer.getBoundingClientRect();
+        const tocHeight = apiToc.offsetHeight;
+        const windowHeight = window.innerHeight;
+        const scrollY = window.scrollY;
+
+        // Calculate when TOC would overlap footer
+        const tocTop = 32; // 2rem from CSS
+        const footerTop = footer.offsetTop;
+        const tocBottom = scrollY + tocTop + tocHeight;
+
+        if (tocBottom >= footerTop - 20) {
+          // Stop TOC before footer
+          apiToc.style.position = 'absolute';
+          apiToc.style.top = (footerTop - tocHeight - 40) + 'px';
+        } else {
+          // Normal sticky behavior
+          apiToc.style.position = 'sticky';
+          apiToc.style.top = '2rem';
+        }
+      }
+
+      window.addEventListener('scroll', updateTocPosition);
+      window.addEventListener('resize', updateTocPosition);
+      window.addEventListener('load', updateTocPosition);
     </script>
       <script>
       // Footer accordion for mobile
