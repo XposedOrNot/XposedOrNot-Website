@@ -249,64 +249,92 @@ const ALERT_MESSAGES = {
     alreadySubscribed: "You're already protected! This email is registered for breach alerts"
 };
 
-function fireConfetti() {
-    // Check if confetti library is loaded
-    if (typeof confetti !== 'function') {
-        console.warn('Confetti library not loaded');
-        return;
-    }
-
-    // Vibrant color palette
-    const colors = [
-        '#FF6B6B',  // Coral red
-        '#4ECDC4',  // Turquoise
-        '#45B7D1',  // Sky blue
-        '#96CEB4',  // Sage green
-        '#FFEEAD',  // Cream yellow
-        '#FFD93D',  // Golden yellow
-        '#FF9EAA',  // Pink
-        '#A06CD5'   // Purple
-    ];
-
-    // First burst from left
-    confetti({
-        particleCount: 150,
-        spread: 80,
-        origin: { x: 0.2, y: 0.8 },
-        colors: colors,
-        ticks: 200,
-        gravity: 1.2,
-        scalar: 1.2,
-        shapes: ['square', 'circle']
+// Lazy-load confetti library
+let confettiLoading = false;
+function loadConfetti() {
+    return new Promise((resolve, reject) => {
+        if (typeof confetti === 'function') {
+            resolve();
+            return;
+        }
+        if (confettiLoading) {
+            // Wait for existing load to complete
+            const checkLoaded = setInterval(() => {
+                if (typeof confetti === 'function') {
+                    clearInterval(checkLoaded);
+                    resolve();
+                }
+            }, 50);
+            return;
+        }
+        confettiLoading = true;
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+        script.integrity = 'sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A==';
+        script.crossOrigin = 'anonymous';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
     });
+}
 
-    // Second burst from right after a small delay
-    setTimeout(() => {
+function fireConfetti() {
+    // Lazy-load confetti library then fire
+    loadConfetti().then(() => {
+        // Vibrant color palette
+        const colors = [
+            '#FF6B6B',  // Coral red
+            '#4ECDC4',  // Turquoise
+            '#45B7D1',  // Sky blue
+            '#96CEB4',  // Sage green
+            '#FFEEAD',  // Cream yellow
+            '#FFD93D',  // Golden yellow
+            '#FF9EAA',  // Pink
+            '#A06CD5'   // Purple
+        ];
+
+        // First burst from left
         confetti({
             particleCount: 150,
             spread: 80,
-            origin: { x: 0.8, y: 0.8 },
+            origin: { x: 0.2, y: 0.8 },
             colors: colors,
             ticks: 200,
             gravity: 1.2,
             scalar: 1.2,
             shapes: ['square', 'circle']
         });
-    }, 250);
 
-    // Add a final smaller burst from the center for extra flair
-    setTimeout(() => {
-        confetti({
-            particleCount: 100,
-            spread: 100,
-            origin: { x: 0.5, y: 0.9 },
-            colors: colors,
-            ticks: 150,
-            gravity: 1,
-            scalar: 1,
-            shapes: ['square', 'circle']
-        });
-    }, 500);
+        // Second burst from right after a small delay
+        setTimeout(() => {
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { x: 0.8, y: 0.8 },
+                colors: colors,
+                ticks: 200,
+                gravity: 1.2,
+                scalar: 1.2,
+                shapes: ['square', 'circle']
+            });
+        }, 250);
+
+        // Add a final smaller burst from the center for extra flair
+        setTimeout(() => {
+            confetti({
+                particleCount: 100,
+                spread: 100,
+                origin: { x: 0.5, y: 0.9 },
+                colors: colors,
+                ticks: 150,
+                gravity: 1,
+                scalar: 1,
+                shapes: ['square', 'circle']
+            });
+        }, 500);
+    }).catch(() => {
+        console.warn('Failed to load confetti library');
+    });
 }
 
 function processSearchResponse(response, email) {

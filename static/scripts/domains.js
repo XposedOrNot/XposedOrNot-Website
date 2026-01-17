@@ -148,60 +148,85 @@ $(document).ready(function () {
         $('.overlay').show();
     }
 
-    function triggerConfetti() {
-        // Check if confetti library is loaded
-        if (typeof confetti !== 'function') {
-            console.warn('Confetti library not loaded');
-            return;
-        }
-
-        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-        const duration = 3000;
-
-        // First burst
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: colors,
-            shapes: ['square', 'circle'],
-            ticks: 200
+    // Lazy-load confetti library
+    let confettiLoading = false;
+    function loadConfetti() {
+        return new Promise((resolve, reject) => {
+            if (typeof confetti === 'function') {
+                resolve();
+                return;
+            }
+            if (confettiLoading) {
+                const checkLoaded = setInterval(() => {
+                    if (typeof confetti === 'function') {
+                        clearInterval(checkLoaded);
+                        resolve();
+                    }
+                }, 50);
+                return;
+            }
+            confettiLoading = true;
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+            script.integrity = 'sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A==';
+            script.crossOrigin = 'anonymous';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
         });
+    }
 
-        // Second burst after 500ms
-        setTimeout(() => {
+    function triggerConfetti() {
+        loadConfetti().then(() => {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+
+            // First burst
             confetti({
-                particleCount: 80,
-                angle: 60,
-                spread: 80,
-                origin: { x: 0, y: 0.6 },
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
                 colors: colors,
                 shapes: ['square', 'circle'],
                 ticks: 200
             });
-            confetti({
-                particleCount: 80,
-                angle: 120,
-                spread: 80,
-                origin: { x: 1, y: 0.6 },
-                colors: colors,
-                shapes: ['square', 'circle'],
-                ticks: 200
-            });
-        }, 500);
 
-        // Third burst after 1000ms
-        setTimeout(() => {
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.7 },
-                colors: colors,
-                shapes: ['square', 'circle'],
-                ticks: 200,
-                gravity: 1.2
-            });
-        }, 1000);
+            // Second burst after 500ms
+            setTimeout(() => {
+                confetti({
+                    particleCount: 80,
+                    angle: 60,
+                    spread: 80,
+                    origin: { x: 0, y: 0.6 },
+                    colors: colors,
+                    shapes: ['square', 'circle'],
+                    ticks: 200
+                });
+                confetti({
+                    particleCount: 80,
+                    angle: 120,
+                    spread: 80,
+                    origin: { x: 1, y: 0.6 },
+                    colors: colors,
+                    shapes: ['square', 'circle'],
+                    ticks: 200
+                });
+            }, 500);
+
+            // Third burst after 1000ms
+            setTimeout(() => {
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.7 },
+                    colors: colors,
+                    shapes: ['square', 'circle'],
+                    ticks: 200,
+                    gravity: 1.2
+                });
+            }, 1000);
+        }).catch(() => {
+            console.warn('Failed to load confetti library');
+        });
     }
 
     google.charts.load('current', {
