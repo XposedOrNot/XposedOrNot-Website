@@ -465,9 +465,10 @@ const pastesRecordsElement = $("#p2");
 const breachesCountElement = $("#b1");
 const breachesRecordsElement = $("#b2");
 
-// Viewport-triggered counter animation
+// Viewport-triggered counter animation with lazy API loading
 let metricsData = null;
 let countersStarted = false;
+let metricsFetched = false;
 
 function startCounters() {
     if (countersStarted || !metricsData) return;
@@ -492,40 +493,43 @@ function startCounters() {
     });
 }
 
+function fetchMetrics() {
+    if (metricsFetched) return;
+    metricsFetched = true;
+
+    $.ajax(apiUrl)
+        .done(function (response) {
+            metricsData = response;
+            startCounters();
+        });
+}
+
 // Set up Intersection Observer for the stats section
 const statsSection = document.querySelector('.follow');
 if (statsSection) {
     const observerOptions = {
         root: null, // viewport
-        rootMargin: '0px',
-        threshold: 0.3 // trigger when 30% visible
+        rootMargin: '100px', // start fetching slightly before section is visible
+        threshold: 0.1 // trigger early for smoother experience
     };
 
     const statsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                startCounters();
-                statsObserver.disconnect(); // Stop observing once triggered
+                fetchMetrics(); // Now API call happens only when section is near viewport
+                statsObserver.disconnect();
             }
         });
     }, observerOptions);
 
     statsObserver.observe(statsSection);
-}
 
-// Fetch metrics data
-$.ajax(apiUrl)
-    .done(function (response) {
-        metricsData = response;
-        // If section is already visible (e.g., user scrolled fast or section is in initial viewport)
-        if (statsSection) {
-            const rect = statsSection.getBoundingClientRect();
-            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-            if (isVisible) {
-                startCounters();
-            }
-        }
-    });
+    // Fallback: check if section is already in viewport on page load
+    const rect = statsSection.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+        fetchMetrics();
+    }
+}
 
 function runCounter(element, endValue, duration) {
     element.runCounter({
