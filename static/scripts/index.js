@@ -573,9 +573,11 @@ let circles = [];
 const maxCircles = 20;
 const maxDistance = 300;
 
+// Initialize canvas size before creating circles
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    var container = document.getElementById('banner');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
@@ -630,8 +632,17 @@ function connectCircles() {
     }
 }
 
-function animate() {
+// Throttle animation to 30fps for better performance
+let lastFrameTime = 0;
+const frameInterval = 1000 / 30; // 30fps = ~33ms per frame
+
+function animate(currentTime) {
     requestAnimationFrame(animate);
+
+    // Skip frame if not enough time has passed
+    if (currentTime - lastFrameTime < frameInterval) return;
+    lastFrameTime = currentTime;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     circles.forEach(circle => {
@@ -641,15 +652,7 @@ function animate() {
     connectCircles();
 }
 
-animate();
-
-function resizeCanvas() {
-    var container = document.getElementById('banner');
-    canvas.width = container.offsetWidth;
-    canvas.height = container.offsetHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+requestAnimationFrame(animate);
 
 // Footer accordion for mobile
 document.addEventListener('DOMContentLoaded', function() {
