@@ -112,7 +112,16 @@ $(document).ready(function () {
     $("#alertMe").click((event) => {
         event.preventDefault();
 
-        const inputValue = $("#recipient-name").val().toLowerCase();
+        const inputValue = $("#recipient-name").val().toLowerCase().trim();
+
+        // Validate email before proceeding
+        if (!inputValue || !validateEmail(inputValue)) {
+            $('#message-text').val("Please enter a valid email address to receive alerts.");
+            $("#h2head").attr("class", "modal-header-danger");
+            $("#recipient-name").css("border", "1px solid red").focus();
+            return;
+        }
+
         let turnstileResponse = '';
 
         try {
