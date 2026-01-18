@@ -33,9 +33,145 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
       integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
       crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous" />
+   <style>
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .svg-spin { animation: spin 1s linear infinite; }
+      .svg-icon { width: 1em; height: 1em; vertical-align: -0.125em; fill: currentColor; }
+
+      /* Speed test styles */
+      .speed-display {
+         background: rgba(255,255,255,0.1);
+         border-radius: 12px;
+         padding: 20px;
+         margin-top: 20px;
+         text-align: center;
+      }
+      .time-row {
+         display: flex;
+         align-items: baseline;
+         justify-content: center;
+         gap: 15px;
+         flex-wrap: wrap;
+      }
+      .stopwatch {
+         font-size: 42px;
+         font-weight: 700;
+         font-family: 'Courier New', monospace;
+         color: #fff;
+         text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      }
+      .stopwatch-label {
+         font-size: 14px;
+         color: rgba(255,255,255,0.8);
+         text-transform: uppercase;
+         letter-spacing: 2px;
+      }
+      .speed-result {
+         display: none;
+      }
+      .speed-result.show { display: inline-flex; align-items: baseline; }
+      .speed-time {
+         font-size: 42px;
+         font-weight: 700;
+         line-height: 1;
+      }
+      .speed-time.fast { color: #2ecc71; }
+      .speed-time.medium { color: #f1c40f; }
+      .speed-time.slow { color: #e74c3c; }
+      .speed-unit {
+         font-size: 20px;
+         color: rgba(255,255,255,0.8);
+         margin-left: 5px;
+      }
+      .speed-status {
+         margin-top: 12px;
+         padding: 10px 16px;
+         background: rgba(255,255,255,0.1);
+         border-radius: 8px;
+         border-left: 3px solid #f1c40f;
+         display: inline-block;
+      }
+      .speed-status .icon {
+         margin-right: 8px;
+      }
+      .speed-status .text {
+         font-size: 14px;
+         color: rgba(255,255,255,0.95);
+      }
+      .breach-summary {
+         margin-top: 12px;
+         font-size: 14px;
+         display: inline-block;
+         padding: 6px 14px;
+         border-radius: 20px;
+      }
+      .breach-summary.safe { background: #2ecc71; color: #fff; }
+      .breach-summary.danger { background: #e74c3c; color: #fff; }
+      .speed-hint {
+         margin-top: 15px;
+         font-size: 14px;
+         color: rgba(255,255,255,0.9);
+         background: rgba(255,255,255,0.15);
+         padding: 8px 16px;
+         border-radius: 6px;
+         display: inline-block;
+      }
+
+      /* Chart area styles */
+      .chart-container {
+         display: none;
+         background: rgba(255,255,255,0.1);
+         border-radius: 12px;
+         padding: 20px;
+         min-height: 420px;
+         position: relative;
+         z-index: 1;
+      }
+      .chart-container.show { display: block; }
+      .chart-title {
+         color: #fff;
+         font-size: 16px;
+         font-weight: 600;
+         margin-bottom: 15px;
+         text-align: center;
+      }
+      .chart-wrapper {
+         position: relative;
+         height: 360px;
+      }
+      #speedChart { width: 100% !important; height: 100% !important; }
+      @keyframes pulse-glow {
+         0%, 100% { text-shadow: 0 0 10px currentColor; }
+         50% { text-shadow: 0 0 25px currentColor, 0 0 40px currentColor; }
+      }
+      .stopwatch.running {
+         animation: pulse-glow 1s ease-in-out infinite;
+      }
+
+      /* Mobile responsive for chart */
+      @media (max-width: 767px) {
+         .banner-right {
+            display: block !important;
+            width: 100%;
+            padding: 0;
+            margin: 20px 0 0 0;
+         }
+         .banner-right #banner-img {
+            display: none;
+         }
+         .chart-container {
+            min-height: 280px;
+            margin: 0;
+            border-radius: 8px;
+         }
+         .chart-wrapper {
+            height: 220px;
+         }
+         .chart-title {
+            font-size: 14px;
+         }
+      }
+   </style>
    <link rel=stylesheet
       href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset'
       type=text/css media=all>
@@ -73,20 +209,37 @@
                <div class="banner-row">
                   <div class="banner-left">
                      <div class="banner-text">
-                        <img src="/static/images/banner.png" class="img-fluid bnr-right2" alt=""">
-                        <form id=" search" method="post" action="/">
+                        <img src="/static/images/banner.png" class="img-fluid bnr-right2" alt="">
+                        <form id="search" method="post" action="/">
                         <h1>Check how fast is XposedOrNot</h1>
                         <p>Type in an email to check the speed for yourself! </p>
                         <div class="form mail-box">
                            <input autofocus class="name" type="email" placeholder="Enter email to check" id="edhu">
                            <input class="check-btn" type="submit" name="submit" value="Check" id="searchMe">
                         </div>
-                        <div id="succ" style="color:white;"> Ready when you are.</div>
+                        <div class="speed-display">
+                           <div class="stopwatch-label">Response Time</div>
+                           <div class="time-row">
+                              <div id="stopwatch" class="stopwatch">0.000s</div>
+                              <div id="speed-result" class="speed-result">
+                                 <span id="speed-time" class="speed-time">0</span><span class="speed-unit">ms</span>
+                              </div>
+                           </div>
+                           <div id="speed-status" class="speed-status"></div>
+                           <div id="breach-summary" class="breach-summary"></div>
+                           <div id="speed-hint" class="speed-hint"></div>
+                        </div>
                         </form>
                      </div>
                   </div>
                   <div class="banner-right">
-                     <img src="/static/images/banner.png" class="img-fluid bnr-right" alt="">
+                     <img id="banner-img" src="/static/images/banner.png" class="img-fluid bnr-right" alt="">
+                     <div id="chart-container" class="chart-container">
+                        <div class="chart-title">Response Time History</div>
+                        <div class="chart-wrapper">
+                           <canvas id="speedChart"></canvas>
+                        </div>
+                     </div>
                   </div>
                </div>
             </div>
@@ -104,8 +257,7 @@
                         <i class="glyphicon glyphicon-fire"></i>
                      </div>
                   </h2>
-                  </i>
-                  <div id=spins> <i class="fa fa-spinner fa-spin" style="font-size:72px;color:#fff"></i> </div>
+                  <div id=spins> <svg class="svg-spin" style="width:72px;height:72px;color:#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg> </div>
                   <div id="ssvisible">
                      <h2> Search results for you ! </h2>
                   </div>
@@ -117,13 +269,13 @@
                   <div class="alert alert-danger" role="alert" id="warn" align="center"> <strong>Warning!</strong>
                      <br>
                   </div>
-                  <div class="alert alert-success" role="alert" id="succ" align="center"> <strong>Excellent !</strong>
+                  <div class="alert alert-success" role="alert" id="modal-succ" align="center"> <strong>Excellent !</strong>
                      Looks like this email is safe for now ! </div>
                   <div class="alert alert-info" role="alert" id="info" align="center"> <strong>Oops !</strong> Can you
                      please try searching again with an email address. </div>
                   <div align="center" id="alert_">
                      <button type="button" id="dismiss" class="btn btn-primary" data-toggle="modal"
-                        data-target="#alertMeModal"> <i class="fa fa-bell"></i> <b>Alert me of data
+                        data-target="#alertMeModal"> <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg> <b>Alert me of data
                            breaches</b></button>
                      <button type="button" id="detailedReport" class="btn btn-primary" style="display: none;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -173,13 +325,13 @@
                <h6>Follow Us</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                  <i class="fab fa-twitter"></i> Twitter (X)
+                  <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)
                </a>
                <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                  <i class="fab fa-facebook"></i> Facebook
+                  <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook
                </a>
                <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-                  <i class="fab fa-mastodon"></i> Mastodon
+                  <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon
                </a>
             </div>
           </div>
@@ -222,12 +374,16 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
       integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
-      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
-      crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="/static/scripts/speed.js"></script>
    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
    <script src="/static/scripts/common.js"></script>
