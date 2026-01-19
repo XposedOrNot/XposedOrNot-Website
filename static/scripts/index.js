@@ -156,9 +156,23 @@ $(document).ready(function () {
                 $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
                 $("#alertMe_i2").addClass("fa fa-bell ring");
             })
-            .fail(() => {
-                $('#message-text').val(ALERT_MESSAGES.alreadySubscribed);
-                $("#h2head").attr("class", "modal-header-success");
+            .fail((jqXHR) => {
+                let message = ALERT_MESSAGES.alreadySubscribed;
+                let headerClass = "modal-header-success";
+
+                // Check if response indicates email delivery failure
+                try {
+                    const response = jqXHR.responseJSON || JSON.parse(jqXHR.responseText);
+                    if (response && response.status === "Error") {
+                        message = ALERT_MESSAGES.unableToDeliver;
+                        headerClass = "modal-header-danger";
+                    }
+                } catch (e) {
+                    // If parsing fails, use default (already subscribed)
+                }
+
+                $('#message-text').val(message);
+                $("#h2head").attr("class", headerClass);
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
 
@@ -255,7 +269,8 @@ const STATUS_MESSAGES = {
 const ALERT_MESSAGES = {
     subscribe: "Get instant notifications if your email appears in future data breaches",
     subscribeSuccess: "Email verification sent! Please check your inbox to confirm alerts",
-    alreadySubscribed: "You're already protected! This email is registered for breach alerts"
+    alreadySubscribed: "You're already protected! This email is registered for breach alerts",
+    unableToDeliver: "Unable to send email to this address. Please check and try again."
 };
 
 // Lazy-load confetti library

@@ -1088,6 +1088,7 @@ $(document).ready(function () {
 
         var successMessage = "Successfully added to the alert service. Please check your email and click on the verification link to confirm";
         var alreadySubscribedMessage = "We thank you for your interest. However our records indicate you are already added to the AlertMe Service.";
+        var unableToDeliverMessage = "Unable to send email to this address. Please check and try again.";
 
         $.ajax(apiUrl)
             .done(function () {
@@ -1096,9 +1097,23 @@ $(document).ready(function () {
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
-            .fail(function () {
-                $('#message-text').val(alreadySubscribedMessage);
-                document.getElementById("h2head").className = "modal-header-success";
+            .fail(function (jqXHR) {
+                var message = alreadySubscribedMessage;
+                var headerClass = "modal-header-success";
+
+                // Check if response indicates email delivery failure
+                try {
+                    var response = jqXHR.responseJSON || JSON.parse(jqXHR.responseText);
+                    if (response && response.status === "Error") {
+                        message = unableToDeliverMessage;
+                        headerClass = "modal-header-danger";
+                    }
+                } catch (e) {
+                    // If parsing fails, use default (already subscribed)
+                }
+
+                $('#message-text').val(message);
+                document.getElementById("h2head").className = headerClass;
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             });
