@@ -230,6 +230,13 @@ $(document).ready(function () {
 
     handleVideoModal();
 
+    // Focus on detailed report button when modal is fully shown
+    $('#thedudalModal').on('shown.bs.modal', function () {
+        if ($("#detailedReport").is(":visible")) {
+            $("#detailedReport").focus();
+        }
+    });
+
     $("#detailedReport").click(function () {
         let url = "data-breaches-risks.html?email=" + $("#edhu").val().toLowerCase();
         window.open(url, '_blank').opener = null;
@@ -238,7 +245,7 @@ $(document).ready(function () {
 
 
 function updateEmailBadge(email) {
-    $('#data_email').html('<b>Searched Email </b> <span class="badge" style="float:right">' + escapeHtml(email) + '</span>');
+    $('#data_email').html('<b class="email-label">Searched Email </b> <span class="badge">' + escapeHtml(email) + '</span>');
 }
 
 function updateBreachBadge(text) {
@@ -418,7 +425,7 @@ function processSearchResponse(response, email) {
 
         $("#hhead").attr("class", "modal-header modal-header-danger");
         $("#dismiss").attr("class", "btn-danger btn");
-        $("#ssvisible").html('<h2><i class="fas fa-exclamation-triangle fa-2x text-white"></i>&nbsp;&nbsp;Warning: Your Email Was Breached!</h2>');
+        $("#ssvisible").html('<h2><i class="fas fa-exclamation-triangle fa-2x text-white"></i>&nbsp;&nbsp;Your Email Appeared in a Breach</h2>');
         $("#warn").show();
         $("#succ").hide();
         $("#info").hide();
@@ -463,6 +470,7 @@ function processSearchResponse(response, email) {
         $("#warn").html(warningMessage);
         $("#warn").show();
     }
+
 }
 
 
@@ -471,7 +479,7 @@ function processSearchError(error, email) {
         $("#mbody").show();
         $("#spins").hide();
         $("#succ").html("You are currently being throttled. Please slow down and try again !");
-        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${escapeHtml(email)}</span>`);
+        $('#data_email').html(`<b class="email-label">Searched Email </b> <span class="badge">${escapeHtml(email)}</span>`);
     } else if (error.status === 502) {
         $("#hhead").attr("class", "modal-header modal-header-danger");
         $("#dismiss").attr("class", "btn btn-primary");
@@ -479,7 +487,7 @@ function processSearchError(error, email) {
         $("#spins, #succ").hide();
         $("#ssvisible").html("<h2>Oops unexpected error...</h2>");
         $("#info").html("Embarassing and looks like something is not right at server end. I have notified the right person to check on this. Please try again after some time.");
-        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${escapeHtml(email)}</span>`);
+        $('#data_email').html(`<b class="email-label">Searched Email </b> <span class="badge">${escapeHtml(email)}</span>`);
     } else {
         $("#hhead").attr("class", "modal-header modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
@@ -487,7 +495,7 @@ function processSearchError(error, email) {
         $("#mbody").show();
         $("#ssvisible").html("<h2>Search results for you</h2>");
         $("#spins, #warn").hide();
-        $('#data_email').html(`<b>Searched Email </b> <span class="badge" style="float:right">${escapeHtml(email)}</span>`);
+        $('#data_email').html(`<b class="email-label">Searched Email </b> <span class="badge">${escapeHtml(email)}</span>`);
         $('#data_breach').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">No breaches found!</span>');
     }
 }
