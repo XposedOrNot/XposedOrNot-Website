@@ -489,14 +489,36 @@ function processSearchError(error, email) {
         $("#info").html("Embarassing and looks like something is not right at server end. I have notified the right person to check on this. Please try again after some time.");
         $('#data_email').html(`<b class="email-label">Searched Email </b> <span class="badge">${escapeHtml(email)}</span>`);
     } else {
+        // No breaches found - show same celebration as processSearchResponse
+        $(".modal-content").css({
+            'background-color': '#f8fff8',
+            'border': '2px solid #28a745'
+        });
+
         $("#hhead").attr("class", "modal-header modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
+        $("#ssvisible").html('<h2><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
+
+        $('#data_email')
+            .removeClass('alert-primary alert-danger')
+            .addClass('alert-success')
+            .html('<b>Searched Email </b> <span class="badge bg-success text-white" style="float:right">' + escapeHtml(email) + '</span>');
+
+        $('#data_breach')
+            .removeClass('alert-primary alert-danger')
+            .addClass('alert-success')
+            .html('<b>Exposed Breaches </b> <span class="badge bg-success text-white" style="float:right">No breaches found!</span>');
+
         $("#detailedReport").hide();
+        $("#warn").hide();
+        $("#spins").hide();
         $("#mbody").show();
-        $("#ssvisible").html("<h2>Search results for you</h2>");
-        $("#spins, #warn").hide();
-        $('#data_email').html(`<b class="email-label">Searched Email </b> <span class="badge">${escapeHtml(email)}</span>`);
-        $('#data_breach').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">No breaches found!</span>');
+        $("#succ").show();
+        $("#alert_").show();
+        $("#succ").html(STATUS_MESSAGES.success);
+
+        // Fire confetti animation
+        setTimeout(fireConfetti, 100);
     }
 }
 
