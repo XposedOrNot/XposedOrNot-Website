@@ -778,7 +778,7 @@ var j = $.ajax(url)
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutoutPercentage: 65,
+                    cutout: '65%',
                     layout: {
                         padding: {
                             top: 20,
@@ -787,37 +787,31 @@ var j = $.ajax(url)
                             left: 20
                         }
                     },
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            fontColor: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
-                            fontSize: 12,
-                            fontStyle: 'bold',
-                            usePointStyle: true,
-                            boxWidth: 10
-                        }
-                    },
-                    tooltips: {
-                        enabled: true,
-                        mode: 'index',
-                        callbacks: {
-                            label: function (tooltipItem, data) {
-                                var dataset = data.datasets[tooltipItem.datasetIndex];
-                                var total = dataset.data.reduce((acc, curr) => acc + curr, 0);
-                                var currentValue = dataset.data[tooltipItem.index];
-                                var percentage = ((currentValue / total) * 100).toFixed(1);
-                                return data.labels[tooltipItem.index] + ': ' + currentValue.toLocaleString() + ' (' + percentage + '%)';
-                            }
-                        }
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true,
-                        duration: 2000,
-                        easing: 'easeInOutQuart'
-                    },
                     plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                usePointStyle: true,
+                                boxWidth: 10
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function (context) {
+                                    var total = context.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                    var currentValue = context.parsed;
+                                    var percentage = ((currentValue / total) * 100).toFixed(1);
+                                    return context.label + ': ' + currentValue.toLocaleString() + ' (' + percentage + '%)';
+                                }
+                            }
+                        },
                         datalabels: {
                             color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
                             font: {
@@ -832,6 +826,12 @@ var j = $.ajax(url)
                             offset: 10,
                             display: 'auto'
                         }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
                     }
                 }
             });
@@ -864,7 +864,7 @@ var j = $.ajax(url)
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutoutPercentage: 65,
+                    cutout: '65%',
                     layout: {
                         padding: {
                             top: 20,
@@ -873,37 +873,31 @@ var j = $.ajax(url)
                             left: 20
                         }
                     },
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            fontColor: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
-                            fontSize: 12,
-                            fontStyle: 'bold',
-                            usePointStyle: true,
-                            boxWidth: 10
-                        }
-                    },
-                    tooltips: {
-                        enabled: true,
-                        mode: 'index',
-                        callbacks: {
-                            label: function (tooltipItem, data) {
-                                var dataset = data.datasets[tooltipItem.datasetIndex];
-                                var total = dataset.data.reduce((acc, curr) => acc + curr, 0);
-                                var currentValue = dataset.data[tooltipItem.index];
-                                var percentage = ((currentValue / total) * 100).toFixed(1);
-                                return data.labels[tooltipItem.index] + ': ' + currentValue.toLocaleString() + ' (' + percentage + '%)';
-                            }
-                        }
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true,
-                        duration: 2000,
-                        easing: 'easeInOutQuart'
-                    },
                     plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                usePointStyle: true,
+                                boxWidth: 10
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function (context) {
+                                    var total = context.dataset.data.reduce((acc, curr) => acc + curr, 0);
+                                    var currentValue = context.parsed;
+                                    var percentage = ((currentValue / total) * 100).toFixed(1);
+                                    return context.label + ': ' + currentValue.toLocaleString() + ' (' + percentage + '%)';
+                                }
+                            }
+                        },
                         datalabels: {
                             color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
                             font: {
@@ -918,6 +912,12 @@ var j = $.ajax(url)
                             offset: 10,
                             display: 'auto'
                         }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
                     }
                 }
             });
@@ -941,32 +941,21 @@ var j = $.ajax(url)
         }
     })
 
-Chart.defaults.global.defaultFontColor = 'white';
-var color = Chart.helpers.color;
-var barChartData1 = {
-    labels: ['Plain Text Password', 'Easily Crackable', 'Strong Hashes'],
-    datasets: [{
-        label: 'Exposed Passwords Risk Profile',
-        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-        borderColor: window.chartColors.blue,
-        borderWidth: 1,
-        data: [
-            plaintext,
-            easy,
-            hard
-        ],
-        backgroundColor: [
-            'rgba(255, 0, 0, 0.7)',
-            'rgba(255, 165, 0, 0.7)',
-            'rgba(0,255,0, 0.7)'
-        ],
-        borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(75, 192, 192, 1)'
-        ],
-    }]
+// Chart.js 4.x global defaults
+Chart.defaults.color = '#666666';
 
+// Register the datalabels plugin
+Chart.register(ChartDataLabels);
+
+// Define chart colors for reuse
+const chartColors = {
+    red: 'rgb(255, 99, 132)',
+    blue: 'rgb(54, 162, 235)',
+    green: 'rgb(75, 192, 192)',
+    orange: 'rgb(255, 159, 64)',
+    purple: 'rgb(153, 102, 255)',
+    yellow: 'rgb(255, 206, 86)',
+    grey: 'rgb(201, 203, 207)'
 };
 
 function g1() {
@@ -982,68 +971,64 @@ function g1() {
             datasets: [{
                 label: 'Breaches Count',
                 fill: false,
-                backgroundColor: window.chartColors.red,
-                borderColor: window.chartColors.red,
+                backgroundColor: chartColors.red,
+                borderColor: chartColors.red,
                 data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24, by25],
             }]
         },
         options: {
             responsive: true,
-            defaultFontColor: isDarkMode ? '#FFFFFF' : '#666666',
-            legend: {
-                position: 'bottom',
-                labels: {
-                    fontColor: isDarkMode ? '#FFFFFF' : '#666666',
-                    fontSize: 12,
-                    fontStyle: 'bold'
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: isDarkMode ? '#FFFFFF' : '#666666',
+                        font: {
+                            size: 12,
+                            weight: 'bold'
+                        }
+                    }
                 }
             },
             scales: {
-                xAxes: [{
+                x: {
                     ticks: {
-                        beginAtZero: true,
-                        precision: 0,
-                        fontColor: isDarkMode ? '#FFFFFF' : '#666666',
-                        fontSize: 12,
-                        fontStyle: 'bold'
+                        color: isDarkMode ? '#FFFFFF' : '#666666',
+                        font: {
+                            size: 12,
+                            weight: 'bold'
+                        }
                     },
-                    gridLines: {
+                    grid: {
                         display: false,
-                        color: '#e0e0e0',
-                        drawOnChartArea: false,
-                        drawBorder: true,
-                        zeroLineColor: isDarkMode ? '#FFFFFF' : '#666666'
-                    },
-                    scaleLabel: {
-                        display: true,
-                        fontColor: isDarkMode ? '#FFFFFF' : '#666666',
-                        fontSize: 12,
-                        fontStyle: 'bold'
+                        drawBorder: true
                     }
-                }],
-                yAxes: [{
+                },
+                y: {
+                    beginAtZero: true,
                     ticks: {
-                        beginAtZero: true,
                         precision: 0,
-                        fontColor: isDarkMode ? '#FFFFFF' : '#666666',
-                        fontSize: 12,
-                        fontStyle: 'bold'
+                        color: isDarkMode ? '#FFFFFF' : '#666666',
+                        font: {
+                            size: 12,
+                            weight: 'bold'
+                        }
                     },
-                    gridLines: {
-                        display: isDarkMode ? false : true,
+                    grid: {
+                        display: !isDarkMode,
                         color: '#e0e0e0',
-                        drawOnChartArea: isDarkMode ? false : true,
-                        drawBorder: true,
-                        zeroLineColor: isDarkMode ? '#FFFFFF' : '#666666'
+                        drawBorder: true
                     },
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: 'Count of Data Breaches',
-                        fontColor: isDarkMode ? '#FFFFFF' : '#666666',
-                        fontSize: 12,
-                        fontStyle: 'bold'
+                        text: 'Count of Data Breaches',
+                        color: isDarkMode ? '#FFFFFF' : '#666666',
+                        font: {
+                            size: 12,
+                            weight: 'bold'
+                        }
                     }
-                }]
+                }
             }
         }
     };
