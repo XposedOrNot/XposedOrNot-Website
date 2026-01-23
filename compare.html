@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Compare Email Breaches - Find Shared Data Exposures | XposedOrNot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
+    />
+    <meta
+      name="description"
+      content="Free breach comparison tool to analyze two email addresses for overlapping data breaches. Compare your personal and work emails, discover shared password exposures, view risk scores, timeline analysis, and get personalized security recommendations."
+    />
+    <meta
+      name="keywords"
+      content="breach comparison tool, compare email breaches, shared data breaches, email security comparison, password exposure checker, personal work email check, security audit, data breach overlap, cybersecurity comparison, XposedOrNot"
+    />
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <link rel="dns-prefetch" href="https://api.xposedornot.com" />
+
+    <!-- Open Graph / Facebook -->
+    <meta
+      property="og:title"
+      content="Compare Email Breaches - Find Shared Data Exposures | XposedOrNot"
+    />
+    <meta
+      property="og:description"
+      content="Free tool to compare two emails for overlapping data breaches. Discover shared password exposures, compare risk scores, and get personalized security recommendations."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="XposedOrNot Breach Comparison Tool - Compare two emails for shared data breaches" />
+    <meta property="og:url" content="https://xposedornot.com/compare" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="bn_BD" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="hi_IN" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+    <meta property="og:locale:alternate" content="ru_RU" />
+    <meta property="og:locale:alternate" content="ta_IN" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta
+      name="twitter:title"
+      content="Compare Email Breaches - Find Shared Exposures | XposedOrNot"
+    />
+    <meta
+      name="twitter:description"
+      content="Free tool to compare two emails for overlapping breaches. Discover shared password exposures, compare risk scores, and get security recommendations."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="XposedOrNot Breach Comparison Tool Interface"
+    />
+
+    <!-- Canonical & Hreflang -->
+    <link rel="canonical" href="https://xposedornot.com/compare" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/compare" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/compare" />
+
+    <!-- SEO & Indexing -->
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="theme-color" content="#417ff9" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="XposedOrNot Compare" />
+    <link rel="author" href="humans.txt" />
+
+    <!-- Structured Data - WebPage -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Breach Comparison Tool",
+        "description": "Compare two email addresses for overlapping data breaches. Discover shared password exposures, compare risk scores, and get personalized security recommendations.",
+        "url": "https://xposedornot.com/compare",
+        "datePublished": "2024-01-01",
+        "dateModified": "2025-01-23",
+        "inLanguage": "en-US",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "XposedOrNot",
+          "url": "https://xposedornot.com"
+        },
+        "about": {
+          "@type": "Thing",
+          "name": "Data Breach Comparison"
+        },
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": [".compare-hero h1", ".compare-hero p", ".section-header h2", ".section-header p"]
+        },
+        "mainEntity": {
+          "@type": "SoftwareApplication",
+          "name": "XposedOrNot Breach Comparison Tool",
+          "applicationCategory": "SecurityApplication",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+      }
+    </script>
+
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://xposedornot.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Breach Comparison Tool",
+            "item": "https://xposedornot.com/compare"
+          }
+        ]
+      }
+    </script>
+
+    <!-- Structured Data - HowTo -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Compare Email Breaches",
+        "description": "Learn how to compare two email addresses for shared data breach exposures using XposedOrNot's free comparison tool.",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "Enter First Email",
+            "text": "Enter the first email address you want to check for data breaches."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "Enter Second Email",
+            "text": "Enter the second email address to compare against the first."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "Compare Breaches",
+            "text": "Click the Compare button to analyze both emails for overlapping breaches, shared risks, and get security recommendations."
+          }
+        ],
+        "totalTime": "PT1M"
+      }
+    </script>
+
+    <!-- Structured Data - SoftwareApplication -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "XposedOrNot Breach Comparison Tool",
+        "description": "Free tool to compare two email addresses for overlapping data breaches, shared password exposures, and security risks.",
+        "url": "https://xposedornot.com/compare",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web Browser",
+        "browserRequirements": "Requires JavaScript",
+        "softwareVersion": "1.0",
+        "author": {
+          "@type": "Organization",
+          "name": "XposedOrNot",
+          "url": "https://xposedornot.com"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Compare two emails for shared breaches",
+          "Visual Venn diagram of breach overlap",
+          "Individual and combined risk scores",
+          "Exposed data types analysis",
+          "Breach timeline history",
+          "Personalized security recommendations",
+          "Export to CSV/PDF"
+        ],
+        "screenshot": "https://xposedornot.com/static/images/xon.png"
+      }
+    </script>
+
+    <!-- Structured Data - FAQPage -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why should I compare two email addresses for breaches?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Comparing your emails helps identify shared breach exposures between your personal and work accounts or multiple accounts you own. Shared breaches indicate potential password reuse risks that require immediate attention."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is the breach comparison tool free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, XposedOrNot's breach comparison tool is completely free to use. You can compare any two email addresses without creating an account."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does the breach comparison tool work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The tool searches our database of known data breaches for both email addresses you enter. It then shows which breaches affect each email, highlights shared breaches that appear in both, calculates risk scores, and provides actionable security recommendations based on the exposed data types."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are shared breaches and why are they dangerous?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Shared breaches are data breaches that contain both email addresses you're comparing. They're dangerous because if you used the same password on both accounts, attackers who obtained credentials from that breach could access multiple accounts. This is called credential stuffing and is one of the most common attack methods."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my email stored when I use the comparison tool?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, XposedOrNot does not store your email addresses or search history. Each comparison is performed in real-time against our breach database, and no personal data is logged or retained. Your privacy is protected."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&display=swap&subset"
+      type="text/css"
+      media="all"
+    />
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/compare.css" type="text/css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
+      integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
+      integrity="sha384-y49Zu59jZHJL/PLKgZPv3k2WI9c0Yp3pWB76V8OBVCb0QBKS8l4Ff3YslzHVX76Y"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"
+      integrity="sha384-0esPaJH+F9evp2lsJYN36SW7XkRbaYviuyF+PpnbjDXBC9i1CWGiJyGrXCyiyGqZ"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
+      integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script src="/static/scripts/other-libraries.js" defer></script>
+  </head>
+
+  <body data-spy="scroll" data-target=".menu" data-offset="50">
+    <!-- Mobile Header -->
+    <div class="mobileheader-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand abs" href="/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community Edition</span>
+              </a>
+              <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="main-menu-part">
+                  <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="password.html">Password</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Header -->
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header-left">
+              <a href="https://XposedOrNot.com" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: #417ff9;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: #417ff9; opacity: 0.85; margin-top: -10px;">Community Edition</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9">
+            <div class="header-right">
+              <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="password.html">Password</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="compare-hero">
+      <div class="container">
+        <h1><i class="fas fa-balance-scale"></i> Compare Email <span class="help-tooltip" title="A data breach happens when hackers steal information from websites you've signed up for, like your email, password, or personal details.">Breaches<i class="fas fa-question-circle"></i></span></h1>
+        <p>Check if two email addresses were caught in the same data breaches and see what information was leaked</p>
+      </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="use-cases-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-briefcase"></i>
+            <h6>Personal & Work</h6>
+            <p>Check your home and work emails</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-envelope-open-text"></i>
+            <h6>Multiple Emails</h6>
+            <p>Compare any two of your emails</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-exchange-alt"></i>
+            <h6>Old & New Email</h6>
+            <p>Check if old breaches followed you</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-clipboard-check"></i>
+            <h6>Security Checkup</h6>
+            <p>See your full breach picture</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="compare-input-section">
+      <div class="container">
+        <p class="instruction-text">
+          <i class="fas fa-info-circle"></i> Enter two email addresses below to see if they appear in the same breaches.
+        </p>
+        <div class="row align-items-center">
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> First Email</h5>
+              <input type="email" class="form-control" id="email1" placeholder="you@gmail.com" autocomplete="email" maxlength="254" autofocus aria-label="First email address to check for breaches">
+            </div>
+          </div>
+          <div class="col-md-2 vs-divider">
+            <span>VS</span>
+          </div>
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> Second Email</h5>
+              <input type="email" class="form-control" id="email2" placeholder="you@work.com" autocomplete="email" maxlength="254" aria-label="Second email address to compare against">
+            </div>
+          </div>
+        </div>
+        <div class="row compare-button-wrapper">
+          <div class="col-12 text-center">
+            <button class="btn btn-compare" id="btnCompare" disabled aria-label="Compare both email addresses for shared data breaches">
+              <i class="fas fa-search" aria-hidden="true"></i> Compare Breaches
+            </button>
+            <div class="error-message" id="errorMessage"></div>
+            <p class="privacy-notice">
+              <i class="fas fa-lock"></i> Your emails are <strong>never stored</strong>.
+              <a href="privacy" target="_blank" rel="noopener">Privacy Policy</a>
+            </p>
+            <p class="consent-notice">
+              <i class="fas fa-user-check"></i> Only check emails you own or have permission to check.
+              <a href="shield.html" target="_blank" rel="noopener">Don't want to appear in searches? Enable Privacy Shield</a>
+            </p>
+            <p class="database-stats" id="databaseStats">
+              <i class="fas fa-database"></i> Searching <span id="breachCount">...</span> breaches with <span id="recordCount">...</span> exposed accounts
+              | <a href="our-repository" target="_blank" rel="noopener" title="View all breaches">See full list <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+      <div class="container">
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="section-header">
+            <h2 class="h3">Breach Comparison Summary</h2>
+            <p>How many breaches each email appears in</p>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-a">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> First Email
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countA">0</div>
+                  <div class="label">Total Breaches</div>
+                  <div class="email-label" id="labelA">Email A</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card shared">
+                <div class="card-header">
+                  <i class="fas fa-link"></i> Shared Breaches
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countShared">0</div>
+                  <div class="label">In Both Emails</div>
+                  <div class="email-label">Both Emails</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-b">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> Second Email
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countB">0</div>
+                  <div class="label">Total Breaches</div>
+                  <div class="email-label" id="labelB">Email B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venn Diagram -->
+        <div class="venn-section">
+          <div class="section-header">
+            <h2 class="h3">Shared vs Unique Breaches
+              <span class="help-tooltip" title="Shared breaches are especially risky. If you used the same password on both emails, hackers could access multiple accounts.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>Which breaches affect one or both emails</p>
+          </div>
+          <div class="venn-container" id="vennContainer">
+            <div class="venn-circle left" id="vennLeft">
+              <span class="count" id="vennCountA">0</span>
+              <span class="label" id="vennLabelA">Only Email 1</span>
+            </div>
+            <div class="venn-overlap" id="vennOverlap">
+              <span class="count" id="vennCountShared">0</span>
+              <span class="label">Shared</span>
+            </div>
+            <div class="venn-circle right" id="vennRight">
+              <span class="count" id="vennCountB">0</span>
+              <span class="label" id="vennLabelB">Only Email 2</span>
+            </div>
+          </div>
+          <div class="overlap-stats" id="overlapStats">
+            <span id="overlapText">Calculating overlap...</span>
+          </div>
+        </div>
+
+        <!-- Risk Comparison -->
+        <div class="risk-comparison-section">
+          <div class="section-header">
+            <h2 class="h3">Security Risk Score
+              <span class="help-tooltip" title="Your risk score (0-100) is based on: how many breaches you're in, whether passwords were leaked, how those passwords were stored, and how recent the breaches are. Higher = more urgent action needed.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>How urgently you need to take action, based on the severity of your breaches</p>
+          </div>
+          <div class="risk-legend">
+            <span class="legend-item low"><i class="fas fa-circle"></i> Low (0-33): No urgent action needed</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Medium (34-66): Change passwords soon</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> High (67-100): Change passwords today</span>
+          </div>
+          <div id="riskMeters">
+            <!-- Risk meters will be populated dynamically -->
+          </div>
+          <div class="alert alert-info mt-3" id="combinedRiskAlert" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="combinedRiskText"></span>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-table-section">
+          <div class="section-header">
+            <h2 class="h3">Detailed Breach Comparison Table</h2>
+            <p>Complete list of data breaches affecting each email address. <strong>Click any breach name</strong> to see full details including exposed data types, breach timeline, and recommended actions.</p>
+          </div>
+          <div class="table-responsive">
+            <table class="comparison-table" id="comparisonTable">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Breach Name</th>
+                  <th id="thEmailA">Email A</th>
+                  <th id="thEmailB">Email B</th>
+                  <th style="text-align: left;">Data Exposed
+                    <span class="help-tooltip" title="Types of personal information leaked: passwords, emails, names, phone numbers, addresses, etc. Passwords are the most critical.">
+                      <i class="fas fa-question-circle"></i>
+                    </span>
+                  </th>
+                  <th>Year</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Table rows will be populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-center">
+            <span class="badge badge-danger mr-2"><i class="fas fa-check"></i> Shared Breach</span>
+            <span class="badge badge-secondary"><i class="fas fa-user"></i> Unique Breach</span>
+          </div>
+        </div>
+
+        <!-- Data Types Comparison -->
+        <div class="data-types-section">
+          <div class="section-header">
+            <h2 class="h3">Exposed Data Types</h2>
+            <p>What types of information were leaked</p>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <canvas id="dataTypesChart" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-section">
+          <div class="section-header">
+            <h2 class="h3">Breach Timeline History</h2>
+            <p>When were these emails caught in breaches? Recent breaches are more urgent to address.</p>
+          </div>
+          <canvas id="timelineChart" height="250"></canvas>
+        </div>
+
+        <!-- Actionable Insights -->
+        <div class="insights-section">
+          <div class="section-header">
+            <h2 class="h3">Security Recommendations</h2>
+            <p>Personalized action items based on your breach comparison analysis</p>
+          </div>
+          <div id="insightsContainer">
+            <!-- Insights will be populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+          <h3 class="h5"><i class="fas fa-download"></i> Export Breach Comparison Report</h3>
+          <p>Download or print your complete breach analysis results</p>
+          <button class="btn btn-success btn-export" id="btnExportCSV">
+            <i class="fas fa-file-excel"></i> Spreadsheet
+          </button>
+          <button class="btn btn-info btn-export" id="btnPrint">
+            <i class="fas fa-print"></i> Print / Save as PDF
+          </button>
+        </div>
+
+        <!-- New Comparison Section -->
+        <div class="new-comparison-section">
+          <h3 class="h5"><i class="fas fa-redo"></i> Check Different Emails</h3>
+          <p>Want to compare other email addresses?</p>
+          <button class="btn btn-outline-primary" id="btnNewComparison">
+            <i class="fas fa-envelope"></i> Start New Comparison
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Celebration Section (No Breaches) -->
+    <div class="celebration-section" id="celebrationSection" style="display: none;">
+      <div class="container">
+        <div class="celebration-content">
+          <div class="celebration-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h2>Excellent News!</h2>
+          <p class="celebration-subtitle">Neither email has been found in any data breaches</p>
+          <div class="celebration-emails">
+            <span class="email-badge" id="celebrateEmailA"></span>
+            <span class="email-badge" id="celebrateEmailB"></span>
+          </div>
+          <div class="celebration-message">
+            <p>Both email addresses are clear! No breaches were found in our database of <strong>billions of exposed records</strong>.</p>
+          </div>
+          <div class="celebration-tips">
+            <h5><i class="fas fa-lightbulb"></i> Keep It That Way</h5>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Use unique, strong passwords for each account</li>
+              <li><i class="fas fa-check-circle"></i> Enable two-factor authentication (2FA), a security code sent to your phone when you log in</li>
+              <li><i class="fas fa-check-circle"></i> Be cautious of phishing emails (fake emails that trick you into revealing passwords)</li>
+              <li><i class="fas fa-check-circle"></i> Regularly check your accounts on XposedOrNot</li>
+            </ul>
+          </div>
+          <div class="celebration-actions">
+            <button class="btn btn-primary" onclick="window.location.href = window.location.pathname">
+              <i class="fas fa-redo"></i> Check Other Emails
+            </button>
+            <a href="/" class="btn btn-outline-primary">
+              <i class="fas fa-search"></i> Full Breach Check
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Join us in shaping this fully open source site! Contributions
+            welcome at our
+            <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Legal</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Privacy Policy</a>
+              <a href="terms" class="footer-link">Terms</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Our Repository</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Trust</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Transparency</a>
+              <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Follow Us</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turnstile Verification Modal -->
+    <div class="modal fade" id="turnstileModal" tabindex="-1" role="dialog" aria-labelledby="turnstileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content turnstile-modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="turnstileModalLabel">
+              <i class="fas fa-shield-alt"></i> Security Check
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <p class="turnstile-instruction">Please complete the security check to continue</p>
+            <div id="turnstileWidget" class="turnstile-wrapper"></div>
+            <div class="turnstile-loading" id="turnstileLoading">
+              <div class="turnstile-spinner">
+                <i class="fas fa-shield-alt fa-pulse"></i>
+              </div>
+              <p>Loading security verification...</p>
+              <small class="text-muted">This usually takes a few seconds</small>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script
+      src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"
+      integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/static/scripts/compare.js"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=initTurnstile"
+      async
+      defer
+    ></script>
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
+    ></script>
+  </body>
+</html>
