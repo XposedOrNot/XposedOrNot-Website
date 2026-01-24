@@ -807,10 +807,18 @@ i.bx {
 	justify-content: space-evenly;
 }
 
+/* Index page specific: allow wrapping for responsive layout */
+.banner-row:has(.add-row) {
+	flex-wrap: wrap;
+	gap: 30px;
+}
+
 .banner-left {
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
-	width: 700px;
+	max-width: 700px;
+	width: 100%;
+	flex: 1 1 450px;
 }
 
 .banner-text {
@@ -881,22 +889,45 @@ img.bnr-right {
 }
 
 .banner-right {
-	margin: 0px 0px 0px 30px;
+	margin: 0px;
 	padding: 80px 0px 0px 0px;
-	width: 700px;
+	max-width: 700px;
+	width: 100%;
+	flex: 1 1 450px;
 }
 
-.banner-row::after {
+/* Divider line - only for index pages (banner-row containing .add-row) */
+.banner-row:has(.add-row)::after {
 	content: "";
 	width: 1px;
-	height: 70%;
+	height: 300px;
+	max-height: 70%;
 	background-color: white;
 	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
-@media screen and (max-width: 768px) {
-	.banner-row::after {
+@media screen and (max-width: 1199px) {
+	.banner-row:has(.add-row)::after {
 		display: none;
+	}
+}
+
+/* Index page specific: smaller tool boxes at medium-large screens */
+@media screen and (max-width: 1399px) and (min-width: 1200px) {
+	.banner-right.add-row {
+		padding-top: 40px;
+	}
+
+	.banner-right.add-row .add1 {
+		min-width: 150px;
+		padding: 12px 10px;
+	}
+
+	.banner-right.add-row .add1 h5 {
+		font-size: 14px;
 	}
 }
 
@@ -1148,15 +1179,6 @@ img.pass2 {
 }
 
 @media (max-width: 1199px) and (min-device-width: 992px) {
-	.banner-text {
-		margin: 110px 0px 0px 0px;
-	}
-
-	.banner-text h1 {
-		font-size: 26px;
-	}
-
-
 	.footer-row {
 		display: block;
 	}
@@ -1208,8 +1230,31 @@ img.pass2 {
 	.banner-right {
 		display: none;
 	}
+}
 
+/* Index page specific: hide tools panel and stack layout earlier (at 1199px) */
+@media (max-width: 1199px) and (min-device-width: 768px) {
+	/* Only stack banner-row when it contains the tools panel (index pages) */
+	.banner-row:has(.add-row) {
+		display: block;
+	}
 
+	.banner-row:has(.add-row) .banner-left {
+		display: block;
+		width: 100%;
+	}
+
+	.banner-row:has(.add-row) .banner-text {
+		text-align: center;
+	}
+
+	.banner-right.add-row {
+		display: none;
+	}
+}
+
+/* Tablet breakpoint (991px) - applies to all pages */
+@media (max-width: 991px) and (min-device-width: 768px) {
 	img.pass2 {
 		margin: 0px 0px 40px 0px;
 		display: block;
@@ -1255,7 +1300,6 @@ img.pass2 {
 	.password {
 		padding: 75px 0px 70px 0px;
 	}
-
 
 	.footer-row {
 		display: block;
