@@ -33,7 +33,7 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-let by25 = by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
+let by26 = by25 = by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
 let i11 = i12 = i13 = i14 = i15 = i16 = i17 = i18 = i19 = i20 = i1 = i2 = i3 = i4 = i5 = i6 = i7 = i8 = i9 = i10 = i20 = i21 = i22 = i23 = i24 = i25 = i26 = 0;
 let unknown = plaintext = easy = hard = password_score = 0;
 
@@ -364,6 +364,7 @@ var j = $.ajax(url)
         $('#risk').html(riskScoreHtml);
 
         if (xposedData.toString().length > 0) {
+            by26 = jsonResponse.BreachMetrics.yearwise_details[0].y2026;
             by25 = jsonResponse.BreachMetrics.yearwise_details[0].y2025;
             by24 = jsonResponse.BreachMetrics.yearwise_details[0].y2024;
             by23 = jsonResponse.BreachMetrics.yearwise_details[0].y2023;
@@ -752,7 +753,7 @@ var j = $.ajax(url)
 
             const isMobile = window.innerWidth <= 767;
 
-            var top5chart = new Chart(top5, {
+            top5ChartInstance = new Chart(top5, {
                 type: 'doughnut',
                 data: {
                     labels: breaches_id,
@@ -792,7 +793,7 @@ var j = $.ajax(url)
                             position: 'bottom',
                             labels: {
                                 padding: 20,
-                                color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
+                                color: getChartTextColor(),
                                 font: {
                                     size: 12,
                                     weight: 'bold'
@@ -813,7 +814,7 @@ var j = $.ajax(url)
                             }
                         },
                         datalabels: {
-                            color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
+                            color: getChartTextColor(),
                             font: {
                                 weight: 'bold',
                                 size: 11
@@ -840,7 +841,7 @@ var j = $.ajax(url)
 
             passwords.parentElement.style.height = '400px';
 
-            var passwordschart = new Chart(passwords, {
+            passwordsChartInstance = new Chart(passwords, {
                 type: 'doughnut',
                 data: {
                     labels: ['Plain Text Password', 'Easily Crackable', 'Strong Hashes', 'Unknown'],
@@ -878,7 +879,7 @@ var j = $.ajax(url)
                             position: 'bottom',
                             labels: {
                                 padding: 20,
-                                color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
+                                color: getChartTextColor(),
                                 font: {
                                     size: 12,
                                     weight: 'bold'
@@ -899,7 +900,7 @@ var j = $.ajax(url)
                             }
                         },
                         datalabels: {
-                            color: document.body.classList.contains('dark-mode') ? '#FFFFFF' : '#666666',
+                            color: getChartTextColor(),
                             font: {
                                 weight: 'bold',
                                 size: 11
@@ -941,11 +942,74 @@ var j = $.ajax(url)
         }
     })
 
-// Chart.js 4.x global defaults
-Chart.defaults.color = '#666666';
-
 // Register the datalabels plugin
 Chart.register(ChartDataLabels);
+
+// Function to check if dark mode is active
+function isDarkModeActive() {
+    return document.body.getAttribute('data-theme') === 'dark' ||
+           document.body.classList.contains('dark-mode') ||
+           localStorage.getItem('darkSwitch') === 'dark';
+}
+
+// Function to get current text color based on dark mode
+function getChartTextColor() {
+    // Use bright white for dark mode, dark gray for light mode
+    return isDarkModeActive() ? '#FFFFFF' : '#333333';
+}
+
+// Store chart instances for updating
+let top5ChartInstance = null;
+let passwordsChartInstance = null;
+let lineChartInstance = null;
+
+// Function to update all chart colors for dark mode
+function updateChartsForDarkMode() {
+    const textColor = getChartTextColor();
+    const isDark = isDarkModeActive();
+
+    // Update global defaults
+    Chart.defaults.color = textColor;
+
+    if (top5ChartInstance) {
+        top5ChartInstance.options.plugins.legend.labels.color = textColor;
+        top5ChartInstance.options.plugins.datalabels.color = textColor;
+        top5ChartInstance.update('none');
+    }
+
+    if (passwordsChartInstance) {
+        passwordsChartInstance.options.plugins.legend.labels.color = textColor;
+        passwordsChartInstance.options.plugins.datalabels.color = textColor;
+        passwordsChartInstance.update('none');
+    }
+
+    if (lineChartInstance) {
+        lineChartInstance.options.plugins.legend.labels.color = textColor;
+        lineChartInstance.options.scales.x.ticks.color = textColor;
+        lineChartInstance.options.scales.y.ticks.color = textColor;
+        lineChartInstance.options.scales.y.title.color = textColor;
+        lineChartInstance.options.scales.y.grid.color = isDark ? '#3a3a3a' : '#e0e0e0';
+        lineChartInstance.update('none');
+    }
+}
+
+// Watch for dark mode changes on body
+const chartDarkModeObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme') {
+            setTimeout(updateChartsForDarkMode, 100);
+        }
+    });
+});
+
+// Start observing body for dark mode changes
+chartDarkModeObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class', 'data-theme']
+});
+
+// Set initial Chart.js defaults based on current mode
+Chart.defaults.color = getChartTextColor();
 
 // Define chart colors for reuse
 const chartColors = {
@@ -960,9 +1024,10 @@ const chartColors = {
 
 function g1() {
 
-    const isDarkMode = document.body.classList.contains('dark-mode');
+    const textColor = getChartTextColor();
+    const isDarkMode = isDarkModeActive();
 
-    const chartLabels = ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'];
+    const chartLabels = ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'];
 
     var config = {
         type: 'line',
@@ -973,7 +1038,7 @@ function g1() {
                 fill: false,
                 backgroundColor: chartColors.red,
                 borderColor: chartColors.red,
-                data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24, by25],
+                data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24, by25, by26],
             }]
         },
         options: {
@@ -982,7 +1047,7 @@ function g1() {
                 legend: {
                     position: 'bottom',
                     labels: {
-                        color: isDarkMode ? '#FFFFFF' : '#666666',
+                        color: textColor,
                         font: {
                             size: 12,
                             weight: 'bold'
@@ -993,7 +1058,7 @@ function g1() {
             scales: {
                 x: {
                     ticks: {
-                        color: isDarkMode ? '#FFFFFF' : '#666666',
+                        color: textColor,
                         font: {
                             size: 12,
                             weight: 'bold'
@@ -1008,21 +1073,21 @@ function g1() {
                     beginAtZero: true,
                     ticks: {
                         precision: 0,
-                        color: isDarkMode ? '#FFFFFF' : '#666666',
+                        color: textColor,
                         font: {
                             size: 12,
                             weight: 'bold'
                         }
                     },
                     grid: {
-                        display: !isDarkMode,
-                        color: '#e0e0e0',
+                        display: true,
+                        color: isDarkMode ? '#3a3a3a' : '#e0e0e0',
                         drawBorder: true
                     },
                     title: {
                         display: true,
                         text: 'Count of Data Breaches',
-                        color: isDarkMode ? '#FFFFFF' : '#666666',
+                        color: textColor,
                         font: {
                             size: 12,
                             weight: 'bold'
@@ -1034,7 +1099,7 @@ function g1() {
     };
 
     var ctx = document.getElementById('bc').getContext('2d');
-    window.myLine = new Chart(ctx, config);
+    lineChartInstance = new Chart(ctx, config);
 }
 
 $(window).on("load", function () {
@@ -1179,20 +1244,34 @@ $(document).ready(function () {
 
 var floatingButton = document.getElementById('floating-button');
 var topPos = 100;
+
+// Function to get appropriate top position based on viewport
+function getFloatingButtonTop() {
+    // On mobile (less than 992px), position below navbar to avoid overlap
+    return window.innerWidth < 992 ? '70px' : '10px';
+}
+
 floatingButton.style.position = 'fixed';
-floatingButton.style.top = '10px';
+floatingButton.style.top = getFloatingButtonTop();
 floatingButton.style.right = '20px';
 
 document.addEventListener('scroll', function () {
     var y = window.pageYOffset;
     if (y > 0) {
         floatingButton.style.position = 'fixed';
-        floatingButton.style.top = '10px';
+        floatingButton.style.top = getFloatingButtonTop();
         floatingButton.style.right = '20px';
     } else {
         floatingButton.style.position = 'absolute';
         floatingButton.style.top = topPos + 'px';
         floatingButton.style.right = '20px';
+    }
+});
+
+// Update position on window resize
+window.addEventListener('resize', function () {
+    if (window.pageYOffset > 0) {
+        floatingButton.style.top = getFloatingButtonTop();
     }
 });
 
