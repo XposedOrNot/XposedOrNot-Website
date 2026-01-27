@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+   <meta charset="utf-8">
+   <title>XposedOrNot স্বচ্ছতা প্রতিবেদন | আমরা আপনার ডেটা কীভাবে পরিচালনা করি</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="description"
+      content="জানুন XposedOrNot কীভাবে আপনার গোপনীয়তা রক্ষা করে, লঙ্ঘন ডেটা পরিচালনা করে এবং আমাদের কার্যক্রমে স্বচ্ছতা বজায় রাখে। আমাদের আইনি সম্মতি এবং টেকডাউন পরিসংখ্যান দেখুন।">
+   <meta name="keywords"
+      content="ডেটা গোপনীয়তা, স্বচ্ছতা প্রতিবেদন, ডেটা লঙ্ঘন পরিচালনা, গোপনীয়তা নীতি, নিরাপত্তা সম্মতি">
+   <meta name="author" content="Devanand Premkumar">
+   <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
+   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+   <link rel="dns-prefetch" href="static.hotjar.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com">
+
+   <meta property="og:title" content="XposedOrNot স্বচ্ছতা প্রতিবেদন | আমরা আপনার ডেটা কীভাবে পরিচালনা করি" />
+   <meta property="og:description"
+      content="জানুন XposedOrNot কীভাবে আপনার গোপনীয়তা রক্ষা করে এবং সম্পূর্ণ স্বচ্ছতার সাথে লঙ্ঘন ডেটা পরিচালনা করে।" />
+   <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+   <meta property="og:image:alt" content="XposedOrNot লোগো" />
+   <meta property="og:url" content="https://xposedornot.com/bn/transparency" />
+   <meta property="og:type" content="website" />
+   <meta property="og:site_name" content="XposedOrNot" />
+
+   <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:site" content="@XposedOrNot">
+   <meta name="twitter:creator" content="@DevaOnBreaches">
+   <meta name="twitter:title" content="XposedOrNot স্বচ্ছতা প্রতিবেদন">
+   <meta name="twitter:description"
+      content="জানুন XposedOrNot কীভাবে আপনার গোপনীয়তা রক্ষা করে এবং সম্পূর্ণ স্বচ্ছতার সাথে লঙ্ঘন ডেটা পরিচালনা করে।">
+   <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+   <link href="../static/css/style-new.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous" />
+   <link rel="stylesheet"
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset' type="text/css"
+      media="all">
+   <link rel="author" href="../humans.txt" />
+
+   <script src="../static/scripts/other-libraries.js" defer></script>
+
+   <style>
+      #banner {
+         min-height: 150px !important;
+         padding-bottom: 30px;
+         overflow: visible !important;
+      }
+
+      .grid {
+         overflow: visible !important;
+      }
+
+      .navbar {
+         overflow: visible !important;
+      }
+
+      .dropdown-menu {
+         position: absolute !important;
+         z-index: 1050 !important;
+         max-height: none !important;
+      }
+
+      .transparency-content {
+         background-color: white;
+         padding: 60px 0;
+      }
+
+      .transparency-section {
+         max-width: 900px;
+         margin: 0 auto;
+         padding: 0 15px;
+      }
+
+      .transparency-section h2 {
+         color: #3f71f3;
+         margin-bottom: 20px;
+         font-size: 1.8em;
+         font-weight: 600;
+      }
+
+      .transparency-section h3 {
+         color: #3f71f3;
+         margin-top: 40px;
+         margin-bottom: 15px;
+         font-size: 1.4em;
+         font-weight: 600;
+      }
+
+      .transparency-section p {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         text-align: justify;
+         font-size: 1.05em;
+      }
+
+      .transparency-section ul {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         padding-left: 25px;
+      }
+
+      .transparency-section ul li {
+         margin-bottom: 10px;
+      }
+
+      .table-responsive {
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         margin-top: 30px;
+         margin-bottom: 40px;
+      }
+
+      .metrics-table {
+         width: 100%;
+         border-collapse: collapse;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+         background-color: white;
+         min-width: 600px;
+      }
+
+      .metrics-table th {
+         background-color: #3f71f3;
+         color: white;
+         padding: 15px;
+         text-align: left;
+         font-weight: 600;
+         white-space: nowrap;
+      }
+
+      .metrics-table td {
+         padding: 12px 15px;
+         border-bottom: 1px solid #e0e0e0;
+         background-color: white;
+      }
+
+      .metrics-table td:nth-child(2),
+      .metrics-table td:nth-child(3),
+      .metrics-table td:nth-child(4) {
+         text-align: center;
+      }
+
+      .metrics-table tr:hover td {
+         background-color: #f5f5f5;
+      }
+
+      .contact-box {
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         color: white;
+         padding: 30px;
+         border-radius: 10px;
+         margin: 40px 0;
+         text-align: center;
+      }
+
+      .contact-box a {
+         color: white;
+         text-decoration: underline;
+         font-weight: bold;
+      }
+
+      .highlight-box {
+         background-color: #f0f4ff;
+         border-left: 4px solid #3f71f3;
+         padding: 20px;
+         margin: 25px 0;
+         border-radius: 5px;
+      }
+
+      /* Dark mode styles */
+      [data-theme="dark"] .transparency-content {
+         background-color: #1a1a1a;
+      }
+
+      [data-theme="dark"] .transparency-section h2,
+      [data-theme="dark"] .transparency-section h3 {
+         color: #5c8aff;
+      }
+
+      [data-theme="dark"] .transparency-section p,
+      [data-theme="dark"] .transparency-section li {
+         color: #e0e0e0;
+      }
+
+      [data-theme="dark"] .metrics-table {
+         background-color: #2a2a2a;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      }
+
+      [data-theme="dark"] .metrics-table td {
+         background-color: #2a2a2a;
+         border-bottom: 1px solid #444;
+         color: #e0e0e0;
+      }
+
+      [data-theme="dark"] .metrics-table tr:hover td {
+         background-color: #333;
+      }
+
+      [data-theme="dark"] .highlight-box {
+         background-color: #2a2a4a;
+         border-left-color: #5c8aff;
+         color: #e0e0e0;
+      }
+
+      @media (max-width: 768px) {
+         .transparency-section h2 {
+            font-size: 1.5em;
+         }
+
+         .transparency-section h3 {
+            font-size: 1.2em;
+         }
+
+         .transparency-section p {
+            font-size: 1em;
+         }
+      }
+   </style>
+
+   <meta name="robots" content="index, follow">
+   <meta name="theme-color" content="#3f71f3">
+</head>
+
+<body data-spy="scroll" data-target=".menu" data-offset="50">
+   <div class="xon">
+      <div class="searchMe">
+         <div class="banner" id="banner">
+            <canvas id="canvas"></canvas>
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/bn/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">কমিউনিটি
+                        সংস্করণ</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password.html">পাসওয়ার্ড</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq.html">প্রায়শই জিজ্ঞাসিত প্রশ্ন</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="https://plus.xposedornot.com" target="_blank">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc.html">এপিআই</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> ভাষা <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+
+      <div class="transparency-content">
+         <div class="container transparency-section">
+            <h2 align="center">স্বচ্ছতা প্রতিবেদন</h2>
+         <p align="center" style="font-size: 1.1em; color: #666; margin-bottom: 50px;">
+            আমরা কীভাবে আপনার গোপনীয়তা রক্ষা করি এবং দায়িত্বশীলভাবে ডেটা লঙ্ঘন পরিচালনা করি
+         </p>
+
+         <h3>আমাদের লক্ষ্য</h3>
+         <p>
+            XposedOrNot-এর উদ্দেশ্য হল মানুষদের বুঝতে সাহায্য করা কখন তাদের ব্যক্তিগত তথ্য ডেটা লঙ্ঘনে উন্মুক্ত হয়েছে। আমাদের পদ্ধতি দায়িত্বশীলতায় মূলিত: আমরা চুরি হওয়া ডেটা পুনঃপ্রকাশ বা ছড়িয়ে না দিয়ে এই সেবা প্রদান করি যা ক্ষতিগ্রস্ত ব্যক্তিদের আরও ক্ষতি করতে পারে।
+         </p>
+         <p>
+            আমাদের লক্ষ্য স্বচ্ছতা এবং দায়িত্বের মধ্যে সতর্ক ভারসাম্য বজায় রাখা। আমরা যা করতে চাই:
+         </p>
+         <ul>
+            <li>আপনাকে কার্যকর নিরাপত্তা অন্তর্দৃষ্টি প্রদান করা যা আপনাকে নিজেকে রক্ষা করতে সাহায্য করে, আপনার গোপনীয়তাকে সম্মান করে এবং কখনও অপ্রয়োজনীয় ব্যক্তিগত তথ্য সংরক্ষণ না করে</li>
+            <li>প্রযোজ্য আইন ও বিধিমালা সম্পূর্ণরূপে মেনে চলা, সংস্থা এবং লঙ্ঘন দ্বারা ক্ষতিগ্রস্ত ব্যক্তি উভয়ের বৈধ অধিকারকে সম্মান করা</li>
+            <li>আমাদের অনুশীলন, নীতি এবং আমাদের সেবার সীমাবদ্ধতা সম্পর্কে সম্পূর্ণ স্বচ্ছতা বজায় রাখা</li>
+         </ul>
+         <p>
+            আপনি কীভাবে আমাদের সেবা ব্যবহার করতে পারেন এবং ব্যবহারকারীদের কাছ থেকে আমরা কী আশা করি তার সম্পূর্ণ বিবরণের জন্য, অনুগ্রহ করে আমাদের <a href="terms.html" style="color: #3f71f3;">শর্তাবলী</a> দেখুন।
+         </p>
+
+         <h3>আমরা কীভাবে লঙ্ঘন ডেটা পরিচালনা করি</h3>
+         <div class="highlight-box">
+            <strong>আমরা কখনও সম্পূর্ণ লঙ্ঘন ডাম্প বা চুরি হওয়া ডেটা পুনঃপ্রকাশ বা বিতরণ করি না।</strong>
+         </div>
+         <p>আমরা আসলে কী সংরক্ষণ করি এবং লঙ্ঘন ডেটা কীভাবে প্রক্রিয়া করি তা এখানে:</p>
+         <ul>
+            <li>আমরা লঙ্ঘন ডেটাসেট থেকে শুধুমাত্র ইমেইল ঠিকানা বের করি এবং আমাদের ডেটাবেসে সংরক্ষণ করি। এটি আমাদেরকে আপস করা তথ্যের সম্পূর্ণ পরিধি ধরে না রেখে অনুসন্ধান কার্যকারিতা প্রদান করতে দেয়।</li>
+            <li>আমরা লঙ্ঘনের নাম, ঘটনার তারিখ, ক্ষতিগ্রস্ত সংস্থা এবং উন্মুক্ত ডেটার সাধারণ বিভাগ সহ সর্বজনীন লঙ্ঘন মেটাডেটা বজায় রাখি। এই প্রাসঙ্গিক তথ্য আপনাকে প্রতিটি ঘটনার তীব্রতা এবং পরিধি বুঝতে সাহায্য করে।</li>
+            <li>আমরা পাসওয়ার্ড, ক্রেডিট কার্ড নম্বর, সামাজিক নিরাপত্তা নম্বর, ব্যক্তিগত পরিচয়পত্র বা মূল লঙ্ঘনের অংশ হতে পারে এমন অন্য কোনো সংবেদনশীল ব্যক্তিগত ডেটা সংরক্ষণ করি না। এই ডেটার ধরনগুলো ইচ্ছাকৃতভাবে আমাদের সিস্টেম থেকে বাদ দেওয়া হয়।</li>
+            <li>এই নির্বাচনী পদ্ধতি আপনাকে পরিচিত লঙ্ঘনে আপনার ইমেইল প্রদর্শিত হয়েছে কিনা তা পরীক্ষা করতে দেয় এবং নিশ্চিত করে যে অন্যান্য সংবেদনশীল তথ্য আমাদের অবকাঠামোর সম্পূর্ণ বাইরে থাকে এবং আমাদের সেবার মাধ্যমে কেউ অ্যাক্সেস করতে পারে না।</li>
+         </ul>
+
+         <h3>ডেটা ন্যূনতমকরণ এবং নিরাপত্তা</h3>
+         <p>আমরা ডেটা নিরাপত্তা এবং ন্যূনতমকরণের জন্য শিল্পের সর্বোত্তম অনুশীলন অনুসরণ করি:</p>
+         <ul>
+            <li>আমরা লঙ্ঘন অনুসন্ধান সম্পাদন এবং আমাদের মূল সেবা প্রদান করতে একেবারে প্রয়োজনীয় সর্বনিম্ন তথ্য বজায় রাখি। যে কোনো ডেটা আমাদের ব্যবহারকারীদের জন্য সরাসরি উদ্দেশ্য পরিবেশন করে না তা সংগ্রহ বা ধরে রাখা হয় না।</li>
+            <li>সমস্ত কার্যক্রম বিচ্ছিন্ন ক্লাউড পরিবেশে পরিচালিত হয় যা বিশ্রামে (ডেটা সংরক্ষিত থাকলে) এবং ট্রানজিটে (ডেটা সিস্টেমের মধ্যে চলাচল করলে) উভয় ক্ষেত্রে এনক্রিপশন ব্যবহার করে। এটি প্রতিটি পর্যায়ে অননুমোদিত অ্যাক্সেস থেকে তথ্য রক্ষা করে।</li>
+            <li>আমরা কখনও বিপণন, বিশ্লেষণ বা গবেষণা সহ কোনো উদ্দেশ্যে তৃতীয় পক্ষের সাথে কাঁচা ব্যক্তিগত ডেটা শেয়ার, বিক্রি বা প্রদান করি না। আপনার গোপনীয়তা আমরা লেনদেন করি এমন পণ্য নয়।</li>
+         </ul>
+
+         <h3>আইনি এবং টেকডাউন অনুরোধ</h3>
+         <p>আমরা আমাদের আইনি বাধ্যবাধকতাগুলো গুরুত্বের সাথে গ্রহণ করি এবং স্বচ্ছতা ও আইনি সম্মতির মধ্যে ভারসাম্য বজায় রাখতে কাজ করি:</p>
+         <ul>
+            <li>আমরা বৈধ আইনি আদেশ, আইন প্রয়োগকারী অনুরোধ এবং নিয়ন্ত্রক কর্তৃপক্ষের নির্দেশে দ্রুত এবং যথাযথভাবে সাড়া দিই। পদক্ষেপ নেওয়ার আগে প্রতিটি অনুরোধ আইনি মান পূরণ করে তা নিশ্চিত করতে পর্যালোচনা করা হয়।</li>
+            <li>যখন একটি লঙ্ঘন ডেটাসেট আদালতের নিষেধাজ্ঞা, আইনি বিধিনিষেধ বা বৈধ টেকডাউন অনুরোধের অধীন হয়, তখন আমরা সেই তথ্য সম্পূর্ণরূপে দমন করতে পারি বা আঞ্চলিক আইন ও বিধিমালা মেনে চলতে ভৌগলিক অবস্থানের উপর ভিত্তি করে অ্যাক্সেস সীমিত করতে পারি।</li>
+            <li>আমরা এই অনুরোধ সম্পর্কে স্বচ্ছতায় বিশ্বাস করি। টেকডাউন এবং আইনি অনুরোধের পরিসংখ্যান নীচের মেট্রিক্স টেবিলে প্রকাশিত হয়, আমরা প্রাপ্ত আইনি দাবি সম্পর্কে সম্প্রদায়কে অবগত রাখতে নিয়মিত আপডেট করা হয়।</li>
+         </ul>
+         <div class="contact-box">
+            <p style="margin-bottom: 10px;"><strong>টেকডাউন বা সীমাবদ্ধতার অনুরোধ করতে হবে?</strong></p>
+            <p style="margin-bottom: 0;">অধিকার-ধারক এবং সংস্থাগুলো আমাদের সাথে যোগাযোগ করতে পারেন:<br>
+               <!--email_off--><a href="mailto:deva@xposedornot.com">deva[@]xposedornot.com</a><!--/email_off-->
+            </p>
+         </div>
+
+         <h3>জনস্বার্থ মান</h3>
+         <p>আমরা নিম্নলিখিত বিষয়গুলোর উপর ভিত্তি করে একটি লঙ্ঘন অন্তর্ভুক্ত করার সিদ্ধান্ত নিই:</p>
+         <ul>
+            <li><strong>নির্ভরযোগ্য উৎস যাচাই:</strong> লঙ্ঘনটি কি খাঁটি এবং যাচাইকৃত?</li>
+            <li><strong>ব্যক্তিদের উপর উল্লেখযোগ্য প্রভাব:</strong> এটি কি উল্লেখযোগ্য সংখ্যক মানুষকে প্রভাবিত করে?</li>
+            <li><strong>কোনো চলমান ঝুঁকি নেই:</strong> প্রকাশ কি ক্ষতি বা নিরাপত্তা সমস্যা সৃষ্টি করবে?</li>
+         </ul>
+         <p>
+            যদি একটি লঙ্ঘন প্রকাশ ক্ষতি করতে পারে বা কোনো আইনি বিধিনিষেধ লঙ্ঘন করে, আমরা সেই ডেটাসেট বাদ দিই বা সীমিত করি।
+         </p>
+
+         <h3>ব্যবহারকারী কোয়েরি গোপনীয়তা</h3>
+         <p>আপনি আমাদের অনুসন্ধান বৈশিষ্ট্যগুলো ব্যবহার করলে আপনার গোপনীয়তা সর্বোচ্চ গুরুত্বপূর্ণ। আমরা আপনার বেনামী রক্ষা করতে আমাদের সিস্টেম ডিজাইন করেছি:</p>
+         <ul>
+            <li>অনুসন্ধান কোয়েরিগুলো মেমরিতে প্রক্রিয়া করা হয় এবং কোনো শনাক্তযোগ্য ফর্মে লগ করা হয় না। আপনার অনুসন্ধান সম্পন্ন হলে, কোয়েরি তথ্য এমনভাবে ধরে রাখা হয় না যা আপনার সাথে সংযুক্ত করা যেতে পারে।</li>
+            <li>আপনি যে ইমেইল ঠিকানাগুলো অনুসন্ধান করেন সেগুলো আমরা সংরক্ষণ করি না, এই তথ্য তৃতীয় পক্ষের কাছে বিক্রি করি না বা বিপণনের উদ্দেশ্যে ব্যবহার করি না। আপনার অনুসন্ধান ব্যক্তিগত থাকে।</li>
+            <li>আমরা ক্ষণস্থায়ী নিরাপত্তা লগের বাইরে আইপি ঠিকানার সাথে কোয়েরি সংযুক্ত করি না যা শুধুমাত্র সিস্টেম সুরক্ষার জন্য রক্ষণাবেক্ষণ করা হয় এবং নিয়মিত সময়সূচীতে স্বয়ংক্রিয়ভাবে পার্জ করা হয়।</li>
+         </ul>
+
+         <h3>স্বচ্ছতা মেট্রিক্স</h3>
+         <p>
+            নীচে আমরা প্রাপ্ত টেকডাউন এবং আইনি অনুরোধের পরিসংখ্যান রয়েছে:
+         </p>
+
+         <div class="table-responsive">
+            <table class="metrics-table">
+               <thead>
+                  <tr>
+                     <th>সময়কাল</th>
+                     <th>টেকডাউন অনুরোধ</th>
+                     <th>মেনে চলা হয়েছে</th>
+                     <th>অস্বীকার করা হয়েছে</th>
+                     <th>মন্তব্য</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>২০২৫ প্রথম প্রান্তিক</td>
+                     <td>০</td>
+                     <td>০</td>
+                     <td>০</td>
+                     <td>কোনো অনুরোধ প্রাপ্ত হয়নি</td>
+                  </tr>
+                  <tr>
+                     <td>২০২৫ দ্বিতীয় প্রান্তিক</td>
+                     <td>০</td>
+                     <td>০</td>
+                     <td>০</td>
+                     <td>কোনো অনুরোধ প্রাপ্ত হয়নি</td>
+                  </tr>
+                  <tr>
+                     <td>২০২৫ তৃতীয় প্রান্তিক</td>
+                     <td>০</td>
+                     <td>০</td>
+                     <td>০</td>
+                     <td>কোনো অনুরোধ প্রাপ্ত হয়নি</td>
+                  </tr>
+                  <tr>
+                     <td>২০২৫ চতুর্থ প্রান্তিক</td>
+                     <td>০</td>
+                     <td>০</td>
+                     <td>০</td>
+                     <td>কোনো অনুরোধ প্রাপ্ত হয়নি</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+         <div class="highlight-box">
+            <p style="margin: 0;">
+               <strong>আমাদের স্বচ্ছতা অনুশীলন সম্পর্কে প্রশ্ন?</strong><br>
+               আমাদের <a href="faq.html" style="color: #3f71f3;">প্রায়শই জিজ্ঞাসিত প্রশ্ন পৃষ্ঠা</a> দেখুন, আমাদের <a href="terms.html" style="color: #3f71f3;">শর্তাবলী</a> পড়ুন, বা
+               <!--email_off--><a href="mailto:deva@xposedornot.com" style="color: #3f71f3;">deva[@]xposedornot.com</a><!--/email_off-->-এ যোগাযোগ করুন
+            </p>
+         </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="footer">
+      <div class="container">
+         <div style="text-align:center;margin-bottom:30px;">
+            <p>এই সম্পূর্ণ ওপেন সোর্স সাইট তৈরিতে আমাদের সাথে যোগ দিন! আমাদের <a
+                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>-এ অবদান স্বাগত ❤️।</p>
+         </div>
+
+         <div class="footer-columns">
+            <div class="footer-group">
+               <h6>আইনি</h6>
+            <div class="footer-links-wrapper">
+              <a href="../privacy" class="footer-link">গোপনীয়তা নীতি</a>
+               <a href="terms.html" class="footer-link">শর্তাবলী</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>সম্প্রদায়</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">ব্লগ</a>
+               <a href="../our-repository" class="footer-link">আমাদের রিপোজিটরি</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>বিশ্বাস</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">স্থিতি</a>
+              <a href="transparency.html" class="footer-link">স্বচ্ছতা</a>
+              <a href="../responsible-disclosure" class="footer-link">দায়িত্বশীল প্রকাশ</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>আমাদের অনুসরণ করুন</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" name="twitter" class="footer-link">
+                  <i class="fab fa-twitter"></i> Twitter (X)
+               </a>
+               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" name="fb" class="footer-link">
+                  <i class="fab fa-facebook"></i> Facebook
+               </a>
+               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" name="mastodon" class="footer-link">
+                  <i class="fab fa-mastodon"></i> Mastodon
+               </a>
+            </div>
+          </div>
+         </div>
+
+         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+            <label class="custom-control-label" for="darkSwitch">ডার্ক মোড</label>
+         </div>
+      </div>
+   </div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"></script>
+   <script src="../static/scripts/common.js"></script>
+   <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <title>Confronta le Violazioni Email - Trova Esposizioni Condivise | XposedOrNot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0" />
+    <meta name="description" content="Strumento gratuito per confrontare violazioni e analizzare due indirizzi email alla ricerca di esposizioni di dati condivise. Confronta le tue email personali e di lavoro, scopri esposizioni di password condivise, visualizza i punteggi di rischio e ottieni raccomandazioni di sicurezza personalizzate." />
+    <meta name="keywords" content="strumento confronto violazioni, confronta violazioni email, violazioni dati condivise, confronto sicurezza email, verificatore esposizione password, verifica email personale lavoro, audit sicurezza, sovrapposizione violazioni dati, confronto cybersecurity, XposedOrNot" />
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <link rel="dns-prefetch" href="https://api.xposedornot.com" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Confronta le Violazioni Email - Trova Esposizioni Condivise | XposedOrNot" />
+    <meta property="og:description" content="Strumento gratuito per confrontare due email alla ricerca di violazioni di dati condivise. Scopri esposizioni di password condivise, confronta i punteggi di rischio e ottieni raccomandazioni di sicurezza personalizzate." />
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta property="og:url" content="https://xposedornot.com/it/compare" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <meta property="og:locale" content="it_IT" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta name="twitter:title" content="Confronta le Violazioni Email - Trova Esposizioni Condivise | XposedOrNot" />
+    <meta name="twitter:description" content="Strumento gratuito per confrontare due email alla ricerca di violazioni condivise. Scopri esposizioni di password condivise, confronta i punteggi di rischio e ottieni raccomandazioni di sicurezza." />
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png" />
+
+    <!-- Canonical & Hreflang -->
+    <link rel="canonical" href="https://xposedornot.com/it/compare" />
+    <link rel="alternate" hreflang="it" href="https://xposedornot.com/it/compare" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/compare" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/compare" />
+
+    <!-- SEO & Indexing -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#417ff9" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&display=swap&subset" type="text/css" media="all" />
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/compare.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" crossorigin="anonymous" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha384-y49Zu59jZHJL/PLKgZPv3k2WI9c0Yp3pWB76V8OBVCb0QBKS8l4Ff3YslzHVX76Y" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" integrity="sha384-0esPaJH+F9evp2lsJYN36SW7XkRbaYviuyF+PpnbjDXBC9i1CWGiJyGrXCyiyGqZ" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="/static/scripts/other-libraries.js" defer></script>
+  </head>
+
+  <body data-spy="scroll" data-target=".menu" data-offset="50">
+    <!-- Mobile Header -->
+    <div class="mobileheader-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand abs" href="/it/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Edizione Community</span>
+              </a>
+              <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="main-menu-part">
+                  <ul>
+                    <li><a href="/it/">Home</a></li>
+                    <li><a href="password.html">Password</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Header -->
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header-left">
+              <a href="https://XposedOrNot.com/it/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: #417ff9;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: #417ff9; opacity: 0.85; margin-top: -10px;">Edizione Community</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9">
+            <div class="header-right">
+              <ul>
+                <li><a href="/it/">Home</a></li>
+                <li><a href="password.html">Password</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="compare-hero">
+      <div class="container">
+        <h1><i class="fas fa-balance-scale"></i> Confronta le <span class="help-tooltip" title="Una violazione di dati si verifica quando gli hacker rubano informazioni da siti web dove ti sei registrato, come la tua email, password o dati personali.">Violazioni<i class="fas fa-question-circle"></i></span> Email</h1>
+        <p>Verifica se due indirizzi email sono stati catturati nelle stesse violazioni di dati e vedi quali informazioni sono state divulgate</p>
+      </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="use-cases-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-briefcase"></i>
+            <h6>Personale e Lavoro</h6>
+            <p>Verifica le tue email di casa e lavoro</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-envelope-open-text"></i>
+            <h6>Email Multiple</h6>
+            <p>Confronta qualsiasi delle tue email</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-exchange-alt"></i>
+            <h6>Email Vecchia e Nuova</h6>
+            <p>Verifica se vecchie violazioni ti hanno seguito</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-clipboard-check"></i>
+            <h6>Revisione Sicurezza</h6>
+            <p>Visualizza il tuo panorama completo delle violazioni</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="compare-input-section">
+      <div class="container">
+        <p class="instruction-text">
+          <i class="fas fa-info-circle"></i> Inserisci due indirizzi email qui sotto per vedere se appaiono nelle stesse violazioni.
+        </p>
+        <div class="row align-items-center">
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> Prima Email</h5>
+              <input type="email" class="form-control" id="email1" placeholder="tua@gmail.com" autocomplete="email" maxlength="254" autofocus aria-label="Primo indirizzo email da verificare">
+            </div>
+          </div>
+          <div class="col-md-2 vs-divider">
+            <span>VS</span>
+          </div>
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> Seconda Email</h5>
+              <input type="email" class="form-control" id="email2" placeholder="tua@lavoro.com" autocomplete="email" maxlength="254" aria-label="Secondo indirizzo email da confrontare">
+            </div>
+          </div>
+        </div>
+        <div class="row compare-button-wrapper">
+          <div class="col-12 text-center">
+            <button class="btn btn-compare" id="btnCompare" disabled aria-label="Confronta entrambe le email alla ricerca di violazioni condivise">
+              <i class="fas fa-search" aria-hidden="true"></i> Confronta Violazioni
+            </button>
+            <div class="error-message" id="errorMessage"></div>
+            <p class="privacy-notice">
+              <i class="fas fa-lock"></i> Le tue email <strong>non vengono mai memorizzate</strong>.
+              <a href="privacy" target="_blank" rel="noopener">Informativa sulla Privacy</a>
+            </p>
+            <p class="consent-notice">
+              <i class="fas fa-user-check"></i> Verifica solo email che ti appartengono o per le quali hai il permesso di verificare.
+              <a href="shield.html" target="_blank" rel="noopener">Non vuoi apparire nelle ricerche? Attiva lo Scudo Privacy</a>
+            </p>
+            <p class="database-stats" id="databaseStats">
+              <i class="fas fa-database"></i> Ricerca in <span id="breachCount">...</span> violazioni con <span id="recordCount">...</span> account esposti
+              | <a href="our-repository" target="_blank" rel="noopener" title="Visualizza tutte le violazioni">Vedi lista completa <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+      <div class="container">
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="section-header">
+            <h2 class="h3">Riepilogo Confronto Violazioni</h2>
+            <p>Quante violazioni colpiscono ciascuna email</p>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-a">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> Prima Email
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countA">0</div>
+                  <div class="label">Totale Violazioni</div>
+                  <div class="email-label" id="labelA">Email A</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card shared">
+                <div class="card-header">
+                  <i class="fas fa-link"></i> Violazioni Condivise
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countShared">0</div>
+                  <div class="label">In Entrambe le Email</div>
+                  <div class="email-label">Entrambe le Email</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-b">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> Seconda Email
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countB">0</div>
+                  <div class="label">Totale Violazioni</div>
+                  <div class="email-label" id="labelB">Email B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venn Diagram -->
+        <div class="venn-section">
+          <div class="section-header">
+            <h2 class="h3">Violazioni Condivise vs Uniche
+              <span class="help-tooltip" title="Le violazioni condivise sono particolarmente rischiose. Se hai usato la stessa password su entrambe le email, gli hacker potrebbero accedere a piu account.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>Quali violazioni colpiscono una o entrambe le email</p>
+          </div>
+          <div class="venn-container" id="vennContainer">
+            <div class="venn-circle left" id="vennLeft">
+              <span class="count" id="vennCountA">0</span>
+              <span class="label" id="vennLabelA">Solo Email 1</span>
+            </div>
+            <div class="venn-overlap" id="vennOverlap">
+              <span class="count" id="vennCountShared">0</span>
+              <span class="label">Condivise</span>
+            </div>
+            <div class="venn-circle right" id="vennRight">
+              <span class="count" id="vennCountB">0</span>
+              <span class="label" id="vennLabelB">Solo Email 2</span>
+            </div>
+          </div>
+          <div class="overlap-stats" id="overlapStats">
+            <span id="overlapText">Calcolo sovrapposizione...</span>
+          </div>
+        </div>
+
+        <!-- Risk Comparison -->
+        <div class="risk-comparison-section">
+          <div class="section-header">
+            <h2 class="h3">Punteggio di Rischio Sicurezza
+              <span class="help-tooltip" title="Il tuo punteggio di rischio (0-100) si basa su: quante violazioni ti colpiscono, se le password sono state divulgate, come quelle password erano memorizzate e quanto sono recenti le violazioni. Piu alto = azione piu urgente necessaria.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>Quanto urgentemente devi agire, basato sulla gravita delle tue violazioni</p>
+          </div>
+          <div class="risk-legend">
+            <span class="legend-item low"><i class="fas fa-circle"></i> Basso (0-33): Nessuna azione urgente necessaria</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Medio (34-66): Cambia le password presto</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> Alto (67-100): Cambia le password oggi</span>
+          </div>
+          <div id="riskMeters">
+            <!-- Risk meters will be populated dynamically -->
+          </div>
+          <div class="alert alert-info mt-3" id="combinedRiskAlert" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="combinedRiskText"></span>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-table-section">
+          <div class="section-header">
+            <h2 class="h3">Tabella Dettagliata di Confronto Violazioni</h2>
+            <p>Lista completa delle violazioni di dati che colpiscono ciascuna email. <strong>Clicca su qualsiasi nome di violazione</strong> per vedere i dettagli completi inclusi i tipi di dati esposti, la cronologia e le azioni raccomandate.</p>
+          </div>
+          <div class="table-responsive">
+            <table class="comparison-table" id="comparisonTable">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Nome Violazione</th>
+                  <th id="thEmailA">Email A</th>
+                  <th id="thEmailB">Email B</th>
+                  <th style="text-align: left;">Dati Esposti
+                    <span class="help-tooltip" title="Tipi di informazioni personali divulgate: password, email, nomi, numeri di telefono, indirizzi, ecc. Le password sono le piu critiche.">
+                      <i class="fas fa-question-circle"></i>
+                    </span>
+                  </th>
+                  <th>Anno</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Table rows will be populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-center">
+            <span class="badge badge-danger mr-2"><i class="fas fa-check"></i> Violazione Condivisa</span>
+            <span class="badge badge-secondary"><i class="fas fa-user"></i> Violazione Unica</span>
+          </div>
+        </div>
+
+        <!-- Data Types Comparison -->
+        <div class="data-types-section">
+          <div class="section-header">
+            <h2 class="h3">Tipi di Dati Esposti</h2>
+            <p>Quali tipi di informazioni sono stati divulgati</p>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <canvas id="dataTypesChart" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-section">
+          <div class="section-header">
+            <h2 class="h3">Cronologia Storica delle Violazioni</h2>
+            <p>Quando queste email sono state catturate nelle violazioni? Le violazioni recenti sono piu urgenti da affrontare.</p>
+          </div>
+          <canvas id="timelineChart" height="250"></canvas>
+        </div>
+
+        <!-- Actionable Insights -->
+        <div class="insights-section">
+          <div class="section-header">
+            <h2 class="h3">Raccomandazioni di Sicurezza</h2>
+            <p>Azioni personalizzate basate sull'analisi del confronto delle tue violazioni</p>
+          </div>
+          <div id="insightsContainer">
+            <!-- Insights will be populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+          <h3 class="h5"><i class="fas fa-download"></i> Esporta Report di Confronto Violazioni</h3>
+          <p>Scarica o stampa i tuoi risultati completi dell'analisi delle violazioni</p>
+          <button class="btn btn-success btn-export" id="btnExportCSV">
+            <i class="fas fa-file-excel"></i> Foglio di Calcolo
+          </button>
+          <button class="btn btn-info btn-export" id="btnPrint">
+            <i class="fas fa-print"></i> Stampa / Salva come PDF
+          </button>
+        </div>
+
+        <!-- New Comparison Section -->
+        <div class="new-comparison-section">
+          <h3 class="h5"><i class="fas fa-redo"></i> Verifica Email Diverse</h3>
+          <p>Vuoi confrontare altri indirizzi email?</p>
+          <button class="btn btn-outline-primary" id="btnNewComparison">
+            <i class="fas fa-envelope"></i> Inizia Nuovo Confronto
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Celebration Section (No Breaches) -->
+    <div class="celebration-section" id="celebrationSection" style="display: none;">
+      <div class="container">
+        <div class="celebration-content">
+          <div class="celebration-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h2>Ottime Notizie!</h2>
+          <p class="celebration-subtitle">Nessuna email e stata trovata in alcuna violazione di dati</p>
+          <div class="celebration-emails">
+            <span class="email-badge" id="celebrateEmailA"></span>
+            <span class="email-badge" id="celebrateEmailB"></span>
+          </div>
+          <div class="celebration-message">
+            <p>Entrambe le email sono pulite! Nessuna violazione trovata nel nostro database di <strong>miliardi di record esposti</strong>.</p>
+          </div>
+          <div class="celebration-tips">
+            <h5><i class="fas fa-lightbulb"></i> Mantienilo Cosi</h5>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Usa password uniche e forti per ogni account</li>
+              <li><i class="fas fa-check-circle"></i> Abilita l'autenticazione a due fattori (2FA), un codice di sicurezza inviato al tuo telefono quando accedi</li>
+              <li><i class="fas fa-check-circle"></i> Fai attenzione alle email di phishing (email false che ti ingannano per rivelare le password)</li>
+              <li><i class="fas fa-check-circle"></i> Controlla regolarmente i tuoi account su XposedOrNot</li>
+            </ul>
+          </div>
+          <div class="celebration-actions">
+            <button class="btn btn-primary" onclick="window.location.href = window.location.pathname">
+              <i class="fas fa-redo"></i> Verifica Altre Email
+            </button>
+            <a href="/it/" class="btn btn-outline-primary">
+              <i class="fas fa-search"></i> Verifica Completa Violazioni
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>Unisciti a noi nella creazione di questo sito open source! Contributi benvenuti sul nostro <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Legale</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Informativa sulla Privacy</a>
+              <a href="terms" class="footer-link">Termini</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Il Nostro Repository</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Fiducia</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Stato</a>
+              <a href="transparency" class="footer-link">Trasparenza</a>
+              <a href="responsible-disclosure" class="footer-link">Divulgazione Responsabile</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Seguici</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Modalita Scura</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turnstile Verification Modal -->
+    <div class="modal fade" id="turnstileModal" tabindex="-1" role="dialog" aria-labelledby="turnstileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content turnstile-modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="turnstileModalLabel">
+              <i class="fas fa-shield-alt"></i> Verifica di Sicurezza
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <p class="turnstile-instruction">Per favore completa la verifica di sicurezza per continuare</p>
+            <div id="turnstileWidget" class="turnstile-wrapper"></div>
+            <div class="turnstile-loading" id="turnstileLoading">
+              <div class="turnstile-spinner">
+                <i class="fas fa-shield-alt fa-pulse"></i>
+              </div>
+              <p>Caricamento verifica di sicurezza...</p>
+              <small class="text-muted">Di solito richiede pochi secondi</small>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+              <i class="fas fa-times"></i> Annulla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js" integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
+    <script src="/static/scripts/compare.js"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=initTurnstile" async defer></script>
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  </body>
+</html>

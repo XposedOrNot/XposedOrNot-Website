@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+   <meta charset="utf-8">
+   <title>Отчёт о прозрачности XposedOrNot | Как мы обрабатываем ваши данные</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="description"
+      content="Узнайте, как XposedOrNot защищает вашу конфиденциальность, обрабатывает данные об утечках и обеспечивает прозрачность в своей деятельности. Просмотрите статистику соответствия и запросов на удаление.">
+   <meta name="keywords"
+      content="конфиденциальность данных, отчёт о прозрачности, обработка утечек данных, политика конфиденциальности, соответствие безопасности">
+   <meta name="author" content="Devanand Premkumar">
+   <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+   <link rel="dns-prefetch" href="static.hotjar.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com">
+
+   <meta property="og:title" content="Отчёт о прозрачности XposedOrNot | Как мы обрабатываем ваши данные" />
+   <meta property="og:description"
+      content="Узнайте, как XposedOrNot защищает вашу конфиденциальность и обрабатывает данные об утечках с полной прозрачностью." />
+   <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+   <meta property="og:image:alt" content="Логотип XposedOrNot" />
+   <meta property="og:url" content="https://xposedornot.com/ru/transparency" />
+   <meta property="og:type" content="website" />
+   <meta property="og:site_name" content="XposedOrNot" />
+
+   <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:site" content="@XposedOrNot">
+   <meta name="twitter:creator" content="@DevaOnBreaches">
+   <meta name="twitter:title" content="Отчёт о прозрачности XposedOrNot">
+   <meta name="twitter:description"
+      content="Узнайте, как XposedOrNot защищает вашу конфиденциальность и обрабатывает данные об утечках с полной прозрачностью.">
+   <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+   <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous" />
+   <link rel="stylesheet"
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset' type="text/css"
+      media="all">
+   <link rel="author" href="/humans.txt" />
+
+   <script src="/static/scripts/other-libraries.js" defer></script>
+
+   <style>
+      #banner {
+         min-height: 150px !important;
+         padding-bottom: 30px;
+         overflow: visible !important;
+      }
+
+      .grid {
+         overflow: visible !important;
+      }
+
+      .navbar {
+         overflow: visible !important;
+      }
+
+      .dropdown-menu {
+         position: absolute !important;
+         z-index: 1050 !important;
+         max-height: none !important;
+      }
+
+      .transparency-content {
+         background-color: white;
+         padding: 60px 0;
+      }
+
+      .transparency-section {
+         max-width: 900px;
+         margin: 0 auto;
+         padding: 0 15px;
+      }
+
+      .transparency-section h2 {
+         color: #3f71f3;
+         margin-bottom: 20px;
+         font-size: 1.8em;
+         font-weight: 600;
+      }
+
+      .transparency-section h3 {
+         color: #3f71f3;
+         margin-top: 40px;
+         margin-bottom: 15px;
+         font-size: 1.4em;
+         font-weight: 600;
+      }
+
+      .transparency-section p {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         text-align: justify;
+         font-size: 1.05em;
+      }
+
+      .transparency-section ul {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         padding-left: 25px;
+      }
+
+      .transparency-section ul li {
+         margin-bottom: 10px;
+      }
+
+      .table-responsive {
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         margin-top: 30px;
+         margin-bottom: 40px;
+      }
+
+      .metrics-table {
+         width: 100%;
+         border-collapse: collapse;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+         background-color: white;
+         min-width: 600px;
+      }
+
+      .metrics-table th {
+         background-color: #3f71f3;
+         color: white;
+         padding: 15px;
+         text-align: left;
+         font-weight: 600;
+         white-space: nowrap;
+      }
+
+      .metrics-table td {
+         padding: 12px 15px;
+         border-bottom: 1px solid #e0e0e0;
+         background-color: white;
+      }
+
+      .metrics-table td:nth-child(2),
+      .metrics-table td:nth-child(3),
+      .metrics-table td:nth-child(4) {
+         text-align: center;
+      }
+
+      .metrics-table tr:hover td {
+         background-color: #f5f5f5;
+      }
+
+      .contact-box {
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         color: white;
+         padding: 30px;
+         border-radius: 10px;
+         margin: 40px 0;
+         text-align: center;
+      }
+
+      .contact-box a {
+         color: white;
+         text-decoration: underline;
+         font-weight: bold;
+      }
+
+      .highlight-box {
+         background-color: #f0f4ff;
+         border-left: 4px solid #3f71f3;
+         padding: 20px;
+         margin: 25px 0;
+         border-radius: 5px;
+      }
+
+      /* Dark mode styles */
+      [data-theme="dark"] .transparency-content {
+         background-color: #1a1a1a;
+      }
+
+      [data-theme="dark"] .transparency-section h2,
+      [data-theme="dark"] .transparency-section h3 {
+         color: #5c8aff;
+      }
+
+      [data-theme="dark"] .transparency-section p,
+      [data-theme="dark"] .transparency-section li {
+         color: #e0e0e0;
+      }
+
+      [data-theme="dark"] .metrics-table {
+         background-color: #2a2a2a;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      }
+
+      [data-theme="dark"] .metrics-table td {
+         background-color: #2a2a2a;
+         border-bottom: 1px solid #444;
+         color: #e0e0e0;
+      }
+
+      [data-theme="dark"] .metrics-table tr:hover td {
+         background-color: #333;
+      }
+
+      [data-theme="dark"] .highlight-box {
+         background-color: #2a2a4a;
+         border-left-color: #5c8aff;
+         color: #e0e0e0;
+      }
+
+      @media (max-width: 768px) {
+         .transparency-section h2 {
+            font-size: 1.5em;
+         }
+
+         .transparency-section h3 {
+            font-size: 1.2em;
+         }
+
+         .transparency-section p {
+            font-size: 1em;
+         }
+      }
+   </style>
+
+   <meta name="robots" content="index, follow">
+   <meta name="theme-color" content="#3f71f3">
+</head>
+
+<body data-spy="scroll" data-target=".menu" data-offset="50">
+   <div class="xon">
+      <div class="searchMe">
+         <div class="banner" id="banner">
+            <canvas id="canvas"></canvas>
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/ru/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Общественная версия</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password.html">Пароль</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq.html">ЧаВо</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="https://plus.xposedornot.com" target="_blank">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc.html">API</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> Язык <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/transparency">English</a>
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+
+      <div class="transparency-content">
+         <div class="container transparency-section">
+            <h2 align="center">Отчёт о прозрачности</h2>
+         <p align="center" style="font-size: 1.1em; color: #666; margin-bottom: 50px;">
+            Как мы защищаем вашу конфиденциальность и ответственно обрабатываем утечки данных
+         </p>
+
+         <h3>Наша миссия</h3>
+         <p>
+            XposedOrNot существует, чтобы помочь людям понять, когда их личная информация была раскрыта в результате утечки данных. Наш подход основан на ответственности: мы предоставляем этот сервис без повторной публикации или распространения украденных данных, которые могут причинить дополнительный вред пострадавшим лицам.
+         </p>
+         <p>
+            Наша цель — найти тщательный баланс между прозрачностью и ответственностью. Мы стремимся:
+         </p>
+         <ul>
+            <li>Предоставлять вам практические рекомендации по безопасности, которые помогут вам защитить себя, уважая при этом вашу конфиденциальность и никогда не храня ненужную личную информацию</li>
+            <li>Работать в полном соответствии с применимыми законами и нормативными актами, уважая законные права как организаций, так и лиц, пострадавших от утечек</li>
+            <li>Поддерживать полную прозрачность в отношении наших практик, политик и ограничений нашего сервиса</li>
+         </ul>
+         <p>
+            Для получения полной информации о том, как вы можете использовать наш сервис и что мы ожидаем от пользователей, пожалуйста, ознакомьтесь с нашими <a href="terms" style="color: #3f71f3;">Условиями использования</a>.
+         </p>
+
+         <h3>Как мы обрабатываем данные об утечках</h3>
+         <div class="highlight-box">
+            <strong>Мы никогда не публикуем повторно и не распространяем полные дампы утечек или украденные данные.</strong>
+         </div>
+         <p>Вот что мы фактически храним и как обрабатываем данные об утечках:</p>
+         <ul>
+            <li>Мы извлекаем только адреса электронной почты из наборов данных об утечках и храним их в нашей базе данных. Это позволяет нам предоставлять функцию поиска без сохранения полного объёма скомпрометированной информации.</li>
+            <li>Мы храним публичные метаданные об утечках, включая название утечки, дату происшествия, затронутую организацию и общие категории раскрытых данных. Эта контекстная информация помогает вам понять серьёзность и масштаб каждого инцидента.</li>
+            <li>Мы НЕ храним пароли, номера кредитных карт, номера социального страхования, личные идентификационные документы или любые другие конфиденциальные персональные данные, которые могли быть частью исходной утечки. Эти типы данных намеренно исключены из наших систем.</li>
+            <li>Этот избирательный подход позволяет вам проверить, появляется ли ваш email в известных утечках, гарантируя при этом, что другая конфиденциальная информация остаётся полностью за пределами нашей инфраструктуры и не может быть доступна кому-либо через наш сервис.</li>
+         </ul>
+
+         <h3>Минимизация данных и безопасность</h3>
+         <p>Мы следуем лучшим отраслевым практикам безопасности данных и минимизации:</p>
+         <ul>
+            <li>Мы храним только минимальную информацию, абсолютно необходимую для выполнения поиска по утечкам и предоставления нашего основного сервиса. Любые данные, которые не служат прямой цели для наших пользователей, не собираются и не хранятся.</li>
+            <li>Все операции проводятся в изолированных облачных средах, которые используют шифрование как при хранении данных, так и при их передаче между системами. Это защищает информацию от несанкционированного доступа на каждом этапе.</li>
+            <li>Мы никогда не передаём, не продаём и не предоставляем необработанные персональные данные третьим лицам для каких-либо целей, включая маркетинг, аналитику или исследования. Ваша конфиденциальность — не товар, которым мы торгуем.</li>
+         </ul>
+
+         <h3>Юридические запросы и запросы на удаление</h3>
+         <p>Мы серьёзно относимся к нашим юридическим обязательствам и работаем над балансом прозрачности и правового соответствия:</p>
+         <ul>
+            <li>Мы оперативно и надлежащим образом реагируем на действительные судебные приказы, запросы правоохранительных органов и указания регулирующих органов. Каждый запрос проверяется на соответствие правовым стандартам перед принятием мер.</li>
+            <li>Когда набор данных об утечке становится предметом судебного запрета, правового ограничения или действительного запроса на удаление, мы можем полностью скрыть эту информацию или ограничить доступ на основе географического местоположения для соблюдения региональных законов и нормативных актов.</li>
+            <li>Мы верим в прозрачность относительно этих запросов. Статистика запросов на удаление и юридических запросов публикуется в таблице метрик ниже, регулярно обновляется, чтобы информировать сообщество о получаемых нами юридических требованиях.</li>
+         </ul>
+         <div class="contact-box">
+            <p style="margin-bottom: 10px;"><strong>Нужно запросить удаление или ограничение?</strong></p>
+            <p style="margin-bottom: 0;">Правообладатели и организации могут связаться с нами по адресу:<br>
+               <!--email_off--><a href="mailto:deva@xposedornot.com">deva[@]xposedornot.com</a><!--/email_off-->
+            </p>
+         </div>
+
+         <h3>Стандарт общественного интереса</h3>
+         <p>Мы решаем, включать ли утечку, на основе следующих критериев:</p>
+         <ul>
+            <li><strong>Надёжная верификация источника:</strong> Является ли утечка подлинной и проверенной?</li>
+            <li><strong>Существенное воздействие на людей:</strong> Затрагивает ли она значительное количество людей?</li>
+            <li><strong>Отсутствие текущего риска:</strong> Вызовет ли раскрытие вред или создаст проблемы безопасности?</li>
+         </ul>
+         <p>
+            Если раскрытие утечки может причинить вред или нарушает правовое ограничение, мы исключаем или ограничиваем этот набор данных.
+         </p>
+
+         <h3>Конфиденциальность запросов пользователей</h3>
+         <p>Ваша конфиденциальность имеет первостепенное значение при использовании наших функций поиска. Мы разработали нашу систему для защиты вашей анонимности:</p>
+         <ul>
+            <li>Поисковые запросы обрабатываются в памяти и не регистрируются в какой-либо идентифицируемой форме. После завершения вашего поиска информация о запросе не сохраняется таким образом, который мог бы быть связан с вами.</li>
+            <li>Мы не храним адреса электронной почты, которые вы ищете, и не продаём эту информацию третьим лицам и не используем её в маркетинговых целях. Ваши поисковые запросы остаются конфиденциальными.</li>
+            <li>Мы не связываем запросы с IP-адресами, за исключением временных журналов безопасности, которые ведутся исключительно для защиты системы и автоматически очищаются по регулярному расписанию.</li>
+         </ul>
+
+         <h3>Показатели прозрачности</h3>
+         <p>
+            Ниже приведена статистика запросов на удаление и юридических запросов, которые мы получили:
+         </p>
+
+         <div class="table-responsive">
+            <table class="metrics-table">
+               <thead>
+                  <tr>
+                     <th>Период</th>
+                     <th>Запросы на удаление</th>
+                     <th>Выполнено</th>
+                     <th>Отклонено</th>
+                     <th>Примечания</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>2025 Q1</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Запросов не поступало</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q2</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Запросов не поступало</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q3</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Запросов не поступало</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q4</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Запросов не поступало</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+         <div class="highlight-box">
+            <p style="margin: 0;">
+               <strong>Есть вопросы о наших практиках прозрачности?</strong><br>
+               Посетите нашу <a href="faq.html" style="color: #3f71f3;">страницу ЧаВо</a>, прочитайте наши <a href="terms" style="color: #3f71f3;">Условия использования</a> или свяжитесь с нами по адресу
+               <!--email_off--><a href="mailto:deva@xposedornot.com" style="color: #3f71f3;">deva[@]xposedornot.com</a><!--/email_off-->
+            </p>
+         </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="footer">
+      <div class="container">
+         <div style="text-align:center;margin-bottom:30px;">
+            <p>Присоединяйтесь к созданию этого полностью открытого сайта! Мы рады вкладу ❤️ на нашем <a
+                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+         </div>
+
+         <div class="footer-columns">
+            <div class="footer-group">
+               <h6>Юридическая информация</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Политика конфиденциальности</a>
+               <a href="terms" class="footer-link">Условия</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Сообщество</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Блог</a>
+               <a href="our-repository" class="footer-link">Наш репозиторий</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Доверие</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Статус</a>
+              <a href="transparency" class="footer-link">Прозрачность</a>
+              <a href="responsible-disclosure" class="footer-link">Ответственное раскрытие</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Подписывайтесь</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" name="twitter" class="footer-link">
+                  <i class="fab fa-twitter"></i> Twitter (X)
+               </a>
+               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" name="fb" class="footer-link">
+                  <i class="fab fa-facebook"></i> Facebook
+               </a>
+               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" name="mastodon" class="footer-link">
+                  <i class="fab fa-mastodon"></i> Mastodon
+               </a>
+            </div>
+          </div>
+         </div>
+
+         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+            <label class="custom-control-label" for="darkSwitch">Тёмный режим</label>
+         </div>
+      </div>
+   </div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"></script>
+   <script src="/static/scripts/common.js"></script>
+   <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

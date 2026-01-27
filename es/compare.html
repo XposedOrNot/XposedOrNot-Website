@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Comparar Brechas de Correo - Encuentra Exposiciones Compartidas | XposedOrNot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0" />
+    <meta name="description" content="Herramienta gratuita de comparación de brechas para analizar dos direcciones de correo en busca de exposiciones de datos compartidas. Compara tus correos personales y de trabajo, descubre exposiciones de contraseñas compartidas, visualiza puntuaciones de riesgo y obtén recomendaciones de seguridad personalizadas." />
+    <meta name="keywords" content="herramienta comparación brechas, comparar brechas correo, brechas datos compartidas, comparación seguridad correo, verificador exposición contraseñas, verificar correo personal trabajo, auditoría seguridad, superposición brechas datos, comparación ciberseguridad, XposedOrNot" />
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <link rel="dns-prefetch" href="https://api.xposedornot.com" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Comparar Brechas de Correo - Encuentra Exposiciones Compartidas | XposedOrNot" />
+    <meta property="og:description" content="Herramienta gratuita para comparar dos correos en busca de brechas de datos compartidas. Descubre exposiciones de contraseñas compartidas, compara puntuaciones de riesgo y obtén recomendaciones de seguridad personalizadas." />
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta property="og:url" content="https://xposedornot.com/es/compare" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta name="twitter:title" content="Comparar Brechas de Correo - Encuentra Exposiciones Compartidas | XposedOrNot" />
+    <meta name="twitter:description" content="Herramienta gratuita para comparar dos correos en busca de brechas compartidas. Descubre exposiciones de contraseñas compartidas, compara puntuaciones de riesgo y obtén recomendaciones de seguridad." />
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png" />
+
+    <!-- Canonical & Hreflang -->
+    <link rel="canonical" href="https://xposedornot.com/es/compare" />
+    <link rel="alternate" hreflang="es" href="https://xposedornot.com/es/compare" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/compare" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/compare" />
+
+    <!-- SEO & Indexing -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#417ff9" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&display=swap&subset" type="text/css" media="all" />
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/compare.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" crossorigin="anonymous" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha384-y49Zu59jZHJL/PLKgZPv3k2WI9c0Yp3pWB76V8OBVCb0QBKS8l4Ff3YslzHVX76Y" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" integrity="sha384-0esPaJH+F9evp2lsJYN36SW7XkRbaYviuyF+PpnbjDXBC9i1CWGiJyGrXCyiyGqZ" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="/static/scripts/other-libraries.js" defer></script>
+  </head>
+
+  <body data-spy="scroll" data-target=".menu" data-offset="50">
+    <!-- Mobile Header -->
+    <div class="mobileheader-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand abs" href="/es/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Edición Comunitaria</span>
+              </a>
+              <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="main-menu-part">
+                  <ul>
+                    <li><a href="/es/">Inicio</a></li>
+                    <li><a href="password.html">Contraseña</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Header -->
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header-left">
+              <a href="https://XposedOrNot.com/es/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: #417ff9;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: #417ff9; opacity: 0.85; margin-top: -10px;">Edición Comunitaria</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9">
+            <div class="header-right">
+              <ul>
+                <li><a href="/es/">Inicio</a></li>
+                <li><a href="password.html">Contraseña</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="compare-hero">
+      <div class="container">
+        <h1><i class="fas fa-balance-scale"></i> Comparar <span class="help-tooltip" title="Una brecha de datos ocurre cuando hackers roban información de sitios web donde te has registrado, como tu correo, contraseña o datos personales.">Brechas<i class="fas fa-question-circle"></i></span> de Correo</h1>
+        <p>Verifica si dos direcciones de correo fueron capturadas en las mismas brechas de datos y ve qué información fue filtrada</p>
+      </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="use-cases-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-briefcase"></i>
+            <h6>Personal y Trabajo</h6>
+            <p>Verifica tus correos de casa y trabajo</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-envelope-open-text"></i>
+            <h6>Múltiples Correos</h6>
+            <p>Compara cualquiera de tus correos</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-exchange-alt"></i>
+            <h6>Correo Antiguo y Nuevo</h6>
+            <p>Verifica si brechas antiguas te siguieron</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-clipboard-check"></i>
+            <h6>Revisión de Seguridad</h6>
+            <p>Ve tu panorama completo de brechas</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="compare-input-section">
+      <div class="container">
+        <p class="instruction-text">
+          <i class="fas fa-info-circle"></i> Ingresa dos direcciones de correo abajo para ver si aparecen en las mismas brechas.
+        </p>
+        <div class="row align-items-center">
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> Primer Correo</h5>
+              <input type="email" class="form-control" id="email1" placeholder="tu@gmail.com" autocomplete="email" maxlength="254" autofocus aria-label="Primera dirección de correo a verificar">
+            </div>
+          </div>
+          <div class="col-md-2 vs-divider">
+            <span>VS</span>
+          </div>
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> Segundo Correo</h5>
+              <input type="email" class="form-control" id="email2" placeholder="tu@trabajo.com" autocomplete="email" maxlength="254" aria-label="Segunda dirección de correo a comparar">
+            </div>
+          </div>
+        </div>
+        <div class="row compare-button-wrapper">
+          <div class="col-12 text-center">
+            <button class="btn btn-compare" id="btnCompare" disabled aria-label="Comparar ambos correos en busca de brechas compartidas">
+              <i class="fas fa-search" aria-hidden="true"></i> Comparar Brechas
+            </button>
+            <div class="error-message" id="errorMessage"></div>
+            <p class="privacy-notice">
+              <i class="fas fa-lock"></i> Tus correos <strong>nunca se almacenan</strong>.
+              <a href="privacy" target="_blank" rel="noopener">Política de Privacidad</a>
+            </p>
+            <p class="consent-notice">
+              <i class="fas fa-user-check"></i> Solo verifica correos que te pertenezcan o tengas permiso para verificar.
+              <a href="shield.html" target="_blank" rel="noopener">¿No quieres aparecer en búsquedas? Activa el Escudo de Privacidad</a>
+            </p>
+            <p class="database-stats" id="databaseStats">
+              <i class="fas fa-database"></i> Buscando en <span id="breachCount">...</span> brechas con <span id="recordCount">...</span> cuentas expuestas
+              | <a href="our-repository" target="_blank" rel="noopener" title="Ver todas las brechas">Ver lista completa <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+      <div class="container">
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="section-header">
+            <h2 class="h3">Resumen de Comparación de Brechas</h2>
+            <p>Cuántas brechas afectan a cada correo</p>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-a">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> Primer Correo
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countA">0</div>
+                  <div class="label">Total de Brechas</div>
+                  <div class="email-label" id="labelA">Correo A</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card shared">
+                <div class="card-header">
+                  <i class="fas fa-link"></i> Brechas Compartidas
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countShared">0</div>
+                  <div class="label">En Ambos Correos</div>
+                  <div class="email-label">Ambos Correos</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-b">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> Segundo Correo
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countB">0</div>
+                  <div class="label">Total de Brechas</div>
+                  <div class="email-label" id="labelB">Correo B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venn Diagram -->
+        <div class="venn-section">
+          <div class="section-header">
+            <h2 class="h3">Brechas Compartidas vs Únicas
+              <span class="help-tooltip" title="Las brechas compartidas son especialmente riesgosas. Si usaste la misma contraseña en ambos correos, los hackers podrían acceder a múltiples cuentas.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>Qué brechas afectan a uno o ambos correos</p>
+          </div>
+          <div class="venn-container" id="vennContainer">
+            <div class="venn-circle left" id="vennLeft">
+              <span class="count" id="vennCountA">0</span>
+              <span class="label" id="vennLabelA">Solo Correo 1</span>
+            </div>
+            <div class="venn-overlap" id="vennOverlap">
+              <span class="count" id="vennCountShared">0</span>
+              <span class="label">Compartidas</span>
+            </div>
+            <div class="venn-circle right" id="vennRight">
+              <span class="count" id="vennCountB">0</span>
+              <span class="label" id="vennLabelB">Solo Correo 2</span>
+            </div>
+          </div>
+          <div class="overlap-stats" id="overlapStats">
+            <span id="overlapText">Calculando superposición...</span>
+          </div>
+        </div>
+
+        <!-- Risk Comparison -->
+        <div class="risk-comparison-section">
+          <div class="section-header">
+            <h2 class="h3">Puntuación de Riesgo de Seguridad
+              <span class="help-tooltip" title="Tu puntuación de riesgo (0-100) se basa en: cuántas brechas te afectan, si las contraseñas fueron filtradas, cómo se almacenaron esas contraseñas y qué tan recientes son las brechas. Mayor = acción más urgente necesaria.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>Qué tan urgente necesitas tomar acción, basado en la severidad de tus brechas</p>
+          </div>
+          <div class="risk-legend">
+            <span class="legend-item low"><i class="fas fa-circle"></i> Bajo (0-33): Sin acción urgente necesaria</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Medio (34-66): Cambia contraseñas pronto</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> Alto (67-100): Cambia contraseñas hoy</span>
+          </div>
+          <div id="riskMeters">
+            <!-- Risk meters will be populated dynamically -->
+          </div>
+          <div class="alert alert-info mt-3" id="combinedRiskAlert" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="combinedRiskText"></span>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-table-section">
+          <div class="section-header">
+            <h2 class="h3">Tabla Detallada de Comparación de Brechas</h2>
+            <p>Lista completa de brechas de datos que afectan a cada correo. <strong>Haz clic en cualquier nombre de brecha</strong> para ver detalles completos incluyendo tipos de datos expuestos, línea de tiempo y acciones recomendadas.</p>
+          </div>
+          <div class="table-responsive">
+            <table class="comparison-table" id="comparisonTable">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Nombre de Brecha</th>
+                  <th id="thEmailA">Correo A</th>
+                  <th id="thEmailB">Correo B</th>
+                  <th style="text-align: left;">Datos Expuestos
+                    <span class="help-tooltip" title="Tipos de información personal filtrada: contraseñas, correos, nombres, números de teléfono, direcciones, etc. Las contraseñas son las más críticas.">
+                      <i class="fas fa-question-circle"></i>
+                    </span>
+                  </th>
+                  <th>Año</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Table rows will be populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-center">
+            <span class="badge badge-danger mr-2"><i class="fas fa-check"></i> Brecha Compartida</span>
+            <span class="badge badge-secondary"><i class="fas fa-user"></i> Brecha Única</span>
+          </div>
+        </div>
+
+        <!-- Data Types Comparison -->
+        <div class="data-types-section">
+          <div class="section-header">
+            <h2 class="h3">Tipos de Datos Expuestos</h2>
+            <p>Qué tipos de información fueron filtrados</p>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <canvas id="dataTypesChart" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-section">
+          <div class="section-header">
+            <h2 class="h3">Historial de Línea de Tiempo de Brechas</h2>
+            <p>¿Cuándo fueron capturados estos correos en brechas? Las brechas recientes son más urgentes de atender.</p>
+          </div>
+          <canvas id="timelineChart" height="250"></canvas>
+        </div>
+
+        <!-- Actionable Insights -->
+        <div class="insights-section">
+          <div class="section-header">
+            <h2 class="h3">Recomendaciones de Seguridad</h2>
+            <p>Acciones personalizadas basadas en tu análisis de comparación de brechas</p>
+          </div>
+          <div id="insightsContainer">
+            <!-- Insights will be populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+          <h3 class="h5"><i class="fas fa-download"></i> Exportar Reporte de Comparación de Brechas</h3>
+          <p>Descarga o imprime tus resultados completos de análisis de brechas</p>
+          <button class="btn btn-success btn-export" id="btnExportCSV">
+            <i class="fas fa-file-excel"></i> Hoja de Cálculo
+          </button>
+          <button class="btn btn-info btn-export" id="btnPrint">
+            <i class="fas fa-print"></i> Imprimir / Guardar como PDF
+          </button>
+        </div>
+
+        <!-- New Comparison Section -->
+        <div class="new-comparison-section">
+          <h3 class="h5"><i class="fas fa-redo"></i> Verificar Diferentes Correos</h3>
+          <p>¿Quieres comparar otras direcciones de correo?</p>
+          <button class="btn btn-outline-primary" id="btnNewComparison">
+            <i class="fas fa-envelope"></i> Iniciar Nueva Comparación
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Celebration Section (No Breaches) -->
+    <div class="celebration-section" id="celebrationSection" style="display: none;">
+      <div class="container">
+        <div class="celebration-content">
+          <div class="celebration-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h2>¡Excelentes Noticias!</h2>
+          <p class="celebration-subtitle">Ningún correo ha sido encontrado en ninguna brecha de datos</p>
+          <div class="celebration-emails">
+            <span class="email-badge" id="celebrateEmailA"></span>
+            <span class="email-badge" id="celebrateEmailB"></span>
+          </div>
+          <div class="celebration-message">
+            <p>¡Ambos correos están limpios! No se encontraron brechas en nuestra base de datos de <strong>miles de millones de registros expuestos</strong>.</p>
+          </div>
+          <div class="celebration-tips">
+            <h5><i class="fas fa-lightbulb"></i> Mantenlo Así</h5>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Usa contraseñas únicas y fuertes para cada cuenta</li>
+              <li><i class="fas fa-check-circle"></i> Activa la autenticación de dos factores (2FA), un código de seguridad enviado a tu teléfono al iniciar sesión</li>
+              <li><i class="fas fa-check-circle"></i> Ten cuidado con correos de phishing (correos falsos que te engañan para revelar contraseñas)</li>
+              <li><i class="fas fa-check-circle"></i> Revisa regularmente tus cuentas en XposedOrNot</li>
+            </ul>
+          </div>
+          <div class="celebration-actions">
+            <button class="btn btn-primary" onclick="window.location.href = window.location.pathname">
+              <i class="fas fa-redo"></i> Verificar Otros Correos
+            </button>
+            <a href="/es/" class="btn btn-outline-primary">
+              <i class="fas fa-search"></i> Verificación Completa de Brechas
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>¡Únete a nosotros en la creación de este sitio de código abierto! Contribuciones bienvenidas en nuestro <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Legal</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Política de Privacidad</a>
+              <a href="terms" class="footer-link">Términos</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Comunidad</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Nuestro Repositorio</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Confianza</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Estado</a>
+              <a href="transparency" class="footer-link">Transparencia</a>
+              <a href="responsible-disclosure" class="footer-link">Divulgación Responsable</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Síguenos</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Modo Oscuro</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turnstile Verification Modal -->
+    <div class="modal fade" id="turnstileModal" tabindex="-1" role="dialog" aria-labelledby="turnstileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content turnstile-modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="turnstileModalLabel">
+              <i class="fas fa-shield-alt"></i> Verificación de Seguridad
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <p class="turnstile-instruction">Por favor completa la verificación de seguridad para continuar</p>
+            <div id="turnstileWidget" class="turnstile-wrapper"></div>
+            <div class="turnstile-loading" id="turnstileLoading">
+              <div class="turnstile-spinner">
+                <i class="fas fa-shield-alt fa-pulse"></i>
+              </div>
+              <p>Cargando verificación de seguridad...</p>
+              <small class="text-muted">Esto generalmente toma unos segundos</small>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+              <i class="fas fa-times"></i> Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js" integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
+    <script src="/static/scripts/compare.js"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=initTurnstile" async defer></script>
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  </body>
+</html>

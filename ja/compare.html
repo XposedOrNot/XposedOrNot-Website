@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>メール漏洩を比較 - 共有露出を見つける | XposedOrNot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0" />
+    <meta name="description" content="2つのメールアドレスで共有データ露出を分析する無料の漏洩比較ツール。個人用と仕事用のメールを比較し、共有パスワード露出を発見し、リスクスコアを視覚化し、カスタマイズされたセキュリティ推奨を取得します。" />
+    <meta name="keywords" content="漏洩比較ツール, メール漏洩比較, 共有データ漏洩, メールセキュリティ比較, パスワード露出チェッカー, 個人仕事メールチェック, セキュリティ監査, データ漏洩オーバーラップ, サイバーセキュリティ比較, XposedOrNot" />
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <link rel="dns-prefetch" href="https://api.xposedornot.com" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="メール漏洩を比較 - 共有露出を見つける | XposedOrNot" />
+    <meta property="og:description" content="2つのメールで共有データ漏洩を比較する無料ツール。共有パスワード露出を発見し、リスクスコアを比較し、カスタマイズされたセキュリティ推奨を取得します。" />
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta property="og:url" content="https://xposedornot.com/ja/compare" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <meta property="og:locale" content="ja_JP" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta name="twitter:title" content="メール漏洩を比較 - 共有露出を見つける | XposedOrNot" />
+    <meta name="twitter:description" content="2つのメールで共有漏洩を比較する無料ツール。共有パスワード露出を発見し、リスクスコアを比較し、セキュリティ推奨を取得します。" />
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png" />
+
+    <!-- Canonical & Hreflang -->
+    <link rel="canonical" href="https://xposedornot.com/ja/compare" />
+    <link rel="alternate" hreflang="ja" href="https://xposedornot.com/ja/compare" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/compare" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/compare" />
+
+    <!-- SEO & Indexing -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#417ff9" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&display=swap&subset" type="text/css" media="all" />
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/compare.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" crossorigin="anonymous" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha384-y49Zu59jZHJL/PLKgZPv3k2WI9c0Yp3pWB76V8OBVCb0QBKS8l4Ff3YslzHVX76Y" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" integrity="sha384-0esPaJH+F9evp2lsJYN36SW7XkRbaYviuyF+PpnbjDXBC9i1CWGiJyGrXCyiyGqZ" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="/static/scripts/other-libraries.js" defer></script>
+  </head>
+
+  <body data-spy="scroll" data-target=".menu" data-offset="50">
+    <!-- Mobile Header -->
+    <div class="mobileheader-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand abs" href="/ja/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">コミュニティエディション</span>
+              </a>
+              <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="main-menu-part">
+                  <ul>
+                    <li><a href="/ja/">ホーム</a></li>
+                    <li><a href="password.html">パスワード</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Header -->
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header-left">
+              <a href="https://XposedOrNot.com/ja/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: #417ff9;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: #417ff9; opacity: 0.85; margin-top: -10px;">コミュニティエディション</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9">
+            <div class="header-right">
+              <ul>
+                <li><a href="/ja/">ホーム</a></li>
+                <li><a href="password.html">パスワード</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">ブログ</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="compare-hero">
+      <div class="container">
+        <h1><i class="fas fa-balance-scale"></i> メール<span class="help-tooltip" title="データ漏洩とは、ハッカーがあなたが登録したウェブサイトからメール、パスワード、個人データなどの情報を盗むことです。">漏洩<i class="fas fa-question-circle"></i></span>を比較</h1>
+        <p>2つのメールアドレスが同じデータ漏洩に巻き込まれたかどうかを確認し、どの情報が漏洩したかを確認します</p>
+      </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="use-cases-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-briefcase"></i>
+            <h6>個人と仕事</h6>
+            <p>自宅と仕事のメールを確認</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-envelope-open-text"></i>
+            <h6>複数のメール</h6>
+            <p>任意のメールを比較</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-exchange-alt"></i>
+            <h6>古いメールと新しいメール</h6>
+            <p>古い漏洩が追いかけてきていないか確認</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-clipboard-check"></i>
+            <h6>セキュリティレビュー</h6>
+            <p>完全な漏洩状況を確認</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="compare-input-section">
+      <div class="container">
+        <p class="instruction-text">
+          <i class="fas fa-info-circle"></i> 2つのメールアドレスを入力して、同じ漏洩に含まれているか確認してください。
+        </p>
+        <div class="row align-items-center">
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> 1つ目のメール</h5>
+              <input type="email" class="form-control" id="email1" placeholder="your@gmail.com" autocomplete="email" maxlength="254" autofocus aria-label="確認する最初のメールアドレス">
+            </div>
+          </div>
+          <div class="col-md-2 vs-divider">
+            <span>VS</span>
+          </div>
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> 2つ目のメール</h5>
+              <input type="email" class="form-control" id="email2" placeholder="your@work.com" autocomplete="email" maxlength="254" aria-label="比較する2番目のメールアドレス">
+            </div>
+          </div>
+        </div>
+        <div class="row compare-button-wrapper">
+          <div class="col-12 text-center">
+            <button class="btn btn-compare" id="btnCompare" disabled aria-label="両方のメールの共有漏洩を比較">
+              <i class="fas fa-search" aria-hidden="true"></i> 漏洩を比較
+            </button>
+            <div class="error-message" id="errorMessage"></div>
+            <p class="privacy-notice">
+              <i class="fas fa-lock"></i> あなたのメールは<strong>保存されません</strong>。
+              <a href="privacy" target="_blank" rel="noopener">プライバシーポリシー</a>
+            </p>
+            <p class="consent-notice">
+              <i class="fas fa-user-check"></i> 自分のメールまたは確認する許可を得たメールのみを確認してください。
+              <a href="shield.html" target="_blank" rel="noopener">検索に表示されたくない場合はプライバシーシールドを有効にしてください</a>
+            </p>
+            <p class="database-stats" id="databaseStats">
+              <i class="fas fa-database"></i> <span id="breachCount">...</span>件の漏洩と<span id="recordCount">...</span>件の流出アカウントを検索中
+              | <a href="our-repository" target="_blank" rel="noopener" title="すべての漏洩を見る">完全なリストを見る <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+      <div class="container">
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="section-header">
+            <h2 class="h3">漏洩比較サマリー</h2>
+            <p>各メールに影響を与えた漏洩の数</p>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-a">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> 1つ目のメール
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countA">0</div>
+                  <div class="label">漏洩総数</div>
+                  <div class="email-label" id="labelA">メールA</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card shared">
+                <div class="card-header">
+                  <i class="fas fa-link"></i> 共有漏洩
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countShared">0</div>
+                  <div class="label">両方のメール</div>
+                  <div class="email-label">両方のメール</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-b">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> 2つ目のメール
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countB">0</div>
+                  <div class="label">漏洩総数</div>
+                  <div class="email-label" id="labelB">メールB</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venn Diagram -->
+        <div class="venn-section">
+          <div class="section-header">
+            <h2 class="h3">共有vs固有の漏洩
+              <span class="help-tooltip" title="共有漏洩は特に危険です。両方のメールで同じパスワードを使用していた場合、ハッカーが複数のアカウントにアクセスする可能性があります。">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>どの漏洩が一方または両方のメールに影響を与えているか</p>
+          </div>
+          <div class="venn-container" id="vennContainer">
+            <div class="venn-circle left" id="vennLeft">
+              <span class="count" id="vennCountA">0</span>
+              <span class="label" id="vennLabelA">メール1のみ</span>
+            </div>
+            <div class="venn-overlap" id="vennOverlap">
+              <span class="count" id="vennCountShared">0</span>
+              <span class="label">共有</span>
+            </div>
+            <div class="venn-circle right" id="vennRight">
+              <span class="count" id="vennCountB">0</span>
+              <span class="label" id="vennLabelB">メール2のみ</span>
+            </div>
+          </div>
+          <div class="overlap-stats" id="overlapStats">
+            <span id="overlapText">オーバーラップを計算中...</span>
+          </div>
+        </div>
+
+        <!-- Risk Comparison -->
+        <div class="risk-comparison-section">
+          <div class="section-header">
+            <h2 class="h3">セキュリティリスクスコア
+              <span class="help-tooltip" title="リスクスコア（0-100）は、影響を受けた漏洩の数、パスワードが漏洩したかどうか、それらのパスワードがどのように保存されていたか、漏洩の新しさに基づいています。高いほど緊急の対応が必要です。">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>漏洩の深刻度に基づいて、どれだけ緊急に対応が必要か</p>
+          </div>
+          <div class="risk-legend">
+            <span class="legend-item low"><i class="fas fa-circle"></i> 低 (0-33): 緊急の対応不要</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> 中 (34-66): 早めにパスワードを変更</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> 高 (67-100): 今日中にパスワードを変更</span>
+          </div>
+          <div id="riskMeters">
+            <!-- Risk meters will be populated dynamically -->
+          </div>
+          <div class="alert alert-info mt-3" id="combinedRiskAlert" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="combinedRiskText"></span>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-table-section">
+          <div class="section-header">
+            <h2 class="h3">詳細な漏洩比較テーブル</h2>
+            <p>各メールに影響を与えたデータ漏洩の完全なリスト。<strong>漏洩名をクリック</strong>すると、流出したデータの種類、タイムライン、推奨アクションなどの詳細が表示されます。</p>
+          </div>
+          <div class="table-responsive">
+            <table class="comparison-table" id="comparisonTable">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">漏洩名</th>
+                  <th id="thEmailA">メールA</th>
+                  <th id="thEmailB">メールB</th>
+                  <th style="text-align: left;">流出したデータ
+                    <span class="help-tooltip" title="漏洩した個人情報の種類：パスワード、メール、名前、電話番号、住所など。パスワードが最も重要です。">
+                      <i class="fas fa-question-circle"></i>
+                    </span>
+                  </th>
+                  <th>年</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Table rows will be populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-center">
+            <span class="badge badge-danger mr-2"><i class="fas fa-check"></i> 共有漏洩</span>
+            <span class="badge badge-secondary"><i class="fas fa-user"></i> 固有の漏洩</span>
+          </div>
+        </div>
+
+        <!-- Data Types Comparison -->
+        <div class="data-types-section">
+          <div class="section-header">
+            <h2 class="h3">流出したデータの種類</h2>
+            <p>どの種類の情報が漏洩したか</p>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <canvas id="dataTypesChart" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-section">
+          <div class="section-header">
+            <h2 class="h3">漏洩タイムライン履歴</h2>
+            <p>これらのメールはいつ漏洩に巻き込まれましたか？最近の漏洩ほど緊急の対応が必要です。</p>
+          </div>
+          <canvas id="timelineChart" height="250"></canvas>
+        </div>
+
+        <!-- Actionable Insights -->
+        <div class="insights-section">
+          <div class="section-header">
+            <h2 class="h3">セキュリティ推奨</h2>
+            <p>漏洩比較分析に基づいたカスタマイズされたアクション</p>
+          </div>
+          <div id="insightsContainer">
+            <!-- Insights will be populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+          <h3 class="h5"><i class="fas fa-download"></i> 漏洩比較レポートをエクスポート</h3>
+          <p>完全な漏洩分析結果をダウンロードまたは印刷</p>
+          <button class="btn btn-success btn-export" id="btnExportCSV">
+            <i class="fas fa-file-excel"></i> スプレッドシート
+          </button>
+          <button class="btn btn-info btn-export" id="btnPrint">
+            <i class="fas fa-print"></i> 印刷 / PDFとして保存
+          </button>
+        </div>
+
+        <!-- New Comparison Section -->
+        <div class="new-comparison-section">
+          <h3 class="h5"><i class="fas fa-redo"></i> 別のメールを確認</h3>
+          <p>他のメールアドレスを比較しますか？</p>
+          <button class="btn btn-outline-primary" id="btnNewComparison">
+            <i class="fas fa-envelope"></i> 新しい比較を開始
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Celebration Section (No Breaches) -->
+    <div class="celebration-section" id="celebrationSection" style="display: none;">
+      <div class="container">
+        <div class="celebration-content">
+          <div class="celebration-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h2>素晴らしいニュース！</h2>
+          <p class="celebration-subtitle">どちらのメールもデータ漏洩に見つかりませんでした</p>
+          <div class="celebration-emails">
+            <span class="email-badge" id="celebrateEmailA"></span>
+            <span class="email-badge" id="celebrateEmailB"></span>
+          </div>
+          <div class="celebration-message">
+            <p>両方のメールがクリーンです！<strong>数十億の流出レコード</strong>のデータベースで漏洩は見つかりませんでした。</p>
+          </div>
+          <div class="celebration-tips">
+            <h5><i class="fas fa-lightbulb"></i> この状態を維持するために</h5>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> 各アカウントに強力でユニークなパスワードを使用する</li>
+              <li><i class="fas fa-check-circle"></i> 二要素認証（2FA）を有効にする - ログイン時に電話に送信されるセキュリティコード</li>
+              <li><i class="fas fa-check-circle"></i> フィッシングメール（パスワードを騙し取る偽のメール）に注意する</li>
+              <li><i class="fas fa-check-circle"></i> XposedOrNotで定期的にアカウントを確認する</li>
+            </ul>
+          </div>
+          <div class="celebration-actions">
+            <button class="btn btn-primary" onclick="window.location.href = window.location.pathname">
+              <i class="fas fa-redo"></i> 他のメールを確認
+            </button>
+            <a href="/ja/" class="btn btn-outline-primary">
+              <i class="fas fa-search"></i> 完全な漏洩チェック
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>このオープンソースサイトの作成にご参加ください！<a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>での貢献を歓迎します。</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>法的情報</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">プライバシーポリシー</a>
+              <a href="terms" class="footer-link">利用規約</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>コミュニティ</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">ブログ</a>
+              <a href="our-repository" class="footer-link">リポジトリ</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>信頼性</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">ステータス</a>
+              <a href="transparency" class="footer-link">透明性</a>
+              <a href="responsible-disclosure" class="footer-link">責任ある開示</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>フォローする</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">ダークモード</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turnstile Verification Modal -->
+    <div class="modal fade" id="turnstileModal" tabindex="-1" role="dialog" aria-labelledby="turnstileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content turnstile-modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="turnstileModalLabel">
+              <i class="fas fa-shield-alt"></i> セキュリティ認証
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <p class="turnstile-instruction">続行するにはセキュリティ認証を完了してください</p>
+            <div id="turnstileWidget" class="turnstile-wrapper"></div>
+            <div class="turnstile-loading" id="turnstileLoading">
+              <div class="turnstile-spinner">
+                <i class="fas fa-shield-alt fa-pulse"></i>
+              </div>
+              <p>セキュリティ認証を読み込み中...</p>
+              <small class="text-muted">通常は数秒かかります</small>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+              <i class="fas fa-times"></i> キャンセル
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js" integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
+    <script src="/static/scripts/compare.js"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=initTurnstile" async defer></script>
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  </body>
+</html>

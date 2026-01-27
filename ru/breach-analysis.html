@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XposedOrNot - Панель анализа утечек данных</title>
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="static.hotjar.com">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" integrity="sha256-4W/j2Pv3N5VfbVDhzI8SKzHFHBfaOdZ2CZ1lXfxNofU=" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" rel="stylesheet" integrity="sha256-0uOj/+KTrDONT9qYX1Ce4YkE80nz40ekZmD8bexUj5A=" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet" integrity="sha256-1rL+uuZR+1enoucMBRgnVeoInbOLnMlfvcepxRcO/Q8=" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet" integrity="sha512-XGV/5wp80o12Hi4G56UU4rHw02xfL+vOqNWa7FokGx3kT7nS+iSd1aXWBa2xO3IfQ+3bLn5JGBgmHXeByoiJ2g==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900" rel="stylesheet">
+    <link href="../static/css/breach-analysis.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header-left">
+                        <a href="https://XposedOrNot.com/ru/" style="text-decoration: none;">
+                            <p>XposedOrNot</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <div class="header-right">
+                        <ul>
+                            <li><a href="#" class="btn-header-back" id="backToDashboard"><i class="fas fa-arrow-left"></i> Назад к панели</a></li>
+                            <li><a href="api_doc.html">API</a></li>
+                            <li><a href="faq.html">FAQ</a></li>
+                            <li><a href="https://blog.xposedornot.com/" target="_blank" rel="noopener noreferrer">Блог</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Фильтры</h5>
+                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                            <i class="fas fa-redo"></i> Сбросить все фильтры
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="filter-row">
+                            <div class="filter-col">
+                                <label for="emailFilter" class="form-label">Адрес электронной почты</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="emailFilter" placeholder="Введите для поиска..." autocomplete="off">
+                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"><i class="bi bi-x"></i> Очистить</button>
+                                </div>
+                            </div>
+                            <div class="filter-col">
+                                <label for="domainFilter" class="form-label">Домен</label>
+                                <select class="form-select" id="domainFilter"><option value="">Все домены</option></select>
+                            </div>
+                            <div class="filter-col">
+                                <label for="yearFilter" class="form-label">Год утечки</label>
+                                <select class="form-select" id="yearFilter"><option value="">Все годы</option></select>
+                            </div>
+                            <div class="filter-col">
+                                <label for="breachFilter" class="form-label">Тип утечки</label>
+                                <select class="form-select" id="breachFilter"><option value="">Все утечки</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="summary-tile">
+                    <h5>Всего утечек</h5>
+                    <div class="breach-count" id="totalBreaches">0</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="summary-tile">
+                    <h5>Оценка риска</h5>
+                    <div class="risk-score" id="riskScore">0</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="summary-tile">
+                    <h5>Уникальные адреса</h5>
+                    <div class="email-count" id="uniqueEmails">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Топ-10 утечек</h5>
+                        <small class="text-muted">По количеству скомпрометированных адресов</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="topBreachesTable">
+                                <thead><tr><th>Название утечки</th><th>Кол-во адресов</th><th>Уровень риска</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Топ-10 скомпрометированных адресов</h5>
+                        <small class="text-muted">По количеству утечек</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="topEmailsTable">
+                                <thead><tr><th>Адрес</th><th>Кол-во утечек</th><th>Домены</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header"><h5 class="mb-0">Детали утечек</h5></div>
+                    <div class="card-body">
+                        <table id="breachTable" class="table table-striped" style="width:100%">
+                            <thead><tr><th>Адрес</th><th>Домен</th><th>Утечка</th><th>Дата утечки</th><th>Скомпрометированные данные</th></tr></thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="mb-0">Визуализация утечек</h5>
+                            <span class="badge bg-info" id="filterBadge" style="display: none;">Отфильтрованный вид</span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;"><i class="fas fa-undo"></i> Сбросить вид</button>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization"><i class="fas fa-chevron-up" id="vizToggleIcon"></i><span id="vizToggleText">Свернуть</span></button>
+                        </div>
+                    </div>
+                    <div class="card-body" id="visualizationCard"><div id="visualization"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js" integrity="sha512-6UofPqm0QupIL0kzS/UIzekR73/luZdC6i/kXDbWnLOJoqwklBK6519iUnShaYceJ0y4FaiPtX/hRnV/X/xlUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js" integrity="sha512-VK2zcvntEufaimc+efOYi622VN5ZacdnufnmX7zIhCPmjhKnOi9ZDMtg1/ug5l183f19gG1/cBstPO4D8N/Img==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" integrity="sha256-JDYsFFqB4eL9lRhcQwDSWVr7LK3Z8VgMLdzpW8GbIIQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" integrity="sha256-3iXHrfSd4xzI1YyrooF0jG4OVwGiSAoU1+WdYwEwYZk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js" integrity="sha256-2UuioIj7ONSCZ/oWLTybD72Ngiql1ZOll4z5zjqIRDo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js" integrity="sha256-nroMpWKYJcftREE92iVGOgvIyBB5T3K3sOuTseQx7HQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js" integrity="sha256-h3KvT6d6XdpSb29/dF6DxtCul3gDqOQ2MJAnQb+RA30=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js" integrity="sha256-fxJmiDt8K09elieA/J28vsEvSsmFgGUvoLsEgH/uUx4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js" integrity="sha256-Kd8QDM9jqFmpd0R+KkPsGIWl+NBtG7iKlSNXmVRGPss=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js" integrity="sha256-8qpfNjLKRiQaMsj2vqPFBZ/jbtoTLNWUmB0ohw32BEE=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <div class="back-btn-wrapper">
+        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard"><i class="fas fa-arrow-left"></i><span>Назад к панели</span></a>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:30px;">
+                <p>Присоединяйтесь к созданию этого сайта с открытым исходным кодом! Вклады приветствуются ❤️ на нашем <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+            </div>
+            <div class="footer-columns">
+                <div class="footer-group">
+                    <h6>Правовая информация</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="privacy" class="footer-link">Политика конфиденциальности</a>
+                        <a href="terms" class="footer-link">Условия</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6>Сообщество</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://blog.xposedornot.com" class="footer-link">Блог</a>
+                        <a href="our-repository" class="footer-link">Наш репозиторий</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6>Доверие</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Статус</a>
+                        <a href="transparency" class="footer-link">Прозрачность</a>
+                        <a href="responsible-disclosure" class="footer-link">Ответственное раскрытие</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6>Следите за нами</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link"><i class="fab fa-twitter"></i> Twitter (X)</a>
+                        <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link"><i class="fab fa-facebook"></i> Facebook</a>
+                        <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link"><i class="fab fa-mastodon"></i> Mastodon</a>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
+                <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+                <label class="custom-control-label" for="darkSwitch">Тёмный режим</label>
+            </div>
+        </div>
+    </div>
+
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script src="../static/scripts/common.js"></script>
+    <script src="../static/scripts/breach-analysis.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var footerGroups = document.querySelectorAll('.footer-group h6');
+            footerGroups.forEach(function(header) {
+                header.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        var group = this.parentElement;
+                        group.classList.toggle('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

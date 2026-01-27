@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=no">
+  <title>XposedOrNot: Verifica i domini di phishing che prendono di mira il tuo marchio</title>
+  <meta name="description"
+    content="Verifica se il tuo dominio ha sosia di phishing con XposedOrNot. Ottieni un rapporto dettagliato dei potenziali domini di phishing che prendono di mira il tuo marchio." />
+  <meta name="author" content="Devanand Premkumar">
+  <link rel="shortcut icon" type="image/ico" href="../favicon.ico">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://static.hotjar.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta content="XposedOrNot: Verifica i domini di phishing che prendono di mira il tuo marchio" property="og:title">
+  <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@XposedOrNot">
+  <meta name="twitter:creator" content="@DevaOnBreaches">
+  <meta name="twitter:title" content="Verifica i domini di phishing che prendono di mira il tuo marchio">
+  <meta name="twitter:description"
+    content="Verifica se il tuo dominio ha sosia di phishing con XposedOrNot. Ottieni un rapporto dettagliato dei potenziali domini di phishing che prendono di mira il tuo marchio.">
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+  <script src="https://kit.fontawesome.com/00d920835c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset"
+    type="text/css" media="all">
+  <link rel="Devanand Premkumar" href="../humans.txt">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
+    integrity="sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="../static/scripts/other-libraries.js" defer></script>
+  <link href="../static/css/style-domain.css" type="text/css" rel="stylesheet">
+  <link href="../static/css/responsive.css" type="text/css" rel="stylesheet">
+
+</head>
+
+<body>
+  <div class="overlay"></div>
+  <div id="content" class="blurred">
+    <div>
+      <div class="header">
+        <div class="grid">
+          <div class="header-row">
+            <a href="index.html">XposedOrNot</a>
+            <div class="header-right">
+              <ul>
+                <li><a href="password.html">Password</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="xonPulse.html">Notizie</a></li>
+                <li><a href="api_doc.html">API</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu">
+        <nav class="navbar">
+          <a class="navbar-brand" href="index.html">XposedOrNot</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon icon-last"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link active" href="#">Password<span class="sr-only">(attuale)</span></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Notizie</a></li>
+              <li class="nav-item  last lang"><a class="nav-link" href="#">API</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="banner">
+        <div class="grid">
+          <div class="banner-row">
+            <h1>La nostra scansione ha trovato <span>potenziali domini di phishing</span><br> che prendono di mira il tuo marchio</h1>
+          </div>
+        </div>
+      </div>
+      <div class="sec3">
+        <div class="grid">
+          <div class="sec3-row">
+            <h4>Rapporto domini di phishing per : <b id="domain-display"></b>
+              </b><img id="logo" src="" alt="Logo" width="120"></h4>
+            <div class="updt">
+              <p>Ultima scansione: <span id="last-exposure"></span></p>
+            </div>
+          </div>
+          <div class="sec3-flex">
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="../static/images/close-circle.png" alt="">
+                </div>
+                <h4 id="breach-count">--</h4>
+                <h5>Totale scansionato</h5>
+              </div>
+            </div>
+            <div class="web-bx1" id="live-domains-box">
+              <span id="fire-emoji" class="fire-indicator">🔥</span>
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="../static/images/document-text.png" alt="">
+                </div>
+                <h4 id="record-count">--</h4>
+                <h5>Domini attivi</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="../static/images/sms.png" alt="">
+                </div>
+                <h4 id="email-count">-</h4>
+                <h5>Fuzzer unici</h5>
+              </div>
+            </div>
+            <div class="web-bx1 web-bx4">
+              <div id="chart_div" style="width: 150px; height: 150px;"></div>
+            </div>
+          </div>
+          <div id="note" class="text-center mt-3" style="display: none; color: white; text-align: left !important;">
+            <small>* Il rapporto mostra i potenziali domini di phishing attualmente attivi. Verifica la proprieta del dominio per vedere informazioni dettagliate su DNS e WHOIS.</small>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sec4">
+        <div class="grid">
+          <div class="sec4-row">
+            <div class="sec4-text">
+              <img src="../static/images/lock.png" class="img-responsive lock" alt="">
+              <h4>Questo contenuto e bloccato, verifica la proprieta del dominio per visualizzarlo.</h4>
+              <a href="domain.html" target="_blank" class="verify-btn">Verifica ora</a>
+            </div>
+          </div>
+        </div>
+        <div align="center"><button type="button" class="btn-modern mt-4" id="checkAnotherDomainBtn"><i class="fas fa-search"></i>Verifica un altro dominio</button></div>
+      </div>
+      <div align="center"><a href="https://logo.dev" alt="Logo API">Logos provided by Logo.dev</a></div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content dark-mode">
+        <div class="modal-header">
+          <h5 class="modal-title" id="domainModalLabel">Verifica domini di phishing</h5>
+        </div>
+        <div class="modal-body light-mode">
+          <form id="domainForm" autocomplete="off">
+            <div class="form-group text-center">
+              <p>Inserisci il nome del tuo dominio qui sotto per cercare potenziali domini di phishing.</p><br><br>
+              <label for="domainInput" class="sr-only">Nome dominio</label>
+              <input type="text" class="form-control" id="domainInput" placeholder="esempio.com" required>
+              <div class="invalid-feedback">
+                Inserisci un nome di dominio valido.
+              </div>
+              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+                Scansiona dominio
+              </button>
+              <div id="scanProgress" style="display:none; margin-top: 20px;">
+                <div class="scan-status">
+                  <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span id="scanMessage" class="scan-message">Inizializzazione scansione...</span>
+                </div>
+                <div class="progress-container">
+                  <div class="progress-bar-wrapper">
+                    <div id="progressBar" class="progress-bar-fill"></div>
+                  </div>
+                </div>
+              </div>
+              <div id="errorMessage" class="error-message" style="display:none;"></div>
+            </div>
+          </form>
+          <div id="noBreachMessage" style="display: none;">
+            <div class="text-center">
+              <i class="fas fa-shield-alt fa-3x text-success"></i>
+              <h4 class="text-success mt-3">Nessun dominio di phishing trovato per <span id="searchedDomain"
+                  class="font-weight-bold"></span>!</h4>
+              <p>Il tuo dominio sembra essere al sicuro da sosia di phishing.</p>
+              <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>Verifica un altro dominio</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:30px;">
+        <p>Unisciti a noi nel dare forma a questo sito completamente open source! Contributi benvenuti ❤️ sul nostro <a
+              href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-group">
+          <h6>Legale</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy.html" class="footer-link">Informativa sulla Privacy</a>
+          <a href="terms.html" class="footer-link">Termini</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>Comunita</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+          <a href="our-repository.html" class="footer-link">Repository</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>Fiducia</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Stato</a>
+              <a href="transparency.html" class="footer-link">Trasparenza</a>
+              <a href="responsible-disclosure.html" class="footer-link">Divulgazione Responsabile</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>Seguici</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-twitter"></i> Twitter (X)
+          </a>
+          <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-facebook"></i> Facebook
+          </a>
+          <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-mastodon"></i> Mastodon
+          </a>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  <script src="../static/scripts/domains-phishing.js"></script>
+  <script src="../static/scripts/common.js"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

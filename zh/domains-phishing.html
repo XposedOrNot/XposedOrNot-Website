@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=no">
+  <title>XposedOrNot: 检查针对您品牌的钓鱼域名</title>
+  <meta name="description"
+    content="使用 XposedOrNot 检查您的域名是否存在钓鱼仿冒。获取针对您品牌的潜在钓鱼域名的详细报告。" />
+  <meta name="author" content="Devanand Premkumar">
+  <link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://static.hotjar.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta content="XposedOrNot: 检查针对您品牌的钓鱼域名" property="og:title">
+  <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@XposedOrNot">
+  <meta name="twitter:creator" content="@DevaOnBreaches">
+  <meta name="twitter:title" content="检查针对您品牌的钓鱼域名">
+  <meta name="twitter:description"
+    content="使用 XposedOrNot 检查您的域名是否存在钓鱼仿冒。获取针对您品牌的潜在钓鱼域名的详细报告。">
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+  <script src="https://kit.fontawesome.com/00d920835c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset"
+    type="text/css" media="all">
+  <link rel="Devanand Premkumar" href="/humans.txt">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
+    integrity="sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="/static/scripts/other-libraries.js" defer></script>
+  <link href="../static/css/style-domain.css" type="text/css" rel="stylesheet">
+  <link href="../static/css/responsive.css" type="text/css" rel="stylesheet">
+
+</head>
+
+<body>
+  <div class="overlay"></div>
+  <div id="content" class="blurred">
+    <div>
+      <div class="header">
+        <div class="grid">
+          <div class="header-row">
+            <a href="index.html">XposedOrNot</a>
+            <div class="header-right">
+              <ul>
+                <li><a href="password.html">密码</a></li>
+                <li><a href="faq.html">常见问题</a></li>
+                <li><a href="xonPulse.html">新闻</a></li>
+                <li><a href="api_doc.html">API接口</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu">
+        <nav class="navbar">
+          <a class="navbar-brand" href="index.html">XposedOrNot</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon icon-last"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link active" href="#">密码<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#">常见问题</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">新闻</a></li>
+              <li class="nav-item  last lang"><a class="nav-link" href="#">API接口</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="banner">
+        <div class="grid">
+          <div class="banner-row">
+            <h1>我们的扫描发现了<span>针对您品牌的潜在钓鱼域名</span></h1>
+          </div>
+        </div>
+      </div>
+      <div class="sec3">
+        <div class="grid">
+          <div class="sec3-row">
+            <h4>钓鱼域名报告 : <b id="domain-display"></b>
+              </b><img id="logo" src="" alt="Logo" width="120"></h4>
+            <div class="updt">
+              <p>上次扫描: <span id="last-exposure"></span></p>
+            </div>
+          </div>
+          <div class="sec3-flex">
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="../static/images/close-circle.png" alt="">
+                </div>
+                <h4 id="breach-count">--</h4>
+                <h5>总扫描数</h5>
+              </div>
+            </div>
+            <div class="web-bx1" id="live-domains-box">
+              <span id="fire-emoji" class="fire-indicator">🔥</span>
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="../static/images/document-text.png" alt="">
+                </div>
+                <h4 id="record-count">--</h4>
+                <h5>活跃域名</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="../static/images/sms.png" alt="">
+                </div>
+                <h4 id="email-count">-</h4>
+                <h5>唯一模糊器</h5>
+              </div>
+            </div>
+            <div class="web-bx1 web-bx4">
+              <div id="chart_div" style="width: 150px; height: 150px;"></div>
+            </div>
+          </div>
+          <div id="note" class="text-center mt-3" style="display: none; color: white; text-align: left !important;">
+            <small>* 报告显示当前活跃的潜在钓鱼域名。验证域名所有权以查看详细的 DNS 和 WHOIS 信息。</small>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sec4">
+        <div class="grid">
+          <div class="sec4-row">
+            <div class="sec4-text">
+              <img src="../static/images/lock.png" class="img-responsive lock" alt="">
+              <h4>此内容已锁定，请验证域名所有权以查看。</h4>
+              <a href="domain.html" target="_blank" class="verify-btn">立即验证</a>
+            </div>
+          </div>
+        </div>
+        <div align="center"><button type="button" class="btn-modern mt-4" id="checkAnotherDomainBtn"><i class="fas fa-search"></i>检查其他域名</button></div>
+      </div>
+      <div align="center"><a href="https://logo.dev" alt="Logo API">Logos provided by Logo.dev</a></div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content dark-mode">
+        <div class="modal-header">
+          <h5 class="modal-title" id="domainModalLabel">检查钓鱼域名</h5>
+        </div>
+        <div class="modal-body light-mode">
+          <form id="domainForm" autocomplete="off">
+            <div class="form-group text-center">
+              <p>在下方输入您的域名以扫描潜在的钓鱼域名。</p><br><br>
+              <label for="domainInput" class="sr-only">域名</label>
+              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <div class="invalid-feedback">
+                请输入有效的域名。
+              </div>
+              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+                扫描域名
+              </button>
+              <div id="scanProgress" style="display:none; margin-top: 20px;">
+                <div class="scan-status">
+                  <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span id="scanMessage" class="scan-message">正在初始化扫描...</span>
+                </div>
+                <div class="progress-container">
+                  <div class="progress-bar-wrapper">
+                    <div id="progressBar" class="progress-bar-fill"></div>
+                  </div>
+                </div>
+              </div>
+              <div id="errorMessage" class="error-message" style="display:none;"></div>
+            </div>
+          </form>
+          <div id="noBreachMessage" style="display: none;">
+            <div class="text-center">
+              <i class="fas fa-shield-alt fa-3x text-success"></i>
+              <h4 class="text-success mt-3">未发现 <span id="searchedDomain"
+                  class="font-weight-bold"></span> 的钓鱼域名！</h4>
+              <p>您的域名似乎未受钓鱼仿冒域名的威胁。</p>
+              <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>检查其他域名</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:30px;">
+        <p>加入我们，共同打造这个完全开源的网站！欢迎在我们的 <a
+              href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> 上贡献 ❤️</p>
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-group">
+          <h6>法律</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">隐私政策</a>
+          <a href="terms" class="footer-link">条款</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>社区</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">博客</a>
+          <a href="our-repository" class="footer-link">我们的仓库</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>信任</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">状态</a>
+              <a href="transparency" class="footer-link">透明度</a>
+              <a href="responsible-disclosure" class="footer-link">负责任披露</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>关注我们</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-twitter"></i> Twitter (X)
+          </a>
+          <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-facebook"></i> Facebook
+          </a>
+          <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-mastodon"></i> Mastodon
+          </a>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  <script src="../static/scripts/domains-phishing.js"></script>
+  <script src="../static/scripts/common.js"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>E-Mail-Datenlecks vergleichen - Gemeinsame Expositionen finden | XposedOrNot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0" />
+    <meta name="description" content="Kostenloses Vergleichstool für Datenlecks, um zwei E-Mail-Adressen auf gemeinsame Datenexpositionen zu analysieren. Vergleichen Sie Ihre persönlichen und beruflichen E-Mails, entdecken Sie gemeinsame Passwort-Expositionen, visualisieren Sie Risikobewertungen und erhalten Sie personalisierte Sicherheitsempfehlungen." />
+    <meta name="keywords" content="Datenleck-Vergleichstool, E-Mail-Datenlecks vergleichen, gemeinsame Datenlecks, E-Mail-Sicherheitsvergleich, Passwort-Expositions-Checker, persönliche und berufliche E-Mail prüfen, Sicherheitsaudit, Datenleck-Überschneidung, Cybersicherheitsvergleich, XposedOrNot" />
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <link rel="dns-prefetch" href="https://api.xposedornot.com" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="E-Mail-Datenlecks vergleichen - Gemeinsame Expositionen finden | XposedOrNot" />
+    <meta property="og:description" content="Kostenloses Tool zum Vergleichen von zwei E-Mails auf gemeinsame Datenlecks. Entdecken Sie gemeinsame Passwort-Expositionen, vergleichen Sie Risikobewertungen und erhalten Sie personalisierte Sicherheitsempfehlungen." />
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta property="og:url" content="https://xposedornot.com/de/compare" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <meta property="og:locale" content="de_DE" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta name="twitter:title" content="E-Mail-Datenlecks vergleichen - Gemeinsame Expositionen finden | XposedOrNot" />
+    <meta name="twitter:description" content="Kostenloses Tool zum Vergleichen von zwei E-Mails auf gemeinsame Datenlecks. Entdecken Sie gemeinsame Passwort-Expositionen, vergleichen Sie Risikobewertungen und erhalten Sie Sicherheitsempfehlungen." />
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png" />
+
+    <!-- Canonical & Hreflang -->
+    <link rel="canonical" href="https://xposedornot.com/de/compare" />
+    <link rel="alternate" hreflang="de" href="https://xposedornot.com/de/compare" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/compare" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/compare" />
+
+    <!-- SEO & Indexing -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#417ff9" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&display=swap&subset" type="text/css" media="all" />
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/compare.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" crossorigin="anonymous" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha384-y49Zu59jZHJL/PLKgZPv3k2WI9c0Yp3pWB76V8OBVCb0QBKS8l4Ff3YslzHVX76Y" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" integrity="sha384-0esPaJH+F9evp2lsJYN36SW7XkRbaYviuyF+PpnbjDXBC9i1CWGiJyGrXCyiyGqZ" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="/static/scripts/other-libraries.js" defer></script>
+  </head>
+
+  <body data-spy="scroll" data-target=".menu" data-offset="50">
+    <!-- Mobile Header -->
+    <div class="mobileheader-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand abs" href="/de/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community-Edition</span>
+              </a>
+              <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="main-menu-part">
+                  <ul>
+                    <li><a href="/de/">Startseite</a></li>
+                    <li><a href="password.html">Passwort</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Header -->
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header-left">
+              <a href="https://XposedOrNot.com/de/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: #417ff9;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: #417ff9; opacity: 0.85; margin-top: -10px;">Community-Edition</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9">
+            <div class="header-right">
+              <ul>
+                <li><a href="/de/">Startseite</a></li>
+                <li><a href="password.html">Passwort</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="compare-hero">
+      <div class="container">
+        <h1><i class="fas fa-balance-scale"></i> E-Mail-<span class="help-tooltip" title="Ein Datenleck tritt auf, wenn Hacker Informationen von Websites stehlen, bei denen Sie sich registriert haben, wie Ihre E-Mail, Ihr Passwort oder persönliche Daten.">Datenlecks<i class="fas fa-question-circle"></i></span> vergleichen</h1>
+        <p>Prüfen Sie, ob zwei E-Mail-Adressen in denselben Datenlecks erfasst wurden und sehen Sie, welche Informationen geleakt wurden</p>
+      </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="use-cases-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-briefcase"></i>
+            <h6>Privat und Beruflich</h6>
+            <p>Prüfen Sie Ihre privaten und beruflichen E-Mails</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-envelope-open-text"></i>
+            <h6>Mehrere E-Mails</h6>
+            <p>Vergleichen Sie beliebige Ihrer E-Mails</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-exchange-alt"></i>
+            <h6>Alte und Neue E-Mail</h6>
+            <p>Prüfen Sie, ob alte Lecks Sie verfolgt haben</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-clipboard-check"></i>
+            <h6>Sicherheitsüberprüfung</h6>
+            <p>Sehen Sie Ihr vollständiges Datenleck-Bild</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="compare-input-section">
+      <div class="container">
+        <p class="instruction-text">
+          <i class="fas fa-info-circle"></i> Geben Sie unten zwei E-Mail-Adressen ein, um zu sehen, ob sie in denselben Datenlecks erscheinen.
+        </p>
+        <div class="row align-items-center">
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> Erste E-Mail</h5>
+              <input type="email" class="form-control" id="email1" placeholder="ihre@gmail.com" autocomplete="email" maxlength="254" autofocus aria-label="Erste E-Mail-Adresse zur Überprüfung">
+            </div>
+          </div>
+          <div class="col-md-2 vs-divider">
+            <span>VS</span>
+          </div>
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> Zweite E-Mail</h5>
+              <input type="email" class="form-control" id="email2" placeholder="ihre@arbeit.com" autocomplete="email" maxlength="254" aria-label="Zweite E-Mail-Adresse zum Vergleichen">
+            </div>
+          </div>
+        </div>
+        <div class="row compare-button-wrapper">
+          <div class="col-12 text-center">
+            <button class="btn btn-compare" id="btnCompare" disabled aria-label="Beide E-Mails auf gemeinsame Datenlecks vergleichen">
+              <i class="fas fa-search" aria-hidden="true"></i> Datenlecks vergleichen
+            </button>
+            <div class="error-message" id="errorMessage"></div>
+            <p class="privacy-notice">
+              <i class="fas fa-lock"></i> Ihre E-Mails werden <strong>niemals gespeichert</strong>.
+              <a href="privacy" target="_blank" rel="noopener">Datenschutzrichtlinie</a>
+            </p>
+            <p class="consent-notice">
+              <i class="fas fa-user-check"></i> Überprüfen Sie nur E-Mails, die Ihnen gehören oder für die Sie die Erlaubnis haben.
+              <a href="shield.html" target="_blank" rel="noopener">Möchten Sie nicht in Suchen erscheinen? Aktivieren Sie den Datenschutz-Schild</a>
+            </p>
+            <p class="database-stats" id="databaseStats">
+              <i class="fas fa-database"></i> Durchsuchen von <span id="breachCount">...</span> Datenlecks mit <span id="recordCount">...</span> betroffenen Konten
+              | <a href="our-repository" target="_blank" rel="noopener" title="Alle Datenlecks anzeigen">Vollständige Liste anzeigen <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+      <div class="container">
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="section-header">
+            <h2 class="h3">Zusammenfassung des Datenleck-Vergleichs</h2>
+            <p>Wie viele Datenlecks betreffen jede E-Mail</p>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-a">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> Erste E-Mail
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countA">0</div>
+                  <div class="label">Gesamtzahl der Lecks</div>
+                  <div class="email-label" id="labelA">E-Mail A</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card shared">
+                <div class="card-header">
+                  <i class="fas fa-link"></i> Gemeinsame Lecks
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countShared">0</div>
+                  <div class="label">In beiden E-Mails</div>
+                  <div class="email-label">Beide E-Mails</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-b">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> Zweite E-Mail
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countB">0</div>
+                  <div class="label">Gesamtzahl der Lecks</div>
+                  <div class="email-label" id="labelB">E-Mail B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venn Diagram -->
+        <div class="venn-section">
+          <div class="section-header">
+            <h2 class="h3">Gemeinsame vs Einzigartige Lecks
+              <span class="help-tooltip" title="Gemeinsame Lecks sind besonders riskant. Wenn Sie dasselbe Passwort für beide E-Mails verwendet haben, könnten Hacker auf mehrere Konten zugreifen.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>Welche Lecks betreffen eine oder beide E-Mails</p>
+          </div>
+          <div class="venn-container" id="vennContainer">
+            <div class="venn-circle left" id="vennLeft">
+              <span class="count" id="vennCountA">0</span>
+              <span class="label" id="vennLabelA">Nur E-Mail 1</span>
+            </div>
+            <div class="venn-overlap" id="vennOverlap">
+              <span class="count" id="vennCountShared">0</span>
+              <span class="label">Gemeinsam</span>
+            </div>
+            <div class="venn-circle right" id="vennRight">
+              <span class="count" id="vennCountB">0</span>
+              <span class="label" id="vennLabelB">Nur E-Mail 2</span>
+            </div>
+          </div>
+          <div class="overlap-stats" id="overlapStats">
+            <span id="overlapText">Überschneidung wird berechnet...</span>
+          </div>
+        </div>
+
+        <!-- Risk Comparison -->
+        <div class="risk-comparison-section">
+          <div class="section-header">
+            <h2 class="h3">Sicherheits-Risikobewertung
+              <span class="help-tooltip" title="Ihre Risikobewertung (0-100) basiert auf: wie viele Lecks Sie betreffen, ob Passwörter geleakt wurden, wie diese Passwörter gespeichert waren und wie aktuell die Lecks sind. Höher = dringendere Maßnahmen erforderlich.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>Wie dringend Sie handeln müssen, basierend auf der Schwere Ihrer Lecks</p>
+          </div>
+          <div class="risk-legend">
+            <span class="legend-item low"><i class="fas fa-circle"></i> Niedrig (0-33): Keine dringenden Maßnahmen erforderlich</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Mittel (34-66): Passwörter bald ändern</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> Hoch (67-100): Passwörter heute ändern</span>
+          </div>
+          <div id="riskMeters">
+            <!-- Risk meters will be populated dynamically -->
+          </div>
+          <div class="alert alert-info mt-3" id="combinedRiskAlert" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="combinedRiskText"></span>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-table-section">
+          <div class="section-header">
+            <h2 class="h3">Detaillierte Datenleck-Vergleichstabelle</h2>
+            <p>Vollständige Liste der Datenlecks, die jede E-Mail betreffen. <strong>Klicken Sie auf einen Datenleck-Namen</strong>, um vollständige Details einschließlich betroffener Datentypen, Zeitachse und empfohlener Maßnahmen anzuzeigen.</p>
+          </div>
+          <div class="table-responsive">
+            <table class="comparison-table" id="comparisonTable">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Name des Lecks</th>
+                  <th id="thEmailA">E-Mail A</th>
+                  <th id="thEmailB">E-Mail B</th>
+                  <th style="text-align: left;">Betroffene Daten
+                    <span class="help-tooltip" title="Arten von geleakten persönlichen Informationen: Passwörter, E-Mails, Namen, Telefonnummern, Adressen usw. Passwörter sind am kritischsten.">
+                      <i class="fas fa-question-circle"></i>
+                    </span>
+                  </th>
+                  <th>Jahr</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Table rows will be populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-center">
+            <span class="badge badge-danger mr-2"><i class="fas fa-check"></i> Gemeinsames Leck</span>
+            <span class="badge badge-secondary"><i class="fas fa-user"></i> Einzigartiges Leck</span>
+          </div>
+        </div>
+
+        <!-- Data Types Comparison -->
+        <div class="data-types-section">
+          <div class="section-header">
+            <h2 class="h3">Arten betroffener Daten</h2>
+            <p>Welche Arten von Informationen wurden geleakt</p>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <canvas id="dataTypesChart" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-section">
+          <div class="section-header">
+            <h2 class="h3">Datenleck-Zeitachsen-Verlauf</h2>
+            <p>Wann wurden diese E-Mails in Datenlecks erfasst? Aktuelle Lecks erfordern dringendere Aufmerksamkeit.</p>
+          </div>
+          <canvas id="timelineChart" height="250"></canvas>
+        </div>
+
+        <!-- Actionable Insights -->
+        <div class="insights-section">
+          <div class="section-header">
+            <h2 class="h3">Sicherheitsempfehlungen</h2>
+            <p>Personalisierte Maßnahmen basierend auf Ihrer Datenleck-Vergleichsanalyse</p>
+          </div>
+          <div id="insightsContainer">
+            <!-- Insights will be populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+          <h3 class="h5"><i class="fas fa-download"></i> Datenleck-Vergleichsbericht exportieren</h3>
+          <p>Laden Sie Ihre vollständigen Analyseergebnisse herunter oder drucken Sie sie aus</p>
+          <button class="btn btn-success btn-export" id="btnExportCSV">
+            <i class="fas fa-file-excel"></i> Tabelle
+          </button>
+          <button class="btn btn-info btn-export" id="btnPrint">
+            <i class="fas fa-print"></i> Drucken / Als PDF speichern
+          </button>
+        </div>
+
+        <!-- New Comparison Section -->
+        <div class="new-comparison-section">
+          <h3 class="h5"><i class="fas fa-redo"></i> Andere E-Mails überprüfen</h3>
+          <p>Möchten Sie andere E-Mail-Adressen vergleichen?</p>
+          <button class="btn btn-outline-primary" id="btnNewComparison">
+            <i class="fas fa-envelope"></i> Neuen Vergleich starten
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Celebration Section (No Breaches) -->
+    <div class="celebration-section" id="celebrationSection" style="display: none;">
+      <div class="container">
+        <div class="celebration-content">
+          <div class="celebration-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h2>Großartige Neuigkeiten!</h2>
+          <p class="celebration-subtitle">Keine E-Mail wurde in Datenlecks gefunden</p>
+          <div class="celebration-emails">
+            <span class="email-badge" id="celebrateEmailA"></span>
+            <span class="email-badge" id="celebrateEmailB"></span>
+          </div>
+          <div class="celebration-message">
+            <p>Beide E-Mails sind sauber! In unserer Datenbank mit <strong>Milliarden von betroffenen Datensätzen</strong> wurden keine Lecks gefunden.</p>
+          </div>
+          <div class="celebration-tips">
+            <h5><i class="fas fa-lightbulb"></i> So bleibt es dabei</h5>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Verwenden Sie einzigartige, starke Passwörter für jedes Konto</li>
+              <li><i class="fas fa-check-circle"></i> Aktivieren Sie die Zwei-Faktor-Authentifizierung (2FA), einen Sicherheitscode, der bei der Anmeldung an Ihr Telefon gesendet wird</li>
+              <li><i class="fas fa-check-circle"></i> Seien Sie vorsichtig bei Phishing-E-Mails (gefälschte E-Mails, die Sie dazu verleiten, Passwörter preiszugeben)</li>
+              <li><i class="fas fa-check-circle"></i> Überprüfen Sie regelmäßig Ihre Konten bei XposedOrNot</li>
+            </ul>
+          </div>
+          <div class="celebration-actions">
+            <button class="btn btn-primary" onclick="window.location.href = window.location.pathname">
+              <i class="fas fa-redo"></i> Andere E-Mails überprüfen
+            </button>
+            <a href="/de/" class="btn btn-outline-primary">
+              <i class="fas fa-search"></i> Vollständige Datenleck-Prüfung
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>Hilf uns, diese Open-Source-Website zu erstellen! Beiträge sind willkommen auf unserem <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Rechtliches</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Datenschutzrichtlinie</a>
+              <a href="terms" class="footer-link">Nutzungsbedingungen</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Unser Repository</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Vertrauen</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Transparenz</a>
+              <a href="responsible-disclosure" class="footer-link">Verantwortungsvolle Offenlegung</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Folge uns</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Dunkelmodus</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turnstile Verification Modal -->
+    <div class="modal fade" id="turnstileModal" tabindex="-1" role="dialog" aria-labelledby="turnstileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content turnstile-modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="turnstileModalLabel">
+              <i class="fas fa-shield-alt"></i> Sicherheitsüberprüfung
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <p class="turnstile-instruction">Bitte schließen Sie die Sicherheitsüberprüfung ab, um fortzufahren</p>
+            <div id="turnstileWidget" class="turnstile-wrapper"></div>
+            <div class="turnstile-loading" id="turnstileLoading">
+              <div class="turnstile-spinner">
+                <i class="fas fa-shield-alt fa-pulse"></i>
+              </div>
+              <p>Sicherheitsüberprüfung wird geladen...</p>
+              <small class="text-muted">Dies dauert normalerweise nur wenige Sekunden</small>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+              <i class="fas fa-times"></i> Abbrechen
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js" integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
+    <script src="/static/scripts/compare.js"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=initTurnstile" async defer></script>
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  </body>
+</html>

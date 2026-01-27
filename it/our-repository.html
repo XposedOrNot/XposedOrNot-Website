@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>XposedOrNot: Il Nostro Repository</title>
+  <meta name="description"
+    content="Esplora l'ampio repository di violazioni di dati di XposedOrNot. Accedi a informazioni dettagliate e approfondimenti per proteggere la tua identità digitale.">
+  <meta name="author" content="Devanand Premkumar">
+  <meta property="og:title" content="XposedOrNot: Il Nostro Repository">
+  <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@XposedOrNot">
+  <meta name="twitter:creator" content="@DevaOnBreaches">
+  <meta name="twitter:title" content="Quanto è sicura la tua email dalle violazioni di dati esposti?">
+  <meta name="twitter:description" content="Il Nostro Repository">
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://static.hotjar.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="shortcut icon" type="image/ico" href="../favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900&subset"
+    type="text/css" media="all">
+  <link rel="stylesheet" href="../static/css/repo-style.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/repo-responsive.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="author" href="../humans.txt">
+  <style>
+    .page-wrapper {
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+      background: #1b192b;
+    }
+
+    .web-background {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: url(../static/images/blue-web.png) right top no-repeat;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+    }
+
+    .yearly-chart-container {
+      position: relative;
+      z-index: 3;
+      margin: 40px 0;
+      width: 100%;
+      height: 400px;
+      padding: 15px 15px 25px 15px;
+      background: rgba(87, 94, 216, 0.1);
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+    }
+
+    .yearly-chart-container canvas {
+      position: relative;
+      z-index: 4;
+      width: 100% !important;
+      max-height: 360px !important;
+      margin: 0 auto;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      z-index: 4;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #1b192b;
+      font-family: 'Inter', sans-serif !important;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    .custom-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .col-45 {
+      flex: 0 0 49%;
+      max-width: 49%;
+    }
+
+    .col-10 {
+      flex: 0 0 2%;
+      max-width: 2%;
+    }
+
+    .sec3-stats {
+      width: 100%;
+    }
+
+    .sec3-flex {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .web-bx1 {
+      flex: 0 1 auto;
+      background: rgba(87, 94, 216, 0.1);
+      border-radius: 10px;
+      margin: 5px;
+      transition: all 0.3s ease;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 140px;
+    }
+
+    .web-bx1:hover {
+      background: rgba(220, 20, 60, 0.1);
+    }
+
+    .web-in {
+      padding: 15px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .web-bx-icn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .web-bx-icn img {
+      width: 32px;
+      height: 32px;
+      opacity: 0.9;
+    }
+
+    .web-in h4 {
+      margin: 5px 0;
+      text-align: center;
+    }
+
+    .web-in h5 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .web-in h4,
+    .web-in h5 {
+      transition: color 0.3s ease;
+    }
+
+    .web-bx1:hover .web-in h4,
+    .web-bx1:hover .web-in h5 {
+      color: #dc143c;
+    }
+
+    .center-text {
+      text-align: center;
+    }
+
+    .sec3-right {
+      position: relative;
+      z-index: 1;
+      background: rgba(87, 94, 216, 0.1);
+      border-radius: 10px;
+      padding: 15px;
+      height: auto;
+      min-height: 450px;
+    }
+
+    .sec3-right canvas {
+      position: relative;
+      z-index: 1;
+      height: 100% !important;
+    }
+
+    .sec3-right .chart-wrapper {
+      height: 450px;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 600;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    table,
+    th,
+    td {
+      color: white;
+    }
+
+    .readMore,
+    .readLess {
+      color: #dc143c;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 0.9em;
+      margin-left: 6px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .readMore:hover,
+    .readLess:hover {
+      color: #ff4d6a;
+    }
+
+    .description.truncated {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .web-bg {
+      z-index: -999 !important;
+      position: absolute !important;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .yearly-chart-container h4 {
+      color: #fff;
+      font-weight: 600;
+      padding-top: 5px;
+      margin-bottom: 10px;
+    }
+
+    .yearly-chart-container .chart-wrapper {
+      position: relative;
+      z-index: 1000 !important;
+      height: 360px;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .sec3-row {
+      margin: 40px 0;
+    }
+
+    h4 {
+      margin-bottom: 15px;
+    }
+
+    .sec3-right h4 {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .web-bx1 {
+      background: rgba(87, 94, 216, 0.1);
+      border-radius: 10px;
+      margin: 5px;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .web-bx1:hover {
+      background: rgba(220, 20, 60, 0.1);
+    }
+
+    .web-in {
+      padding: 15px 10px;
+    }
+
+    .web-in h4,
+    .web-in h5 {
+      transition: color 0.3s ease;
+    }
+
+    .web-bx1:hover .web-in h4,
+    .web-bx1:hover .web-in h5 {
+      color: #dc143c;
+    }
+
+    .sec3-flex {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .custom-row {
+        display: block;
+      }
+
+      .col-45 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .col-10 {
+        display: none;
+      }
+
+      .yearly-chart-container {
+        margin: 20px 0;
+        padding: 10px;
+        height: 300px;
+      }
+
+      .yearly-chart-container canvas,
+      #industryChart {
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+      }
+
+      .chart-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .sec3-right {
+        padding: 15px 5px;
+        min-height: 400px;
+      }
+
+      .sec3-right .chart-wrapper {
+        height: 400px;
+      }
+
+      .sec3-row {
+        margin: 20px 0;
+      }
+
+      .sec3-flex {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .web-bx1 {
+        flex: 0 0 calc(50% - 15px);
+        margin: 0;
+      }
+
+      .web-in {
+        padding: 12px 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .web-bx-icn img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .sec3-right h4 {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      table {
+        font-size: 14px;
+      }
+
+      td img {
+        width: 30px !important;
+        height: auto;
+      }
+
+      .description.truncated {
+        -webkit-line-clamp: 2;
+        font-size: 13px;
+      }
+
+      .readMore,
+      .readLess {
+        font-size: 12px;
+      }
+
+      .buttons ul {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 15px;
+        box-sizing: border-box;
+      }
+
+      .buttons ul li {
+        width: 100%;
+      }
+
+      .buttons ul li a {
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+        box-sizing: border-box;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+
+      .button-wrapper .tooltip-text {
+        display: none;
+      }
+
+
+      .header-row {
+        padding: 10px 15px;
+      }
+
+      .logo-text {
+        font-size: 1.2rem;
+      }
+
+      .header-right ul li a {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .banner {
+        padding: 30px 15px;
+      }
+
+      .banner h1 {
+        font-size: 2rem;
+      }
+
+      /* Chart adjustments for mobile */
+      #yearlyChart,
+      #industryChart {
+        max-height: 100% !important;
+      }
+
+      #industryChart {
+        height: 100% !important;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .web-bx1 {
+        flex: 0 0 100%;
+      }
+
+      .sec3-flex {
+        flex-direction: column;
+      }
+
+      .yearly-chart-container {
+        height: 250px;
+      }
+
+      .yearly-chart-container .chart-wrapper {
+        height: 200px;
+      }
+
+      td:nth-child(3) {
+        max-width: 150px;
+      }
+
+      .description.truncated {
+        -webkit-line-clamp: 1;
+      }
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0;
+      padding: 0 15px;
+    }
+
+    .table {
+      min-width: 500px;
+      margin-bottom: 0;
+    }
+
+    .chartjs-tooltip {
+      max-width: 200px;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+
+    .navbar-toggler {
+      border: none;
+      padding: 0;
+      outline: none !important;
+    }
+
+    .navbar-toggler-icon {
+      background: #fff;
+      height: 2px;
+      width: 25px;
+      display: block;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-collapse {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .navbar-nav .nav-item {
+      margin: 8px 0;
+    }
+
+    .navbar-nav .nav-link {
+      color: #fff !important;
+      padding: 8px 15px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .menu {
+        padding: 10px 15px;
+      }
+
+      .navbar {
+        padding: 0;
+      }
+
+      .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        margin: 0 15px;
+      }
+
+      .navbar-nav {
+        padding: 10px 0;
+      }
+    }
+
+    .banner h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0;
+    }
+
+    .yearly-chart-container h4,
+    .sec3-right h4,
+    .breach1 h4 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .banner h1 {
+        font-size: 2rem;
+      }
+
+      .yearly-chart-container h4,
+      .sec3-right h4,
+      .breach1 h4 {
+        font-size: 1.25rem;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .banner h1 {
+        font-size: 1.75rem;
+      }
+
+      .yearly-chart-container h4,
+      .sec3-right h4,
+      .breach1 h4 {
+        font-size: 1.1rem;
+      }
+    }
+
+    .breach-row {
+      margin: 40px 0;
+    }
+
+    .buttons {
+      margin: 40px 0;
+      width: 100%;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+
+    .breach1 {
+      position: relative;
+      z-index: 3;
+      background: rgba(87, 94, 216, 0.1);
+      border-radius: 10px;
+      padding: 15px;
+      backdrop-filter: blur(8px);
+    }
+
+    .breach1 h4 {
+      margin: 10px 0 20px;
+    }
+
+    .web-bx-icn {
+      margin-bottom: 10px;
+    }
+
+    .web-bx-icn img {
+      width: 32px;
+      height: 32px;
+      opacity: 0.9;
+    }
+
+    @media screen and (max-width: 768px) {
+      .web-bx-icn img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    /* Footer Styles */
+    .site-footer {
+      padding: 40px 0 30px;
+      background: rgba(87, 94, 216, 0.1);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 40px;
+    }
+
+    .footer-columns {
+      display: flex;
+      justify-content: space-between;
+      gap: 60px;
+      text-align: left;
+      padding: 0 40px;
+    }
+
+    .footer-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .footer-group h6 {
+      color: #ffffff !important;
+      font-size: 0.95em !important;
+      margin-bottom: 15px !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .footer-group a.footer-link {
+      display: block;
+      margin-bottom: 8px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      color: #9fc0e0;
+      text-decoration: none;
+    }
+
+    .footer-group a.footer-link:hover {
+      background-color: rgba(220, 20, 60, 0.2);
+      padding-left: 14px;
+      color: #dc143c !important;
+    }
+
+    @media (max-width: 768px) {
+      .footer-columns {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+        padding: 0 20px;
+      }
+	.footer-group {
+		border-bottom: 1px solid #ebedef;
+	}
+
+	.footer-group h6 {
+		cursor: pointer;
+		padding: 15px 20px;
+		margin: 0 !important;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.footer-group h6::after {
+		content: '+';
+		font-size: 20px;
+		font-weight: 300;
+		transition: transform 0.3s ease;
+	}
+
+	.footer-group.active h6::after {
+		content: '−';
+	}
+
+	.footer-group .footer-links-wrapper {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease;
+		padding: 0 20px;
+	}
+
+	.footer-group.active .footer-links-wrapper {
+		max-height: 300px;
+		padding: 0 20px 15px 20px;
+	}
+
+      .footer-group a.footer-link:hover {
+        padding-left: 10px;
+      }
+    }
+  </style>
+  <script defer src="../static/scripts/other-libraries.js"></script>
+  <script src="https://kit.fontawesome.com/00d920835c.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/0.7.0/chartjs-plugin-datalabels.min.js"
+    integrity="sha512-FxGxGq2nisu+06U6WXH/FD+OkuKhMBfKOfuKz297nuE/25y9oLPMsWNpm1KcpThcoMzTYLeTWFv7DfBA6rZUpg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"
+    integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
+  <script>
+
+    Chart.plugins.register(ChartDataLabels);
+
+    Chart.Tooltip.positioners.custom = function (elements, position) {
+      if (!elements.length) {
+        return false;
+      }
+      return {
+        x: elements[0]._model.x + 10,
+        y: elements[0]._model.y
+      };
+    };
+  </script>
+</head>
+
+<body>
+  <div class="page-wrapper">
+    <div class="web-background"></div>
+    <div class="content-wrapper">
+      <header>
+        <div class="header">
+          <div class="grid">
+            <div class="header-row">
+              <a href="index.html" class="logo-text">XposedOrNot</a>
+              <nav class="header-right">
+                <ul>
+                  <li><a href="password.html">Password</a></li>
+                  <li><a href="faq.html">FAQ</a></li>
+                  <li><a href="xonPulse.html">Notizie</a></li>
+                  <li><a href="api_doc.html">API</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="menu" style="padding: 15px;">
+          <nav class="navbar" style="min-height: 60px;">
+            <a class="navbar-brand" href="#" style="text-decoration: none; display: block !important; height: auto !important; overflow: visible !important;">
+              <span style="font-size: 1.5em; font-weight: bold; display: block !important; color: white !important; line-height: 1.2;">XposedOrNot</span>
+              <span style="font-size: 0.8em; display: block !important; color: white !important; opacity: 0.85; line-height: 1; margin-top: 2px;">Edizione Community</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Attiva/disattiva navigazione">
+              <span class="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="password.html">Password</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="faq.html">FAQ</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="xonPulse.html">Notizie</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="api_doc.html">API</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <div class="banner">
+          <div class="grid">
+            <div class="banner-row center-text">
+              <h1>Il Nostro Repository</h1>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <div class="sec3">
+          <div class="grid">
+            <div class="yearly-chart-container center-text">
+              <h4>Trend Annuale delle Violazioni di Dati Esposti</h4>
+              <div class="chart-wrapper">
+                <canvas id="yearlyChart"></canvas>
+              </div>
+            </div>
+
+            <div class="sec3-row">
+              <div class="custom-row">
+                <div class="col-45">
+                  <div class="sec3-stats">
+                    <div class="sec3-flex">
+                      <div class="web-bx1">
+                        <div class="web-in">
+                          <div class="web-bx-icn">
+                            <img src="../static/images/close-circle.png" alt="Icona chiudi">
+                          </div>
+                          <h4 id="breaches-count">0</h4>
+                          <h5>Violazioni</h5>
+                        </div>
+                      </div>
+                      <div class="web-bx1">
+                        <div class="web-in">
+                          <div class="web-bx-icn">
+                            <img src="../static/images/document-text.png" alt="Icona documento">
+                          </div>
+                          <h4 id="records-count">0</h4>
+                          <h5>Record</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="sec3-flex">
+                      <div class="web-bx1">
+                        <div class="web-in">
+                          <div class="web-bx-icn">
+                            <img src="../static/images/lock2.png" alt="Icona lucchetto">
+                          </div>
+                          <h4 id="pastes-count">0</h4>
+                          <h5>E-mail</h5>
+                        </div>
+                      </div>
+                      <div class="web-bx1">
+                        <div class="web-in">
+                          <div class="web-bx-icn">
+                            <img src="../static/images/sms.png" alt="Icona SMS">
+                          </div>
+                          <h4 id="emails-count">0</h4>
+                          <h5>Password</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-10"></div>
+                <div class="col-45">
+                  <div class="sec3-right center-text">
+                    <h4>Violazioni per Settore</h4>
+                    <div class="chart-wrapper">
+                      <canvas id="industryChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <section class="breach-row">
+              <div class="custom-row">
+                <div class="col-45 breach1 center-text">
+                  <h4>Top 10 Violazioni di Dati</h4>
+                  <div id="top-breaches-table" class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Logo</th>
+                          <th>ID Violazione</th>
+                          <th>Descrizione</th>
+                          <th>Record</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-10">
+                </div>
+                <div class="col-45 breach1 center-text">
+                  <h4>Violazioni Recenti</h4>
+                  <div id="another-table" class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Logo</th>
+                          <th>ID Violazione</th>
+                          <th>Descrizione</th>
+                          <th>Record</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div class="buttons center-text">
+              <ul>
+                <li class="button-wrapper">
+                  <a href="xposed.html" class="btn-data-breaches">Violazioni di Dati</a>
+                  <span class="tooltip-text">Approfondisci i dettagli completi di tutte le violazioni di dati che interessano la tua email</span>
+                </li>
+                <li class="button-wrapper">
+                  <a href="domains.html" class="btn-company-exposure">Verifica Esposizione Aziendale</a>
+                  <span class="tooltip-text">Monitora le violazioni di dati su tutti i domini verificati nella tua organizzazione</span>
+                </li>
+                <li class="button-wrapper">
+                  <a href="domain.html" class="btn-verify-domain">Verifica Dominio</a>
+                  <span class="tooltip-text">Verifica rapidamente l'autorità del tuo dominio tramite validazione DNS, email o HTTP</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="site-footer">
+        <div class="grid">
+          <div style="text-align:center;margin-bottom:30px;">
+            <p style="color:#9fc0e0;">Unisciti a noi nel plasmare questo sito completamente open source! Contributi benvenuti ❤️ sul nostro <a
+                href="https://github.com/XposedOrNot" target="_blank" rel="noopener" style="color:#dc143c;">GitHub</a>.</p>
+          </div>
+
+          <div class="footer-columns">
+            <div class="footer-group">
+              <h6>Legale</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Informativa sulla Privacy</a>
+              <a href="terms" class="footer-link">Termini</a>
+            </div>
+          </div>
+            <div class="footer-group">
+              <h6>Comunità</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Il Nostro Repository</a>
+            </div>
+          </div>
+            <div class="footer-group">
+              <h6>Fiducia</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Stato</a>
+              <a href="transparency" class="footer-link">Trasparenza</a>
+              <a href="responsible-disclosure" class="footer-link">Divulgazione Responsabile</a>
+            </div>
+          </div>
+            <div class="footer-group">
+              <h6>Seguici</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Riepilogo IA</h6>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <img src="../static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                ChatGPT
+              </a>
+              <a
+                href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <img src="../static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Perplexity
+              </a>
+              <a
+                href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <img src="../static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Gemini
+              </a>
+            </div>
+          </div>
+        </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
+    integrity="sha512-ubuT8Z88WxezgSqf3RLuNi5lmjstiJcyezx34yIU2gAHonIi27Na7atqzUZCOoY4CExaoFumzOsFQ2Ch+I/HCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script>
+    $.LoadingOverlay("show", {
+      background: "rgba(0, 0, 0, 0.5)",
+      image: "../static/images/shield-alt.svg",
+      imageAnimation: "1s fadein",
+      imageColor: "#6daae0"
+    });
+
+    function toggleDescription(el) {
+      const desc = el.previousElementSibling;
+      if (desc.classList.contains('truncated')) {
+        desc.classList.remove('truncated');
+        el.textContent = 'Leggi meno';
+      } else {
+        desc.classList.add('truncated');
+        el.textContent = 'Leggi di più';
+      }
+    }
+
+    $(document).ready(function () {
+      $(document).on("click", ".readMore", function () {
+        toggleDescription(this);
+      });
+
+      $.fn.runCounter = function (options) {
+        const settings = $.extend({ start: 0, end: 0, duration: 5000 }, options);
+        return this.each(function () {
+          const $this = $(this);
+          $({ counter: settings.start }).animate({ counter: settings.end }, {
+            duration: settings.duration,
+            easing: 'linear',
+            step: function () {
+              $this.text(Math.floor(this.counter).toLocaleString());
+            },
+            complete: function () {
+              $this.text(settings.end.toLocaleString());
+            }
+          });
+        });
+      };
+
+      function parseNumber(value) {
+        return parseInt(value.replace(/,/g, ''), 10);
+      }
+
+      $.get("https://api.xposedornot.com/v1/metrics/detailed", function (data) {
+        $("#breaches-count").runCounter({ end: data.Breaches_Count });
+        $("#records-count").runCounter({ end: data.Breaches_Records });
+        $("#pastes-count").runCounter({ end: parseNumber(data.Pastes_Count) });
+        $("#emails-count").runCounter({ end: data.Pastes_Records });
+
+        const yearlyData = Object.entries(data.Yearly_Breaches_Count)
+          .map(([year, count]) => ({ year: parseInt(year), count }))
+          .sort((a, b) => a.year - b.year);
+
+        const years = yearlyData.map(item => item.year.toString());
+        const breachesCount = yearlyData.map(item => item.count);
+
+        const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+        const yearlyGradient = yearlyCtx.createLinearGradient(0, 0, 0, 300);
+        yearlyGradient.addColorStop(0, "rgba(220, 20, 60, 1)");
+        yearlyGradient.addColorStop(1, "rgba(220, 20, 60, 0.5)");
+
+        new Chart("yearlyChart", {
+          type: "line",
+          data: {
+            labels: years,
+            datasets: [{
+              fill: true,
+              lineTension: 0.3,
+              backgroundColor: "rgba(220, 20, 60, 0.1)",
+              borderColor: yearlyGradient,
+              borderWidth: 2,
+              pointBackgroundColor: "#fff",
+              pointBorderColor: "rgba(220, 20, 60, 1)",
+              pointBorderWidth: 2,
+              pointRadius: 4,
+              pointHoverRadius: 7,
+              data: breachesCount
+            }]
+          },
+          options: {
+            legend: { display: false },
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 0,
+                right: 30,
+                top: 15,
+                bottom: 35
+              }
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  fontColor: "#fff",
+                  padding: 5,
+                  callback: function (value) {
+                    return value;
+                  }
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: true,
+                  color: "rgba(255,255,255,0.2)"
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  fontColor: "#fff",
+                  padding: 5,
+                  callback: function (value) {
+                    if (value >= 1000000) {
+                      return (value / 1000000).toFixed(1) + 'M';
+                    } else if (value >= 1000) {
+                      return (value / 1000).toFixed(1) + 'k';
+                    }
+                    return value;
+                  }
+                },
+                gridLines: { color: "rgba(255,255,255,0.2)" }
+              }]
+            },
+            tooltips: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleFontColor: '#fff',
+              bodyFontColor: '#fff',
+              bodySpacing: 4,
+              xPadding: 12,
+              mode: "nearest",
+              intersect: 0,
+              position: "nearest",
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  return `Conteggio: ${tooltipItem.yLabel.toLocaleString()}`;
+                }
+              }
+            },
+            plugins: {
+              datalabels: {
+                align: 'top',
+                anchor: 'end',
+                backgroundColor: 'rgba(220, 20, 60, 0.65)',
+                borderRadius: 4,
+                color: 'white',
+                font: {
+                  size: 11,
+                  weight: 'bold'
+                },
+                padding: 4,
+                formatter: function (value) {
+                  if (value >= 1000000) {
+                    return (value / 1000000).toFixed(1) + 'M';
+                  } else if (value >= 1000) {
+                    return (value / 1000).toFixed(1) + 'k';
+                  }
+                  return value;
+                },
+                display: true,
+                offset: 8,
+                clamp: true
+              }
+            }
+          }
+        });
+
+        const industries = Object.keys(data.Industry_Breaches_Count);
+        const industryCounts = Object.values(data.Industry_Breaches_Count);
+
+        const ctx = document.getElementById('industryChart').getContext('2d');
+        const industryGradient = ctx.createLinearGradient(0, 0, 400, 0);
+        industryGradient.addColorStop(0, "rgba(220, 20, 60, 0.6)");
+        industryGradient.addColorStop(1, "rgba(220, 20, 60, 0.4)");
+
+        const industryData = industries.map((industry, index) => {
+          return { industry: industry, count: industryCounts[index] };
+        }).sort((a, b) => b.count - a.count);
+
+        const topIndustries = industryData.slice(0, 15);
+
+        const formattedIndustries = topIndustries.map(item => ({
+          industry: item.industry.replace('_', ' ').replace(/-/g, ' '),
+          count: item.count
+        }));
+
+        new Chart(document.getElementById('industryChart').getContext('2d'), {
+          type: 'horizontalBar',
+          data: {
+            labels: formattedIndustries.map(item => item.industry),
+            datasets: [{
+              backgroundColor: "rgba(220, 20, 60, 0.5)",
+              borderColor: industryGradient,
+              borderWidth: 1,
+              data: formattedIndustries.map(item => item.count)
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+              display: false
+            },
+            layout: {
+              padding: {
+                left: 0,
+                right: 65,
+                top: 0,
+                bottom: 0
+              }
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  fontColor: "#fff",
+                  beginAtZero: true,
+                  padding: 0,
+                  callback: function (value) {
+                    if (value >= 1000000) {
+                      return (value / 1000000).toFixed(1) + 'M';
+                    } else if (value >= 1000) {
+                      return (value / 1000).toFixed(1) + 'k';
+                    }
+                    return value;
+                  }
+                },
+                gridLines: {
+                  color: "rgba(255,255,255,0.2)",
+                  drawBorder: true
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  fontColor: "#fff",
+                  fontSize: 11,
+                  padding: 0
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: true
+                },
+                barPercentage: 0.6,
+                categoryPercentage: 0.8,
+                position: 'left',
+                offset: true
+              }]
+            },
+            tooltips: {
+              enabled: true,
+              mode: 'nearest',
+              axis: 'y',
+              position: 'custom',
+              intersect: true,
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleFontFamily: "'Poppins', sans-serif",
+              bodyFontFamily: "'Poppins', sans-serif",
+              titleFontColor: '#fff',
+              bodyFontColor: '#fff',
+              titleFontSize: 13,
+              bodyFontSize: 13,
+              xPadding: 12,
+              yPadding: 8,
+              caretSize: 6,
+              cornerRadius: 4,
+              displayColors: false,
+              callbacks: {
+                title: function (tooltipItems) {
+                  return formattedIndustries[tooltipItems[0].index].industry;
+                },
+                label: function (tooltipItem) {
+                  const value = formattedIndustries[tooltipItem.index].count;
+                  if (value >= 1000000) {
+                    return 'Conteggio: ' + (value / 1000000).toFixed(1) + 'M';
+                  } else if (value >= 1000) {
+                    return 'Conteggio: ' + (value / 1000).toFixed(1) + 'k';
+                  }
+                  return 'Conteggio: ' + value.toLocaleString();
+                }
+              }
+            },
+            plugins: {
+              datalabels: {
+                align: function (context) {
+                  const value = context.dataset.data[context.dataIndex];
+                  return value >= 0 ? 'end' : 'start';
+                },
+                anchor: 'end',
+                backgroundColor: 'rgba(220, 20, 60, 0.65)',
+                borderRadius: 4,
+                color: 'white',
+                font: {
+                  size: 11,
+                  weight: 'bold'
+                },
+                formatter: function (value) {
+                  if (value >= 1000000) {
+                    return (value / 1000000).toFixed(1) + 'M';
+                  } else if (value >= 1000) {
+                    return (value / 1000).toFixed(1) + 'k';
+                  }
+                  return value.toLocaleString();
+                },
+                padding: 4,
+                offset: 10,
+                display: true
+              }
+            }
+          }
+        });
+
+        const topBreaches = data.Top_Breaches;
+        const firstTableBody = $("#top-breaches-table tbody");
+        firstTableBody.empty();
+        topBreaches.forEach(breach => {
+          firstTableBody.append(`
+            <tr>
+              <td><img src="${breach.logo}" alt="Logo" width="50"></td>
+              <td>${breach.breachid}</td>
+              <td style="text-align: left;">
+                <span class="description truncated">${breach.description}</span>
+                <span class="readMore">Leggi di più</span>
+              </td>
+              <td>${breach.count.toLocaleString()}</td>
+            </tr>
+          `);
+        });
+
+        const recentBreaches = data.Recent_Breaches;
+        const secondTableBody = $("#another-table tbody");
+        secondTableBody.empty();
+        recentBreaches.forEach(breach => {
+          secondTableBody.append(`
+            <tr>
+              <td><img src="${breach.logo}" alt="Logo" width="50"></td>
+              <td>${breach.breachid}</td>
+              <td style="text-align: left;">
+                <span class="description truncated">${breach.description}</span>
+                <span class="readMore">Leggi di più</span>
+              </td>
+              <td>${breach.count.toLocaleString()}</td>
+            </tr>
+          `);
+        });
+
+        $.LoadingOverlay("hide");
+      });
+    });
+  </script>
+  <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+  <script src="../static/scripts/common.js"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

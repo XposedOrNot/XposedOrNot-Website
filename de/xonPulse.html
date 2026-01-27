@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>Datenleck-Nachrichten & Warnungen | xonPulse von XposedOrNot</title>
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="static.hotjar.com">
+    <meta name="description"
+        content="Bleiben Sie informiert über die neuesten Datenlecks, Cybersicherheitsvorfälle und Datenschutzverletzungen. Echtzeit-Updates zu Unternehmensverletzungen, Hacks und Datenlecks.">
+    <meta name="keywords"
+        content="Datenleck-Nachrichten, Cybersicherheitswarnungen, Datenschutzverletzungen, Sicherheitsvorfälle, Hack-Berichte, Datenlecks">
+    <meta name="author" content="XposedOrNot">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://xposedornot.com/de/xonPulse" />
+
+
+    <meta property="og:title" content="Datenleck-Nachrichten & Warnungen | xonPulse">
+    <meta property="og:description"
+        content="Bleiben Sie informiert über die neuesten Datenlecks, Cybersicherheitsvorfälle und Datenschutzverletzungen. Echtzeit-Updates zu Unternehmensverletzungen, Hacks und Datenlecks.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xposedornot.com/de/xonPulse">
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+    <meta property="og:site_name" content="XposedOrNot">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@XposedOrNot">
+    <meta name="twitter:creator" content="@DevaOnBreaches">
+    <meta name="twitter:title" content="Datenleck-Nachrichten & Warnungen | xonPulse">
+    <meta name="twitter:description"
+        content="Bleiben Sie informiert über die neuesten Datenlecks, Cybersicherheitsvorfälle und Datenschutzverletzungen.">
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+        integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--primary-color) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .search-section {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #search-input {
+            border-radius: var(--border-radius);
+            padding: 0.875rem 1rem;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            transition: var(--transition);
+            flex: 1;
+            min-width: 200px;
+            min-height: 48px;
+        }
+
+        #timeline-dropdown {
+            border-radius: var(--border-radius);
+            padding: 0.875rem 1rem;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            transition: var(--transition);
+            flex: 0 0 auto;
+            width: auto;
+            min-width: 160px;
+            min-height: 48px;
+            cursor: pointer;
+        }
+
+        #search-input:focus,
+        #timeline-dropdown:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .news-item {
+            background: var(--card-background);
+            border: none;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: var(--transition);
+            position: relative;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .news-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .news-item h5 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-right: 220px;
+        }
+
+        .news-date {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .news-date .relative-time {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .news-summary {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .news-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .news-link:hover {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        .pagination-controls button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+            min-width: 120px;
+        }
+
+        .pagination-controls button:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .pagination-controls button:not(:disabled):hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        #page-info {
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border-radius: var(--border-radius);
+        }
+
+        .loading-spinner {
+            display: none;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .loading-spinner.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .search-section {
+                padding: 1.5rem;
+            }
+
+            .news-item {
+                padding: 1.25rem;
+            }
+
+            .news-date {
+                position: static;
+                margin-bottom: 1rem;
+                display: inline-block;
+            }
+
+            .news-item h5 {
+                padding-right: 0;
+                font-size: 1.1rem;
+            }
+
+            .pagination-controls {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            #page-info {
+                order: -1;
+            }
+        }
+    </style>
+
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Datenleck-Nachrichten & Warnungen | xonPulse",
+        "description": "Bleiben Sie informiert über die neuesten Datenlecks, Cybersicherheitsvorfälle und Datenschutzverletzungen.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "XposedOrNot",
+            "logo": "https://xposedornot.com/static/images/xon.png"
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="https://xposedornot.com/de/">
+                <span style="font-size: 1.5em; font-weight: bold;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; opacity: 0.85; margin-top: -5px;">Community-Ausgabe</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Navigation umschalten">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Startseite</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="xonPulse.html">xonPulse</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container my-5">
+        <div class="search-section">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 style="color: var(--primary-color); font-size: 2rem; margin-bottom: 0.5rem; font-weight: 700;">
+                        xonPulse
+                        <span
+                            style="font-size: 1.1rem; color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                            Ihr Echtzeit-Datenleck-Nachrichtenfeed
+                        </span>
+                    </h1>
+                </div>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" class="form-control"
+                    placeholder="Suche nach Datenlecks, Unternehmen oder Vorfällen...">
+                <select id="timeline-dropdown" class="form-control">
+                    <option value="all">Gesamter Zeitraum</option>
+                    <option value="day">Letzte 24 Stunden</option>
+                    <option value="week">Letzte Woche</option>
+                    <option value="month">Letzter Monat</option>
+                    <option value="quarter">Letzte 3 Monate</option>
+                    <option value="year">Letztes Jahr</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="alert alert-info"
+            style="border-radius: var(--border-radius); background-color: #eff6ff; border: none; color: #1e40af;">
+            <h2 class="h5 mb-2" style="color: var(--primary-color); font-weight: 600;">Bleiben Sie über Datenlecks informiert
+            </h2>
+            <p class="mb-0">Erhalten Sie Echtzeit-Updates zu Datenlecks, Cybersicherheitsvorfällen und Datenschutzverletzungen
+                weltweit. Unser kuratierter Feed hilft Ihnen, potenziellen Bedrohungen einen Schritt voraus zu sein und
+                proaktive Maßnahmen zum Schutz Ihrer digitalen Vermögenswerte zu ergreifen.</p>
+        </div>
+
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+        </div>
+
+        <div id="news-container"></div>
+        <div class="pagination-controls">
+            <button id="prev-page" class="btn">&larr; Zurück</button>
+            <span id="page-info">Seite 1 von 10</span>
+            <button id="next-page" class="btn">Weiter &rarr;</button>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let currentPage = 1;
+            const itemsPerPage = 10;
+            let sortedData = [];
+
+            function showLoading() {
+                $('.loading-spinner').addClass('active');
+                $('#news-container').hide();
+            }
+
+            function hideLoading() {
+                $('.loading-spinner').removeClass('active');
+                $('#news-container').show();
+            }
+
+            function updatePagination(totalPages) {
+                $('#page-info').text(`Seite ${currentPage} von ${totalPages}`);
+                $('#prev-page').prop('disabled', currentPage === 1);
+                $('#next-page').prop('disabled', currentPage === totalPages);
+            }
+
+            function fetchNews() {
+                showLoading();
+                $.ajax({
+                    url: 'https://api.xposedornot.com/v1/xon-pulse',
+
+                    method: 'GET',
+                    success: function (response) {
+                        sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                        displayPaginatedNews();
+                        hideLoading();
+                    },
+                    error: function () {
+                        console.error('Failed to fetch news');
+                        hideLoading();
+                        $('#news-container').html('<div class="alert alert-danger">Nachrichten konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</div>');
+                    }
+                });
+            }
+
+            function filterNews(searchText) {
+                return sortedData.filter(news =>
+                    news.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                    news.summary.toLowerCase().includes(searchText.toLowerCase())
+                );
+            }
+
+            function filterByTimeline(data) {
+                const timeline = $('#timeline-dropdown').val();
+                if (timeline === 'all') return data;
+
+                const now = new Date();
+                let cutoffDate;
+
+                switch (timeline) {
+                    case 'day':
+                        cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+                        break;
+                    case 'week':
+                        cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                        break;
+                    case 'month':
+                        cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                        break;
+                    case 'quarter':
+                        cutoffDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+                        break;
+                    case 'year':
+                        cutoffDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+                        break;
+                    default:
+                        return data;
+                }
+
+                return data.filter(news => new Date(news.date) >= cutoffDate);
+            }
+
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const day = String(date.getDate()).padStart(2, '0');
+                const months = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+                return `${day}-${month}-${year}`;
+            }
+
+            function getRelativeTime(dateString) {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffSecs = Math.floor(diffMs / 1000);
+                const diffMins = Math.floor(diffSecs / 60);
+                const diffHours = Math.floor(diffMins / 60);
+                const diffDays = Math.floor(diffHours / 24);
+                const diffWeeks = Math.floor(diffDays / 7);
+                const diffMonths = Math.floor(diffDays / 30);
+                const diffYears = Math.floor(diffDays / 365);
+
+                if (diffSecs < 60) return 'Gerade eben';
+                if (diffMins < 60) return diffMins === 1 ? 'Vor 1 Minute' : `Vor ${diffMins} Minuten`;
+                if (diffHours < 24) return diffHours === 1 ? 'Vor 1 Stunde' : `Vor ${diffHours} Stunden`;
+                if (diffDays < 7) return diffDays === 1 ? 'Gestern' : `Vor ${diffDays} Tagen`;
+                if (diffWeeks < 4) return diffWeeks === 1 ? 'Vor 1 Woche' : `Vor ${diffWeeks} Wochen`;
+                if (diffMonths < 12) return diffMonths === 1 ? 'Vor 1 Monat' : `Vor ${diffMonths} Monaten`;
+                return diffYears === 1 ? 'Vor 1 Jahr' : `Vor ${diffYears} Jahren`;
+            }
+
+            function displayPaginatedNews() {
+                const searchText = $('#search-input').val();
+                let filteredData = filterByTimeline(sortedData);
+                if (searchText) {
+                    filteredData = filteredData.filter(news =>
+                        news.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                        news.summary.toLowerCase().includes(searchText.toLowerCase())
+                    );
+                }
+                const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
+
+                updatePagination(totalPages);
+
+                const paginatedData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+                displayNews(paginatedData);
+            }
+
+            function displayNews(newsItems) {
+                $('#news-container').empty();
+                if (newsItems.length === 0) {
+                    $('#news-container').html('<div class="text-center p-5">Keine Nachrichten gefunden, die Ihren Suchkriterien entsprechen.</div>');
+                    return;
+                }
+                newsItems.forEach(news => {
+                    const formattedDate = formatDate(news.date);
+                    const relativeTime = getRelativeTime(news.date);
+                    $('#news-container').append(`
+                        <div class="news-item">
+                            <div class="news-date">${formattedDate} <span class="relative-time">· ${relativeTime}</span></div>
+                            <h5>${news.title}</h5>
+                            <p class="news-summary">${news.summary}</p>
+                            <a href="${news.url}" target="_blank" class="news-link">
+                                Vollständigen Artikel lesen
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    `);
+                });
+            }
+
+            let searchTimeout;
+            $('#search-input').on('input', function () {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentPage = 1;
+                    displayPaginatedNews();
+                }, 300);
+            });
+
+            $('#timeline-dropdown').on('change', function () {
+                currentPage = 1;
+                displayPaginatedNews();
+            });
+
+            $('#prev-page').click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayPaginatedNews();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+            $('#next-page').click(function () {
+                currentPage++;
+                displayPaginatedNews();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            fetchNews();
+        });
+    </script>
+    <style>
+      .footer { padding: 40px 0 30px; background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
+      .footer p { color: #9fc0e0; }
+      .footer-columns { display: flex; justify-content: space-between; gap: 60px; text-align: left; padding: 0 40px; }
+      .footer-group { flex: 1; min-width: 0; }
+      .footer-group h6 { color: #ffffff !important; font-size: 0.95em !important; margin-bottom: 15px !important; font-weight: 700 !important; text-transform: uppercase; letter-spacing: 0.8px; }
+      .footer-group a.footer-link { display: block; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; transition: all 0.3s ease; color: #9fc0e0; text-decoration: none; }
+      .footer-group a.footer-link:hover { background-color: rgba(63, 113, 243, 0.2); padding-left: 14px; color: #6daae0 !important; }
+      @media (max-width: 768px) { .footer-columns { flex-direction: column; text-align: center; gap: 30px; padding: 0 20px; }
+	.footer-group {
+		border-bottom: 1px solid #ebedef;
+	}
+
+	.footer-group h6 {
+		cursor: pointer;
+		padding: 15px 20px;
+		margin: 0 !important;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.footer-group h6::after {
+		content: '+';
+		font-size: 20px;
+		font-weight: 300;
+		transition: transform 0.3s ease;
+	}
+
+	.footer-group.active h6::after {
+		content: '−';
+	}
+
+	.footer-group .footer-links-wrapper {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease;
+		padding: 0 20px;
+	}
+
+	.footer-group.active .footer-links-wrapper {
+		max-height: 300px;
+		padding: 0 20px 15px 20px;
+	} }
+    </style>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:30px;">
+          <p>xonPulse bietet Echtzeit-Benachrichtigungen über Datenlecks und Cybersicherheitsnachrichten.</p>
+          <p>Helfen Sie mit, diese vollständig Open-Source-Website zu gestalten! Beiträge sind willkommen auf unserem <a
+                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Rechtliches</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy.html" class="footer-link">Datenschutzrichtlinie</a>
+            <a href="terms.html" class="footer-link">Nutzungsbedingungen</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+            <a href="our-repository.html" class="footer-link">Unser Repository</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Vertrauen</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency.html" class="footer-link">Transparenz</a>
+              <a href="responsible-disclosure.html" class="footer-link">Verantwortungsvolle Offenlegung</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Folgen Sie uns</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-twitter"></i> Twitter (X)
+            </a>
+            <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script src="../static/scripts/common.js"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>
