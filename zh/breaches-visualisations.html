@@ -1,156 +1,693 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh">
 
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>数据泄露可视化</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="static.hotjar.com">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="XposedOrNot: 数据泄露存储库" />
+    <meta name="description"
+        content="使用 XposedOrNot 可视化数据泄露。通过交互式图表深入了解泄露趋势和影响。" />
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta property="og:url" content="https://xposedornot.com/zh/breaches-visualisations.html" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@XposedOrNot">
+    <meta name="twitter:title" content="XposedOrNot: 数据泄露存储库">
+    <meta name="twitter:description"
+        content="使用 XposedOrNot 可视化数据泄露。通过交互式图表深入了解泄露趋势和影响。">
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+    <script>
+        (function () {
+            function isMobileDevice() {
+                return (window.innerWidth <= 768) ||
+                    (navigator.userAgent.match(/Android/i) ||
+                        navigator.userAgent.match(/webOS/i) ||
+                        navigator.userAgent.match(/iPhone/i) ||
+                        navigator.userAgent.match(/iPad/i) ||
+                        navigator.userAgent.match(/iPod/i) ||
+                        navigator.userAgent.match(/BlackBerry/i) ||
+                        navigator.userAgent.match(/Windows Phone/i));
+            }
+
+            if (isMobileDevice()) {
+                if (!window.location.href.includes('breaches-visualisations-mobile.html')) {
+                    window.location.href = 'breaches-visualisations-mobile.html';
+                }
+            }
+        })();
+    </script>
+
     <style>
         body,
         html {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #333;
-            /* Dark gray background */
-            overflow: hidden;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
         }
 
         #chart {
-            width: calc(100vw - 40px);
-            height: calc(100vh - 56px);
-            overflow: auto;
-            padding: 20px 20px;
+            width: 100%;
+            padding: 20px;
+            margin: 0 auto;
+            position: relative;
         }
 
         .navbar-custom {
-            background-color: #007bff;
-            /* Shades of blue for navbar */
+            background-color: #2563eb;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand,
         .nav-link {
             color: white !important;
+            font-weight: 500;
         }
 
         .tooltip {
             position: absolute;
-            background-color: white;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 5px;
+            background-color: rgba(30, 30, 34, 0.95);
+            border: none;
+            padding: 20px;
+            border-radius: 12px;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.3s;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 250px;
-            color: #333;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 320px;
+            color: #f8f9fa;
+            font-size: 14px;
+            line-height: 1.6;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tooltip-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #f8f9fa;
+            border-bottom: 2px solid;
+            padding-bottom: 8px;
+        }
+
+        .tooltip-logo {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .tooltip-description {
+            color: #e2e8f0;
+            margin: 12px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .tooltip-stats {
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .axis text.year-label {
+            font-size: 18px;
+            font-weight: 700;
+            fill: currentColor;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+        }
+
+        .year-badge-bg {
+            fill: rgba(255, 255, 255, 0.1);
+            stroke: currentColor;
+            stroke-width: 1px;
+            stroke-opacity: 0.3;
+            rx: 5px;
+            ry: 5px;
+        }
+
+        @keyframes pulse-badge {
+            0% {
+                stroke-opacity: 0.3;
+            }
+
+            50% {
+                stroke-opacity: 0.6;
+            }
+
+            100% {
+                stroke-opacity: 0.3;
+            }
+        }
+
+        .year-badge-bg:hover {
+            animation: pulse-badge 2s infinite ease-in-out;
+            fill: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .axis line.year-grid {
+            stroke: currentColor;
+            stroke-opacity: 0.3;
+            stroke-width: 1px;
+            stroke-dasharray: 3, 3;
         }
 
         .circle {
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3));
         }
 
-        .axis path,
+        .axis path {
+            stroke: #4b5563;
+        }
+
         .axis line {
-            fill: none;
-            stroke: #bbb;
-            shape-rendering: crispEdges;
+            stroke: #374151;
+            stroke-dasharray: 2, 2;
         }
 
         .axis text {
             font-size: 14px;
-            fill: #ccc;
+            fill: #e5e7eb;
+            font-weight: 500;
         }
 
         text.breach-title {
-            font-size: 12px;
+            font-size: 13px;
             text-anchor: middle;
             fill: white;
-            /* White font color */
-            font-weight: bold;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
         }
 
         img.logo {
             max-width: 100%;
             height: auto;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            border-radius: 4px;
         }
 
         image.breach-logo {
             pointer-events: none;
         }
-    </style>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
 
+        .breach {
+            transition: transform 0.3s ease-out;
+        }
+
+        .page-title {
+            color: white;
+            text-align: center;
+            margin: 2rem 0;
+            font-weight: 600;
+            font-size: 2rem;
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .overlay-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .overlay-content {
+            max-width: 800px;
+            background-color: rgba(30, 30, 30, 0.9);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .overlay-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .overlay-container p {
+            max-width: 600px;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .overlay-container ul {
+            text-align: left;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        .overlay-container li {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .overlay-container button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .overlay-container button:hover,
+        .overlay-container button:focus {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .overlay-container button:focus {
+            outline: 3px solid rgba(59, 130, 246, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .overlay-content {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .overlay-container h2 {
+                font-size: 1.5rem;
+            }
+
+            .overlay-container p,
+            .overlay-container li {
+                font-size: 0.9rem;
+            }
+        }
+
+        .info-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            z-index: 100;
+        }
+
+        .info-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            background: #1d4ed8;
+        }
+
+        .industry-filter {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: rgba(37, 99, 235, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(-10px);
+            width: 280px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .industry-filter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .industry-filter h4 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: white;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .active-industry {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .industry-filter label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+
+        .industry-filter select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(30, 30, 34, 0.8);
+            color: white;
+            font-size: 14px;
+            margin-bottom: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .industry-filter select option {
+            background-color: #2a2a2a;
+            color: white;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        .industry-filter select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .industry-filter button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .industry-filter button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        @keyframes pulse-circle {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .industry-highlight {
+            animation: pulse-circle 2.5s infinite ease-in-out;
+            z-index: 10;
+        }
+
+        .industry-highlight circle {
+            stroke: rgba(255, 255, 255, 0.5);
+            stroke-width: 2px;
+        }
+
+        .filtered-out {
+            pointer-events: none;
+        }
+
+        .filtered-in {
+            z-index: 5;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../static/scripts/other-libraries.js" defer></script>
 </head>
 
 <body>
-    引导导航栏
+    <div id="loadingOverlay"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(17, 24, 39, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+        <div style="text-align: center;">
+            <i class="fas fa-spinner fa-spin fa-3x" style="color: #3b82f6;"></i>
+            <p style="margin-top: 15px; font-weight: 600; color: #e5e7eb; font-size: 1.1rem;">正在加载可视化...</p>
+        </div>
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="#">是否Xpose</a>
+        <a class="navbar-brand" href="../">XposedOrNot</a>
         <div class="navbar-collapse collapse justify-content-center">
         </div>
-        <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
-            data-target="#navbarNav" data-toggle="collapse" type="button">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="https://blog.xposedornot.com">博客</a></li>
-                <li class="nav-item"><a class="nav-link" href="api_doc.html">应用程序编程接口</a></li>
+                <li class="nav-item"><a class="nav-link" href="api_doc.html">API</a></li>
             </ul>
         </div>
     </nav>
-    <br />
-    <h1 style="text-align: center; color: white;">暴露的违规行为可视化（2023 年 11 月更新）</h1>
+    <br>
+    <h1 class="page-title">数据泄露可视化（2026年更新）</h1>
+
     <div id="chart"></div>
+
+    <!-- Info button -->
+    <button class="info-button" id="infoButton" aria-label="显示可视化信息">i</button>
+
+    <!-- Industry filter -->
+    <div class="industry-filter" id="industryFilter">
+        <h4>筛选数据泄露</h4>
+        <label for="industrySelect">选择行业类别</label>
+        <select id="industrySelect">
+            <option value="all">所有行业</option>
+            <!-- Industry options will be populated dynamically -->
+        </select>
+        <button id="resetFilter">重置筛选</button>
+        <div class="active-industry" id="activeIndustry">显示: 所有行业</div>
+    </div>
+
+    <!-- Custom overlay for visualization details -->
+    <div class="overlay-container" id="infoOverlay">
+        <div class="overlay-content">
+            <h2>了解数据泄露可视化</h2>
+            <p>此交互式可视化按年份显示重大数据泄露事件，帮助您了解网络安全事件的规模和影响。</p>
+
+            <p><strong>如何使用此可视化:</strong></p>
+            <ul>
+                <li><strong>圆圈大小:</strong> 表示每次泄露中暴露的记录数量</li>
+                <li><strong>配色方案:</strong> 颜色按年份分组，帮助识别趋势</li>
+                <li><strong>徽标:</strong> 公司/组织标识显示在每个圆圈的中心</li>
+                <li><strong>悬停:</strong> 将光标移动到任何泄露事件上可查看详细信息</li>
+            </ul>
+
+            <p>可视化会自动排列泄露事件，在按年份组织的同时尽量减少重叠。</p>
+
+            <button id="closeOverlay" tabindex="0" aria-label="继续查看可视化">继续查看可视化</button>
+        </div>
+    </div>
+
     <script>
+        let allBreachData = [];
+
+        document.getElementById('loadingOverlay').style.display = 'flex';
+
         fetch('https://api.xposedornot.com/v1/breaches')
             .then(response => response.json())
             .then(apiData => {
-                const data = processData(apiData['Exposed Breaches']);
-                createGraph(data);
+                allBreachData = processData(apiData['exposedBreaches']);
+
+                populateIndustryFilter(apiData['exposedBreaches']);
+                createGraph(allBreachData);
+                document.getElementById('loadingOverlay').style.display = 'none';
+
+                setTimeout(() => {
+                    document.getElementById('industryFilter').classList.add('visible');
+                }, 500);
             })
-            .catch(error => console.error('Error fetching data:', error));
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            });
+
+        function populateIndustryFilter(breaches) {
+            const industrySelect = document.getElementById('industrySelect');
+
+            const industries = new Set();
+            breaches.forEach(breach => {
+                if (breach.industry && breach.industry.trim() !== '') {
+                    industries.add(breach.industry);
+                } else {
+                    industries.add('Uncategorized');
+                }
+            });
+
+            const sortedIndustries = Array.from(industries).sort();
+
+            while (industrySelect.options.length > 1) {
+                industrySelect.remove(1);
+            }
+
+            sortedIndustries.forEach(industry => {
+                const option = document.createElement('option');
+                option.value = industry.toLowerCase().replace(/\s+/g, '-');
+                option.textContent = industry;
+                industrySelect.appendChild(option);
+            });
+
+            console.log(`Populated filter with ${sortedIndustries.length} unique industries`);
+        }
 
         function processData(breaches) {
             return breaches.map(breach => {
                 return {
-                    year: new Date(breach['Breached Date']).getFullYear(),
-                    name: breach['Breach ID'],
-                    logo: breach['Logo'],
-                    description: breach['Exposure Description'],
-                    count: breach['Exposed Records']
+                    year: new Date(breach['breachedDate']).getFullYear(),
+                    name: breach['breachID'],
+                    logo: breach['logo'],
+                    description: breach['exposureDescription'],
+                    count: breach['exposedRecords'],
+                    industry: breach['industry'] || 'Uncategorized'
                 };
             });
         }
 
         function circleSize(count) {
-            if (count >= 50000000) return 80;
-            else if (count >= 10000000) return 65;
-            else if (count >= 5000000) return 55;
-            else if (count >= 1000000) return 45;
-            else return 30;
+            if (count >= 50000000) return 70;
+            else if (count >= 10000000) return 58;
+            else if (count >= 5000000) return 50;
+            else if (count >= 1000000) return 42;
+            else return 28;
         }
 
         function logoSize(count) {
-            if (count >= 50000000) return 50;
-            else if (count >= 10000000) return 45;
-            else if (count >= 5000000) return 40;
-            else if (count >= 1000000) return 35;
-            else return 30;
+            if (count >= 50000000) return 45;
+            else if (count >= 10000000) return 40;
+            else if (count >= 5000000) return 36;
+            else if (count >= 1000000) return 32;
+            else return 26;
         }
 
         function createGraph(data) {
             const dataByYear = d3.group(data, d => d.year);
             const years = Array.from(dataByYear.keys()).sort(d3.descending);
 
-            const margin = { top: 20, right: 20, bottom: 20, left: 60 };
-            const width = window.innerWidth - margin.left - margin.right;
-            let height = d3.sum(Array.from(dataByYear.values()), breaches => breaches.length * 10 + 40);
+            const breachesPerYear = Array.from(dataByYear.entries()).map(([year, breaches]) => ({
+                year: year,
+                count: breaches.length
+            }));
+
+            const maxBreaches = Math.max(...breachesPerYear.map(d => d.count));
+            const margin = { top: 40, right: 60, bottom: 40, left: 160 };
+            const width = Math.min(2000, window.innerWidth) - margin.left - margin.right;
+
+            // Calculate optimal base height based on average circle size
+            function getOptimalHeight(count) {
+                if (count <= 3) return 100; // Minimal height for very few breaches
+                if (count <= 10) return 120; // Slightly more for < 10 breaches
+
+                const avgCircleSize = 45;
+                // More aggressive row calculation for very dense years
+                const rowMultiplier = count > 45 ? 2.2 :
+                    count > 30 ? 1.8 :
+                        count > 20 ? 1.5 : 1.2;
+                const rows = Math.ceil(Math.sqrt(count * rowMultiplier));
+                return rows * (avgCircleSize + 10);
+            }
+
+            // More compact space allocation
+            const linesPerYear = breachesPerYear.map(d => {
+                // Special static allocation for 2019 and 2020
+                if (d.year === 2020) return 4.2; // Maximum space for 2020
+                if (d.year === 2019) return 3.8; // Large space for 2019
+
+                const baseHeight = getOptimalHeight(d.count);
+                // Regular rules for other years
+                if (d.count <= 3) return 0.8;
+                if (d.count <= 10) return 1.0;
+                if (d.count > 45) return 3.5;
+                if (d.count > 30) return 2.5;
+                return Math.max(1.2, Math.min(2, baseHeight / 100));
+            });
+
+            const baseHeight = 150;
+            const height = years.reduce((acc, year, i) => {
+                return acc + (baseHeight * linesPerYear[i]);
+            }, 0);
+
+            const tooltip = d3.select("body").selectAll(".tooltip").data([0])
+                .enter()
+                .append("div")
+                .attr("class", "tooltip");
 
             const svg = d3.select("#chart").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -158,39 +695,372 @@
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            const yScale = d3.scaleBand()
+            const yearRanges = new Map();
+            let currentHeight = 0;
+            years.forEach((year, idx) => {
+                const yearHeight = baseHeight * linesPerYear[years.indexOf(year)];
+                const verticalOffset = idx === 0 ? 0 : 10; // Reduced gap between years
+
+                yearRanges.set(year, {
+                    start: currentHeight + verticalOffset,
+                    end: currentHeight + yearHeight,
+                    height: yearHeight,
+                    center: currentHeight + yearHeight / 2
+                });
+                currentHeight += yearHeight + verticalOffset;
+            });
+
+            const yScale = d3.scalePoint()
                 .domain(years)
                 .range([0, height])
-                .paddingInner(0.1);
+                .padding(0.1);
 
-            const colorScale = d3.scaleOrdinal(d3.schemeDark2);
-            //const colorScale = d3.scaleOrdinal(d3.schemeTableau10);
-            //const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-            const yAxis = d3.axisLeft(yScale).tickFormat(d3.format("d"));
-            svg.append("g")
+            const colorPalettes = {
+                2026: ['#4CC9F0', '#4895EF', '#4361EE', '#3F37C9', '#3A0CA3'].reverse(),
+                2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
+                2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
+                2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),
+                2022: ['#FFD43B', '#FCC419', '#FAB005', '#F59F00', '#F08C00'].reverse(),
+                2021: ['#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'].reverse(),
+                2020: ['#FF922B', '#FD7E14', '#F76707', '#E8590C', '#D9480F'].reverse(),
+                2019: ['#339AF0', '#228BE6', '#1C7ED6', '#1971C2', '#1864AB'].reverse(),
+                2018: ['#E64980', '#D6336C', '#C2255C', '#A61E4D', '#9C1453'].reverse(),
+                2017: ['#66D9E8', '#3BC9DB', '#22B8CF', '#15AABF', '#1098AD'].reverse(),
+                2016: ['#9775FA', '#845EF7', '#7950F2', '#7048E8', '#6741D9'].reverse(),
+                2015: ['#F783AC', '#F06595', '#E64980', '#D6336C', '#C2255C'].reverse(),
+                2014: ['#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20'].reverse(),
+                2013: ['#FF5722', '#F4511E', '#E64A19', '#D84315', '#BF360C'].reverse(),
+                2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),
+                2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),
+                2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),
+                2009: ['#06D6A0', '#05C793', '#04B886', '#03A879', '#029A6C'].reverse(),
+                2008: ['#F72585', '#E71D7C', '#D71573', '#C70D6A', '#B70561'].reverse(),
+                2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()
+            };
+
+            const defaultPalette = ['#748FFC', '#4C6EF5', '#4263EB', '#3B5BDB', '#364FC7'].reverse();
+
+            const yAxis = d3.axisLeft(yScale)
+                .tickFormat(year => {
+                    const count = dataByYear.get(year).length;
+                    return `${year}`;
+                })
+                .tickSize(-width);
+
+            const gAxis = svg.append("g")
                 .attr("class", "axis")
                 .call(yAxis)
-                .selectAll(".tick text")
-                .style("font-size", "16px");
+                .call(g => g.select(".domain").remove());
 
-            const simulation = d3.forceSimulation(data)
-                .force("x", d3.forceX(width / 2).strength(0.1))
-                .force("y", d3.forceY(d => yScale(d.year) + yScale.bandwidth() / 2).strength(1))
-                .force("collide", d3.forceCollide(d => circleSize(d.count) + 3))
-                .on("tick", ticked);
+            gAxis.selectAll(".tick")
+                .each(function (year) {
+                    const yearRange = yearRanges.get(year);
+                    const palette = colorPalettes[year] || defaultPalette;
+                    const baseColor = palette[0];
+                    const count = dataByYear.get(year).length;
 
-            const tooltip = d3.select("#chart").append("div")
-                .attr("class", "tooltip");
+                    d3.select(this)
+                        .attr("transform", `translate(0,${yearRange.center})`)
+                        .select("text")
+                        .attr("class", "year-label")
+                        .text(`${year} (${count} 次泄露)`)
+                        .style("fill", baseColor)
+                        .style("font-weight", "600");
+
+                    const textNode = d3.select(this).select("text").node();
+                    if (textNode) {
+                        const textBox = textNode.getBBox();
+                        d3.select(this).insert("rect", "text")
+                            .attr("class", "year-badge-bg")
+                            .attr("x", textBox.x - 10)
+                            .attr("y", textBox.y - 5)
+                            .attr("width", textBox.width + 20)
+                            .attr("height", textBox.height + 10)
+                            .style("stroke", baseColor);
+                    }
+
+                    d3.select(this)
+                        .select("line")
+                        .attr("class", "year-grid")
+                        .style("stroke", baseColor);
+                });
+
+            data.forEach((d, i) => {
+                const yearRange = yearRanges.get(d.year);
+                d.index = i;
+                d.fy = yearRange.start + (yearRange.height * (i % 4 + 0.5)) / 5;
+                d.x = (Math.random() * 0.8 + 0.1) * width;
+            });
+
+            function calculateForceParameters(yearData) {
+                const count = yearData.length;
+
+                // More space between circles for dense years
+                const baseCollisionPadding = count > 60 ? 3 :
+                    count > 45 ? 2.8 :
+                        count > 20 ? 2.5 : 3;
+
+                // Stronger repulsion for dense years
+                const chargeStrength = count > 60 ? -120 :
+                    count > 45 ? -110 :
+                        count > 20 ? -90 : -70;
+
+                // Weaker center attraction for dense years to allow more spread
+                const xStrength = count > 60 ? 0.06 :
+                    count > 45 ? 0.07 :
+                        count > 20 ? 0.1 : 0.15;
+
+                // Balanced vertical constraint
+                const yStrength = count > 60 ? 0.12 :
+                    count > 45 ? 0.15 :
+                        count > 20 ? 0.18 : 0.25;
+
+                return {
+                    collisionPadding: baseCollisionPadding,
+                    charge: chargeStrength,
+                    xStrength: xStrength,
+                    yStrength: yStrength
+                };
+            }
+
+            const simulations = [];
+            years.forEach(year => {
+                const yearData = data.filter(d => d.year === year);
+                const forceParams = calculateForceParameters(yearData);
+                const yearRange = yearRanges.get(year);
+
+                // Special handling for 2019 and 2020
+                const is2020 = year === 2020;
+                const is2019 = year === 2019;
+                const isSpecialYear = is2020 || is2019;
+
+                // Regular density checks
+                const isVeryFewBreaches = yearData.length <= 3;
+                const isHighDensity = !isSpecialYear && yearData.length > 30;
+                const isVeryHighDensity = !isSpecialYear && yearData.length > 45;
+
+                // Assign fixed target centers to prevent jittery movement
+                const centers2020 = [width * 0.2, width * 0.4, width * 0.6, width * 0.8];
+                const centers2019 = [width * 0.25, width * 0.5, width * 0.75];
+                const centersDefault = [width * 0.25, width * 0.5, width * 0.75];
+
+                yearData.forEach((d, idx) => {
+                    if (is2020) {
+                        d.targetCenter = centers2020[idx % centers2020.length];
+                    } else if (is2019) {
+                        d.targetCenter = centers2019[idx % centers2019.length];
+                    } else if (isVeryFewBreaches) {
+                        d.targetCenter = width / 2;
+                    } else {
+                        d.targetCenter = centersDefault[idx % centersDefault.length];
+                    }
+                });
+
+                // Initial positioning
+                yearData.forEach((d) => {
+                    if (is2020) {
+                        // Special 2020 positioning: wider spread, more vertical space
+                        const padding = circleSize(d.count);
+                        const randomX = padding + Math.random() * (width - 2 * padding);
+                        const verticalPadding = yearRange.height * 0.05; // Use more vertical space
+                        const randomY = yearRange.start + verticalPadding +
+                            Math.random() * (yearRange.height - 2 * verticalPadding);
+                        d.x = randomX;
+                        d.y = randomY;
+                    } else if (is2019) {
+                        // Special 2019 positioning: slightly less spread than 2020
+                        const padding = circleSize(d.count) * 1.1;
+                        const randomX = padding + Math.random() * (width - 2 * padding);
+                        const verticalPadding = yearRange.height * 0.06;
+                        const randomY = yearRange.start + verticalPadding +
+                            Math.random() * (yearRange.height - 2 * verticalPadding);
+                        d.x = randomX;
+                        d.y = randomY;
+                    } else if (isVeryFewBreaches) {
+                        // Existing centered positioning for few breaches
+                        const totalBreaches = yearData.length;
+                        const index = yearData.indexOf(d);
+                        const startX = width * 0.33;
+                        const availableWidth = width * 0.34;
+                        d.x = startX + (availableWidth / (totalBreaches + 1)) * (index + 1);
+                        d.y = yearRange.center;
+                    } else {
+                        // Regular positioning for other years
+                        const padding = circleSize(d.count) * (isHighDensity ? 1.2 : 1.3);
+                        const randomX = padding + Math.random() * (width - 2 * padding);
+                        const verticalPadding = yearRange.height * (
+                            isHighDensity ? 0.1 : 0.15
+                        );
+                        const randomY = yearRange.start + verticalPadding +
+                            Math.random() * (yearRange.height - 2 * verticalPadding);
+                        d.x = randomX;
+                        d.y = randomY;
+                    }
+                });
+
+                const yearSimulation = d3.forceSimulation(yearData)
+                    .force("x", d3.forceX(d => d.targetCenter).strength(
+                        is2020 ? 0.005 :
+                            is2019 ? 0.007 :
+                                isVeryFewBreaches ? 0.2 :
+                                    isHighDensity ? 0.01 : 0.015
+                    ))
+                    .force("y", d3.forceY(yearRange.center).strength(
+                        is2020 ? 0.02 :
+                            is2019 ? 0.025 :
+                                isVeryFewBreaches ? 0.2 :
+                                    isHighDensity ? 0.05 : 0.08
+                    ))
+                    .force("collide", d3.forceCollide(d => {
+                        const baseSize = circleSize(d.count);
+                        if (is2020) return baseSize * 1.02;
+                        if (is2019) return baseSize * 1.05;
+                        if (isVeryFewBreaches) return baseSize * 1.1;
+                        return isHighDensity ? baseSize * 1.15 : baseSize * 1.2;
+                    })
+                        .strength(
+                            is2020 ? 0.99 :
+                                is2019 ? 0.95 :
+                                    isHighDensity ? 0.9 : 0.85
+                        )
+                        .iterations(
+                            is2020 ? 20 :
+                                is2019 ? 15 :
+                                    isHighDensity ? 12 : 8
+                        ))
+                    .force("charge", d3.forceManyBody()
+                        .strength(d => {
+                            const baseCharge = -Math.pow(circleSize(d.count), 1.4);
+                            if (is2020) return baseCharge * 2.5;
+                            if (is2019) return baseCharge * 2.0;
+                            if (isVeryFewBreaches) return baseCharge * 0.5;
+                            return isHighDensity ? baseCharge * 1.5 : baseCharge;
+                        })
+                        .distanceMax(width * (
+                            is2020 ? 0.8 :
+                                is2019 ? 0.7 :
+                                    isHighDensity ? 0.5 : 0.4
+                        )))
+                    .alpha(0.95)
+                    .alphaDecay(
+                        is2020 ? 0.003 :
+                            is2019 ? 0.004 :
+                                isHighDensity ? 0.006 : 0.01
+                    )
+                    .on("tick", () => {
+                        breaches
+                            .filter(d => d.year === year)
+                            .attr("transform", d => {
+                                const padding = circleSize(d.count) *
+                                    (is2020 ? 1.15 : (is2019 ? 1.25 : 1.1));
+                                d.x = Math.max(padding, Math.min(width - padding, d.x));
+                                const verticalPadding = is2020 ?
+                                    yearRange.height * 0.06 :
+                                    (is2019 ? yearRange.height * 0.08 : yearRange.height * 0.1);
+                                const minY = yearRange.start + verticalPadding;
+                                const maxY = yearRange.end - verticalPadding;
+                                d.y = Math.max(minY, Math.min(maxY, d.y));
+                                return `translate(${d.x},${d.y})`;
+                            });
+                    });
+
+                simulations.push(yearSimulation);
+            });
+
+            function addJitter() {
+                try {
+                    simulations.forEach(sim => {
+                        const nodes = sim.nodes();
+                        if (nodes.length === 0) return;
+
+                        // Jitter 15% of nodes randomly for subtle movement
+                        const jitterCount = Math.ceil(nodes.length * 0.15);
+                        const nodesToJitter = d3.shuffle(nodes).slice(0, jitterCount);
+
+                        nodesToJitter.forEach(node => {
+                            // Random angle between 0 and 2π (full circle)
+                            const angle = Math.random() * Math.PI * 2;
+                            // Reduced distance for smoother movement
+                            const distance = 0.2 + Math.random() * 0.5;
+
+                            // Calculate x and y movements using trigonometry
+                            const dx = Math.cos(angle) * distance;
+                            const dy = Math.sin(angle) * distance;
+
+                            // Apply the movement
+                            node.x += dx;
+                            node.y += dy;
+                        });
+
+                        // Restart simulation with a lower alpha for gentler movement
+                        sim.alpha(0.05).restart();
+                    });
+                } catch (error) {
+                    console.error("Error in jitter function:", error);
+                }
+            }
+
+            const jitterInterval = setInterval(addJitter, 3000);
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    clearInterval(jitterInterval);
+                } else {
+                    if (!jitterInterval) {
+                        setInterval(addJitter, 3000);
+                    }
+                }
+            });
 
             const breaches = svg.selectAll(".breach")
                 .data(data)
                 .enter().append("g")
-                .attr("class", "breach");
+                .attr("class", "breach")
+                .attr("data-industry", d => d.industry)
+                .attr("transform", d => {
+                    const yearRange = yearRanges.get(d.year);
+                    const y = d.targetY || (yearRange.center + (Math.random() - 0.5) * yearRange.height * 0.8);
+                    const yearDataLength = dataByYear.get(d.year).length;
+                    const positionInYear = dataByYear.get(d.year).indexOf(d);
+                    const horizontalPosition = width * (0.1 + (0.8 * positionInYear / yearDataLength));
+                    return `translate(${horizontalPosition},${y})`;
+                });
+
+            const defs = svg.append("defs");
+
+            breaches.each(function (d, i) {
+                const gradientId = `gradient-${d.year}-${i}`;
+                const palette = colorPalettes[d.year] || defaultPalette;
+                const gradient = defs.append("radialGradient")
+                    .attr("id", gradientId)
+                    .attr("gradientUnits", "userSpaceOnUse")
+                    .attr("cx", "0")
+                    .attr("cy", "0")
+                    .attr("r", circleSize(d.count));
+
+                gradient.append("stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", palette[0]);
+
+                gradient.append("stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", palette[palette.length - 1]);
+
+                gradient.append("animate")
+                    .attr("attributeName", "r")
+                    .attr("values", `${circleSize(d.count)};${circleSize(d.count) * 1.1};${circleSize(d.count)}`)
+                    .attr("dur", "3s")
+                    .attr("repeatCount", "indefinite");
+            });
 
             breaches.append("circle")
                 .attr("class", "circle")
-                .attr("r", d => circleSize(d.count))
-                .style("fill", d => colorScale(d.year));
+                .attr("r", 0)
+                .style("fill", (d, i) => `url(#gradient-${d.year}-${i})`)
+                .style("opacity", 0.9)
+                .transition()
+                .duration(1000)
+                .attr("r", d => circleSize(d.count));
 
             breaches.append("image")
                 .attr("class", "breach-logo")
@@ -198,34 +1068,301 @@
                 .attr("x", d => -logoSize(d.count) / 2)
                 .attr("y", d => -logoSize(d.count) / 2)
                 .attr("width", d => logoSize(d.count))
-                .attr("height", d => logoSize(d.count));
+                .attr("height", d => logoSize(d.count))
+                .style("opacity", 0)
+                .transition()
+                .delay(500)
+                .duration(500)
+                .style("opacity", 1);
 
             breaches.append("text")
                 .attr("class", "breach-title")
                 .attr("y", d => circleSize(d.count) / 2 + logoSize(d.count) / 2 - 8)
-                .text(d => d.name);
+                .text(d => d.name)
+                .style("opacity", 0)
+                .transition()
+                .delay(1000)
+                .duration(500)
+                .style("opacity", 1);
+
+            let previousSize = null;
+            let activeElement = null;
 
             breaches.on("mouseover", function (event, d) {
-                const originalSize = circleSize(d.count);
-                d3.select(this).select("circle").transition().attr("r", originalSize + 10);
-                tooltip.transition().duration(200).style("opacity", 1);
-                tooltip.html("<img src='" + d.logo + "' alt='Logo' class='logo'><strong>" + d.name + "</strong><br/>" + d.description)
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY + 10) + "px");
-            })
-                .on("mouseout", function (d) {
-                    const originalSize = circleSize(d.count);
-                    d3.select(this).select("circle").transition().attr("r", originalSize);
-                    tooltip.transition().duration(500).style("opacity", 0);
-                });
+                const element = d3.select(this);
+                activeElement = element;
+                previousSize = circleSize(d.count);
+                const palette = colorPalettes[d.year] || defaultPalette;
 
-            function ticked() {
-                breaches
-                    .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+                element.select("circle")
+                    .transition()
+                    .duration(300)
+                    .attr("r", previousSize + 10)
+                    .style("opacity", 1);
+
+                element.raise();
+
+                const tooltipContent = `
+                    <div class="tooltip-title" style="border-color: ${palette[0]}">
+                        ${d.name} <span style="opacity: 0.8; font-size: 0.9em;">(${d.year})</span>
+                    </div>
+                    <img src="${d.logo}" alt="Logo" class="tooltip-logo">
+                    <div class="tooltip-description">
+                        ${d.description}
+                    </div>
+                    <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[0]}; border: 1px solid ${palette[0]}40">
+                        泄露记录数: ${d3.format(",")(d.count)}
+                    </div>
+                `;
+
+                tooltip.html(tooltipContent)
+                    .style("opacity", 0)
+                    .style("display", "block")
+                    .style("border-left", `4px solid ${palette[0]}`);
+
+                const tooltipNode = tooltip.node();
+                const tooltipRect = tooltipNode.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                const cursorX = event.clientX;
+                const cursorY = event.clientY;
+                const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+                let left, top;
+
+                left = cursorX + scrollX - (tooltipRect.width / 2);
+
+                if (left < scrollX + 20) {
+                    left = scrollX + 20;
+                }
+                if (left + tooltipRect.width > scrollX + viewportWidth - 20) {
+                    left = scrollX + viewportWidth - tooltipRect.width - 20;
+                }
+
+                const spaceAbove = cursorY - scrollY;
+                const spaceBelow = viewportHeight - cursorY;
+
+                if (tooltipRect.height < spaceBelow - 20) {
+                    top = cursorY + scrollY + 20;
+                } else if (tooltipRect.height < spaceAbove - 20) {
+                    top = cursorY + scrollY - tooltipRect.height - 20;
+                } else {
+                    const availableHeight = Math.max(spaceAbove, spaceBelow);
+                    if (tooltipRect.height < availableHeight) {
+                        if (spaceBelow > spaceAbove) {
+                            top = cursorY + scrollY + 20;
+                        } else {
+                            top = cursorY + scrollY - tooltipRect.height - 20;
+                        }
+                    } else {
+                        top = scrollY + 20;
+                    }
+                }
+
+                tooltip
+                    .style("left", `${Math.round(left)}px`)
+                    .style("top", `${Math.round(top)}px`)
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 1);
+            })
+                .on("mouseout", function (event, d) {
+                    if (activeElement) {
+                        activeElement.select("circle")
+                            .transition()
+                            .duration(300)
+                            .attr("r", previousSize)
+                            .style("opacity", 0.9);
+                    }
+
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0)
+                        .on("end", function () {
+                            tooltip.style("display", "none");
+                        });
+
+                    activeElement = null;
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const overlay = document.getElementById('infoOverlay');
+            const closeBtn = document.getElementById('closeOverlay');
+            const infoBtn = document.getElementById('infoButton');
+            const industryFilter = document.getElementById('industrySelect');
+            const resetBtn = document.getElementById('resetFilter');
+
+            industryFilter.addEventListener('change', function () {
+                filterByIndustry(this.value);
+            });
+
+            resetBtn.addEventListener('click', function () {
+                industryFilter.value = 'all';
+                filterByIndustry('all');
+            });
+
+            infoBtn.addEventListener('click', function () {
+                overlay.style.display = 'flex';
+            });
+
+            closeBtn.addEventListener('click', function () {
+                overlay.style.display = 'none';
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && overlay.style.display === 'flex') {
+                    overlay.style.display = 'none';
+                }
+
+                if (e.key === 'Enter' && document.activeElement === closeBtn) {
+                    overlay.style.display = 'none';
+                }
+            });
+        });
+
+        function filterByIndustry(industry) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            let displayName = '所有行业';
+            if (industry !== 'all') {
+                const selectedOption = document.querySelector(`#industrySelect option[value="${industry}"]`);
+                if (selectedOption) {
+                    displayName = selectedOption.textContent;
+                }
             }
+
+            document.getElementById('activeIndustry').textContent = `显示: ${displayName}`;
+
+            let filteredData;
+            if (industry === 'all') {
+                filteredData = allBreachData;
+            } else {
+                const industryName = document.querySelector(`#industrySelect option[value="${industry}"]`)?.textContent;
+                filteredData = allBreachData.filter(d => d.industry === industryName);
+            }
+
+            d3.select("#chart").selectAll("svg").remove();
+
+            document.getElementById('industryFilter').classList.add('visible');
+
+            setTimeout(() => {
+                createGraph(filteredData);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 300);
         }
     </script>
-    <script src="/static/scripts/common.js"></script>
-</body>
+    <style>
+      .footer { padding: 40px 0 30px; background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
+      .footer p { color: #9fc0e0; }
+      .footer-columns { display: flex; justify-content: space-between; gap: 60px; text-align: left; padding: 0 40px; }
+      .footer-group { flex: 1; min-width: 0; }
+      .footer-group h6 { color: #ffffff !important; font-size: 0.95em !important; margin-bottom: 15px !important; font-weight: 700 !important; text-transform: uppercase; letter-spacing: 0.8px; }
+      .footer-group a.footer-link { display: block; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; transition: all 0.3s ease; color: #9fc0e0; text-decoration: none; }
+      .footer-group a.footer-link:hover { background-color: rgba(63, 113, 243, 0.2); padding-left: 14px; color: #6daae0 !important; }
+      @media (max-width: 768px) { .footer-columns { flex-direction: column; text-align: center; gap: 30px; padding: 0 20px; }
+	.footer-group {
+		border-bottom: 1px solid #ebedef;
+	}
+
+	.footer-group h6 {
+		cursor: pointer;
+		padding: 15px 20px;
+		margin: 0 !important;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.footer-group h6::after {
+		content: '+';
+		font-size: 20px;
+		font-weight: 300;
+		transition: transform 0.3s ease;
+	}
+
+	.footer-group.active h6::after {
+		content: '−';
+	}
+
+	.footer-group .footer-links-wrapper {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease;
+		padding: 0 20px;
+	}
+
+	.footer-group.active .footer-links-wrapper {
+		max-height: 300px;
+		padding: 0 20px 15px 20px;
+	} }
+    </style>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:30px;">
+          <p>加入我们，共同打造这个完全开源的网站！欢迎在我们的 <a
+                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> 上贡献代码。</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>法律信息</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy.html" class="footer-link">隐私政策</a>
+            <a href="terms.html" class="footer-link">条款</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>社区</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">博客</a>
+            <a href="our-repository.html" class="footer-link">我们的仓库</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>信任</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">状态</a>
+              <a href="transparency.html" class="footer-link">透明度</a>
+              <a href="responsible-disclosure.html" class="footer-link">负责任披露</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>关注我们</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-twitter"></i> Twitter (X)
+            </a>
+            <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script src="../static/scripts/common.js"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 
 </html>

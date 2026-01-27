@@ -498,7 +498,7 @@
         style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(17, 24, 39, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999;">
         <div style="text-align: center;">
             <i class="fas fa-spinner fa-spin fa-3x" style="color: #3b82f6;"></i>
-            <p style="margin-top: 15px; font-weight: 600; color: #e5e7eb; font-size: 1.1rem;">ビジュアライゼーションを読み込み中...</p>
+            <p style="margin-top: 15px; font-weight: 600; color: #e5e7eb; font-size: 1.1rem;">可視化を読み込み中...</p>
         </div>
     </div>
 
@@ -528,28 +528,28 @@
     <!-- Industry filter -->
     <div class="industry-filter" id="industryFilter">
         <h4>データ漏洩をフィルター</h4>
-        <label for="industrySelect">業種カテゴリを選択</label>
+        <label for="industrySelect">業界カテゴリを選択</label>
         <select id="industrySelect">
-            <option value="all">すべての業種</option>
+            <option value="all">すべての業界</option>
             <!-- Industry options will be populated dynamically -->
         </select>
         <button id="resetFilter">フィルターをリセット</button>
-        <div class="active-industry" id="activeIndustry">表示中: すべての業種</div>
+        <div class="active-industry" id="activeIndustry">表示中: すべての業界</div>
     </div>
 
     <!-- Custom overlay for visualization details -->
     <div class="overlay-container" id="infoOverlay">
         <div class="overlay-content">
-            <h2>データ漏洩可視化について</h2>
+            <h2>データ漏洩可視化の理解</h2>
             <p>このインタラクティブな可視化では、主要なデータ漏洩を年別に表示し、
                 サイバーセキュリティインシデントの範囲と影響についての洞察を提供します。</p>
 
-            <p><strong>この可視化の使い方：</strong></p>
+            <p><strong>この可視化の使い方:</strong></p>
             <ul>
-                <li><strong>円のサイズ：</strong> 各漏洩で流出したレコード数を表します</li>
-                <li><strong>配色：</strong> 年ごとに色分けされており、傾向の把握に役立ちます</li>
-                <li><strong>ロゴ：</strong> 各円の中央に企業・組織のロゴが表示されます</li>
-                <li><strong>ホバー：</strong> 漏洩にカーソルを合わせると詳細情報が表示されます</li>
+                <li><strong>円のサイズ:</strong> 各漏洩で流出したレコード数を表します</li>
+                <li><strong>配色:</strong> 年ごとに色分けされており、傾向の把握に役立ちます</li>
+                <li><strong>ロゴ:</strong> 各円の中央に企業・組織のロゴが表示されます</li>
+                <li><strong>ホバー:</strong> 漏洩にカーソルを合わせると詳細情報が表示されます</li>
             </ul>
 
             <p>可視化は、年ごとに整理しながら重なりを最小限に抑えるよう自動的に配置されます。</p>
@@ -764,7 +764,7 @@
                         .attr("transform", `translate(0,${yearRange.center})`)
                         .select("text")
                         .attr("class", "year-label")
-                        .text(`${year} (${count} breaches)`)
+                        .text(`${year} (${count}件の漏洩)`)
                         .style("fill", baseColor)
                         .style("font-weight", "600");
 
@@ -1112,7 +1112,7 @@
                         ${d.description}
                     </div>
                     <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[0]}; border: 1px solid ${palette[0]}40">
-                        Records exposed: ${d3.format(",")(d.count)}
+                        漏洩レコード数: ${d3.format(",")(d.count)}
                     </div>
                 `;
 
@@ -1227,7 +1227,7 @@
         function filterByIndustry(industry) {
             document.getElementById('loadingOverlay').style.display = 'flex';
 
-            let displayName = 'すべての業種';
+            let displayName = 'すべての業界';
             if (industry !== 'all') {
                 const selectedOption = document.querySelector(`#industrySelect option[value="${industry}"]`);
                 if (selectedOption) {
