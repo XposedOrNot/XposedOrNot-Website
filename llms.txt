@@ -1,0 +1,80 @@
+# XposedOrNot
+
+> XposedOrNot is a free, open-source data breach monitoring platform that helps individuals and organizations check if their emails, passwords, or domains have been exposed in known data breaches. It provides real-time breach insights across billions of exposed records and 835+ million compromised passwords.
+
+XposedOrNot offers a comprehensive suite of cybersecurity tools designed to protect digital identities. The platform is community-driven, fully transparent, and accessible to everyone—from individual users checking personal security to enterprises monitoring domain-level exposure.
+
+## Core Features
+
+- **Email Breach Check**: Search billions of exposed records to find if an email appears in any known data breach
+- **Password Security**: Verify passwords against 835+ million exposed passwords using SHA-3 (Keccak-512) hashing
+- **Domain Monitoring**: Track and verify domain ownership, monitor corporate email exposure
+- **Privacy Shield**: Opt out of public searches to protect email addresses
+- **Breach Repository**: Browse comprehensive database of all indexed data breaches
+
+## Tools
+
+- [Email Breach Search](https://xposedornot.com/): Check if your email has been exposed in data breaches
+- [Password Check](https://xposedornot.com/password): Verify if a password has been compromised
+- [Xposed Breaches](https://xposedornot.com/xposed): View detailed breach exposure for an email
+- [Privacy Shield](https://xposedornot.com/shield): Protect your email from public searches
+- [Domain Verification](https://xposedornot.com/domain): Verify domain ownership for monitoring
+- [Domain Search](https://xposedornot.com/domains): Search breaches affecting a domain
+- [Breach Timeline](https://xposedornot.com/timeline): Visualize data breaches over time
+- [Breach Repository](https://xposedornot.com/breaches): Browse all indexed data breaches
+
+## API Documentation
+
+XposedOrNot provides a RESTful API with JSON responses for developers to integrate breach checking into applications.
+
+- [API Documentation](https://xposedornot.com/api_doc): Complete API reference with endpoints and examples
+
+### Public API Endpoints (No Authentication Required)
+
+- `GET /api/v1/check-email/{email}` - Check if an email appears in any breach
+- `GET /api/v1/breach-analytics/{email}` - Get detailed breach analytics for an email
+- `GET /api/v1/pass/anon/{first10_keccak512_hash}` - Check if a password is exposed (returns 200 if exposed, 404 if safe)
+- `GET /api/v1/breaches` - Retrieve list of all indexed data breaches
+
+### Domain API Endpoints (API Key Required)
+
+- `GET /api/v1/domain-breaches/` - Check breaches affecting a verified domain
+- API keys are available in the domain dashboard after verification
+
+## Technical Details
+
+- **Password Hashing**: Uses SHA-3 (Keccak-512) for secure client-side password checking
+- **Privacy**: Passwords are never stored; only the first 10 characters of the hash are transmitted
+- **Response Format**: JSON for all API endpoints
+- **Authentication**: Most endpoints are public; domain endpoints require API key
+
+## Resources
+
+- [Blog](https://blog.xposedornot.com/): Security insights and breach news
+- [GitHub](https://github.com/XposedOrNot): Open-source repository
+- [Privacy Policy](https://xposedornot.com/privacy): Data handling practices
+- [Terms of Service](https://xposedornot.com/terms): Usage terms
+- [Status Page](https://stats.uptimerobot.com/3zjQkZ2Caa): Service uptime monitoring
+- [Responsible Disclosure](https://xposedornot.com/responsible-disclosure): Security vulnerability reporting
+
+## Optional
+
+### Supported Languages for Password Check Implementation
+
+Code examples are available for client-side password checking in:
+- jQuery/JavaScript
+- PHP
+- Python
+- Ruby
+- Java
+- Go
+- Rust
+
+### Trust and Security
+
+- Open-source and community-driven
+- WCAG AA accessible
+- No password storage in plain text
+- SHA-3 encryption for sensitive operations
+- Transparent data practices
+- Multi-language support (12+ languages)
