@@ -110,8 +110,12 @@ function initDataTable(breaches) {
         var logoHtml = '<img src="' + defaultLogo + '" data-src="' + logoSrc + '" ' +
                        'alt="' + breach.breachID + '" class="breach-logo lazy-logo">';
 
-        var nameHtml = '<div class="breach-name">' + breach.breachID + '</div>' +
-                       '<div class="breach-domain">' + (breach.domain || '-') + '</div>';
+        var nameHtml = '<a href="breach.html#' + breach.breachID + '" target="_blank" rel="noopener noreferrer" class="breach-name-link">' +
+                       '<div class="breach-name">' + breach.breachID +
+                       '<i class="fas fa-chevron-right breach-chevron" aria-hidden="true"></i></div>' +
+                       '<div class="breach-domain">' + (breach.domain || '-') + '</div>' +
+                       '<span class="sr-only">(opens in new tab)</span>' +
+                       '</a>';
 
         var industryHtml = '<span class="industry-badge">' + (breach.industry || 'Unknown') + '</span>';
 
@@ -123,8 +127,8 @@ function initDataTable(breaches) {
 
         var statusHtml = getStatusBadges(breach);
 
-        var actionsHtml = '<a href="breach.html#' + breach.breachID + '" target="_blank" class="btn-details">' +
-                          '<i class="fas fa-eye"></i> Details</a>';
+        var actionsHtml = '<a href="breach.html#' + breach.breachID + '" target="_blank" rel="noopener noreferrer" class="btn-details">' +
+                          '<i class="fas fa-eye" aria-hidden="true"></i> Details<span class="sr-only">(opens in new tab)</span></a>';
 
         // Hidden data for filtering
         var breachYear = breach.breachedDate ? new Date(breach.breachedDate).getFullYear().toString() : '';
