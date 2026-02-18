@@ -17,6 +17,9 @@ $.LoadingOverlaySetup({
 
 $.LoadingOverlay("show");
 
+// Announce loading state to screen readers
+$('body').append('<div id="sr-loading-status" class="sr-only" aria-live="assertive" role="status">Loading your breach report...</div>');
+
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (!results) {
@@ -31,6 +34,119 @@ $.urlParam = function (name) {
 function validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+}
+
+// Lazy-load confetti library
+var confettiLoading = false;
+function loadConfetti() {
+    return new Promise(function (resolve, reject) {
+        if (typeof confetti === 'function') {
+            resolve();
+            return;
+        }
+        if (confettiLoading) {
+            var checkLoaded = setInterval(function () {
+                if (typeof confetti === 'function') {
+                    clearInterval(checkLoaded);
+                    resolve();
+                }
+            }, 50);
+            return;
+        }
+        confettiLoading = true;
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+        script.crossOrigin = 'anonymous';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+function fireConfetti() {
+    loadConfetti().then(function () {
+        var colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#FF9EAA', '#A06CD5'];
+
+        confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { x: 0.2, y: 0.8 },
+            colors: colors,
+            ticks: 200,
+            gravity: 1.2,
+            scalar: 1.2,
+            shapes: ['square', 'circle']
+        });
+
+        setTimeout(function () {
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { x: 0.8, y: 0.8 },
+                colors: colors,
+                ticks: 200,
+                gravity: 1.2,
+                scalar: 1.2,
+                shapes: ['square', 'circle']
+            });
+        }, 250);
+
+        setTimeout(function () {
+            confetti({
+                particleCount: 100,
+                spread: 100,
+                origin: { x: 0.5, y: 0.9 },
+                colors: colors,
+                ticks: 150,
+                gravity: 1,
+                scalar: 1,
+                shapes: ['square', 'circle']
+            });
+        }, 500);
+    }).catch(function () {
+        // Confetti library unavailable — skip animation
+    });
+}
+
+function showNoBreachView(emailAddr) {
+    $.LoadingOverlay("hide");
+    $('#sr-loading-status').text('Report loaded.');
+
+    // Hide all report sections except the first
+    $('section[aria-label="Risk analysis and recommendations"]').hide();
+    $('section[aria-label="Breach summary"]').hide();
+    $('section[aria-label="Sensitive data breaches"]').hide();
+    $('section[aria-label="Password risk and top breaches"]').hide();
+    $('section[aria-label="Industry exposure"]').hide();
+    $('section[aria-label="Exposed data categories"]').hide();
+    $('section[aria-label="Detailed breach breakdown"]').hide();
+    $('section[aria-label="Breach timeline visualization"]').hide();
+    $('section[aria-label="Protect your accounts"]').hide();
+
+    // Replace the first section content with a clean "all clear" view
+    var safeEmail = escapeHtml(emailAddr);
+    var isDark = document.body.classList.contains('dark-mode') ||
+                 document.documentElement.getAttribute('data-theme') === 'dark';
+
+    $('section[aria-label="Risk score overview"] .container').html(
+        '<h1 class="report-h1">Your Data Breach Report</h1>' +
+        '<div style="text-align:center; padding: 60px 20px; max-width: 600px; margin: 0 auto;">' +
+            '<div style="font-size: 72px; margin-bottom: 20px;" role="img" aria-label="Celebration">&#127881;</div>' +
+            '<h2 style="color: #28a745; font-size: 28px; font-weight: 700; margin-bottom: 16px;">All Clear!</h2>' +
+            '<p style="font-size: 18px; color: ' + (isDark ? '#ccc' : '#555') + '; margin-bottom: 12px;">' +
+                '<strong>' + safeEmail + '</strong> was not found in any data breaches loaded in XposedOrNot.' +
+            '</p>' +
+            '<p style="font-size: 16px; color: ' + (isDark ? '#aaa' : '#777') + '; margin-bottom: 30px;">' +
+                'Your email doesn\'t appear in our database of known breaches. Stay protected by setting up free alerts — we\'ll notify you if this changes.' +
+            '</p>' +
+            '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal" style="margin-top: 10px;">' +
+                '<i class="fa fa-bell" aria-hidden="true"></i>&nbsp; Get Free Breach Alerts' +
+            '</button>' +
+        '</div>'
+    );
+
+    // Fire confetti
+    setTimeout(fireConfetti, 300);
 }
 
 let by26 = by25 = by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
@@ -51,75 +167,137 @@ function getAlertType(riskLabel) {
 }
 
 function generateRiskAnalysis(riskLabel, jsonResponse) {
-    let analysisText = "<div align='left' class='alert alert-info'>";
     const breachesDetails = jsonResponse.ExposedBreaches.breaches_details;
     const xposedData = jsonResponse.BreachMetrics.xposed_data[0].children;
+    const alertType = getAlertType(riskLabel);
 
-    const categoryColor = "#407f7f";
-    const actionTextColor = "#355035";
-
-    let plaintextBreaches = [];
-    let easyToCrackBreaches = [];
-    breachesDetails.forEach(breach => {
+    const plaintextBreaches = [];
+    const easyToCrackBreaches = [];
+    breachesDetails.forEach(function(breach) {
         if (breach.password_risk === 'plaintext') {
-            plaintextBreaches.push(`<strong>${breach.breach}</strong>`);
+            plaintextBreaches.push(escapeHtml(breach.breach));
         } else if (breach.password_risk === 'easytocrack') {
-            easyToCrackBreaches.push(`<strong>${breach.breach}</strong>`);
+            easyToCrackBreaches.push(escapeHtml(breach.breach));
         }
     });
+    const totalPasswordBreaches = plaintextBreaches.length + easyToCrackBreaches.length;
 
-    let piiBreachesCount = xposedData.find(category => category.name.includes("Personal Identification"))?.children.reduce((sum, item) => sum + item.value, 0) || 0;
-    let emailBreachesCount = xposedData.find(category => category.name.includes("Communication and Social Interactions"))?.children.reduce((sum, item) => sum + item.value, 0) || 0;
-    let communicationBreachesCount = xposedData.find(category => category.name.includes("Communication and Social Interactions"))?.children.reduce((sum, item) => sum + item.value, 0) || 0;
-    let demographicsBreachesCount = xposedData.find(category => category.name.includes("Demographics"))?.children.reduce((sum, item) => sum + item.value, 0) || 0;
+    const piiCount = xposedData.find(function(c) { return c.name.includes("Personal Identification"); })?.children.reduce(function(s, i) { return s + i.value; }, 0) || 0;
+    const commsCount = xposedData.find(function(c) { return c.name.includes("Communication and Social Interactions"); })?.children.reduce(function(s, i) { return s + i.value; }, 0) || 0;
+    const demoCount = xposedData.find(function(c) { return c.name.includes("Demographics"); })?.children.reduce(function(s, i) { return s + i.value; }, 0) || 0;
 
-    analysisText += "<ol>";
-
-    if (plaintextBreaches.length > 0 || easyToCrackBreaches.length > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>🔐 Compromised Passwords (${plaintextBreaches.length + easyToCrackBreaches.length} Breaches):</strong></span><ul>`;
-        if (plaintextBreaches.length > 0) {
-            analysisText += `<li>Breaches with plain text passwords: ${plaintextBreaches.join(', ')}.</li>`;
-        }
-        if (easyToCrackBreaches.length > 0) {
-            analysisText += `<li>Breaches with easy-to-crack passwords: ${easyToCrackBreaches.join(', ')}.</li>`;
-        }
-        analysisText += `<li style='color: ${actionTextColor};'><strong>Recommended Action:</strong> If your email is linked to any of these breaches, immediately change your passwords. Use strong, unique passwords for each account.</li></ul></li><br>`;
-    }
-
-    if (piiBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>👤 Personal Information Exposure (${piiBreachesCount} Occurrences):</strong></span> Your personal details might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Monitor for unusual activities that could indicate identity theft or fraud.</li><br>`;
-    }
-
-    if (emailBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>📧 Email Addresses and Phishing Risks (${emailBreachesCount} Occurrences):</strong></span> Your email address might be used in phishing attempts.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with emails from unknown sources and avoid clicking on suspicious links.</li><br>`;
-    }
-
-    if (communicationBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>💬 Communication and Social Interactions (${communicationBreachesCount} Occurrences):</strong></span> Your communication details may be at risk.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Be cautious with your online interactions and consider updating privacy settings on social platforms.</li><br>`;
-    }
-
-    if (demographicsBreachesCount > 0) {
-        analysisText += `<li><span style='color: ${categoryColor};'><strong>📊 Demographics (${demographicsBreachesCount} Occurrences):</strong></span> Sensitive demographic information might be exposed.<br><strong style='color: ${actionTextColor};'>Recommended Action:</strong> Review and secure any accounts that may contain detailed personal information to prevent identity theft.</li><br>`;
-    }
-
-    analysisText += "</ol>";
-
-    analysisText += `<p><strong>Your Risk Score:</strong> <span class='alert alert-${getAlertType(riskLabel)}' style='padding: 2px 8px; display: inline-block; margin: 0;'><strong>${riskLabel}</strong></span><br><br><strong>Our Recommendations:</strong> `;
+    let introIcon, introTitle, introBody, introClass;
     switch (riskLabel) {
-        case 'Low':
-            analysisText += "<span style='display: inline-block;'>🟢 Stay vigilant and proactive in securing your data.</span>";
+        case 'High':
+            introIcon = '🔴';
+            introTitle = 'Your accounts are at serious risk';
+            introBody = 'Multiple breaches have exposed sensitive data tied to your email. Take the steps below immediately to protect your accounts and identity.';
+            introClass = 'risk-intro-high';
             break;
         case 'Medium':
-            analysisText += "<span style='display: inline-block;'>🟠 Enhance your security measures and remain alert.</span>";
-            break;
-        case 'High':
-            analysisText += "<span style='display: inline-block;'>🔴 Urgently review and fortify your security practices.</span>";
+            introIcon = '🟠';
+            introTitle = 'Some of your data has been exposed';
+            introBody = 'Your email appeared in several data breaches. Act now to change compromised passwords and limit potential damage.';
+            introClass = 'risk-intro-medium';
             break;
         default:
-            analysisText += "<span style='display: inline-block;'>🔵 Regularly assess and update your security settings.</span>";
+            introIcon = '🟢';
+            introTitle = 'Your exposure is limited';
+            introBody = 'Your email has minimal breach exposure. The steps below will help you stay ahead of future threats.';
+            introClass = 'risk-intro-low';
     }
-    analysisText += "</p></div>";
-    return analysisText;
+
+    let html = '<div class="risk-analysis">';
+
+    html += '<div class="risk-intro ' + introClass + '">';
+    html += '<div class="risk-intro-icon" role="img" aria-label="' + riskLabel + ' risk">' + introIcon + '</div>';
+    html += '<div class="risk-intro-text"><h3>' + introTitle + '</h3>';
+    html += '<p>' + introBody + '</p></div></div>';
+
+    html += '<div class="risk-cards">';
+
+    if (totalPasswordBreaches > 0) {
+        html += '<div class="risk-card risk-card-critical">';
+        html += '<div class="risk-card-header">';
+        html += '<span class="risk-card-icon" role="img" aria-label="Compromised passwords">⛓️‍💥</span>';
+        html += '<span class="risk-card-title">Compromised Passwords</span>';
+        html += '<span class="risk-badge risk-badge-high">' + totalPasswordBreaches + (totalPasswordBreaches === 1 ? ' breach' : ' breaches') + '</span>';
+        html += '</div>';
+
+        if (plaintextBreaches.length > 0) {
+            html += '<p class="risk-card-impact">Your passwords were leaked <strong>in plain text</strong> from:</p>';
+            html += '<div class="risk-card-breaches">';
+            plaintextBreaches.forEach(function(name) {
+                html += '<span class="risk-breach-name">' + name + '</span>';
+            });
+            html += '</div>';
+        }
+        if (easyToCrackBreaches.length > 0) {
+            html += '<p class="risk-card-impact">' + (plaintextBreaches.length > 0 ? 'Additionally, passwords' : 'Your passwords') + ' from these breaches are <strong>easy to crack</strong>:</p>';
+            html += '<div class="risk-card-breaches">';
+            easyToCrackBreaches.forEach(function(name) {
+                html += '<span class="risk-breach-name">' + name + '</span>';
+            });
+            html += '</div>';
+        }
+
+        html += '<div class="risk-card-action"><strong>Do this now:</strong> Change your password on ';
+        const allBreachNames = plaintextBreaches.concat(easyToCrackBreaches);
+        if (allBreachNames.length <= 3) {
+            html += allBreachNames.join(', ');
+        } else {
+            html += 'these ' + allBreachNames.length + ' sites';
+        }
+        html += ' immediately. Use a password manager (like Bitwarden — free) to generate a unique password for every account.</div>';
+        html += '</div>';
+    }
+
+    if (piiCount > 0) {
+        html += '<div class="risk-card risk-card-warning">';
+        html += '<div class="risk-card-header">';
+        html += '<span class="risk-card-icon" role="img" aria-label="Personal information">👤</span>';
+        html += '<span class="risk-card-title">Personal Information Exposed</span>';
+        html += '<span class="risk-badge risk-badge-medium">' + piiCount + (piiCount === 1 ? ' occurrence' : ' occurrences') + '</span>';
+        html += '</div>';
+        html += '<p class="risk-card-impact">Your personal details (name, address, phone, or date of birth) have been exposed. This data can be used for identity theft, fraudulent accounts, or social engineering attacks.</p>';
+        html += '<div class="risk-card-action"><strong>Do this now:</strong> Set up a credit freeze at all 3 bureaus (Equifax, Experian, TransUnion) — it is free and takes 10 minutes. Enable transaction alerts on your bank accounts and watch for mail or calls referencing your personal details.</div>';
+        html += '</div>';
+    }
+
+    if (commsCount > 0) {
+        html += '<div class="risk-card risk-card-info">';
+        html += '<div class="risk-card-header">';
+        html += '<span class="risk-card-icon" role="img" aria-label="Email exposure">📧</span>';
+        html += '<span class="risk-card-title">Email &amp; Communication Exposure</span>';
+        html += '<span class="risk-badge risk-badge-low">' + commsCount + (commsCount === 1 ? ' occurrence' : ' occurrences') + '</span>';
+        html += '</div>';
+        html += '<p class="risk-card-impact">Your email address and communication details are exposed. Expect targeted phishing emails, spam, and social engineering attempts — especially emails mentioning breached services by name.</p>';
+        html += '<div class="risk-card-action"><strong>Do this now:</strong> Never click password reset links you did not request. If an email mentions a breach you recognize, go directly to that site (type the URL yourself) instead of clicking any link. Enable 2FA on your email account — it is the single most effective protection.</div>';
+        html += '</div>';
+    }
+
+    if (demoCount > 0) {
+        html += '<div class="risk-card risk-card-info">';
+        html += '<div class="risk-card-header">';
+        html += '<span class="risk-card-icon" role="img" aria-label="Demographic data">📊</span>';
+        html += '<span class="risk-card-title">Demographic Data Exposed</span>';
+        html += '<span class="risk-badge risk-badge-low">' + demoCount + (demoCount === 1 ? ' occurrence' : ' occurrences') + '</span>';
+        html += '</div>';
+        html += '<p class="risk-card-impact">Demographic information like age, gender, location, or occupation has been exposed. This data is used to build profiles for targeted scams and impersonation.</p>';
+        html += '<div class="risk-card-action"><strong>Do this now:</strong> Review your social media privacy settings — limit what is publicly visible. Be skeptical of unsolicited calls or messages that seem to know personal details about you.</div>';
+        html += '</div>';
+    }
+
+    html += '</div>';
+
+    html += '<div class="risk-cta">';
+    html += '<p>Don\'t wait for the next breach to find out.</p>';
+    html += '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal">';
+    html += '<i class="fa fa-bell" aria-hidden="true"></i>&nbsp; Get Breach Alerts — Free</button>';
+    html += '</div>';
+
+    html += '</div>';
+    return html;
 }
 
 let email, token;
@@ -133,29 +311,26 @@ try {
     window.location.replace("https://xposedornot.com");
 }
 
-const emailHeader = (category, prefixHtml = '') => `<div align="center" class="alert alert-primary"><strong>${prefixHtml}${escapeHtml(category)} For Email: ${escapeHtml(email)}</strong></div></p>`;
+const emailHeader = (category, prefixHtml = '') => `<h2 class="section-heading">${prefixHtml}${escapeHtml(category)} for: ${escapeHtml(email)}</h2>`;
 
-$("#email").html(emailHeader("Data Breaches Quick Information"));
-$("#email_sensitive").html(emailHeader('🔥 Sensitive Data Breaches Summary', '<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed.">?</span>&nbsp;&nbsp; '));
-$("#data").html(emailHeader("Your Exposed Data Sorted by Categories"));
-
+$("#email").html(emailHeader("Breach Summary"));
+$("#email_sensitive").html(emailHeader('Sensitive Data Breaches', '<span class="help-icon" tabindex="0" role="button" aria-label="Sensitive breach explanation" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed."><i class="fas fa-question-circle" aria-hidden="true"></i></span>&nbsp;&nbsp; '));
+$("#data").html(emailHeader("What Data Was Exposed"));
 
 $("#db-sensitive").show();
 $("#sensitive-data-table").hide();
 document.getElementById("db-sensitive").className = "alert alert-info";
 $("#db-sensitive").html(`
-    <em class="fas fa-lock"></em>
-    <strong>🔥 Sensitive Data Breaches Require Verification 🔥</strong>
+    <i class="fas fa-lock" aria-hidden="true"></i>
+    <strong>Unlock Your Full Breach Report</strong>
     <p style="font-size:16px; margin-top:10px;">
-        To view sensitive data breaches that may contain more critical information, 
-        please verify your email address. This extra step helps protect sensitive data 
-        from unauthorized access.
+        Some breaches contain sensitive data that requires email verification to view.
+        Verify your email to see your complete breach exposure.
     </p>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
-        <em class="fas fa-envelope"></em> Verify Email Now
+        <i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now
     </button>
 `);
-
 
 const url = token
     ? `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
@@ -163,21 +338,19 @@ const url = token
 
 let jsonResponse;
 
-
 if (!token) {
     $("#db-sensitive").show();
     $("#sensitive-data-table").hide();
     document.getElementById("db-sensitive").className = "alert alert-info";
     $("#db-sensitive").html(`
-        <em class="fas fa-lock"></em>
-        <strong>🔥 Sensitive Data Breaches Require Verification 🔥</strong>
+        <i class="fas fa-lock" aria-hidden="true"></i>
+        <strong>Unlock Your Full Breach Report</strong>
         <p style="font-size:16px; margin-top:10px;">
-            To view sensitive data breaches that may contain more critical information, 
-            please verify your email address. This extra step helps protect sensitive data 
-            from unauthorized access.
+            Some breaches contain sensitive data that requires email verification to view.
+            Verify your email to see your complete breach exposure.
         </p>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
-            <em class="fas fa-envelope"></em> Verify Email Now
+            <i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now
         </button>
     `);
 }
@@ -185,7 +358,6 @@ if (!token) {
 var j = $.ajax(url)
     .done(function (response) {
         jsonResponse = response;
-
 
         if (token) {
             if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
@@ -196,10 +368,9 @@ var j = $.ajax(url)
                     $("#sensitive-data-table").hide();
                     document.getElementById("db-sensitive").className = "visible alert alert-success";
                     $("#db-sensitive").html(`
-                        <em class="fas fa-check-circle"></em>
-                        <strong>🔥 Your email is not found in any sensitive data breaches loaded in XposedOrNot</strong>
-                        <p style="color:green;font-size:20px"></p>
-                        <h3><strong>Good news 🎉</strong></h3>
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
+                        <strong>No sensitive data breaches found for your email</strong>
+                        <p><strong>Good news!</strong></p>
                     `);
                 } else {
                     $("#db-sensitive").hide();
@@ -207,11 +378,11 @@ var j = $.ajax(url)
                     let tableRowsHtml = "";
                     for (var i = 0; i < sensitiveBreaches.length; i++) {
                         tableRowsHtml += '<tr>' +
-                            '<td style="text-align: center;"><span style="color:#FF4500;">🔥</span> ' + sensitiveBreaches[i].breach + '<br>' +
-                            '<img src="' + sensitiveBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
-                            '</td>' +
-                            '<td><div class="text">' + sensitiveBreaches[i].details + '</div>' +
-                            '<a href="#" class="see-more">See More</a></td>' +
+                            '<th scope="row" style="text-align: center;"><span role="img" aria-label="Sensitive breach">🔥</span> ' + escapeHtml(sensitiveBreaches[i].breach) + '<br>' +
+                            '<img src="' + sensitiveBreaches[i].logo + '" alt="' + escapeHtml(sensitiveBreaches[i].breach) + ' logo" style="width: 50px; height: 50px;">' +
+                            '</th>' +
+                            '<td><div class="text">' + escapeHtml(sensitiveBreaches[i].details) + '</div>' +
+                            '<button type="button" class="see-more" aria-expanded="false">See More</button></td>' +
                             '<td style="text-align: right;">' + parseInt(sensitiveBreaches[i].xposed_records).toLocaleString() + '</td>' +
                             '</tr>';
                     }
@@ -222,10 +393,9 @@ var j = $.ajax(url)
                 $("#sensitive-data-table").hide();
                 document.getElementById("db-sensitive").className = "visible alert alert-success";
                 $("#db-sensitive").html(`
-                    <em class="fas fa-check-circle"></em>
-                    <strong>🔥 Your email is not found in any sensitive data breaches loaded in XposedOrNot</strong>
-                    <p style="color:green;font-size:20px"></p>
-                    <h3><strong>Good news 🎉</strong></h3>
+                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                    <strong>No sensitive data breaches found for your email</strong>
+                    <h3><strong>Good news!</strong></h3>
                 `);
             }
         } else if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details &&
@@ -235,24 +405,29 @@ var j = $.ajax(url)
             $("#sensitive-data-table").hide();
             document.getElementById("db-sensitive").className = "alert alert-info";
             $("#db-sensitive").html(`
-                
-                <strong>🔥 Sensitive Data Breaches Require Verification 🔥</strong>
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                <strong>Unlock Your Full Breach Report</strong>
                 <p style="font-size:16px; margin-top:10px;">
-                    To view sensitive data breaches that may contain more critical information, 
-                    please verify your email address. This extra step helps protect sensitive data 
-                    from unauthorized access.
+                    Some breaches contain sensitive data that requires email verification to view.
+                    Verify your email to see your complete breach exposure.
                 </p>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
-                    <em class="fas fa-envelope"></em> Verify Email Now
+                    <i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now
                 </button>
             `);
         }
-
 
         breachesDetailsHtml = ''
         breachesSite = '', xposedData = '', riskScore = '', riskLabel = '';
         let passwordScore = 0;
         const passwordsCounts = [];
+
+        if (!jsonResponse.BreachesSummary || !jsonResponse.BreachMetrics ||
+            !jsonResponse.BreachMetrics.xposed_data || !jsonResponse.BreachMetrics.risk) {
+            showNoBreachView(email);
+            return;
+        }
+
         breachesSite = jsonResponse.BreachesSummary.site;
         xposedData = jsonResponse.BreachMetrics.xposed_data[0]
         riskScore = jsonResponse.BreachMetrics.risk[0].risk_score
@@ -273,7 +448,6 @@ var j = $.ajax(url)
                 ['Risk Score', Math.round(riskScore)]
             ]);
 
-            // Responsive options based on screen size
             const isMobile = window.innerWidth <= 767;
 
             var options = {
@@ -292,13 +466,11 @@ var j = $.ajax(url)
 
             var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
 
-            // Apply text color styles after chart is drawn
             const applyTextColor = function() {
                 const isDarkMode = document.body.classList.contains('dark-mode') ||
                                   document.documentElement.getAttribute('data-theme') === 'dark';
                 const chartDiv = document.getElementById('chart_div');
                 if (chartDiv) {
-                    // Target all text elements in the SVG including the number value
                     const textElements = chartDiv.querySelectorAll('svg text');
                     textElements.forEach(text => {
                         text.setAttribute('fill', isDarkMode ? '#ffffff' : '#000000');
@@ -308,13 +480,10 @@ var j = $.ajax(url)
                 }
             };
 
-            // Draw chart once with the actual risk score
             chart.draw(data, options);
 
-            // Apply text color after initial draw
             setTimeout(applyTextColor, 150);
 
-            // Redraw on window resize
             window.addEventListener('resize', function () {
                 const isMobile = window.innerWidth <= 767;
                 options.width = isMobile ? 300 : 500;
@@ -323,7 +492,6 @@ var j = $.ajax(url)
                 setTimeout(applyTextColor, 150);
             });
 
-            // Watch for dark mode changes and update text color
             const observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
                     if (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme') {
@@ -332,13 +500,11 @@ var j = $.ajax(url)
                 });
             });
 
-            // Observe body class changes (for .dark-mode class)
             observer.observe(document.body, {
                 attributes: true,
                 attributeFilter: ['class']
             });
 
-            // Observe documentElement data-theme changes
             observer.observe(document.documentElement, {
                 attributes: true,
                 attributeFilter: ['data-theme']
@@ -360,7 +526,7 @@ var j = $.ajax(url)
                 alertType = "warning";
         }
 
-        const riskScoreHtml = `<div align="center" class="alert alert-${alertType}">&nbsp;Your Risk Score :  <strong>${riskLabel}</strong>&nbsp;&nbsp;<span class="help-icon" data-toggle="tooltip" data-placement="auto" title="Calculated based on the number and severity of data breaches, the time since the last breach, and the strength of the exposed password. Please read FAQ for more details on this. ">?</span></div>`;
+        const riskScoreHtml = `<h2 class="section-heading section-heading-${alertType}">Your Risk Score: <span class="risk-level-${alertType}">${riskLabel}</span>&nbsp;&nbsp;<span class="help-icon" tabindex="0" role="button" aria-label="Risk score explanation" data-toggle="tooltip" data-placement="auto" title="Calculated based on the number and severity of data breaches, the time since the last breach, and the strength of the exposed password. Please read FAQ for more details on this."><i class="fas fa-question-circle" aria-hidden="true"></i></span></h2>`;
         $('#risk').html(riskScoreHtml);
 
         if (xposedData.toString().length > 0) {
@@ -396,19 +562,15 @@ var j = $.ajax(url)
             })
             password_score = (plaintext / (easy + hard + plaintext + unknown)) * 100
 
-
             industries = jsonResponse.BreachMetrics.industry[0];
-
 
             if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
                 const sensitiveBreaches = jsonResponse.ExposedBreaches.sensitive_breaches_details;
-
 
                 const industryMap = new Map();
                 industries.forEach(ind => {
                     industryMap.set(ind[0], ind[1]);
                 });
-
 
                 sensitiveBreaches.forEach(breach => {
                     const industry = breach.industry.toLowerCase().substring(0, 4); // Get industry code
@@ -418,7 +580,6 @@ var j = $.ajax(url)
                         industryMap.set(industry, 1);
                     }
                 });
-
 
                 industries = Array.from(industryMap.entries());
             }
@@ -611,7 +772,7 @@ var j = $.ajax(url)
                     font-weight: 600;
                 }
                 .badge-high {
-                    background-color: #ff7675;
+                    background-color: #d63031;
                     color: white;
                 }
                 .badge-medium {
@@ -619,8 +780,14 @@ var j = $.ajax(url)
                     color: #2d3436;
                 }
                 .badge-low {
-                    background-color: #00b894;
+                    background-color: #2874a6;
                     color: white;
+                }
+                [data-theme="dark"] .badge-low, .dark-mode .badge-low {
+                    background-color: #2874a6;
+                    color: white;
+                    border: none;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
                 }
                 @media (max-width: 767px) {
                     .industry-list .row {
@@ -635,48 +802,47 @@ var j = $.ajax(url)
 
             $('#industry').html(industryList);
 
-
             const githubSection = `
                 <div class="github-collab-section h-100">
                     <div class="github-content text-center">
                         <div class="github-icon mb-3">
-                            <i class="fab fa-github fa-3x"></i>
+                            <i class="fab fa-github fa-3x" aria-hidden="true"></i>
                         </div>
-                        <h4 class="mb-3">Join Our Open Source Community! 🚀</h4>
+                        <h3 class="mb-3">Join Our Open Source Community</h3>
                         <p class="mb-4">
-                            Help us make the internet safer by contributing to XposedOrNot. 
-                            Your ideas & contributions can make a difference!
+                            Help us make the internet safer by contributing to XposedOrNot.
+                            Your ideas and contributions can make a difference!
                         </p>
                         <div class="github-stats mb-3">
                             <div class="row justify-content-center">
                                 <div class="col-auto px-3">
                                     <div class="stat-item">
-                                        <i class="fas fa-code-branch"></i>
+                                        <i class="fas fa-code-branch" aria-hidden="true"></i>
                                         <span>Open Source</span>
                                     </div>
                                 </div>
                                 <div class="col-auto px-3">
                                     <div class="stat-item">
-                                        <i class="fas fa-users"></i>
+                                        <i class="fas fa-users" aria-hidden="true"></i>
                                         <span>Community</span>
                                     </div>
                                 </div>
                                 <div class="col-auto px-3">
                                     <div class="stat-item">
-                                        <i class="fas fa-shield-alt"></i>
+                                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
                                         <span>Security</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <a href="https://github.com/xposedornot" target="_blank" class="btn btn-github">
-                            <i class="fab fa-github mr-2"></i> Visit our GitHub
+                        <a href="https://github.com/xposedornot" target="_blank" rel="noopener" class="btn btn-github">
+                            <i class="fab fa-github mr-2" aria-hidden="true"></i> Visit our GitHub<span class="sr-only"> (opens in new tab)</span>
                         </a>
                     </div>
                 </div>
             `;
 
-            $('.xon-row2-right .text-center').html(githubSection);
+            $('#github-section').html(githubSection);
 
             breachesDetailsHtml = ''
             if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.breaches_details) {
@@ -684,20 +850,18 @@ var j = $.ajax(url)
                 const regularBreaches = jsonResponse.ExposedBreaches.breaches_details;
                 for (var i = 0; i < regularBreaches.length; i++) {
                     breachesTable += '<tr>' +
-                        '<td style="text-align: center;">' + regularBreaches[i].breach + '<br>' +
-                        '<img src="' + regularBreaches[i].logo + '" alt="Logo" style="width: 50px; height: 50px;">' +
-                        '</td>' +
-                        '<td><div class="text">' + regularBreaches[i].details + '</div>' +
-                        '<a href="#" class="see-more">See More</a></td>' +
+                        '<th scope="row" style="text-align: center;">' + escapeHtml(regularBreaches[i].breach) + '<br>' +
+                        '<img src="' + regularBreaches[i].logo + '" alt="' + escapeHtml(regularBreaches[i].breach) + ' logo" style="width: 50px; height: 50px;">' +
+                        '</th>' +
+                        '<td><div class="text">' + escapeHtml(regularBreaches[i].details) + '</div>' +
+                        '<button type="button" class="see-more" aria-expanded="false">See More</button></td>' +
                         '<td style="text-align: right;">' + parseInt(regularBreaches[i].xposed_records).toLocaleString() + '</td>' +
                         '</tr>';
-
 
                     breachesDetailsHtml += generateBreachDetailHtml(regularBreaches[i], false);
                 }
                 $("#data_breach").html(breachesTable);
             }
-
 
             if (token && jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
                 const sensitiveBreaches = jsonResponse.ExposedBreaches.sensitive_breaches_details;
@@ -706,14 +870,12 @@ var j = $.ajax(url)
                 }
             }
 
-
             nn = "";
             if (xposedData.toString().length <= 0) {
                 document.getElementById("db-s").className = "visible alert alert-success";
                 $("#db-s").show();
             } else {
                 breachesCountsArray = []
-                // Add regular breaches to counts array
                 if (jsonResponse.ExposedBreaches.breaches_details) {
                     jsonResponse.ExposedBreaches.breaches_details.forEach(breach => {
                         breachesCountsArray.push({
@@ -722,7 +884,6 @@ var j = $.ajax(url)
                         });
                     });
                 }
-
 
                 if (token && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
                     jsonResponse.ExposedBreaches.sensitive_breaches_details.forEach(breach => {
@@ -747,7 +908,6 @@ var j = $.ajax(url)
                 breaches_cnt.push(parseInt(breachesCountsArray[i].cnt));
             }
             var top5 = document.getElementById('top5breaches');
-
 
             top5.parentElement.style.height = '400px';
 
@@ -844,7 +1004,7 @@ var j = $.ajax(url)
             passwordsChartInstance = new Chart(passwords, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Plain Text Password', 'Easily Crackable', 'Strong Hashes', 'Unknown'],
+                    labels: ['Exposed as Plain Text', 'Easy to Crack', 'Well Protected', 'Unknown'],
                     datasets: [{
                         data: [plaintext, easy, hard, unknown],
                         backgroundColor: [
@@ -926,49 +1086,58 @@ var j = $.ajax(url)
             $("#details").append(breachesDetailsHtml);
         }
 
+        if (typeof tippy !== 'undefined') {
+            tippy('[data-toggle="tooltip"]', {
+                content: function(reference) {
+                    return reference.getAttribute('title');
+                },
+                allowHTML: true,
+                placement: 'auto',
+                arrow: true,
+                maxWidth: 300
+            });
+        }
+
         g1();
     })
     .fail(function (response) {
         if (response.status === 404) {
-            $.LoadingOverlay("hide");
-            document.getElementById("db-s").className = "visible alert alert-success";
-            $("#db-s").show();
-            g1()
+            showNoBreachView(email);
         } else if (response.status === 429) {
             $.LoadingOverlay("hide");
+            $('#sr-loading-status').text('Report loaded.');
             document.getElementById("db-s").className = "visible alert alert-danger";
-            $("#db-s").html("<b>Please Slow down.</b><br>Looks like your going too fast, please try again after some time.");
+            $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
+            $("#db-s").show();
+        } else {
+            $.LoadingOverlay("hide");
+            $('#sr-loading-status').text('Report loaded.');
+            document.getElementById("db-s").className = "visible alert alert-warning";
+            $("#db-s").html("<b>Something went wrong.</b><br>We couldn't load your breach report. Please try again later.");
             $("#db-s").show();
         }
     })
 
-// Register the datalabels plugin
 Chart.register(ChartDataLabels);
 
-// Function to check if dark mode is active
 function isDarkModeActive() {
     return document.body.getAttribute('data-theme') === 'dark' ||
            document.body.classList.contains('dark-mode') ||
            localStorage.getItem('darkSwitch') === 'dark';
 }
 
-// Function to get current text color based on dark mode
 function getChartTextColor() {
-    // Use bright white for dark mode, dark gray for light mode
     return isDarkModeActive() ? '#FFFFFF' : '#333333';
 }
 
-// Store chart instances for updating
 let top5ChartInstance = null;
 let passwordsChartInstance = null;
 let lineChartInstance = null;
 
-// Function to update all chart colors for dark mode
 function updateChartsForDarkMode() {
     const textColor = getChartTextColor();
     const isDark = isDarkModeActive();
 
-    // Update global defaults
     Chart.defaults.color = textColor;
 
     if (top5ChartInstance) {
@@ -985,6 +1154,8 @@ function updateChartsForDarkMode() {
 
     if (lineChartInstance) {
         lineChartInstance.options.plugins.legend.labels.color = textColor;
+        lineChartInstance.options.plugins.datalabels.color = textColor;
+        lineChartInstance.options.plugins.datalabels.backgroundColor = isDark ? 'rgba(30,30,30,0.8)' : 'rgba(255,255,255,0.85)';
         lineChartInstance.options.scales.x.ticks.color = textColor;
         lineChartInstance.options.scales.y.ticks.color = textColor;
         lineChartInstance.options.scales.y.title.color = textColor;
@@ -993,7 +1164,6 @@ function updateChartsForDarkMode() {
     }
 }
 
-// Watch for dark mode changes on body
 const chartDarkModeObserver = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
         if (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme') {
@@ -1002,16 +1172,13 @@ const chartDarkModeObserver = new MutationObserver(function(mutations) {
     });
 });
 
-// Start observing body for dark mode changes
 chartDarkModeObserver.observe(document.body, {
     attributes: true,
     attributeFilter: ['class', 'data-theme']
 });
 
-// Set initial Chart.js defaults based on current mode
 Chart.defaults.color = getChartTextColor();
 
-// Define chart colors for reuse
 const chartColors = {
     red: 'rgb(255, 99, 132)',
     blue: 'rgb(54, 162, 235)',
@@ -1052,6 +1219,22 @@ function g1() {
                             size: 12,
                             weight: 'bold'
                         }
+                    }
+                },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    offset: 4,
+                    color: textColor,
+                    font: {
+                        size: 11,
+                        weight: 'bold'
+                    },
+                    backgroundColor: isDarkMode ? 'rgba(30,30,30,0.8)' : 'rgba(255,255,255,0.85)',
+                    borderRadius: 4,
+                    padding: { top: 2, bottom: 2, left: 4, right: 4 },
+                    display: function(context) {
+                        return context.dataset.data[context.dataIndex] > 0;
                     }
                 }
             },
@@ -1103,7 +1286,15 @@ function g1() {
 }
 
 $(window).on("load", function () {
-    //  $.LoadingOverlay("hide");
+});
+
+$('#alertMeModal').on('hidden.bs.modal', function () {
+    $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
+    $("#alertMe_i2").addClass("fa fa-bell ring");
+    $("#h2head").attr("class", "modal-header-primary");
+    $('#message-text').val("We'll notify you instantly if your email appears in any new data breach. Verify your email and activate your FREE subscription by clicking 'Start Monitoring'.");
+    $("#alertMe").show();
+    $("#alertMeClose, #a_succ").hide();
 });
 
 $('#alertMeModal').on('show.bs.modal', function (event) {
@@ -1123,35 +1314,71 @@ $(document).ready(function () {
     $('#recipient-name').on('input', function () {
         var email = $(this).val();
         var isValid = validateEmail(email);
+        var $errorMsg = $('#email-validation-error');
+        if ($errorMsg.length === 0) {
+            $(this).after('<div id="email-validation-error" role="alert" style="color: #c82333; font-size: 13px; margin-top: 4px; display: none;">Please enter a valid email address.</div>');
+            $(this).attr('aria-describedby', 'email-validation-error');
+            $errorMsg = $('#email-validation-error');
+        }
         if (isValid) {
-            $(this).css("border", "2px solid green");
+            $(this).css("border", "2px solid #6daae0");
+            $(this).attr('aria-invalid', 'false');
+            $errorMsg.hide();
             $('#alertMe').prop('disabled', false);
         } else {
-            $(this).css("border", "2px solid red");
+            $(this).css("border", "2px solid #c82333");
+            $(this).attr('aria-invalid', 'true');
+            if (email.length > 0) { $errorMsg.show(); } else { $errorMsg.hide(); }
             $('#alertMe').prop('disabled', true);
         }
     });
     $("#alertMe").click(function (event) {
         event.preventDefault();
-        var inputValue = document.getElementById("recipient-name").value.toLowerCase();
-        var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        var inputValue = $("#recipient-name").val().toLowerCase().trim();
 
-        var successMessage = "Successfully added to the alert service. Please check your email and click on the verification link to confirm";
-        var alreadySubscribedMessage = "We thank you for your interest. However our records indicate you are already added to the AlertMe Service.";
+        if (!inputValue || !validateEmail(inputValue)) {
+            $('#message-text').val("Please enter a valid email address to receive alerts.");
+            $("#h2head").attr("class", "modal-header-danger");
+            $("#recipient-name").css("border", "2px solid #c82333").focus();
+            return;
+        }
+
+        var turnstileResponse = '';
+        try {
+            if (typeof turnstile !== 'undefined') {
+                turnstileResponse = turnstile.getResponse() || '';
+            }
+        } catch (e) {
+            console.error('Error getting Turnstile response:', e);
+        }
+
+        $("#alertMe_i1").addClass("fa fa-spinner fa-spin");
+        $("#alertMe_i2").removeClass("fa fa-bell ring");
+
+        var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        var headers = turnstileResponse ? { 'X-Turnstile-Token': turnstileResponse } : {};
+
+        var successMessage = "Verification email sent! Check your inbox to activate free breach monitoring.";
+        var alreadySubscribedMessage = "You're already protected! This email is registered for breach alerts.";
         var unableToDeliverMessage = "Unable to send email to this address. Please check and try again.";
 
-        $.ajax(apiUrl)
+        $.ajax({
+            url: apiUrl,
+            type: 'GET',
+            headers: headers
+        })
             .done(function () {
                 $('#message-text').val(successMessage);
-                document.getElementById("h2head").className = "modal-header-success";
+                $("#h2head").attr("class", "modal-header-success");
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
+                $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
+                $("#alertMe_i2").addClass("fa fa-bell ring");
             })
             .fail(function (jqXHR) {
                 var message = alreadySubscribedMessage;
                 var headerClass = "modal-header-success";
 
-                // Check if response indicates email delivery failure
                 try {
                     var response = jqXHR.responseJSON || JSON.parse(jqXHR.responseText);
                     if (response && response.status === "Error") {
@@ -1159,19 +1386,19 @@ $(document).ready(function () {
                         headerClass = "modal-header-danger";
                     }
                 } catch (e) {
-                    // If parsing fails, use default (already subscribed)
                 }
 
                 $('#message-text').val(message);
-                document.getElementById("h2head").className = headerClass;
+                $("#h2head").attr("class", headerClass);
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
+                $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
+                $("#alertMe_i2").addClass("fa fa-bell ring");
             });
     });
 
     function adjustLayoutForScreenSize() {
         const isMobile = window.innerWidth <= 767;
-
 
         if (isMobile) {
             $('.xon-row2-right, .xon-row2-left').css({
@@ -1180,7 +1407,6 @@ $(document).ready(function () {
                 'margin-bottom': '30px'
             });
 
-
             $('.github-collab-section').css({
                 'height': 'auto',
                 'min-height': '280px',
@@ -1188,11 +1414,9 @@ $(document).ready(function () {
                 'margin-bottom': '30px'
             });
 
-
             $('.github-content').css({
                 'padding': '15px 5px'
             });
-
 
             if (window.innerWidth < 400) {
                 $('.github-stats .row').css({
@@ -1236,18 +1460,13 @@ $(document).ready(function () {
         }
     }
 
-
     adjustLayoutForScreenSize();
     $(window).on('resize', adjustLayoutForScreenSize);
 });
 
-
 var floatingButton = document.getElementById('floating-button');
-var topPos = 100;
 
-// Function to get appropriate top position based on viewport
 function getFloatingButtonTop() {
-    // On mobile (less than 992px), position below navbar to avoid overlap
     return window.innerWidth < 992 ? '70px' : '10px';
 }
 
@@ -1255,39 +1474,30 @@ floatingButton.style.position = 'fixed';
 floatingButton.style.top = getFloatingButtonTop();
 floatingButton.style.right = '20px';
 
-document.addEventListener('scroll', function () {
-    var y = window.pageYOffset;
-    if (y > 0) {
-        floatingButton.style.position = 'fixed';
-        floatingButton.style.top = getFloatingButtonTop();
-        floatingButton.style.right = '20px';
-    } else {
-        floatingButton.style.position = 'absolute';
-        floatingButton.style.top = topPos + 'px';
-        floatingButton.style.right = '20px';
-    }
-});
-
-// Update position on window resize
 window.addEventListener('resize', function () {
-    if (window.pageYOffset > 0) {
-        floatingButton.style.top = getFloatingButtonTop();
-    }
+    floatingButton.style.top = getFloatingButtonTop();
 });
 
 var analyticsApiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
 
-$.get(analyticsApiUrl, function (response) {
+$.get(analyticsApiUrl)
+    .done(function (response) {
+        if (!response || !response.description || !response.children) {
+            return;
+        }
+        var dataForTree = [{
+            description: response.description,
+            children: response.children.filter(function (year) { return year.children && year.children.length > 0; })
+        }];
 
-    const dataForTree = [{
-        description: response.description,
-        children: response.children.filter(year => year.children && year.children.length > 0)
-    }];
-
-    $('#tree-container').hortree({
-        data: dataForTree
+        $('#tree-container').hortree({
+            data: dataForTree
+        });
+    })
+    .fail(function () {
+        // Analytics data unavailable — silently skip hortree
     });
-});
+
 
 var leaving = false;
 $(document).on('mouseleave', function (e) {
@@ -1398,11 +1608,9 @@ document.getElementById('clippy-button').addEventListener('click', function () {
 
 });
 
-
 google.charts.load("current", {
     packages: ["corechart"]
 });
-
 
 function getCategoryBadgeClass(count) {
     if (count > 10) return 'high';
@@ -1471,7 +1679,7 @@ function drawChart_categories(xposedData) {
                 font-weight: 600;
             }
             .badge-high {
-                background-color: #ff7675;
+                background-color: #d63031;
                 color: white;
             }
             .badge-medium {
@@ -1479,7 +1687,7 @@ function drawChart_categories(xposedData) {
                 color: #2d3436;
             }
             .badge-low {
-                background-color: #00b894;
+                background-color: #2874a6;
                 color: white;
             }
             [data-theme="dark"] .badge, .dark-mode .badge {
@@ -1501,7 +1709,7 @@ function drawChart_categories(xposedData) {
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
             }
             [data-theme="dark"] .badge-low, .dark-mode .badge-low {
-                background-color: #38a169;
+                background-color: #2874a6;
                 color: white;
                 border: none;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -1512,7 +1720,6 @@ function drawChart_categories(xposedData) {
                 margin: 0;
                 text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             }
-            /* Responsive styles for mobile view */
             @media (max-width: 767px) {
                 .category-header h5 {
                     font-size: 0.95rem !important;
@@ -1533,43 +1740,36 @@ function drawChart_categories(xposedData) {
         `;
         document.head.appendChild(style);
 
-
         let categoriesHTML = `
             <div class="categories-list">
                 <div class="row">
         `;
-
 
         xposedData.forEach(category => {
             if (!category.children || !category.children.length) {
                 return;
             }
 
-
             const totalItems = category.children.reduce((sum, item) => sum + item.value, 0);
             if (totalItems === 0) {
                 return;
             }
-
 
             let categoryName = category.name;
             if (categoryName.startsWith("data_")) {
                 categoryName = categoryName.substring(5);
             }
 
-
             categoriesHTML += `
                 <div class="col-12 mb-3">
                     <div class="category-header">
-                        <h5>${categoryName} (${totalItems} items)</h5>
+                        <h3>${categoryName} (${totalItems} items)</h3>
                     </div>
                     <div class="row">
             `;
 
-
             category.children.forEach(item => {
                 if (item.value === 0) return;
-
 
                 let itemName = item.name;
                 if (itemName.startsWith("data_")) {
@@ -1597,9 +1797,7 @@ function drawChart_categories(xposedData) {
             </div>
         `;
 
-
         $('#categories-list').html(categoriesHTML);
-
 
         if (isDarkMode) {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -1624,13 +1822,13 @@ $(document).ready(function () {
         return false;
     });
 
-
     $('body').on('click', '.see-more', function (e) {
         e.preventDefault();
         var $this = $(this);
         var $text = $this.prev('.text');
+        var isExpanded = $this.attr('aria-expanded') === 'true';
 
-        if ($this.text() == 'See More') {
+        if (!isExpanded) {
             $text.css({
                 'overflow': 'visible',
                 'display': 'block',
@@ -1638,6 +1836,7 @@ $(document).ready(function () {
                 '-webkit-box-orient': 'unset'
             });
             $this.text('See Less');
+            $this.attr('aria-expanded', 'true');
         } else {
             $text.css({
                 'overflow': 'hidden',
@@ -1646,6 +1845,7 @@ $(document).ready(function () {
                 '-webkit-box-orient': 'vertical'
             });
             $this.text('See More');
+            $this.attr('aria-expanded', 'false');
         }
     });
 });
@@ -1654,27 +1854,25 @@ $(document).ajaxStart(function () {
     $.LoadingOverlay("show");
 }).ajaxStop(function () {
     $.LoadingOverlay("hide");
+    $('#sr-loading-status').text('Report loaded.');
 });
 
 function generateBreachDetailHtml(breach, isSensitive) {
-    let html = "<div>   <b><span class='notser'>" + breach.xposed_date + "</span></b><br><br>   <div class='row'>      <div class='col-sm-4'> <img height=75 width=100 src='";
-    html += breach.logo + "'>    </div>      <div class='col-sm-4'>         <h3><strong><font>  <a  href='breach.html#" + breach.breach + "' target='_blank'>";
-    html += breach.breach + "</font></strong></h3>         </a>      </div>      <div class='col-sm-4'>         <img height=75 width=75 src='";
-    html += 'static/logos/industry/' + breach.industry + ".png' title='";
-    html += breach.industry + ' Industry';
-    html += "'>  <figcaption>Industry: ";
-    html += breach.industry + "</figcaption></div></div><br><p><div align='center'><table width=85% class='table-striped table-bordered table-hover' style='font-size:16px'><tr><td>Number of Records Exposed</td><td>";
-    html += parseInt(breach.xposed_records).toLocaleString();
-    html += "</td></tr><tr><td table width=30%>Data Types Exposed<td>";
-    html += breach.xposed_data.replace(/;/g, ', ');
-    html += " </td></tr><tr><td>Password/Hash Status</td><td>";
-    html += breach.password_risk;
-    html += "</td></tr><tr><td>Affected Domain</td><td> ";
-    html += breach.domain;
-    html += "</td></tr></table><p style='font-size:22px;'>";
-    html += breach.details;
-    html += "</p></div><br><br><b><u>Reference link(s):</u></b><br><a target='_blank' href='" + encodeURI(breach.references) + "'> " + breach.references + "</a></p>";
-    html += "<span class='ver'>Searchable</span>";
+    let html = "<div><b><span class='notser'>" + escapeHtml(breach.xposed_date) + "</span></b><br><br><div class='row'><div class='col-sm-4' style='text-align: center'><img height='75' width='100' src='";
+    html += breach.logo + "' alt='" + escapeHtml(breach.breach) + " logo'></div><div class='col-sm-4' style='text-align: center'><h3><strong><a href='breach.html#" + encodeURIComponent(breach.breach) + "' target='_blank' rel='noopener'>";
+    html += escapeHtml(breach.breach) + "<span class='sr-only'> (opens in new tab)</span></a></strong></h3></div><div class='col-sm-4' style='text-align: center'><img height='75' width='75' src='";
+    html += 'static/logos/industry/' + encodeURIComponent(breach.industry) + ".png' alt='" + escapeHtml(breach.industry) + " industry icon'>";
+    html += "<p>Industry: " + escapeHtml(breach.industry) + "</p></div></div><br>";
+    html += "<div style='text-align: center'><table style='width: 85%; font-size: 16px' class='table-striped table-bordered table-hover'>";
+    html += "<caption class='sr-only'>Breach details for " + escapeHtml(breach.breach) + "</caption>";
+    html += "<thead><tr><th scope='col'>Detail</th><th scope='col'>Value</th></tr></thead><tbody>";
+    html += "<tr><th scope='row'>Number of Records Exposed</th><td>" + parseInt(breach.xposed_records).toLocaleString() + "</td></tr>";
+    html += "<tr><th scope='row'>Data Types Exposed</th><td>" + escapeHtml(breach.xposed_data.replace(/;/g, ', ')) + "</td></tr>";
+    html += "<tr><th scope='row'>Password/Hash Status</th><td>" + escapeHtml(breach.password_risk) + "</td></tr>";
+    html += "<tr><th scope='row'>Affected Domain</th><td>" + escapeHtml(breach.domain) + "</td></tr></tbody></table>";
+    html += "<p style='font-size: 16px'>" + escapeHtml(breach.details) + "</p></div><br><br>";
+    html += "<b>Reference link(s):</b><br><a target='_blank' rel='noopener' href='" + encodeURI(breach.references) + "'>" + escapeHtml(breach.references) + "<span class='sr-only'> (opens in new tab)</span></a>";
+    html += "<br><br><span class='ver'>Searchable</span>";
     if (breach.verified === "Yes") {
         html += "<span class='ver'>Verified</span>";
     } else {
@@ -1684,3 +1882,28 @@ function generateBreachDetailHtml(breach, isSensitive) {
     html += "</div><hr>";
     return html;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var footerGroups = document.querySelectorAll('.footer-group h3');
+    footerGroups.forEach(function(header) {
+        header.setAttribute('tabindex', '0');
+        header.setAttribute('role', 'button');
+        header.setAttribute('aria-expanded', 'false');
+
+        function toggleGroup() {
+            if (window.innerWidth <= 768) {
+                var group = header.parentElement;
+                var isActive = group.classList.toggle('active');
+                header.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+            }
+        }
+
+        header.addEventListener('click', toggleGroup);
+        header.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleGroup();
+            }
+        });
+    });
+});

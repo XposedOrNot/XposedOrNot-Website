@@ -45,7 +45,7 @@ const validateEmail = (email) => {
 $('#alertMeModal').on('hidden.bs.modal', (e) => {
     $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
     $("#h2head").attr("class", "modal-header-primary");
-    $('#message-text').val("To ensure you don't miss any crucial alerts about potential data breaches, kindly verify your email address and activate your subscription by clicking 'Alert Me'.");
+    $('#message-text').val("We'll notify you instantly if your email appears in any new data breach. You can unsubscribe anytime. This service is completely free.");
     $("#alertMe").show();
     $("#alertMeClose, #a_succ").hide();
 });
@@ -200,7 +200,7 @@ $(document).ready(function () {
         $("#dismiss").attr("class", "btn btn-success");
         $("#mbody, #warn, #info").hide();
         $("#succ, #spins, #alert_").show();
-        $("#ssvisible").html("<h2>Searching ...</h2>");
+        $("#ssvisible").html('<h2 id="thedudalModalLabel">Searching ...</h2>');
         updateEmailBadge(email);
         updateBreachBadge('No breaches found!');
 
@@ -225,6 +225,7 @@ $(document).ready(function () {
         let targetButton = $(this).is('#edhu') ? '#searchMe' : '#alertMe';
 
         $(this).css("border", isValid ? "2px solid green" : "1px solid red");
+        $(this).attr('aria-invalid', !isValid);
         $(targetButton).prop('disabled', !isValid);
     });
 
@@ -237,6 +238,11 @@ $(document).ready(function () {
         }
     });
 
+    // Return focus to search input when modal closes
+    $('#thedudalModal').on('hidden.bs.modal', function () {
+        $("#edhu").focus();
+    });
+
     $("#detailedReport").click(function () {
         let url = "data-breaches-risks.html?email=" + $("#edhu").val().toLowerCase();
         window.open(url, '_blank').opener = null;
@@ -245,11 +251,11 @@ $(document).ready(function () {
 
 
 function updateEmailBadge(email) {
-    $('#data_email').html('<b class="email-label">Searched Email </b> <span class="badge">' + escapeHtml(email) + '</span>');
+    $('#data_email').html('<b>Email Checked </b> <span class="badge">' + escapeHtml(email) + '</span>');
 }
 
 function updateBreachBadge(text) {
-    $('#data_breach').html('<b>Exposed Breaches </b> <span class="badge" style="float:right">' + escapeHtml(text) + '</span>');
+    $('#data_breach').html('<b>Breaches Found </b> <span class="badge" style="float:right">' + escapeHtml(text) + '</span>');
 }
 
 
@@ -265,18 +271,18 @@ function updateModalForInvalidEmail(email) {
 }
 
 const STATUS_MESSAGES = {
-    searching: "Searching for your email in our database...",
-    success: "🎉 Good news! Your email hasn't been found in any public data breaches.",
+    searching: "Checking your email against our breach database...",
+    success: "🎉 Great news! Your email wasn't found in any known data breaches. Stay protected by setting up free alerts.",
     invalidEmail: "Please enter a valid email address to check",
     throttled: "Please wait a moment before trying again",
     serverError: "We're experiencing technical difficulties. Please try again in a few minutes.",
-    breachFound: "Important: Your email was found in the following data breaches:"
+    breachFound: "Your email was found in the following data breaches. We recommend changing your passwords immediately:"
 };
 
 const ALERT_MESSAGES = {
     subscribe: "Get instant notifications if your email appears in future data breaches",
-    subscribeSuccess: "Email verification sent! Please check your inbox to confirm alerts",
-    alreadySubscribed: "You're already protected! This email is registered for breach alerts",
+    subscribeSuccess: "Verification email sent! Check your inbox to activate free breach monitoring.",
+    alreadySubscribed: "You're already protected! This email is registered for breach alerts.",
     unableToDeliver: "Unable to send email to this address. Please check and try again."
 };
 
@@ -384,6 +390,8 @@ function processSearchResponse(response, email) {
     $("#spins").hide();
     $("#mbody").show();
 
+    let warningMessage = '';
+
     // Check if no breaches found (either empty or length < 1)
     if (!breachSummary || breachSummary.length < 1) {
         // Success state - No breaches
@@ -394,7 +402,7 @@ function processSearchResponse(response, email) {
 
         $("#hhead").attr("class", "modal-header modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
-        $("#ssvisible").html('<h2><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
+        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;" aria-hidden="true"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
 
         $('#data_email')
             .removeClass('alert-primary alert-danger')
@@ -404,7 +412,7 @@ function processSearchResponse(response, email) {
         $('#data_breach')
             .removeClass('alert-primary alert-danger')
             .addClass('alert-success')
-            .html('<b>Exposed Breaches </b> <span class="badge bg-success text-white" style="float:right">No breaches found!</span>');
+            .html('<b>Breaches Found </b> <span class="badge bg-success text-white" style="float:right">No breaches found!</span>');
 
         $("#detailedReport").hide();
         $("#warn").hide();
@@ -425,7 +433,7 @@ function processSearchResponse(response, email) {
 
         $("#hhead").attr("class", "modal-header modal-header-danger");
         $("#dismiss").attr("class", "btn-danger btn");
-        $("#ssvisible").html('<h2><i class="fas fa-exclamation-triangle fa-2x text-white"></i>&nbsp;&nbsp;Your Email Appeared in a Breach</h2>');
+        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-exclamation-triangle fa-2x text-white" aria-hidden="true"></i>&nbsp;&nbsp;Your Email Appeared in a Breach</h2>');
         $("#warn").show();
         $("#succ").hide();
         $("#info").hide();
@@ -436,20 +444,18 @@ function processSearchResponse(response, email) {
             .addClass('alert-danger')
             .html('<b>Searched Email </b> <span class="badge bg-danger text-white" style="float:right">' + escapeHtml(email) + '</span>');
 
-        let warningMessage = 'Below shown are the data breaches in which this email was exposed:   <br><br>';
+        warningMessage = '<p class="breach-intro">Your email appeared in these data breaches:</p><div class="breach-tags">';
         $("#detailedReport").show();
         $('#data_breach')
             .removeClass('alert-primary alert-success')
             .addClass('alert-danger')
-            .html('Exposed Breaches <span class="badge bg-danger text-white" style="float:right">' + breachSummary.split(";").length + '</span>');
+            .html('Breaches Found <span class="badge bg-danger text-white" style="float:right">' + breachSummary.split(";").length + '</span>');
 
         const breaches = breachSummary.split(";");
         for (let i = 0; i < breaches.length; i++) {
-            warningMessage += '<a rel="noopener" target="_blank" title="Click here for more details..." href="breach.html#' + encodeURIComponent(breaches[i]) + '">' + escapeHtml(breaches[i]) + '</a>';
-            if (i !== breaches.length - 1) {
-                warningMessage += ', ';
-            }
+            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="Click for details" href="breach.html#' + encodeURIComponent(breaches[i]) + '">' + escapeHtml(breaches[i]) + '<span class="sr-only"> (opens in new tab)</span></a>';
         }
+        warningMessage += '</div>';
 
         $("#warn").html(warningMessage);
         $("#warn").show();
@@ -459,14 +465,12 @@ function processSearchResponse(response, email) {
     const pasteCount = jsonResponse.PastesSummary.cnt;
     if (pasteCount > 0) {
         $("#detailedReport").show();
-        warningMessage += '<br><br>' + 'Searched email has been exposed in public pastes shown below <br>';
+        warningMessage += '<p class="breach-intro" style="margin-top:16px">Also found in public pastes:</p><div class="breach-tags">';
         const pastes = jsonResponse.PastesSummary.tweet_id.split(";");
         for (let i = 0; i < pastes.length; i++) {
-            warningMessage += '<a rel="noopener" target="_blank" title="Click here to open" href="https://pastebin.com/' + encodeURIComponent(pastes[i]) + '">' + escapeHtml(pastes[i]) + '</a>';
-            if (i !== pastes.length - 1) {
-                warningMessage += ' ; ';
-            }
+            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="Click to open" href="https://pastebin.com/' + encodeURIComponent(pastes[i]) + '">' + escapeHtml(pastes[i]) + '<span class="sr-only"> (opens in new tab)</span></a>';
         }
+        warningMessage += '</div>';
         $("#warn").html(warningMessage);
         $("#warn").show();
     }
@@ -479,15 +483,15 @@ function processSearchError(error, email) {
         $("#mbody").show();
         $("#spins").hide();
         $("#succ").html("You are currently being throttled. Please slow down and try again !");
-        $('#data_email').html(`<b class="email-label">Searched Email </b> <span class="badge">${escapeHtml(email)}</span>`);
+        $('#data_email').html(`<b>Email Checked </b> <span class="badge">${escapeHtml(email)}</span>`);
     } else if (error.status === 502) {
         $("#hhead").attr("class", "modal-header modal-header-danger");
         $("#dismiss").attr("class", "btn btn-primary");
         $("#mbody, #info").show();
         $("#spins, #succ").hide();
-        $("#ssvisible").html("<h2>Oops unexpected error...</h2>");
+        $("#ssvisible").html('<h2 id="thedudalModalLabel">Oops unexpected error...</h2>');
         $("#info").html("Embarassing and looks like something is not right at server end. I have notified the right person to check on this. Please try again after some time.");
-        $('#data_email').html(`<b class="email-label">Searched Email </b> <span class="badge">${escapeHtml(email)}</span>`);
+        $('#data_email').html(`<b>Email Checked </b> <span class="badge">${escapeHtml(email)}</span>`);
     } else {
         // No breaches found - show same celebration as processSearchResponse
         $(".modal-content").css({
@@ -497,7 +501,7 @@ function processSearchError(error, email) {
 
         $("#hhead").attr("class", "modal-header modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
-        $("#ssvisible").html('<h2><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
+        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;" aria-hidden="true"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
 
         $('#data_email')
             .removeClass('alert-primary alert-danger')
@@ -507,7 +511,7 @@ function processSearchError(error, email) {
         $('#data_breach')
             .removeClass('alert-primary alert-danger')
             .addClass('alert-success')
-            .html('<b>Exposed Breaches </b> <span class="badge bg-success text-white" style="float:right">No breaches found!</span>');
+            .html('<b>Breaches Found </b> <span class="badge bg-success text-white" style="float:right">No breaches found!</span>');
 
         $("#detailedReport").hide();
         $("#warn").hide();
@@ -624,8 +628,8 @@ function runCounter(element, endValue, duration) {
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let circles = [];
-const maxCircles = 20;
-const maxDistance = 300;
+const maxCircles = window.innerWidth <= 768 ? 8 : 20;
+const maxDistance = window.innerWidth <= 768 ? 200 : 300;
 
 // Initialize canvas size before creating circles
 function resizeCanvas() {
@@ -710,12 +714,62 @@ requestAnimationFrame(animate);
 
 // Footer accordion for mobile
 document.addEventListener('DOMContentLoaded', function() {
-    var footerGroups = document.querySelectorAll('.footer-group h6');
+    var footerGroups = document.querySelectorAll('.footer-group h3');
     footerGroups.forEach(function(header) {
         header.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
                 var group = this.parentElement;
                 group.classList.toggle('active');
+            }
+        });
+    });
+});
+
+// V2: Populate hero metrics from API on page load
+function populateHeroMetrics() {
+    var heroBreachCount = document.getElementById('hero-breach-count');
+    var heroRecordCount = document.getElementById('hero-record-count');
+    if (!heroBreachCount && !heroRecordCount) return;
+
+    $.ajax('https://api.xposedornot.com/v1/metrics')
+        .done(function (response) {
+            // Cache for stats section
+            if (!metricsData) {
+                metricsData = response;
+            }
+
+            var breachCount = parseInt(response.Breaches_Count, 10);
+            if (heroBreachCount) {
+                heroBreachCount.textContent = breachCount.toLocaleString() + '+';
+            }
+            var benefitBreachCount = document.getElementById('benefit-breach-count');
+            if (benefitBreachCount) {
+                benefitBreachCount.textContent = breachCount.toLocaleString() + '+';
+            }
+            if (heroRecordCount) {
+                var breachRecords = parseInt(response.Breaches_Records, 10);
+                // Convert to billions for readability
+                var billions = (breachRecords / 1000000000).toFixed(1);
+                heroRecordCount.textContent = billions + ' billion';
+            }
+        })
+        .fail(function () {
+            // Keep fallback values in HTML
+        });
+}
+
+document.addEventListener('DOMContentLoaded', populateHeroMetrics);
+
+// V2: Smooth scroll to top for CTA buttons
+document.addEventListener('DOMContentLoaded', function() {
+    var scrollBtns = document.querySelectorAll('.scroll-to-top');
+    scrollBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var searchInput = document.getElementById('edhu');
+            if (searchInput) {
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(function() { searchInput.focus(); }, 600);
             }
         });
     });
