@@ -255,7 +255,7 @@ function updateEmailBadge(email) {
 }
 
 function updateBreachBadge(text) {
-    $('#data_breach').html('<b>Breaches Found </b> <span class="badge" style="float:right">' + escapeHtml(text) + '</span>');
+    $('#data_breach').html('<b>Breaches Found </b> <span class="badge">' + escapeHtml(text) + '</span>');
 }
 
 
@@ -390,14 +390,15 @@ function processSearchResponse(response, email) {
     $("#spins").hide();
     $("#mbody").show();
 
+    var isDark = document.body.getAttribute('data-theme') === 'dark';
     let warningMessage = '';
 
     // Check if no breaches found (either empty or length < 1)
     if (!breachSummary || breachSummary.length < 1) {
         // Success state - No breaches
         $(".modal-content").css({
-            'background-color': '#f8fff8',
-            'border': '2px solid #28a745'
+            'background-color': isDark ? '#131c15' : '#f8fff8',
+            'border': isDark ? '2px solid #1b5e20' : '2px solid #28a745'
         });
 
         $("#hhead").attr("class", "modal-header modal-header-success");
@@ -407,12 +408,12 @@ function processSearchResponse(response, email) {
         $('#data_email')
             .removeClass('alert-primary alert-danger')
             .addClass('alert-success')
-            .html('<b>Searched Email </b> <span class="badge bg-success text-white" style="float:right">' + escapeHtml(email) + '</span>');
+            .html('<b>Searched Email </b> <span class="badge bg-success text-white">' + escapeHtml(email) + '</span>');
 
         $('#data_breach')
             .removeClass('alert-primary alert-danger')
             .addClass('alert-success')
-            .html('<b>Breaches Found </b> <span class="badge bg-success text-white" style="float:right">No breaches found!</span>');
+            .html('<b>Breaches Found </b> <span class="badge bg-success text-white">No breaches found!</span>');
 
         $("#detailedReport").hide();
         $("#warn").hide();
@@ -427,8 +428,8 @@ function processSearchResponse(response, email) {
     } else {
         // Danger state - Breaches found
         $(".modal-content").css({
-            'background-color': '#fff5f5',
-            'border': '2px solid #dc3545'
+            'background-color': isDark ? '#1c1517' : '#fff5f5',
+            'border': isDark ? '2px solid #b71c1c' : '2px solid #dc3545'
         });
 
         $("#hhead").attr("class", "modal-header modal-header-danger");
@@ -442,14 +443,14 @@ function processSearchResponse(response, email) {
         $('#data_email')
             .removeClass('alert-primary alert-success')
             .addClass('alert-danger')
-            .html('<b>Searched Email </b> <span class="badge bg-danger text-white" style="float:right">' + escapeHtml(email) + '</span>');
+            .html('<b>Searched Email </b> <span class="badge bg-danger text-white">' + escapeHtml(email) + '</span>');
 
         warningMessage = '<p class="breach-intro">Your email appeared in these data breaches:</p><div class="breach-tags">';
         $("#detailedReport").show();
         $('#data_breach')
             .removeClass('alert-primary alert-success')
             .addClass('alert-danger')
-            .html('Breaches Found <span class="badge bg-danger text-white" style="float:right">' + breachSummary.split(";").length + '</span>');
+            .html('<b>Breaches Found </b> <span class="badge bg-danger text-white">' + breachSummary.split(";").length + '</span>');
 
         const breaches = breachSummary.split(";");
         for (let i = 0; i < breaches.length; i++) {
@@ -479,6 +480,7 @@ function processSearchResponse(response, email) {
 
 
 function processSearchError(error, email) {
+    var isDark = document.body.getAttribute('data-theme') === 'dark';
     if (error.status === 429) {
         $("#mbody").show();
         $("#spins").hide();
@@ -495,8 +497,8 @@ function processSearchError(error, email) {
     } else {
         // No breaches found - show same celebration as processSearchResponse
         $(".modal-content").css({
-            'background-color': '#f8fff8',
-            'border': '2px solid #28a745'
+            'background-color': isDark ? '#131c15' : '#f8fff8',
+            'border': isDark ? '2px solid #1b5e20' : '2px solid #28a745'
         });
 
         $("#hhead").attr("class", "modal-header modal-header-success");
@@ -506,12 +508,12 @@ function processSearchError(error, email) {
         $('#data_email')
             .removeClass('alert-primary alert-danger')
             .addClass('alert-success')
-            .html('<b>Searched Email </b> <span class="badge bg-success text-white" style="float:right">' + escapeHtml(email) + '</span>');
+            .html('<b>Searched Email </b> <span class="badge bg-success text-white">' + escapeHtml(email) + '</span>');
 
         $('#data_breach')
             .removeClass('alert-primary alert-danger')
             .addClass('alert-success')
-            .html('<b>Breaches Found </b> <span class="badge bg-success text-white" style="float:right">No breaches found!</span>');
+            .html('<b>Breaches Found </b> <span class="badge bg-success text-white">No breaches found!</span>');
 
         $("#detailedReport").hide();
         $("#warn").hide();

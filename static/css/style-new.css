@@ -48,6 +48,13 @@
 	background-clip: text;
 }
 
+[data-theme="dark"] .gradient-text {
+	background: linear-gradient(-220deg, #6daae0, #9fc0e0);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
 /* CTA Button Styles */
 .cta-button {
 	display: inline-block;
@@ -3578,15 +3585,81 @@ img.cup {
 	fill: #6daae0;
 }
 
-/* Email badge styling */
-#data_email .badge {
-	float: right;
+/* Modal body padding — responsive */
+#mbody {
+	padding: 32px 40px;
 }
 
-/* Modal button spacing on mobile */
 @media (max-width: 767px) {
+	#mbody {
+		padding: 24px 16px;
+	}
+}
+
+/* Email/Breach alert rows — flexbox instead of float */
+#data_email,
+#data_breach {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+#data_email .badge,
+#data_breach .badge {
+	white-space: normal;
+	word-break: break-all;
+	text-align: right;
+	max-width: 100%;
+}
+
+/* Dark mode — Bootstrap alert overrides (index page) */
+[data-theme="dark"] .alert-primary {
+	background-color: #1a2744;
+	border-color: #2a3f6e;
+	color: #9fc0e0;
+}
+
+[data-theme="dark"] .alert-success {
+	background-color: #152535;
+	border-color: #254560;
+	color: #a0c8d8;
+}
+
+[data-theme="dark"] .alert-danger {
+	background-color: #251a30;
+	border-color: #452a55;
+	color: #d0a8c0;
+}
+
+/* Search results modal — mobile text sizing */
+@media (max-width: 767px) {
+	#hhead {
+		padding: 20px 16px !important;
+	}
+
+	#thedudalModalLabel {
+		font-size: 1.1rem;
+		line-height: 1.3;
+	}
+
+	#thedudalModalLabel .fa-2x {
+		font-size: 1.3em;
+	}
+
+	#mbody .alert {
+		font-size: 0.85rem;
+		padding: 10px 12px;
+	}
+
+	#mbody .badge {
+		font-size: 0.8rem;
+	}
+
 	#alert_ .btn {
 		margin-bottom: 10px;
+		font-size: 0.85rem;
 	}
 }
 
@@ -4565,6 +4638,10 @@ body.v2 .add-row1 .add-flex-5 .add1 {
 
 [data-theme="dark"] .modal-header-success {
 	background-color: #1b5e20;
+}
+
+[data-theme="dark"] .modal-header-primary {
+	background-color: #1a2744;
 }
 
 /* Reduced motion: disable all animations for users who prefer it */

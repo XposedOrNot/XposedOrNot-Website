@@ -132,7 +132,7 @@ function showNoBreachView(emailAddr) {
         '<h1 class="report-h1">Your Data Breach Report</h1>' +
         '<div style="text-align:center; padding: 60px 20px; max-width: 600px; margin: 0 auto;">' +
             '<div style="font-size: 72px; margin-bottom: 20px;" role="img" aria-label="Celebration">&#127881;</div>' +
-            '<h2 style="color: #28a745; font-size: 28px; font-weight: 700; margin-bottom: 16px;">All Clear!</h2>' +
+            '<h2 style="color: ' + (isDark ? '#5bb8d0' : '#28a745') + '; font-size: 28px; font-weight: 700; margin-bottom: 16px;">All Clear!</h2>' +
             '<p style="font-size: 18px; color: ' + (isDark ? '#ccc' : '#555') + '; margin-bottom: 12px;">' +
                 '<strong>' + safeEmail + '</strong> was not found in any data breaches loaded in XposedOrNot.' +
             '</p>' +
