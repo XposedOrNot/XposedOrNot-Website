@@ -45,7 +45,7 @@
 
 </head>
 
-<body>
+<body data-theme="dark">
   <div class="overlay"></div>
   <div id="content" class="blurred">
     <div>
@@ -135,7 +135,7 @@
               <div id="chart_div" style="width: 150px; height: 150px;"></div>
             </div>
           </div>
-          <div id="note" class="text-center mt-3" style="display: none; color: white; text-align: left !important;">
+          <div id="note" class="text-center mt-3" style="display: none; text-align: left !important;">
             <small>* The records count are trimmed for brevity. You can validate the domain ownership to see the
               complete
               records.</small>
@@ -163,11 +163,11 @@
   <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content dark-mode">
+      <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="domainModalLabel">Check Your Data Breach Exposure</h5>
         </div>
-        <div class="modal-body light-mode">
+        <div class="modal-body">
           <form id="domainForm" autocomplete="off">
             <div class="form-group text-center">
               <p>Enter your domain name below to get your breach summary.</p><br><br>
@@ -243,6 +243,11 @@
             </div>
           </div>
       </div>
+
+      <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
+        <input type="checkbox" class="custom-control-input" id="darkSwitch">
+        <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+      </div>
     </div>
   </div>
 
@@ -250,7 +255,7 @@
   <script src="static/scripts/domains.js"></script>
   <script src="static/scripts/common.js"></script>
     <script>
-      // Footer accordion for mobile
+
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {
