@@ -224,7 +224,7 @@ $(document).ready(function () {
         let isValid = validateEmail(email);
         let targetButton = $(this).is('#edhu') ? '#searchMe' : '#alertMe';
 
-        $(this).css("border", isValid ? "2px solid green" : "1px solid red");
+        $(this).css("border", isValid ? "2px solid green" : "2px solid red");
         $(this).attr('aria-invalid', !isValid);
         $(targetButton).prop('disabled', !isValid);
     });
