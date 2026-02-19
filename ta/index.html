@@ -21,9 +21,10 @@
     />
     <meta name="author" content="Devanand Premkumar" />
     <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
-    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
-    <link rel="dns-prefetch" href="static.hotjar.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
 
     <meta
       property="og:title"
@@ -97,22 +98,41 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link
-      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <!-- Async Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
       crossorigin="anonymous"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+        crossorigin="anonymous"
+      />
+    </noscript>
+    <!-- Preload and async load Google Fonts -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
-      type="text/css"
-      media="all"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      />
+    </noscript>
     <link rel="author" href="../humans.txt" />
 
     <script src="/static/scripts/other-libraries.js" defer></script>
@@ -195,48 +215,22 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="XposedOrNot" />
 
-    <style>
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
+    </head>
 
-        50% {
-          transform: scale(1.05);
-        }
-
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      .new-badge {
-        background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-        color: white;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 0.7em;
-        font-weight: bold;
-        margin-left: 8px;
-        position: relative;
-        display: inline-block;
-        animation: pulse 2s infinite;
-      }
-    </style>
-  </head>
-
-  <body data-spy="scroll" data-target=".menu" data-offset="50">
+  <body class="v2" data-spy="scroll" data-target=".menu" data-offset="50">
+    <a class="skip-link" href="#main-content">முதன்மை உள்ளடக்கத்திற்குச் செல்</a>
     <div class="xon">
+      <main id="main-content">
       <div class="searchMe">
         <div class="banner" id="banner">
-          <canvas id="canvas"></canvas>
+          <canvas id="canvas" aria-hidden="true"></canvas>
           <div class="grid">
             <nav
               class="navbar navbar-expand-md navbar-dark justify-content-center"
             >
               <a
                 class="navbar-brand abs"
-                href="#"
+                href="/ta/"
                 style="text-decoration: none"
               >
                 <span
@@ -252,8 +246,7 @@
                   style="
                     font-size: 0.8em;
                     display: block;
-                    color: white;
-                    opacity: 0.85;
+                    color: rgba(255, 255, 255, 0.95);
                     margin-top: -10px;
                   "
                   >சமூக பதிப்பு</span
@@ -264,6 +257,9 @@
                 type="button"
                 data-toggle="collapse"
                 data-target="#collapsingNavbar"
+                aria-controls="collapsingNavbar"
+                aria-expanded="false"
+                aria-label="வழிசெலுத்தல் மெனுவை மாற்று"
               >
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -280,7 +276,7 @@
                       class="nav-link"
                       href="https://plus.xposedornot.com"
                       target="_blank"
-                      >xonPlus</a
+                      >xonPlus<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span></a
                     >
                   </li>
                   <li class="nav-item active px-4">
@@ -295,7 +291,7 @@
                       id="navbarDropdownMenuLink"
                       role="button"
                     >
-                      மொழி <i class="fas fa-caret-down"></i
+                      மொழி <i class="fas fa-caret-down" aria-hidden="true"></i
                     ></a>
                     <style>
                       .dropdown-toggle::after {
@@ -306,28 +302,26 @@
                       aria-labelledby="navbarDropdownMenuLink"
                       class="dropdown-menu"
                     >
-                      <a class="dropdown-item" href="/">English</a>
-                      <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
-                      <a class="dropdown-item" href="/es/">Español (Spanish)</a>
-                      <a class="dropdown-item" href="/fr/">Français (French)</a>
-                      <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
-                      <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
-                      <a class="dropdown-item" href="/pt/"
-                        >Português (Portuguese)</a
-                      >
-                      <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
-                      <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
-                      <a class="dropdown-item" href="/de/">Deutsch (German)</a>
-                      <a class="dropdown-item" href="/it/">Italiano (Italian)</a>
-                      <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                      <a class="dropdown-item" href="/" lang="en">English</a>
+                      <a class="dropdown-item" href="/zh/" lang="zh">中文 (Chinese)</a>
+                      <a class="dropdown-item" href="/es/" lang="es">Español (Spanish)</a>
+                      <a class="dropdown-item" href="/fr/" lang="fr">Français (French)</a>
+                      <a class="dropdown-item" href="/hi/" lang="hi">हिन्दी (Hindi)</a>
+                      <a class="dropdown-item" href="/bn/" lang="bn">বাংলা (Bengali)</a>
+                      <a class="dropdown-item" href="/pt/" lang="pt">Português (Portuguese)</a>
+                      <a class="dropdown-item" href="/ru/" lang="ru">Русский (Russian)</a>
+                      <a class="dropdown-item" href="/ja/" lang="ja">日本語 (Japanese)</a>
+                      <a class="dropdown-item" href="/de/" lang="de">Deutsch (German)</a>
+                      <a class="dropdown-item" href="/it/" lang="it">Italiano (Italian)</a>
                     </div>
                   </li>
                 </ul>
               </div>
             </nav>
 
+            <!-- V2 Hero: Single-column centered layout -->
             <div class="banner-row">
-              <div class="banner-left">
+              <div class="banner-center">
                 <div class="banner-text">
                   <form id="search" method="post" action="/">
                     <h1 id="heading" align="center">
@@ -336,7 +330,6 @@
                     <p align="center">
                       கோடிக்கணக்கான வெளிப்பட்ட பதிவுகளை உடனடியாகத் தேடுங்கள். உங்கள் கணக்குகளைப் பாதுகாக்க நிகழ்நேர விழிப்பூட்டல்களைப் பெறுங்கள்.
                     </p>
-                    <br />
                     <div class="form mail-box">
                       <div class="modern-search-container">
                         <input
@@ -346,6 +339,9 @@
                           placeholder="your@email.com"
                           id="edhu"
                           aria-label="தரவு மீறல்களைச் சரிபார்க்க மின்னஞ்சல் முகவரி"
+                          autocomplete="email"
+                          required
+                          aria-required="true"
                         />
                         <button
                           class="modern-search-button"
@@ -358,10 +354,11 @@
                       </div>
                     </div>
                   </form>
+
                   <p
                     style="
                       font-size: 0.75em;
-                      color: rgba(255, 255, 255, 0.7);
+                      color: #ffffff;
                       margin: 12px 0 8px 0;
                       text-align: center;
                       white-space: nowrap;
@@ -374,11 +371,11 @@
                       rel="noopener"
                       style="
                         display: inline !important;
-                        color: rgba(255, 255, 255, 0.9);
+                        color: #ffffff;
                         text-decoration: underline;
                         margin: 0 !important;
                       "
-                      >விதிமுறைகள்</a
+                      >விதிமுறைகள்<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span></a
                     >
                     மற்றும்
                     <a
@@ -387,13 +384,69 @@
                       rel="noopener"
                       style="
                         display: inline !important;
-                        color: rgba(255, 255, 255, 0.9);
+                        color: #ffffff;
                         text-decoration: underline;
                         margin: 0 !important;
                       "
-                      >தனியுரிமைக் கொள்கையை</a
+                      >தனியுரிமைக் கொள்கையை<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span></a
                     > ஏற்கிறீர்கள்.
                   </p>
+
+                  <div class="hero-alert-cta">
+                    <a
+                      href="#alertMeModal"
+                      role="button"
+                      data-toggle="modal"
+                      data-target="#alertMeModal"
+                      class="hero-alert-link"
+                    >
+                      <i class="fa fa-bell" aria-hidden="true"></i>
+                      உங்கள் மின்னஞ்சல் புதிய மீறல்களில் தோன்றும் போது இலவச விழிப்பூட்டல்களைப் பெறுங்கள்
+                    </a>
+                  </div>
+
+                  <!-- Hero Quick Tools -->
+                  <nav class="hero-tools" aria-label="பாதுகாப்பு கருவிகளுக்கான விரைவு அணுகல்">
+                    <h2 class="gradient-text" style="-webkit-text-fill-color: #fff; color: #fff;">அனைவருக்கும் இலவச கருவிகள்</h2>
+                    <div class="hero-tools-grid">
+                      <a href="shield.html" class="hero-tool-card">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                        <span class="hero-tool-label">தனியுரிமைக் கவசம்</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">பொதுத் தேடல்களிலிருந்து உங்கள் மின்னஞ்சலைப் பாதுகாக்கவும்</span>
+                      </a>
+                      <a href="domains.html" class="hero-tool-card">
+                        <i class="fas fa-building" aria-hidden="true"></i>
+                        <span class="hero-tool-label">நிறுவன நுண்ணறிவுகள்</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">உங்கள் டொமைனுக்கான தரவு மீறல் சம்பவங்களின் மேலோட்டம்</span>
+                      </a>
+                      <a href="dashboard.html" class="hero-tool-card">
+                        <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
+                        <span class="hero-tool-label">CXO டாஷ்போர்டு</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">சரிபார்க்கப்பட்ட டொமைன்களில் மீறல்களைக் கண்காணிக்கவும்</span>
+                      </a>
+                      <a href="breaches-visualisations.html" class="hero-tool-card">
+                        <i class="fas fa-chart-pie" aria-hidden="true"></i>
+                        <span class="hero-tool-label">மீறல் காட்சிகள்</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">மீறல்களின் அளவை வரைபட வடிவில் காணுங்கள்</span>
+                      </a>
+                      <a href="xposed.html" class="hero-tool-card">
+                        <i class="fas fa-database" aria-hidden="true"></i>
+                        <span class="hero-tool-label">தரவு மீறல்கள்</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">ஆதாரங்கள் உட்பட அனைத்து மீறல்களின் விவரங்கள்</span>
+                      </a>
+                      <a href="compare.html" class="hero-tool-card">
+                        <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                        <span class="hero-tool-label">மீறல் ஒப்பீடு</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">இரண்டு மின்னஞ்சல்களுக்கு இடையே மீறல் வெளிப்பாட்டை ஒப்பிடுங்கள்</span>
+                      </a>
+                    </div>
+                  </nav>
 
                   <div
                     class="modal fade"
@@ -406,6 +459,7 @@
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-body">
+                          <h3 class="sr-only" id="ModalLabel">வீடியோ இயக்கி</h3>
                           <button
                             type="button"
                             class="close"
@@ -419,6 +473,7 @@
                               class="embed-responsive-item"
                               src=""
                               id="video"
+                              title="XposedOrNot விளக்க வீடியோ"
                               allowscriptaccess="always"
                               allow="autoplay"
                             ></iframe>
@@ -429,219 +484,168 @@
                   </div>
                 </div>
               </div>
-              <div class="banner-right banner-text add-row">
-                <h4 align="center" style="color: #3f71f3">
-                  அனைவருக்கும் இலவச கருவிகள்
-                </h4>
-                <div class="add-flex">
-                  <a href="shield.html" class="adds">
-                    <div class="add1">
-                      <h5>தனியுரிமைக் கவசம்</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >பொதுத் தேடல்களிலிருந்து உங்கள் மின்னஞ்சலைப் பாதுகாக்க தனியுரிமைக் கவசத்தை இயக்கவும்.</span
-                      >
-                    </div>
-                  </a>
-                  <a href="domains.html" class="adds">
-                    <div class="add1">
-                      <h5>நிறுவன நுண்ணறிவுகள்</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >உங்கள் டொமைனுக்கான தரவு மீறல் சம்பவங்களின் உயர்நிலை மேலோட்டத்தைப் பெறுங்கள்.</span
-                      >
-                    </div>
-                  </a>
-                </div>
-                <div class="add-flex">
-                  <a href="dashboard.html" class="adds">
-                    <div class="add1">
-                      <h5>CXO டாஷ்போர்டு</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >சரிபார்க்கப்பட்ட அனைத்து டொமைன்களிலும் தரவு மீறல்களைக் கண்காணித்து விரிவான சுருக்கங்களை அணுகவும்.</span
-                      >
-                    </div>
-                  </a>
-                  <a href="domains-phishing.html" class="adds">
-                    <div class="add1">
-                      <h5>
-                        ஃபிஷிங் ஸ்கேனர் <span class="new-badge">புதியது</span>
-                      </h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >உங்கள் டொமைன் ஃபிஷிங் தாக்குதல்களுக்குப் பயன்படுத்தப்படுகிறதா என்பதைச் சரிபார்த்து விரிவான பாதுகாப்பு நுண்ணறிவுகளைப் பெறுங்கள்.</span
-                      >
-                    </div>
-                  </a>
-                </div>
-                <div class="add-flex add-flex2">
-                  <a href="domain.html" class="adds">
-                    <div class="add1">
-                      <h5>டொமைன் சரிபார்ப்பு</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >மூன்று படிகளில் DNS, மின்னஞ்சல் அல்லது HTML மூலம் உங்கள் டொமைன் அதிகாரத்தை விரைவாகச் சரிபார்க்கவும்.</span
-                      >
-                    </div>
-                  </a>
-                  <a href="xposed.html" class="adds">
-                    <div class="add1">
-                      <h5>தரவு மீறல்கள்</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >ஆதாரங்கள் மற்றும் தரவுப் புள்ளிகள் உட்பட அனைத்து தரவு மீறல்களின் விரிவான விவரங்களை ஆராயுங்கள்.</span
-                      >
-                    </div>
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="password">
+
+      <!-- Social Proof Bar -->
+      <section class="social-proof-bar" aria-label="நம்பிக்கை மற்றும் சமூக சான்று">
+        <div class="social-proof-items">
+          <div class="social-proof-item">
+            <i class="fas fa-users" aria-hidden="true"></i>
+            <span class="proof-full">ஆயிரக்கணக்கான பாதுகாப்பு நனவுள்ள பயனர்களால் நம்பப்படுகிறது</span>
+            <span class="proof-short">ஆயிரக்கணக்கானோர் நம்புகிறார்கள்</span>
+          </div>
+          <div class="social-proof-item">
+            <i class="fas fa-server" aria-hidden="true"></i>
+            <span class="proof-full">99.9% இயங்குநேரம், எப்போதும் கிடைக்கும்</span>
+            <span class="proof-short">99.9% இயங்குநேரம்</span>
+          </div>
+          <div class="social-proof-item">
+            <i class="fab fa-github" aria-hidden="true"></i>
+            <span class="proof-full">GitHub இல் முழு திறந்த மூலம்</span>
+            <span class="proof-short">திறந்த மூலம்</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works: Benefit Cards -->
+      <section class="benefit-cards-section password" aria-label="XposedOrNot எவ்வாறு செயல்படுகிறது">
         <div class="container">
-          <h5 align="center" style="color: #3f71f3">
+          <h2 class="gradient-text">
             XposedOrNot உங்களை எவ்வாறு பாதுகாப்பாக வைத்திருக்கிறது
-            <p><i class="fas fa-arrow-down blueArrow"></i></p>
-          </h5>
-          <div class="password-row">
-            <div class="password-left">
-              <div class="password-text">
-                <p align="justify">
-                  <strong>XposedOrNot</strong> இன்றைய டிஜிட்டல் உலகில் உங்களைப் பாதுகாப்பாக வைத்திருக்க உதவுகிறது. உங்கள் மின்னஞ்சலை 24/7 கண்காணித்து, ஏதேனும் தரவு மீறல்களில் தோன்றினால் உடனடியாக அறிவிக்கிறோம், விரைவாகச் செயல்பட்டு உங்கள் தகவலைப் பாதுகாக்க உங்களுக்கு அதிகாரம் அளிக்கிறது. <br /><br />தனியுரிமையை மையமாகக் கொண்டு வடிவமைக்கப்பட்ட XposedOrNot, உங்கள் தரவு தேவையின்றி சேமிக்கப்படாமல் அல்லது பகிரப்படாமல் இருப்பதை உறுதி செய்கிறது. <br /><br />
-                  சமூகத்தால் இயக்கப்படும், திறந்த மூல தளமாக, முழு வெளிப்படைத்தன்மைக்கு நாங்கள் உறுதிபூண்டுள்ளோம். எல்லாம் எப்படி வேலை செய்கிறது என்பதை ஆராயலாம், எங்கள் குறியீட்டை மதிப்பாய்வு செய்யலாம், மேம்பாடுகளைச் சமர்ப்பித்து அல்லது மீறல் தரவைப் பகிர்ந்து பங்களிக்கலாம்.
-                  <br /><br />
-                  மீறல் நிகழும் வரை காத்திருக்காதீர்கள்.
-                  <strong
-                    ><a
-                      href="#"
-                      id="mySignUp"
-                      data-toggle="modal"
-                      data-target="#alertMeModal"
-                      >இலவச விழிப்பூட்டல்களைப் பெறுங்கள்</a
-                    >
-                    இன்றே உங்கள் டிஜிட்டல் அடையாளத்தைப் பாதுகாக்கவும்!</strong
-                  >
-                  <br />
-                  <br />
-                  கேள்விகள் உள்ளதா? எங்கள் விரிவான
-                  <a href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a> உதவ இங்கே உள்ளன.
-                </p>
-              </div>
-            </div>
-            <div class="password-right">
-              <div class="video-container">
-                <video
-                  class="img-fluid pass"
-                  controls
-                  loop
-                  style="max-width: 500px; width: 100%; height: 400px"
-                  id="xon-video"
-                >
-                  <source src="/static/xon-video.mp4" type="video/mp4" />
-                  உங்கள் உலாவி வீடியோ டேக்கை ஆதரிக்கவில்லை.
-                </video>
-              </div>
+          </h2>
+          <p align="center"><i class="fas fa-arrow-down blueArrow" aria-hidden="true"></i></p>
+
+          <!-- Video centered on top -->
+          <div class="benefit-video">
+            <div class="video-container" style="padding-left: 0; display: inline-block;">
+              <p class="video-caption">
+                <i class="fas fa-play-circle" aria-hidden="true"></i> இது எப்படி வேலை செய்கிறது என்று பாருங்கள்
+              </p>
+              <video
+                class="img-fluid pass"
+                controls
+                loop
+                style="max-width: 800px; width: 100%; height: auto"
+                id="xon-video"
+                aria-label="தரவு மீறல்களுக்கு மின்னஞ்சலை எவ்வாறு சரிபார்ப்பது என்பதைக் காட்டும் XposedOrNot விளக்க வீடியோ"
+              >
+                <source src="/static/xon-video.mp4" type="video/mp4" />
+                <track kind="captions" src="/static/xon-video-captions.vtt" srclang="en" label="English captions" />
+                உங்கள் உலாவி வீடியோ டேக்கை ஆதரிக்கவில்லை.
+              </video>
             </div>
           </div>
+
+          <!-- 3 Benefit Cards -->
+          <div class="benefit-cards">
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </div>
+              <h3>உங்கள் வெளிப்பாட்டைச் சரிபார்க்கவும்</h3>
+              <p>உங்கள் மின்னஞ்சலை உள்ளிட்டு, அறியப்பட்ட தரவு மீறல்களின் எங்கள் தரவுத்தளத்திலிருந்து உடனடி முடிவுகளைப் பெறுங்கள்.</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-bell" aria-hidden="true"></i>
+              </div>
+              <h3>நிகழ்நேர விழிப்பூட்டல்களைப் பெறுங்கள்</h3>
+              <p>நாங்கள் 24/7 கண்காணித்து, புதிய மீறலில் உங்கள் மின்னஞ்சல் தோன்றினால் உடனடியாக அறிவிக்கிறோம்.</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+              </div>
+              <h3>விரைவாகச் செயல்படுங்கள்</h3>
+              <p>எந்த கடவுச்சொற்களை மாற்ற வேண்டும், எந்த கணக்குகளைப் பாதுகாக்க வேண்டும் என்பதற்கான தெளிவான வழிகாட்டுதலைப் பெறுங்கள்.</p>
+            </div>
+          </div>
+
+          <!-- CTA below cards -->
+          <div class="benefit-cta">
+            <a
+              href="#alertMeModal"
+              class="cta-button"
+              role="button"
+              data-toggle="modal"
+              data-target="#alertMeModal"
+              ><i class="fa fa-bell" aria-hidden="true"></i> இலவச விழிப்பூட்டல்களைப் பெறுங்கள்</a
+            >
+            <span class="cta-subtext">ஸ்பேம் இல்லை. கட்டணம் இல்லை. பாதுகாப்பு மட்டுமே.</span>
+          </div>
         </div>
-      </div>
-      <div class="follow">
+      </section>
+
+      <!-- Statistics -->
+      <section class="follow" aria-label="தரவு மீறல் புள்ளிவிவரங்கள்">
         <div class="container" align="center">
-          <h2 style="color: #3f71f3">
-            XposedOrNot இல் தரவு மீறல்களின் மொத்த புள்ளிவிவரங்கள்
+          <h2 class="gradient-text">
+            பிரச்சனையின் அளவு
           </h2>
           <p style="margin-top: 15px; margin-bottom: 25px">
-            ஆயிரக்கணக்கானோர் தங்கள் டிஜிட்டல் பாதுகாப்பைக் கண்காணிக்க நம்புகிறார்கள்
+            இவை உண்மையான தரவு மீறல்களிலிருந்து உண்மையான வெளிப்பட்ட பதிவுகள். நீங்கள் அவற்றில் இருக்கிறீர்களா?
           </p>
           <div class="follow-row">
             <div class="follow-flex">
               <div class="follow1 stat-breaches">
                 <div class="stat-icon">
-                  <i class="fas fa-shield-alt"></i>
+                  <i class="fas fa-shield-alt" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="b1"></div>
-                </h4>
-                <h6>தரவு மீறல்கள்</h6>
+                <div class="stat-number" id="b1"></div>
+                <h3>தரவு மீறல்கள்</h3>
               </div>
               <div class="follow1 stat-records">
                 <div class="stat-icon">
-                  <i class="fas fa-database"></i>
+                  <i class="fas fa-database" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="b2"></div>
-                </h4>
-                <h6>வெளிப்பட்ட பதிவுகள்</h6>
+                <div class="stat-number" id="b2"></div>
+                <h3>வெளிப்பட்ட பதிவுகள்</h3>
               </div>
               <div class="follow1 stat-emails">
                 <div class="stat-icon">
-                  <i class="fas fa-envelope-open"></i>
+                  <i class="fas fa-envelope-open" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="p1"></div>
-                </h4>
-                <h6>வெளிப்பட்ட மின்னஞ்சல்கள்</h6>
+                <div class="stat-number" id="p1"></div>
+                <h3>வெளிப்பட்ட மின்னஞ்சல்கள்</h3>
               </div>
               <div class="follow1 stat-passwords">
                 <div class="stat-icon">
-                  <i class="fas fa-key"></i>
+                  <i class="fas fa-key" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="p2"></div>
-                </h4>
-                <h6>வெளிப்பட்ட கடவுச்சொற்கள்</h6>
+                <div class="stat-number" id="p2"></div>
+                <h3>வெளிப்பட்ட கடவுச்சொற்கள்</h3>
               </div>
             </div>
-            <p>
-              தரவு மீறல் விழிப்பூட்டல்கள் மற்றும் அறிவிப்புகளுக்கு Twitter இல்
-              <a
-                href="https://twitter.com/XposedOrNot"
-                target="_blank"
-                rel="noopener"
-                name="twitter"
-                >XposedOrNot</a
-              >
-              ஐப் பின்தொடரவும்.
+            <p class="stats-context">
+              பூமியில் உள்ள மக்களை விட அதிக வெளிப்பட்ட பதிவுகள் உள்ளன. நீங்கள் மீறப்பட்டீர்களா என்பது கேள்வி அல்ல — <em>எத்தனை முறை</em> என்பதுதான்.
             </p>
+            <div class="stats-cta">
+              <a
+                href="#search"
+                class="cta-button scroll-to-top"
+                role="button"
+              >
+                <i class="fas fa-search" aria-hidden="true"></i> உங்கள் மின்னஞ்சலை இப்போது சரிபார்க்கவும்
+              </a>
+            </div>
           </div>
         </div>
         <hr />
-      </div>
-      <div class="add">
+      </section>
+
+      <!-- Free Tools -->
+      <section class="add" aria-label="இலவச பாதுகாப்பு கருவிகள்">
         <div class="container">
-          <h2 style="color: #3f71f3">இலவச பாதுகாப்பு & தனியுரிமைக் கருவிகள்</h2>
+          <h2 class="gradient-text">உங்கள் டிஜிட்டல் வாழ்க்கையைப் பாதுகாக்க இலவச கருவிகள்</h2>
           <div class="add-row1">
-            <div class="add-flex">
+            <div class="add-flex-5">
               <a href="password.html" class="adds">
                 <div class="add1">
-                  <h5>கடவுச்சொல் சரிபார்ப்பு</h5>
+                  <i class="fas fa-key tool-icon" aria-hidden="true"></i>
+                  <h3>கடவுச்சொல் சரிபார்ப்பு</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -654,7 +658,8 @@
               </a>
               <a href="shield.html" class="adds">
                 <div class="add1">
-                  <h5>தனியுரிமைக் கவசம்</h5>
+                  <i class="fas fa-shield-alt tool-icon" aria-hidden="true"></i>
+                  <h3>தனியுரிமைக் கவசம்</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -667,7 +672,8 @@
               </a>
               <a href="domains.html" class="adds">
                 <div class="add1">
-                  <h5>நிறுவன நுண்ணறிவுகள்</h5>
+                  <i class="fas fa-building tool-icon" aria-hidden="true"></i>
+                  <h3>நிறுவன நுண்ணறிவுகள்</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -678,11 +684,10 @@
                   >
                 </div>
               </a>
-            </div>
-            <div class="add-flex add-flex2">
               <a href="domain.html" class="adds">
                 <div class="add1">
-                  <h5>டொமைன் சரிபார்ப்பு</h5>
+                  <i class="fas fa-check-circle tool-icon" aria-hidden="true"></i>
+                  <h3>டொமைன் சரிபார்ப்பு</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -695,7 +700,8 @@
               </a>
               <a href="breaches-visualisations.html" class="adds">
                 <div class="add1">
-                  <h5>மீறல்கள் காட்சிப்படுத்தல்</h5>
+                  <i class="fas fa-chart-pie tool-icon" aria-hidden="true"></i>
+                  <h3>மீறல் காட்சிகள்</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -706,51 +712,68 @@
                   >
                 </div>
               </a>
+            </div>
+            <div class="add-flex-5">
               <a href="xposed.html" class="adds">
                 <div class="add1">
-                  <h5>தரவு மீறல்கள்</h5>
+                  <i class="fas fa-database tool-icon" aria-hidden="true"></i>
+                  <h3>தரவு மீறல்கள்</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >ஆதாரங்கள் மற்றும் தரவுப் புள்ளிகள் உட்பட Xposedornot இல் ஏற்றப்பட்ட அனைத்து தரவு மீறல்களின் விரிவான விவரங்களை ஆராயுங்கள்.</span
+                    >ஆதாரங்கள் மற்றும் தரவுப் புள்ளிகள் உட்பட அனைத்து தரவு மீறல்களின் விரிவான விவரங்களை ஆராயுங்கள்.</span
                   >
                 </div>
               </a>
-            </div>
-            <br />
-            <div class="add-flex">
-              <a href="dashboard.html" class="adds">
+              <a href="compare.html" class="adds">
                 <div class="add1">
-                  <h5>CXO டாஷ்போர்டு</h5>
+                  <i class="fas fa-balance-scale tool-icon" aria-hidden="true"></i>
+                  <h3>மீறல் ஒப்பீடு</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >சரிபார்க்கப்பட்ட அனைத்து டொமைன்களிலும் தரவு மீறல்களைக் கண்காணித்து உங்கள் விரல் நுனியில் விரிவான சுருக்கங்களை அணுகவும்.</span
+                    >இரண்டு மின்னஞ்சல்களுக்கு இடையே மீறல் வெளிப்பாட்டை ஒப்பிட்டு பகிரப்பட்ட அபாயங்களைக் கண்டறியுங்கள்.</span
+                  >
+                </div>
+              </a>
+              <a href="dashboard.html" class="adds">
+                <div class="add1">
+                  <i class="fas fa-tachometer-alt tool-icon" aria-hidden="true"></i>
+                  <h3>CXO டாஷ்போர்டு</h3>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >சரிபார்க்கப்பட்ட அனைத்து டொமைன்களிலும் தரவு மீறல்களைக் கண்காணித்து விரிவான சுருக்கங்களை அணுகவும்.</span
                   >
                 </div>
               </a>
               <a href="domains-phishing.html" class="adds">
                 <div class="add1">
-                  <h5>ஃபிஷிங் ஸ்கேனர் <span class="new-badge">புதியது</span></h5>
+                  <i class="fas fa-anchor tool-icon" aria-hidden="true"></i>
+                  <h3>ஃபிஷிங் ஸ்கேனர்</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >உங்கள் டொமைன் ஃபிஷிங் தாக்குதல்களுக்குப் பயன்படுத்தப்படுகிறதா என்பதைச் சரிபார்த்து விரிவான பாதுகாப்பு நுண்ணறிவுகளைப் பெறுங்கள்.</span
+                    >உங்கள் டொமைன் ஃபிஷிங் தாக்குதல்களுக்குப் பயன்படுத்தப்படுகிறதா என்பதைச் சரிபார்க்கவும்.</span
                   >
                 </div>
               </a>
               <a href="xonPulse.html" class="adds">
                 <div class="add1">
-                  <h5>பாதுகாப்பு செய்திகள்</h5>
+                  <i class="fas fa-newspaper tool-icon" aria-hidden="true"></i>
+                  <h3>சமீபத்திய மீறல்கள்</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -764,53 +787,74 @@
             </div>
           </div>
           <p>
-            <a href="#">XposedOrNot</a> பாதுகாப்பு மற்றும் தனியுரிமைக் கருவிகள்
+            <a href="/ta/">XposedOrNot</a> பாதுகாப்பு மற்றும் தனியுரிமைக் கருவிகள்
             அனைவரும் பயன்பெற <u>எப்போதும் <b>இலவசம்</b></u>.
           </p>
         </div>
-      </div>
+      </section>
+      </main>
     </div>
-    <div class="footer">
+    <footer class="footer">
       <div class="container">
+        <!-- Footer Final CTA -->
+        <div class="footer-final-cta">
+          <h2>தரவு மீறல்களுக்கு முன்னால் இருங்கள்</h2>
+          <a
+            href="#alertMeModal"
+            class="cta-button"
+            role="button"
+            data-toggle="modal"
+            data-target="#alertMeModal"
+          >
+            <i class="fa fa-bell" aria-hidden="true"></i> தரவு மீறல்கள் குறித்து விழிப்பூட்டு
+          </a>
+        </div>
+
         <div style="text-align: center; margin-bottom: 30px">
           <p>
-            இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ எங்கள்
+            சமூகத்தால் கட்டப்பட்டது, சமூகத்திற்காக. GitHub இல் முழு திறந்த மூலம்.
             <a
               href="https://github.com/XposedOrNot"
               target="_blank"
               rel="noopener"
-              >GitHub</a
-            > இல்.
+              >GitHub<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span></a
+            >
           </p>
         </div>
 
         <div class="footer-columns">
           <div class="footer-group">
-            <h6>சட்டம்</h6>
-            <a href="privacy.html" class="footer-link">தனியுரிமைக் கொள்கை</a>
-            <a href="terms.html" class="footer-link">விதிமுறைகள்</a>
+            <h3>சட்டம்</h3>
+            <div class="footer-links-wrapper">
+              <a href="privacy.html" class="footer-link">தனியுரிமைக் கொள்கை</a>
+              <a href="terms.html" class="footer-link">விதிமுறைகள்</a>
+            </div>
           </div>
           <div class="footer-group">
-            <h6>சமூகம்</h6>
-            <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
-            <a href="our-repository.html" class="footer-link">எங்கள் களஞ்சியம்</a>
+            <h3>சமூகம்</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
+              <a href="our-repository.html" class="footer-link">எங்கள் களஞ்சியம்</a>
+            </div>
           </div>
           <div class="footer-group">
-            <h6>நம்பகத்தன்மை</h6>
-            <a href="transparency.html" class="footer-link">வெளிப்படைத்தன்மை</a>
-            <a href="responsible-disclosure.html" class="footer-link"
-              >பொறுப்பான வெளிப்படுத்தல்</a
-            >
-            <a
-              href="https://stats.uptimerobot.com/3zjQkZ2Caa"
-              target="_blank"
-              rel="noopener"
-              class="footer-link"
-              >நிலை</a
-            >
+            <h3>நம்பகத்தன்மை</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://stats.uptimerobot.com/3zjQkZ2Caa"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+                >நிலை<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span></a
+              >
+              <a href="transparency.html" class="footer-link">வெளிப்படைத்தன்மை</a>
+              <a href="responsible-disclosure.html" class="footer-link"
+                >பொறுப்பான வெளிப்படுத்தல்</a
+              >
+            </div>
           </div>
           <div class="footer-group">
-            <h6>எங்களைப் பின்தொடரவும்</h6>
+            <h3>எங்களைப் பின்தொடரவும்</h3>
             <div class="footer-links-wrapper">
               <a
                 href="https://twitter.com/xposedornot"
@@ -819,7 +863,7 @@
                 name="twitter"
                 class="footer-link"
               >
-                <i class="fab fa-twitter"></i> Twitter (X)
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span>
               </a>
               <a
                 href="https://facebook.com/xposedornot"
@@ -828,7 +872,7 @@
                 name="fb"
                 class="footer-link"
               >
-                <i class="fab fa-facebook"></i> Facebook
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span>
               </a>
               <a
                 href="https://infosec.exchange/@XposedOrNot"
@@ -837,12 +881,12 @@
                 name="mastodon"
                 class="footer-link"
               >
-                <i class="fab fa-mastodon"></i> Mastodon
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 448 512"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span>
               </a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>AI சுருக்கம்</h6>
+            <h3>AI சுருக்கம்</h3>
             <div class="footer-links-wrapper">
               <a
                 href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -851,7 +895,7 @@
                 class="footer-link"
               >
                 <img src="../static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                ChatGPT
+                ChatGPT<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span>
               </a>
               <a
                 href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -860,7 +904,7 @@
                 class="footer-link"
               >
                 <img src="../static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                Perplexity
+                Perplexity<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span>
               </a>
               <a
                 href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -869,7 +913,7 @@
                 class="footer-link"
               >
                 <img src="../static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                Gemini
+                Gemini<span class="sr-only"> (புதிய தாவலில் திறக்கும்)</span>
               </a>
             </div>
           </div>
@@ -883,7 +927,8 @@
           <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
         </div>
       </div>
-    </div>
+    </footer>
+    <!-- Alert Me Modal -->
     <div
       class="modal fade"
       id="alertMeModal"
@@ -895,7 +940,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div id="h2head" class="modal-header modal-header-primary">
-            <h3 class="modal-title" id="alertMeModalLabel">விழிப்பூட்டல் அமை</h3>
+            <h2 class="modal-title" id="alertMeModalLabel">விழிப்பூட்டல் அமை</h2>
             <button
               type="button"
               class="close"
@@ -911,7 +956,7 @@
                 <label for="recipient-name" class="form-control-label">
                   <b>கண்காணிக்க வேண்டிய மின்னஞ்சல்:</b>
                 </label>
-                <input type="text" class="form-control" id="recipient-name" />
+                <input type="email" class="form-control" id="recipient-name" autocomplete="email" required aria-required="true" />
               </div>
               <div class="form-group">
                 <label for="message-text" class="form-control-label">
@@ -937,7 +982,7 @@
           </div>
           <div class="modal-footer">
             <button id="alertMe" type="button" class="btn btn-primary">
-              <i id="alertMe_i2" class="fa fa-bell ring"></i
+              <i id="alertMe_i2" class="fa fa-bell ring" aria-hidden="true"></i
               ><span id="alertMe_i1"></span>&nbsp;விழிப்பூட்டல் அமை
             </button>
             <button
@@ -953,15 +998,16 @@
         </div>
       </div>
     </div>
+    <!-- Search Results Modal -->
     <div
-      class="modal"
+      class="modal fade"
       id="thedudalModal"
       tabindex="-1"
       role="dialog"
       aria-labelledby="thedudalModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div
             align="center"
@@ -973,31 +1019,30 @@
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-hidden="true"
+              aria-label="மூடு"
             >
-              &times;
+              <span aria-hidden="true">&times;</span>
             </button>
-            <h2>
-              <div id="imz_s" visible="false"></div>
-              <div id="imz_f" visible="false">
-                <i class="glyphicon glyphicon-fire"></i>
-              </div>
-            </h2>
+            <div id="imz_s" style="display:none" aria-hidden="true"></div>
+            <div id="imz_f" style="display:none" aria-hidden="true">
+              <i class="glyphicon glyphicon-fire" aria-hidden="true"></i>
+            </div>
             <div id="spins">
               <i
                 class="fa fa-spinner fa-spin"
                 style="font-size: 72px; color: #fff"
+                aria-hidden="true"
               ></i>
+              <span class="sr-only">முடிவுகள் ஏற்றப்படுகின்றன...</span>
             </div>
             <div id="ssvisible">
-              <h2>உங்கள் முடிவுகள்</h2>
+              <h2 id="thedudalModalLabel">உங்கள் முடிவுகள்</h2>
             </div>
           </div>
           <div
             id="mbody"
-            visible="false"
+            style="display:none"
             class="modal-body"
-            style="padding: 40px 50px"
           >
             <div class="alert alert-primary" role="alert" id="data_email">
               <b>சரிபார்க்கப்பட்ட மின்னஞ்சல் முகவரி</b>
@@ -1031,7 +1076,7 @@
                 data-toggle="modal"
                 data-target="#alertMeModal"
               >
-                <i class="fa fa-bell ring"></i>
+                <i class="fa fa-bell ring" aria-hidden="true"></i>
                 <b>தரவு மீறல்கள் குறித்து விழிப்பூட்டு</b>
               </button>
               <button
@@ -1047,6 +1092,7 @@
                   fill="currentColor"
                   class="bi bi-cursor"
                   viewBox="0 0 16 16"
+                  aria-hidden="true"
                 >
                   <path
                     d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z"
@@ -1064,26 +1110,23 @@
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"
+      defer
     ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
       integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+      defer
     ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
-      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
-      integrity="sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="/static/scripts/index.js"></script>
-    <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/index.js" defer></script>
+    <script src="/static/scripts/common.js" defer></script>
     <script
       src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb"
       async

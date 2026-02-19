@@ -20,10 +20,11 @@
       content="データ侵害チェッカー, メールセキュリティ, パスワードセキュリティ, 侵害モニタリング, サイバーセキュリティツール"
     />
     <meta name="author" content="Devanand Premkumar" />
-    <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
-    <link rel="dns-prefetch" href="//static.hotjar.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
 
     <meta
       property="og:title"
@@ -97,23 +98,42 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link
-      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <!-- Async Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
       crossorigin="anonymous"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+        crossorigin="anonymous"
+      />
+    </noscript>
+    <!-- Preload and async load Google Fonts -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
-      type="text/css"
-      media="all"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
-    <link rel="author" href="/humans.txt" />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      />
+    </noscript>
+    <link rel="author" href="../humans.txt" />
 
     <script src="/static/scripts/other-libraries.js" defer></script>
 
@@ -180,7 +200,7 @@
           {
             "@type": "ListItem",
             "position": 1,
-            "name": "Home",
+            "name": "ホーム",
             "item": "https://xposedornot.com/ja/"
           }
         ]
@@ -197,18 +217,20 @@
 
     </head>
 
-  <body data-spy="scroll" data-target=".menu" data-offset="50">
+  <body class="v2" data-spy="scroll" data-target=".menu" data-offset="50">
+    <a class="skip-link" href="#main-content">メインコンテンツへ移動</a>
     <div class="xon">
+      <main id="main-content">
       <div class="searchMe">
         <div class="banner" id="banner">
-          <canvas id="canvas"></canvas>
+          <canvas id="canvas" aria-hidden="true"></canvas>
           <div class="grid">
             <nav
               class="navbar navbar-expand-md navbar-dark justify-content-center"
             >
               <a
                 class="navbar-brand abs"
-                href="#"
+                href="/ja/"
                 style="text-decoration: none"
               >
                 <span
@@ -224,8 +246,7 @@
                   style="
                     font-size: 0.8em;
                     display: block;
-                    color: white;
-                    opacity: 0.95;
+                    color: rgba(255, 255, 255, 0.95);
                     margin-top: -10px;
                   "
                   >コミュニティ版</span
@@ -236,6 +257,9 @@
                 type="button"
                 data-toggle="collapse"
                 data-target="#collapsingNavbar"
+                aria-controls="collapsingNavbar"
+                aria-expanded="false"
+                aria-label="ナビゲーションメニューの切り替え"
               >
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -252,7 +276,7 @@
                       class="nav-link"
                       href="https://plus.xposedornot.com"
                       target="_blank"
-                      >xonPlus</a
+                      >xonPlus<span class="sr-only"> (新しいタブで開きます)</span></a
                     >
                   </li>
                   <li class="nav-item active px-4">
@@ -267,7 +291,7 @@
                       id="navbarDropdownMenuLink"
                       role="button"
                     >
-                      言語 <i class="fas fa-caret-down"></i
+                      言語 <i class="fas fa-caret-down" aria-hidden="true"></i
                     ></a>
                     <style>
                       .dropdown-toggle::after {
@@ -278,28 +302,26 @@
                       aria-labelledby="navbarDropdownMenuLink"
                       class="dropdown-menu"
                     >
-                      <a class="dropdown-item" href="/">English</a>
-                      <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
-                      <a class="dropdown-item" href="/es/">Español (Spanish)</a>
-                      <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
-                      <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
-                      <a class="dropdown-item" href="/pt/"
-                        >Português (Portuguese)</a
-                      >
-                      <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
-                      <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
-                      <a class="dropdown-item" href="/de/">Deutsch (German)</a>
-                      <a class="dropdown-item" href="/fr/">Français (French)</a>
-                      <a class="dropdown-item" href="/it/">Italiano (Italian)</a>
-                      <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                      <a class="dropdown-item" href="/" lang="en">English</a>
+                      <a class="dropdown-item" href="/zh/" lang="zh">中文 (Chinese)</a>
+                      <a class="dropdown-item" href="/es/" lang="es">Español (Spanish)</a>
+                      <a class="dropdown-item" href="/fr/" lang="fr">Français (French)</a>
+                      <a class="dropdown-item" href="/hi/" lang="hi">हिन्दी (Hindi)</a>
+                      <a class="dropdown-item" href="/bn/" lang="bn">বাংলা (Bengali)</a>
+                      <a class="dropdown-item" href="/pt/" lang="pt">Português (Portuguese)</a>
+                      <a class="dropdown-item" href="/ru/" lang="ru">Русский (Russian)</a>
+                      <a class="dropdown-item" href="/de/" lang="de">Deutsch (German)</a>
+                      <a class="dropdown-item" href="/it/" lang="it">Italiano (Italian)</a>
+                      <a class="dropdown-item" href="/ta/" lang="ta">தமிழ் (Tamil)</a>
                     </div>
                   </li>
                 </ul>
               </div>
             </nav>
 
+            <!-- V2 Hero: Single-column centered layout -->
             <div class="banner-row">
-              <div class="banner-left">
+              <div class="banner-center">
                 <div class="banner-text">
                   <form id="search" method="post" action="/">
                     <h1 id="heading" align="center">
@@ -308,7 +330,6 @@
                     <p align="center">
                       数十億件の漏洩レコードを即座に検索。アカウントを保護するためのリアルタイムアラートを受け取れます。
                     </p>
-                    <br />
                     <div class="form mail-box">
                       <div class="modern-search-container">
                         <input
@@ -318,6 +339,9 @@
                           placeholder="your@email.com"
                           id="edhu"
                           aria-label="データ侵害をチェックするメールアドレス"
+                          autocomplete="email"
+                          required
+                          aria-required="true"
                         />
                         <button
                           class="modern-search-button"
@@ -330,10 +354,11 @@
                       </div>
                     </div>
                   </form>
+
                   <p
                     style="
                       font-size: 0.75em;
-                      color: rgba(255, 255, 255, 0.85);
+                      color: #ffffff;
                       margin: 12px 0 8px 0;
                       text-align: center;
                       white-space: nowrap;
@@ -341,7 +366,7 @@
                   >
                     このサービスを利用することで、
                     <a
-                      href="terms"
+                      href="terms.html"
                       target="_blank"
                       rel="noopener"
                       style="
@@ -350,11 +375,11 @@
                         text-decoration: underline;
                         margin: 0 !important;
                       "
-                      >利用規約</a
+                      >利用規約<span class="sr-only"> (新しいタブで開きます)</span></a
                     >
                     と
                     <a
-                      href="privacy"
+                      href="privacy.html"
                       target="_blank"
                       rel="noopener"
                       style="
@@ -363,9 +388,65 @@
                         text-decoration: underline;
                         margin: 0 !important;
                       "
-                      >プライバシーポリシー</a
+                      >プライバシーポリシー<span class="sr-only"> (新しいタブで開きます)</span></a
                     >に同意したことになります。
                   </p>
+
+                  <div class="hero-alert-cta">
+                    <a
+                      href="#alertMeModal"
+                      role="button"
+                      data-toggle="modal"
+                      data-target="#alertMeModal"
+                      class="hero-alert-link"
+                    >
+                      <i class="fa fa-bell" aria-hidden="true"></i>
+                      あなたのメールが新しい漏洩に現れた場合、無料のアラートを受け取る
+                    </a>
+                  </div>
+
+                  <!-- Hero Quick Tools -->
+                  <nav class="hero-tools" aria-label="セキュリティツールへのクイックアクセス">
+                    <h2 class="gradient-text" style="-webkit-text-fill-color: #fff; color: #fff;">みんなのための無料ツール</h2>
+                    <div class="hero-tools-grid">
+                      <a href="shield.html" class="hero-tool-card">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                        <span class="hero-tool-label">プライバシーシールド</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">公開検索からメールを保護します</span>
+                      </a>
+                      <a href="domains.html" class="hero-tool-card">
+                        <i class="fas fa-building" aria-hidden="true"></i>
+                        <span class="hero-tool-label">ドメインインサイト</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">ドメインのデータ侵害インシデントの概要</span>
+                      </a>
+                      <a href="dashboard.html" class="hero-tool-card">
+                        <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
+                        <span class="hero-tool-label">CXOダッシュボード</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">検証済みドメインの侵害を監視</span>
+                      </a>
+                      <a href="breaches-visualisations.html" class="hero-tool-card">
+                        <i class="fas fa-chart-pie" aria-hidden="true"></i>
+                        <span class="hero-tool-label">漏洩ビジュアル</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">侵害の規模をグラフで確認</span>
+                      </a>
+                      <a href="xposed.html" class="hero-tool-card">
+                        <i class="fas fa-database" aria-hidden="true"></i>
+                        <span class="hero-tool-label">データ侵害</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">ソースを含むすべての侵害の詳細</span>
+                      </a>
+                      <a href="compare.html" class="hero-tool-card">
+                        <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                        <span class="hero-tool-label">漏洩比較</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">2つのメール間の侵害露出を比較</span>
+                      </a>
+                    </div>
+                  </nav>
 
                   <div
                     class="modal fade"
@@ -378,11 +459,12 @@
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-body">
+                          <h3 class="sr-only" id="ModalLabel">ビデオプレーヤー</h3>
                           <button
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="閉じる"
                           >
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -391,6 +473,7 @@
                               class="embed-responsive-item"
                               src=""
                               id="video"
+                              title="XposedOrNot説明ビデオ"
                               allowscriptaccess="always"
                               allow="autoplay"
                             ></iframe>
@@ -401,226 +484,168 @@
                   </div>
                 </div>
               </div>
-              <div class="banner-right banner-text add-row">
-                <h4 align="center" class="gradient-text">
-                  無料ツール
-                </h4>
-                <div class="add-flex">
-                  <a href="shield.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-shield-alt tool-icon"></i>
-                      <h5>プライバシーシールド</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >プライバシーシールドを有効にして、メールを公開検索から保護します。</span
-                      >
-                    </div>
-                  </a>
-                  <a href="domains.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-building tool-icon"></i>
-                      <h5>ドメインインサイト</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >ドメインのデータ侵害インシデントの概要を取得します。</span
-                      >
-                    </div>
-                  </a>
-                </div>
-                <div class="add-flex">
-                  <a href="dashboard.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-tachometer-alt tool-icon"></i>
-                      <h5>CXOダッシュボード</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >検証済みのすべてのドメインのデータ侵害を監視し、詳細なサマリーにアクセスします。</span
-                      >
-                    </div>
-                  </a>
-                  <a href="domains-phishing.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-fish tool-icon"></i>
-                      <h5>フィッシングスキャナー</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >ドメインがフィッシングやタイポスクワッティング攻撃に使用されていないか確認します。</span
-                      >
-                    </div>
-                  </a>
-                </div>
-                <div class="add-flex add-flex2">
-                  <a href="domain.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-check-circle tool-icon"></i>
-                      <h5>ドメイン検証</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >DNS、メール、HTMLを通じて3ステップでドメインの所有権を迅速に検証します。</span
-                      >
-                    </div>
-                  </a>
-                  <a href="xposed.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-database tool-icon"></i>
-                      <h5>データ侵害</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >ソースやデータポイントを含む、すべてのデータ侵害の包括的な詳細を確認します。</span
-                      >
-                    </div>
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="password">
+
+      <!-- Social Proof Bar -->
+      <section class="social-proof-bar" aria-label="信頼とソーシャルプルーフ">
+        <div class="social-proof-items">
+          <div class="social-proof-item">
+            <i class="fas fa-users" aria-hidden="true"></i>
+            <span class="proof-full">数千のセキュリティ意識の高いユーザーに信頼されています</span>
+            <span class="proof-short">数千人が信頼</span>
+          </div>
+          <div class="social-proof-item">
+            <i class="fas fa-server" aria-hidden="true"></i>
+            <span class="proof-full">99.9%の稼働率、常に利用可能</span>
+            <span class="proof-short">99.9%の稼働率</span>
+          </div>
+          <div class="social-proof-item">
+            <i class="fab fa-github" aria-hidden="true"></i>
+            <span class="proof-full">GitHubで完全オープンソース</span>
+            <span class="proof-short">オープンソース</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works: Benefit Cards -->
+      <section class="benefit-cards-section password" aria-label="XposedOrNotの仕組み">
         <div class="container">
-          <h2 align="center" class="gradient-text">
+          <h2 class="gradient-text">
             XposedOrNotがあなたを守る方法
           </h2>
-          <p align="center"><i class="fas fa-arrow-down blueArrow"></i></p>
-          <div class="password-row">
-            <div class="password-left">
-              <div class="password-text">
-                <p align="justify">
-                  <strong>XposedOrNot</strong>は現代のデジタル世界であなたを保護するお手伝いをします。メールを24時間365日監視し、データ侵害に関与した場合は即座に通知。迅速に行動して情報を保護できます。<br /><br />プライバシーを核として設計されたXposedOrNotは、データが不必要に保存や共有されないことを保証します。<br /><br />
-                  コミュニティ主導のオープンソースプラットフォームとして、完全な透明性にコミットしています。仕組みを探索し、コードを確認し、改善の提出や侵害データの共有で貢献することもできます。
-                  <br /><br />
-                  侵害が起こるまで待たないでください。今日からデジタルアイデンティティを保護しましょう！
-                  <br /><br />
-                  <a
-                    href="#"
-                    id="mySignUp"
-                    class="cta-button"
-                    data-toggle="modal"
-                    data-target="#alertMeModal"
-                    ><i class="fa fa-bell"></i> 無料アラートを受け取る</a
-                  >
-                  <br />
-                  <br />
-                  質問がありますか？包括的な
-                  <a href="faq.html">FAQ</a>がお役に立ちます。
-                </p>
-              </div>
-            </div>
-            <div class="password-right">
-              <div class="video-container">
-                <p class="video-caption">
-                  <i class="fas fa-play-circle"></i> 使い方を見る
-                </p>
-                <video
-                  class="img-fluid pass"
-                  controls
-                  loop
-                  style="max-width: 500px; width: 100%; height: 400px"
-                  id="xon-video"
-                >
-                  <source src="/static/xon-video.mp4" type="video/mp4" />
-                  お使いのブラウザはビデオタグをサポートしていません。
-                </video>
-              </div>
+          <p align="center"><i class="fas fa-arrow-down blueArrow" aria-hidden="true"></i></p>
+
+          <!-- Video centered on top -->
+          <div class="benefit-video">
+            <div class="video-container" style="padding-left: 0; display: inline-block;">
+              <p class="video-caption">
+                <i class="fas fa-play-circle" aria-hidden="true"></i> 使い方を見る
+              </p>
+              <video
+                class="img-fluid pass"
+                controls
+                loop
+                style="max-width: 800px; width: 100%; height: auto"
+                id="xon-video"
+                aria-label="データ侵害のメールチェック方法を示すXposedOrNot説明ビデオ"
+              >
+                <source src="/static/xon-video.mp4" type="video/mp4" />
+                <track kind="captions" src="/static/xon-video-captions.vtt" srclang="en" label="English captions" />
+                お使いのブラウザはビデオタグをサポートしていません。
+              </video>
             </div>
           </div>
+
+          <!-- 3 Benefit Cards -->
+          <div class="benefit-cards">
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </div>
+              <h3>あなたの露出を確認</h3>
+              <p>メールを入力して、既知のデータ侵害データベースから即座に結果を取得します。</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-bell" aria-hidden="true"></i>
+              </div>
+              <h3>リアルタイムアラートを受け取る</h3>
+              <p>24時間365日監視し、新しい侵害にメールが現れた場合に即座に通知します。</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+              </div>
+              <h3>素早く行動する</h3>
+              <p>どのパスワードを変更し、どのアカウントを保護すべきかの明確なガイダンスを受け取れます。</p>
+            </div>
+          </div>
+
+          <!-- CTA below cards -->
+          <div class="benefit-cta">
+            <a
+              href="#alertMeModal"
+              class="cta-button"
+              role="button"
+              data-toggle="modal"
+              data-target="#alertMeModal"
+              ><i class="fa fa-bell" aria-hidden="true"></i> 無料アラートを受け取る</a
+            >
+            <span class="cta-subtext">スパムなし。費用なし。保護のみ。</span>
+          </div>
         </div>
-      </div>
-      <div class="follow">
+      </section>
+
+      <!-- Statistics -->
+      <section class="follow" aria-label="データ侵害統計">
         <div class="container" align="center">
           <h2 class="gradient-text">
-            XposedOrNotのデータ侵害総合統計
+            問題の規模
           </h2>
           <p style="margin-top: 15px; margin-bottom: 25px">
-            デジタルセキュリティの監視で数千人に信頼されています
+            これらは実際のデータ漏洩からの実際の露出レコードです。あなたはその中にいますか？
           </p>
           <div class="follow-row">
             <div class="follow-flex">
               <div class="follow1 stat-breaches">
                 <div class="stat-icon">
-                  <i class="fas fa-shield-alt"></i>
+                  <i class="fas fa-shield-alt" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="b1"></div>
-                </h4>
-                <h6>データ侵害</h6>
+                <div class="stat-number" id="b1"></div>
+                <h3>データ侵害</h3>
               </div>
               <div class="follow1 stat-records">
                 <div class="stat-icon">
-                  <i class="fas fa-database"></i>
+                  <i class="fas fa-database" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="b2"></div>
-                </h4>
-                <h6>漏洩レコード</h6>
+                <div class="stat-number" id="b2"></div>
+                <h3>漏洩レコード</h3>
               </div>
               <div class="follow1 stat-emails">
                 <div class="stat-icon">
-                  <i class="fas fa-envelope-open"></i>
+                  <i class="fas fa-envelope-open" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="p1"></div>
-                </h4>
-                <h6>漏洩メール</h6>
+                <div class="stat-number" id="p1"></div>
+                <h3>漏洩メール</h3>
               </div>
               <div class="follow1 stat-passwords">
                 <div class="stat-icon">
-                  <i class="fas fa-key"></i>
+                  <i class="fas fa-key" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="p2"></div>
-                </h4>
-                <h6>漏洩パスワード</h6>
+                <div class="stat-number" id="p2"></div>
+                <h3>漏洩パスワード</h3>
               </div>
             </div>
-            <p>
-              データ侵害のアラートと通知については、Twitterで
-              <a
-                href="https://twitter.com/XposedOrNot"
-                target="_blank"
-                rel="noopener"
-                name="twitter"
-                >XposedOrNot</a
-              >
-              をフォローしてください。
+            <p class="stats-context">
+              地球上の人々よりも多くの露出レコードがあります。問題はあなたが漏洩されたかどうかではなく、<em>何回か</em>ということです。
             </p>
+            <div class="stats-cta">
+              <a
+                href="#search"
+                class="cta-button scroll-to-top"
+                role="button"
+              >
+                <i class="fas fa-search" aria-hidden="true"></i> 今すぐメールを確認
+              </a>
+            </div>
           </div>
         </div>
         <hr />
-      </div>
-      <div class="add">
+      </section>
+
+      <!-- Free Tools -->
+      <section class="add" aria-label="無料セキュリティツール">
         <div class="container">
-          <h2 class="gradient-text">無料セキュリティ＆プライバシーツール</h2>
+          <h2 class="gradient-text">デジタルライフを守る無料ツール</h2>
           <div class="add-row1">
-            <div class="add-flex">
+            <div class="add-flex-5">
               <a href="password.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-key tool-icon"></i>
-                  <h5>パスワードチェック</h5>
+                  <i class="fas fa-key tool-icon" aria-hidden="true"></i>
+                  <h3>パスワードチェック</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -633,8 +658,8 @@
               </a>
               <a href="shield.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-shield-alt tool-icon"></i>
-                  <h5>プライバシーシールド</h5>
+                  <i class="fas fa-shield-alt tool-icon" aria-hidden="true"></i>
+                  <h3>プライバシーシールド</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -647,8 +672,8 @@
               </a>
               <a href="domains.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-building tool-icon"></i>
-                  <h5>ドメインインサイト</h5>
+                  <i class="fas fa-building tool-icon" aria-hidden="true"></i>
+                  <h3>ドメインインサイト</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -659,12 +684,10 @@
                   >
                 </div>
               </a>
-            </div>
-            <div class="add-flex add-flex2">
               <a href="domain.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-check-circle tool-icon"></i>
-                  <h5>ドメイン検証</h5>
+                  <i class="fas fa-check-circle tool-icon" aria-hidden="true"></i>
+                  <h3>ドメイン検証</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -677,8 +700,8 @@
               </a>
               <a href="breaches-visualisations.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-chart-pie tool-icon"></i>
-                  <h5>侵害の可視化</h5>
+                  <i class="fas fa-chart-pie tool-icon" aria-hidden="true"></i>
+                  <h3>漏洩ビジュアル</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -689,27 +712,40 @@
                   >
                 </div>
               </a>
+            </div>
+            <div class="add-flex-5">
               <a href="xposed.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-database tool-icon"></i>
-                  <h5>データ侵害</h5>
+                  <i class="fas fa-database tool-icon" aria-hidden="true"></i>
+                  <h3>データ侵害</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >XposedOrNotの全データ侵害の詳細（ソースやデータポイントを含む）を確認します。</span
+                    >ソースやデータポイントを含む、すべてのデータ侵害の包括的な詳細を確認します。</span
                   >
                 </div>
               </a>
-            </div>
-            <br />
-            <div class="add-flex">
+              <a href="compare.html" class="adds">
+                <div class="add1">
+                  <i class="fas fa-balance-scale tool-icon" aria-hidden="true"></i>
+                  <h3>漏洩比較</h3>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >2つのメール間の侵害露出を比較し、共通リスクを発見します。</span
+                  >
+                </div>
+              </a>
               <a href="dashboard.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-tachometer-alt tool-icon"></i>
-                  <h5>CXOダッシュボード</h5>
+                  <i class="fas fa-tachometer-alt tool-icon" aria-hidden="true"></i>
+                  <h3>CXOダッシュボード</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -722,22 +758,22 @@
               </a>
               <a href="domains-phishing.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-fish tool-icon"></i>
-                  <h5>フィッシングスキャナー</h5>
+                  <i class="fas fa-anchor tool-icon" aria-hidden="true"></i>
+                  <h3>フィッシングスキャナー</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >ドメインがフィッシングやタイポスクワッティング攻撃に使用されていないか確認します。</span
+                    >ドメインがフィッシング攻撃に使用されていないか確認します。</span
                   >
                 </div>
               </a>
               <a href="xonPulse.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-newspaper tool-icon"></i>
-                  <h5>セキュリティニュース</h5>
+                  <i class="fas fa-newspaper tool-icon" aria-hidden="true"></i>
+                  <h3>最新の侵害</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -751,59 +787,74 @@
             </div>
           </div>
           <p>
-            <a href="#">XposedOrNot</a>のセキュリティ＆プライバシーツールは
+            <a href="/ja/">XposedOrNot</a>のセキュリティ＆プライバシーツールは
             みんなのために<u>常に<b>無料</b></u>です。
           </p>
         </div>
-      </div>
+      </section>
+      </main>
     </div>
-    <div class="footer">
+    <footer class="footer">
       <div class="container">
+        <!-- Footer Final CTA -->
+        <div class="footer-final-cta">
+          <h2>データ漏洩に先手を打つ</h2>
+          <a
+            href="#alertMeModal"
+            class="cta-button"
+            role="button"
+            data-toggle="modal"
+            data-target="#alertMeModal"
+          >
+            <i class="fa fa-bell" aria-hidden="true"></i> データ漏洩を通知する
+          </a>
+        </div>
+
         <div style="text-align: center; margin-bottom: 30px">
           <p>
-            この完全オープンソースサイトの構築に参加してください！
+            コミュニティによって構築、コミュニティのために。GitHubで完全オープンソース。
             <a
               href="https://github.com/XposedOrNot"
               target="_blank"
               rel="noopener"
-              >GitHub</a
-            >での貢献を歓迎します ❤️
+              >GitHub<span class="sr-only"> (新しいタブで開きます)</span></a
+            >
           </p>
         </div>
 
         <div class="footer-columns">
           <div class="footer-group">
-            <h6>法的情報</h6>
+            <h3>法的情報</h3>
             <div class="footer-links-wrapper">
-              <a href="privacy" class="footer-link">プライバシーポリシー</a>
-              <a href="terms" class="footer-link">利用規約</a>
+              <a href="privacy.html" class="footer-link">プライバシーポリシー</a>
+              <a href="terms.html" class="footer-link">利用規約</a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>コミュニティ</h6>
+            <h3>コミュニティ</h3>
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">ブログ</a>
-              <a href="our-repository" class="footer-link">リポジトリ</a>
+              <a href="our-repository.html" class="footer-link">リポジトリ</a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>信頼性</h6>
+            <h3>信頼性</h3>
             <div class="footer-links-wrapper">
               <a
                 href="https://stats.uptimerobot.com/3zjQkZ2Caa"
                 target="_blank"
                 rel="noopener"
                 class="footer-link"
-                >ステータス</a
+                >ステータス<span class="sr-only"> (新しいタブで開きます)</span></a
               >
-              <a href="transparency" class="footer-link">透明性</a>
-              <a href="responsible-disclosure" class="footer-link"
+              <a href="transparency.html" class="footer-link">透明性</a>
+              <a href="responsible-disclosure.html" class="footer-link"
                 >責任ある開示</a
               >
             </div>
           </div>
           <div class="footer-group">
-            <h6>フォロー</h6>
+            <h3>フォロー</h3>
             <div class="footer-links-wrapper">
               <a
                 href="https://twitter.com/xposedornot"
@@ -812,7 +863,7 @@
                 name="twitter"
                 class="footer-link"
               >
-                <i class="fab fa-twitter"></i> Twitter (X)
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)<span class="sr-only"> (新しいタブで開きます)</span>
               </a>
               <a
                 href="https://facebook.com/xposedornot"
@@ -821,7 +872,7 @@
                 name="fb"
                 class="footer-link"
               >
-                <i class="fab fa-facebook"></i> Facebook
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook<span class="sr-only"> (新しいタブで開きます)</span>
               </a>
               <a
                 href="https://infosec.exchange/@XposedOrNot"
@@ -830,12 +881,12 @@
                 name="mastodon"
                 class="footer-link"
               >
-                <i class="fab fa-mastodon"></i> Mastodon
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 448 512"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon<span class="sr-only"> (新しいタブで開きます)</span>
               </a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>AI要約</h6>
+            <h3>AI要約</h3>
             <div class="footer-links-wrapper">
               <a
                 href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -843,8 +894,8 @@
                 rel="noopener"
                 class="footer-link"
               >
-                <img src="/static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                ChatGPT
+                <img src="../static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                ChatGPT<span class="sr-only"> (新しいタブで開きます)</span>
               </a>
               <a
                 href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -852,8 +903,8 @@
                 rel="noopener"
                 class="footer-link"
               >
-                <img src="/static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                Perplexity
+                <img src="../static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Perplexity<span class="sr-only"> (新しいタブで開きます)</span>
               </a>
               <a
                 href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -861,8 +912,8 @@
                 rel="noopener"
                 class="footer-link"
               >
-                <img src="/static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                Gemini
+                <img src="../static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Gemini<span class="sr-only"> (新しいタブで開きます)</span>
               </a>
             </div>
           </div>
@@ -876,7 +927,8 @@
           <label class="custom-control-label" for="darkSwitch">ダークモード</label>
         </div>
       </div>
-    </div>
+    </footer>
+    <!-- Alert Me Modal -->
     <div
       class="modal fade"
       id="alertMeModal"
@@ -888,12 +940,12 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div id="h2head" class="modal-header modal-header-primary">
-            <h3 class="modal-title" id="alertMeModalLabel">アラートを設定</h3>
+            <h2 class="modal-title" id="alertMeModalLabel">アラートを設定</h2>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
+              aria-label="閉じる"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -904,7 +956,7 @@
                 <label for="recipient-name" class="form-control-label">
                   <b>監視するメール:</b>
                 </label>
-                <input type="text" class="form-control" id="recipient-name" />
+                <input type="email" class="form-control" id="recipient-name" autocomplete="email" required aria-required="true" />
               </div>
               <div class="form-group">
                 <label for="message-text" class="form-control-label">
@@ -930,7 +982,7 @@
           </div>
           <div class="modal-footer">
             <button id="alertMe" type="button" class="btn btn-primary">
-              <i id="alertMe_i2" class="fa fa-bell ring"></i
+              <i id="alertMe_i2" class="fa fa-bell ring" aria-hidden="true"></i
               ><span id="alertMe_i1"></span>&nbsp;アラートを設定
             </button>
             <button
@@ -946,6 +998,7 @@
         </div>
       </div>
     </div>
+    <!-- Search Results Modal -->
     <div
       class="modal fade"
       id="thedudalModal"
@@ -966,31 +1019,30 @@
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-hidden="true"
+              aria-label="閉じる"
             >
-              &times;
+              <span aria-hidden="true">&times;</span>
             </button>
-            <h2>
-              <div id="imz_s" visible="false"></div>
-              <div id="imz_f" visible="false">
-                <i class="glyphicon glyphicon-fire"></i>
-              </div>
-            </h2>
+            <div id="imz_s" style="display:none" aria-hidden="true"></div>
+            <div id="imz_f" style="display:none" aria-hidden="true">
+              <i class="glyphicon glyphicon-fire" aria-hidden="true"></i>
+            </div>
             <div id="spins">
               <i
                 class="fa fa-spinner fa-spin"
                 style="font-size: 72px; color: #fff"
+                aria-hidden="true"
               ></i>
+              <span class="sr-only">結果を読み込み中...</span>
             </div>
             <div id="ssvisible">
-              <h2>検索結果</h2>
+              <h2 id="thedudalModalLabel">検索結果</h2>
             </div>
           </div>
           <div
             id="mbody"
-            visible="false"
+            style="display:none"
             class="modal-body"
-            style="padding: 40px 50px"
           >
             <div class="alert alert-primary" role="alert" id="data_email">
               <b>チェックしたメールアドレス</b>
@@ -1024,7 +1076,7 @@
                 data-toggle="modal"
                 data-target="#alertMeModal"
               >
-                <i class="fa fa-bell ring"></i>
+                <i class="fa fa-bell ring" aria-hidden="true"></i>
                 <b>データ侵害のアラートを受け取る</b>
               </button>
               <button
@@ -1040,6 +1092,7 @@
                   fill="currentColor"
                   class="bi bi-cursor"
                   viewBox="0 0 16 16"
+                  aria-hidden="true"
                 >
                   <path
                     d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z"
@@ -1057,26 +1110,23 @@
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"
+      defer
     ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
       integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+      defer
     ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
-      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
-      integrity="sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="/static/scripts/index.js"></script>
-    <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/index.js" defer></script>
+    <script src="/static/scripts/common.js" defer></script>
     <script
       src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb"
       async

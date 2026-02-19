@@ -20,10 +20,11 @@
       content="ডেটা লঙ্ঘন পরীক্ষক, ইমেল নিরাপত্তা, পাসওয়ার্ড নিরাপত্তা, লঙ্ঘন পর্যবেক্ষণ, সাইবার নিরাপত্তা টুল"
     />
     <meta name="author" content="Devanand Premkumar" />
-    <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
-    <link rel="dns-prefetch" href="//static.hotjar.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
 
     <meta
       property="og:title"
@@ -97,23 +98,42 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link
-      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <!-- Async Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
       integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
       crossorigin="anonymous"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+        crossorigin="anonymous"
+      />
+    </noscript>
+    <!-- Preload and async load Google Fonts -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset"
-      type="text/css"
-      media="all"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
-    <link rel="author" href="/humans.txt" />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      />
+    </noscript>
+    <link rel="author" href="../humans.txt" />
 
     <script src="/static/scripts/other-libraries.js" defer></script>
 
@@ -180,7 +200,7 @@
           {
             "@type": "ListItem",
             "position": 1,
-            "name": "Home",
+            "name": "হোম",
             "item": "https://xposedornot.com/bn/"
           }
         ]
@@ -197,18 +217,20 @@
 
     </head>
 
-  <body data-spy="scroll" data-target=".menu" data-offset="50">
+  <body class="v2" data-spy="scroll" data-target=".menu" data-offset="50">
+    <a class="skip-link" href="#main-content">মূল বিষয়বস্তুতে যান</a>
     <div class="xon">
+      <main id="main-content">
       <div class="searchMe">
         <div class="banner" id="banner">
-          <canvas id="canvas"></canvas>
+          <canvas id="canvas" aria-hidden="true"></canvas>
           <div class="grid">
             <nav
               class="navbar navbar-expand-md navbar-dark justify-content-center"
             >
               <a
                 class="navbar-brand abs"
-                href="#"
+                href="/bn/"
                 style="text-decoration: none"
               >
                 <span
@@ -224,8 +246,7 @@
                   style="
                     font-size: 0.8em;
                     display: block;
-                    color: white;
-                    opacity: 0.95;
+                    color: rgba(255, 255, 255, 0.95);
                     margin-top: -10px;
                   "
                   >সম্প্রদায় সংস্করণ</span
@@ -236,6 +257,9 @@
                 type="button"
                 data-toggle="collapse"
                 data-target="#collapsingNavbar"
+                aria-controls="collapsingNavbar"
+                aria-expanded="false"
+                aria-label="নেভিগেশন মেনু টগল করুন"
               >
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -252,7 +276,7 @@
                       class="nav-link"
                       href="https://plus.xposedornot.com"
                       target="_blank"
-                      >xonPlus</a
+                      >xonPlus<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
                     >
                   </li>
                   <li class="nav-item active px-4">
@@ -267,7 +291,7 @@
                       id="navbarDropdownMenuLink"
                       role="button"
                     >
-                      ভাষা <i class="fas fa-caret-down"></i
+                      ভাষা <i class="fas fa-caret-down" aria-hidden="true"></i
                     ></a>
                     <style>
                       .dropdown-toggle::after {
@@ -278,28 +302,26 @@
                       aria-labelledby="navbarDropdownMenuLink"
                       class="dropdown-menu"
                     >
-                      <a class="dropdown-item" href="/">English</a>
-                      <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
-                      <a class="dropdown-item" href="/es/">Español (Spanish)</a>
-                      <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
-                      <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
-                      <a class="dropdown-item" href="/pt/"
-                        >Português (Portuguese)</a
-                      >
-                      <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
-                      <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
-                      <a class="dropdown-item" href="/de/">Deutsch (German)</a>
-                      <a class="dropdown-item" href="/fr/">Français (French)</a>
-                      <a class="dropdown-item" href="/it/">Italiano (Italian)</a>
-                      <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                      <a class="dropdown-item" href="/" lang="en">English</a>
+                      <a class="dropdown-item" href="/zh/" lang="zh">中文 (Chinese)</a>
+                      <a class="dropdown-item" href="/es/" lang="es">Español (Spanish)</a>
+                      <a class="dropdown-item" href="/fr/" lang="fr">Français (French)</a>
+                      <a class="dropdown-item" href="/hi/" lang="hi">हिन्दी (Hindi)</a>
+                      <a class="dropdown-item" href="/pt/" lang="pt">Português (Portuguese)</a>
+                      <a class="dropdown-item" href="/ru/" lang="ru">Русский (Russian)</a>
+                      <a class="dropdown-item" href="/ja/" lang="ja">日本語 (Japanese)</a>
+                      <a class="dropdown-item" href="/de/" lang="de">Deutsch (German)</a>
+                      <a class="dropdown-item" href="/it/" lang="it">Italiano (Italian)</a>
+                      <a class="dropdown-item" href="/ta/" lang="ta">தமிழ் (Tamil)</a>
                     </div>
                   </li>
                 </ul>
               </div>
             </nav>
 
+            <!-- V2 Hero: Single-column centered layout -->
             <div class="banner-row">
-              <div class="banner-left">
+              <div class="banner-center">
                 <div class="banner-text">
                   <form id="search" method="post" action="/">
                     <h1 id="heading" align="center">
@@ -308,7 +330,6 @@
                     <p align="center">
                       কোটি কোটি প্রকাশিত রেকর্ড তাৎক্ষণিকভাবে অনুসন্ধান করুন। আপনার অ্যাকাউন্ট রক্ষা করতে রিয়েল-টাইম সতর্কতা পান।
                     </p>
-                    <br />
                     <div class="form mail-box">
                       <div class="modern-search-container">
                         <input
@@ -318,6 +339,9 @@
                           placeholder="your@email.com"
                           id="edhu"
                           aria-label="ডেটা লঙ্ঘন পরীক্ষা করতে ইমেল ঠিকানা"
+                          autocomplete="email"
+                          required
+                          aria-required="true"
                         />
                         <button
                           class="modern-search-button"
@@ -330,10 +354,11 @@
                       </div>
                     </div>
                   </form>
+
                   <p
                     style="
                       font-size: 0.75em;
-                      color: rgba(255, 255, 255, 0.85);
+                      color: #ffffff;
                       margin: 12px 0 8px 0;
                       text-align: center;
                       white-space: nowrap;
@@ -341,7 +366,7 @@
                   >
                     এই সেবা ব্যবহার করে, আপনি আমাদের
                     <a
-                      href="terms"
+                      href="terms.html"
                       target="_blank"
                       rel="noopener"
                       style="
@@ -350,11 +375,11 @@
                         text-decoration: underline;
                         margin: 0 !important;
                       "
-                      >শর্তাবলী</a
+                      >শর্তাবলী<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
                     >
                     এবং
                     <a
-                      href="privacy"
+                      href="privacy.html"
                       target="_blank"
                       rel="noopener"
                       style="
@@ -363,9 +388,65 @@
                         text-decoration: underline;
                         margin: 0 !important;
                       "
-                      >গোপনীয়তা নীতিতে</a
+                      >গোপনীয়তা নীতিতে<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
                     > সম্মত হচ্ছেন।
                   </p>
+
+                  <div class="hero-alert-cta">
+                    <a
+                      href="#alertMeModal"
+                      role="button"
+                      data-toggle="modal"
+                      data-target="#alertMeModal"
+                      class="hero-alert-link"
+                    >
+                      <i class="fa fa-bell" aria-hidden="true"></i>
+                      নতুন লঙ্ঘনে আপনার ইমেল প্রকাশিত হলে বিনামূল্যে সতর্কতা পান
+                    </a>
+                  </div>
+
+                  <!-- Hero Quick Tools -->
+                  <nav class="hero-tools" aria-label="নিরাপত্তা টুলে দ্রুত অ্যাক্সেস">
+                    <h2 class="gradient-text" style="-webkit-text-fill-color: #fff; color: #fff;">সবার জন্য বিনামূল্যে টুল</h2>
+                    <div class="hero-tools-grid">
+                      <a href="shield.html" class="hero-tool-card">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                        <span class="hero-tool-label">গোপনীয়তা শিল্ড</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">সর্বজনীন অনুসন্ধান থেকে আপনার ইমেল রক্ষা করুন</span>
+                      </a>
+                      <a href="domains.html" class="hero-tool-card">
+                        <i class="fas fa-building" aria-hidden="true"></i>
+                        <span class="hero-tool-label">ডোমেন ইনসাইটস</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">আপনার ডোমেনের জন্য ডেটা লঙ্ঘন ঘটনার ওভারভিউ</span>
+                      </a>
+                      <a href="dashboard.html" class="hero-tool-card">
+                        <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
+                        <span class="hero-tool-label">CXO ড্যাশবোর্ড</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">যাচাইকৃত ডোমেনে লঙ্ঘন পর্যবেক্ষণ করুন</span>
+                      </a>
+                      <a href="breaches-visualisations.html" class="hero-tool-card">
+                        <i class="fas fa-chart-pie" aria-hidden="true"></i>
+                        <span class="hero-tool-label">লঙ্ঘন ভিজ্যুয়াল</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">লঙ্ঘনের মাত্রা চার্ট আকারে দেখুন</span>
+                      </a>
+                      <a href="xposed.html" class="hero-tool-card">
+                        <i class="fas fa-database" aria-hidden="true"></i>
+                        <span class="hero-tool-label">ডেটা লঙ্ঘন</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">উৎস সহ সমস্ত লঙ্ঘনের বিস্তারিত বিবরণ</span>
+                      </a>
+                      <a href="compare.html" class="hero-tool-card">
+                        <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                        <span class="hero-tool-label">লঙ্ঘন তুলনা</span>
+                        <i class="fas fa-chevron-right hero-tool-arrow" aria-hidden="true"></i>
+                        <span class="hero-tool-tip">দুটি ইমেলের মধ্যে লঙ্ঘন এক্সপোজার তুলনা করুন</span>
+                      </a>
+                    </div>
+                  </nav>
 
                   <div
                     class="modal fade"
@@ -378,11 +459,12 @@
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-body">
+                          <h3 class="sr-only" id="ModalLabel">ভিডিও প্লেয়ার</h3>
                           <button
                             type="button"
                             class="close"
                             data-dismiss="modal"
-                            aria-label="Close"
+                            aria-label="বন্ধ"
                           >
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -391,6 +473,7 @@
                               class="embed-responsive-item"
                               src=""
                               id="video"
+                              title="XposedOrNot ব্যাখ্যামূলক ভিডিও"
                               allowscriptaccess="always"
                               allow="autoplay"
                             ></iframe>
@@ -401,226 +484,168 @@
                   </div>
                 </div>
               </div>
-              <div class="banner-right banner-text add-row">
-                <h4 align="center" class="gradient-text">
-                  সবার জন্য বিনামূল্যে টুল
-                </h4>
-                <div class="add-flex">
-                  <a href="shield.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-shield-alt tool-icon"></i>
-                      <h5>গোপনীয়তা শিল্ড</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >সর্বজনীন অনুসন্ধান থেকে আপনার ইমেল রক্ষা করতে গোপনীয়তা শিল্ড সক্রিয় করুন।</span
-                      >
-                    </div>
-                  </a>
-                  <a href="domains.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-building tool-icon"></i>
-                      <h5>ডোমেন ইনসাইটস</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >আপনার ডোমেনের জন্য ডেটা লঙ্ঘন ঘটনার উচ্চ-স্তরের ওভারভিউ পান।</span
-                      >
-                    </div>
-                  </a>
-                </div>
-                <div class="add-flex">
-                  <a href="dashboard.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-tachometer-alt tool-icon"></i>
-                      <h5>CXO ড্যাশবোর্ড</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >সমস্ত যাচাইকৃত ডোমেনে ডেটা লঙ্ঘন পর্যবেক্ষণ করুন এবং বিস্তারিত সারাংশ অ্যাক্সেস করুন।</span
-                      >
-                    </div>
-                  </a>
-                  <a href="domains-phishing.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-fish tool-icon"></i>
-                      <h5>ফিশিং স্ক্যানার</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >আপনার ডোমেন ফিশিং বা টাইপোস্কোয়াটিং আক্রমণে ব্যবহৃত হচ্ছে কিনা পরীক্ষা করুন।</span
-                      >
-                    </div>
-                  </a>
-                </div>
-                <div class="add-flex add-flex2">
-                  <a href="domain.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-check-circle tool-icon"></i>
-                      <h5>ডোমেন যাচাইকরণ</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >মাত্র তিনটি ধাপে DNS, ইমেল বা HTML এর মাধ্যমে দ্রুত আপনার ডোমেন কর্তৃপক্ষ যাচাই করুন।</span
-                      >
-                    </div>
-                  </a>
-                  <a href="xposed.html" class="adds">
-                    <div class="add1">
-                      <i class="fas fa-database tool-icon"></i>
-                      <h5>ডেটা লঙ্ঘন</h5>
-                      <img
-                        src="/static/images/arrow-left.png"
-                        class="img-fluid arrow"
-                        alt=""
-                      />
-                      <span class="tooltip-text"
-                        >উৎস এবং ডেটা পয়েন্ট সহ সমস্ত ডেটা লঙ্ঘনের বিস্তারিত বিবরণে ডুব দিন।</span
-                      >
-                    </div>
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="password">
+
+      <!-- Social Proof Bar -->
+      <section class="social-proof-bar" aria-label="বিশ্বাস এবং সামাজিক প্রমাণ">
+        <div class="social-proof-items">
+          <div class="social-proof-item">
+            <i class="fas fa-users" aria-hidden="true"></i>
+            <span class="proof-full">হাজার হাজার নিরাপত্তা সচেতন ব্যবহারকারীর আস্থা</span>
+            <span class="proof-short">হাজারো মানুষের আস্থা</span>
+          </div>
+          <div class="social-proof-item">
+            <i class="fas fa-server" aria-hidden="true"></i>
+            <span class="proof-full">99.9% আপটাইম, সর্বদা উপলব্ধ</span>
+            <span class="proof-short">99.9% আপটাইম</span>
+          </div>
+          <div class="social-proof-item">
+            <i class="fab fa-github" aria-hidden="true"></i>
+            <span class="proof-full">GitHub-এ সম্পূর্ণ ওপেন সোর্স</span>
+            <span class="proof-short">ওপেন সোর্স</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works: Benefit Cards -->
+      <section class="benefit-cards-section password" aria-label="XposedOrNot কীভাবে কাজ করে">
         <div class="container">
-          <h2 align="center" class="gradient-text">
+          <h2 class="gradient-text">
             XposedOrNot কীভাবে আপনাকে নিরাপদ রাখে
           </h2>
-          <p align="center"><i class="fas fa-arrow-down blueArrow"></i></p>
-          <div class="password-row">
-            <div class="password-left">
-              <div class="password-text">
-                <p align="justify">
-                  <strong>XposedOrNot</strong> আজকের ডিজিটাল বিশ্বে আপনাকে সুরক্ষিত থাকতে সাহায্য করে। আমরা আপনার ইমেল ২৪/৭ পর্যবেক্ষণ করি এবং কোনো ডেটা লঙ্ঘনে প্রকাশিত হলে তাৎক্ষণিকভাবে জানাই, যাতে আপনি দ্রুত পদক্ষেপ নিতে এবং আপনার তথ্য সুরক্ষিত করতে পারেন। <br /><br />গোপনীয়তাকে মূলে রেখে ডিজাইন করা, XposedOrNot নিশ্চিত করে যে আপনার ডেটা কখনই অপ্রয়োজনীয়ভাবে সংরক্ষিত বা শেয়ার করা হয় না। <br /><br />
-                  সম্প্রদায়-চালিত, ওপেন-সোর্স প্ল্যাটফর্ম হিসাবে, আমরা সম্পূর্ণ স্বচ্ছতায় প্রতিশ্রুতিবদ্ধ। আপনি কীভাবে সব কাজ করে তা অন্বেষণ করতে পারেন, আমাদের কোড পর্যালোচনা করতে পারেন এবং উন্নতি জমা দিয়ে বা লঙ্ঘন ডেটা শেয়ার করে অবদান রাখতে পারেন।
-                  <br /><br />
-                  লঙ্ঘন ঘটার জন্য অপেক্ষা করবেন না। আজই আপনার ডিজিটাল পরিচয় রক্ষা করুন!
-                  <br /><br />
-                  <a
-                    href="#"
-                    id="mySignUp"
-                    class="cta-button"
-                    data-toggle="modal"
-                    data-target="#alertMeModal"
-                    ><i class="fa fa-bell"></i> বিনামূল্যে সতর্কতা পান</a
-                  >
-                  <br />
-                  <br />
-                  প্রশ্ন আছে? আমাদের বিস্তারিত
-                  <a href="faq.html">FAQ</a> আপনাকে সাহায্য করবে।
-                </p>
-              </div>
-            </div>
-            <div class="password-right">
-              <div class="video-container">
-                <p class="video-caption">
-                  <i class="fas fa-play-circle"></i> কীভাবে কাজ করে দেখুন
-                </p>
-                <video
-                  class="img-fluid pass"
-                  controls
-                  loop
-                  style="max-width: 500px; width: 100%; height: 400px"
-                  id="xon-video"
-                >
-                  <source src="/static/xon-video.mp4" type="video/mp4" />
-                  আপনার ব্রাউজার ভিডিও ট্যাগ সমর্থন করে না।
-                </video>
-              </div>
+          <p align="center"><i class="fas fa-arrow-down blueArrow" aria-hidden="true"></i></p>
+
+          <!-- Video centered on top -->
+          <div class="benefit-video">
+            <div class="video-container" style="padding-left: 0; display: inline-block;">
+              <p class="video-caption">
+                <i class="fas fa-play-circle" aria-hidden="true"></i> এটি কীভাবে কাজ করে দেখুন
+              </p>
+              <video
+                class="img-fluid pass"
+                controls
+                loop
+                style="max-width: 800px; width: 100%; height: auto"
+                id="xon-video"
+                aria-label="ডেটা লঙ্ঘনের জন্য ইমেল কীভাবে পরীক্ষা করতে হয় তা দেখানো XposedOrNot ব্যাখ্যামূলক ভিডিও"
+              >
+                <source src="/static/xon-video.mp4" type="video/mp4" />
+                <track kind="captions" src="/static/xon-video-captions.vtt" srclang="en" label="English captions" />
+                আপনার ব্রাউজার ভিডিও ট্যাগ সমর্থন করে না।
+              </video>
             </div>
           </div>
+
+          <!-- 3 Benefit Cards -->
+          <div class="benefit-cards">
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </div>
+              <h3>আপনার এক্সপোজার পরীক্ষা করুন</h3>
+              <p>আপনার ইমেল লিখুন এবং পরিচিত ডেটা লঙ্ঘনের আমাদের ডেটাবেস থেকে তাৎক্ষণিক ফলাফল পান।</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-bell" aria-hidden="true"></i>
+              </div>
+              <h3>রিয়েল-টাইম সতর্কতা পান</h3>
+              <p>আমরা 24/7 পর্যবেক্ষণ করি এবং নতুন লঙ্ঘনে আপনার ইমেল দেখা দিলে তাৎক্ষণিক জানাই।</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon">
+                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+              </div>
+              <h3>দ্রুত পদক্ষেপ নিন</h3>
+              <p>কোন পাসওয়ার্ড পরিবর্তন করতে হবে এবং কোন অ্যাকাউন্ট সুরক্ষিত করতে হবে সে সম্পর্কে স্পষ্ট নির্দেশনা পান।</p>
+            </div>
+          </div>
+
+          <!-- CTA below cards -->
+          <div class="benefit-cta">
+            <a
+              href="#alertMeModal"
+              class="cta-button"
+              role="button"
+              data-toggle="modal"
+              data-target="#alertMeModal"
+              ><i class="fa fa-bell" aria-hidden="true"></i> বিনামূল্যে সতর্কতা পান</a
+            >
+            <span class="cta-subtext">স্প্যাম নেই। খরচ নেই। শুধু সুরক্ষা।</span>
+          </div>
         </div>
-      </div>
-      <div class="follow">
+      </section>
+
+      <!-- Statistics -->
+      <section class="follow" aria-label="ডেটা লঙ্ঘন পরিসংখ্যান">
         <div class="container" align="center">
           <h2 class="gradient-text">
-            XposedOrNot-এ ডেটা লঙ্ঘনের সর্বকালের পরিসংখ্যান
+            সমস্যার মাত্রা
           </h2>
           <p style="margin-top: 15px; margin-bottom: 25px">
-            হাজার হাজার মানুষ তাদের ডিজিটাল নিরাপত্তা পর্যবেক্ষণে আমাদের বিশ্বাস করে
+            এগুলো বাস্তব ডেটা লঙ্ঘন থেকে বাস্তব প্রকাশিত রেকর্ড। আপনি কি তাদের মধ্যে আছেন?
           </p>
           <div class="follow-row">
             <div class="follow-flex">
               <div class="follow1 stat-breaches">
                 <div class="stat-icon">
-                  <i class="fas fa-shield-alt"></i>
+                  <i class="fas fa-shield-alt" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="b1"></div>
-                </h4>
-                <h6>ডেটা লঙ্ঘন</h6>
+                <div class="stat-number" id="b1"></div>
+                <h3>ডেটা লঙ্ঘন</h3>
               </div>
               <div class="follow1 stat-records">
                 <div class="stat-icon">
-                  <i class="fas fa-database"></i>
+                  <i class="fas fa-database" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="b2"></div>
-                </h4>
-                <h6>প্রকাশিত রেকর্ড</h6>
+                <div class="stat-number" id="b2"></div>
+                <h3>প্রকাশিত রেকর্ড</h3>
               </div>
               <div class="follow1 stat-emails">
                 <div class="stat-icon">
-                  <i class="fas fa-envelope-open"></i>
+                  <i class="fas fa-envelope-open" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="p1"></div>
-                </h4>
-                <h6>প্রকাশিত ইমেল</h6>
+                <div class="stat-number" id="p1"></div>
+                <h3>প্রকাশিত ইমেল</h3>
               </div>
               <div class="follow1 stat-passwords">
                 <div class="stat-icon">
-                  <i class="fas fa-key"></i>
+                  <i class="fas fa-key" aria-hidden="true"></i>
                 </div>
-                <h4>
-                  <div id="p2"></div>
-                </h4>
-                <h6>প্রকাশিত পাসওয়ার্ড</h6>
+                <div class="stat-number" id="p2"></div>
+                <h3>প্রকাশিত পাসওয়ার্ড</h3>
               </div>
             </div>
-            <p>
-              ডেটা লঙ্ঘন সতর্কতা ও বিজ্ঞপ্তির জন্য Twitter-এ
-              <a
-                href="https://twitter.com/XposedOrNot"
-                target="_blank"
-                rel="noopener"
-                name="twitter"
-                >XposedOrNot</a
-              >
-              অনুসরণ করুন।
+            <p class="stats-context">
+              পৃথিবীর মানুষের চেয়ে বেশি প্রকাশিত রেকর্ড রয়েছে। আপনি লঙ্ঘিত হয়েছেন কিনা সেটা প্রশ্ন নয় — <em>কতবার হয়েছেন সেটাই প্রশ্ন</em>।
             </p>
+            <div class="stats-cta">
+              <a
+                href="#search"
+                class="cta-button scroll-to-top"
+                role="button"
+              >
+                <i class="fas fa-search" aria-hidden="true"></i> এখনই আপনার ইমেল পরীক্ষা করুন
+              </a>
+            </div>
           </div>
         </div>
         <hr />
-      </div>
-      <div class="add">
+      </section>
+
+      <!-- Free Tools -->
+      <section class="add" aria-label="বিনামূল্যে নিরাপত্তা টুল">
         <div class="container">
-          <h2 class="gradient-text">বিনামূল্যে নিরাপত্তা ও গোপনীয়তা টুল</h2>
+          <h2 class="gradient-text">আপনার ডিজিটাল জীবন সুরক্ষিত করতে বিনামূল্যে টুল</h2>
           <div class="add-row1">
-            <div class="add-flex">
+            <div class="add-flex-5">
               <a href="password.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-key tool-icon"></i>
-                  <h5>পাসওয়ার্ড পরীক্ষা</h5>
+                  <i class="fas fa-key tool-icon" aria-hidden="true"></i>
+                  <h3>পাসওয়ার্ড পরীক্ষা</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -633,8 +658,8 @@
               </a>
               <a href="shield.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-shield-alt tool-icon"></i>
-                  <h5>গোপনীয়তা শিল্ড</h5>
+                  <i class="fas fa-shield-alt tool-icon" aria-hidden="true"></i>
+                  <h3>গোপনীয়তা শিল্ড</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -647,8 +672,8 @@
               </a>
               <a href="domains.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-building tool-icon"></i>
-                  <h5>ডোমেন ইনসাইটস</h5>
+                  <i class="fas fa-building tool-icon" aria-hidden="true"></i>
+                  <h3>ডোমেন ইনসাইটস</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -659,12 +684,10 @@
                   >
                 </div>
               </a>
-            </div>
-            <div class="add-flex add-flex2">
               <a href="domain.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-check-circle tool-icon"></i>
-                  <h5>ডোমেন যাচাইকরণ</h5>
+                  <i class="fas fa-check-circle tool-icon" aria-hidden="true"></i>
+                  <h3>ডোমেন যাচাইকরণ</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -677,8 +700,8 @@
               </a>
               <a href="breaches-visualisations.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-chart-pie tool-icon"></i>
-                  <h5>লঙ্ঘন ভিজ্যুয়ালাইজেশন</h5>
+                  <i class="fas fa-chart-pie tool-icon" aria-hidden="true"></i>
+                  <h3>লঙ্ঘন ভিজ্যুয়ালাইজেশন</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
@@ -689,121 +712,149 @@
                   >
                 </div>
               </a>
+            </div>
+            <div class="add-flex-5">
               <a href="xposed.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-database tool-icon"></i>
-                  <h5>ডেটা লঙ্ঘন</h5>
+                  <i class="fas fa-database tool-icon" aria-hidden="true"></i>
+                  <h3>ডেটা লঙ্ঘন</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >উৎস এবং ডেটা পয়েন্ট সহ XposedOrNot-এ লোড হওয়া সমস্ত ডেটা লঙ্ঘনের বিস্তারিত বিবরণে ডুব দিন।</span
+                    >উৎস এবং ডেটা পয়েন্ট সহ সমস্ত ডেটা লঙ্ঘনের বিস্তারিত বিবরণে ডুব দিন।</span
                   >
                 </div>
               </a>
-            </div>
-            <br />
-            <div class="add-flex">
-              <a href="dashboard.html" class="adds">
+              <a href="compare.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-tachometer-alt tool-icon"></i>
-                  <h5>CXO ড্যাশবোর্ড</h5>
+                  <i class="fas fa-balance-scale tool-icon" aria-hidden="true"></i>
+                  <h3>লঙ্ঘন তুলনা</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >সমস্ত যাচাইকৃত ডোমেনে ডেটা লঙ্ঘন পর্যবেক্ষণ করুন এবং আপনার আঙুলের ডগায় বিস্তারিত সারাংশ অ্যাক্সেস করুন।</span
+                    >দুটি ইমেলের মধ্যে লঙ্ঘন এক্সপোজার তুলনা করে শেয়ার্ড ঝুঁকি খুঁজুন।</span
+                  >
+                </div>
+              </a>
+              <a href="dashboard.html" class="adds">
+                <div class="add1">
+                  <i class="fas fa-tachometer-alt tool-icon" aria-hidden="true"></i>
+                  <h3>CXO ড্যাশবোর্ড</h3>
+                  <img
+                    src="/static/images/arrow-left.png"
+                    class="img-fluid arrow"
+                    alt=""
+                  />
+                  <span class="tooltip-text"
+                    >সমস্ত যাচাইকৃত ডোমেনে ডেটা লঙ্ঘন পর্যবেক্ষণ করুন এবং বিস্তারিত সারাংশ অ্যাক্সেস করুন।</span
                   >
                 </div>
               </a>
               <a href="domains-phishing.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-fish tool-icon"></i>
-                  <h5>ফিশিং স্ক্যানার</h5>
+                  <i class="fas fa-anchor tool-icon" aria-hidden="true"></i>
+                  <h3>ফিশিং স্ক্যানার</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >আপনার ডোমেন ফিশিং বা টাইপোস্কোয়াটিং আক্রমণে ব্যবহৃত হচ্ছে কিনা পরীক্ষা করুন।</span
+                    >আপনার ডোমেন ফিশিং আক্রমণে ব্যবহৃত হচ্ছে কিনা পরীক্ষা করুন।</span
                   >
                 </div>
               </a>
               <a href="xonPulse.html" class="adds">
                 <div class="add1">
-                  <i class="fas fa-newspaper tool-icon"></i>
-                  <h5>নিরাপত্তা সংবাদ</h5>
+                  <i class="fas fa-newspaper tool-icon" aria-hidden="true"></i>
+                  <h3>সর্বশেষ লঙ্ঘন</h3>
                   <img
                     src="/static/images/arrow-left.png"
                     class="img-fluid arrow"
                     alt=""
                   />
                   <span class="tooltip-text"
-                    >সর্বশেষ ডেটা লঙ্ঘন, নিরাপত্তা সতর্কতা এবং সাইবার নিরাপত্তা সংবাদ সম্পর্কে আপডেট থাকুন।</span
+                    >নতুন আবিষ্কৃত ডেটা লঙ্ঘন ট্র্যাক করুন এবং সময়মত নিরাপত্তা আপডেট পান।</span
                   >
                 </div>
               </a>
             </div>
           </div>
           <p>
-            <a href="#">XposedOrNot</a> নিরাপত্তা ও গোপনীয়তা টুল সবার উপকারের জন্য
+            <a href="/bn/">XposedOrNot</a> নিরাপত্তা ও গোপনীয়তা টুল সবার উপকারের জন্য
             <u>সর্বদা <b>বিনামূল্যে</b></u>।
           </p>
         </div>
-      </div>
+      </section>
+      </main>
     </div>
-    <div class="footer">
+    <footer class="footer">
       <div class="container">
+        <!-- Footer Final CTA -->
+        <div class="footer-final-cta">
+          <h2>ডেটা লঙ্ঘনের আগে থাকুন</h2>
+          <a
+            href="#alertMeModal"
+            class="cta-button"
+            role="button"
+            data-toggle="modal"
+            data-target="#alertMeModal"
+          >
+            <i class="fa fa-bell" aria-hidden="true"></i> ডেটা লঙ্ঘনে সতর্ক করুন
+          </a>
+        </div>
+
         <div style="text-align: center; margin-bottom: 30px">
           <p>
-            এই সম্পূর্ণ ওপেন সোর্স সাইট গঠনে আমাদের সাথে যোগ দিন! অবদান আমাদের
+            সম্প্রদায়ের দ্বারা তৈরি, সম্প্রদায়ের জন্য। GitHub-এ সম্পূর্ণ ওপেন সোর্স।
             <a
               href="https://github.com/XposedOrNot"
               target="_blank"
               rel="noopener"
-              >GitHub</a
-            >-এ স্বাগত ❤️
+              >GitHub<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
+            >
           </p>
         </div>
 
         <div class="footer-columns">
           <div class="footer-group">
-            <h6>আইনি</h6>
+            <h3>আইনি</h3>
             <div class="footer-links-wrapper">
-              <a href="privacy" class="footer-link">গোপনীয়তা নীতি</a>
-              <a href="terms" class="footer-link">শর্তাবলী</a>
+              <a href="privacy.html" class="footer-link">গোপনীয়তা নীতি</a>
+              <a href="terms.html" class="footer-link">শর্তাবলী</a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>সম্প্রদায়</h6>
+            <h3>সম্প্রদায়</h3>
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">ব্লগ</a>
-              <a href="our-repository" class="footer-link">আমাদের রিপোজিটরি</a>
+              <a href="our-repository.html" class="footer-link">আমাদের রিপোজিটরি</a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>বিশ্বাস</h6>
+            <h3>বিশ্বাস</h3>
             <div class="footer-links-wrapper">
               <a
                 href="https://stats.uptimerobot.com/3zjQkZ2Caa"
                 target="_blank"
                 rel="noopener"
                 class="footer-link"
-                >স্ট্যাটাস</a
+                >স্ট্যাটাস<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
               >
-              <a href="transparency" class="footer-link">স্বচ্ছতা</a>
-              <a href="responsible-disclosure" class="footer-link"
+              <a href="transparency.html" class="footer-link">স্বচ্ছতা</a>
+              <a href="responsible-disclosure.html" class="footer-link"
                 >দায়িত্বশীল প্রকাশ</a
               >
             </div>
           </div>
           <div class="footer-group">
-            <h6>আমাদের অনুসরণ করুন</h6>
+            <h3>আমাদের অনুসরণ করুন</h3>
             <div class="footer-links-wrapper">
               <a
                 href="https://twitter.com/xposedornot"
@@ -812,7 +863,7 @@
                 name="twitter"
                 class="footer-link"
               >
-                <i class="fab fa-twitter"></i> Twitter (X)
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
               </a>
               <a
                 href="https://facebook.com/xposedornot"
@@ -821,7 +872,7 @@
                 name="fb"
                 class="footer-link"
               >
-                <i class="fab fa-facebook"></i> Facebook
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
               </a>
               <a
                 href="https://infosec.exchange/@XposedOrNot"
@@ -830,12 +881,12 @@
                 name="mastodon"
                 class="footer-link"
               >
-                <i class="fab fa-mastodon"></i> Mastodon
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 448 512"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
               </a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>AI সারাংশ</h6>
+            <h3>AI সারাংশ</h3>
             <div class="footer-links-wrapper">
               <a
                 href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -843,8 +894,8 @@
                 rel="noopener"
                 class="footer-link"
               >
-                <img src="/static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                ChatGPT
+                <img src="../static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                ChatGPT<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
               </a>
               <a
                 href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -852,8 +903,8 @@
                 rel="noopener"
                 class="footer-link"
               >
-                <img src="/static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                Perplexity
+                <img src="../static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Perplexity<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
               </a>
               <a
                 href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me"
@@ -861,8 +912,8 @@
                 rel="noopener"
                 class="footer-link"
               >
-                <img src="/static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
-                Gemini
+                <img src="../static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Gemini<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
               </a>
             </div>
           </div>
@@ -876,7 +927,8 @@
           <label class="custom-control-label" for="darkSwitch">ডার্ক মোড</label>
         </div>
       </div>
-    </div>
+    </footer>
+    <!-- Alert Me Modal -->
     <div
       class="modal fade"
       id="alertMeModal"
@@ -888,12 +940,12 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div id="h2head" class="modal-header modal-header-primary">
-            <h3 class="modal-title" id="alertMeModalLabel">সতর্কতা সেট করুন</h3>
+            <h2 class="modal-title" id="alertMeModalLabel">সতর্কতা সেট করুন</h2>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
+              aria-label="বন্ধ"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -904,7 +956,7 @@
                 <label for="recipient-name" class="form-control-label">
                   <b>পর্যবেক্ষণ করতে ইমেল:</b>
                 </label>
-                <input type="text" class="form-control" id="recipient-name" />
+                <input type="email" class="form-control" id="recipient-name" autocomplete="email" required aria-required="true" />
               </div>
               <div class="form-group">
                 <label for="message-text" class="form-control-label">
@@ -930,7 +982,7 @@
           </div>
           <div class="modal-footer">
             <button id="alertMe" type="button" class="btn btn-primary">
-              <i id="alertMe_i2" class="fa fa-bell ring"></i
+              <i id="alertMe_i2" class="fa fa-bell ring" aria-hidden="true"></i
               ><span id="alertMe_i1"></span>&nbsp;সতর্কতা সেট করুন
             </button>
             <button
@@ -946,6 +998,7 @@
         </div>
       </div>
     </div>
+    <!-- Search Results Modal -->
     <div
       class="modal fade"
       id="thedudalModal"
@@ -966,31 +1019,30 @@
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-hidden="true"
+              aria-label="বন্ধ"
             >
-              &times;
+              <span aria-hidden="true">&times;</span>
             </button>
-            <h2>
-              <div id="imz_s" visible="false"></div>
-              <div id="imz_f" visible="false">
-                <i class="glyphicon glyphicon-fire"></i>
-              </div>
-            </h2>
+            <div id="imz_s" style="display:none" aria-hidden="true"></div>
+            <div id="imz_f" style="display:none" aria-hidden="true">
+              <i class="glyphicon glyphicon-fire" aria-hidden="true"></i>
+            </div>
             <div id="spins">
               <i
                 class="fa fa-spinner fa-spin"
                 style="font-size: 72px; color: #fff"
+                aria-hidden="true"
               ></i>
+              <span class="sr-only">ফলাফল লোড হচ্ছে...</span>
             </div>
             <div id="ssvisible">
-              <h2>আপনার ফলাফল</h2>
+              <h2 id="thedudalModalLabel">আপনার ফলাফল</h2>
             </div>
           </div>
           <div
             id="mbody"
-            visible="false"
+            style="display:none"
             class="modal-body"
-            style="padding: 40px 50px"
           >
             <div class="alert alert-primary" role="alert" id="data_email">
               <b>পরীক্ষিত ইমেল ঠিকানা</b>
@@ -1024,7 +1076,7 @@
                 data-toggle="modal"
                 data-target="#alertMeModal"
               >
-                <i class="fa fa-bell ring"></i>
+                <i class="fa fa-bell ring" aria-hidden="true"></i>
                 <b>ডেটা লঙ্ঘনে সতর্ক করুন</b>
               </button>
               <button
@@ -1040,6 +1092,7 @@
                   fill="currentColor"
                   class="bi bi-cursor"
                   viewBox="0 0 16 16"
+                  aria-hidden="true"
                 >
                   <path
                     d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z"
@@ -1057,26 +1110,23 @@
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"
+      defer
     ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
       integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+      defer
     ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
-      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
-      integrity="sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="/static/scripts/index.js"></script>
-    <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/index.js" defer></script>
+    <script src="/static/scripts/common.js" defer></script>
     <script
       src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb"
       async
