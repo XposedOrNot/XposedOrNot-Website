@@ -155,17 +155,13 @@ $.ajax(emailVerificationUrl)
         myjson = n;
 
         if (myjson) {
-            var domains = new Set();
-            var exposedEmails = new Set();
-            if (myjson.Breaches_Details && Array.isArray(myjson.Breaches_Details)) {
-                myjson.Breaches_Details.forEach(function (detail) {
-                    domains.add(detail.domain);
-                    exposedEmails.add(detail.email);
-                });
+            var domainSummaryInit = myjson.Domain_Summary;
+            if (domainSummaryInit && typeof domainSummaryInit === 'object') {
+                var domainCountInit = Object.keys(domainSummaryInit).length;
+                var emailCountInit = Object.values(domainSummaryInit).reduce(function (sum, count) { return sum + count; }, 0);
+                $('#exposed-domains').text(domainCountInit.toLocaleString());
+                $('#exposed-emails').text(emailCountInit.toLocaleString());
             }
-
-            $('#exposed-domains').text(domains.size.toLocaleString());
-            $('#exposed-emails').text(exposedEmails.size.toLocaleString());
         }
 
         const breachMetrics = myjson.Yearly_Metrics;
