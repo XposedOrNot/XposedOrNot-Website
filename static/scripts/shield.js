@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $('#email').trigger('focus');
     $('#emailForm').bootstrapValidator({
         fields: {
             email: {
@@ -8,6 +9,10 @@ $(document).ready(function () {
                     },
                     emailAddress: {
                         message: 'The input is not a valid email address'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        message: 'Please enter a valid email address with a full domain'
                     }
                 }
             }
