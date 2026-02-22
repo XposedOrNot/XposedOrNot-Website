@@ -122,6 +122,7 @@ function showNoBreachView(emailAddr) {
     $('section[aria-label="Detailed breach breakdown"]').hide();
     $('section[aria-label="Breach timeline visualization"]').hide();
     $('section[aria-label="Protect your accounts"]').hide();
+    $('section[aria-label="Attack path visualization"]').hide();
 
     // Replace the first section content with a clean "all clear" view
     var safeEmail = escapeHtml(emailAddr);
@@ -437,6 +438,14 @@ var j = $.ajax(url)
         $('#risk-analysis').html(riskAnalysisHtml);
 
         drawHeatMap(xposedData.children)
+
+        if (token) {
+            var attackPaths = detectAttackPaths(jsonResponse.ExposedBreaches.breaches_details, email);
+            renderAttackPaths(attackPaths);
+        } else {
+            renderSampleAttackPath();
+        }
+
         google.charts.load('current', {
             'packages': ['gauge']
         });
@@ -1625,6 +1634,416 @@ function cleanLabel(raw) {
 function cleanCategory(raw) {
     return raw.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\uFE0F]\s*/gu, '').trim();
 }
+
+function detectAttackPaths(breachesDetails, emailAddr) {
+    if (!breachesDetails || !breachesDetails.length) return [];
+
+    var dataTypeMap = {};
+    breachesDetails.forEach(function(breach) {
+        if (!breach.xposed_data) return;
+        breach.xposed_data.split(';').forEach(function(type) {
+            var t = type.trim();
+            if (!t) return;
+            if (!dataTypeMap[t]) dataTypeMap[t] = [];
+            dataTypeMap[t].push(breach.breach);
+        });
+    });
+
+    var freemailDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'protonmail.com', 'live.com', 'mail.com', 'ymail.com', 'proton.me'];
+    var emailDomain = (emailAddr || '').split('@')[1] || '';
+    var isCorporate = emailDomain && freemailDomains.indexOf(emailDomain.toLowerCase()) === -1;
+
+    function hasType(t) { return dataTypeMap[t] && dataTypeMap[t].length > 0; }
+    function getBreaches(t) { return (dataTypeMap[t] || []).slice(0, 5); }
+    function uniqueBreaches(arr) {
+        return arr.filter(function(v, i, a) { return a.indexOf(v) === i; }).slice(0, 5);
+    }
+
+    var paths = [];
+
+    // 1. Account Takeover: Passwords in 2+ breaches
+    if (hasType('Passwords') && dataTypeMap['Passwords'].length >= 2) {
+        var pwBreaches = getBreaches('Passwords');
+        var hasEmailType = hasType('Email addresses');
+        paths.push({
+            id: 'account-takeover',
+            name: 'Account Takeover',
+            severity: 'CRITICAL',
+            stages: [
+                { label: 'Exposed', icon: 'fa-database', status: 'red',
+                  detail: 'Passwords found in ' + dataTypeMap['Passwords'].length + ' breaches.',
+                  breaches: pwBreaches, dataTypes: ['Passwords'] },
+                { label: 'Targeted', icon: 'fa-crosshairs', status: 'red',
+                  detail: 'Credential stuffing lists include your email and leaked passwords.',
+                  breaches: [], dataTypes: ['Email addresses'] },
+                { label: 'Exploited', icon: 'fa-unlock-alt', status: 'red',
+                  detail: 'Attacker logs into your accounts using leaked credentials.',
+                  breaches: [], dataTypes: ['Passwords'] },
+                { label: 'Cascading', icon: hasEmailType ? 'fa-project-diagram' : 'fa-check-circle',
+                  status: hasEmailType ? 'red' : 'green',
+                  detail: hasEmailType
+                      ? 'Email account compromise cascades to password resets on linked services.'
+                      : 'No email address exposed alongside passwords, so cascade is harder.',
+                  breaches: hasEmailType ? getBreaches('Email addresses') : [], dataTypes: hasEmailType ? ['Email addresses'] : [] },
+                { label: 'Impact', icon: 'fa-exclamation-triangle',
+                  status: hasEmailType ? 'red' : 'amber',
+                  detail: hasEmailType
+                      ? 'Full account takeover: financial fraud, data theft, impersonation.'
+                      : 'Limited to accounts sharing the same password. Change passwords to contain damage.',
+                  breaches: [], dataTypes: [] }
+            ]
+        });
+    }
+
+    // 2. SIM Swap: Passwords + Phone numbers
+    if (hasType('Passwords') && hasType('Phone numbers')) {
+        var simBreaches = uniqueBreaches(getBreaches('Phone numbers').concat(getBreaches('Passwords')));
+        var hasDob = hasType('Dates of birth');
+        var hasAddr = hasType('Physical addresses');
+        var hasCarrierData = hasDob || hasAddr;
+        paths.push({
+            id: 'sim-swap',
+            name: 'SIM Swap Attack',
+            severity: 'CRITICAL',
+            stages: [
+                { label: 'Exposed', icon: 'fa-database', status: 'red',
+                  detail: 'Phone number and passwords found in breach data.',
+                  breaches: simBreaches, dataTypes: ['Phone numbers', 'Passwords'] },
+                { label: 'Targeted', icon: 'fa-crosshairs', status: 'red',
+                  detail: 'Attacker identifies your carrier from your phone number.',
+                  breaches: [], dataTypes: ['Phone numbers'] },
+                { label: 'Exploited', icon: hasCarrierData ? 'fa-unlock-alt' : 'fa-check-circle',
+                  status: hasCarrierData ? 'red' : 'green',
+                  detail: hasCarrierData
+                      ? 'Carrier tricked into porting your number. Identity data makes verification easier.'
+                      : 'Carrier verification is harder without date of birth or address.',
+                  breaches: hasCarrierData ? uniqueBreaches((hasDob ? getBreaches('Dates of birth') : []).concat(hasAddr ? getBreaches('Physical addresses') : [])) : [],
+                  dataTypes: (hasDob ? ['Dates of birth'] : []).concat(hasAddr ? ['Physical addresses'] : []) },
+                { label: 'Cascading', icon: 'fa-project-diagram', status: 'red',
+                  detail: 'SMS 2FA intercepted. Password resets on banking, email, and social accounts.',
+                  breaches: [], dataTypes: ['Phone numbers'] },
+                { label: 'Impact', icon: 'fa-exclamation-triangle', status: 'red',
+                  detail: 'Financial theft, cryptocurrency drain, complete account lockout.',
+                  breaches: [], dataTypes: [] }
+            ]
+        });
+    }
+
+    // 3. Identity Theft: 2+ of DOB, addresses, SSN, Names
+    var identityTypes = ['Dates of birth', 'Physical addresses', 'Social security numbers', 'Names'];
+    var presentIdentityTypes = identityTypes.filter(function(t) { return hasType(t); });
+    if (presentIdentityTypes.length >= 2) {
+        var idBreaches = [];
+        presentIdentityTypes.forEach(function(t) { idBreaches = idBreaches.concat(getBreaches(t)); });
+        idBreaches = uniqueBreaches(idBreaches);
+        var hasSsn = hasType('Social security numbers');
+        var hasMany = presentIdentityTypes.length >= 3;
+        paths.push({
+            id: 'identity-theft',
+            name: 'Identity Theft',
+            severity: 'CRITICAL',
+            stages: [
+                { label: 'Exposed', icon: 'fa-database', status: 'red',
+                  detail: escapeHtml(presentIdentityTypes.join(', ')) + ' found in breach data.',
+                  breaches: idBreaches, dataTypes: presentIdentityTypes },
+                { label: 'Targeted', icon: 'fa-crosshairs', status: 'red',
+                  detail: 'Attacker builds an identity profile for fraudulent applications.',
+                  breaches: [], dataTypes: presentIdentityTypes.slice(0, 2) },
+                { label: 'Exploited', icon: hasSsn ? 'fa-unlock-alt' : 'fa-check-circle',
+                  status: hasSsn ? 'red' : 'green',
+                  detail: hasSsn
+                      ? 'SSN exposed. Credit applications and identity verification are straightforward.'
+                      : 'No SSN found, so harder to pass identity verification for credit applications.',
+                  breaches: hasSsn ? getBreaches('Social security numbers') : [], dataTypes: hasSsn ? ['Social security numbers'] : [] },
+                { label: 'Cascading', icon: hasMany ? 'fa-project-diagram' : 'fa-check-circle',
+                  status: hasMany ? 'red' : 'green',
+                  detail: hasMany
+                      ? 'Multiple identity data types enable opening accounts across providers.'
+                      : 'Limited identity data constrains how many fraudulent accounts can be opened.',
+                  breaches: [], dataTypes: [] },
+                { label: 'Impact', icon: 'fa-exclamation-triangle',
+                  status: hasSsn ? 'red' : 'amber',
+                  detail: hasSsn
+                      ? 'Credit damage, fraudulent debt, legal complications.'
+                      : 'Moderate identity risk. Monitor credit reports and set up fraud alerts.',
+                  breaches: [], dataTypes: [] }
+            ]
+        });
+    }
+
+    // 4. Corporate Infiltration: Passwords + non-freemail
+    if (hasType('Passwords') && isCorporate) {
+        var corpBreaches = getBreaches('Passwords');
+        paths.push({
+            id: 'corporate-infiltration',
+            name: 'Corporate Infiltration',
+            severity: 'CRITICAL',
+            stages: [
+                { label: 'Exposed', icon: 'fa-database', status: 'red',
+                  detail: 'Corporate email (' + escapeHtml(emailDomain) + ') and passwords found in breach data.',
+                  breaches: corpBreaches, dataTypes: ['Passwords', 'Email addresses'] },
+                { label: 'Targeted', icon: 'fa-crosshairs', status: 'red',
+                  detail: 'Attacker identifies your employer from the email domain.',
+                  breaches: [], dataTypes: ['Email addresses'] },
+                { label: 'Exploited', icon: 'fa-unlock-alt', status: 'red',
+                  detail: 'Attempts corporate VPN, email, or SSO login with leaked credentials.',
+                  breaches: [], dataTypes: ['Passwords'] },
+                { label: 'Cascading', icon: 'fa-check-circle', status: 'green',
+                  detail: 'Internal network access depends on corporate security controls.',
+                  breaches: [], dataTypes: [] },
+                { label: 'Impact', icon: 'fa-check-circle', status: 'green',
+                  detail: 'Potential corporate data breach, intellectual property theft.',
+                  breaches: [], dataTypes: [] }
+            ]
+        });
+    }
+
+    // 5. Social Engineering: Names + Phone + Email
+    if (hasType('Names') && hasType('Phone numbers') && hasType('Email addresses')) {
+        var seBreaches = uniqueBreaches(getBreaches('Names').concat(getBreaches('Phone numbers')).concat(getBreaches('Email addresses')));
+        var hasAddrSE = hasType('Physical addresses');
+        paths.push({
+            id: 'social-engineering',
+            name: 'Social Engineering',
+            severity: 'HIGH',
+            stages: [
+                { label: 'Exposed', icon: 'fa-database', status: 'red',
+                  detail: 'Name, phone, and email found in breach data.',
+                  breaches: seBreaches, dataTypes: ['Names', 'Phone numbers', 'Email addresses'] },
+                { label: 'Targeted', icon: 'fa-crosshairs', status: 'red',
+                  detail: 'Complete contact profile enables targeted attacks.',
+                  breaches: [], dataTypes: ['Names', 'Email addresses'] },
+                { label: 'Exploited', icon: 'fa-unlock-alt', status: 'red',
+                  detail: 'Targeted phishing emails or vishing calls using your real details.',
+                  breaches: [], dataTypes: ['Phone numbers'] },
+                { label: 'Cascading', icon: hasAddrSE ? 'fa-project-diagram' : 'fa-check-circle',
+                  status: hasAddrSE ? 'red' : 'green',
+                  detail: hasAddrSE
+                      ? 'Physical address also exposed, enabling in-person social engineering.'
+                      : 'No physical address found. Attack limited to digital channels only.',
+                  breaches: hasAddrSE ? getBreaches('Physical addresses') : [], dataTypes: hasAddrSE ? ['Physical addresses'] : [] },
+                { label: 'Impact', icon: 'fa-exclamation-triangle', status: 'amber',
+                  detail: 'Financial scams, relationship exploitation, further data compromise.',
+                  breaches: [], dataTypes: [] }
+            ]
+        });
+    }
+
+    // 6. Physical Threat: Addresses + Names
+    if (hasType('Physical addresses') && hasType('Names')) {
+        var physBreaches = uniqueBreaches(getBreaches('Physical addresses').concat(getBreaches('Names')));
+        var hasPhonePT = hasType('Phone numbers');
+        paths.push({
+            id: 'physical-threat',
+            name: 'Physical Threat',
+            severity: 'HIGH',
+            stages: [
+                { label: 'Exposed', icon: 'fa-database', status: 'red',
+                  detail: 'Name and home address found in breach data.',
+                  breaches: physBreaches, dataTypes: ['Physical addresses', 'Names'] },
+                { label: 'Targeted', icon: 'fa-crosshairs', status: 'red',
+                  detail: 'Physical location is publicly linked to your identity.',
+                  breaches: [], dataTypes: ['Physical addresses'] },
+                { label: 'Exploited', icon: hasPhonePT ? 'fa-unlock-alt' : 'fa-check-circle',
+                  status: hasPhonePT ? 'red' : 'green',
+                  detail: hasPhonePT
+                      ? 'Phone number also exposed, enabling mail redirect and SIM-based attacks.'
+                      : 'No phone number found. Exploitation limited to physical mail only.',
+                  breaches: hasPhonePT ? getBreaches('Phone numbers') : [], dataTypes: hasPhonePT ? ['Phone numbers'] : [] },
+                { label: 'Cascading', icon: 'fa-project-diagram', status: 'amber',
+                  detail: 'Info gathered from redirected mail, bills, and correspondence.',
+                  breaches: [], dataTypes: [] },
+                { label: 'Impact', icon: 'fa-exclamation-triangle', status: 'amber',
+                  detail: 'Physical stalking risk, mail fraud, targeted burglary.',
+                  breaches: [], dataTypes: [] }
+            ]
+        });
+    }
+
+    paths.sort(function(a, b) {
+        var order = { 'CRITICAL': 1, 'HIGH': 2 };
+        return (order[a.severity] || 99) - (order[b.severity] || 99);
+    });
+
+    return paths;
+}
+
+function renderSampleAttackPath() {
+    var section = document.getElementById('attack-paths-section');
+    if (!section) return;
+
+    section.style.display = '';
+    var tabsContainer = document.getElementById('attack-paths-tabs');
+    var contentContainer = document.getElementById('attack-paths-content');
+
+    tabsContainer.innerHTML = '';
+
+    var sampleStages = [
+        { label: 'Exposed', status: 'red', icon: 'fa-exclamation-triangle', detail: 'Passwords found in 3 breaches.', breaches: ['SocialApp', 'ShoppingSite', 'OnlineForum'] },
+        { label: 'Targeted', status: 'red', icon: 'fa-crosshairs', detail: 'Credential stuffing lists include your email and leaked passwords.' },
+        { label: 'Exploited', status: 'red', icon: 'fa-unlock-alt', detail: 'Attacker logs into your accounts using leaked credentials.' },
+        { label: 'Cascading', status: 'green', icon: 'fa-check-circle', detail: 'No email address exposed alongside passwords, so cascade is harder.' },
+        { label: 'Impact', status: 'amber', icon: 'fa-exclamation-circle', detail: 'Limited to accounts sharing the same password. Change passwords to contain damage.' }
+    ];
+
+    var flowHtml = '<div class="hybrid-flow" role="list" aria-label="Sample account takeover attack flow">';
+    sampleStages.forEach(function(stage, j) {
+        var posClass = j === 0 ? ' hybrid-first' : '';
+        flowHtml += '<div class="hybrid-node" role="listitem">';
+        flowHtml += '<div class="hybrid-header status-' + stage.status + posClass + '"><i class="fas ' + stage.icon + '" aria-hidden="true"></i> ' + stage.label + '</div>';
+        flowHtml += '<div class="hybrid-body status-' + stage.status + '-border">';
+        flowHtml += '<p class="hybrid-detail">' + stage.detail + '</p>';
+        if (stage.breaches && stage.breaches.length > 0) {
+            flowHtml += '<div class="attack-path-tags">';
+            stage.breaches.forEach(function(b) {
+                flowHtml += '<span class="attack-path-breach-tag">' + b + '</span>';
+            });
+            flowHtml += '</div>';
+        }
+        flowHtml += '</div></div>';
+    });
+    flowHtml += '</div>';
+
+    var html = '';
+    html += '<div class="attack-path-sample-badge" aria-hidden="true">SAMPLE</div>';
+    html += '<div class="attack-path-sample-wrapper" aria-hidden="true">';
+    html += '<div class="attack-path-single-header"><span class="attack-path-severity-badge severity-critical">CRITICAL</span> Account Takeover</div>';
+    html += flowHtml;
+    html += '</div>';
+    html += '<div class="attack-path-cta">';
+    html += '<i class="fas fa-lock" aria-hidden="true"></i>';
+    html += '<strong>See Your Personalized Attack Paths</strong>';
+    html += '<p>Verify your email to see how attackers could specifically target you based on your actual breach data.</p>';
+    html += '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">';
+    html += '<i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now</button>';
+    html += '</div>';
+
+    contentContainer.innerHTML = html;
+}
+
+function renderAttackPaths(paths) {
+    var section = document.getElementById('attack-paths-section');
+    if (!section) return;
+
+    if (!paths || paths.length === 0) {
+        section.style.display = 'none';
+        return;
+    }
+
+    section.style.display = '';
+    var tabsContainer = document.getElementById('attack-paths-tabs');
+    var contentContainer = document.getElementById('attack-paths-content');
+
+    // Build tabs (only if 2+ paths)
+    var tabsHtml = '';
+    if (paths.length > 1) {
+        tabsHtml = '<div class="attack-path-tabs-wrapper">';
+        paths.forEach(function(path, i) {
+            var isActive = i === 0;
+            tabsHtml += '<button class="attack-path-tab' + (isActive ? ' active' : '') + '" role="tab" id="tab-' + path.id + '" aria-selected="' + isActive + '" aria-controls="panel-' + path.id + '" tabindex="' + (isActive ? '0' : '-1') + '">';
+            tabsHtml += '<span class="attack-path-severity-badge severity-' + path.severity.toLowerCase() + '">' + path.severity + '</span> ';
+            tabsHtml += escapeHtml(path.name);
+            tabsHtml += '</button>';
+        });
+        tabsHtml += '</div>';
+    }
+    tabsContainer.innerHTML = tabsHtml;
+
+    // Build content panels
+    var contentHtml = '';
+    paths.forEach(function(path, i) {
+        var isActive = i === 0;
+        contentHtml += '<div class="attack-path-panel' + (isActive ? ' active' : '') + '" role="tabpanel" id="panel-' + path.id + '" aria-labelledby="tab-' + path.id + '"' + (!isActive ? ' hidden' : '') + '>';
+
+        if (paths.length === 1) {
+            contentHtml += '<div class="attack-path-single-header"><span class="attack-path-severity-badge severity-' + path.severity.toLowerCase() + '">' + path.severity + '</span> ' + escapeHtml(path.name) + '</div>';
+        }
+
+        contentHtml += '<div class="hybrid-flow" role="list" aria-label="' + escapeHtml(path.name) + ' attack flow">';
+        path.stages.forEach(function(stage, j) {
+            var posClass = j === 0 ? ' hybrid-first' : '';
+            contentHtml += '<div class="hybrid-node" role="listitem">';
+            contentHtml += '<div class="hybrid-header status-' + stage.status + posClass + '"><i class="fas ' + stage.icon + '" aria-hidden="true"></i> ' + escapeHtml(stage.label) + '</div>';
+            contentHtml += '<div class="hybrid-body status-' + stage.status + '-border">';
+            contentHtml += '<p class="hybrid-detail">' + stage.detail + '</p>';
+            if (stage.breaches && stage.breaches.length > 0) {
+                contentHtml += '<div class="attack-path-tags">';
+                stage.breaches.forEach(function(b) {
+                    contentHtml += '<span class="attack-path-breach-tag">' + escapeHtml(b) + '</span>';
+                });
+                contentHtml += '</div>';
+            }
+            if (stage.dataTypes && stage.dataTypes.length > 0) {
+                contentHtml += '<div class="attack-path-tags">';
+                stage.dataTypes.forEach(function(dt) {
+                    contentHtml += '<span class="attack-path-data-tag">' + escapeHtml(dt) + '</span>';
+                });
+                contentHtml += '</div>';
+            }
+            contentHtml += '</div></div>';
+        });
+        contentHtml += '</div>';
+
+        contentHtml += '</div>';
+    });
+    contentContainer.innerHTML = contentHtml;
+
+    // Tab click + keyboard navigation
+    if (paths.length > 1) {
+        var tabs = tabsContainer.querySelectorAll('.attack-path-tab');
+        var panels = contentContainer.querySelectorAll('.attack-path-panel');
+
+        function activateTab(tab) {
+            tabs.forEach(function(t) {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+                t.setAttribute('tabindex', '-1');
+            });
+            panels.forEach(function(p) {
+                p.classList.remove('active');
+                p.setAttribute('hidden', '');
+            });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            tab.setAttribute('tabindex', '0');
+            var panelId = tab.getAttribute('aria-controls');
+            var panel = document.getElementById(panelId);
+            if (panel) {
+                panel.classList.add('active');
+                panel.removeAttribute('hidden');
+            }
+            tab.focus();
+        }
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                activateTab(tab);
+            });
+
+            tab.addEventListener('keydown', function(e) {
+                var index = Array.prototype.indexOf.call(tabs, tab);
+                var newIndex = -1;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    newIndex = (index + 1) % tabs.length;
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    newIndex = (index - 1 + tabs.length) % tabs.length;
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    newIndex = 0;
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    newIndex = tabs.length - 1;
+                }
+                if (newIndex >= 0) {
+                    activateTab(tabs[newIndex]);
+                }
+            });
+        });
+    }
+}
+
 
 function drawHeatMap(xposedData) {
     try {
