@@ -613,10 +613,12 @@ if (statsSection) {
     statsObserver.observe(statsSection);
 
     // Fallback: check if section is already in viewport on page load
-    const rect = statsSection.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-        fetchMetrics();
-    }
+    requestAnimationFrame(() => {
+        const rect = statsSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            fetchMetrics();
+        }
+    });
 }
 
 function runCounter(element, endValue, duration) {
@@ -634,13 +636,17 @@ const maxCircles = window.innerWidth <= 768 ? 8 : 20;
 const maxDistance = window.innerWidth <= 768 ? 200 : 300;
 
 // Initialize canvas size before creating circles
-function resizeCanvas() {
-    var container = document.getElementById('banner');
-    canvas.width = container.offsetWidth;
-    canvas.height = container.offsetHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+const bannerContainer = document.getElementById('banner');
+canvas.width = bannerContainer.clientWidth;
+canvas.height = bannerContainer.clientHeight;
+const resizeObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        canvas.width = width;
+        canvas.height = height;
+    }
+});
+resizeObserver.observe(bannerContainer);
 
 function Circle() {
     this.x = Math.random() * canvas.width;
