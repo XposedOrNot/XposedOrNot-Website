@@ -1614,7 +1614,6 @@ google.charts.load("current", {
     packages: ["corechart"]
 });
 
-/* ── Exposure Heat Map (D3 Treemap) ── */
 var _heatMapResizeTimer = null;
 
 function cleanLabel(raw) {
@@ -1624,7 +1623,7 @@ function cleanLabel(raw) {
 }
 
 function cleanCategory(raw) {
-    return raw.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]\s*/gu, '').trim();
+    return raw.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\uFE0F]\s*/gu, '').trim();
 }
 
 function drawHeatMap(xposedData) {
@@ -1634,7 +1633,6 @@ function drawHeatMap(xposedData) {
         var container = document.getElementById('heatmap-container');
         if (!container) return;
 
-        /* Flatten all category children into one array, skip zeros */
         var items = [];
         if (!xposedData || !xposedData.length) {
             container.innerHTML = '';
@@ -1660,23 +1658,19 @@ function drawHeatMap(xposedData) {
 
         var isDark = isDarkModeActive();
 
-        /* Color scale matching badge thresholds */
         var colorScale = d3.scaleThreshold()
             .domain([6, 11])
             .range(['#3b6be6', '#e67e22', '#d63031']);
 
-        /* Text color per tier for WCAG AA contrast */
         function textColor(count) {
-            if (count > 10) return '#ffffff';       /* white on red */
-            if (count > 5)  return '#2d3436';       /* dark on amber */
-            return '#ffffff';                        /* white on blue */
+            if (count > 10) return '#ffffff';
+            if (count > 5)  return '#2d3436';
+            return '#ffffff';
         }
 
-        /* Adaptive dimensions */
         var width = container.clientWidth || 600;
         var height = Math.min(500, Math.max(300, items.length * 8));
 
-        /* Build hierarchy */
         var root = d3.hierarchy({ children: items })
             .sum(function(d) { return d.value; })
             .sort(function(a, b) { return b.value - a.value; });
@@ -1686,17 +1680,14 @@ function drawHeatMap(xposedData) {
             .padding(2)
             .round(true)(root);
 
-        /* Clear previous content */
         container.innerHTML = '';
 
-        /* Create SVG with viewBox for responsiveness */
         var svg = d3.select(container)
             .append('svg')
             .attr('viewBox', '0 0 ' + width + ' ' + height)
             .attr('preserveAspectRatio', 'xMidYMid meet')
             .attr('role', 'presentation');
 
-        /* Render cells */
         var cells = svg.selectAll('g')
             .data(root.leaves())
             .enter()
@@ -1719,48 +1710,64 @@ function drawHeatMap(xposedData) {
             .attr('stroke-width', 1.5)
             .attr('rx', 3);
 
-        /* Labels — only if cell is large enough */
         cells.each(function(d) {
             var cellW = d.x1 - d.x0;
             var cellH = d.y1 - d.y0;
             if (cellW < 50 || cellH < 28) return;
 
             var g = d3.select(this);
-            var maxChars = Math.floor(cellW / 7);
+            var fontSize = cellW < 80 ? 10 : 12;
+            var maxChars = Math.floor(cellW / (fontSize * 0.62));
             var label = d.data.name.length > maxChars
                 ? d.data.name.substring(0, maxChars - 1) + '\u2026'
                 : d.data.name;
 
+            var slots = 1 + (cellH >= 52 ? 1 : 0);
+            var lineH = fontSize + 4;
+            var blockH = slots * lineH;
+            var startY = (cellH - blockH) / 2 + fontSize;
+            var row = 0;
+
             g.append('text')
                 .attr('x', cellW / 2)
-                .attr('y', cellH / 2 - 5)
+                .attr('y', startY + row * lineH)
                 .attr('text-anchor', 'middle')
-                .attr('dominant-baseline', 'auto')
                 .attr('fill', textColor(d.data.value))
-                .attr('font-size', cellW < 80 ? '10px' : '12px')
+                .attr('font-size', fontSize + 'px')
                 .attr('font-family', 'Poppins, sans-serif')
                 .attr('font-weight', '500')
                 .attr('pointer-events', 'none')
                 .text(label);
+            row++;
 
-            /* Count label below name */
-            if (cellH >= 44) {
+            if (cellH >= 52) {
+                var badgeY = startY + row * lineH;
+                var countStr = String(d.data.value);
+                var badgeW = Math.max(28, countStr.length * 9 + 14);
+                var badgeH = 18;
+
+                g.append('rect')
+                    .attr('x', (cellW - badgeW) / 2)
+                    .attr('y', badgeY - badgeH + 4)
+                    .attr('width', badgeW)
+                    .attr('height', badgeH)
+                    .attr('rx', 9)
+                    .attr('fill', isDark ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.3)')
+                    .attr('pointer-events', 'none');
+
                 g.append('text')
                     .attr('x', cellW / 2)
-                    .attr('y', cellH / 2 + 12)
+                    .attr('y', badgeY - 1)
                     .attr('text-anchor', 'middle')
-                    .attr('dominant-baseline', 'auto')
                     .attr('fill', textColor(d.data.value))
                     .attr('font-size', '11px')
                     .attr('font-family', 'Poppins, sans-serif')
-                    .attr('font-weight', '600')
-                    .attr('opacity', '0.9')
+                    .attr('font-weight', '700')
                     .attr('pointer-events', 'none')
                     .text(d.data.value);
             }
         });
 
-        /* Tippy.js tooltips */
         if (typeof tippy !== 'undefined') {
             tippy(container.querySelectorAll('.heatmap-cell'), {
                 content: function(el) {
@@ -1776,7 +1783,6 @@ function drawHeatMap(xposedData) {
             });
         }
 
-        /* Legend */
         var legendEl = container.querySelector('.heatmap-legend');
         if (legendEl) legendEl.remove();
 
