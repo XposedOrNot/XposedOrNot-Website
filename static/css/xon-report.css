@@ -3215,3 +3215,118 @@ button.see-more:focus-visible {
 [data-theme="dark"] .social-icon {
 	fill: #6daae0;
 }
+
+/* ── Exposure Heat Map ── */
+#heatmap-container {
+	width: 100%;
+	min-height: 120px;
+}
+
+#heatmap-container svg {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+#heatmap-container .heatmap-cell {
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+}
+
+#heatmap-container .heatmap-cell:hover,
+#heatmap-container .heatmap-cell:focus {
+	opacity: 0.82;
+}
+
+#heatmap-container .heatmap-cell:focus {
+	outline: 2px solid #417ff9;
+	outline-offset: -2px;
+}
+
+.heatmap-description {
+	text-align: center;
+	color: #5a6a7a;
+	font-size: 0.95rem;
+	margin-bottom: 16px;
+}
+
+.heatmap-legend {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-top: 14px;
+	flex-wrap: wrap;
+	font-size: 0.85rem;
+	color: #555;
+}
+
+.heatmap-legend-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.heatmap-legend-swatch {
+	width: 16px;
+	height: 16px;
+	border-radius: 3px;
+	display: inline-block;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Dark mode */
+[data-theme="dark"] .heatmap-description,
+.dark-mode .heatmap-description {
+	color: #8fa8c0;
+}
+
+[data-theme="dark"] .heatmap-legend,
+.dark-mode .heatmap-legend {
+	color: #9fb0c0;
+}
+
+[data-theme="dark"] .heatmap-legend-swatch,
+.dark-mode .heatmap-legend-swatch {
+	border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] #heatmap-container .heatmap-cell:focus,
+.dark-mode #heatmap-container .heatmap-cell:focus {
+	outline-color: #6daae0;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+	.heatmap-description {
+		font-size: 0.85rem;
+		margin-bottom: 12px;
+	}
+
+	.heatmap-legend {
+		gap: 12px;
+		font-size: 0.78rem;
+	}
+}
+
+@media (max-width: 576px) {
+	.heatmap-legend {
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+	}
+}
+
+/* Windows High Contrast */
+@media (forced-colors: active) {
+	#heatmap-container .heatmap-cell rect {
+		stroke: CanvasText;
+	}
+
+	#heatmap-container .heatmap-cell text {
+		fill: CanvasText;
+	}
+
+	.heatmap-legend-swatch {
+		forced-color-adjust: none;
+	}
+}

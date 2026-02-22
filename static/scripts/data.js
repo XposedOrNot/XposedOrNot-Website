@@ -436,7 +436,7 @@ var j = $.ajax(url)
         const riskAnalysisHtml = generateRiskAnalysis(riskLabel, jsonResponse);
         $('#risk-analysis').html(riskAnalysisHtml);
 
-        drawChart_categories(xposedData.children)
+        drawHeatMap(xposedData.children)
         google.charts.load('current', {
             'packages': ['gauge']
         });
@@ -1133,6 +1133,7 @@ function getChartTextColor() {
 let top5ChartInstance = null;
 let passwordsChartInstance = null;
 let lineChartInstance = null;
+let lastHeatMapData = null;
 
 function updateChartsForDarkMode() {
     const textColor = getChartTextColor();
@@ -1168,6 +1169,7 @@ const chartDarkModeObserver = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
         if (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme') {
             setTimeout(updateChartsForDarkMode, 100);
+            if (lastHeatMapData) setTimeout(function() { drawHeatMap(lastHeatMapData); }, 120);
         }
     });
 });
@@ -1612,199 +1614,212 @@ google.charts.load("current", {
     packages: ["corechart"]
 });
 
-function getCategoryBadgeClass(count) {
-    if (count > 10) return 'high';
-    if (count > 5) return 'medium';
-    return 'low';
+/* ── Exposure Heat Map (D3 Treemap) ── */
+var _heatMapResizeTimer = null;
+
+function cleanLabel(raw) {
+    var s = raw;
+    if (s.startsWith('data_')) s = s.substring(5);
+    return s.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
 }
 
-function drawChart_categories(xposedData) {
+function cleanCategory(raw) {
+    return raw.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]\s*/gu, '').trim();
+}
+
+function drawHeatMap(xposedData) {
     try {
+        if (typeof d3 === 'undefined') return;
+
+        var container = document.getElementById('heatmap-container');
+        if (!container) return;
+
+        /* Flatten all category children into one array, skip zeros */
+        var items = [];
         if (!xposedData || !xposedData.length) {
+            container.innerHTML = '';
             return;
         }
 
-        const style = document.createElement('style');
-        const isDarkMode = document.body.classList.contains('dark-mode');
-
-        style.textContent = `
-            .categories-list {
-                padding: 15px;
+        xposedData.forEach(function(cat) {
+            if (cat.children && cat.children.length) {
+                cat.children.forEach(function(item) {
+                    if (item.value > 0) {
+                        items.push({ name: cleanLabel(item.name), value: item.value, category: cleanCategory(cat.name) });
+                    }
+                });
             }
-            .category-header {
-                margin-bottom: 10px;
-                padding-bottom: 5px;
-                border-bottom: 1px solid ${isDarkMode ? '#444' : '#ddd'};
-            }
-            .category-header h5 {
-                color: ${isDarkMode ? '#9fc0e0' : '#3A4B5E'};
-                font-weight: 600;
-                margin: 0;
-                font-size: 1.1rem;
-            }
-            .category-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 15px;
-                border-radius: 8px;
-                background-color: #f8f9fa;
-                transition: all 0.3s ease;
-                margin-bottom: 8px;
-                border: 1px solid #e1e4e8;
-            }
-            .category-item:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                background-color: #e9ecef;
-            }
-            .category-name {
-                font-weight: 500;
-                color: #2d3436;
-            }
-            [data-theme="dark"] .category-item, .dark-mode .category-item {
-                background-color: #1f2937;
-                color: #ffffff;
-                border: 1px solid #4a5568;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            }
-            [data-theme="dark"] .category-item:hover, .dark-mode .category-item:hover {
-                background-color: #2d3748;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                border: 1px solid #6daae0;
-            }
-            [data-theme="dark"] .category-name, .dark-mode .category-name {
-                color: #e2e8f0;
-                font-weight: 600;
-            }
-            .badge-high {
-                background-color: #d63031;
-                color: white;
-            }
-            .badge-medium {
-                background-color: #fdcb6e;
-                color: #2d3436;
-            }
-            .badge-low {
-                background-color: #2874a6;
-                color: white;
-            }
-            [data-theme="dark"] .badge, .dark-mode .badge {
-                background-color: #2d3748;
-                color: #e2e8f0;
-                border: 1px solid #4a5568;
-                font-weight: 700;
-            }
-            [data-theme="dark"] .badge-high, .dark-mode .badge-high {
-                background-color: #e53e3e;
-                color: white;
-                border: none;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            }
-            [data-theme="dark"] .badge-medium, .dark-mode .badge-medium {
-                background-color: #ecc94b;
-                color: #1a202c;
-                border: none;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            }
-            [data-theme="dark"] .badge-low, .dark-mode .badge-low {
-                background-color: #2874a6;
-                color: white;
-                border: none;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            }
-            [data-theme="dark"] .category-header h5, .dark-mode .category-header h5 {
-                color: #6daae0;
-                font-weight: 700;
-                margin: 0;
-                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-            }
-            @media (max-width: 767px) {
-                .category-header h5 {
-                    font-size: 0.95rem !important;
-                    line-height: 1.3;
-                    padding: 5px 0;
-                }
-                [data-theme="dark"] .category-header h5, .dark-mode .category-header h5 {
-                    font-size: 0.95rem !important;
-                }
-                .category-header {
-                    margin-bottom: 8px;
-                    padding-bottom: 4px;
-                }
-                .categories-list {
-                    padding: 10px;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        let categoriesHTML = `
-            <div class="categories-list">
-                <div class="row">
-        `;
-
-        xposedData.forEach(category => {
-            if (!category.children || !category.children.length) {
-                return;
-            }
-
-            const totalItems = category.children.reduce((sum, item) => sum + item.value, 0);
-            if (totalItems === 0) {
-                return;
-            }
-
-            let categoryName = category.name;
-            if (categoryName.startsWith("data_")) {
-                categoryName = categoryName.substring(5);
-            }
-
-            categoriesHTML += `
-                <div class="col-12 mb-3">
-                    <div class="category-header">
-                        <h3>${categoryName} (${totalItems} items)</h3>
-                    </div>
-                    <div class="row">
-            `;
-
-            category.children.forEach(item => {
-                if (item.value === 0) return;
-
-                let itemName = item.name;
-                if (itemName.startsWith("data_")) {
-                    itemName = itemName.substring(5);
-                }
-
-                categoriesHTML += `
-                    <div class="col-md-6 mb-2">
-                        <div class="category-item ${isDarkMode ? 'dark-mode' : ''}">
-                            <span class="category-name">${itemName}</span>
-                            <span class="badge badge-${getCategoryBadgeClass(item.value)}">${item.value}</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            categoriesHTML += `
-                    </div>
-                </div>
-            `;
         });
 
-        categoriesHTML += `
-                </div>
-            </div>
-        `;
-
-        $('#categories-list').html(categoriesHTML);
-
-        if (isDarkMode) {
-            document.documentElement.setAttribute('data-theme', 'dark');
+        if (items.length === 0) {
+            container.innerHTML = '';
+            return;
         }
+
+        lastHeatMapData = xposedData;
+
+        var isDark = isDarkModeActive();
+
+        /* Color scale matching badge thresholds */
+        var colorScale = d3.scaleThreshold()
+            .domain([6, 11])
+            .range(['#3b6be6', '#e67e22', '#d63031']);
+
+        /* Text color per tier for WCAG AA contrast */
+        function textColor(count) {
+            if (count > 10) return '#ffffff';       /* white on red */
+            if (count > 5)  return '#2d3436';       /* dark on amber */
+            return '#ffffff';                        /* white on blue */
+        }
+
+        /* Adaptive dimensions */
+        var width = container.clientWidth || 600;
+        var height = Math.min(500, Math.max(300, items.length * 8));
+
+        /* Build hierarchy */
+        var root = d3.hierarchy({ children: items })
+            .sum(function(d) { return d.value; })
+            .sort(function(a, b) { return b.value - a.value; });
+
+        d3.treemap()
+            .size([width, height])
+            .padding(2)
+            .round(true)(root);
+
+        /* Clear previous content */
+        container.innerHTML = '';
+
+        /* Create SVG with viewBox for responsiveness */
+        var svg = d3.select(container)
+            .append('svg')
+            .attr('viewBox', '0 0 ' + width + ' ' + height)
+            .attr('preserveAspectRatio', 'xMidYMid meet')
+            .attr('role', 'presentation');
+
+        /* Render cells */
+        var cells = svg.selectAll('g')
+            .data(root.leaves())
+            .enter()
+            .append('g')
+            .attr('class', 'heatmap-cell')
+            .attr('tabindex', '0')
+            .attr('role', 'listitem')
+            .attr('aria-label', function(d) {
+                return d.data.name + ': ' + d.data.value + ' exposures (' + d.data.category + ')';
+            })
+            .attr('transform', function(d) {
+                return 'translate(' + d.x0 + ',' + d.y0 + ')';
+            });
+
+        cells.append('rect')
+            .attr('width', function(d) { return Math.max(0, d.x1 - d.x0); })
+            .attr('height', function(d) { return Math.max(0, d.y1 - d.y0); })
+            .attr('fill', function(d) { return colorScale(d.data.value); })
+            .attr('stroke', isDark ? '#1a1d2e' : '#ffffff')
+            .attr('stroke-width', 1.5)
+            .attr('rx', 3);
+
+        /* Labels — only if cell is large enough */
+        cells.each(function(d) {
+            var cellW = d.x1 - d.x0;
+            var cellH = d.y1 - d.y0;
+            if (cellW < 50 || cellH < 28) return;
+
+            var g = d3.select(this);
+            var maxChars = Math.floor(cellW / 7);
+            var label = d.data.name.length > maxChars
+                ? d.data.name.substring(0, maxChars - 1) + '\u2026'
+                : d.data.name;
+
+            g.append('text')
+                .attr('x', cellW / 2)
+                .attr('y', cellH / 2 - 5)
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'auto')
+                .attr('fill', textColor(d.data.value))
+                .attr('font-size', cellW < 80 ? '10px' : '12px')
+                .attr('font-family', 'Poppins, sans-serif')
+                .attr('font-weight', '500')
+                .attr('pointer-events', 'none')
+                .text(label);
+
+            /* Count label below name */
+            if (cellH >= 44) {
+                g.append('text')
+                    .attr('x', cellW / 2)
+                    .attr('y', cellH / 2 + 12)
+                    .attr('text-anchor', 'middle')
+                    .attr('dominant-baseline', 'auto')
+                    .attr('fill', textColor(d.data.value))
+                    .attr('font-size', '11px')
+                    .attr('font-family', 'Poppins, sans-serif')
+                    .attr('font-weight', '600')
+                    .attr('opacity', '0.9')
+                    .attr('pointer-events', 'none')
+                    .text(d.data.value);
+            }
+        });
+
+        /* Tippy.js tooltips */
+        if (typeof tippy !== 'undefined') {
+            tippy(container.querySelectorAll('.heatmap-cell'), {
+                content: function(el) {
+                    var d = d3.select(el).datum();
+                    return '<strong>' + d.data.name + '</strong><br>Category: ' + d.data.category + '<br>Exposures: ' + d.data.value;
+                },
+                allowHTML: true,
+                placement: 'top',
+                arrow: true,
+                trigger: 'mouseenter focus',
+                theme: isDark ? 'dark' : 'light',
+                maxWidth: 220
+            });
+        }
+
+        /* Legend */
+        var legendEl = container.querySelector('.heatmap-legend');
+        if (legendEl) legendEl.remove();
+
+        var legend = document.createElement('div');
+        legend.className = 'heatmap-legend';
+        legend.setAttribute('aria-label', 'Heat map color legend');
+
+        var tiers = [
+            { color: '#3b6be6', label: 'Low (1\u20135)' },
+            { color: '#e67e22', label: 'Medium (6\u201310)' },
+            { color: '#d63031', label: 'High (11+)' }
+        ];
+
+        tiers.forEach(function(t) {
+            var item = document.createElement('span');
+            item.className = 'heatmap-legend-item';
+
+            var swatch = document.createElement('span');
+            swatch.className = 'heatmap-legend-swatch';
+            swatch.style.backgroundColor = t.color;
+            swatch.setAttribute('aria-hidden', 'true');
+
+            item.appendChild(swatch);
+            item.appendChild(document.createTextNode(t.label));
+            legend.appendChild(item);
+        });
+
+        container.appendChild(legend);
+
+        /* Debounced resize handler */
+        window.removeEventListener('resize', _heatMapResizeHandler);
+        window.addEventListener('resize', _heatMapResizeHandler);
+
     } catch (error) {
-        console.warn('Error rendering categories list:', error);
+        console.warn('Error rendering heat map:', error);
     }
+}
+
+function _heatMapResizeHandler() {
+    clearTimeout(_heatMapResizeTimer);
+    _heatMapResizeTimer = setTimeout(function() {
+        if (lastHeatMapData) drawHeatMap(lastHeatMapData);
+    }, 250);
 }
 
 $(document).ready(function () {
