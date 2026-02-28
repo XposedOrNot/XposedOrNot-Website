@@ -728,11 +728,12 @@ function renderRiskComparison() {
     // Calculate combined risk (higher of the two + bonus for shared breaches)
     const sharedBonus = Math.min(comparisonData.sharedBreaches.size * 2, 15);
     const combinedScore = Math.min(Math.max(riskA.risk_score, riskB.risk_score) + sharedBonus, 100);
-    const combinedLabel = combinedScore >= 67 ? 'High' : (combinedScore >= 34 ? 'Medium' : 'Low');
+    const combinedLabel = combinedScore >= 76 ? 'Critical' : (combinedScore >= 51 ? 'High' : (combinedScore >= 26 ? 'Moderate' : 'Low'));
 
     const getRiskClass = (score) => {
-        if (score >= 67) return 'risk-high';
-        if (score >= 34) return 'risk-medium';
+        if (score >= 76) return 'risk-critical';
+        if (score >= 51) return 'risk-high';
+        if (score >= 26) return 'risk-medium';
         return 'risk-low';
     };
 

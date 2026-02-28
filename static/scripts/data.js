@@ -17,7 +17,6 @@ $.LoadingOverlaySetup({
 
 $.LoadingOverlay("show");
 
-// Announce loading state to screen readers
 $('body').append('<div id="sr-loading-status" class="sr-only" aria-live="assertive" role="status">Loading your breach report...</div>');
 
 $.urlParam = function (name) {
@@ -36,7 +35,6 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-// Lazy-load confetti library
 var confettiLoading = false;
 function loadConfetti() {
     return new Promise(function (resolve, reject) {
@@ -104,7 +102,6 @@ function fireConfetti() {
             });
         }, 500);
     }).catch(function () {
-        // Confetti library unavailable — skip animation
     });
 }
 
@@ -112,7 +109,6 @@ function showNoBreachView(emailAddr) {
     $.LoadingOverlay("hide");
     $('#sr-loading-status').text('Report loaded.');
 
-    // Hide all report sections except the first
     $('section[aria-label="Risk analysis and recommendations"]').hide();
     $('section[aria-label="Breach summary"]').hide();
     $('section[aria-label="Sensitive data breaches"]').hide();
@@ -124,7 +120,6 @@ function showNoBreachView(emailAddr) {
     $('section[aria-label="Protect your accounts"]').hide();
     $('section[aria-label="Attack path visualization"]').hide();
 
-    // Replace the first section content with a clean "all clear" view
     var safeEmail = escapeHtml(emailAddr);
     var isDark = document.body.classList.contains('dark-mode') ||
                  document.documentElement.getAttribute('data-theme') === 'dark';
@@ -146,7 +141,6 @@ function showNoBreachView(emailAddr) {
         '</div>'
     );
 
-    // Fire confetti
     setTimeout(fireConfetti, 300);
 }
 
@@ -158,9 +152,11 @@ function getAlertType(riskLabel) {
     switch (riskLabel) {
         case 'Low':
             return 'success';
-        case 'Medium':
+        case 'Moderate':
             return 'warning';
         case 'High':
+            return 'danger';
+        case 'Critical':
             return 'danger';
         default:
             return 'secondary';
@@ -189,22 +185,28 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
 
     let introIcon, introTitle, introBody, introClass;
     switch (riskLabel) {
-        case 'High':
+        case 'Critical':
             introIcon = '🔴';
             introTitle = 'Your accounts are at serious risk';
-            introBody = 'Multiple breaches have exposed sensitive data tied to your email. Take the steps below immediately to protect your accounts and identity.';
+            introBody = 'Sensitive data like passwords or financial info has been exposed in multiple breaches. You should act on the steps below right away.';
+            introClass = 'risk-intro-critical';
+            break;
+        case 'High':
+            introIcon = '🟠';
+            introTitle = 'Important data has been exposed';
+            introBody = 'Your email shows up in breaches that leaked sensitive data. Change your compromised passwords now to stay safe.';
             introClass = 'risk-intro-high';
             break;
-        case 'Medium':
-            introIcon = '🟠';
+        case 'Moderate':
+            introIcon = '🟡';
             introTitle = 'Some of your data has been exposed';
-            introBody = 'Your email appeared in several data breaches. Act now to change compromised passwords and limit potential damage.';
+            introBody = 'Your email was found in a few data breaches. Check the details below and secure any affected accounts.';
             introClass = 'risk-intro-medium';
             break;
         default:
             introIcon = '🟢';
             introTitle = 'Your exposure is limited';
-            introBody = 'Your email has minimal breach exposure. The steps below will help you stay ahead of future threats.';
+            introBody = 'Your email has very little breach exposure. Follow the steps below to stay protected.';
             introClass = 'risk-intro-low';
     }
 
@@ -463,10 +465,10 @@ var j = $.ajax(url)
                 width: isMobile ? 300 : 500,
                 height: isMobile ? 200 : 300,
                 greenFrom: 0,
-                greenTo: 33,
-                yellowFrom: 34,
-                yellowTo: 66,
-                redFrom: 67,
+                greenTo: 25,
+                yellowFrom: 26,
+                yellowTo: 50,
+                redFrom: 51,
                 redTo: 100,
                 minorTicks: 5,
                 max: 100,
@@ -522,14 +524,17 @@ var j = $.ajax(url)
 
         let alertType;
         switch (riskLabel) {
-            case "Medium":
+            case "Low":
+                alertType = "success";
+                break;
+            case "Moderate":
                 alertType = "warning";
                 break;
             case "High":
                 alertType = "danger";
                 break;
-            case "Low":
-                alertType = "success";
+            case "Critical":
+                alertType = "danger";
                 break;
             default:
                 alertType = "warning";
@@ -1506,7 +1511,6 @@ $.get(analyticsApiUrl)
         });
     })
     .fail(function () {
-        // Analytics data unavailable — silently skip hortree
     });
 
 
@@ -1661,7 +1665,6 @@ function detectAttackPaths(breachesDetails, emailAddr) {
 
     var paths = [];
 
-    // 1. Account Takeover: Passwords in 2+ breaches
     if (hasType('Passwords') && dataTypeMap['Passwords'].length >= 2) {
         var pwBreaches = getBreaches('Passwords');
         var hasEmailType = hasType('Email addresses');
@@ -1695,7 +1698,6 @@ function detectAttackPaths(breachesDetails, emailAddr) {
         });
     }
 
-    // 2. SIM Swap: Passwords + Phone numbers
     if (hasType('Passwords') && hasType('Phone numbers')) {
         var simBreaches = uniqueBreaches(getBreaches('Phone numbers').concat(getBreaches('Passwords')));
         var hasDob = hasType('Dates of birth');
@@ -1729,7 +1731,6 @@ function detectAttackPaths(breachesDetails, emailAddr) {
         });
     }
 
-    // 3. Identity Theft: 2+ of DOB, addresses, SSN, Names
     var identityTypes = ['Dates of birth', 'Physical addresses', 'Social security numbers', 'Names'];
     var presentIdentityTypes = identityTypes.filter(function(t) { return hasType(t); });
     if (presentIdentityTypes.length >= 2) {
@@ -1771,7 +1772,6 @@ function detectAttackPaths(breachesDetails, emailAddr) {
         });
     }
 
-    // 4. Corporate Infiltration: Passwords + non-freemail
     if (hasType('Passwords') && isCorporate) {
         var corpBreaches = getBreaches('Passwords');
         paths.push({
@@ -1798,7 +1798,6 @@ function detectAttackPaths(breachesDetails, emailAddr) {
         });
     }
 
-    // 5. Social Engineering: Names + Phone + Email
     if (hasType('Names') && hasType('Phone numbers') && hasType('Email addresses')) {
         var seBreaches = uniqueBreaches(getBreaches('Names').concat(getBreaches('Phone numbers')).concat(getBreaches('Email addresses')));
         var hasAddrSE = hasType('Physical addresses');
@@ -1829,7 +1828,6 @@ function detectAttackPaths(breachesDetails, emailAddr) {
         });
     }
 
-    // 6. Physical Threat: Addresses + Names
     if (hasType('Physical addresses') && hasType('Names')) {
         var physBreaches = uniqueBreaches(getBreaches('Physical addresses').concat(getBreaches('Names')));
         var hasPhonePT = hasType('Phone numbers');
@@ -1934,7 +1932,6 @@ function renderAttackPaths(paths) {
     var tabsContainer = document.getElementById('attack-paths-tabs');
     var contentContainer = document.getElementById('attack-paths-content');
 
-    // Build tabs (only if 2+ paths)
     var tabsHtml = '';
     if (paths.length > 1) {
         tabsHtml = '<div class="attack-path-tabs-wrapper">';
@@ -1949,7 +1946,6 @@ function renderAttackPaths(paths) {
     }
     tabsContainer.innerHTML = tabsHtml;
 
-    // Build content panels
     var contentHtml = '';
     paths.forEach(function(path, i) {
         var isActive = i === 0;
@@ -1988,7 +1984,6 @@ function renderAttackPaths(paths) {
     });
     contentContainer.innerHTML = contentHtml;
 
-    // Tab click + keyboard navigation
     if (paths.length > 1) {
         var tabs = tabsContainer.querySelectorAll('.attack-path-tab');
         var panels = contentContainer.querySelectorAll('.attack-path-panel');
@@ -2231,7 +2226,6 @@ function drawHeatMap(xposedData) {
 
         container.appendChild(legend);
 
-        /* Debounced resize handler */
         window.removeEventListener('resize', _heatMapResizeHandler);
         window.addEventListener('resize', _heatMapResizeHandler);
 

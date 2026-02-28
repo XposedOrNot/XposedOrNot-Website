@@ -126,10 +126,12 @@ var j = $.ajax(edutu)
 
         risk_score = myjson.BreachMetrics.risk[0].risk_score
         risk_label = myjson.BreachMetrics.risk[0].risk_label
-        if (risk_label == "Medium") {
-            risk_score_html = '<div align="center" class="alert alert-warning">' + 'Your Risk Score : <strong>' + risk_label + '</strong></div>'
+        if (risk_label == "Critical") {
+            risk_score_html = '<div align="center" class="alert alert-danger">' + 'Your Risk Score : <strong>' + risk_label + '</strong></div>'
         } else if (risk_label == "High") {
             risk_score_html = '<div align="center" class="alert alert-danger">' + 'Your Risk Score : <strong>' + risk_label + '</strong></div>'
+        } else if (risk_label == "Moderate") {
+            risk_score_html = '<div align="center" class="alert alert-warning">' + 'Your Risk Score : <strong>' + risk_label + '</strong></div>'
         } else if (risk_label == "Low") {
             risk_score_html = '<div align="center" class="alert alert-success">' + 'Your Risk Score : <strong>' + risk_label + '</strong></div>'
         } else {
