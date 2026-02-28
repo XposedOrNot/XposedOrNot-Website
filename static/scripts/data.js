@@ -115,6 +115,7 @@ function showNoBreachView(emailAddr) {
     $('section[aria-label="Password risk and top breaches"]').hide();
     $('section[aria-label="Industry exposure"]').hide();
     $('section[aria-label="Exposed data categories"]').hide();
+    $('section[aria-label="Exposed data heat map"]').hide();
     $('section[aria-label="Detailed breach breakdown"]').hide();
     $('section[aria-label="Breach timeline visualization"]').hide();
     $('section[aria-label="Protect your accounts"]').hide();
@@ -1923,12 +1924,22 @@ function renderAttackPaths(paths) {
     var section = document.getElementById('attack-paths-section');
     if (!section) return;
 
+    section.style.display = '';
+
     if (!paths || paths.length === 0) {
-        section.style.display = 'none';
+        var tabsContainer = document.getElementById('attack-paths-tabs');
+        var contentContainer = document.getElementById('attack-paths-content');
+        tabsContainer.innerHTML = '';
+        var desc = section.querySelector('.attack-path-description');
+        if (desc) desc.style.display = 'none';
+        var isDark = document.body.classList.contains('dark-mode') || document.documentElement.getAttribute('data-theme') === 'dark';
+        contentContainer.innerHTML = '<div style="text-align:center; padding: 32px 24px; max-width: 500px; margin: 0 auto; border-radius: 12px; background:' + (isDark ? '#0f2a1f' : '#f0fdf4') + '; border: 1px solid ' + (isDark ? '#16a34a44' : '#bbf7d0') + ';">' +
+            '<div style="font-size: 40px; margin-bottom: 8px;" role="img" aria-label="Shield">&#128737;&#65039;</div>' +
+            '<h3 style="margin-bottom: 6px; color:' + (isDark ? '#86efac' : '#166534') + ';">You\'re looking good</h3>' +
+            '<p style="color:' + (isDark ? '#94a3b8' : '#64748b') + '; margin: 0; font-size: 14px;">Your exposed data does not match any known attack scenario. Keep your passwords unique and stay alert to keep it that way.</p>' +
+            '</div>';
         return;
     }
-
-    section.style.display = '';
     var tabsContainer = document.getElementById('attack-paths-tabs');
     var contentContainer = document.getElementById('attack-paths-content');
 
