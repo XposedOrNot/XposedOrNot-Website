@@ -251,7 +251,7 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
         } else {
             html += 'these ' + allBreachNames.length + ' sites';
         }
-        html += ' immediately. Use a password manager (like Bitwarden — free) to generate a unique password for every account.</div>';
+        html += ' right away. Use a password manager like Bitwarden (free) to create a unique password for every account.</div>';
         html += '</div>';
     }
 
@@ -262,8 +262,8 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
         html += '<span class="risk-card-title">Personal Information Exposed</span>';
         html += '<span class="risk-badge risk-badge-medium">' + piiCount + (piiCount === 1 ? ' occurrence' : ' occurrences') + '</span>';
         html += '</div>';
-        html += '<p class="risk-card-impact">Your personal details (name, address, phone, or date of birth) have been exposed. This data can be used for identity theft, fraudulent accounts, or social engineering attacks.</p>';
-        html += '<div class="risk-card-action"><strong>Do this now:</strong> Set up a credit freeze at all 3 bureaus (Equifax, Experian, TransUnion) — it is free and takes 10 minutes. Enable transaction alerts on your bank accounts and watch for mail or calls referencing your personal details.</div>';
+        html += '<p class="risk-card-impact">Your personal details (name, address, phone, or date of birth) have been exposed. This data can be used for identity theft, fake accounts, or social engineering attacks.</p>';
+        html += '<div class="risk-card-action"><strong>Do this now:</strong> Contact your bank to turn on transaction alerts and fraud monitoring. Check if your country offers a credit freeze or identity protection service. Watch out for calls, emails, or mail that mention your personal details.</div>';
         html += '</div>';
     }
 
@@ -274,8 +274,8 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
         html += '<span class="risk-card-title">Email &amp; Communication Exposure</span>';
         html += '<span class="risk-badge risk-badge-low">' + commsCount + (commsCount === 1 ? ' occurrence' : ' occurrences') + '</span>';
         html += '</div>';
-        html += '<p class="risk-card-impact">Your email address and communication details are exposed. Expect targeted phishing emails, spam, and social engineering attempts — especially emails mentioning breached services by name.</p>';
-        html += '<div class="risk-card-action"><strong>Do this now:</strong> Never click password reset links you did not request. If an email mentions a breach you recognize, go directly to that site (type the URL yourself) instead of clicking any link. Enable 2FA on your email account — it is the single most effective protection.</div>';
+        html += '<p class="risk-card-impact">Your email address and communication details are out there. Watch out for phishing emails, spam, and social engineering tricks, especially emails that mention breached services by name.</p>';
+        html += '<div class="risk-card-action"><strong>Do this now:</strong> Never click password reset links you did not ask for. If an email mentions a breach you recognize, go to that site directly (type the URL yourself) instead of clicking any link. Turn on 2FA on your email account. It is the single best thing you can do to protect yourself.</div>';
         html += '</div>';
     }
 
@@ -286,8 +286,8 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
         html += '<span class="risk-card-title">Demographic Data Exposed</span>';
         html += '<span class="risk-badge risk-badge-low">' + demoCount + (demoCount === 1 ? ' occurrence' : ' occurrences') + '</span>';
         html += '</div>';
-        html += '<p class="risk-card-impact">Demographic information like age, gender, location, or occupation has been exposed. This data is used to build profiles for targeted scams and impersonation.</p>';
-        html += '<div class="risk-card-action"><strong>Do this now:</strong> Review your social media privacy settings — limit what is publicly visible. Be skeptical of unsolicited calls or messages that seem to know personal details about you.</div>';
+        html += '<p class="risk-card-impact">Demographic info like age, gender, location, or occupation has been exposed. This data is used to build profiles for targeted scams and impersonation.</p>';
+        html += '<div class="risk-card-action"><strong>Do this now:</strong> Review your social media privacy settings and limit what is publicly visible. Be wary of unexpected calls or messages from people who seem to know personal details about you.</div>';
         html += '</div>';
     }
 
