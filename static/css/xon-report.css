@@ -3763,33 +3763,48 @@ button.see-more:focus-visible {
 	user-select: none;
 }
 
+.attack-path-nudge {
+	text-align: center;
+	padding: 12px 0 4px;
+}
+
+.attack-path-nudge .nudge-chevron {
+	display: inline-block;
+	color: #3b82f6;
+	font-size: 28px;
+	animation: nudge-bounce 2s ease-in-out 1s infinite;
+}
+
+@keyframes nudge-bounce {
+	0%, 100% { transform: translateY(0); opacity: 0.4; }
+	50% { transform: translateY(8px); opacity: 1; }
+}
+
 .attack-path-cta {
 	text-align: center;
 	background-color: #eff6ff;
 	border: 1px solid #bfdbfe;
 	border-radius: 8px;
-	padding: 24px 20px;
-	margin-top: 16px;
+	padding: 16px 20px;
+	margin-top: 0;
 }
 
 .attack-path-cta i.fa-lock {
-	font-size: 24px;
 	color: #3b82f6;
-	margin-bottom: 8px;
-	display: block;
+	margin-right: 6px;
 }
 
 .attack-path-cta strong {
 	display: block;
 	font-size: 16px;
 	color: #1e293b;
-	margin-bottom: 6px;
+	margin-bottom: 4px;
 }
 
 .attack-path-cta p {
 	font-size: 14px;
 	color: #475569;
-	margin-bottom: 14px;
+	margin-bottom: 12px;
 	max-width: 480px;
 	margin-left: auto;
 	margin-right: auto;
@@ -3797,6 +3812,10 @@ button.see-more:focus-visible {
 
 .attack-path-cta .btn-primary {
 	font-weight: 600;
+}
+
+[data-theme="dark"] .attack-path-nudge .nudge-chevron {
+	color: #6daae0;
 }
 
 [data-theme="dark"] .attack-path-cta {
@@ -3823,5 +3842,12 @@ button.see-more:focus-visible {
 
 	.attack-path-sample-wrapper {
 		opacity: 0.5;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.attack-path-nudge .nudge-chevron {
+		animation: none;
+		opacity: 0.6;
 	}
 }

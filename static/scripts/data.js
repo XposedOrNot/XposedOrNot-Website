@@ -1908,10 +1908,10 @@ function renderSampleAttackPath() {
     html += '<div class="attack-path-single-header"><span class="attack-path-severity-badge severity-critical">CRITICAL</span> Account Takeover</div>';
     html += flowHtml;
     html += '</div>';
+    html += '<div class="attack-path-nudge" aria-hidden="true"><span class="nudge-chevron"><i class="fas fa-chevron-down"></i></span></div>';
     html += '<div class="attack-path-cta">';
-    html += '<i class="fas fa-lock" aria-hidden="true"></i>';
-    html += '<strong>See Your Personalized Attack Paths</strong>';
-    html += '<p>Verify your email to see how attackers could specifically target you based on your actual breach data.</p>';
+    html += '<strong><i class="fas fa-lock" aria-hidden="true"></i> See Your Personalized Attack Paths</strong>';
+    html += '<p>Verify your email to see how attackers could target you based on your actual breach data.</p>';
     html += '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">';
     html += '<i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now</button>';
     html += '</div>';
