@@ -8,18 +8,26 @@ $(document).ready(function () {
 
     $('#domainModal').on('shown.bs.modal', function () {
         $('#domainInput').focus();
-        setTimeout(function () {
-            if (document.activeElement !== document.getElementById('domainInput')) {
-                $('#domainInput').focus();
-            }
-        }, 100);
     });
 
-    const domainRegex = /^(?!:\/\/)([a-zA-Z0-9-_]+\.)?[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/;
+    $('#modalCloseBtn').on('click', function () {
+        window.location.href = 'index.html';
+    });
+
+    function extractDomain(input) {
+        var s = input.trim();
+        s = s.replace(/^https?:\/\//i, '');
+        s = s.replace(/^www\./i, '');
+        s = s.replace(/[\/\?#].*$/, '');
+        s = s.replace(/:\d+$/, '');
+        return s.toLowerCase();
+    }
+
+    const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,11}$/;
 
     $('#domainForm').on('submit', function (e) {
         e.preventDefault();
-        var domainName = $('#domainInput').val().trim();
+        var domainName = extractDomain($('#domainInput').val());
 
         if (domainRegex.test(domainName)) {
             $('#submitButton').attr("disabled", true);
@@ -95,8 +103,7 @@ $(document).ready(function () {
     });
 
     $('#checkAnotherDomainBtn').on('click', function () {
-        $('#domainModal').modal('show');
-        $('.overlay').show();
+        resetForm();
     });
 
     $('#domainInput').on('input', function () {
@@ -111,7 +118,6 @@ $(document).ready(function () {
     function handleNoBreach(domainName) {
         $('#searchedDomain').text(domainName);
         $('#domainForm').hide();
-        $('#domainModalLabel').hide();
         $('#noBreachMessage').show();
         $('#checkAnotherDomainBtnInModal').show();
         triggerConfetti();
@@ -141,14 +147,14 @@ $(document).ready(function () {
     function resetForm() {
         $('#noBreachMessage').hide();
         $('#domainForm').show();
-        $('#domainModalLabel').show();
         $('#domainInput').val('').removeClass('is-invalid');
+        $('#errorMessage').hide();
         $('#checkAnotherDomainBtnInModal').hide();
         $('#domainModal').modal('show');
         $('.overlay').show();
+        $('#content').addClass('blurred');
     }
 
-    // Lazy-load confetti library
     let confettiLoading = false;
     function loadConfetti() {
         return new Promise((resolve, reject) => {
@@ -180,7 +186,6 @@ $(document).ready(function () {
         loadConfetti().then(() => {
             const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
 
-            // First burst
             confetti({
                 particleCount: 100,
                 spread: 70,
@@ -190,7 +195,6 @@ $(document).ready(function () {
                 ticks: 200
             });
 
-            // Second burst after 500ms
             setTimeout(() => {
                 confetti({
                     particleCount: 80,
@@ -212,7 +216,6 @@ $(document).ready(function () {
                 });
             }, 500);
 
-            // Third burst after 1000ms
             setTimeout(() => {
                 confetti({
                     particleCount: 150,

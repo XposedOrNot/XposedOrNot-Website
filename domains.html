@@ -164,19 +164,24 @@
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="domainModalLabel">Check Your Data Breach Exposure</h5>
-        </div>
-        <div class="modal-body">
+        <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="Close and return to home">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="modal-body domain-modal-body">
           <form id="domainForm" autocomplete="off">
-            <div class="form-group text-center">
-              <p>Enter your domain name below to get your breach summary.</p><br><br>
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-building"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">Check Your Domain's Breach Exposure</h5>
+              <p class="domain-modal-desc">Enter your domain name to get a breach summary.</p>
               <label for="domainInput" class="sr-only">Domain Name</label>
-              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <input type="text" class="domain-modal-input" id="domainInput" placeholder="example.com" required>
               <div class="invalid-feedback">
                 Please enter a valid domain name.
               </div>
-              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
                 Get My Report
                 <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                   style="display:none;"></span>
@@ -185,7 +190,7 @@
             </div>
           </form>
           <div id="noBreachMessage" style="display: none;">
-            <div class="text-center">
+            <div class="domain-modal-inner">
               <i class="fas fa-smile-beam fa-3x text-success"></i>
               <h4 class="text-success mt-3">No breach records found for <span id="searchedDomain"
                   class="font-weight-bold"></span>!</h4>
