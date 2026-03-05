@@ -3,24 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Breaches Visualization (Mobile)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Data Breaches Visualization</title>
     <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="static.hotjar.com">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <meta property="og:title" content="XposedOrNot: Data Breaches Repository" />
-    <meta name="description"
-        content="Visualize data breaches with XposedOrNot. Gain insights through interactive charts and graphs to better understand breach trends and impacts." />
+    <meta name="description" content="Visualize data breaches with XposedOrNot. Gain insights through interactive charts and graphs to better understand breach trends and impacts." />
     <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
     <meta property="og:url" content="https://xposedornot.com/data_breaches" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@XposedOrNot">
     <meta name="twitter:title" content="XposedOrNot: Data Breaches Repository">
-    <meta name="twitter:description"
-        content="Visualize data breaches with XposedOrNot. Gain insights through interactive charts and graphs to better understand breach trends and impacts.">
+    <meta name="twitter:description" content="Visualize data breaches with XposedOrNot. Gain insights through interactive charts and graphs to better understand breach trends and impacts.">
     <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
     <script>
@@ -35,7 +32,6 @@
                         navigator.userAgent.match(/BlackBerry/i) ||
                         navigator.userAgent.match(/Windows Phone/i));
             }
-
             if (isDesktopDevice()) {
                 if (!window.location.href.includes('breaches-visualisations.html')) {
                     window.location.href = 'breaches-visualisations.html';
@@ -45,92 +41,471 @@
     </script>
 
     <style>
-        body,
-        html {
+        :root {
+            --bg-primary: #0e0f19;
+            --bg-card: #161927;
+            --bg-elevated: #1e2235;
+            --bg-hover: #252940;
+            --border-subtle: rgba(96, 165, 250, 0.08);
+            --border-dim: rgba(255, 255, 255, 0.06);
+            --text-primary: #f0f4ff;
+            --text-secondary: #8b9dc3;
+            --text-muted: #6b7fa0;
+            --accent-blue: #60a5fa;
+            --accent-gradient: linear-gradient(-220deg, #3c5fec, #4284fb);
+            --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', Arial, sans-serif;
-            background-color: #1a1a1a;
+            font-family: var(--font-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 16px;
+            background: var(--accent-blue);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 0 0 8px 8px;
+            z-index: 10000;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+            outline: 3px solid var(--accent-blue);
+            outline-offset: 2px;
+            color: #fff;
+            text-decoration: none;
         }
 
         .navbar-custom {
-            background-color: #2563eb;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 500;
         }
 
-        .navbar-brand,
-        .nav-link {
+        .navbar-brand {
             color: white !important;
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
             font-weight: 500;
-        }
-
-        .tooltip {
-            position: fixed;
-            background-color: rgba(30, 30, 34, 0.95);
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            pointer-events: none;
-            opacity: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            max-width: 90%;
-            width: 300px;
-            color: #f8f9fa;
-            font-size: 14px;
-            line-height: 1.6;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            left: 50%;
-            bottom: 20px;
-            transform: translateX(-50%);
-        }
-
-        .tooltip-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #f8f9fa;
-            border-bottom: 2px solid;
-            padding-bottom: 6px;
-        }
-
-        .tooltip-logo {
-            max-width: 30%;
-            height: auto;
-            display: block;
-            margin: 0 auto 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .tooltip-description {
-            color: #e2e8f0;
-            margin: 10px 0;
-            font-size: 13px;
-            line-height: 1.6;
-            max-height: 120px;
-            overflow-y: auto;
-        }
-
-        .tooltip-stats {
-            font-weight: 500;
-            padding: 6px 10px;
+            font-size: 0.9rem;
+            padding: 6px 12px !important;
             border-radius: 6px;
-            display: inline-block;
-            margin-top: 6px;
-            font-size: 13px;
+            transition: all 0.2s ease;
         }
 
-        /* Bottom Sheet Styles */
+        #loadingOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(14, 15, 25, 0.97);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid rgba(96, 165, 250, 0.15);
+            border-top-color: var(--accent-blue);
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 14px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .hero-section {
+            padding: 24px 16px 16px;
+        }
+
+        .hero-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-stat {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0 0 20px;
+        }
+
+        .hero-stat span {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .year-pills {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 0 0 12px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .year-pills::-webkit-scrollbar { display: none; }
+
+        .year-pill {
+            flex-shrink: 0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            border: 1px solid var(--border-dim);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .year-pill:focus {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 1px;
+        }
+
+        .year-pill .pill-count {
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .filter-bar {
+            position: sticky;
+            top: 56px;
+            z-index: 400;
+            background: rgba(14, 15, 25, 0.92);
+            backdrop-filter: blur(12px);
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .filter-bar label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            white-space: nowrap;
+            margin: 0;
+        }
+
+        .filter-select {
+            flex: 1;
+            padding: 7px 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-dim);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-family: var(--font-body);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b9dc3' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 28px;
+        }
+
+        .filter-select:focus {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 1px;
+            border-color: transparent;
+        }
+
+        .filter-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .filter-reset {
+            padding: 7px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-dim);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-family: var(--font-body);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .filter-reset:hover, .filter-reset:focus {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        .filter-reset:focus {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 1px;
+        }
+
+        .active-filter-tag {
+            font-size: 0.7rem;
+            color: var(--accent-blue);
+            padding: 4px 10px;
+            background: rgba(96, 165, 250, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            text-align: center;
+        }
+
+        main {
+            padding: 0 0 20px;
+        }
+
+        .timeline {
+            padding: 0 12px;
+        }
+
+        .year-section {
+            margin-bottom: 2px;
+        }
+
+        .year-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 14px;
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            transition: background 0.15s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-body);
+        }
+
+        .year-header:hover, .year-header:focus-visible {
+            background: var(--bg-card);
+        }
+
+        .year-header:focus {
+            outline: none;
+        }
+
+        .year-header:focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: -2px;
+        }
+
+        .year-color-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .year-label {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .year-count {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .year-chevron {
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            transition: transform 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .year-section.active .year-chevron {
+            transform: rotate(180deg);
+        }
+
+        .year-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .year-section.active .year-body {
+            max-height: 5000px;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .year-inner {
+            padding: 0 6px 12px;
+        }
+
+        .breach-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background 0.15s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-body);
+            color: inherit;
+        }
+
+        .breach-row:hover, .breach-row:focus-visible {
+            background: var(--bg-card);
+        }
+
+        .breach-row:focus {
+            outline: none;
+        }
+
+        .breach-row:focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: -2px;
+        }
+
+        .breach-logo-thumb {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: contain;
+            background: var(--bg-elevated);
+            padding: 3px;
+            flex-shrink: 0;
+        }
+
+        .breach-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .breach-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .breach-bar-track {
+            height: 4px;
+            background: var(--bg-elevated);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .breach-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            min-width: 3px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .breach-bar-fill.animate {
+            animation: barGrow 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes barGrow {
+            from { width: 0; }
+        }
+
+        .breach-count {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 52px;
+            text-align: right;
+        }
+
+        .show-more-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px;
+            margin-top: 4px;
+            border: 1px dashed var(--border-dim);
+            border-radius: var(--radius-sm);
+            background: none;
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .show-more-btn:hover, .show-more-btn:focus-visible {
+            background: var(--bg-card);
+            color: var(--accent-blue);
+            border-color: rgba(96, 165, 250, 0.2);
+        }
+
+        .show-more-btn:focus {
+            outline: none;
+        }
+
+        .show-more-btn:focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: -2px;
+        }
+
         .bottom-sheet-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.6);
             z-index: 9998;
             opacity: 0;
@@ -145,103 +520,105 @@
 
         .bottom-sheet {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(180deg, #1e1e26 0%, #15151a 100%);
-            border-radius: 20px 20px 0 0;
+            bottom: 0; left: 0; right: 0;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
             z-index: 9999;
             transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 70vh;
+            max-height: 75vh;
             overflow: hidden;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(96, 165, 250, 0.1);
         }
 
         .bottom-sheet.active {
             transform: translateY(0);
         }
 
-        .bottom-sheet-handle {
-            width: 40px;
+        .bs-handle {
+            width: 36px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 2px;
-            margin: 12px auto;
+            margin: 12px auto 0;
             cursor: grab;
         }
 
-        .bottom-sheet-content {
-            padding: 0 20px 30px;
+        .bs-content {
+            padding: 16px 20px 30px;
             overflow-y: auto;
-            max-height: calc(70vh - 30px);
+            max-height: calc(75vh - 20px);
+            -webkit-overflow-scrolling: touch;
         }
 
         .bs-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 14px;
+            margin-bottom: 18px;
         }
 
         .bs-logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
             object-fit: contain;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px;
+            background: var(--bg-elevated);
+            padding: 6px;
         }
 
-        .bs-title-section {
-            flex: 1;
-        }
+        .bs-title-block { flex: 1; min-width: 0; }
 
         .bs-title {
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            color: #f8f9fa;
-            margin: 0 0 4px 0;
+            color: var(--text-primary);
+            margin: 0 0 4px;
         }
 
         .bs-meta {
-            font-size: 0.85rem;
-            color: #94a3b8;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
 
         .bs-industry-tag {
             display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
             font-weight: 600;
         }
 
-        .bs-records-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+        .bs-stat-card {
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            margin-bottom: 14px;
         }
 
-        .bs-records-label {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin-bottom: 8px;
+        .bs-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
 
-        .bs-records-value {
-            font-size: 1.8rem;
+        .bs-stat-value {
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
             font-weight: 700;
-            color: #f8f9fa;
+            color: var(--text-primary);
         }
 
-        .bs-progress-bar {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
+        .bs-progress {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.06);
             border-radius: 3px;
             margin-top: 10px;
             overflow: hidden;
@@ -254,115 +631,132 @@
         }
 
         .bs-description {
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .bs-actions {
+            display: flex;
+            gap: 8px;
         }
 
         .bs-close-btn {
-            width: 100%;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 12px;
-            color: #f8f9fa;
-            font-size: 1rem;
+            flex: 1;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 0.9rem;
             font-weight: 600;
+            font-family: var(--font-body);
             cursor: pointer;
             transition: background 0.2s ease;
         }
 
-        .bs-close-btn:active {
-            background: rgba(255, 255, 255, 0.2);
+        .bs-close-btn:hover, .bs-close-btn:focus {
+            background: var(--bg-hover);
         }
 
-        /* Footer Styles for Dark Background */
-        .footer {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 30px 15px;
-            margin-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .bs-close-btn:focus {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 1px;
         }
 
-        .footer p {
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            line-height: 1.6;
+        .bs-detail-link {
+            padding: 12px 16px;
+            background: rgba(96, 165, 250, 0.12);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: var(--radius-sm);
+            color: var(--accent-blue);
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: var(--font-body);
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s ease;
         }
 
-        .footer a {
-            color: #60a5fa;
+        .bs-detail-link:hover, .bs-detail-link:focus {
+            background: rgba(96, 165, 250, 0.2);
+            color: var(--accent-blue);
             text-decoration: none;
         }
 
-        .footer a:hover {
-            color: #93c5fd;
-            text-decoration: underline;
+        .bs-detail-link:focus {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 1px;
         }
 
-        .footer-columns {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 20px;
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
         }
 
-        .footer-group h6 {
-            color: #f8f9fa;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .footer-group .footer-link {
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 12px;
             display: block;
-            color: #94a3b8;
-            font-size: 0.85rem;
-            padding: 4px 0;
-            transition: color 0.2s ease;
         }
 
-        .footer-group .footer-link:hover {
-            color: #60a5fa;
+        .footer {
+            padding: 30px 0 24px;
+            background: #111320;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 30px;
         }
 
-        .footer-group .footer-link i {
-            margin-right: 6px;
-            width: 16px;
-        }
+        .footer p { color: var(--text-secondary); font-size: 0.85rem; }
+        .footer p a { color: var(--accent-blue); text-decoration: none; }
+        .footer p a:hover { color: #93b4ff; text-decoration: underline; }
 
-        /* Accordion styles for footer */
         .footer-columns {
             display: flex;
             flex-direction: column;
-            text-align: left;
+            text-align: center;
             gap: 0;
             padding: 0;
         }
 
         .footer-group {
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid var(--border-dim);
         }
 
         .footer-group h6 {
+            color: #c8d6e5 !important;
+            font-size: 0.8em !important;
+            font-weight: 600 !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
-            padding: 15px 20px;
+            padding: 14px 20px;
             margin: 0 !important;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        .footer-group h6:focus {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: -2px;
+        }
+
         .footer-group h6::after {
             content: '+';
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 300;
+            color: var(--text-muted);
             transition: transform 0.3s ease;
         }
 
         .footer-group.active h6::after {
-            content: '−';
+            content: '\2212';
         }
 
         .footer-group .footer-links-wrapper {
@@ -377,744 +771,500 @@
             padding: 0 20px 15px 20px;
         }
 
-        .year-section {
-            margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .year-header {
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .year-header:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .year-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0;
-            color: white;
-        }
-
-        .year-count {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .year-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .year-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-
-        .year-section.active .year-content {
-            max-height: 2000px;
-            transition: max-height 1s ease-in;
-        }
-
-        .year-section.active .year-icon {
-            transform: rotate(180deg);
-        }
-
-        .breach-container {
-            position: relative;
-            margin: 0;
-            padding: 10px;
-        }
-
-        .breach-circle {
-            cursor: pointer;
-            transition: filter 0.3s ease-in-out;
-            filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3));
-            animation: glow 4s ease-in-out infinite;
-        }
-
-        .breach-group {
-            opacity: 0;
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        @keyframes glow {
-            0%, 100% {
-                filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-            }
-            50% {
-                filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.5));
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .breach-logo {
-            pointer-events: none;
-        }
-
-        .breach-circle:active {
-            filter: drop-shadow(0 8px 24px rgba(59, 130, 246, 0.7)) brightness(1.2);
-        }
-
-        .breach-group:hover .breach-circle,
-        .breach-group:focus .breach-circle {
-            filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.6)) brightness(1.1);
-        }
-
-        .breach-title {
-            font-size: 11px;
-            fill: #e5e7eb;
-            font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-            pointer-events: none;
-        }
-
-        .page-title {
-            color: white;
-            text-align: center;
-            margin: 1.5rem 0;
-            font-weight: 600;
-            font-size: 1.5rem;
-            background: linear-gradient(45deg, #3b82f6, #2563eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 0 15px;
-        }
-
-        .filter-controls {
-            background: rgba(37, 99, 235, 0.9);
-            padding: 15px;
-            border-radius: 8px;
-            color: white;
-            margin: 10px 15px 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .filter-controls h4 {
-            margin: 0 0 15px 0;
-            font-size: 16px;
-            text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .filter-controls select {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(30, 30, 34, 0.8);
-            color: white;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .filter-controls button {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            width: 100%;
-            font-weight: 500;
-        }
-
-        .filter-controls button:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .active-industry {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin-top: 10px;
-            font-size: 14px;
-            text-align: center;
-            width: 100%;
-            font-weight: 500;
-        }
-
-        #loadingOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(17, 24, 39, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .desktop-view-link {
+        .footer-group a.footer-link {
             display: block;
-            text-align: center;
-            margin: 20px auto;
-            color: #3b82f6;
-            text-decoration: underline;
-            font-weight: 500;
+            margin-bottom: 6px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85em;
+        }
+
+        .footer-group a.footer-link:hover {
+            background-color: rgba(96, 165, 250, 0.1);
+            padding-left: 14px;
+            color: var(--accent-blue) !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .breach-bar-fill, .year-body, .bottom-sheet,
+            .bottom-sheet-overlay, .year-chevron {
+                transition: none !important;
+                animation: none !important;
+            }
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
-    <div id="loadingOverlay">
-        <i class="fas fa-spinner fa-spin fa-3x" style="color: #3b82f6;"></i>
-        <p style="margin-top: 15px; color: #e5e7eb; font-weight: 600; font-size: 1.1rem;">Loading visualization...</p>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <div id="loadingOverlay" role="status" aria-live="polite">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading breach data</p>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="/">XposedOrNot</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="https://blog.xposedornot.com">Blog</a></li>
-                <li class="nav-item"><a class="nav-link" href="api_doc.html">API</a></li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container-fluid px-3">
+            <a class="navbar-brand" href="/">XposedOrNot</a>
+            <div class="ml-auto d-flex">
+                <a class="nav-link" href="https://blog.xposedornot.com">Blog</a>
+                <a class="nav-link" href="api_doc.html">API</a>
+            </div>
         </div>
     </nav>
 
-    <h1 class="page-title">Data Breaches Visualization (Mobile)</h1>
+    <main id="main-content">
+        <div class="hero-section">
+            <h1 class="hero-title">Data Breaches</h1>
+            <p class="hero-stat" id="heroStat">Loading breach data...</p>
+            <div class="year-pills" id="yearPills" role="tablist" aria-label="Jump to year"></div>
+        </div>
 
-    <div class="filter-controls">
-        <h4>Filter Data Breaches</h4>
-        <select id="industrySelect">
-            <option value="all">All Industries</option>
-            <!-- Industry options will be populated dynamically -->
-        </select>
-        <button id="resetFilter">Reset Filter</button>
-        <div class="active-industry" id="activeIndustry">Showing: All Industries</div>
+        <div class="filter-bar" id="filterBar">
+            <label for="industrySelect">Filter</label>
+            <select class="filter-select" id="industrySelect" aria-label="Filter by industry">
+                <option value="all">All Industries</option>
+            </select>
+            <button class="filter-reset" id="resetFilter" aria-label="Reset industry filter">Reset</button>
+        </div>
+
+        <div class="timeline" id="timeline" role="list" aria-label="Breach timeline by year"></div>
+    </main>
+
+    <div class="bottom-sheet-overlay" id="bsOverlay"></div>
+    <div class="bottom-sheet" id="bottomSheet" role="dialog" aria-modal="true" aria-label="Breach details">
+        <div class="bs-handle" id="bsHandle"></div>
+        <div class="bs-content" id="bsContent"></div>
     </div>
 
-    <a href="breaches-visualisations.html" class="desktop-view-link">View Desktop Version</a>
-
-    <div id="timelineContainer"></div>
-
-    <div class="tooltip" id="tooltip" style="display: none;"></div>
-
-    <!-- Bottom Sheet Overlay -->
-    <div class="bottom-sheet-overlay" id="bottomSheetOverlay"></div>
-
-    <!-- Bottom Sheet -->
-    <div class="bottom-sheet" id="bottomSheet">
-        <div class="bottom-sheet-handle"></div>
-        <div class="bottom-sheet-content" id="bottomSheetContent">
-            <!-- Content will be injected by JavaScript -->
+    <div class="footer">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:24px;">
+                <p>Join us in shaping this fully open source site! Contributions welcome at our <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+            </div>
+            <div class="footer-columns">
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">Legal</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="privacy" class="footer-link">Privacy Policy</a>
+                        <a href="terms" class="footer-link">Terms</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">Community</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+                        <a href="our-repository" class="footer-link">Our Repository</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">Trust</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+                        <a href="transparency" class="footer-link">Transparency</a>
+                        <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">Follow Us</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link"><i class="fab fa-twitter"></i> Twitter (X)</a>
+                        <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link"><i class="fab fa-facebook"></i> Facebook</a>
+                        <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link"><i class="fab fa-mastodon"></i> Mastodon</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        let allBreachData = [];
         const colorPalettes = {
-            2026: ['#4CC9F0', '#4895EF', '#4361EE', '#3F37C9', '#3A0CA3'].reverse(),
-            2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
-            2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
-            2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),
-            2022: ['#FFD43B', '#FCC419', '#FAB005', '#F59F00', '#F08C00'].reverse(),
-            2021: ['#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'].reverse(),
-            2020: ['#FF922B', '#FD7E14', '#F76707', '#E8590C', '#D9480F'].reverse(),
-            2019: ['#339AF0', '#228BE6', '#1C7ED6', '#1971C2', '#1864AB'].reverse(),
-            2018: ['#E64980', '#D6336C', '#C2255C', '#A61E4D', '#9C1453'].reverse(),
-            2017: ['#66D9E8', '#3BC9DB', '#22B8CF', '#15AABF', '#1098AD'].reverse(),
-            2016: ['#9775FA', '#845EF7', '#7950F2', '#7048E8', '#6741D9'].reverse(),
-            2015: ['#F783AC', '#F06595', '#E64980', '#D6336C', '#C2255C'].reverse(),
-            2014: ['#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20'].reverse(),
-            2013: ['#FF5722', '#F4511E', '#E64A19', '#D84315', '#BF360C'].reverse(),
-            2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),
-            2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),
-            2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),
-            2009: ['#06D6A0', '#05C793', '#04B886', '#03A879', '#029A6C'].reverse(),
-            2008: ['#F72585', '#E71D7C', '#D71573', '#C70D6A', '#B70561'].reverse(),
-            2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()
+            2026: ['#3A0CA3','#3F37C9','#4361EE','#4895EF','#4CC9F0'],
+            2025: ['#C92A2A','#E03131','#F03E3E','#FA5252','#FF6B6B'],
+            2024: ['#237032','#2B8A3E','#2F9E44','#37B24D','#40C057'],
+            2023: ['#5F3DC4','#6741D9','#7048E8','#7950F2','#845EF7'],
+            2022: ['#F08C00','#F59F00','#FAB005','#FCC419','#FFD43B'],
+            2021: ['#087F5B','#099268','#0CA678','#12B886','#20C997'],
+            2020: ['#D9480F','#E8590C','#F76707','#FD7E14','#FF922B'],
+            2019: ['#1864AB','#1971C2','#1C7ED6','#228BE6','#339AF0'],
+            2018: ['#9C1453','#A61E4D','#C2255C','#D6336C','#E64980'],
+            2017: ['#1098AD','#15AABF','#22B8CF','#3BC9DB','#66D9E8'],
+            2016: ['#6741D9','#7048E8','#7950F2','#845EF7','#9775FA'],
+            2015: ['#C2255C','#D6336C','#E64980','#F06595','#F783AC'],
+            2014: ['#1B5E20','#2E7D32','#388E3C','#43A047','#4CAF50'],
+            2013: ['#BF360C','#D84315','#E64A19','#F4511E','#FF5722'],
+            2012: ['#006064','#00838F','#0097A7','#00ACC1','#00BCD4'],
+            2011: ['#4A148C','#6A1B9A','#7B1FA2','#8E24AA','#9C27B0'],
+            2010: ['#FF6F00','#FF8F00','#FFA000','#FFB300','#FFC107'],
+            2009: ['#029A6C','#03A879','#04B886','#05C793','#06D6A0'],
+            2008: ['#B70561','#C70D6A','#D71573','#E71D7C','#F72585'],
+            2007: ['#880E4F','#AD1457','#C2185B','#D81B60','#E91E63']
         };
-        const defaultPalette = ['#748FFC', '#4C6EF5', '#4263EB', '#3B5BDB', '#364FC7'].reverse();
+        const labelOverrides = { 2011: '#BA68C8' };
+        const defaultPalette = ['#364FC7','#3B5BDB','#4263EB','#4C6EF5','#748FFC'];
 
-        function circleSize(count) {
-            if (count >= 50000000) return 55;
-            else if (count >= 10000000) return 48;
-            else if (count >= 5000000) return 42;
-            else if (count >= 1000000) return 36;
-            else return 30;
+        function getLabelColor(year) {
+            if (labelOverrides[year]) return labelOverrides[year];
+            const p = colorPalettes[year] || defaultPalette;
+            return p[p.length - 1];
         }
 
-        function logoSize(count) {
-            if (count >= 50000000) return 38;
-            else if (count >= 10000000) return 32;
-            else if (count >= 5000000) return 28;
-            else if (count >= 1000000) return 24;
-            else return 20;
+        function getBarColor(year) {
+            const p = colorPalettes[year] || defaultPalette;
+            return p[Math.min(3, p.length - 1)];
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        function formatCount(n) {
+            if (n >= 1000000000) return (n / 1000000000).toFixed(1) + 'B';
+            if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+            if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
+            return n.toString();
+        }
 
-            fetch('https://api.xposedornot.com/v1/breaches')
-                .then(response => response.json())
-                .then(apiData => {
-                    allBreachData = processData(apiData['exposedBreaches']);
-                    populateIndustryFilter(apiData['exposedBreaches']);
-                    createMobileTimeline(allBreachData);
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                    document.getElementById('timelineContainer').innerHTML = `
-                        <div style="color: white; text-align: center; padding: 20px;">
-                            <p>Error loading data. Please try again later.</p>
-                        </div>
-                    `;
-                });
+        let allBreachData = [];
+        let dataByYear = new Map();
+        let expandedShowAll = new Set();
 
+        fetch('https://api.xposedornot.com/v1/breaches')
+            .then(r => r.json())
+            .then(apiData => {
+                const breaches = apiData['exposedBreaches'];
+                allBreachData = breaches.map(b => ({
+                    year: new Date(b.breachedDate).getFullYear(),
+                    name: b.breachID,
+                    logo: b.logo,
+                    description: b.exposureDescription,
+                    count: b.exposedRecords,
+                    industry: b.industry || 'Uncategorized'
+                }));
 
-            document.getElementById('resetFilter').addEventListener('click', function () {
-                document.getElementById('industrySelect').value = 'all';
-                filterByIndustry('all');
+                populateFilter(breaches);
+                buildPage(allBreachData);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            })
+            .catch(err => {
+                console.error('Error fetching data:', err);
+                document.getElementById('loadingOverlay').innerHTML =
+                    '<p class="loading-text" style="color:#fca5a5;">Unable to load data. Please refresh.</p>';
             });
 
-            document.getElementById('industrySelect').addEventListener('change', function () {
-                filterByIndustry(this.value);
-            });
-        });
-
-        function processData(breaches) {
-            return breaches.map(breach => {
-                return {
-                    year: new Date(breach['breachedDate']).getFullYear(),
-                    name: breach['breachID'],
-                    logo: breach['logo'],
-                    description: breach['exposureDescription'],
-                    count: breach['exposedRecords'],
-                    industry: breach['industry'] || 'Uncategorized'
-                };
+        function populateFilter(breaches) {
+            const sel = document.getElementById('industrySelect');
+            const industries = [...new Set(breaches.map(b => b.industry || 'Uncategorized').filter(Boolean))].sort();
+            industries.forEach(ind => {
+                const opt = document.createElement('option');
+                opt.value = ind.toLowerCase().replace(/\s+/g, '-');
+                opt.textContent = ind;
+                sel.appendChild(opt);
             });
         }
 
-        function populateIndustryFilter(breaches) {
-            const industrySelect = document.getElementById('industrySelect');
+        function buildPage(data) {
+            dataByYear = d3.group(data, d => d.year);
+            const years = Array.from(dataByYear.keys()).sort(d3.descending);
+            const totalBreaches = data.length;
+            const totalIndustries = new Set(data.map(d => d.industry)).size;
 
-            const industries = new Set();
-            breaches.forEach(breach => {
-                if (breach.industry && breach.industry.trim() !== '') {
-                    industries.add(breach.industry);
-                } else {
-                    industries.add('Uncategorized');
+            document.getElementById('heroStat').innerHTML =
+                '<span>' + totalBreaches + ' breaches</span> across <span>' + totalIndustries + ' industries</span>';
+
+            buildYearPills(years);
+            buildTimeline(years);
+        }
+
+        function buildYearPills(years) {
+            const container = document.getElementById('yearPills');
+            container.innerHTML = '';
+            years.forEach(year => {
+                const count = dataByYear.get(year).length;
+                const color = getLabelColor(year);
+                const pill = document.createElement('button');
+                pill.className = 'year-pill';
+                pill.setAttribute('role', 'tab');
+                pill.setAttribute('aria-label', year + ', ' + count + ' breaches');
+                pill.style.borderColor = color + '40';
+                pill.style.color = color;
+                pill.innerHTML = year + '<span class="pill-count">' + count + '</span>';
+                pill.addEventListener('click', () => scrollToYear(year));
+                container.appendChild(pill);
+            });
+        }
+
+        function scrollToYear(year) {
+            const section = document.querySelector('[data-year="' + year + '"]');
+            if (!section) return;
+            if (!section.classList.contains('active')) {
+                toggleYear(section, year);
+            }
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function buildTimeline(years) {
+            const container = document.getElementById('timeline');
+            container.innerHTML = '';
+            expandedShowAll.clear();
+
+            years.forEach((year, idx) => {
+                const yearData = dataByYear.get(year);
+                const color = getLabelColor(year);
+                const barColor = getBarColor(year);
+                const isOpen = idx < 2;
+
+                const section = document.createElement('div');
+                section.className = 'year-section' + (isOpen ? ' active' : '');
+                section.dataset.year = year;
+                section.setAttribute('role', 'listitem');
+
+                const header = document.createElement('button');
+                header.className = 'year-header';
+                header.setAttribute('aria-expanded', isOpen);
+                header.setAttribute('aria-controls', 'year-body-' + year);
+                header.innerHTML =
+                    '<span class="year-color-dot" style="background:' + color + '"></span>' +
+                    '<span class="year-label">' + year + '</span>' +
+                    '<span class="year-count">' + yearData.length + ' breaches</span>' +
+                    '<i class="fas fa-chevron-down year-chevron"></i>';
+
+                header.addEventListener('click', () => toggleYear(section, year));
+
+                const body = document.createElement('div');
+                body.className = 'year-body';
+                body.id = 'year-body-' + year;
+
+                section.appendChild(header);
+                section.appendChild(body);
+                container.appendChild(section);
+
+                if (isOpen) {
+                    renderYearContent(body, yearData, year, barColor);
                 }
             });
-
-            const sortedIndustries = Array.from(industries).sort();
-
-
-            while (industrySelect.options.length > 1) {
-                industrySelect.remove(1);
-            }
-
-            sortedIndustries.forEach(industry => {
-                const option = document.createElement('option');
-                option.value = industry.toLowerCase().replace(/\s+/g, '-');
-                option.textContent = industry;
-                industrySelect.appendChild(option);
-            });
         }
 
-        function createMobileTimeline(data) {
-            const timelineContainer = document.getElementById('timelineContainer');
-            timelineContainer.innerHTML = ''; // Clear previous content
+        function toggleYear(section, year) {
+            const isActive = section.classList.contains('active');
+            const header = section.querySelector('.year-header');
+            const body = section.querySelector('.year-body');
 
+            if (isActive) {
+                section.classList.remove('active');
+                header.setAttribute('aria-expanded', 'false');
+            } else {
+                section.classList.add('active');
+                header.setAttribute('aria-expanded', 'true');
 
-            const dataByYear = d3.group(data, d => d.year);
-            const years = Array.from(dataByYear.keys()).sort(d3.descending);
+                if (!body.dataset.rendered) {
+                    const yearData = dataByYear.get(year);
+                    const barColor = getBarColor(year);
+                    renderYearContent(body, yearData, year, barColor);
+                }
+            }
+        }
 
+        function renderYearContent(body, yearData, year, barColor) {
+            body.dataset.rendered = '1';
+            const inner = document.createElement('div');
+            inner.className = 'year-inner';
 
-            years.forEach(year => {
-                const yearData = dataByYear.get(year);
-                const palette = colorPalettes[year] || defaultPalette;
+            const sorted = [...yearData].sort((a, b) => b.count - a.count);
+            const maxCount = sorted[0] ? sorted[0].count : 1;
+            const initialShow = 5;
 
-                const yearSection = document.createElement('div');
-                yearSection.className = 'year-section active';
-                yearSection.dataset.year = year;
+            sorted.forEach((breach, idx) => {
+                const row = createBreachRow(breach, maxCount, barColor, idx);
+                if (idx >= initialShow) row.style.display = 'none';
+                row.dataset.extraRow = idx >= initialShow ? '1' : '';
+                inner.appendChild(row);
+            });
 
-                const yearHeader = document.createElement('div');
-                yearHeader.className = 'year-header';
-                yearHeader.style.borderLeft = `4px solid ${palette[0]}`;
-                yearHeader.innerHTML = `
-                    <h3 class="year-title" style="color: ${palette[0]};">${year}</h3>
-                    <span class="year-count">${yearData.length} breaches</span>
-                    <i class="fas fa-chevron-down year-icon" style="transform: rotate(180deg);"></i>
-                `;
+            if (sorted.length > initialShow) {
+                const remaining = sorted.length - initialShow;
+                const moreBtn = document.createElement('button');
+                moreBtn.className = 'show-more-btn';
+                moreBtn.dataset.year = year;
+                moreBtn.innerHTML = '<i class="fas fa-plus" style="font-size:0.65rem"></i> Show all ' + sorted.length + ' breaches';
 
-                const yearContent = document.createElement('div');
-                yearContent.className = 'year-content';
+                moreBtn.addEventListener('click', function () {
+                    const rows = inner.querySelectorAll('[data-extra-row="1"]');
+                    const isExpanded = expandedShowAll.has(year);
 
-                const svgContainer = document.createElement('div');
-                svgContainer.className = 'breach-container';
-
-                yearContent.appendChild(svgContainer);
-
-                yearSection.appendChild(yearHeader);
-                yearSection.appendChild(yearContent);
-
-                timelineContainer.appendChild(yearSection);
-
-                yearHeader.addEventListener('click', function () {
-                    if (yearSection.classList.contains('active')) {
-                        yearSection.classList.remove('active');
-                        yearHeader.querySelector('.year-icon').style.transform = 'rotate(0deg)';
+                    if (isExpanded) {
+                        rows.forEach(r => r.style.display = 'none');
+                        expandedShowAll.delete(year);
+                        this.innerHTML = '<i class="fas fa-plus" style="font-size:0.65rem"></i> Show all ' + sorted.length + ' breaches';
                     } else {
-                        yearSection.classList.add('active');
-                        yearHeader.querySelector('.year-icon').style.transform = 'rotate(180deg)';
-
-                        if (svgContainer.childElementCount === 0) {
-                            createYearVisualization(yearData, svgContainer, year);
-                        }
+                        rows.forEach((r, i) => {
+                            r.style.display = '';
+                            const bar = r.querySelector('.breach-bar-fill');
+                            if (bar) {
+                                bar.classList.remove('animate');
+                                void bar.offsetWidth;
+                                bar.classList.add('animate');
+                            }
+                        });
+                        expandedShowAll.add(year);
+                        this.innerHTML = '<i class="fas fa-minus" style="font-size:0.65rem"></i> Show top 5 only';
                     }
                 });
 
-                createYearVisualization(yearData, svgContainer, year);
+                inner.appendChild(moreBtn);
+            }
+
+            body.appendChild(inner);
+
+            requestAnimationFrame(() => {
+                const bars = inner.querySelectorAll('.breach-bar-fill:not([data-extra-row="1"])');
+                bars.forEach(bar => bar.classList.add('animate'));
             });
         }
 
-        function createYearVisualization(yearData, container, year) {
-            const containerWidth = container.clientWidth || window.innerWidth - 30;
-            const palette = colorPalettes[year] || defaultPalette;
+        function createBreachRow(breach, maxCount, barColor, idx) {
+            const pct = Math.max(3, (breach.count / maxCount) * 100);
 
-            yearData.sort((a, b) => b.count - a.count);
+            const row = document.createElement('button');
+            row.className = 'breach-row';
+            row.setAttribute('aria-label', breach.name + ': ' + d3.format(',')(breach.count) + ' records exposed');
+            row.style.animationDelay = (idx * 0.03) + 's';
 
-            const maxCircleSize = circleSize(Number.MAX_SAFE_INTEGER);
-            const breachesPerRow = Math.floor(containerWidth / (maxCircleSize * 2.2));
+            row.innerHTML =
+                '<img class="breach-logo-thumb" src="' + breach.logo + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+                '<div class="breach-info">' +
+                    '<div class="breach-name">' + breach.name + '</div>' +
+                    '<div class="breach-bar-track"><div class="breach-bar-fill" style="width:' + pct + '%;background:' + barColor + '"></div></div>' +
+                '</div>' +
+                '<span class="breach-count">' + formatCount(breach.count) + '</span>';
 
-            const rows = Math.ceil(yearData.length / breachesPerRow);
-
-            const rowHeight = maxCircleSize * 2.5;
-            const svgHeight = rows * rowHeight;
-
-            const svg = d3.select(container)
-                .append('svg')
-                .attr('width', '100%')
-                .attr('height', svgHeight)
-                .attr('viewBox', `0 0 ${containerWidth} ${svgHeight}`)
-                .attr('preserveAspectRatio', 'xMidYMid meet');
-
-            const defs = svg.append("defs");
-
-            yearData.forEach((breach, i) => {
-                const gradientId = `gradient-${year}-${i}`;
-                const gradient = defs.append("radialGradient")
-                    .attr("id", gradientId)
-                    .attr("cx", "0.5")
-                    .attr("cy", "0.5")
-                    .attr("r", "0.5")
-                    .attr("fx", "0.5")
-                    .attr("fy", "0.5");
-
-                gradient.append("stop")
-                    .attr("offset", "0%")
-                    .attr("stop-color", palette[0]);
-
-                gradient.append("stop")
-                    .attr("offset", "100%")
-                    .attr("stop-color", palette[palette.length - 1]);
-            });
-
-            const breaches = svg.selectAll('.breach-group')
-                .data(yearData)
-                .enter()
-                .append('g')
-                .attr('class', 'breach-group')
-                .attr('transform', (d, i) => {
-                    const row = Math.floor(i / breachesPerRow);
-                    const col = i % breachesPerRow;
-                    const x = col * (containerWidth / breachesPerRow) + (containerWidth / breachesPerRow) / 2;
-                    const y = row * rowHeight + maxCircleSize;
-                    return `translate(${x}, ${y})`;
-                })
-                .style('animation-delay', (d, i) => `${i * 0.05}s`);
-
-            breaches.append('circle')
-                .attr('class', 'breach-circle')
-                .attr('r', d => circleSize(d.count))
-                .attr('fill', (d, i) => `url(#gradient-${year}-${i})`)
-                .attr('data-breach', d => d.name)
-                .style('animation-delay', (d, i) => `${(i % 8) * 0.5}s`)
-                .on('click', function (event, d) {
-                    showTooltip(event, d, palette[0]);
-                })
-                .each(function(d, i) {
-                    // Add subtle random floating animation
-                    const circle = d3.select(this);
-                    const duration = 3 + Math.random() * 2; // 3-5 seconds
-                    const dx = 2 + Math.random() * 4; // 2-6px horizontal
-                    const dy = 2 + Math.random() * 4; // 2-6px vertical
-                    const startDelay = Math.random() * 2;
-
-                    circle.append('animate')
-                        .attr('attributeName', 'cx')
-                        .attr('values', `0;${dx};0;${-dx};0`)
-                        .attr('dur', `${duration}s`)
-                        .attr('repeatCount', 'indefinite')
-                        .attr('begin', `${startDelay}s`);
-
-                    circle.append('animate')
-                        .attr('attributeName', 'cy')
-                        .attr('values', `0;${-dy};0;${dy};0`)
-                        .attr('dur', `${duration * 1.3}s`)
-                        .attr('repeatCount', 'indefinite')
-                        .attr('begin', `${startDelay + 0.5}s`);
-                });
-
-            breaches.append('image')
-                .attr('class', 'breach-logo')
-                .attr('xlink:href', d => d.logo)
-                .attr('x', d => -logoSize(d.count) / 2)
-                .attr('y', d => -logoSize(d.count) / 2)
-                .attr('width', d => logoSize(d.count))
-                .attr('height', d => logoSize(d.count));
-
-            breaches.append('text')
-                .attr('class', 'breach-title')
-                .attr('x', 0)
-                .attr('y', d => circleSize(d.count) + 15)
-                .attr('text-anchor', 'middle')
-                .text(d => d.name.length > 15 ? d.name.substring(0, 15) + '...' : d.name);
+            row.addEventListener('click', () => openBottomSheet(breach));
+            return row;
         }
 
-        function showTooltip(event, breach, color) {
-            const bottomSheet = document.getElementById('bottomSheet');
-            const bottomSheetOverlay = document.getElementById('bottomSheetOverlay');
-            const bottomSheetContent = document.getElementById('bottomSheetContent');
+        function openBottomSheet(breach) {
+            const palette = colorPalettes[breach.year] || defaultPalette;
+            const color = palette[palette.length - 1];
+            const barColor = palette[Math.min(3, palette.length - 1)];
+            const maxRecords = 500000000;
+            const progressPct = Math.min((breach.count / maxRecords) * 100, 100);
 
-            // Calculate progress bar width (max 100M for full bar)
-            const maxRecords = 100000000;
-            const progressWidth = Math.min((breach.count / maxRecords) * 100, 100);
+            const content = document.getElementById('bsContent');
+            content.innerHTML =
+                '<div class="bs-header">' +
+                    '<img src="' + breach.logo + '" alt="' + breach.name + ' logo" class="bs-logo" onerror="this.style.display=\'none\'">' +
+                    '<div class="bs-title-block">' +
+                        '<h3 class="bs-title">' + breach.name + '</h3>' +
+                        '<div class="bs-meta">' +
+                            '<span>' + breach.year + '</span>' +
+                            '<span class="bs-industry-tag" style="background:' + color + '20;color:' + color + '">' + breach.industry + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="bs-stat-card">' +
+                    '<div class="bs-stat-label">Records Exposed</div>' +
+                    '<div class="bs-stat-value" style="color:' + barColor + '">' + d3.format(',')(breach.count) + '</div>' +
+                    '<div class="bs-progress"><div class="bs-progress-fill" style="width:' + progressPct + '%;background:' + barColor + '"></div></div>' +
+                '</div>' +
+                '<div class="bs-description">' + breach.description + '</div>' +
+                '<div class="bs-actions">' +
+                    '<button class="bs-close-btn" id="bsCloseBtn">Close</button>' +
+                    '<a href="breach.html#' + breach.name + '" class="bs-detail-link">Details <i class="fas fa-arrow-right" style="font-size:0.7rem"></i></a>' +
+                '</div>';
 
-            const content = `
-                <div class="bs-header">
-                    <img src="${breach.logo}" alt="${breach.name}" class="bs-logo" onerror="this.style.display='none'">
-                    <div class="bs-title-section">
-                        <h3 class="bs-title">${breach.name}</h3>
-                        <div class="bs-meta">
-                            <span>${breach.year}</span>
-                            <span class="bs-industry-tag" style="background: ${color}30; color: ${color}">
-                                ${breach.industry || 'Unknown'}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bs-records-section">
-                    <div class="bs-records-label">Records Exposed</div>
-                    <div class="bs-records-value" style="color: ${color}">${d3.format(",")(breach.count)}</div>
-                    <div class="bs-progress-bar">
-                        <div class="bs-progress-fill" style="width: ${progressWidth}%; background: ${color}"></div>
-                    </div>
-                </div>
-
-                <div class="bs-description">${breach.description}</div>
-
-                <button class="bs-close-btn" onclick="closeBottomSheet()">Close</button>
-            `;
-
-            bottomSheetContent.innerHTML = content;
-
-            // Show bottom sheet
-            bottomSheet.classList.add('active');
-            bottomSheetOverlay.classList.add('active');
+            document.getElementById('bottomSheet').classList.add('active');
+            document.getElementById('bsOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // Prevent event bubbling
-            event.stopPropagation();
+            document.getElementById('bsCloseBtn').focus();
+            document.getElementById('bsCloseBtn').addEventListener('click', closeBottomSheet);
         }
 
         function closeBottomSheet() {
-            const bottomSheet = document.getElementById('bottomSheet');
-            const bottomSheetOverlay = document.getElementById('bottomSheetOverlay');
-
-            bottomSheet.classList.remove('active');
-            bottomSheetOverlay.classList.remove('active');
+            document.getElementById('bottomSheet').classList.remove('active');
+            document.getElementById('bsOverlay').classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        // Close on overlay click
-        document.addEventListener('DOMContentLoaded', function() {
-            const overlay = document.getElementById('bottomSheetOverlay');
-            overlay.addEventListener('click', closeBottomSheet);
+        document.getElementById('bsOverlay').addEventListener('click', closeBottomSheet);
 
-            // Swipe to dismiss
-            let startY = 0;
-            let currentY = 0;
-            const bottomSheet = document.getElementById('bottomSheet');
-            const handle = bottomSheet.querySelector('.bottom-sheet-handle');
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                const bs = document.getElementById('bottomSheet');
+                if (bs.classList.contains('active')) closeBottomSheet();
+            }
+        });
 
-            handle.addEventListener('touchstart', function(e) {
+        (function () {
+            let startY = 0, currentY = 0;
+            const bs = document.getElementById('bottomSheet');
+            const handle = document.getElementById('bsHandle');
+
+            handle.addEventListener('touchstart', function (e) {
                 startY = e.touches[0].clientY;
-                bottomSheet.style.transition = 'none';
-            });
+                bs.style.transition = 'none';
+            }, { passive: true });
 
-            handle.addEventListener('touchmove', function(e) {
+            handle.addEventListener('touchmove', function (e) {
                 currentY = e.touches[0].clientY;
                 const diff = currentY - startY;
-                if (diff > 0) {
-                    bottomSheet.style.transform = `translateY(${diff}px)`;
-                }
-            });
+                if (diff > 0) bs.style.transform = 'translateY(' + diff + 'px)';
+            }, { passive: true });
 
-            handle.addEventListener('touchend', function(e) {
-                bottomSheet.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-                const diff = currentY - startY;
-                if (diff > 100) {
+            handle.addEventListener('touchend', function () {
+                bs.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                if (currentY - startY > 80) {
                     closeBottomSheet();
                 } else {
-                    bottomSheet.style.transform = 'translateY(0)';
+                    bs.style.transform = 'translateY(0)';
                 }
                 startY = 0;
                 currentY = 0;
             });
+        })();
+
+        document.getElementById('industrySelect').addEventListener('change', function () {
+            filterByIndustry(this.value);
+        });
+
+        document.getElementById('resetFilter').addEventListener('click', function () {
+            document.getElementById('industrySelect').value = 'all';
+            filterByIndustry('all');
         });
 
         function filterByIndustry(industry) {
-            document.getElementById('loadingOverlay').style.display = 'flex';
-
-            let displayName = 'All Industries';
-            if (industry !== 'all') {
-                const selectedOption = document.querySelector(`#industrySelect option[value="${industry}"]`);
-                if (selectedOption) {
-                    displayName = selectedOption.textContent;
-                }
-            }
-
-            document.getElementById('activeIndustry').textContent = `Showing: ${displayName}`;
-
-            let filteredData;
+            let filtered;
             if (industry === 'all') {
-                filteredData = allBreachData;
+                filtered = allBreachData;
             } else {
-                const industryName = document.querySelector(`#industrySelect option[value="${industry}"]`)?.textContent;
-                filteredData = allBreachData.filter(d => d.industry === industryName);
+                const sel = document.querySelector('#industrySelect option[value="' + industry + '"]');
+                const name = sel ? sel.textContent : '';
+                filtered = allBreachData.filter(d => d.industry === name);
             }
-
-            setTimeout(() => {
-                createMobileTimeline(filteredData);
-                document.getElementById('loadingOverlay').style.display = 'none';
-            }, 300);
+            buildPage(filtered);
         }
-    </script>
 
-    <div class="footer">
-      <div class="container">
-        <div style="text-align:center;margin-bottom:30px;">
-          <p>Join us in shaping this fully open source site! Contributions welcome ❤️ at our <a
-                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
-        </div>
-
-        <div class="footer-columns">
-          <div class="footer-group">
-            <h6>Legal</h6>
-            <div class="footer-links-wrapper">
-              <a href="privacy" class="footer-link">Privacy Policy</a>
-            <a href="terms" class="footer-link">Terms</a>
-            </div>
-          </div>
-          <div class="footer-group">
-            <h6>Community</h6>
-            <div class="footer-links-wrapper">
-              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
-            <a href="our-repository" class="footer-link">Our Repository</a>
-            </div>
-          </div>
-          <div class="footer-group">
-            <h6>Trust</h6>
-            <div class="footer-links-wrapper">
-              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
-              <a href="transparency" class="footer-link">Transparency</a>
-              <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
-            </div>
-          </div>
-          <div class="footer-group">
-            <h6>Follow Us</h6>
-            <div class="footer-links-wrapper">
-              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
-            </a>
-            <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
-            </a>
-            <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
-            </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
-    <script src="/static/scripts/common.js"></script>
-    <script>
-      // Footer accordion for mobile
-      document.addEventListener('DOMContentLoaded', function() {
-        var footerGroups = document.querySelectorAll('.footer-group h6');
-        footerGroups.forEach(function(header) {
-          header.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-              var group = this.parentElement;
-              group.classList.toggle('active');
-            }
-          });
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.footer-group h6').forEach(function (header) {
+                function toggle() {
+                    var group = header.parentElement;
+                    var isActive = group.classList.toggle('active');
+                    header.setAttribute('aria-expanded', isActive);
+                }
+                header.addEventListener('click', toggle);
+                header.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+            });
         });
-      });
     </script>
-  </body>
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/static/scripts/common.js"></script>
+</body>
 
 </html>

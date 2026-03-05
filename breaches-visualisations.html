@@ -62,14 +62,30 @@
         }
 
         .navbar-custom {
-            background-color: #2563eb;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(-220deg, #3c5fec, #4284fb);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+            padding: 12px 0;
         }
 
-        .navbar-brand,
-        .nav-link {
+        .navbar-brand {
             color: white !important;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
             font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px !important;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .tooltip {
@@ -133,12 +149,12 @@
         }
 
         .year-badge-bg {
-            fill: rgba(255, 255, 255, 0.1);
+            fill: rgba(255, 255, 255, 0.06);
             stroke: currentColor;
-            stroke-width: 1px;
-            stroke-opacity: 0.3;
-            rx: 5px;
-            ry: 5px;
+            stroke-width: 1.5px;
+            stroke-opacity: 0.4;
+            rx: 6px;
+            ry: 6px;
         }
 
         @keyframes pulse-badge {
@@ -214,16 +230,40 @@
             transition: transform 0.3s ease-out;
         }
 
-        .page-title {
-            color: white;
+        .breach:focus {
+            outline: none;
+        }
+
+        .breach:focus > circle {
+            stroke: #60a5fa;
+            stroke-width: 3px;
+        }
+
+        .page-title-wrapper {
             text-align: center;
-            margin: 2rem 0;
+            margin: 2.5rem 0 1.5rem;
+        }
+
+        .page-title {
+            color: #f0f4ff;
+            text-align: center;
+            margin: 0 0 8px;
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            color: #8b9dc3;
+            font-size: 1rem;
+            font-weight: 400;
+            margin: 0;
+            letter-spacing: 0.2px;
+        }
+
+        .page-subtitle span {
+            color: #60a5fa;
             font-weight: 600;
-            font-size: 2rem;
-            background: linear-gradient(45deg, #3b82f6, #2563eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .overlay-container {
@@ -245,125 +285,165 @@
         }
 
         .overlay-content {
-            max-width: 800px;
-            background-color: rgba(30, 30, 30, 0.9);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 560px;
+            background: linear-gradient(160deg, #1e2235 0%, #161927 100%);
+            border-radius: 20px;
+            padding: 40px 36px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .overlay-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #3c5fec, #4284fb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            box-shadow: 0 8px 24px rgba(60, 95, 236, 0.3);
         }
 
         .overlay-container h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #3b82f6, #2563eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            color: #f0f4ff;
             text-align: center;
+            font-weight: 700;
         }
 
-        .overlay-container p {
-            max-width: 600px;
-            margin-bottom: 1.5rem;
+        .overlay-container .overlay-desc {
+            color: #8b9dc3;
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
             line-height: 1.6;
-            font-size: 1rem;
-            opacity: 0.9;
         }
 
-        .overlay-container ul {
-            text-align: left;
-            margin-bottom: 1.5rem;
-            padding-left: 20px;
+        .overlay-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 28px;
         }
 
-        .overlay-container li {
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
+        .overlay-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .overlay-feature i {
+            color: #60a5fa;
+            font-size: 16px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .overlay-feature span {
+            font-size: 0.85rem;
+            color: #c8d6e5;
+            line-height: 1.4;
         }
 
         .overlay-container button {
-            background: #2563eb;
+            background: linear-gradient(135deg, #3c5fec, #4284fb);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 14px 32px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
             font-size: 1rem;
-            margin-top: 1rem;
+            margin-top: 4px;
+            box-shadow: 0 4px 16px rgba(60, 95, 236, 0.3);
+            width: 100%;
         }
 
         .overlay-container button:hover,
         .overlay-container button:focus {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+            background: linear-gradient(135deg, #4a6ff5, #5a8eff);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(60, 95, 236, 0.4);
         }
 
         .overlay-container button:focus {
-            outline: 3px solid rgba(59, 130, 246, 0.5);
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
         }
 
         @media (max-width: 768px) {
             .overlay-content {
-                width: 90%;
-                padding: 20px;
+                width: 92%;
+                padding: 28px 20px;
             }
 
             .overlay-container h2 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
 
-            .overlay-container p,
-            .overlay-container li {
-                font-size: 0.9rem;
+            .overlay-features {
+                grid-template-columns: 1fr;
             }
         }
 
         .info-button {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #2563eb;
-            color: white;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(22, 25, 39, 0.8);
+            backdrop-filter: blur(12px);
+            color: #8b9dc3;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(96, 165, 250, 0.12);
             z-index: 100;
         }
 
         .info-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-            background: #1d4ed8;
+            color: #60a5fa;
+            background: rgba(22, 25, 39, 0.95);
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        .info-button:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 2px;
         }
 
         .industry-filter {
             position: absolute;
             top: 80px;
             right: 20px;
-            background: rgba(37, 99, 235, 0.9);
-            padding: 15px;
-            border-radius: 8px;
+            background: rgba(22, 25, 39, 0.85);
+            padding: 20px;
+            border-radius: 14px;
             color: white;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
             opacity: 0;
             transform: translateY(-10px);
-            width: 280px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 260px;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(96, 165, 250, 0.12);
         }
 
         .industry-filter.visible {
@@ -372,77 +452,88 @@
         }
 
         .industry-filter h4 {
-            margin: 0 0 15px 0;
-            font-size: 18px;
-            color: white;
-            text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 0 0 16px 0;
+            font-size: 15px;
+            color: #c8d6e5;
+            text-align: left;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
+            letter-spacing: 0.3px;
         }
 
         .active-industry {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
+            display: block;
+            background: rgba(96, 165, 250, 0.1);
             padding: 8px 12px;
-            border-radius: 4px;
-            margin-top: 15px;
-            font-size: 14px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 12px;
             text-align: center;
-            width: 100%;
+            color: #60a5fa;
             font-weight: 500;
+            border: 1px solid rgba(96, 165, 250, 0.15);
         }
 
         .industry-filter label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            font-size: 15px;
-            white-space: nowrap;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 12px;
+            color: #8b9dc3;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
 
         .industry-filter select {
             width: 100%;
             padding: 10px 12px;
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(30, 30, 34, 0.8);
-            color: white;
-            font-size: 14px;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            font-size: 13px;
+            margin-bottom: 8px;
             max-height: 200px;
             overflow-y: auto;
+            transition: border-color 0.2s ease;
         }
 
         .industry-filter select option {
-            background-color: #2a2a2a;
-            color: white;
+            background-color: #1e2235;
+            color: #e2e8f0;
             padding: 8px;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .industry-filter select:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+            outline: 2px solid #60a5fa;
+            outline-offset: 1px;
+            border-color: transparent;
         }
 
         .industry-filter button {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 14px;
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #c8d6e5;
+            padding: 9px 14px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
+            font-size: 13px;
+            transition: all 0.2s ease;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 6px;
             font-weight: 500;
         }
 
         .industry-filter button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .industry-filter button:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 1px;
         }
 
         @keyframes pulse-circle {
@@ -478,13 +569,48 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-            100% {
-                transform: rotate(360deg);
-            }
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 16px;
+            background: #2563eb;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 0 0 8px 8px;
+            z-index: 10000;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid rgba(96, 165, 250, 0.15);
+            border-top-color: #60a5fa;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        .loading-text {
+            color: #8b9dc3;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -495,17 +621,18 @@
 
 <body>
     <div id="loadingOverlay"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(17, 24, 39, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+        role="status" aria-live="polite"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(14, 15, 25, 0.97); display: flex; justify-content: center; align-items: center; z-index: 9999;">
         <div style="text-align: center;">
-            <i class="fas fa-spinner fa-spin fa-3x" style="color: #3b82f6;"></i>
-            <p style="margin-top: 15px; font-weight: 600; color: #e5e7eb; font-size: 1.1rem;">Loading visualization...</p>
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading visualization</p>
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-custom">
+    <a href="#chart" class="skip-link">Skip to visualization</a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <a class="navbar-brand" href="/">XposedOrNot</a>
-        <div class="navbar-collapse collapse justify-content-center">
-        </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -517,51 +644,60 @@
             </ul>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Data Breaches Visualization (Updated 2026)</h1>
 
-    <div id="chart"></div>
-
-    <!-- Info button -->
-    <button class="info-button" id="infoButton" aria-label="Show visualization information">i</button>
-
-    <!-- Industry filter -->
-    <div class="industry-filter" id="industryFilter">
-        <h4>Filter Data Breaches</h4>
-        <label for="industrySelect">Select Industry Category</label>
-        <select id="industrySelect">
-            <option value="all">All Industries</option>
-            <!-- Industry options will be populated dynamically -->
-        </select>
-        <button id="resetFilter">Reset Filter</button>
-        <div class="active-industry" id="activeIndustry">Showing: All Industries</div>
+    <main id="main-content">
+    <div class="page-title-wrapper">
+        <h1 class="page-title">Data Breaches Visualization</h1>
+        <p class="page-subtitle" id="pageSubtitle">Exploring breach data across industries and years</p>
     </div>
 
-    <!-- Custom overlay for visualization details -->
-    <div class="overlay-container" id="infoOverlay">
+    <div id="chart" role="img" aria-label="Interactive bubble chart showing data breaches organized by year. Each bubble represents a breach, sized by number of records exposed."></div>
+    </main>
+
+    <button class="info-button" id="infoButton" aria-label="Show visualization information">i</button>
+
+    <div class="industry-filter" id="industryFilter">
+        <h4><i class="fas fa-filter" style="margin-right: 6px; font-size: 12px;"></i> Filter by Industry</h4>
+        <label for="industrySelect">Industry</label>
+        <select id="industrySelect">
+            <option value="all">All Industries</option>
+        </select>
+        <button id="resetFilter"><i class="fas fa-undo" style="margin-right: 4px; font-size: 11px;"></i> Reset</button>
+        <div class="active-industry" id="activeIndustry" aria-live="polite">Showing: All Industries</div>
+    </div>
+
+    <div class="overlay-container" id="infoOverlay" role="dialog" aria-modal="true" aria-label="Visualization guide">
         <div class="overlay-content">
-            <h2>Understanding Data Breach Visualization</h2>
-            <p>This interactive visualization displays major data breaches organized by year, providing insights into
-                the scope and impact of cybersecurity incidents over time.</p>
+            <div class="overlay-icon"><i class="fas fa-shield-alt"></i></div>
+            <h2>Data Breach Visualization</h2>
+            <p class="overlay-desc">Interactive map of major data breaches organized by year. Hover over any bubble to explore breach details.</p>
 
-            <p><strong>How to use this visualization:</strong></p>
-            <ul>
-                <li><strong>Circle Size:</strong> Represents the number of records exposed in each breach</li>
-                <li><strong>Color Scheme:</strong> Colors are grouped by year to help identify trends</li>
-                <li><strong>Logos:</strong> Company/organization identifiers appear in the center of each circle</li>
-                <li><strong>Hover:</strong> Move your cursor over any breach to see detailed information</li>
-            </ul>
+            <div class="overlay-features">
+                <div class="overlay-feature">
+                    <i class="fas fa-circle"></i>
+                    <span><strong>Size</strong> = records exposed</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-palette"></i>
+                    <span><strong>Color</strong> = breach year</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-image"></i>
+                    <span><strong>Logo</strong> = affected org</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-filter"></i>
+                    <span><strong>Filter</strong> by industry</span>
+                </div>
+            </div>
 
-            <p>The visualization automatically arranges breaches to minimize overlap while keeping them organized by
-                year.</p>
-
-            <button id="closeOverlay" tabindex="0" aria-label="Continue to visualization">Continue to
-                Visualization</button>
+            <button id="closeOverlay" tabindex="0" aria-label="Continue to visualization">Explore Breaches</button>
         </div>
     </div>
 
     <script>
         let allBreachData = [];
+        let floatAnimId = null;
 
         document.getElementById('loadingOverlay').style.display = 'flex';
 
@@ -574,13 +710,18 @@
                 createGraph(allBreachData);
                 document.getElementById('loadingOverlay').style.display = 'none';
 
+                const industries = new Set(apiData['exposedBreaches'].map(b => b.industry).filter(Boolean));
+                document.getElementById('pageSubtitle').innerHTML =
+                    'Exploring <span>' + allBreachData.length + '+ breaches</span> across <span>' + industries.size + ' industries</span>';
+
                 setTimeout(() => {
                     document.getElementById('industryFilter').classList.add('visible');
                 }, 500);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('loadingOverlay').innerHTML =
+                    '<div style="text-align:center;"><p class="loading-text" style="color:#fca5a5;">Unable to load breach data. Please refresh the page.</p></div>';
             });
 
         function populateIndustryFilter(breaches) {
@@ -755,11 +896,14 @@
                 .call(yAxis)
                 .call(g => g.select(".domain").remove());
 
+            const labelColorOverrides = { 2011: '#BA68C8' };
+
             gAxis.selectAll(".tick")
                 .each(function (year) {
                     const yearRange = yearRanges.get(year);
                     const palette = colorPalettes[year] || defaultPalette;
-                    const baseColor = palette[0];
+                    const labelColor = labelColorOverrides[year] || palette[palette.length - 1];
+                    const gridColor = palette[Math.floor(palette.length / 2)];
                     const count = dataByYear.get(year).length;
 
                     d3.select(this)
@@ -767,8 +911,8 @@
                         .select("text")
                         .attr("class", "year-label")
                         .text(`${year} (${count} breaches)`)
-                        .style("fill", baseColor)
-                        .style("font-weight", "600");
+                        .style("fill", labelColor)
+                        .style("font-weight", "700");
 
                     const textNode = d3.select(this).select("text").node();
                     if (textNode) {
@@ -779,13 +923,14 @@
                             .attr("y", textBox.y - 5)
                             .attr("width", textBox.width + 20)
                             .attr("height", textBox.height + 10)
-                            .style("stroke", baseColor);
+                            .style("stroke", labelColor)
+                            .style("stroke-opacity", "0.4");
                     }
 
                     d3.select(this)
                         .select("line")
                         .attr("class", "year-grid")
-                        .style("stroke", baseColor);
+                        .style("stroke", gridColor);
                 });
 
             data.forEach((d, i) => {
@@ -970,55 +1115,13 @@
                 simulations.push(yearSimulation);
             });
 
-            function addJitter() {
-                try {
-                    simulations.forEach(sim => {
-                        const nodes = sim.nodes();
-                        if (nodes.length === 0) return;
-
-                        // Jitter 15% of nodes randomly for subtle movement
-                        const jitterCount = Math.ceil(nodes.length * 0.15);
-                        const nodesToJitter = d3.shuffle(nodes).slice(0, jitterCount);
-
-                        nodesToJitter.forEach(node => {
-                            // Random angle between 0 and 2π (full circle)
-                            const angle = Math.random() * Math.PI * 2;
-                            // Reduced distance for smoother movement
-                            const distance = 0.2 + Math.random() * 0.5;
-
-                            // Calculate x and y movements using trigonometry
-                            const dx = Math.cos(angle) * distance;
-                            const dy = Math.sin(angle) * distance;
-
-                            // Apply the movement
-                            node.x += dx;
-                            node.y += dy;
-                        });
-
-                        // Restart simulation with a lower alpha for gentler movement
-                        sim.alpha(0.05).restart();
-                    });
-                } catch (error) {
-                    console.error("Error in jitter function:", error);
-                }
-            }
-
-            const jitterInterval = setInterval(addJitter, 3000);
-
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    clearInterval(jitterInterval);
-                } else {
-                    if (!jitterInterval) {
-                        setInterval(addJitter, 3000);
-                    }
-                }
-            });
-
             const breaches = svg.selectAll(".breach")
                 .data(data)
                 .enter().append("g")
                 .attr("class", "breach")
+                .attr("tabindex", "0")
+                .attr("role", "button")
+                .attr("aria-label", d => `${d.name} (${d.year}): ${d3.format(",")(d.count)} records exposed`)
                 .attr("data-industry", d => d.industry)
                 .attr("transform", d => {
                     const yearRange = yearRanges.get(d.year);
@@ -1109,7 +1212,7 @@
                     <div class="tooltip-title" style="border-color: ${palette[0]}">
                         ${d.name} <span style="opacity: 0.8; font-size: 0.9em;">(${d.year})</span>
                     </div>
-                    <img src="${d.logo}" alt="Logo" class="tooltip-logo">
+                    <img src="${d.logo}" alt="${d.name} logo" class="tooltip-logo">
                     <div class="tooltip-description">
                         ${d.description}
                     </div>
@@ -1188,7 +1291,121 @@
                         });
 
                     activeElement = null;
+                })
+                .on("focus", function (event, d) {
+                    const element = d3.select(this);
+                    activeElement = element;
+                    previousSize = circleSize(d.count);
+                    const palette = colorPalettes[d.year] || defaultPalette;
+
+                    element.select("circle")
+                        .transition()
+                        .duration(300)
+                        .attr("r", previousSize + 10)
+                        .style("opacity", 1);
+
+                    element.raise();
+
+                    const tooltipContent = `
+                        <div class="tooltip-title" style="border-color: ${palette[0]}">
+                            ${d.name} <span style="opacity: 0.8; font-size: 0.9em;">(${d.year})</span>
+                        </div>
+                        <img src="${d.logo}" alt="${d.name} logo" class="tooltip-logo">
+                        <div class="tooltip-description">
+                            ${d.description}
+                        </div>
+                        <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[0]}; border: 1px solid ${palette[0]}40">
+                            Records exposed: ${d3.format(",")(d.count)}
+                        </div>
+                    `;
+
+                    tooltip.html(tooltipContent)
+                        .style("opacity", 0)
+                        .style("display", "block")
+                        .style("border-left", `4px solid ${palette[0]}`);
+
+                    const svgRect = svg.node().closest('svg').getBoundingClientRect();
+                    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const tooltipRect = tooltip.node().getBoundingClientRect();
+                    let left = svgRect.left + scrollX + margin.left + d.x - (tooltipRect.width / 2);
+                    let top = svgRect.top + scrollY + margin.top + d.y + previousSize + 20;
+
+                    if (left < scrollX + 20) left = scrollX + 20;
+                    if (left + tooltipRect.width > scrollX + window.innerWidth - 20)
+                        left = scrollX + window.innerWidth - tooltipRect.width - 20;
+                    if (top + tooltipRect.height > scrollY + window.innerHeight - 20)
+                        top = svgRect.top + scrollY + margin.top + d.y - tooltipRect.height - 20;
+
+                    tooltip
+                        .style("left", `${Math.round(left)}px`)
+                        .style("top", `${Math.round(top)}px`)
+                        .transition()
+                        .duration(200)
+                        .style("opacity", 1);
+                })
+                .on("blur", function (event, d) {
+                    if (activeElement) {
+                        activeElement.select("circle")
+                            .transition()
+                            .duration(300)
+                            .attr("r", previousSize)
+                            .style("opacity", 0.9);
+                    }
+
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0)
+                        .on("end", function () {
+                            tooltip.style("display", "none");
+                        });
+
+                    activeElement = null;
                 });
+
+            if (floatAnimId) cancelAnimationFrame(floatAnimId);
+
+            breaches.each(function(d) {
+                d.floatPhaseX = Math.random() * Math.PI * 2;
+                d.floatPhaseY = Math.random() * Math.PI * 2;
+                d.floatAmpX = 0.8 + Math.random() * 1.5;
+                d.floatAmpY = 0.6 + Math.random() * 1.2;
+                d.floatSpeedX = 0.0003 + Math.random() * 0.0004;
+                d.floatSpeedY = 0.0002 + Math.random() * 0.0003;
+                d.baseX = d.x;
+                d.baseY = d.y;
+            });
+
+            function waitForSettled() {
+                const allSettled = simulations.every(sim => sim.alpha() < 0.02);
+                if (allSettled) {
+                    breaches.each(function(d) {
+                        d.baseX = d.x;
+                        d.baseY = d.y;
+                    });
+                    startFloating();
+                } else {
+                    setTimeout(waitForSettled, 500);
+                }
+            }
+
+            function startFloating() {
+                function animate(now) {
+                    breaches.each(function(d) {
+                        const dx = Math.sin(now * d.floatSpeedX + d.floatPhaseX) * d.floatAmpX;
+                        const dy = Math.cos(now * d.floatSpeedY + d.floatPhaseY) * d.floatAmpY;
+                        d.x = d.baseX + dx;
+                        d.y = d.baseY + dy;
+                    });
+
+                    breaches.attr("transform", d => `translate(${d.x},${d.y})`);
+                    floatAnimId = requestAnimationFrame(animate);
+                }
+
+                floatAnimId = requestAnimationFrame(animate);
+            }
+
+            setTimeout(waitForSettled, 2000);
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -1207,21 +1424,27 @@
                 filterByIndustry('all');
             });
 
-            infoBtn.addEventListener('click', function () {
+            function openOverlay() {
                 overlay.style.display = 'flex';
-            });
+                closeBtn.focus();
+            }
 
-            closeBtn.addEventListener('click', function () {
+            function closeOverlay() {
                 overlay.style.display = 'none';
-            });
+                infoBtn.focus();
+            }
+
+            infoBtn.addEventListener('click', openOverlay);
+            closeBtn.addEventListener('click', closeOverlay);
 
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && overlay.style.display === 'flex') {
-                    overlay.style.display = 'none';
+                    closeOverlay();
                 }
 
-                if (e.key === 'Enter' && document.activeElement === closeBtn) {
-                    overlay.style.display = 'none';
+                if (overlay.style.display === 'flex' && e.key === 'Tab') {
+                    e.preventDefault();
+                    closeBtn.focus();
                 }
             });
         });
@@ -1258,16 +1481,18 @@
         }
     </script>
     <style>
-      .footer { padding: 40px 0 30px; background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
-      .footer p { color: #9fc0e0; }
+      .footer { padding: 40px 0 30px; background: #111320; border-top: 1px solid rgba(96, 165, 250, 0.08); margin-top: 40px; }
+      .footer p { color: #8b9dc3; }
+      .footer p a { color: #60a5fa; text-decoration: none; }
+      .footer p a:hover { color: #93b4ff; text-decoration: underline; }
       .footer-columns { display: flex; justify-content: space-between; gap: 60px; text-align: left; padding: 0 40px; }
       .footer-group { flex: 1; min-width: 0; }
-      .footer-group h6 { color: #ffffff !important; font-size: 0.95em !important; margin-bottom: 15px !important; font-weight: 700 !important; text-transform: uppercase; letter-spacing: 0.8px; }
-      .footer-group a.footer-link { display: block; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; transition: all 0.3s ease; color: #9fc0e0; text-decoration: none; }
-      .footer-group a.footer-link:hover { background-color: rgba(63, 113, 243, 0.2); padding-left: 14px; color: #6daae0 !important; }
+      .footer-group h6 { color: #c8d6e5 !important; font-size: 0.85em !important; margin-bottom: 15px !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 1px; }
+      .footer-group a.footer-link { display: block; margin-bottom: 6px; padding: 6px 10px; border-radius: 6px; transition: all 0.2s ease; color: #8b9dc3; text-decoration: none; font-size: 0.9em; }
+      .footer-group a.footer-link:hover { background-color: rgba(96, 165, 250, 0.1); padding-left: 14px; color: #60a5fa !important; }
       @media (max-width: 768px) { .footer-columns { flex-direction: column; text-align: center; gap: 30px; padding: 0 20px; }
 	.footer-group {
-		border-bottom: 1px solid #ebedef;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 	}
 
 	.footer-group h6 {
@@ -1279,10 +1504,16 @@
 		align-items: center;
 	}
 
+	.footer-group h6:focus {
+		outline: 2px solid #60a5fa;
+		outline-offset: -2px;
+	}
+
 	.footer-group h6::after {
 		content: '+';
 		font-size: 20px;
 		font-weight: 300;
+		color: #8b9dc3;
 		transition: transform 0.3s ease;
 	}
 
@@ -1311,21 +1542,21 @@
 
         <div class="footer-columns">
           <div class="footer-group">
-            <h6>Legal</h6>
+            <h6 role="button" tabindex="0" aria-expanded="false">Legal</h6>
             <div class="footer-links-wrapper">
               <a href="privacy" class="footer-link">Privacy Policy</a>
-            <a href="terms" class="footer-link">Terms</a>
+              <a href="terms" class="footer-link">Terms</a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>Community</h6>
+            <h6 role="button" tabindex="0" aria-expanded="false">Community</h6>
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
-            <a href="our-repository" class="footer-link">Our Repository</a>
+              <a href="our-repository" class="footer-link">Our Repository</a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>Trust</h6>
+            <h6 role="button" tabindex="0" aria-expanded="false">Trust</h6>
             <div class="footer-links-wrapper">
               <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
               <a href="transparency" class="footer-link">Transparency</a>
@@ -1333,17 +1564,17 @@
             </div>
           </div>
           <div class="footer-group">
-            <h6>Follow Us</h6>
+            <h6 role="button" tabindex="0" aria-expanded="false">Follow Us</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
-            </a>
-            <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
-            </a>
-            <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
-            </a>
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
             </div>
           </div>
         </div>
@@ -1353,14 +1584,21 @@
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
     <script src="/static/scripts/common.js"></script>
     <script>
-      // Footer accordion for mobile
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {
-          header.addEventListener('click', function() {
+          function toggle() {
             if (window.innerWidth <= 768) {
-              var group = this.parentElement;
-              group.classList.toggle('active');
+              var group = header.parentElement;
+              var isActive = group.classList.toggle('active');
+              header.setAttribute('aria-expanded', isActive);
+            }
+          }
+          header.addEventListener('click', toggle);
+          header.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggle();
             }
           });
         });
