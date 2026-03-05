@@ -587,8 +587,20 @@ var j = $.ajax(url)
                     industryMap.set(ind[0], ind[1]);
                 });
 
+                const industryCodeMap = {
+                    'aerospace': 'aero', 'transport': 'tran', 'information technology': 'info',
+                    'telecommunication': 'tele', 'agriculture': 'agri', 'construction': 'cons',
+                    'education': 'educ', 'pharmaceutical': 'phar', 'food': 'food',
+                    'health care': 'heal', 'hospitality': 'hosp', 'entertainment': 'ente',
+                    'news media': 'news', 'energy': 'ener', 'manufacturing': 'manu',
+                    'music': 'musi', 'mining': 'mini', 'electronics': 'elec',
+                    'miscellaneous': 'misc', 'finance': 'fina', 'retail': 'reta',
+                    'non-profit/charities': 'nonp', 'government': 'govt',
+                    'sports': 'spor', 'environment': 'envi'
+                };
+
                 sensitiveBreaches.forEach(breach => {
-                    const industry = breach.industry.toLowerCase().substring(0, 4); // Get industry code
+                    const industry = industryCodeMap[breach.industry.toLowerCase()] || breach.industry.toLowerCase().substring(0, 4);
                     if (industryMap.has(industry)) {
                         industryMap.set(industry, industryMap.get(industry) + 1);
                     } else {
@@ -682,7 +694,7 @@ var j = $.ajax(url)
                 cnt: i12
             },
             {
-                name: 'News',
+                name: 'News Media',
                 cnt: i13
             },
             {
