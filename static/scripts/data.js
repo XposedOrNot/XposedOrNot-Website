@@ -145,9 +145,9 @@ function showNoBreachView(emailAddr) {
     setTimeout(fireConfetti, 300);
 }
 
-let by26 = by25 = by24 = by23 = by22 = by21 = by20 = by19 = by18 = by17 = by16 = by15 = by14 = by13 = by12 = by11 = by10 = by09 = by08 = by07 = 0;
-let i11 = i12 = i13 = i14 = i15 = i16 = i17 = i18 = i19 = i20 = i1 = i2 = i3 = i4 = i5 = i6 = i7 = i8 = i9 = i10 = i20 = i21 = i22 = i23 = i24 = i25 = i26 = 0;
-let unknown = plaintext = easy = hard = password_score = 0;
+let by26 = 0, by25 = 0, by24 = 0, by23 = 0, by22 = 0, by21 = 0, by20 = 0, by19 = 0, by18 = 0, by17 = 0, by16 = 0, by15 = 0, by14 = 0, by13 = 0, by12 = 0, by11 = 0, by10 = 0, by09 = 0, by08 = 0, by07 = 0;
+let i1 = 0, i2 = 0, i3 = 0, i4 = 0, i5 = 0, i6 = 0, i7 = 0, i8 = 0, i9 = 0, i10 = 0, i11 = 0, i12 = 0, i13 = 0, i14 = 0, i15 = 0, i16 = 0, i17 = 0, i18 = 0, i19 = 0, i20 = 0, i21 = 0, i22 = 0, i23 = 0, i24 = 0, i25 = 0;
+let unknown = 0, plaintext = 0, easy = 0, hard = 0, password_score = 0;
 
 function getAlertType(riskLabel) {
     switch (riskLabel) {

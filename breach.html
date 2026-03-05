@@ -14,7 +14,6 @@
     <meta name="author" content="Devanand Premkumar">
     <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
 
-    <!-- Open Graph / Social Media -->
     <meta property="og:title" id="og-title" content="XposedOrNot - Breach Details" />
     <meta property="og:description" id="og-description"
         content="Detailed information about data breaches and how to protect yourself." />
@@ -42,7 +41,6 @@
         type="text/css" media="all">
 
     <style>
-        /* Page background fix */
         body {
             background: #f9fbff !important;
         }
@@ -218,6 +216,11 @@
             margin-bottom: 10px;
         }
 
+        .stat-value .badge-status {
+            font-size: 18px;
+            padding: 8px 16px;
+        }
+
         .stat-label-container {
             margin-top: auto;
         }
@@ -243,6 +246,10 @@
 
         [data-theme="dark"] .stat-sublabel {
             color: #6daae0;
+        }
+
+        [data-theme="dark"] #added-date-line {
+            color: #999;
         }
 
         .content-section {
@@ -617,7 +624,8 @@
         .reference-link {
             color: #3f71f3;
             font-weight: 500;
-            word-break: break-all;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .reference-link:hover {
@@ -843,13 +851,11 @@
             </div>
         </div>
 
-        <!-- Loading State -->
         <div id="loading" class="loading-container">
             <div class="loading-spinner"></div>
             <h3 style="color: #3f71f3;">Loading breach details...</h3>
         </div>
 
-        <!-- Error State -->
         <div id="error" class="error-container" style="display: none;">
             <div class="error-icon">
                 <i class="fas fa-exclamation-triangle"></i>
@@ -861,9 +867,7 @@
             </a>
         </div>
 
-        <!-- Main Content -->
         <div id="content" class="breach-detail-container" style="display: none;">
-            <!-- Breach Header -->
             <div class="breach-header">
                 <div class="breach-logo-container">
                     <img id="breach-logo" class="breach-logo" src="" alt="Breach Logo" onerror="this.src='/static/images/xon.png'">
@@ -874,7 +878,6 @@
                 </div>
             </div>
 
-            <!-- Statistics Cards -->
             <div class="stats-container">
                 <div class="stat-card">
                     <div class="stat-content">
@@ -911,20 +914,18 @@
                     </div>
                 </div>
             </div>
+            <div id="added-date-line" style="text-align: center; margin-top: -8px; margin-bottom: 18px; font-size: 0.85em; color: #888; font-style: italic;"></div>
 
-            <!-- Description Section -->
             <div class="content-section">
                 <h2 class="section-title">What Happened?</h2>
                 <p id="breach-description" class="description-text"></p>
             </div>
 
-            <!-- Exposed Data Section -->
             <div class="content-section">
                 <h2 class="section-title">Data Exposed</h2>
                 <div id="exposed-data" class="data-types"></div>
             </div>
 
-            <!-- Breach Details Section -->
             <div class="content-section">
                 <h2 class="section-title">Breach Details</h2>
                 <table class="details-table">
@@ -951,7 +952,6 @@
                 </table>
             </div>
 
-            <!-- Action Section -->
             <div class="action-section">
                 <div class="action-header">
                     <div class="action-icon-wrapper">
@@ -960,48 +960,7 @@
                     <h3>What Should You Do?</h3>
                     <p class="action-subtitle">Follow these recommended steps to protect yourself after this breach</p>
                 </div>
-                <div class="action-grid">
-                    <div class="action-card urgent">
-                        <div class="action-card-header">
-                            <div class="action-card-icon">
-                                <i class="fas fa-key"></i>
-                            </div>
-                            <span class="action-priority">Urgent</span>
-                        </div>
-                        <h4>Change Your Passwords</h4>
-                        <p>Immediately update passwords for accounts associated with this breach. Use strong, unique passwords with at least 12 characters including numbers and symbols.</p>
-                    </div>
-                    <div class="action-card high">
-                        <div class="action-card-header">
-                            <div class="action-card-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <span class="action-priority">High Priority</span>
-                        </div>
-                        <h4>Enable Two-Factor Authentication</h4>
-                        <p>Add an extra layer of security by enabling 2FA on all supported accounts. Use authenticator apps like Google Authenticator or Authy for better protection.</p>
-                    </div>
-                    <div class="action-card medium">
-                        <div class="action-card-header">
-                            <div class="action-card-icon">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                            <span class="action-priority">Recommended</span>
-                        </div>
-                        <h4>Monitor Your Accounts</h4>
-                        <p>Keep a close watch on your accounts for unauthorized access or suspicious activity. Set up login alerts and review account activity regularly.</p>
-                    </div>
-                    <div class="action-card info">
-                        <div class="action-card-header">
-                            <div class="action-card-icon">
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <span class="action-priority">Best Practice</span>
-                        </div>
-                        <h4>Use a Password Manager</h4>
-                        <p>Never reuse passwords across services. Consider using a reputable password manager to generate and store unique passwords for each account securely.</p>
-                    </div>
-                </div>
+                <div id="action-grid" class="action-grid"></div>
                 <div class="action-buttons">
                     <a href="/" class="btn-primary-custom">
                         <i class="fas fa-search"></i> Check Your Email
@@ -1011,7 +970,6 @@
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
             <div class="container">
                 <div style="text-align:center;margin-bottom:30px;">
@@ -1066,7 +1024,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -1080,9 +1037,7 @@
     <script src="/static/scripts/common.js"></script>
 
     <script>
-        // Get breach ID from URL hash
         function getBreachId() {
-            // Get breach ID from hash: breach-detail.html#BreachID
             if (window.location.hash) {
                 const hashId = window.location.hash.substring(1);
                 return hashId;
@@ -1090,18 +1045,15 @@
             return null;
         }
 
-        // Format number with commas
         function formatNumber(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // Format date for display
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         }
 
-        // Format date for card (shorter)
         function formatDateCard(dateString) {
             const date = new Date(dateString);
             const month = date.toLocaleDateString('en-US', { month: 'short' });
@@ -1109,7 +1061,6 @@
             return `${month} ${year}`;
         }
 
-        // Calculate time ago
         function getTimeAgo(dateString) {
             const breachDate = new Date(dateString);
             const now = new Date();
@@ -1133,50 +1084,77 @@
             }
         }
 
-        // Get industry image path
         function getIndustryImage(industry) {
-            // Try exact match first
             const industryFormatted = industry.replace(/\s+/g, ' ').trim();
             return `/static/logos/industry/${industryFormatted}.png`;
         }
 
-        // Get icon for data type
         function getDataIcon(dataType) {
             const icons = {
-                'Email': 'fas fa-envelope',
-                'Email addresses': 'fas fa-envelope',
-                'Emails': 'fas fa-envelope',
-                'Password': 'fas fa-key',
-                'Passwords': 'fas fa-key',
-                'Username': 'fas fa-user',
-                'Usernames': 'fas fa-user',
-                'Name': 'fas fa-id-card',
-                'Names': 'fas fa-id-card',
-                'Phone': 'fas fa-phone',
-                'Phone numbers': 'fas fa-phone',
-                'Address': 'fas fa-map-marker-alt',
-                'Addresses': 'fas fa-map-marker-alt',
-                'Credit card': 'fas fa-credit-card',
-                'Social security': 'fas fa-id-card-alt',
-                'Date of birth': 'fas fa-birthday-cake',
-                'Dates of birth': 'fas fa-birthday-cake',
-                'Gender': 'fas fa-venus-mars',
-                'Genders': 'fas fa-venus-mars',
-                'Geographic location': 'fas fa-map-marked-alt',
-                'Geographic locations': 'fas fa-map-marked-alt',
-                'IP address': 'fas fa-network-wired',
-                'IP addresses': 'fas fa-network-wired'
+                'email': 'fas fa-envelope',
+                'password': 'fas fa-key',
+                'username': 'fas fa-user',
+                'user name': 'fas fa-user',
+                'nickname': 'fas fa-user-tag',
+                'name': 'fas fa-id-card',
+                'avatar': 'fas fa-user-circle',
+                'profile photo': 'fas fa-user-circle',
+                'phone': 'fas fa-phone',
+                'physical address': 'fas fa-map-marker-alt',
+                'address': 'fas fa-map-marker-alt',
+                'credit card': 'fas fa-credit-card',
+                'bank account': 'fas fa-university',
+                'account balance': 'fas fa-wallet',
+                'income level': 'fas fa-money-bill-wave',
+                'partial credit card': 'fas fa-credit-card',
+                'date of birth': 'fas fa-birthday-cake',
+                'years of birth': 'fas fa-birthday-cake',
+                'place of birth': 'fas fa-baby',
+                'gender': 'fas fa-venus-mars',
+                'marital status': 'fas fa-ring',
+                'spouse': 'fas fa-ring',
+                'mother': 'fas fa-female',
+                'nationality': 'fas fa-flag',
+                'ethnicit': 'fas fa-users',
+                'religion': 'fas fa-pray',
+                'language': 'fas fa-language',
+                'spoken language': 'fas fa-language',
+                'education level': 'fas fa-graduation-cap',
+                'occupation': 'fas fa-briefcase',
+                'employer': 'fas fa-building',
+                'job application': 'fas fa-file-alt',
+                'geographic location': 'fas fa-map-marked-alt',
+                'ip address': 'fas fa-network-wired',
+                'social security': 'fas fa-id-card-alt',
+                'government': 'fas fa-landmark',
+                'passport': 'fas fa-passport',
+                'licence plate': 'fas fa-car',
+                'vehicle': 'fas fa-car',
+                'device information': 'fas fa-mobile-alt',
+                'browser': 'fas fa-globe',
+                'user agent': 'fas fa-globe',
+                'website activity': 'fas fa-mouse-pointer',
+                'social media': 'fas fa-share-alt',
+                'social connection': 'fas fa-user-friends',
+                'instant messenger': 'fas fa-comment-dots',
+                'private message': 'fas fa-envelope-open-text',
+                'security question': 'fas fa-question-circle',
+                'historical password': 'fas fa-history',
+                'passwords history': 'fas fa-history',
+                'sexual preference': 'fas fa-heart',
+                'drug habit': 'fas fa-pills',
+                'drink habit': 'fas fa-wine-glass-alt'
             };
 
+            const lower = dataType.toLowerCase();
             for (let key in icons) {
-                if (dataType.toLowerCase().includes(key.toLowerCase())) {
+                if (lower.includes(key)) {
                     return icons[key];
                 }
             }
             return 'fas fa-database';
         }
 
-        // Format password risk
         function formatPasswordRisk(risk) {
             const riskLevels = {
                 'plaintext': { text: 'Plain Text', class: 'badge-danger', icon: 'fas fa-exclamation-triangle' },
@@ -1189,21 +1167,18 @@
             return `<span class="badge-status ${level.class}"><i class="${level.icon}"></i> ${level.text}</span>`;
         }
 
-        // Format boolean status
         function formatStatus(value) {
             return value
                 ? '<span class="badge-status badge-success"><i class="fas fa-check-circle"></i> Yes</span>'
                 : '<span class="badge-status badge-danger"><i class="fas fa-times-circle"></i> No</span>';
         }
 
-        // Format sensitive data status (inverted colors: No = good/green, Yes = bad/red)
         function formatSensitiveStatus(value) {
             return value
                 ? '<span class="badge-status badge-danger"><i class="fas fa-exclamation-triangle"></i> Yes</span>'
                 : '<span class="badge-status badge-success"><i class="fas fa-check-circle"></i> No</span>';
         }
 
-        // Update meta tags
         function updateMetaTags(breach) {
             const title = `XposedOrNot - ${breach.breachID} Data Breach Details`;
             const description = breach.exposureDescription || `Learn about the ${breach.breachID} data breach that exposed ${formatNumber(breach.exposedRecords)} records.`;
@@ -1213,19 +1188,68 @@
             document.getElementById('page-title').textContent = title;
             document.getElementById('page-description').setAttribute('content', description);
 
-            // Open Graph
             document.getElementById('og-title').setAttribute('content', title);
             document.getElementById('og-description').setAttribute('content', description);
             document.getElementById('og-image').setAttribute('content', logo);
             document.getElementById('og-url').setAttribute('content', window.location.href);
 
-            // Twitter
             document.getElementById('twitter-title').setAttribute('content', title);
             document.getElementById('twitter-description').setAttribute('content', description);
             document.getElementById('twitter-image').setAttribute('content', logo);
         }
 
-        // Load breach data
+        function generateActionCards(exposedData) {
+            const lower = exposedData.map(d => d.toLowerCase()).join(' ');
+            const has = (keyword) => lower.includes(keyword);
+
+            const cards = [];
+
+            if (has('password')) {
+                cards.push({ priority: 'urgent', cls: 'urgent', icon: 'fas fa-key', title: 'Change Your Passwords', text: 'Immediately update passwords for accounts associated with this breach. Use strong, unique passwords with at least 12 characters including numbers and symbols.' });
+            }
+
+            if (has('email') || has('password') || has('username')) {
+                cards.push({ priority: 'High Priority', cls: 'high', icon: 'fas fa-shield-alt', title: 'Enable Two-Factor Authentication', text: 'Add an extra layer of security by enabling 2FA on all supported accounts. Use authenticator apps like Google Authenticator or Authy.' });
+            }
+
+            if (has('credit card') || has('bank account') || has('account balance') || has('income')) {
+                cards.push({ priority: 'Urgent', cls: 'urgent', icon: 'fas fa-university', title: 'Alert Your Bank', text: 'Contact your bank or card issuer immediately. Monitor statements for unauthorized transactions and consider freezing affected cards.' });
+            }
+
+            if (has('social security') || has('government') || has('passport')) {
+                cards.push({ priority: 'Urgent', cls: 'urgent', icon: 'fas fa-landmark', title: 'Place a Fraud Alert', text: 'Contact credit bureaus to place a fraud alert or credit freeze. Government-issued IDs exposed in breaches can be used for identity theft.' });
+            }
+
+            if (has('phone')) {
+                cards.push({ priority: 'Recommended', cls: 'medium', icon: 'fas fa-phone', title: 'Watch for Phishing Calls & SMS', text: 'Be cautious of unexpected calls or texts asking for personal information. Attackers may use your leaked phone number for smishing or vishing attacks.' });
+            }
+
+            if (has('physical address')) {
+                cards.push({ priority: 'Recommended', cls: 'medium', icon: 'fas fa-mail-bulk', title: 'Beware of Scam Mail', text: 'Your physical address may be used for targeted scam mail or social engineering. Be skeptical of unexpected correspondence requesting personal details.' });
+            }
+
+            if (has('ip address') || has('device') || has('browser') || has('user agent')) {
+                cards.push({ priority: 'Recommended', cls: 'medium', icon: 'fas fa-desktop', title: 'Review Device Security', text: 'Update your devices, browsers, and software. Check for unauthorized logins on your accounts and review active sessions.' });
+            }
+
+            cards.push({ priority: 'Recommended', cls: 'medium', icon: 'fas fa-eye', title: 'Monitor Your Accounts', text: 'Keep a close watch on your accounts for unauthorized access or suspicious activity. Set up login alerts and review account activity regularly.' });
+
+            if (has('password')) {
+                cards.push({ priority: 'Best Practice', cls: 'info', icon: 'fas fa-lock', title: 'Use a Password Manager', text: 'Never reuse passwords across services. Use a reputable password manager to generate and store unique passwords for each account.' });
+            }
+
+            return cards.map(c => `
+                <div class="action-card ${c.cls}">
+                    <div class="action-card-header">
+                        <div class="action-card-icon"><i class="${c.icon}"></i></div>
+                        <span class="action-priority">${c.priority}</span>
+                    </div>
+                    <h4>${c.title}</h4>
+                    <p>${c.text}</p>
+                </div>
+            `).join('');
+        }
+
         async function loadBreachData() {
             const breachId = getBreachId();
 
@@ -1238,7 +1262,6 @@
                 const apiUrl = `https://api.xposedornot.com/v1/breaches?breach_id=${breachId}`;
                 const response = await fetch(apiUrl);
 
-                // Handle rate limiting (429)
                 if (response.status === 429) {
                     showError('ratelimit');
                     return;
@@ -1266,35 +1289,32 @@
             }
         }
 
-        // Display breach data
         function displayBreachData(breach) {
-            // Hide loading, show content
             document.getElementById('loading').style.display = 'none';
             document.getElementById('content').style.display = 'block';
 
-            // Header
             document.getElementById('breach-logo').src = breach.logo || '/static/images/xon.png';
             document.getElementById('breach-logo').alt = `${breach.breachID} logo`;
             document.getElementById('breach-name').innerHTML = breach.breachID + (!breach.searchable ? ' <span style="font-size: 0.7em;" title="Sensitive Breach">🔥</span>' : '');
             document.getElementById('breach-domain').innerHTML = '<i class="fas fa-globe" style="font-size: 0.8em; margin-right: 8px; opacity: 0.7;"></i>' + breach.domain;
 
-            // Statistics
             document.getElementById('exposed-records').textContent = formatNumber(breach.exposedRecords);
             document.getElementById('breach-date-card').textContent = formatDateCard(breach.breachedDate);
             document.getElementById('time-ago').textContent = getTimeAgo(breach.breachedDate);
-            document.getElementById('password-risk').innerHTML = formatPasswordRisk(breach.passwordRisk).replace(/badge-status/g, '').replace(/<[^>]*>/g, '').trim();
+            document.getElementById('password-risk').innerHTML = formatPasswordRisk(breach.passwordRisk);
 
-            // Industry with image
             document.getElementById('industry').textContent = breach.industry;
             const industryImg = document.getElementById('industry-image');
             const industryPath = getIndustryImage(breach.industry);
             industryImg.src = industryPath;
             industryImg.style.display = 'block';
 
-            // Description
+            if (breach.addedDate) {
+                document.getElementById('added-date-line').textContent = 'Added to XposedOrNot on ' + formatDate(breach.addedDate);
+            }
+
             document.getElementById('breach-description').textContent = breach.exposureDescription;
 
-            // Exposed Data
             const exposedDataContainer = document.getElementById('exposed-data');
             exposedDataContainer.innerHTML = '';
             breach.exposedData.forEach(dataType => {
@@ -1304,22 +1324,21 @@
                 exposedDataContainer.appendChild(badge);
             });
 
-            // Details
             document.getElementById('searchable').innerHTML = formatStatus(breach.searchable) + (!breach.searchable ? ' <span class="badge-status badge-danger" style="margin-left: 8px;"><i class="fas fa-fire"></i> Sensitive</span>' : '');
             document.getElementById('verified').innerHTML = formatStatus(breach.verified);
             document.getElementById('sensitive').innerHTML = formatSensitiveStatus(breach.sensitive);
             document.getElementById('password-risk-detail').innerHTML = formatPasswordRisk(breach.passwordRisk);
 
-            // Reference
             const referenceCell = document.getElementById('reference');
             if (breach.referenceURL) {
                 referenceCell.innerHTML = `<a href="${breach.referenceURL}" target="_blank" rel="noopener" class="reference-link">${breach.referenceURL}</a>`;
             } else {
                 referenceCell.textContent = 'No reference available';
             }
+
+            document.getElementById('action-grid').innerHTML = generateActionCards(breach.exposedData);
         }
 
-        // Show error
         function showError(errorType = 'notfound') {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('error').style.display = 'block';
@@ -1337,21 +1356,18 @@
                 errorTitle.textContent = 'Something Went Wrong';
                 errorMessage.textContent = 'An unexpected error occurred while loading the breach information. Please try again later.';
             } else {
-                // Default: notfound
                 errorIcon.className = 'fas fa-exclamation-triangle';
                 errorTitle.textContent = 'Breach Not Found';
                 errorMessage.textContent = 'The requested breach information could not be found or does not exist.';
             }
         }
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', function () {
             loadBreachData();
         });
     </script>
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
     <script>
-      // Footer accordion for mobile
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {
