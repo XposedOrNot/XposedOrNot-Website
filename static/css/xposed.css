@@ -1,4 +1,3 @@
-/* Light Mode (Default) */
 :root {
     --bg-primary: #f5f7fa;
     --bg-secondary: #ffffff;
@@ -15,7 +14,6 @@
     --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark Mode */
 [data-theme="dark"] {
     --bg-primary: #0f1219;
     --bg-secondary: #1a1f2e;
@@ -36,60 +34,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Header */
-.page-header {
-    background: var(--bg-secondary);
-    padding: 1rem 2rem;
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-light);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-}
-
-.brand:hover {
-    text-decoration: none;
-    color: var(--text-primary);
-    transform: scale(1.02);
-}
-
-.brand-logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.brand-sub {
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-top: -2px;
-}
-
-/* Main Content */
 .xposed-content {
     padding: 40px 0;
 }
@@ -116,7 +60,56 @@ body {
     font-size: 16px;
 }
 
-/* Stats Row */
+.page-title .last-updated {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.page-title .last-updated i {
+    margin-right: 4px;
+}
+
+.seo-summary {
+    max-width: 1200px;
+    margin: 0 auto 36px;
+    padding: 20px 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.seo-summary h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+}
+
+.seo-summary p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.seo-summary p:last-child {
+    margin-bottom: 0;
+}
+
+.seo-summary a {
+    color: var(--primary-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.seo-summary a:hover {
+    color: var(--text-primary);
+}
+
 .stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -187,7 +180,6 @@ body {
     color: var(--text-primary);
 }
 
-/* Filter Section */
 .filter-section {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -258,7 +250,6 @@ body {
     color: var(--primary-color);
 }
 
-/* DataTable Card */
 .table-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -302,7 +293,6 @@ body {
     font-size: 14px;
 }
 
-/* DataTable Overrides */
 .dataTables_wrapper {
     padding: 20px;
 }
@@ -366,7 +356,6 @@ body {
     cursor: not-allowed;
 }
 
-/* Table Styles */
 #breachesTable {
     width: 100% !important;
     border-collapse: collapse;
@@ -406,7 +395,6 @@ body {
     background: rgba(91, 124, 250, 0.12);
 }
 
-/* Breach Row Elements */
 .breach-logo {
     width: 48px;
     height: 48px;
@@ -416,7 +404,6 @@ body {
     padding: 4px;
 }
 
-/* Screen reader only utility */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -478,8 +465,9 @@ body {
 .industry-badge {
     display: inline-block;
     padding: 4px 10px;
-    background: rgba(91, 124, 250, 0.15);
-    color: var(--primary-color);
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
@@ -495,7 +483,6 @@ body {
     font-size: 14px;
 }
 
-/* Risk Badges */
 .risk-badge {
     display: inline-block;
     padding: 4px 10px;
@@ -525,7 +512,6 @@ body {
     color: var(--text-secondary);
 }
 
-/* Status Badges */
 .status-badges {
     display: flex;
     gap: 6px;
@@ -563,32 +549,34 @@ body {
     color: #e74c3c;
 }
 
-/* View Details Button */
 .btn-details {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 14px;
-    background: var(--primary-gradient);
+    padding: 5px 14px;
+    background-color: var(--primary-color);
     color: #fff;
-    border: none;
-    border-radius: 6px;
+    border: 1px solid var(--primary-color);
+    border-radius: 20px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-details:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(91, 124, 250, 0.3);
-    color: #fff;
+.btn-details:hover,
+.btn-details:focus {
+    background-color: transparent;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
-/* Footer */
+.btn-details:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
 .xposed-footer {
     background: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
@@ -641,7 +629,6 @@ body {
     color: var(--primary-color);
 }
 
-/* Dark Mode Toggle */
 .dark-mode-toggle {
     margin-top: 8px;
 }
@@ -657,7 +644,6 @@ body {
     border-color: var(--primary-color);
 }
 
-/* Loading */
 .loading-overlay {
     display: flex;
     justify-content: center;
@@ -676,7 +662,6 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Responsive */
 @media (max-width: 992px) {
     .stats-row {
         grid-template-columns: repeat(2, 1fr);
@@ -692,10 +677,6 @@ body {
 }
 
 @media (max-width: 768px) {
-    .page-header {
-        padding: 1rem;
-    }
-
     .xposed-content {
         padding: 20px 0;
     }
@@ -744,7 +725,6 @@ body {
         height: 36px;
     }
 
-    /* Mobile: Show only Name and Records */
     #breachesTable th:nth-child(1),
     #breachesTable td:nth-child(1),
     #breachesTable th:nth-child(3),
@@ -760,7 +740,6 @@ body {
         display: none;
     }
 
-    /* Show chevron and underline on mobile to indicate tappable link */
     .breach-chevron {
         display: inline-block;
     }
@@ -772,7 +751,6 @@ body {
         text-decoration-thickness: 1px;
     }
 
-    /* Adjust visible columns */
     .breach-name {
         font-size: 13px;
     }

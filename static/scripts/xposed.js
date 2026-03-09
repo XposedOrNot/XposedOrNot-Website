@@ -1,14 +1,11 @@
-// Global variables
 var breachesTable;
 var allBreaches = [];
 var defaultLogo = 'https://xposedornot.com/static/logos/combolist.png';
 
-// Format number with commas
 function formatWithCommas(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// Format date
 function formatDate(dateStr) {
     if (!dateStr) return 'Unknown';
     var date = new Date(dateStr);
@@ -16,7 +13,6 @@ function formatDate(dateStr) {
     return date.toLocaleDateString('en-US', options);
 }
 
-// Get risk badge HTML
 function getRiskBadge(risk) {
     var riskClass = risk || 'unknown';
     var riskLabels = {
@@ -28,7 +24,6 @@ function getRiskBadge(risk) {
     return '<span class="risk-badge ' + riskClass + '">' + (riskLabels[riskClass] || 'Unknown') + '</span>';
 }
 
-// Get status badges HTML
 function getStatusBadges(breach) {
     var badges = '';
     if (breach.verified) {
@@ -44,19 +39,24 @@ function getStatusBadges(breach) {
     return '<div class="status-badges">' + badges + '</div>';
 }
 
-// Update stats
+function getLatestAddedDate(breaches) {
+    var latest = '';
+    breaches.forEach(function(b) {
+        if (b.addedDate && b.addedDate > latest) latest = b.addedDate;
+    });
+    return latest;
+}
+
 function updateStats(breaches) {
     var totalBreaches = breaches.length;
     var totalRecords = breaches.reduce(function(sum, b) { return sum + (b.exposedRecords || 0); }, 0);
 
-    // Get unique industries
     var industries = {};
     breaches.forEach(function(b) {
         if (b.industry) industries[b.industry] = true;
     });
     var totalIndustries = Object.keys(industries).length;
 
-    // Get recent breaches (this year)
     var currentYear = new Date().getFullYear();
     var recentBreaches = breaches.filter(function(b) {
         if (!b.breachedDate) return false;
@@ -68,9 +68,48 @@ function updateStats(breaches) {
     $('#stat-industries').text(totalIndustries);
     $('#stat-recent').text(recentBreaches);
     $('#total-count').text(formatWithCommas(totalBreaches));
+
+    updateSEO(totalBreaches, totalIndustries, getLatestAddedDate(breaches));
 }
 
-// Populate industry filter
+function updateSEO(totalBreaches, totalIndustries, latestDate) {
+    var count = formatWithCommas(totalBreaches);
+    var countPlus = totalBreaches + '+';
+
+    document.title = 'Data Breach Database - Search ' + countPlus + ' Known Breaches | XposedOrNot';
+
+    var descText = 'Search ' + countPlus + ' known data breaches across ' + totalIndustries +
+        ' industries. Filter by year, password risk level, and more. Free breach database by XposedOrNot.';
+    $('meta[name="description"]').attr('content', descText);
+    $('meta[property="og:title"]').attr('content', document.title);
+    $('meta[property="og:description"]').attr('content', descText);
+    $('meta[name="twitter:title"]').attr('content', document.title);
+    $('meta[name="twitter:description"]').attr('content', descText);
+
+    $('#seo-breach-count').text(count);
+    $('#seo-industry-count').text(totalIndustries);
+
+    if (latestDate) {
+        var d = new Date(latestDate);
+        var isoDate = d.toISOString().split('T')[0];
+        var displayDate = d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        $('#seo-last-updated').html(
+            '<i class="far fa-calendar-alt" aria-hidden="true"></i> Last updated: ' +
+            '<time datetime="' + isoDate + '">' + displayDate + '</time>'
+        );
+
+        var wpSchema = document.getElementById('webpage-schema');
+        if (wpSchema) {
+            try {
+                var data = JSON.parse(wpSchema.textContent);
+                data.dateModified = isoDate;
+                wpSchema.textContent = JSON.stringify(data);
+            } catch (e) {}
+        }
+    }
+}
+
 function populateIndustryFilter(breaches) {
     var industries = {};
     breaches.forEach(function(b) {
@@ -85,7 +124,6 @@ function populateIndustryFilter(breaches) {
     });
 }
 
-// Populate year filter
 function populateYearFilter(breaches) {
     var years = {};
     breaches.forEach(function(b) {
@@ -103,7 +141,6 @@ function populateYearFilter(breaches) {
     });
 }
 
-// Initialize DataTable
 function initDataTable(breaches) {
     var tableData = breaches.map(function(breach) {
         var logoSrc = breach.logo || defaultLogo;
@@ -130,7 +167,6 @@ function initDataTable(breaches) {
         var actionsHtml = '<a href="breach.html#' + breach.breachID + '" target="_blank" rel="noopener noreferrer" class="btn-details">' +
                           '<i class="fas fa-eye" aria-hidden="true"></i> Details<span class="sr-only">(opens in new tab)</span></a>';
 
-        // Hidden data for filtering
         var breachYear = breach.breachedDate ? new Date(breach.breachedDate).getFullYear().toString() : '';
 
         return {
@@ -142,7 +178,6 @@ function initDataTable(breaches) {
             risk: riskHtml,
             status: statusHtml,
             action: actionsHtml,
-            // Hidden data for filtering
             _industry: breach.industry || '',
             _year: breachYear,
             _risk: breach.passwordRisk || '',
@@ -168,7 +203,7 @@ function initDataTable(breaches) {
             { data: '_records', visible: false },
             { data: '_dateSort', visible: false }
         ],
-        order: [[4, 'desc']], // Sort by date descending
+        order: [[4, 'desc']],
         pageLength: -1,
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         language: {
@@ -185,13 +220,11 @@ function initDataTable(breaches) {
         },
         dom: '<"top"l>rt<"bottom"ip>',
         drawCallback: function() {
-            // Lazy load logos after draw
             loadVisibleLogos();
         }
     });
 }
 
-// Lazy load logos to prevent flickering
 function loadVisibleLogos() {
     $('.lazy-logo').each(function() {
         var $img = $(this);
@@ -203,19 +236,17 @@ function loadVisibleLogos() {
                 $img.data('loaded', true);
             };
             img.onerror = function() {
-                $img.data('loaded', true); // Keep default
+                $img.data('loaded', true);
             };
             img.src = src;
         }
     });
 }
 
-// Escape regex special characters
 function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-// Apply filters using DataTable's built-in search
 function applyFilters() {
     if (!breachesTable) return;
 
@@ -224,13 +255,10 @@ function applyFilters() {
     var year = $('#filter-year').val();
     var risk = $('#filter-risk').val();
 
-    // Clear all column searches first
     breachesTable.columns().search('');
 
-    // Apply global search
     breachesTable.search(searchText);
 
-    // Apply column-specific filters (using hidden columns)
     if (industry) {
         breachesTable.column(8).search('^' + escapeRegex(industry) + '$', true, false);
     }
@@ -241,15 +269,12 @@ function applyFilters() {
         breachesTable.column(10).search('^' + escapeRegex(risk) + '$', true, false);
     }
 
-    // Redraw table
     breachesTable.draw();
 
-    // Update count
     var filteredCount = breachesTable.rows({ search: 'applied' }).count();
     $('#total-count').text(formatWithCommas(filteredCount));
 }
 
-// Reset filters
 function resetFilters() {
     $('#filter-search').val('');
     $('#filter-industry').val('');
@@ -262,7 +287,6 @@ function resetFilters() {
     }
 }
 
-// Fetch and display breaches
 $(document).ready(function() {
     $.ajax({
         url: 'https://api.xposedornot.com/v1/breaches',
@@ -272,18 +296,14 @@ $(document).ready(function() {
             if (response.exposedBreaches) {
                 allBreaches = response.exposedBreaches;
 
-                // Update stats
                 updateStats(allBreaches);
 
-                // Populate filters
                 populateIndustryFilter(allBreaches);
                 populateYearFilter(allBreaches);
 
-                // Hide loading, show table
                 $('#loading-overlay').hide();
                 $('#table-container').show();
 
-                // Initialize DataTable
                 initDataTable(allBreaches);
             }
         },
@@ -298,7 +318,6 @@ $(document).ready(function() {
         }
     });
 
-    // Filter event listeners
     $('#filter-search').on('keyup', function() {
         clearTimeout($.data(this, 'timer'));
         var wait = setTimeout(applyFilters, 300);
