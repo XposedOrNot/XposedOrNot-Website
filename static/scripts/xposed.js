@@ -26,15 +26,14 @@ function getRiskBadge(risk) {
 
 function getStatusBadges(breach) {
     var badges = '';
-    if (breach.verified) {
-        badges += '<span class="status-badge verified"><i class="fas fa-check"></i> Verified</span>';
-    } else {
+    if (!breach.verified) {
         badges += '<span class="status-badge not-verified"><i class="fas fa-times"></i> Not Verified</span>';
     }
-    if (breach.searchable) {
-        badges += '<span class="status-badge searchable"><i class="fas fa-search"></i> Searchable</span>';
-    } else {
+    if (!breach.searchable) {
         badges += '<span class="status-badge sensitive"><i class="fas fa-exclamation-triangle"></i> Sensitive</span>';
+    }
+    if (!badges) {
+        badges = '<span class="status-badge verified"><i class="fas fa-check"></i> Verified</span>';
     }
     return '<div class="status-badges">' + badges + '</div>';
 }
@@ -76,7 +75,7 @@ function updateSEO(totalBreaches, totalIndustries, latestDate) {
     var count = formatWithCommas(totalBreaches);
     var countPlus = totalBreaches + '+';
 
-    document.title = 'Data Breach Database - Search ' + countPlus + ' Known Breaches | XposedOrNot';
+    document.title = 'All Data Breaches - ' + countPlus + ' Known Breaches | XposedOrNot';
 
     var descText = 'Search ' + countPlus + ' known data breaches across ' + totalIndustries +
         ' industries. Filter by year, password risk level, and more. Free breach database by XposedOrNot.';
@@ -193,7 +192,7 @@ function initDataTable(breaches) {
             { data: 'name', title: "Breach", width: "180px" },
             { data: 'industry', title: "Industry", width: "120px" },
             { data: 'records', title: "Records", width: "100px", orderData: 11 },
-            { data: 'date', title: "Date", width: "90px", orderData: 12 },
+            { data: 'date', title: "Breach Date", width: "90px", orderData: 12 },
             { data: 'risk', title: "Password Risk", width: "110px" },
             { data: 'status', title: "Status", width: "150px", orderable: false },
             { data: 'action', title: "Action", width: "90px", orderable: false },

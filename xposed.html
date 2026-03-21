@@ -73,7 +73,9 @@
 
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+      crossorigin="anonymous"
     />
     <link
       rel="stylesheet"
@@ -89,8 +91,8 @@
       integrity="sha256-d/193zMcyZUwruClurTkAXN/g5rqawa2b9+czcJFqjY="
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="static/css/style.css" />
-    <link rel="stylesheet" href="static/css/xposed.css" />
+    <link rel="stylesheet" href="/static/css/style-new.css" />
+    <link rel="stylesheet" href="/static/css/xposed.css" />
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -256,101 +258,60 @@
   </head>
 
   <body>
-    <div class="kbanner">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-        <a class="navbar-brand" href="https://xposedornot.com"
-          ><span
-            style="
-              font-size: 1.5em;
-              font-weight: bold;
-              display: block;
-              color: white;
-            "
-            >XposedOrNot</span
-          >
-          <span
-            style="
-              font-size: 0.8em;
-              display: block;
-              color: white;
-              opacity: 0.85;
-              margin-top: -1px;
-            "
-            >Community Edition</span
-          ></a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="password.html">Password &nbsp;</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="api_doc.html">API &nbsp;</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="https://blog.xposedornot.com/"
-                >Blog &nbsp;</a
-              >
-            </li>
-            <li class="nav-item dropdown active">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownMenuLink"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                More Tools
-              </a>
-              <div
-                class="dropdown-menu dropdown-menu-right"
-                aria-labelledby="navbarDropdownMenuLink"
-              >
-                <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
-                <a class="dropdown-item" href="shield.html">Privacy Shield</a>
-                <a class="dropdown-item" href="domain.html">Domain Verification</a>
-                <a class="dropdown-item" href="domains.html">Domain-level Search</a>
-                <a class="dropdown-item" href="timeline.html">Breaches Timeline</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
+    <div class="banner" style="padding: 30px 0px 40px 0px;">
+      <div class="grid">
+        <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+          <a class="navbar-brand abs" href="/" style="text-decoration: none;">
+            <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+            <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community Edition</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#collapsingNavbar" aria-controls="collapsingNavbar"
+            aria-expanded="false" aria-label="Toggle navigation menu">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="password.html">Password</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="xposed.html">Breaches</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="faq.html">FAQ</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="api_doc.html">API</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     </div>
 
     <main class="xposed-content">
       <div class="container-fluid px-4">
         <div class="page-title">
-          <h1><i class="fas fa-shield-alt"></i> Data Breach Database: All Known Breaches</h1>
+          <h1><i class="fas fa-shield-alt"></i> All Data Breaches</h1>
           <p>
-            Search <span id="seo-breach-count">hundreds of</span> known data breaches across
+            Browse <span id="seo-breach-count">hundreds of</span> breaches across
             <span id="seo-industry-count">multiple</span> industries.
-            Filter by year, password risk level, and more.
+            Filter by year, password risk, and more.
           </p>
           <span class="last-updated" id="seo-last-updated"></span>
         </div>
 
         <section class="seo-summary" id="seo-summary">
-          <h2>What This Database Covers</h2>
+          <h2>How to use this page</h2>
           <p>
-            A free directory of every publicly known data breach, showing exposed records, affected industry,
-            breach date, password risk level, and verification status.
-            Filter by industry, year, or password risk. Each breach links to a detail page with exposed data types and incident description.
-            Updated as new breaches are verified.
-            Check if your email was exposed using our <a href="/">free breach search</a>,
-            or verify your organization's exposure with <a href="domain.html">domain-level breach verification</a>.
+            Every publicly known data breach is listed here. Use the filters below to narrow
+            results by industry, year, or how passwords were stored. Click any breach to see
+            what data was exposed and what steps you can take.
+            Want to check if your own email was affected? Try our <a href="/">free breach search</a>.
           </p>
         </section>
 
@@ -462,7 +423,7 @@
                   <th>Breach</th>
                   <th>Industry</th>
                   <th>Records</th>
-                  <th>Date</th>
+                  <th>Breach Date</th>
                   <th>Password Risk</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -475,27 +436,56 @@
       </div>
     </main>
 
-    <footer class="xposed-footer">
-      <div class="container-fluid px-4">
-        <p>
-          &copy; 2026
-          <a href="https://xposedornot.com" target="_blank">XposedOrNot.com</a>
-        </p>
-        <p class="footer-links">
-          <a href="privacy" target="_blank">Privacy</a>
-          <span class="separator">|</span>
-          <a href="terms" target="_blank">Terms</a>
-          <span class="separator">|</span>
-          <a href="api_doc.html" target="_blank">API</a>
-          <span class="separator">|</span>
-          <a href="https://blog.xposedornot.com" target="_blank">Blog</a>
-        </p>
-        <div class="custom-control custom-switch dark-mode-toggle">
+    <div class="footer">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:30px;">
+          <p>Built by the community, for the community. Fully open-source on
+            <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Legal</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Privacy Policy</a>
+              <a href="terms" class="footer-link">Terms</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Our Repository</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Trust</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Transparency</a>
+              <a href="responsible-disclosure" class="footer-link">Responsible Disclosure</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Follow Us</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
           <input type="checkbox" class="custom-control-input" id="darkSwitch" />
           <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
         </div>
       </div>
-    </footer>
+    </div>
 
     <script
       defer
@@ -503,5 +493,18 @@
       src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
     ></script>
     <script src="/static/scripts/common.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
