@@ -529,6 +529,10 @@
       async
       src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"
     ></script>
+    <button id="backToTop" title="Back to top" aria-label="Back to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
@@ -539,6 +543,18 @@
               group.classList.toggle('active');
             }
           });
+        });
+
+        var backToTopButton = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 500) {
+            backToTopButton.style.display = 'block';
+          } else {
+            backToTopButton.style.display = 'none';
+          }
+        });
+        backToTopButton.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       });
     </script>
