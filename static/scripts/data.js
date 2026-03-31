@@ -1507,24 +1507,28 @@ window.addEventListener('resize', function () {
     floatingButton.style.top = getFloatingButtonTop();
 });
 
-var analyticsApiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
+if (token) {
+    $('section[aria-label="Breach timeline visualization"]').hide();
+} else {
+    var analyticsApiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
 
-$.get(analyticsApiUrl)
-    .done(function (response) {
-        if (!response || !response.description || !response.children) {
-            return;
-        }
-        var dataForTree = [{
-            description: response.description,
-            children: response.children.filter(function (year) { return year.children && year.children.length > 0; })
-        }];
+    $.get(analyticsApiUrl)
+        .done(function (response) {
+            if (!response || !response.description || !response.children) {
+                return;
+            }
+            var dataForTree = [{
+                description: response.description,
+                children: response.children.filter(function (year) { return year.children && year.children.length > 0; })
+            }];
 
-        $('#tree-container').hortree({
-            data: dataForTree
+            $('#tree-container').hortree({
+                data: dataForTree
+            });
+        })
+        .fail(function () {
         });
-    })
-    .fail(function () {
-    });
+}
 
 
 var leaving = false;
