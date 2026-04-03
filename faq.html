@@ -1207,7 +1207,7 @@
         <h1>Frequently Asked Questions. Data Breach Search & Security</h1>
         <span class="last-updated">
           <i class="far fa-calendar-alt"></i>
-          Updated: 04-Dec-2025
+          Updated: 03-Apr-2026
         </span>
       </div>
       <nav aria-label="breadcrumb">
@@ -1931,50 +1931,56 @@
                       <strong>What is the risk score formula? </strong><br />
                       <br />
                       The <strong>risk score formula</strong> calculates a
-                      normalized risk score (0-100) based on multiple factors
-                      that indicate the potential risk level of an account. The
-                      score considers the number of breaches, types of exposed
-                      passwords, recency of breaches, and sensitivity of exposed
-                      data.<br /><br />
-                      The formula combines four main components:<br /><br />
-                      <strong>1. Base Score (0-15 points)</strong><br />
-                      • 3 points per breach, up to a maximum of 15 points<br /><br />
-                      <strong>2. Password Risk Score (0-40 points)</strong
-                      ><br />
-                      • Weighted based on password exposure types:<br />
-                      &nbsp;&nbsp;- Plaintext passwords: 40 points<br />
-                      &nbsp;&nbsp;- Easy to crack passwords: 30 points<br />
-                      &nbsp;&nbsp;- Unknown password types: 20 points<br />
-                      &nbsp;&nbsp;- Strong hash passwords: 10 points<br />
-                      • Final password score is the weighted average based on
-                      total passwords<br /><br />
-                      <strong>3. Recency Score (0-25 points)</strong><br />
-                      Based on most recent breach:<br />
-                      • Within 3 months: 25 points<br />
-                      • 3-6 months: 20 points<br />
-                      • 6-12 months: 15 points<br />
-                      • 12-24 months: 10 points<br />
-                      • Over 24 months: 5 points<br /><br />
-                      <strong>4. Sensitive Data Score (0-20 points)</strong
-                      ><br />
-                      • 4 points per exposed high-risk data category, up to 20
-                      points<br />
-                      • High-risk categories include:<br />
-                      &nbsp;&nbsp;- Security Practices (passwords, security
-                      questions)<br />
-                      &nbsp;&nbsp;- Financial Details (credit cards, bank
-                      accounts)<br />
-                      &nbsp;&nbsp;- Health Information (medical data)<br />
-                      &nbsp;&nbsp;- Personal Identification (identity data)<br /><br />
-                      <strong>Final Risk Score</strong><br />
-                      The final score is the sum of all components, capped at
-                      100 points. Risk levels are categorized as:<br />
-                      • High Risk: 70-100 points<br />
-                      • Medium Risk: 40-69 points<br />
-                      • Low Risk: 0-39 points<br /><br />
-                      This comprehensive scoring system helps users understand
-                      their exposure risk level and take appropriate action to
-                      protect their accounts.
+                      weighted exposure risk score (0-100) based on the types of
+                      data exposed across your breaches, adjusted by modifiers
+                      for breach recency and password exposure severity.<br /><br />
+
+                      The formula works in three steps:<br /><br />
+
+                      <strong>Step 1: Raw Score from Exposed Data Types</strong><br />
+                      Each type of exposed data is assigned to a risk tier, and
+                      the points for all exposed data types are summed:<br />
+                      &nbsp;&nbsp;• <strong>Critical (10 pts each):</strong>
+                      Passwords, Credit Cards, Bank Account Numbers, Social
+                      Security Numbers, Government IDs, Passport Numbers, Auth
+                      Tokens, Security Questions &amp; Answers, Mnemonic
+                      Phrases<br />
+                      &nbsp;&nbsp;• <strong>High (7 pts each):</strong> Phone
+                      Numbers, Physical Addresses, Dates of Birth, Health Data,
+                      Private Messages, Chat Logs, GPS Coordinates, Encrypted
+                      Keys, Password Hints, Sexual Orientation data<br />
+                      &nbsp;&nbsp;• <strong>Medium (4 pts each):</strong> Names,
+                      Usernames, Email Addresses, IP Addresses, Employers,
+                      Occupations, Education Levels, Vehicle Details, MAC
+                      Addresses<br />
+                      &nbsp;&nbsp;• <strong>Low (1 pt each):</strong> Any other
+                      recognized data type<br /><br />
+
+                      <strong>Step 2: Modifiers</strong><br />
+                      The raw score is then adjusted by multiplying with the
+                      following modifiers:<br />
+                      &nbsp;&nbsp;• <strong>Breach frequency:</strong> +1% per
+                      breach with plaintext or easy-to-crack passwords beyond
+                      the first (capped at +15%)<br />
+                      &nbsp;&nbsp;• <strong>Recency:</strong> +15% if the most
+                      recent breach is within 12 months, or +8% if within 24
+                      months<br />
+                      &nbsp;&nbsp;• <strong>Plaintext password penalty:</strong>
+                      +10% if any breach exposed plaintext passwords<br /><br />
+
+                      <strong>Step 3: Final Score</strong><br />
+                      The final score is calculated as:<br />
+                      <code>min(100, round(raw_score &times; modifier))</code><br /><br />
+
+                      Risk levels are categorized into four zones:<br />
+                      • Critical: 76-100 points<br />
+                      • High: 51-75 points<br />
+                      • Moderate: 26-50 points<br />
+                      • Low: 0-25 points<br /><br />
+                      This tier-based scoring system ensures that the severity of
+                      exposed data drives the risk assessment, with additional
+                      weight given to recent breaches and plaintext password
+                      exposure.
                     </div>
                   </div>
                 </div>
