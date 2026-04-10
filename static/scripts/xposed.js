@@ -75,10 +75,10 @@ function updateSEO(totalBreaches, totalIndustries, latestDate) {
     var count = formatWithCommas(totalBreaches);
     var countPlus = totalBreaches + '+';
 
-    document.title = 'All Data Breaches - ' + countPlus + ' Known Breaches | XposedOrNot';
+    document.title = 'Data Breach Directory & Database: Browse ' + countPlus + ' Known Breaches | XposedOrNot';
 
-    var descText = 'Search ' + countPlus + ' known data breaches across ' + totalIndustries +
-        ' industries. Filter by year, password risk level, and more. Free breach database by XposedOrNot.';
+    var descText = 'Browse our complete directory of ' + countPlus + ' data breaches across ' + totalIndustries +
+        ' industries. Search by company, date, or data type exposed. Free breach database with record counts, risk levels, and details.';
     $('meta[name="description"]').attr('content', descText);
     $('meta[property="og:title"]').attr('content', document.title);
     $('meta[property="og:description"]').attr('content', descText);
