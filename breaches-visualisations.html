@@ -52,6 +52,7 @@
             font-family: 'Inter', Arial, sans-serif;
             background-color: #1a1a1a;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         #chart {
@@ -59,6 +60,13 @@
             padding: 20px;
             margin: 0 auto;
             position: relative;
+            box-sizing: border-box;
+        }
+
+        #chart svg {
+            max-width: 100%;
+            display: block;
+            background: radial-gradient(ellipse at 50% 0%, rgba(60, 95, 236, 0.04) 0%, transparent 60%);
         }
 
         .navbar-custom {
@@ -75,7 +83,7 @@
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: #fff !important;
             font-weight: 500;
             font-size: 0.95rem;
             padding: 8px 16px !important;
@@ -90,21 +98,21 @@
 
         .tooltip {
             position: absolute;
-            background-color: rgba(30, 30, 34, 0.95);
+            background-color: rgba(22, 24, 32, 0.97);
             border: none;
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 14px;
             pointer-events: none;
             opacity: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            max-width: 320px;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2);
+            max-width: 340px;
             color: #f8f9fa;
             font-size: 14px;
             line-height: 1.6;
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .tooltip-title {
@@ -141,20 +149,23 @@
         }
 
         .axis text.year-label {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             fill: currentColor;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
             padding: 5px 10px;
+            letter-spacing: 0.3px;
         }
 
         .year-badge-bg {
-            fill: rgba(255, 255, 255, 0.06);
+            fill: rgba(255, 255, 255, 0.05);
             stroke: currentColor;
             stroke-width: 1.5px;
-            stroke-opacity: 0.4;
-            rx: 6px;
-            ry: 6px;
+            stroke-opacity: 0.35;
+            rx: 8px;
+            ry: 8px;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
         }
 
         @keyframes pulse-badge {
@@ -179,15 +190,24 @@
 
         .axis line.year-grid {
             stroke: currentColor;
-            stroke-opacity: 0.3;
+            stroke-opacity: 0.15;
             stroke-width: 1px;
-            stroke-dasharray: 3, 3;
+            stroke-dasharray: 4, 6;
         }
 
         .circle {
             cursor: pointer;
             transition: all 0.3s ease-in-out;
-            filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3));
+            filter: drop-shadow(0 4px 12px rgb(0 0 0 / 0.4));
+        }
+
+        .breach:hover .circle {
+            filter: drop-shadow(0 6px 20px rgb(0 0 0 / 0.5)) brightness(1.15);
+        }
+
+        .breach:hover .breach-title {
+            opacity: 1 !important;
+            font-weight: 700;
         }
 
         .axis path {
@@ -231,7 +251,18 @@
         }
 
         .breach:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 4px;
+            border-radius: 50%;
+        }
+
+        .breach:focus:not(:focus-visible) {
             outline: none;
+        }
+
+        .breach:focus-visible {
+            outline: 2px solid #60a5fa;
+            outline-offset: 4px;
         }
 
         .breach:focus > circle {
@@ -251,6 +282,10 @@
             font-weight: 700;
             font-size: 2.2rem;
             letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #8bb4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .page-subtitle {
@@ -394,10 +429,16 @@
             }
         }
 
-        .info-button {
+        .bottom-buttons {
             position: fixed;
             bottom: 24px;
             right: 24px;
+            display: flex;
+            gap: 10px;
+            z-index: 101;
+        }
+
+        .bottom-btn {
             width: 44px;
             height: 44px;
             border-radius: 12px;
@@ -407,48 +448,55 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             transition: all 0.2s ease;
             border: 1px solid rgba(96, 165, 250, 0.12);
-            z-index: 100;
         }
 
-        .info-button:hover {
+        .bottom-btn:hover {
             color: #60a5fa;
             background: rgba(22, 25, 39, 0.95);
             border-color: rgba(96, 165, 250, 0.3);
         }
 
-        .info-button:focus {
+        .bottom-btn:focus {
             outline: 2px solid #60a5fa;
             outline-offset: 2px;
         }
 
+        .bottom-btn.active {
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(30, 40, 70, 0.9);
+        }
+
         .industry-filter {
-            position: absolute;
-            top: 80px;
-            right: 20px;
-            background: rgba(22, 25, 39, 0.85);
+            position: fixed;
+            bottom: 80px;
+            right: 24px;
+            background: rgba(22, 25, 39, 0.92);
             padding: 20px;
             border-radius: 14px;
             color: white;
             font-weight: 500;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
             opacity: 0;
-            transform: translateY(-10px);
-            width: 260px;
-            backdrop-filter: blur(16px);
+            pointer-events: none;
+            transform: translateY(10px) scale(0.95);
+            width: 240px;
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(96, 165, 250, 0.12);
         }
 
         .industry-filter.visible {
             opacity: 1;
-            transform: translateY(0);
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
         }
 
         .industry-filter h4 {
@@ -651,42 +699,45 @@
         <p class="page-subtitle" id="pageSubtitle">Exploring breach data across industries and years</p>
     </div>
 
-    <div id="chart" role="img" aria-label="Interactive bubble chart showing data breaches organized by year. Each bubble represents a breach, sized by number of records exposed."></div>
+    <div id="chart" role="region" aria-label="Interactive bubble chart showing data breaches organized by year. Each bubble represents a breach, sized by number of records exposed."></div>
     </main>
 
-    <button class="info-button" id="infoButton" aria-label="Show visualization information">i</button>
+    <div class="bottom-buttons">
+        <button class="bottom-btn" id="filterButton" aria-label="Toggle industry filter" aria-expanded="false" title="Filter by industry"><i class="fas fa-filter" aria-hidden="true"></i></button>
+        <button class="bottom-btn" id="infoButton" aria-label="Show visualization information" title="Info">i</button>
+    </div>
 
     <div class="industry-filter" id="industryFilter">
-        <h4><i class="fas fa-filter" style="margin-right: 6px; font-size: 12px;"></i> Filter by Industry</h4>
+        <h4><i class="fas fa-filter" style="margin-right: 6px; font-size: 12px;" aria-hidden="true"></i> Filter by Industry</h4>
         <label for="industrySelect">Industry</label>
         <select id="industrySelect">
             <option value="all">All Industries</option>
         </select>
-        <button id="resetFilter"><i class="fas fa-undo" style="margin-right: 4px; font-size: 11px;"></i> Reset</button>
+        <button id="resetFilter" aria-label="Reset industry filter"><i class="fas fa-undo" style="margin-right: 4px; font-size: 11px;" aria-hidden="true"></i> Reset</button>
         <div class="active-industry" id="activeIndustry" aria-live="polite">Showing: All Industries</div>
     </div>
 
     <div class="overlay-container" id="infoOverlay" role="dialog" aria-modal="true" aria-label="Visualization guide">
         <div class="overlay-content">
-            <div class="overlay-icon"><i class="fas fa-shield-alt"></i></div>
+            <div class="overlay-icon"><i class="fas fa-shield-alt" aria-hidden="true"></i></div>
             <h2>Data Breach Visualization</h2>
             <p class="overlay-desc">Interactive map of major data breaches organized by year. Hover over any bubble to explore breach details.</p>
 
             <div class="overlay-features">
                 <div class="overlay-feature">
-                    <i class="fas fa-circle"></i>
+                    <i class="fas fa-circle" aria-hidden="true"></i>
                     <span><strong>Size</strong> = records exposed</span>
                 </div>
                 <div class="overlay-feature">
-                    <i class="fas fa-palette"></i>
+                    <i class="fas fa-palette" aria-hidden="true"></i>
                     <span><strong>Color</strong> = breach year</span>
                 </div>
                 <div class="overlay-feature">
-                    <i class="fas fa-image"></i>
+                    <i class="fas fa-image" aria-hidden="true"></i>
                     <span><strong>Logo</strong> = affected org</span>
                 </div>
                 <div class="overlay-feature">
-                    <i class="fas fa-filter"></i>
+                    <i class="fas fa-filter" aria-hidden="true"></i>
                     <span><strong>Filter</strong> by industry</span>
                 </div>
             </div>
@@ -714,9 +765,8 @@
                 document.getElementById('pageSubtitle').innerHTML =
                     'Exploring <span>' + allBreachData.length + '+ breaches</span> across <span>' + industries.size + ' industries</span>';
 
-                setTimeout(() => {
-                    document.getElementById('industryFilter').classList.add('visible');
-                }, 500);
+
+
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -791,16 +841,15 @@
             }));
 
             const maxBreaches = Math.max(...breachesPerYear.map(d => d.count));
-            const margin = { top: 40, right: 60, bottom: 40, left: 160 };
-            const width = Math.min(2000, window.innerWidth) - margin.left - margin.right;
+            const margin = { top: 40, right: 60, bottom: 40, left: 195 };
+            const chartPadding = 40;
+            const width = Math.min(2000, window.innerWidth - chartPadding) - margin.left - margin.right;
 
-            // Calculate optimal base height based on average circle size
             function getOptimalHeight(count) {
-                if (count <= 3) return 100; // Minimal height for very few breaches
-                if (count <= 10) return 120; // Slightly more for < 10 breaches
+                if (count <= 3) return 100;
+                if (count <= 10) return 120;
 
                 const avgCircleSize = 45;
-                // More aggressive row calculation for very dense years
                 const rowMultiplier = count > 45 ? 2.2 :
                     count > 30 ? 1.8 :
                         count > 20 ? 1.5 : 1.2;
@@ -808,14 +857,11 @@
                 return rows * (avgCircleSize + 10);
             }
 
-            // More compact space allocation
             const linesPerYear = breachesPerYear.map(d => {
-                // Special static allocation for 2019 and 2020
-                if (d.year === 2020) return 4.2; // Maximum space for 2020
-                if (d.year === 2019) return 3.8; // Large space for 2019
+                if (d.year === 2020) return 4.2;
+                if (d.year === 2019) return 3.8;
 
                 const baseHeight = getOptimalHeight(d.count);
-                // Regular rules for other years
                 if (d.count <= 3) return 0.8;
                 if (d.count <= 10) return 1.0;
                 if (d.count > 45) return 3.5;
@@ -831,7 +877,9 @@
             const tooltip = d3.select("body").selectAll(".tooltip").data([0])
                 .enter()
                 .append("div")
-                .attr("class", "tooltip");
+                .attr("class", "tooltip")
+                .attr("role", "tooltip")
+                .attr("aria-hidden", "true");
 
             const svg = d3.select("#chart").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -843,7 +891,7 @@
             let currentHeight = 0;
             years.forEach((year, idx) => {
                 const yearHeight = baseHeight * linesPerYear[years.indexOf(year)];
-                const verticalOffset = idx === 0 ? 0 : 10; // Reduced gap between years
+                const verticalOffset = idx === 0 ? 0 : 10;
 
                 yearRanges.set(year, {
                     start: currentHeight + verticalOffset,
@@ -860,6 +908,7 @@
                 .padding(0.1);
 
             const colorPalettes = {
+                2027: ['#F0A500', '#E09400', '#D08400', '#C07400', '#B06400'].reverse(),
                 2026: ['#4CC9F0', '#4895EF', '#4361EE', '#3F37C9', '#3A0CA3'].reverse(),
                 2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
                 2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
@@ -910,6 +959,7 @@
                         .attr("transform", `translate(0,${yearRange.center})`)
                         .select("text")
                         .attr("class", "year-label")
+                        .attr("dx", "-8")
                         .text(`${year} (${count} breaches)`)
                         .style("fill", labelColor)
                         .style("font-weight", "700");
@@ -943,22 +993,18 @@
             function calculateForceParameters(yearData) {
                 const count = yearData.length;
 
-                // More space between circles for dense years
                 const baseCollisionPadding = count > 60 ? 3 :
                     count > 45 ? 2.8 :
                         count > 20 ? 2.5 : 3;
 
-                // Stronger repulsion for dense years
                 const chargeStrength = count > 60 ? -120 :
                     count > 45 ? -110 :
                         count > 20 ? -90 : -70;
 
-                // Weaker center attraction for dense years to allow more spread
                 const xStrength = count > 60 ? 0.06 :
                     count > 45 ? 0.07 :
                         count > 20 ? 0.1 : 0.15;
 
-                // Balanced vertical constraint
                 const yStrength = count > 60 ? 0.12 :
                     count > 45 ? 0.15 :
                         count > 20 ? 0.18 : 0.25;
@@ -977,17 +1023,14 @@
                 const forceParams = calculateForceParameters(yearData);
                 const yearRange = yearRanges.get(year);
 
-                // Special handling for 2019 and 2020
                 const is2020 = year === 2020;
                 const is2019 = year === 2019;
                 const isSpecialYear = is2020 || is2019;
 
-                // Regular density checks
                 const isVeryFewBreaches = yearData.length <= 3;
                 const isHighDensity = !isSpecialYear && yearData.length > 30;
                 const isVeryHighDensity = !isSpecialYear && yearData.length > 45;
 
-                // Assign fixed target centers to prevent jittery movement
                 const centers2020 = [width * 0.2, width * 0.4, width * 0.6, width * 0.8];
                 const centers2019 = [width * 0.25, width * 0.5, width * 0.75];
                 const centersDefault = [width * 0.25, width * 0.5, width * 0.75];
@@ -1004,19 +1047,16 @@
                     }
                 });
 
-                // Initial positioning
                 yearData.forEach((d) => {
                     if (is2020) {
-                        // Special 2020 positioning: wider spread, more vertical space
                         const padding = circleSize(d.count);
                         const randomX = padding + Math.random() * (width - 2 * padding);
-                        const verticalPadding = yearRange.height * 0.05; // Use more vertical space
+                        const verticalPadding = yearRange.height * 0.05;
                         const randomY = yearRange.start + verticalPadding +
                             Math.random() * (yearRange.height - 2 * verticalPadding);
                         d.x = randomX;
                         d.y = randomY;
                     } else if (is2019) {
-                        // Special 2019 positioning: slightly less spread than 2020
                         const padding = circleSize(d.count) * 1.1;
                         const randomX = padding + Math.random() * (width - 2 * padding);
                         const verticalPadding = yearRange.height * 0.06;
@@ -1025,7 +1065,6 @@
                         d.x = randomX;
                         d.y = randomY;
                     } else if (isVeryFewBreaches) {
-                        // Existing centered positioning for few breaches
                         const totalBreaches = yearData.length;
                         const index = yearData.indexOf(d);
                         const startX = width * 0.33;
@@ -1033,7 +1072,6 @@
                         d.x = startX + (availableWidth / (totalBreaches + 1)) * (index + 1);
                         d.y = yearRange.center;
                     } else {
-                        // Regular positioning for other years
                         const padding = circleSize(d.count) * (isHighDensity ? 1.2 : 1.3);
                         const randomX = padding + Math.random() * (width - 2 * padding);
                         const verticalPadding = yearRange.height * (
@@ -1163,10 +1201,13 @@
                 .attr("class", "circle")
                 .attr("r", 0)
                 .style("fill", (d, i) => `url(#gradient-${d.year}-${i})`)
-                .style("opacity", 0.9)
+                .style("opacity", 0)
                 .transition()
-                .duration(1000)
-                .attr("r", d => circleSize(d.count));
+                .delay((d, i) => i * 15)
+                .duration(800)
+                .ease(d3.easeBackOut.overshoot(0.8))
+                .attr("r", d => circleSize(d.count))
+                .style("opacity", 0.9);
 
             breaches.append("image")
                 .attr("class", "breach-logo")
@@ -1177,7 +1218,7 @@
                 .attr("height", d => logoSize(d.count))
                 .style("opacity", 0)
                 .transition()
-                .delay(500)
+                .delay((d, i) => 400 + i * 15)
                 .duration(500)
                 .style("opacity", 1);
 
@@ -1187,9 +1228,9 @@
                 .text(d => d.name)
                 .style("opacity", 0)
                 .transition()
-                .delay(1000)
+                .delay((d, i) => 800 + i * 15)
                 .duration(500)
-                .style("opacity", 1);
+                .style("opacity", 0.85);
 
             let previousSize = null;
             let activeElement = null;
@@ -1210,18 +1251,19 @@
 
                 const tooltipContent = `
                     <div class="tooltip-title" style="border-color: ${palette[0]}">
-                        ${d.name} <span style="opacity: 0.8; font-size: 0.9em;">(${d.year})</span>
+                        ${d.name} <span style="color: #c8d6e5; font-size: 0.9em;">(${d.year})</span>
                     </div>
                     <img src="${d.logo}" alt="${d.name} logo" class="tooltip-logo">
                     <div class="tooltip-description">
                         ${d.description}
                     </div>
-                    <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[0]}; border: 1px solid ${palette[0]}40">
+                    <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[palette.length - 1]}; border: 1px solid ${palette[0]}40">
                         Records exposed: ${d3.format(",")(d.count)}
                     </div>
                 `;
 
                 tooltip.html(tooltipContent)
+                    .attr("aria-hidden", "false")
                     .style("opacity", 0)
                     .style("display", "block")
                     .style("border-left", `4px solid ${palette[0]}`);
@@ -1287,7 +1329,7 @@
                         .duration(500)
                         .style("opacity", 0)
                         .on("end", function () {
-                            tooltip.style("display", "none");
+                            tooltip.style("display", "none").attr("aria-hidden", "true");
                         });
 
                     activeElement = null;
@@ -1308,18 +1350,19 @@
 
                     const tooltipContent = `
                         <div class="tooltip-title" style="border-color: ${palette[0]}">
-                            ${d.name} <span style="opacity: 0.8; font-size: 0.9em;">(${d.year})</span>
+                            ${d.name} <span style="color: #c8d6e5; font-size: 0.9em;">(${d.year})</span>
                         </div>
                         <img src="${d.logo}" alt="${d.name} logo" class="tooltip-logo">
                         <div class="tooltip-description">
                             ${d.description}
                         </div>
-                        <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[0]}; border: 1px solid ${palette[0]}40">
+                        <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[palette.length - 1]}; border: 1px solid ${palette[0]}40">
                             Records exposed: ${d3.format(",")(d.count)}
                         </div>
                     `;
 
                     tooltip.html(tooltipContent)
+                        .attr("aria-hidden", "false")
                         .style("opacity", 0)
                         .style("display", "block")
                         .style("border-left", `4px solid ${palette[0]}`);
@@ -1357,10 +1400,16 @@
                         .duration(500)
                         .style("opacity", 0)
                         .on("end", function () {
-                            tooltip.style("display", "none");
+                            tooltip.style("display", "none").attr("aria-hidden", "true");
                         });
 
                     activeElement = null;
+                })
+                .on("keydown", function (event, d) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        this.focus();
+                    }
                 });
 
             if (floatAnimId) cancelAnimationFrame(floatAnimId);
@@ -1368,10 +1417,16 @@
             breaches.each(function(d) {
                 d.floatPhaseX = Math.random() * Math.PI * 2;
                 d.floatPhaseY = Math.random() * Math.PI * 2;
-                d.floatAmpX = 0.8 + Math.random() * 1.5;
-                d.floatAmpY = 0.6 + Math.random() * 1.2;
-                d.floatSpeedX = 0.0003 + Math.random() * 0.0004;
-                d.floatSpeedY = 0.0002 + Math.random() * 0.0003;
+                d.floatAmpX = 0.6 + Math.random() * 1.0;
+                d.floatAmpY = 0.4 + Math.random() * 0.8;
+                d.floatSpeedX = 0.00015 + Math.random() * 0.00025;
+                d.floatSpeedY = 0.0001 + Math.random() * 0.0002;
+                d.driftX = 0;
+                d.driftY = 0;
+                d.driftTargetX = 0;
+                d.driftTargetY = 0;
+                d.driftLerp = 0.003 + Math.random() * 0.004;
+                d.nextNudge = performance.now() + 2000 + Math.random() * 6000;
                 d.baseX = d.x;
                 d.baseY = d.y;
             });
@@ -1392,8 +1447,16 @@
             function startFloating() {
                 function animate(now) {
                     breaches.each(function(d) {
-                        const dx = Math.sin(now * d.floatSpeedX + d.floatPhaseX) * d.floatAmpX;
-                        const dy = Math.cos(now * d.floatSpeedY + d.floatPhaseY) * d.floatAmpY;
+                        if (now > d.nextNudge) {
+                            d.driftTargetX = (Math.random() - 0.5) * 4;
+                            d.driftTargetY = (Math.random() - 0.5) * 3;
+                            d.nextNudge = now + 3000 + Math.random() * 8000;
+                        }
+                        d.driftX += (d.driftTargetX - d.driftX) * d.driftLerp;
+                        d.driftY += (d.driftTargetY - d.driftY) * d.driftLerp;
+
+                        const dx = Math.sin(now * d.floatSpeedX + d.floatPhaseX) * d.floatAmpX + d.driftX;
+                        const dy = Math.cos(now * d.floatSpeedY + d.floatPhaseY) * d.floatAmpY + d.driftY;
                         d.x = d.baseX + dx;
                         d.y = d.baseY + dy;
                     });
@@ -1412,6 +1475,8 @@
             const overlay = document.getElementById('infoOverlay');
             const closeBtn = document.getElementById('closeOverlay');
             const infoBtn = document.getElementById('infoButton');
+            const filterBtn = document.getElementById('filterButton');
+            const filterPanel = document.getElementById('industryFilter');
             const industryFilter = document.getElementById('industrySelect');
             const resetBtn = document.getElementById('resetFilter');
 
@@ -1422,6 +1487,33 @@
             resetBtn.addEventListener('click', function () {
                 industryFilter.value = 'all';
                 filterByIndustry('all');
+            });
+
+            function showFilter() {
+                filterPanel.classList.add('visible');
+                filterBtn.classList.add('active');
+                filterBtn.setAttribute('aria-expanded', 'true');
+                industryFilter.focus();
+            }
+
+            function hideFilter() {
+                filterPanel.classList.remove('visible');
+                filterBtn.classList.remove('active');
+                filterBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            filterBtn.addEventListener('click', function () {
+                if (filterPanel.classList.contains('visible')) {
+                    hideFilter();
+                } else {
+                    showFilter();
+                }
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!filterPanel.contains(e.target) && !filterBtn.contains(e.target) && filterPanel.classList.contains('visible')) {
+                    hideFilter();
+                }
             });
 
             function openOverlay() {
@@ -1438,8 +1530,13 @@
             closeBtn.addEventListener('click', closeOverlay);
 
             document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && overlay.style.display === 'flex') {
-                    closeOverlay();
+                if (e.key === 'Escape') {
+                    if (overlay.style.display === 'flex') {
+                        closeOverlay();
+                    } else if (filterPanel.classList.contains('visible')) {
+                        hideFilter();
+                        filterBtn.focus();
+                    }
                 }
 
                 if (overlay.style.display === 'flex' && e.key === 'Tab') {
@@ -1471,8 +1568,6 @@
             }
 
             d3.select("#chart").selectAll("svg").remove();
-
-            document.getElementById('industryFilter').classList.add('visible');
 
             setTimeout(() => {
                 createGraph(filteredData);
@@ -1567,13 +1662,13 @@
             <h6 role="button" tabindex="0" aria-expanded="false">Follow Us</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                <i class="fab fa-twitter"></i> Twitter (X)
+                <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
               </a>
               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                <i class="fab fa-facebook"></i> Facebook
+                <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
               </a>
               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-                <i class="fab fa-mastodon"></i> Mastodon
+                <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
               </a>
             </div>
           </div>
