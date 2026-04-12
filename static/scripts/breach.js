@@ -303,9 +303,10 @@ function displayBreachData(breach) {
         exposedDataContainer.appendChild(badge);
     });
 
-    document.getElementById('searchable').innerHTML = formatStatus(breach.searchable) + (!breach.searchable ? ' <span class="badge-status badge-danger" style="margin-left: 8px;"><i class="fas fa-fire"></i> Sensitive</span>' : '');
+    var isSensitive = !breach.searchable;
+    document.getElementById('searchable').innerHTML = formatStatus(breach.searchable);
     document.getElementById('verified').innerHTML = formatStatus(breach.verified);
-    document.getElementById('sensitive').innerHTML = formatSensitiveStatus(breach.sensitive);
+    document.getElementById('sensitive').innerHTML = formatSensitiveStatus(isSensitive) + (isSensitive ? ' <span class="badge-status badge-danger" style="margin-left: 8px;"><i class="fas fa-fire"></i> Sensitive</span>' : '');
     var referenceCell = document.getElementById('reference');
     if (breach.referenceURL) {
         referenceCell.innerHTML = '<a href="' + breach.referenceURL + '" target="_blank" rel="noopener" class="reference-link">' + breach.referenceURL + '</a>';
