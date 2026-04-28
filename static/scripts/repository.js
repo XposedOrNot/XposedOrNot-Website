@@ -22,18 +22,58 @@ function animateCounter($el, end, duration) {
 }
 
 var colors = {
-  red: 'rgba(220, 20, 60, 0.8)',
-  redLight: 'rgba(220, 20, 60, 0.2)',
-  blue: 'rgba(87, 94, 216, 0.8)',
-  blueLight: 'rgba(87, 94, 216, 0.2)',
+  primary: 'rgba(63, 113, 243, 0.8)',
+  primaryLight: 'rgba(63, 113, 243, 0.2)',
+  secondary: 'rgba(66, 132, 251, 0.8)',
+  secondaryLight: 'rgba(66, 132, 251, 0.2)',
   amber: 'rgba(245, 158, 11, 0.8)',
   purple: 'rgba(139, 92, 246, 0.8)',
   emerald: 'rgba(16, 185, 129, 0.8)',
   gray: 'rgba(107, 114, 128, 0.8)'
 };
 
+function isDarkMode() {
+  return document.body.getAttribute('data-theme') === 'dark';
+}
+
+function getTextColor() {
+  return isDarkMode() ? '#e2e8f0' : '#2d3748';
+}
+
+function getSubTextColor() {
+  return isDarkMode() ? '#9fc0e0' : '#4a5568';
+}
+
+function getMutedColor() {
+  return isDarkMode() ? '#718096' : '#718096';
+}
+
+function getGridColor() {
+  return isDarkMode() ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+}
+
+function getTooltipBg() {
+  return isDarkMode() ? 'rgba(0, 0, 0, 0.9)' : 'rgba(45, 55, 72, 0.95)';
+}
+
+var dashboardData = null;
+
 $(document).ready(function() {
   fetchDashboardData();
+
+  $('#darkSwitch').on('change', function() {
+    if (dashboardData) {
+      setTimeout(function() {
+        Chart.helpers.each(Chart.instances, function(instance) {
+          instance.chart.destroy();
+        });
+        renderPasswordRiskChart(dashboardData);
+        renderDataTypesChart(dashboardData);
+        renderYearlyChart(dashboardData);
+        renderIndustryChart(dashboardData);
+      }, 50);
+    }
+  });
 });
 
 function fetchDashboardData(retryCount) {
@@ -141,6 +181,7 @@ function calculatePareto(topBreaches, totalRecords) {
 }
 
 function renderDashboard(data) {
+  dashboardData = data;
   animateCounter($('#breaches-count'), data.Breaches_Count);
   animateCounter($('#records-count'), data.Breaches_Records);
   animateCounter($('#emails-count'), parseInt(data.Pastes_Count.replace(/,/g, '')) || 0);
@@ -213,9 +254,9 @@ function renderPasswordRiskChart(data) {
         }
       },
       tooltips: {
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        titleFontFamily: 'Inter',
-        bodyFontFamily: 'Inter',
+        backgroundColor: getTooltipBg(),
+        titleFontFamily: 'Poppins',
+        bodyFontFamily: 'Poppins',
         callbacks: {
           label: function(tooltipItem, data) {
             var value = data.datasets[0].data[tooltipItem.index];
@@ -251,8 +292,8 @@ function renderDataTypesChart(data) {
     { type: 'Passwords', pct: 73 },
     { type: 'Usernames', pct: 52 },
     { type: 'Names', pct: 47 },
-    { type: 'Phone Numbers', pct: 30 },
     { type: 'IP Addresses', pct: 38 },
+    { type: 'Phone Numbers', pct: 30 },
     { type: 'Dates of Birth', pct: 25 },
     { type: 'Physical Addresses', pct: 23 }
   ];
@@ -264,8 +305,8 @@ function renderDataTypesChart(data) {
       datasets: [{
         data: dataTypes.map(function(d) { return d.pct; }),
         backgroundColor: dataTypes.map(function(d, i) {
-          var opacity = 0.9 - (i * 0.08);
-          return 'rgba(220, 20, 60, ' + opacity + ')';
+          var opacity = 0.9 - (i * 0.07);
+          return 'rgba(63, 113, 243, ' + opacity + ')';
         }),
         borderRadius: 4
       }]
@@ -279,13 +320,13 @@ function renderDataTypesChart(data) {
           ticks: {
             beginAtZero: true,
             max: 100,
-            fontColor: '#9ca3af',
+            fontColor: getMutedColor(),
             callback: function(v) { return v + '%'; }
           },
-          gridLines: { color: 'rgba(255,255,255,0.05)' }
+          gridLines: { color: getGridColor() }
         }],
         yAxes: [{
-          ticks: { fontColor: '#fff', fontSize: 11 },
+          ticks: { fontColor: getTextColor(), fontSize: 11 },
           gridLines: { display: false }
         }]
       },
@@ -293,14 +334,14 @@ function renderDataTypesChart(data) {
         datalabels: {
           anchor: 'end',
           align: 'end',
-          color: '#fff',
+          color: getTextColor(),
           font: { weight: 'bold', size: 11 },
           formatter: function(v) { return v + '%'; },
           offset: 4
         }
       },
       tooltips: {
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        backgroundColor: getTooltipBg(),
         callbacks: {
           label: function(t) { return t.value + '% of breaches contain this data'; }
         }
@@ -346,8 +387,8 @@ function renderYearlyChart(data) {
 
   var ctx = document.getElementById('yearlyChart').getContext('2d');
   var gradient = ctx.createLinearGradient(0, 0, 0, 300);
-  gradient.addColorStop(0, 'rgba(220, 20, 60, 0.3)');
-  gradient.addColorStop(1, 'rgba(220, 20, 60, 0)');
+  gradient.addColorStop(0, 'rgba(63, 113, 243, 0.25)');
+  gradient.addColorStop(1, 'rgba(63, 113, 243, 0)');
 
   new Chart(ctx, {
     type: 'line',
@@ -357,10 +398,10 @@ function renderYearlyChart(data) {
         data: yearlyData.map(function(d) { return d.count; }),
         fill: true,
         backgroundColor: gradient,
-        borderColor: 'rgba(220, 20, 60, 1)',
+        borderColor: 'rgba(63, 113, 243, 1)',
         borderWidth: 3,
-        pointBackgroundColor: '#fff',
-        pointBorderColor: 'rgba(220, 20, 60, 1)',
+        pointBackgroundColor: isDarkMode() ? '#1a1f3a' : '#fff',
+        pointBorderColor: 'rgba(63, 113, 243, 1)',
         pointBorderWidth: 2,
         pointRadius: 5,
         pointHoverRadius: 8,
@@ -373,33 +414,33 @@ function renderYearlyChart(data) {
       legend: { display: false },
       scales: {
         xAxes: [{
-          ticks: { fontColor: '#9ca3af' },
+          ticks: { fontColor: getMutedColor() },
           gridLines: { display: false }
         }],
         yAxes: [{
           ticks: {
-            fontColor: '#9ca3af',
+            fontColor: getMutedColor(),
             beginAtZero: true,
             callback: formatNumber
           },
-          gridLines: { color: 'rgba(255,255,255,0.05)' }
+          gridLines: { color: getGridColor() }
         }]
       },
       plugins: {
         datalabels: {
           align: 'top',
           anchor: 'end',
-          backgroundColor: 'rgba(220, 20, 60, 0.8)',
+          backgroundColor: 'rgba(63, 113, 243, 0.85)',
           borderRadius: 4,
           color: '#fff',
           font: { size: 10, weight: 'bold' },
           padding: 4,
           formatter: formatNumber,
-          display: function(ctx) { return ctx.dataIndex % 2 === 0 || ctx.dataIndex === yearlyData.length - 1; }
+          display: true
         }
       },
       tooltips: {
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        backgroundColor: getTooltipBg(),
         callbacks: {
           label: function(t) { return 'Breaches: ' + t.value.toLocaleString(); }
         }
@@ -423,7 +464,7 @@ function renderIndustryChart(data) {
         data: industries.map(function(d) { return d.count; }),
         backgroundColor: industries.map(function(d, i) {
           var opacity = Math.max(0.4, 0.95 - (i * 0.025));
-          return 'rgba(87, 94, 216, ' + opacity + ')';
+          return 'rgba(66, 132, 251, ' + opacity + ')';
         })
       }]
     },
@@ -434,14 +475,14 @@ function renderIndustryChart(data) {
       scales: {
         xAxes: [{
           ticks: {
-            fontColor: '#9ca3af',
+            fontColor: getMutedColor(),
             beginAtZero: true,
             callback: formatNumber
           },
-          gridLines: { color: 'rgba(255,255,255,0.05)' }
+          gridLines: { color: getGridColor() }
         }],
         yAxes: [{
-          ticks: { fontColor: '#fff', fontSize: 11 },
+          ticks: { fontColor: getTextColor(), fontSize: 11 },
           gridLines: { display: false }
         }]
       },
@@ -449,14 +490,14 @@ function renderIndustryChart(data) {
         datalabels: {
           anchor: 'end',
           align: 'end',
-          color: '#fff',
+          color: getTextColor(),
           font: { size: 10, weight: 'bold' },
           formatter: formatNumber,
           offset: 4
         }
       },
       tooltips: {
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        backgroundColor: getTooltipBg(),
         callbacks: {
           label: function(t) { return 'Breaches: ' + parseInt(t.value).toLocaleString(); }
         }
@@ -523,32 +564,3 @@ function toggleDesc(el) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  var menuToggle = document.querySelector('.menu-toggle');
-  var navLinks = document.querySelector('.nav-links');
-
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener('click', function() {
-      navLinks.classList.toggle('active');
-      var isOpen = navLinks.classList.contains('active');
-      menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-      menuToggle.setAttribute('aria-expanded', isOpen);
-    });
-
-    navLinks.querySelectorAll('a').forEach(function(link) {
-      link.addEventListener('click', function() {
-        navLinks.classList.remove('active');
-        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-        menuToggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-
-    document.addEventListener('click', function(e) {
-      if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
-        navLinks.classList.remove('active');
-        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-        menuToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-});
