@@ -515,6 +515,15 @@
         font-size: 0.9rem;
       }
 
+      header + .xon-row-area-min,
+      [data-theme="dark"] header + .xon-row-area-min {
+        padding-top: 16px;
+      }
+
+      .xon-row2-left {
+        min-height: 450px;
+      }
+
       /* Ensure proper spacing in the row */
       .xon-row-area-min .row {
         margin: 0;
@@ -633,8 +642,144 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"
     ></script>
     <style>
-      .buttons-label {
-        color: blue;
+      div.dt-buttons button.btn,
+      div.dt-buttons a.btn,
+      div.dt-buttons .btn-group > .btn,
+      div.dt-buttons button.btn:hover,
+      div.dt-buttons button.btn:focus,
+      div.dt-buttons button.btn:active,
+      div.dt-buttons button.btn.active,
+      div.dt-buttons a.btn:hover,
+      div.dt-buttons a.btn:focus,
+      div.dt-buttons a.btn:active {
+        border-style: solid !important;
+        border-width: 1px !important;
+        border-color: #d0d7e2 !important;
+        border-radius: 8px !important;
+        padding: 6px 14px !important;
+        margin: 0 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        box-shadow: none !important;
+        outline: none !important;
+        transform: none !important;
+        transition: background-color 0.2s ease, color 0.2s ease !important;
+      }
+
+      div.dt-buttons button.btn,
+      div.dt-buttons a.btn,
+      div.dt-buttons .btn-group > .btn {
+        background-color: #ffffff !important;
+        color: #2c3e50 !important;
+      }
+
+      div.dt-buttons button.btn:hover,
+      div.dt-buttons button.btn:focus,
+      div.dt-buttons a.btn:hover,
+      div.dt-buttons a.btn:focus {
+        background-color: #eef2f7 !important;
+        color: #2c3e50 !important;
+      }
+
+      [data-theme="dark"] div.dt-buttons button.btn,
+      [data-theme="dark"] div.dt-buttons a.btn,
+      [data-theme="dark"] div.dt-buttons .btn-group > .btn,
+      [data-theme="dark"] div.dt-buttons button.btn:hover,
+      [data-theme="dark"] div.dt-buttons button.btn:focus,
+      [data-theme="dark"] div.dt-buttons button.btn:active,
+      [data-theme="dark"] div.dt-buttons a.btn:hover,
+      [data-theme="dark"] div.dt-buttons a.btn:focus {
+        border-color: #2a2f4a !important;
+      }
+
+      [data-theme="dark"] div.dt-buttons button.btn,
+      [data-theme="dark"] div.dt-buttons a.btn,
+      [data-theme="dark"] div.dt-buttons .btn-group > .btn {
+        background-color: #181b2d !important;
+        color: #9fc0e0 !important;
+      }
+
+      [data-theme="dark"] div.dt-buttons button.btn:hover,
+      [data-theme="dark"] div.dt-buttons button.btn:focus,
+      [data-theme="dark"] div.dt-buttons a.btn:hover,
+      [data-theme="dark"] div.dt-buttons a.btn:focus {
+        background-color: #232742 !important;
+        color: #ecf0f1 !important;
+      }
+
+      .pwd-risk {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        color: #ffffff;
+        white-space: nowrap;
+        line-height: 1.4;
+      }
+
+      .pwd-risk--plaintext { background-color: #e74c3c; }
+      .pwd-risk--easy      { background-color: #f39c12; }
+      .pwd-risk--hard      { background-color: #27ae60; }
+      .pwd-risk--unknown   { background-color: #7f8c8d; }
+
+      [data-theme="dark"] .pwd-risk--plaintext { background-color: #c0392b; }
+      [data-theme="dark"] .pwd-risk--easy      { background-color: #d68910; }
+      [data-theme="dark"] .pwd-risk--hard      { background-color: #1e8449; }
+      [data-theme="dark"] .pwd-risk--unknown   { background-color: #525a66; }
+
+      div.dt-button-collection {
+        background-color: #ffffff !important;
+        border: 1px solid rgba(0, 0, 0, 0.15) !important;
+      }
+
+      [data-theme="dark"] div.dt-button-collection {
+        background-color: #181b2d !important;
+        border: 1px solid #2a2f4a !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5) !important;
+      }
+
+      div.dt-button-collection .btn,
+      div.dt-button-collection .dt-button,
+      div.dt-button-collection .btn:hover,
+      div.dt-button-collection .dt-button:hover,
+      div.dt-button-collection .btn:focus,
+      div.dt-button-collection .dt-button:focus,
+      div.dt-button-collection .btn:active,
+      div.dt-button-collection .dt-button:active {
+        border: none !important;
+        border-radius: 4px !important;
+        padding: 8px 16px !important;
+        margin: 0 !important;
+        text-align: left !important;
+        box-shadow: none !important;
+        outline: none !important;
+        transform: none !important;
+      }
+
+      div.dt-button-collection .btn,
+      div.dt-button-collection .dt-button {
+        background-color: #ffffff !important;
+        color: #2c3e50 !important;
+      }
+
+      div.dt-button-collection .btn:hover,
+      div.dt-button-collection .dt-button:hover {
+        background-color: #f0f3f7 !important;
+        color: #2c3e50 !important;
+      }
+
+      [data-theme="dark"] div.dt-button-collection .btn,
+      [data-theme="dark"] div.dt-button-collection .dt-button {
+        background-color: #181b2d !important;
+        color: #9fc0e0 !important;
+      }
+
+      [data-theme="dark"] div.dt-button-collection .btn:hover,
+      [data-theme="dark"] div.dt-button-collection .dt-button:hover {
+        background-color: #232742 !important;
+        color: #ecf0f1 !important;
       }
 
       /* xonPlus Modal Styling */
@@ -1045,7 +1190,7 @@
         <div class="row align-items-center">
           <div class="col-auto mb-3 mb-md-0">
             <select id="data-filter" class="custom-select" style="width: 150px">
-              <option value="all">All Data</option>
+              <option value="all">All Time</option>
               <option value="12m">Last 12 Months</option>
               <option value="6m">Last 6 Months</option>
             </select>
@@ -1109,58 +1254,64 @@
       <div class="container">
         <div class="row">
           <div class="container mt-5">
-            <div class="row text-center">
-              <div class="col-md-4">
-                <div class="metric-box">
-                  <div class="metric-header">
-                    <h2>Monitored Domains</h2>
+            <div class="metrics-panel" aria-labelledby="exposure-overview-title">
+              <h3 class="metrics-panel-title" id="exposure-overview-title">Exposure Overview</h3>
+              <div class="row text-center">
+                <div class="col-md-4">
+                  <div class="metric-box">
+                    <div class="metric-header">
+                      <h2>Monitored Domains</h2>
+                    </div>
+                    <p id="exposed-domains">...</p>
                   </div>
-                  <p id="exposed-domains">...</p>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="metric-box">
-                  <div class="metric-header">
-                    <h2>Exposed Emails</h2>
+                <div class="col-md-4">
+                  <div class="metric-box">
+                    <div class="metric-header">
+                      <h2>Exposed Emails</h2>
+                    </div>
+                    <p id="exposed-emails">...</p>
                   </div>
-                  <p id="exposed-emails">...</p>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="metric-box">
-                  <div class="metric-header">
-                    <h2>Exposed Records</h2>
+                <div class="col-md-4">
+                  <div class="metric-box">
+                    <div class="metric-header">
+                      <h2>Exposed Records</h2>
+                    </div>
+                    <p id="exposed-records">...</p>
                   </div>
-                  <p id="exposed-records">...</p>
                 </div>
               </div>
             </div>
 
             <div class="xon-row-area" align="center" style="width: 100%">
               <div class="container">
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="metric-box">
-                      <div class="metric-header">
-                        <h2>CxO</h2>
+                <div class="metrics-panel" aria-labelledby="executive-exposure-title">
+                  <h3 class="metrics-panel-title" id="executive-exposure-title">Executive Exposure</h3>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="metric-box">
+                        <div class="metric-header">
+                          <h2>CxO</h2>
+                        </div>
+                        <p id="exposed-cxo">...</p>
                       </div>
-                      <p id="exposed-cxo">...</p>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="metric-box">
-                      <div class="metric-header">
-                        <h2>VP</h2>
+                    <div class="col-md-4">
+                      <div class="metric-box">
+                        <div class="metric-header">
+                          <h2>VP</h2>
+                        </div>
+                        <p id="exposed-vp">...</p>
                       </div>
-                      <p id="exposed-vp">...</p>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="metric-box">
-                      <div class="metric-header">
-                        <h2>Directors</h2>
+                    <div class="col-md-4">
+                      <div class="metric-box">
+                        <div class="metric-header">
+                          <h2>Directors</h2>
+                        </div>
+                        <p id="exposed-directors">...</p>
                       </div>
-                      <p id="exposed-directors">...</p>
                     </div>
                   </div>
                 </div>
@@ -1931,63 +2082,37 @@
     </div>
     <br />
     <div class="xon">
-      <div>
-        <div>
-          <br />
-          <div align="center">
-            <button
-              type="button"
-              class="btn-lg btn-primary"
-              style="
-                background-color: #e74c3c;
-                color: white;
-                border: none;
-                margin: 0 10px;
-              "
-            >
-              &nbsp; 🛠️ API Key Management
-            </button>
-            <a
-              href="#"
-              id="googleLink"
-              class="btn-lg"
-              style="
-                background-color: #2ecc71;
-                color: white;
-                border: none;
-                margin: 0 10px;
-                text-decoration: none;
-              "
-            >
-              <em>&nbsp; Add Another Domain</em>
-            </a>
-            <button
-              type="button"
-              class="btn-lg btn-primary"
-              id="breachAnalysisBtn"
-              style="
-                background-color: #ff8c00;
-                color: white;
-                border: none;
-                margin: 0 10px;
-              "
-            >
-              &nbsp; 📊 Breach Analysis
-            </button>
-            <button
-              type="button"
-              class="btn-lg btn-primary vip-btn-bottom"
-              style="
-                background-color: #d4af37;
-                color: white;
-                border: none;
-                margin: 0 10px;
-              "
-            >
-              &nbsp; 👑 VIP Dashboard
-            </button>
-          </div>
-        </div>
+      <div
+        class="utility-buttons"
+        style="justify-content: center; margin: 24px 0 32px;"
+      >
+        <button type="button" class="btn btn-utility api-key-btn">
+          <i class="fas fa-key"></i>
+          <span>API Key Management</span>
+        </button>
+        <a
+          href="#"
+          id="googleLink"
+          class="btn btn-utility domain-add-btn"
+        >
+          <i class="fas fa-plus-circle"></i>
+          <span>Add Another Domain</span>
+        </a>
+        <button
+          type="button"
+          class="btn btn-utility analysis-btn"
+          id="breachAnalysisBtn"
+        >
+          <i class="fas fa-chart-bar"></i>
+          <span>Breach Analysis</span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-utility vip-btn vip-btn-bottom"
+        >
+          <i class="fas fa-crown"></i>
+          <span>VIP Dashboard</span>
+        </button>
       </div>
     </div>
     <div class="footer">

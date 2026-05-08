@@ -192,7 +192,7 @@ $.ajax(emailVerificationUrl)
         if (yearlyBreachHierarchy) {
             $('#tree-container').empty();
             $('#tree-container').hortree({
-                data: [yearlyBreachHierarchy],
+                data: [pruneEmptyYears(yearlyBreachHierarchy)],
                 levelSeparation: 30,
                 nodeWidth: 120,
                 nodeHeight: 80,
@@ -254,6 +254,15 @@ function updateSenioritySummary(senioritySummary) {
 
 // Store chart instance for proper destruction on updates
 var yearlyTrendChart = null;
+
+function pruneEmptyYears(root) {
+    if (!root || !Array.isArray(root.children)) return root;
+    return Object.assign({}, root, {
+        children: root.children.filter(function (year) {
+            return Array.isArray(year.children) && year.children.length > 0;
+        })
+    });
+}
 
 function g1(years, breachCounts) {
     const allZero = breachCounts.every(count => count === 0);
@@ -510,23 +519,16 @@ function addBreachesToTable(breaches) {
 
 
         const cellPasswordrisk = $('<td>');
-        const span = $('<span>', {
-            text: breachData.password_risk || ''
-        });
-
-        switch (breachData.password_risk) {
-            case 'plaintext':
-                span.addClass('alert alert-danger');
-                break;
-            case 'unknown':
-                span.addClass('alert alert-dark');
-                break;
-            case 'easytocrack':
-                span.addClass('alert alert-warning');
-                break;
-            case 'hardtocrack':
-                span.addClass('alert alert-success');
-                break;
+        const riskMap = {
+            plaintext:   { label: 'Plain Text',    cls: 'pwd-risk--plaintext' },
+            easytocrack: { label: 'Easy to Crack', cls: 'pwd-risk--easy' },
+            hardtocrack: { label: 'Hard to Crack', cls: 'pwd-risk--hard' },
+            unknown:     { label: 'Unknown',       cls: 'pwd-risk--unknown' }
+        };
+        const riskMeta = riskMap[breachData.password_risk] || { label: breachData.password_risk || '', cls: '' };
+        const span = $('<span>', { text: riskMeta.label });
+        if (riskMeta.cls) {
+            span.addClass('pwd-risk ' + riskMeta.cls);
         }
 
         cellPasswordrisk.append(span);
@@ -550,7 +552,7 @@ function addBreachesToTable(breaches) {
     }
 
     table.DataTable({
-        dom: '<"top"<"d-flex align-items-center justify-content-between"lB>f>rtip',
+        dom: '<"top"<"d-flex align-items-center justify-content-between flex-wrap"l<"d-flex align-items-center"fB>>>rtip',
         buttons: [{
             extend: 'collection',
             text: 'Export',
@@ -831,7 +833,7 @@ function addBreachesDetailsToTable(breachesDetails) {
     var domainNamesArray = Array.from(uniqueDomains);
 
     table.DataTable({
-        dom: '<"top"<"d-flex align-items-center justify-content-between"lB>f>rtip',
+        dom: '<"top"<"d-flex align-items-center justify-content-between flex-wrap"l<"d-flex align-items-center"fB>>>rtip',
         buttons: [{
             extend: 'collection',
             text: 'Export',
@@ -1030,9 +1032,6 @@ function addBreachesDetailsToTable(breachesDetails) {
         autoWidth: false,
         responsive: true,
         scrollX: true,
-        initComplete: function () {
-            $(".dt-buttons").prepend('<span class="buttons-label">Export as: &nbsp;</span>');
-        },
         order: []
     });
 }
@@ -1055,12 +1054,6 @@ function addDomainSummaryToTable(domainSummary, email, token) {
         tbody.append(rowHTML);
     }
 }
-
-const googleLink = document.getElementById("googleLink");
-googleLink.addEventListener("click", function (event) {
-    event.preventDefault();
-    window.open("https://xposedornot.com/domain.html", "_blank");
-});
 
 function updateApiCall(timeFilter) {
     const emailVerificationUrl = `https://api.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&time_filter=${timeFilter}`;
@@ -1107,7 +1100,7 @@ function updateApiCall(timeFilter) {
             if (yearlyBreachHierarchy) {
                 $('#tree-container').empty();
                 $('#tree-container').hortree({
-                    data: [yearlyBreachHierarchy],
+                    data: [pruneEmptyYears(yearlyBreachHierarchy)],
                     levelSeparation: 30,
                     nodeWidth: 120,
                     nodeHeight: 80,
