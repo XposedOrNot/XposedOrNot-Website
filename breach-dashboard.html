@@ -190,6 +190,7 @@
 
       .vip-btn {
         border-color: #d4af37;
+        padding-right: 28px;
       }
 
       .vip-btn::before {
@@ -206,6 +207,33 @@
 
       .vip-btn:hover i.fa-crown {
         color: #ffffff;
+      }
+
+      .vip-fire {
+        position: absolute;
+        top: 0;
+        right: 3px;
+        font-size: 0.8rem;
+        line-height: 1;
+        z-index: 2;
+        filter: drop-shadow(0 0 4px rgba(255, 140, 0, 0.7));
+        animation: vipFireFlicker 1.6s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes vipFireFlicker {
+        0%, 100% {
+          transform: scale(1) rotate(-3deg);
+          filter: drop-shadow(0 0 4px rgba(255, 140, 0, 0.7));
+        }
+        50% {
+          transform: scale(1.15) rotate(3deg);
+          filter: drop-shadow(0 0 8px rgba(255, 100, 0, 0.9));
+        }
+      }
+
+      [data-theme="dark"] .vip-fire {
+        filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.85));
       }
 
       .phishing-btn {
@@ -405,6 +433,39 @@
 
       .breach-alerts-section.no-alerts thead {
         background-color: #2ecc71 !important;
+      }
+
+      .alerts-empty-row {
+        color: #1e8449 !important;
+        font-weight: 500;
+        background-color: #eafaf1 !important;
+        padding: 18px !important;
+      }
+
+      .alerts-empty-row i {
+        color: #27ae60;
+      }
+
+      [data-theme="dark"] .alerts-empty-row {
+        color: #6ee7a7 !important;
+        background-color: #0e2a1c !important;
+      }
+
+      [data-theme="dark"] .alerts-empty-row i {
+        color: #6ee7a7;
+      }
+
+      /* Override generic dark-mode .badge gray for status badges */
+      [data-theme="dark"] .badge.badge-success {
+        background-color: #1e8449 !important;
+        color: #ffffff !important;
+        border: 1px solid #27ae60 !important;
+      }
+
+      [data-theme="dark"] .badge.badge-danger {
+        background-color: #c0392b !important;
+        color: #ffffff !important;
+        border: 1px solid #e74c3c !important;
       }
 
       /* Icon and text transitions */
@@ -1234,6 +1295,7 @@
               >
                 <i class="fas fa-crown"></i>
                 <span>VIP Dashboard</span>
+                <span class="vip-fire" aria-hidden="true">🔥</span>
               </button>
               <div class="phishing-btn-wrapper">
                 <button
@@ -2118,6 +2180,7 @@
         >
           <i class="fas fa-crown"></i>
           <span>VIP Dashboard</span>
+          <span class="vip-fire" aria-hidden="true">🔥</span>
         </button>
       </div>
     </div>

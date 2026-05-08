@@ -1276,7 +1276,7 @@ function populateDynamicAlerts(alertManagement) {
 
     if (!alertManagement || !alertManagement.summary || !alertManagement.alerts) {
         console.warn('No Alert_Management data found in API response');
-        $('#dynamic-alert-badge').text('No Alerts').removeClass('badge-danger badge-warning').addClass('badge-success');
+        $('#dynamic-alert-badge').text('No Alerts').removeClass('badge-danger badge-warning badge-secondary').addClass('badge-success');
         alertSection.addClass('no-alerts');
         alertIcon.removeClass('fa-exclamation-triangle').addClass('fa-check-circle');
         alertDescription.text('All clear - no pending breach alerts');
@@ -1302,7 +1302,7 @@ function populateDynamicAlerts(alertManagement) {
         alertIcon.removeClass('fa-exclamation-triangle').addClass('fa-check-circle');
         alertDescription.text('All breach alerts have been acknowledged');
     } else {
-        badge.text('No Alerts').removeClass('badge-danger badge-warning').addClass('badge-secondary');
+        badge.text('No Alerts').removeClass('badge-danger badge-warning badge-secondary').addClass('badge-success');
         alertSection.addClass('no-alerts');
         alertIcon.removeClass('fa-exclamation-triangle').addClass('fa-check-circle');
         alertDescription.text('All clear - no pending breach alerts');
@@ -1313,7 +1313,7 @@ function populateDynamicAlerts(alertManagement) {
     tbody.empty();
 
     if (alerts.length === 0) {
-        tbody.append('<tr><td colspan="7" class="text-center">No alerts to display</td></tr>');
+        tbody.append('<tr><td colspan="7" class="text-center alerts-empty-row"><i class="fas fa-check-circle mr-2"></i>All clear &mdash; no recent breach alerts to display</td></tr>');
         alertSection.addClass('no-alerts');
         return;
     }
