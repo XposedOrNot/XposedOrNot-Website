@@ -114,7 +114,7 @@ function initDataTable() {
             buttons: ['csv', 'excel', 'pdf']
         }],
         pageLength: 25,
-        order: [[4, 'desc'], [0, 'asc']],  // Sort by breach date (newest first), then domain
+        order: [[2, 'asc'], [4, 'desc'], [0, 'asc']],  // VIP level (C-Suite first), then breach date, then domain
         responsive: true,
         scrollX: true,
         autoWidth: false,
@@ -125,7 +125,11 @@ function initDataTable() {
         columnDefs: [
             { targets: 0, width: '120px' },  // Domain
             { targets: 1, width: '200px' },  // Email
-            { targets: 2, width: '100px' },  // VIP Level
+            {
+                targets: 2,
+                width: '100px',
+                type: 'html-data-sort'  // Sort by seniority rank, not label text
+            },
             { targets: 3, width: '150px' },  // Breach Name
             {
                 targets: 4,
@@ -428,8 +432,15 @@ function getVipBadge(seniority) {
         'director': 'Director'
     };
 
+    var vipRanks = {
+        'c_suite': '1',
+        'vp': '2',
+        'director': '3'
+    };
+
     var label = vipLabels[seniority] || seniority;
-    return '<span class="badge badge-vip-level badge-' + seniority + '">' + label + '</span>';
+    var sortRank = vipRanks[seniority] || '9';
+    return '<span class="badge badge-vip-level badge-' + seniority + '" data-sort="' + sortRank + '">' + label + '</span>';
 }
 
 /**
@@ -454,7 +465,7 @@ function formatBreachDate(breachDate) {
     }
 
     var sortValue = parseDateToSortable(breachDate);
-    return '<span class="badge badge-secondary" data-sort="' + sortValue + '">' + escapeHtml(breachDate) + '</span>';
+    return '<span class="breach-date-text" data-sort="' + sortValue + '">' + escapeHtml(breachDate) + '</span>';
 }
 
 /**
@@ -495,7 +506,7 @@ function formatExposedData(xposedData) {
     var html = '<div class="exposed-data-list">';
     uniqueData.forEach(function(dataType) {
         var emoji = getDataTypeEmoji(dataType);
-        html += '<span class="badge badge-exposed mr-1 mb-1">' + emoji + ' ' + escapeHtml(dataType) + '</span>';
+        html += '<span class="exposed-data-item"><span class="exposed-data-emoji">' + emoji + '</span>' + escapeHtml(dataType) + '</span>';
     });
     html += '</div>';
     return html;

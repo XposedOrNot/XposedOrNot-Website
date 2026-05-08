@@ -125,40 +125,68 @@
          transform: translateY(-5px);
       }
 
+      [data-theme="dark"] .metrics-panel .metric-box {
+         background: #0b0d18 !important;
+         border: 1px solid #2a2f4a !important;
+      }
+
       [data-theme="dark"] .metric-header {
-         background: linear-gradient(145deg, #1e2235, #181b2d) !important;
+         background: linear-gradient(145deg, #2c3e64, #1f2c4a) !important;
+         border-bottom: 1px solid #3a4a73 !important;
       }
 
       [data-theme="dark"] .metric-box h2 {
-         color: #9fc0e0 !important;
+         color: #cfe1f5 !important;
       }
 
       [data-theme="dark"] .metric-box p {
          color: #6daae0 !important;
       }
 
-      /* VIP Badge Colors */
+      /* VIP Badge Colors - distinct hues for instant recognition */
       .badge-c_suite {
-         background-color: #e74c3c !important;
-         color: white !important;
+         background-color: #f39c12 !important;
+         color: #1a1a2e !important;
+         border: 1px solid #c87f0a !important;
       }
 
       .badge-vp {
-         background-color: #9b59b6 !important;
-         color: white !important;
+         background-color: #8e44ad !important;
+         color: #ffffff !important;
+         border: 1px solid #6c3483 !important;
       }
 
       .badge-director {
-         background-color: #3498db !important;
-         color: white !important;
+         background-color: #138d75 !important;
+         color: #ffffff !important;
+         border: 1px solid #0e6655 !important;
       }
 
       .badge-vip-level {
          padding: 6px 12px;
          border-radius: 20px;
          font-size: 0.85rem;
-         font-weight: 500;
+         font-weight: 600;
          text-transform: capitalize;
+         letter-spacing: 0.3px;
+      }
+
+      [data-theme="dark"] .badge-c_suite {
+         background-color: #f1c40f !important;
+         color: #1a1a2e !important;
+         border-color: #d4ac0d !important;
+      }
+
+      [data-theme="dark"] .badge-vp {
+         background-color: #a569bd !important;
+         color: #ffffff !important;
+         border-color: #7d3c98 !important;
+      }
+
+      [data-theme="dark"] .badge-director {
+         background-color: #1abc9c !important;
+         color: #1a1a2e !important;
+         border-color: #138d75 !important;
       }
 
       /* Table Styling */
@@ -272,14 +300,77 @@
       .exposed-data-list {
          display: flex;
          flex-wrap: wrap;
-         gap: 4px;
+         gap: 6px;
       }
 
-      .breach-list .badge,
-      .exposed-data-list .badge {
-         font-size: 0.75rem;
-         padding: 4px 8px;
-         font-weight: 500;
+      .breach-list .badge {
+         font-size: 0.85rem;
+         padding: 6px 14px;
+         font-weight: 600;
+         border-radius: 20px;
+         line-height: 1;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         min-height: 32px;
+      }
+
+      .exposed-data-list {
+         gap: 6px;
+      }
+
+      .exposed-data-item {
+         display: inline-flex;
+         align-items: center;
+         font-size: 0.82rem;
+         font-weight: 600;
+         color: #0e4d6b;
+         background: linear-gradient(135deg, #d6ecf7 0%, #c5e0f0 100%);
+         border: 1px solid #7fb3d4;
+         padding: 5px 12px 5px 8px;
+         border-radius: 16px;
+         line-height: 1.3;
+         box-shadow: 0 1px 2px rgba(14, 77, 107, 0.12);
+         transition: all 0.2s ease;
+      }
+
+      .exposed-data-item:hover {
+         background: linear-gradient(135deg, #c5e0f0 0%, #a8d0e6 100%);
+         border-color: #4a90b8;
+         box-shadow: 0 2px 6px rgba(14, 77, 107, 0.2);
+         transform: translateY(-1px);
+      }
+
+      .exposed-data-emoji {
+         margin-right: 6px;
+         font-size: 1em;
+         line-height: 1;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         width: 22px;
+         height: 22px;
+         background: rgba(255, 255, 255, 0.6);
+         border-radius: 50%;
+         box-shadow: inset 0 0 0 1px rgba(74, 144, 184, 0.2);
+      }
+
+      [data-theme="dark"] .exposed-data-item {
+         color: #b8e0f5;
+         background: linear-gradient(135deg, #1e3a5f 0%, #15294a 100%);
+         border-color: #3a6a94;
+         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      }
+
+      [data-theme="dark"] .exposed-data-item:hover {
+         background: linear-gradient(135deg, #264a73 0%, #1d3a5e 100%);
+         border-color: #5a8eb8;
+         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      [data-theme="dark"] .exposed-data-emoji {
+         background: rgba(184, 224, 245, 0.12);
+         box-shadow: inset 0 0 0 1px rgba(184, 224, 245, 0.2);
       }
 
       .badge-danger {
@@ -291,42 +382,51 @@
       .breach-link {
          text-decoration: none !important;
          transition: all 0.2s ease;
+         border: 1px solid #c0392b;
+         box-shadow: 0 1px 3px rgba(231, 76, 60, 0.25);
       }
 
       .breach-link:hover {
          background-color: #c0392b !important;
-         transform: scale(1.05);
-         box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+         transform: translateY(-1px) scale(1.03);
+         box-shadow: 0 4px 12px rgba(231, 76, 60, 0.45);
       }
 
       .breach-link i {
-         margin-left: 4px;
-         opacity: 0.8;
+         margin-left: 6px;
+         opacity: 0.9;
+         font-size: 0.85em;
       }
 
-      .badge-secondary {
-         background-color: #6c757d !important;
-         color: white !important;
+      /* Breach date - plain text, no pill */
+      .breach-date-text {
+         color: #2c3e50;
+         font-size: 0.9rem;
+         font-weight: 500;
+         white-space: nowrap;
       }
 
-      /* Exposed data badge - dark teal for better contrast */
-      .badge-exposed {
-         background-color: #1a5276 !important;
-         color: #ffffff !important;
-         border: 1px solid #21618c;
+      [data-theme="dark"] .breach-date-text {
+         color: #cfd8e3;
       }
 
       [data-theme="dark"] .badge-danger {
-         background-color: #c0392b !important;
+         background-color: #ee5a4c !important;
+         color: #ffffff !important;
       }
 
-      [data-theme="dark"] .badge-secondary {
-         background-color: #495057 !important;
+      [data-theme="dark"] .breach-link {
+         background-color: #ee5a4c !important;
+         color: #ffffff !important;
+         border-color: #f37468 !important;
+         box-shadow: 0 1px 3px rgba(238, 90, 76, 0.4);
+         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
       }
 
-      [data-theme="dark"] .badge-exposed {
-         background-color: #154360 !important;
-         border-color: #1a5276 !important;
+      [data-theme="dark"] .breach-link:hover {
+         background-color: #f37468 !important;
+         border-color: #f78d83 !important;
+         box-shadow: 0 4px 14px rgba(238, 90, 76, 0.55);
       }
 
       /* Table cell adjustments for new columns */
@@ -697,40 +797,38 @@
    <!-- Metrics Section -->
    <div class="xon-row-area-min">
       <div class="container">
-         <div class="row">
-            <div class="container mt-4">
-               <div class="row text-center">
-                  <div class="col-md-3 col-6 mb-3">
-                     <div class="metric-box">
-                        <div class="metric-header">
-                           <h2>🎯 Total Exposed</h2>
-                        </div>
-                        <p id="metric-total">...</p>
+         <div class="metrics-panel">
+            <div class="row text-center">
+               <div class="col-md-3 col-6 mb-3">
+                  <div class="metric-box">
+                     <div class="metric-header">
+                        <h2>🎯 Total Exposed</h2>
                      </div>
+                     <p id="metric-total">...</p>
                   </div>
-                  <div class="col-md-3 col-6 mb-3">
-                     <div class="metric-box">
-                        <div class="metric-header">
-                           <h2>👔 C-Suite</h2>
-                        </div>
-                        <p id="metric-csuite">...</p>
+               </div>
+               <div class="col-md-3 col-6 mb-3">
+                  <div class="metric-box">
+                     <div class="metric-header">
+                        <h2>👔 C-Suite</h2>
                      </div>
+                     <p id="metric-csuite">...</p>
                   </div>
-                  <div class="col-md-3 col-6 mb-3">
-                     <div class="metric-box">
-                        <div class="metric-header">
-                           <h2>💼 VP</h2>
-                        </div>
-                        <p id="metric-vp">...</p>
+               </div>
+               <div class="col-md-3 col-6 mb-3">
+                  <div class="metric-box">
+                     <div class="metric-header">
+                        <h2>💼 VP</h2>
                      </div>
+                     <p id="metric-vp">...</p>
                   </div>
-                  <div class="col-md-3 col-6 mb-3">
-                     <div class="metric-box">
-                        <div class="metric-header">
-                           <h2>📋 Directors</h2>
-                        </div>
-                        <p id="metric-director">...</p>
+               </div>
+               <div class="col-md-3 col-6 mb-3">
+                  <div class="metric-box">
+                     <div class="metric-header">
+                        <h2>📋 Directors</h2>
                      </div>
+                     <p id="metric-director">...</p>
                   </div>
                </div>
             </div>
