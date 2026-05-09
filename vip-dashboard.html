@@ -651,8 +651,9 @@
          background: transparent;
       }
 
-      /* Header Back Button */
+      /* Header Back Button - matches bottom button hover style */
       .btn-header-back {
+         position: relative;
          display: inline-flex;
          align-items: center;
          gap: 8px;
@@ -664,14 +665,40 @@
          border: 2px solid #3498db;
          border-radius: 25px;
          text-decoration: none !important;
+         overflow: hidden;
          transition: all 0.3s ease;
+         z-index: 1;
+      }
+
+      .btn-header-back::before {
+         content: '';
+         position: absolute;
+         top: 100%;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+         transition: all 0.3s ease;
+         z-index: -1;
+      }
+
+      .btn-header-back:hover::before {
+         top: 0;
       }
 
       .btn-header-back:hover {
-         background: #3498db;
          color: #ffffff !important;
          transform: translateY(-2px);
          box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+         border-color: #2980b9;
+      }
+
+      .btn-header-back i {
+         transition: transform 0.3s ease;
+      }
+
+      .btn-header-back:hover i {
+         transform: translateX(-4px);
       }
 
       [data-theme="dark"] .btn-header-back {
@@ -680,7 +707,6 @@
       }
 
       [data-theme="dark"] .btn-header-back:hover {
-         background: #5dade2;
          color: #ffffff !important;
       }
    </style>
