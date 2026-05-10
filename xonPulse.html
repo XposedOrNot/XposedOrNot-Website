@@ -39,468 +39,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #3b82f6;
-            --background-color: #f8fafc;
-            --card-background: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border-radius: 12px;
-            --transition: all 0.3s ease;
-        }
-
-        body {
-            background-color: var(--background-color);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        .kbanner {
-            background: linear-gradient(120deg, #4284fb, #3c5fec);
-            overflow: visible;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .kbanner .navbar {
-            background: transparent !important;
-            padding: 0.85rem 1.5rem;
-            overflow: visible;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            text-decoration: none;
-        }
-
-        .navbar-brand:hover {
-            text-decoration: none;
-        }
-
-        .kbanner .navbar-nav .nav-link {
-            color: rgba(255, 255, 255, 0.92);
-            font-weight: 500;
-            padding: 0.5rem 0.85rem;
-            transition: color 0.2s ease;
-        }
-
-        .kbanner .navbar-nav .nav-link:hover,
-        .kbanner .navbar-nav .nav-link:focus {
-            color: #ffffff;
-        }
-
-        .dropdown-menu {
-            border: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            padding: 8px 0;
-        }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
-
-        .dropdown-item:hover,
-        .dropdown-item:focus {
-            background-color: #f0f4ff;
-            color: #3c5fec;
-        }
-
-        @media (max-width: 991px) {
-            .navbar-collapse {
-                background: linear-gradient(135deg, #4a7ce8 0%, #3c5fec 100%);
-                border-radius: 0 0 12px 12px;
-                margin-top: 10px;
-                padding: 10px 0;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            }
-
-            .kbanner .navbar-nav {
-                padding: 0 10px;
-            }
-
-            .kbanner .navbar-nav .nav-item {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            }
-
-            .kbanner .navbar-nav .nav-item:last-child {
-                border-bottom: none;
-            }
-
-            .navbar-nav .dropdown-menu {
-                background: transparent;
-                border: none;
-                box-shadow: none;
-                padding: 0 0 10px 20px;
-                margin: 0;
-            }
-
-            .navbar-nav .dropdown-item {
-                color: rgba(255, 255, 255, 0.9);
-                padding: 10px 16px;
-                border-radius: 6px;
-                font-size: 14px;
-            }
-
-            .navbar-nav .dropdown-item:hover,
-            .navbar-nav .dropdown-item:focus {
-                background-color: rgba(255, 255, 255, 0.12);
-                color: #ffffff;
-            }
-        }
-
-        .search-section {
-            background: var(--card-background);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            margin-bottom: 2rem;
-        }
-
-        .search-container {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        #search-input {
-            border-radius: var(--border-radius);
-            padding: 0.875rem 1rem;
-            border: 1px solid #e2e8f0;
-            background-color: #f8fafc;
-            font-size: 0.875rem;
-            line-height: 1.4;
-            transition: var(--transition);
-            flex: 1;
-            min-width: 200px;
-            min-height: 48px;
-        }
-
-        #timeline-dropdown {
-            border-radius: var(--border-radius);
-            padding: 0.875rem 1rem;
-            border: 1px solid #e2e8f0;
-            background-color: #f8fafc;
-            font-size: 0.875rem;
-            line-height: 1.4;
-            transition: var(--transition);
-            flex: 0 0 auto;
-            width: auto;
-            min-width: 160px;
-            min-height: 48px;
-            cursor: pointer;
-        }
-
-        #search-input:focus,
-        #timeline-dropdown:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-            outline: none;
-        }
-
-        .news-item {
-            background: var(--card-background);
-            border: none;
-            border-radius: var(--border-radius);
-            margin-bottom: 1.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: var(--transition);
-            position: relative;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .news-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .news-item h5 {
-            color: var(--text-primary);
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            padding-right: 220px;
-        }
-
-        .news-date {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: #f1f5f9;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .news-date .relative-time {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .news-summary {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        .news-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-        }
-
-        .news-link:hover {
-            color: var(--secondary-color);
-            text-decoration: none;
-        }
-
-        .pagination-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding: 1rem;
-        }
-
-        .pagination-controls button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            transition: var(--transition);
-            min-width: 120px;
-        }
-
-        .pagination-controls button:disabled {
-            background: #cbd5e1;
-            cursor: not-allowed;
-        }
-
-        .pagination-controls button:not(:disabled):hover {
-            background: var(--secondary-color);
-            transform: translateY(-1px);
-        }
-
-        #page-info {
-            font-weight: 500;
-            color: var(--text-secondary);
-            padding: 0.5rem 1rem;
-            background: #f1f5f9;
-            border-radius: var(--border-radius);
-        }
-
-        .loading-spinner {
-            display: none;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .loading-spinner.active {
-            display: flex;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        footer {
-            background: #1e293b;
-            color: #f8fafc;
-            padding: 3rem 0;
-            margin-top: 4rem;
-        }
-
-        footer p {
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-
-        @media (max-width: 768px) {
-            .search-section {
-                padding: 1.5rem;
-            }
-
-            .news-item {
-                padding: 1.25rem;
-            }
-
-            .news-date {
-                position: static;
-                margin-bottom: 1rem;
-                display: inline-block;
-            }
-
-            .news-item h5 {
-                padding-right: 0;
-                font-size: 1.1rem;
-            }
-
-            .pagination-controls {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            #page-info {
-                order: -1;
-            }
-        }
-
-        [data-theme="dark"] {
-            --background-color: #0f172a;
-            --card-background: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-        }
-
-        [data-theme="dark"] .kbanner,
-        [data-theme="dark"] .kbanner.bg-primary {
-            background: #0e0f19 !important;
-            border-bottom: 1px solid #2a2d40;
-        }
-
-        [data-theme="dark"] .dropdown-menu {
-            background-color: #1e2340;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        [data-theme="dark"] .dropdown-item {
-            color: #e1e1e1;
-        }
-
-        [data-theme="dark"] .dropdown-item:hover,
-        [data-theme="dark"] .dropdown-item:focus {
-            background-color: #2a305c;
-            color: #ffffff;
-        }
-
-        [data-theme="dark"] body {
-            background-color: var(--background-color);
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] .search-section {
-            background: var(--card-background);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="dark"] #search-input,
-        [data-theme="dark"] #timeline-dropdown {
-            background-color: #0f172a;
-            border-color: #334155;
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] #search-input::placeholder {
-            color: #64748b;
-        }
-
-        [data-theme="dark"] #search-input:focus,
-        [data-theme="dark"] #timeline-dropdown:focus {
-            border-color: #5dade2;
-            box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.2);
-        }
-
-        [data-theme="dark"] .news-item {
-            background: var(--card-background);
-            border-left-color: #5dade2;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="dark"] .news-item h5 {
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] .news-summary {
-            color: #cbd5e1;
-        }
-
-        [data-theme="dark"] .news-date {
-            background: #0f172a;
-            color: var(--text-secondary);
-        }
-
-        [data-theme="dark"] .news-date .relative-time {
-            color: #5dade2;
-        }
-
-        [data-theme="dark"] .news-link {
-            color: #5dade2;
-        }
-
-        [data-theme="dark"] .news-link:hover {
-            color: #93c5fd;
-        }
-
-        [data-theme="dark"] .alert-info {
-            background-color: rgba(59, 130, 246, 0.12) !important;
-            color: #bfdbfe !important;
-            border: 1px solid rgba(93, 173, 226, 0.25) !important;
-        }
-
-        [data-theme="dark"] .alert-info h2 {
-            color: #5dade2 !important;
-        }
-
-        [data-theme="dark"] #page-info {
-            background: #1e293b;
-            color: var(--text-secondary);
-        }
-
-        [data-theme="dark"] .pagination-controls button {
-            background: #1d4ed8;
-        }
-
-        [data-theme="dark"] .pagination-controls button:disabled {
-            background: #334155;
-            color: #64748b;
-        }
-
-        [data-theme="dark"] .pagination-controls button:not(:disabled):hover {
-            background: #2563eb;
-        }
-
-        [data-theme="dark"] .spinner {
-            border-color: #334155;
-            border-top-color: #5dade2;
-        }
-
-        [data-theme="dark"] h1 {
-            color: #5dade2 !important;
-        }
-    </style>
+    <link href="/static/css/xon-pulse.css" rel="stylesheet">
 
 
     <script type="application/ld+json">
@@ -519,6 +58,7 @@
 </head>
 
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="kbanner">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
             <a class="navbar-brand" href="https://xposedornot.com">
@@ -543,7 +83,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"> More Tools </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="xposed.html">Xposed Breaches</a>
                             <a class="dropdown-item" href="shield.html">Privacy Shield</a>
                             <a class="dropdown-item" href="domain.html">Domain Verification</a>
@@ -557,22 +97,19 @@
     </div>
 
 
-    <div class="container my-5">
+    <main id="main-content" class="container my-5" tabindex="-1">
         <div class="search-section">
             <div class="row mb-4">
                 <div class="col-12">
-                    <h1 style="color: var(--primary-color); font-size: 2rem; margin-bottom: 0.5rem; font-weight: 700;">
-                        xonPulse
-                        <span
-                            style="font-size: 1.1rem; color: var(--text-secondary); display: block; margin-top: 0.5rem;">
-                            Your Real-Time Data Breach Intelligence Feed
-                        </span>
-                    </h1>
+                    <h1 class="page-title">xonPulse</h1>
+                    <p class="page-subtitle">Your Real-Time Data Breach Intelligence Feed</p>
                 </div>
             </div>
-            <div class="search-container">
+            <div class="search-container" role="search">
+                <label for="search-input" class="sr-only">Search breach news</label>
                 <input type="text" id="search-input" class="form-control"
                     placeholder="Search for breaches, companies, or incidents...">
+                <label for="timeline-dropdown" class="sr-only">Filter by time range</label>
                 <select id="timeline-dropdown" class="form-control">
                     <option value="all">All Time</option>
                     <option value="day">Last 24 Hours</option>
@@ -584,26 +121,35 @@
             </div>
         </div>
 
-        <div class="alert alert-info"
-            style="border-radius: var(--border-radius); background-color: #eff6ff; border: none; color: #1e40af;">
-            <h2 class="h5 mb-2" style="color: var(--primary-color); font-weight: 600;">Stay Informed About Data Breaches
-            </h2>
-            <p class="mb-0">Get real-time updates on data breaches, cyber security incidents, and privacy violations
-                worldwide. Our curated feed helps you stay ahead of potential threats and take proactive measures to
-                protect your digital assets.</p>
+        <div class="results-strip" id="results-strip" hidden>
+            <div class="results-meta" id="results-meta"></div>
+            <button type="button" class="btn-refresh" id="refresh-btn" aria-label="Refresh news feed">
+                <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                <span>Refresh</span>
+            </button>
         </div>
 
-        <div class="loading-spinner">
-            <div class="spinner"></div>
+        <div class="loading-spinner" role="status" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <span class="sr-only">Loading breach news…</span>
         </div>
 
-        <div id="news-container"></div>
-        <div class="pagination-controls">
-            <button id="prev-page" class="btn">&larr; Previous</button>
-            <span id="page-info">Page 1 of 10</span>
-            <button id="next-page" class="btn">Next &rarr;</button>
-        </div>
-    </div>
+        <section aria-labelledby="news-feed-heading">
+            <h2 id="news-feed-heading" class="sr-only">Latest data breach news</h2>
+            <div id="news-container"></div>
+        </section>
+        <nav class="pagination-controls" aria-label="News pagination">
+            <button id="prev-page" class="btn" type="button" aria-label="Previous page">
+                <span aria-hidden="true">&larr;</span>
+                <span class="pag-text">Previous</span>
+            </button>
+            <span id="page-info" aria-live="polite" aria-atomic="true"></span>
+            <button id="next-page" class="btn" type="button" aria-label="Next page">
+                <span class="pag-text">Next</span>
+                <span aria-hidden="true">&rarr;</span>
+            </button>
+        </nav>
+    </main>
 
 
 
@@ -611,333 +157,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            let currentPage = 1;
-            const itemsPerPage = 10;
-            let sortedData = [];
-
-            function showLoading() {
-                $('.loading-spinner').addClass('active');
-                $('#news-container').hide();
-            }
-
-            function hideLoading() {
-                $('.loading-spinner').removeClass('active');
-                $('#news-container').show();
-            }
-
-            function updatePagination(totalPages) {
-                $('#page-info').text(`Page ${currentPage} of ${totalPages}`);
-                $('#prev-page').prop('disabled', currentPage === 1);
-                $('#next-page').prop('disabled', currentPage === totalPages);
-            }
-
-            function fetchNews() {
-                showLoading();
-                $.ajax({
-                    url: 'https://api.xposedornot.com/v1/xon-pulse',
-
-                    method: 'GET',
-                    success: function (response) {
-                        sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
-                        displayPaginatedNews();
-                        hideLoading();
-                    },
-                    error: function () {
-                        console.error('Failed to fetch news');
-                        hideLoading();
-                        $('#news-container').html('<div class="alert alert-danger">Failed to load news. Please try again later.</div>');
-                    }
-                });
-            }
-
-            function filterNews(searchText) {
-                return sortedData.filter(news =>
-                    news.title.toLowerCase().includes(searchText.toLowerCase()) ||
-                    news.summary.toLowerCase().includes(searchText.toLowerCase())
-                );
-            }
-
-            function filterByTimeline(data) {
-                const timeline = $('#timeline-dropdown').val();
-                if (timeline === 'all') return data;
-
-                const now = new Date();
-                let cutoffDate;
-
-                switch (timeline) {
-                    case 'day':
-                        cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-                        break;
-                    case 'week':
-                        cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                        break;
-                    case 'month':
-                        cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                        break;
-                    case 'quarter':
-                        cutoffDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
-                        break;
-                    case 'year':
-                        cutoffDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
-                        break;
-                    default:
-                        return data;
-                }
-
-                return data.filter(news => new Date(news.date) >= cutoffDate);
-            }
-
-            function formatDate(dateString) {
-                const date = new Date(dateString);
-                const day = String(date.getDate()).padStart(2, '0');
-                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                const month = months[date.getMonth()];
-                const year = date.getFullYear();
-                return `${day}-${month}-${year}`;
-            }
-
-            function getRelativeTime(dateString) {
-                const date = new Date(dateString);
-                const now = new Date();
-                const diffMs = now - date;
-                const diffSecs = Math.floor(diffMs / 1000);
-                const diffMins = Math.floor(diffSecs / 60);
-                const diffHours = Math.floor(diffMins / 60);
-                const diffDays = Math.floor(diffHours / 24);
-                const diffWeeks = Math.floor(diffDays / 7);
-                const diffMonths = Math.floor(diffDays / 30);
-                const diffYears = Math.floor(diffDays / 365);
-
-                if (diffSecs < 60) return 'Just now';
-                if (diffMins < 60) return diffMins === 1 ? '1 minute ago' : `${diffMins} minutes ago`;
-                if (diffHours < 24) return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
-                if (diffDays < 7) return diffDays === 1 ? 'Yesterday' : `${diffDays} days ago`;
-                if (diffMonths < 1) return diffWeeks === 1 ? '1 week ago' : `${diffWeeks} weeks ago`;
-                if (diffMonths < 12) return diffMonths === 1 ? '1 month ago' : `${diffMonths} months ago`;
-                return diffYears === 1 ? '1 year ago' : `${diffYears} years ago`;
-            }
-
-            function displayPaginatedNews() {
-                const searchText = $('#search-input').val();
-                let filteredData = filterByTimeline(sortedData);
-                if (searchText) {
-                    filteredData = filteredData.filter(news =>
-                        news.title.toLowerCase().includes(searchText.toLowerCase()) ||
-                        news.summary.toLowerCase().includes(searchText.toLowerCase())
-                    );
-                }
-                const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
-
-                updatePagination(totalPages);
-
-                const paginatedData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-                displayNews(paginatedData);
-            }
-
-            function displayNews(newsItems) {
-                $('#news-container').empty();
-                if (newsItems.length === 0) {
-                    $('#news-container').html('<div class="text-center p-5">No news found matching your search criteria.</div>');
-                    return;
-                }
-                newsItems.forEach(news => {
-                    const formattedDate = formatDate(news.date);
-                    const relativeTime = getRelativeTime(news.date);
-                    $('#news-container').append(`
-                        <div class="news-item">
-                            <div class="news-date">${formattedDate} <span class="relative-time">· ${relativeTime}</span></div>
-                            <h5>${news.title}</h5>
-                            <p class="news-summary">${news.summary}</p>
-                            <a href="${news.url}" target="_blank" class="news-link">
-                                Read Full Article
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    `);
-                });
-            }
-
-            let searchTimeout;
-            $('#search-input').on('input', function () {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    currentPage = 1;
-                    displayPaginatedNews();
-                }, 300);
-            });
-
-            $('#timeline-dropdown').on('change', function () {
-                currentPage = 1;
-                displayPaginatedNews();
-            });
-
-            $('#prev-page').click(function () {
-                if (currentPage > 1) {
-                    currentPage--;
-                    displayPaginatedNews();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            });
-
-            $('#next-page').click(function () {
-                currentPage++;
-                displayPaginatedNews();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-
-            fetchNews();
-        });
-    </script>
-    <style>
-      /* Footer Styles — synced with faq.html / index.html */
-      .footer {
-        background-color: #ffffff;
-        padding: 40px 0 20px;
-        margin-top: 40px;
-        border-top: 1px solid #ebedef;
-      }
-
-      .footer p {
-        color: #666;
-        font-size: 14px;
-      }
-
-      .footer p a {
-        color: #3c5fec;
-        text-decoration: none;
-      }
-
-      .footer p a:hover {
-        text-decoration: underline;
-      }
-
-      .footer-columns {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 30px;
-        margin-bottom: 20px;
-      }
-
-      .footer-group {
-        flex: 1;
-        min-width: 150px;
-      }
-
-      .footer-group h6 {
-        font-weight: 600;
-        margin-bottom: 15px;
-        color: #333;
-        font-size: 14px;
-      }
-
-      .footer-group a.footer-link {
-        display: block;
-        color: #666;
-        text-decoration: none;
-        margin-bottom: 8px;
-        font-size: 14px;
-        transition: color 0.2s;
-      }
-
-      .footer-group a.footer-link:hover {
-        color: #3c5fec;
-      }
-
-      .footer-group a.footer-link i {
-        margin-right: 6px;
-        width: 16px;
-      }
-
-      [data-theme="dark"] .footer {
-        background-color: var(--dark-bg-color, #1a1f3c);
-        border-top-color: #2a305c;
-      }
-
-      [data-theme="dark"] .footer p {
-        color: #8f96b3;
-      }
-
-      [data-theme="dark"] .footer p a {
-        color: #6daae0;
-      }
-
-      [data-theme="dark"] .footer-group h6 {
-        color: #e1e1e1;
-      }
-
-      [data-theme="dark"] .footer-group a.footer-link {
-        color: #8f96b3;
-      }
-
-      [data-theme="dark"] .footer-group a.footer-link:hover {
-        color: #fff;
-      }
-
-      [data-theme="dark"] .footer .custom-control-label {
-        color: #8f96b3;
-      }
-
-      @media (max-width: 768px) {
-        .footer-columns {
-          flex-direction: column;
-          gap: 0;
-        }
-
-        .footer-group {
-          border-bottom: 1px solid #e0e4e8;
-          text-align: left;
-        }
-
-        .footer-group:last-child {
-          border-bottom: none;
-        }
-
-        .footer-group h6 {
-          cursor: pointer;
-          padding: 16px 20px;
-          margin: 0 !important;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-size: 15px;
-        }
-
-        .footer-group h6::after {
-          content: '+';
-          font-size: 18px;
-          font-weight: 400;
-          color: #666;
-          transition: transform 0.3s ease;
-        }
-
-        .footer-group.active h6::after {
-          content: '−';
-        }
-
-        .footer-group .footer-links-wrapper {
-          max-height: 0;
-          overflow: hidden;
-          transition: max-height 0.3s ease;
-          padding: 0 20px;
-        }
-
-        .footer-group.active .footer-links-wrapper {
-          max-height: 300px;
-          padding: 0 20px 15px 20px;
-        }
-
-        [data-theme="dark"] .footer-group {
-          border-bottom-color: #2a305c;
-        }
-
-        [data-theme="dark"] .footer-group h6::after {
-          color: #8f96b3;
-        }
-      }
-    </style>
+    <script src="/static/scripts/xon-pulse.js" defer></script>
     <div class="footer">
       <div class="container">
         <div style="text-align:center;margin-bottom:30px;">
@@ -994,20 +214,6 @@
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=UA-108891851-1"></script>
     <script src="/static/scripts/common.js"></script>
-    <script>
-      // Footer accordion for mobile
-      document.addEventListener('DOMContentLoaded', function() {
-        var footerGroups = document.querySelectorAll('.footer-group h6');
-        footerGroups.forEach(function(header) {
-          header.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-              var group = this.parentElement;
-              group.classList.toggle('active');
-            }
-          });
-        });
-      });
-    </script>
   </body>
 
 </html>
