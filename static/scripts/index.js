@@ -68,6 +68,17 @@ $('#alertMeModal').on('show.bs.modal', (event) => {
 
 const isEmpty = (value) => value == null || (typeof value === "string" && value.trim().length === 0);
 
+let turnstileLoaded = false;
+function loadTurnstile() {
+    if (turnstileLoaded) return;
+    turnstileLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+}
+
 function _turnstileCb() {
     try {
         const turnstileStatus = turnstile.render('#turns', {
@@ -98,6 +109,8 @@ $(document).ready(function () {
         }
     });
 
+
+    $('#alertMeModal').on('show.bs.modal', loadTurnstile);
 
     $('#alertMeModal').on('shown.bs.modal', function () {
         if (typeof turnstile !== 'undefined' && document.getElementById('turns')) {

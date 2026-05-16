@@ -1326,7 +1326,19 @@ $('#alertMeModal').on('hidden.bs.modal', function () {
     $("#alertMeClose, #a_succ").hide();
 });
 
+let turnstileLoaded = false;
+function loadTurnstile() {
+    if (turnstileLoaded) return;
+    turnstileLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+}
+
 $('#alertMeModal').on('show.bs.modal', function (event) {
+    loadTurnstile();
     var button = $(event.relatedTarget)
     var recipient = button.data('whatever')
     var modal = $(this)

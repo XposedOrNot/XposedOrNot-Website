@@ -106,14 +106,30 @@ let turnstileToken = null;
 let turnstileWidgetId = null;
 let turnstileRendered = false;
 let pendingComparison = null;
+let turnstileLoaded = false;
 const TURNSTILE_SITE_KEY = '0x4AAAAAAAA_T_0Qt4kJbXno';
 
 /**
- * Initialize Cloudflare Turnstile - called when script loads
+ * Lazy-load Cloudflare Turnstile api.js (only once, on first need)
+ */
+function loadTurnstile() {
+    if (turnstileLoaded) return;
+    turnstileLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=initTurnstile';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+}
+
+/**
+ * Initialize Cloudflare Turnstile - called when script loads.
+ * If the modal is already open waiting, render the widget now.
  */
 function initTurnstile() {
-    // Just mark as ready, we'll render when modal opens
-    console.log('Turnstile API loaded');
+    if ($('#turnstileModal').hasClass('show') && !turnstileRendered) {
+        renderTurnstileInModal();
+    }
 }
 
 /**
@@ -138,7 +154,7 @@ function renderTurnstileInModal() {
         $('#turnstileLoading').hide();
 
         if (typeof turnstile === 'undefined') {
-            showTurnstileError('Verification unavailable. Please refresh the page.');
+            // api.js still loading; initTurnstile() will retry render once ready
             return;
         }
 
@@ -466,6 +482,9 @@ function compareBreaches(email1, email2) {
         <small class="text-muted">This usually takes a few seconds</small>
     `).show();
     $('#turnstileWidget').empty();
+
+    // Kick off Turnstile load (no-op after first call)
+    loadTurnstile();
 
     // Show the Turnstile modal
     $('#turnstileModal').modal('show');
