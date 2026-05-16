@@ -4,7 +4,7 @@ function gtag() {
     dataLayer.push(arguments);
 }
 gtag('js', new Date());
-gtag('config', 'UA-108891851-1');
+gtag('config', 'G-MHXCCZ0EYY');
 
 var themeSwitch = $("#darkSwitch");
 var themeKey = "darkSwitch";
