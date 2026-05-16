@@ -109,9 +109,6 @@ let pendingComparison = null;
 let turnstileLoaded = false;
 const TURNSTILE_SITE_KEY = '0x4AAAAAAAA_T_0Qt4kJbXno';
 
-/**
- * Lazy-load Cloudflare Turnstile api.js (only once, on first need)
- */
 function loadTurnstile() {
     if (turnstileLoaded) return;
     turnstileLoaded = true;
@@ -122,10 +119,6 @@ function loadTurnstile() {
     document.head.appendChild(s);
 }
 
-/**
- * Initialize Cloudflare Turnstile - called when script loads.
- * If the modal is already open waiting, render the widget now.
- */
 function initTurnstile() {
     if ($('#turnstileModal').hasClass('show') && !turnstileRendered) {
         renderTurnstileInModal();
@@ -154,7 +147,6 @@ function renderTurnstileInModal() {
         $('#turnstileLoading').hide();
 
         if (typeof turnstile === 'undefined') {
-            // api.js still loading; initTurnstile() will retry render once ready
             return;
         }
 
@@ -483,7 +475,6 @@ function compareBreaches(email1, email2) {
     `).show();
     $('#turnstileWidget').empty();
 
-    // Kick off Turnstile load (no-op after first call)
     loadTurnstile();
 
     // Show the Turnstile modal
