@@ -2017,6 +2017,7 @@ function renderAttackPaths(paths) {
         var tabsContainer = document.getElementById('attack-paths-tabs');
         var contentContainer = document.getElementById('attack-paths-content');
         tabsContainer.innerHTML = '';
+        tabsContainer.removeAttribute('role');
         var desc = section.querySelector('.attack-path-description');
         if (desc) desc.style.display = 'none';
         var isDark = document.body.classList.contains('dark-mode') || document.documentElement.getAttribute('data-theme') === 'dark';
@@ -2031,6 +2032,11 @@ function renderAttackPaths(paths) {
     var contentContainer = document.getElementById('attack-paths-content');
 
     var tabsHtml = '';
+    if (paths.length > 1) {
+        tabsContainer.setAttribute('role', 'tablist');
+    } else {
+        tabsContainer.removeAttribute('role');
+    }
     if (paths.length > 1) {
         tabsHtml = '<div class="attack-path-tabs-wrapper">';
         paths.forEach(function(path, i) {
