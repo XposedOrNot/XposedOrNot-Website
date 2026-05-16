@@ -1,3 +1,65 @@
+var _loadedScripts = {};
+function loadScriptOnce(url) {
+    if (_loadedScripts[url]) return _loadedScripts[url];
+    _loadedScripts[url] = new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = url;
+        s.async = true;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+    });
+    return _loadedScripts[url];
+}
+
+var D3_URL = 'https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js';
+var HORTREE_URL = '/static/scripts/jquery.hortree.min.js';
+var _lastTreeData = null;
+
+function _setupHeatMapLazyLoad() {
+    var container = document.getElementById('heatmap-container');
+    if (!container || typeof IntersectionObserver === 'undefined') {
+        loadScriptOnce(D3_URL).then(function () {
+            if (typeof lastHeatMapData !== 'undefined' && lastHeatMapData) drawHeatMap(lastHeatMapData);
+        });
+        return;
+    }
+    var obs = new IntersectionObserver(function (entries, observer) {
+        for (var i = 0; i < entries.length; i++) {
+            if (entries[i].isIntersecting) {
+                observer.disconnect();
+                loadScriptOnce(D3_URL).then(function () {
+                    if (typeof lastHeatMapData !== 'undefined' && lastHeatMapData) drawHeatMap(lastHeatMapData);
+                });
+                break;
+            }
+        }
+    }, { rootMargin: '200px' });
+    obs.observe(container);
+}
+
+function _setupTreeLazyLoad() {
+    var container = document.getElementById('tree-container');
+    if (!container || typeof IntersectionObserver === 'undefined') {
+        loadScriptOnce(HORTREE_URL).then(function () {
+            if (_lastTreeData) $('#tree-container').hortree({ data: _lastTreeData });
+        });
+        return;
+    }
+    var obs = new IntersectionObserver(function (entries, observer) {
+        for (var i = 0; i < entries.length; i++) {
+            if (entries[i].isIntersecting) {
+                observer.disconnect();
+                loadScriptOnce(HORTREE_URL).then(function () {
+                    if (_lastTreeData) $('#tree-container').hortree({ data: _lastTreeData });
+                });
+                break;
+            }
+        }
+    }, { rootMargin: '200px' });
+    obs.observe(container);
+}
+
 function escapeHtml(unsafe) {
     if (typeof unsafe !== 'string') return unsafe;
     return unsafe
@@ -1534,9 +1596,10 @@ if (token) {
                 children: response.children.filter(function (year) { return year.children && year.children.length > 0; })
             }];
 
-            $('#tree-container').hortree({
-                data: dataForTree
-            });
+            _lastTreeData = dataForTree;
+            if (typeof $.fn.hortree === 'function') {
+                $('#tree-container').hortree({ data: dataForTree });
+            }
         })
         .fail(function () {
         });
@@ -1650,10 +1713,6 @@ document.getElementById('clippy-button').addEventListener('click', function () {
         setInterval(speakRandom, Math.floor(Math.random() * 60000));
     });
 
-});
-
-google.charts.load("current", {
-    packages: ["corechart"]
 });
 
 var _heatMapResizeTimer = null;
@@ -2081,6 +2140,9 @@ function renderAttackPaths(paths) {
 
 function drawHeatMap(xposedData) {
     try {
+        if (xposedData && xposedData.length) {
+            lastHeatMapData = xposedData;
+        }
         if (typeof d3 === 'undefined') return;
 
         var container = document.getElementById('heatmap-container');
@@ -2380,3 +2442,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+_setupHeatMapLazyLoad();
+_setupTreeLazyLoad();
