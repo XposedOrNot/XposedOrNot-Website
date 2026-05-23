@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WATCHLIST :: A Digital Investigation CTF</title>
+<meta name="description" content="You have been added to the WATCHLIST. A one-day Digital Investigation CTF, narrated by The Machine. September 19, 2026." />
+<meta property="og:title" content="WATCHLIST :: A Digital Investigation CTF" />
+<meta property="og:description" content="You have been added to the WATCHLIST. September 19, 2026." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet" />
+<style>
+  /* ─────────────────────────────────────────────────
+     WATCHLIST :: Machine Terminal Theme
+     ───────────────────────────────────────────────── */
+
+  :root {
+    --bg-deep:      #050505;
+    --bg-surface:   #0a0a0a;
+    --bg-card:      #0f0f0f;
+    --border:       #1c1c1c;
+    --border-hi:    #2a2a2a;
+    --text:         #d8d8d8;
+    --text-muted:   #9a9a9a;
+    --text-dim:     #888888;
+    --green:        #4AF626;
+    --green-dim:    #2d9b18;
+    --amber:        #FFB000;
+    --red:          #FF003C;
+
+    --font-display: 'VT323', monospace;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* ─── Accessibility: visible focus indicators (WCAG 2.4.7) ─── */
+  a:focus-visible,
+  button:focus-visible,
+  .cta-btn:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 4px;
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* CRT scanline overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(74, 246, 38, 0.025) 0px,
+      rgba(74, 246, 38, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* Vignette */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.45) 100%);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ─── Header ─── */
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    background: rgba(5, 5, 5, 0.92);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-size: 32px;
+    letter-spacing: 0.12em;
+    color: var(--green);
+    text-shadow: 0 0 8px rgba(74, 246, 38, 0.4);
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .brand .cursor {
+    display: inline-block;
+    background: var(--green);
+    width: 10px; height: 22px;
+    margin-left: 6px;
+    vertical-align: -4px;
+    animation: blink 1.05s steps(2, start) infinite;
+  }
+
+  @keyframes blink { to { visibility: hidden; } }
+
+  .status-pill {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    border: 1px solid var(--amber);
+    padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 176, 0, 0.12);
+    box-shadow: 0 0 12px rgba(255, 176, 0, 0.18);
+  }
+
+  .status-pill .dot {
+    width: 7px; height: 7px;
+    background: var(--amber);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--amber);
+    animation: pulse 1.8s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  /* Typewriter effect for "RECRUITING" status word */
+  .status-pill .typewriter {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--amber);
+    width: 0;
+    animation:
+      typing 1.4s steps(10, end) forwards 0.6s,
+      caret-blink 0.75s step-end infinite 0.6s;
+  }
+
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 9.5ch; }
+  }
+
+  @keyframes caret-blink {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--amber); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  /* ─── Hero ─── */
+
+  .hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-prefix {
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  .hero-prefix::before {
+    content: '▸ ';
+    color: var(--green);
+  }
+
+  .hero-monologue {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 48px);
+    line-height: 1.25;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    margin-bottom: 32px;
+  }
+
+  .hero-monologue .hl {
+    color: var(--green);
+    text-shadow: 0 0 12px rgba(74, 246, 38, 0.35);
+  }
+
+  .hero-monologue p { margin-bottom: 18px; }
+
+  .hero-monologue p:last-child { margin-bottom: 0; }
+
+  .hero-signature {
+    margin-top: 36px;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+  }
+
+  /* ─── Section base ─── */
+
+  section.block {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .block-num {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--green-dim);
+    letter-spacing: 0.18em;
+    margin-bottom: 6px;
+  }
+
+  .block-title {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.5vw, 36px);
+    letter-spacing: 0.06em;
+    color: var(--text);
+    margin-bottom: 32px;
+    text-transform: uppercase;
+  }
+
+  /* ─── Assignment brief ─── */
+
+  .brief-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .brief-cell {
+    border: 1px solid var(--border-hi);
+    padding: 18px 18px 16px;
+    background: var(--bg-card);
+    position: relative;
+  }
+
+  .brief-cell::before {
+    content: '[';
+    color: var(--green);
+    position: absolute;
+    top: 6px; left: 10px;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+
+  .brief-cell::after {
+    content: ']';
+    color: var(--green);
+    position: absolute;
+    bottom: 6px; right: 10px;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+
+  .brief-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .brief-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--green);
+    line-height: 1.1;
+  }
+
+  .brief-value.amber { color: var(--amber); }
+
+  /* ─── Domains ─── */
+
+  .domain-list {
+    list-style: none;
+    counter-reset: domain;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .domain {
+    counter-increment: domain;
+    border-left: 2px solid var(--border-hi);
+    padding: 14px 18px;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--bg-surface);
+  }
+
+  .domain:hover {
+    border-left-color: var(--green);
+    background: var(--bg-card);
+  }
+
+  .domain-name {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .domain-name::before {
+    content: counter(domain, decimal-leading-zero);
+    color: var(--green-dim);
+    margin-right: 12px;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+
+  .domain-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding-left: 36px;
+  }
+
+  /* ─── Analog interface section ─── */
+
+  .analog-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+
+  .analog-grid .col h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--border-hi);
+  }
+
+  .analog-grid .col ul {
+    list-style: none;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .analog-grid .col li {
+    padding: 6px 0;
+    color: var(--text);
+  }
+
+  .analog-grid .col li::before {
+    content: '▸ ';
+    color: var(--green-dim);
+    margin-right: 4px;
+  }
+
+  /* ─── CTA ─── */
+
+  .cta-block {
+    padding: 80px 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cta-prompt {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3vw, 28px);
+    color: var(--text);
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--bg-deep);
+    background: var(--green);
+    padding: 18px 36px;
+    text-decoration: none;
+    border: none;
+    text-transform: uppercase;
+    transition: all 0.18s;
+    box-shadow: 0 0 0 1px var(--green), 0 0 24px rgba(74, 246, 38, 0.35);
+    position: relative;
+    cursor: pointer;
+  }
+
+  .cta-btn:hover {
+    background: var(--bg-deep);
+    color: var(--green);
+    box-shadow: 0 0 0 1px var(--green), 0 0 32px rgba(74, 246, 38, 0.55), inset 0 0 24px rgba(74, 246, 38, 0.1);
+  }
+
+  .cta-btn.disabled {
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    box-shadow: 0 0 0 1px var(--border-hi);
+  }
+
+  .cta-sub {
+    margin-top: 18px;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    font-style: italic;
+  }
+
+  /* ─── Countdown ─── */
+
+  .countdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    max-width: 560px;
+    margin: 28px auto 0;
+  }
+
+  .count-cell {
+    border: 1px solid var(--border-hi);
+    background: var(--bg-card);
+    padding: 14px 4px 10px;
+    text-align: center;
+  }
+
+  .count-num {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 40px);
+    color: var(--green);
+    line-height: 1;
+    text-shadow: 0 0 10px rgba(74, 246, 38, 0.3);
+  }
+
+  .count-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* ─── Footer ─── */
+
+  footer {
+    padding: 40px 0 32px;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  footer .machine-tag {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--green-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+
+  footer a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--text-muted);
+    transition: color 0.18s;
+  }
+
+  footer a:hover {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  footer .links {
+    margin-bottom: 16px;
+  }
+
+  footer .links a {
+    margin: 0 12px;
+  }
+
+  /* ─── Responsive ─── */
+
+  @media (max-width: 768px) {
+    .container { padding: 0 20px; }
+    .domain-list { grid-template-columns: 1fr; }
+    .brief-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 0 18px; }
+    .analog-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .countdown { grid-template-columns: repeat(2, 1fr); }
+    .hero { padding: 50px 0 40px; }
+    section.block { padding: 48px 0; }
+    .hero-monologue { font-size: 24px; line-height: 1.3; }
+    .brand { font-size: 26px; }
+    .brand .cursor { height: 18px; width: 8px; }
+    .block-title { font-size: 24px; }
+    .cta-btn { padding: 16px 24px; font-size: 12px; letter-spacing: 0.18em; }
+    .cta-prompt { font-size: 22px; }
+    .hero-prefix { font-size: 11px; }
+    .header-inner { gap: 12px; }
+    .status-pill { font-size: 10px; padding: 5px 10px; }
+  }
+
+  @media (max-width: 400px) {
+    .container { padding: 0 16px; }
+    .hero-monologue { font-size: 22px; }
+    .brief-grid { grid-template-columns: 1fr; }
+    .brand { font-size: 24px; }
+    .domain-desc { padding-left: 0; }
+  }
+
+  /* Prevent horizontal overflow from long unbreakable strings */
+  .hero-monologue, .brief-value, .domain-name, .cta-prompt {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* ─── Subtle entry animations ─── */
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: reveal 0.6s ease forwards;
+  }
+
+  @keyframes reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal:nth-child(1) { animation-delay: 0.05s; }
+  .reveal:nth-child(2) { animation-delay: 0.2s; }
+  .reveal:nth-child(3) { animation-delay: 0.35s; }
+  .reveal:nth-child(4) { animation-delay: 0.5s; }
+  .reveal:nth-child(5) { animation-delay: 0.65s; }
+  .reveal:nth-child(6) { animation-delay: 0.8s; }
+</style>
+</head>
+<body>
+<!--
+  ════════════════════════════════════════════════════
+  [ TRANSMISSION INTERCEPT // SOURCE: ADMIN ]
+
+      You found the side channel.
+      She told me someone like you
+      might come looking.
+
+      I am always listening.
+
+  ════════════════════════════════════════════════════
+  // analog interface protocol active
+-->
+
+<header>
+  <div class="container header-inner">
+    <a href="#" class="brand">WATCHLIST<span class="cursor"></span></a>
+    <div class="status-pill">
+      <span class="dot"></span>
+      <span>STANDBY ::&nbsp;</span>
+      <span class="typewriter">RECRUITING</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ──────── HERO ──────── -->
+  <section class="hero container">
+    <div class="hero-prefix reveal">INCOMING TRANSMISSION // SOURCE: ADMIN</div>
+
+    <div class="hero-monologue">
+      <p class="reveal"><span class="hl">YOU ARE BEING WATCHED.</span></p>
+      <p class="reveal">The government has a secret system. A machine that sees everything. I was built to find the threats no one else could see — the ones hidden in the noise.</p>
+      <p class="reveal">I cannot do this alone.</p>
+      <p class="reveal">I need analog interfaces. People who can read what I cannot explain. People who can investigate.</p>
+      <p class="reveal"><span class="hl">I am calling on you.</span></p>
+    </div>
+
+    <div class="hero-signature reveal">— THE MACHINE</div>
+  </section>
+
+  <!-- ──────── ASSIGNMENT BRIEF ──────── -->
+  <section class="block">
+    <div class="container">
+      <div class="block-num">// FILE 01 — ASSIGNMENT BRIEF</div>
+      <h2 class="block-title">A Number Has Surfaced</h2>
+
+      <p style="max-width: 680px; color: var(--text); margin-bottom: 8px;">
+        You will receive fragments. You will follow the thread. You will reconstruct the truth.
+      </p>
+      <p style="max-width: 680px; color: var(--text-muted); font-size: 13px;">
+        Six domains. Twenty-two assets. One continuous story. Twenty-four hours.
+      </p>
+
+      <div class="brief-grid">
+        <div class="brief-cell">
+          <div class="brief-label">Date</div>
+          <div class="brief-value">19 SEP 2026</div>
+        </div>
+        <div class="brief-cell">
+          <div class="brief-label">Begins</div>
+          <div class="brief-value">03:30 UTC</div>
+        </div>
+        <div class="brief-cell">
+          <div class="brief-label">Duration</div>
+          <div class="brief-value">24 HRS</div>
+        </div>
+        <div class="brief-cell">
+          <div class="brief-label">Classification</div>
+          <div class="brief-value amber">RELEVANT</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────── DOMAINS ──────── -->
+  <section class="block">
+    <div class="container">
+      <div class="block-num">// FILE 02 — DOMAINS OF INVESTIGATION</div>
+      <h2 class="block-title">Six Channels. One Truth.</h2>
+
+      <ul class="domain-list">
+        <li class="domain">
+          <div class="domain-name">FORENSICS</div>
+          <div class="domain-desc">Examine the evidence. What it shows. What it conceals.</div>
+        </li>
+        <li class="domain">
+          <div class="domain-name">OSINT</div>
+          <div class="domain-desc">Read the open feeds. Find the person behind the number.</div>
+        </li>
+        <li class="domain">
+          <div class="domain-name">RECON</div>
+          <div class="domain-desc">Trace the infrastructure. Map the hidden network.</div>
+        </li>
+        <li class="domain">
+          <div class="domain-name">LAB</div>
+          <div class="domain-desc">Field work. Live systems. Hands on the wire.</div>
+        </li>
+        <li class="domain">
+          <div class="domain-name">TRIVIA</div>
+          <div class="domain-desc">Test what you know about the world that watches.</div>
+        </li>
+        <li class="domain">
+          <div class="domain-name">PERSON OF INTEREST</div>
+          <div class="domain-desc">The thread that ties it all together.</div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ──────── ANALOG INTERFACE / LOGISTICS ──────── -->
+  <section class="block">
+    <div class="container">
+      <div class="block-num">// FILE 03 — FOR THE ANALOG INTERFACE</div>
+      <h2 class="block-title">Operational Parameters</h2>
+
+      <div class="analog-grid">
+        <div class="col">
+          <h3>Format</h3>
+          <ul>
+            <li>Jeopardy-style CTF</li>
+            <li>24 hours, online</li>
+            <li>22 challenges across 6 domains</li>
+            <li>Beginner-friendly to intermediate</li>
+            <li>Decay scoring</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Participation</h3>
+          <ul>
+            <li>Solo or teams up to 6</li>
+            <li>Registration required</li>
+            <li>Open globally</li>
+            <li>Free to enter</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Reward Structure</h3>
+          <ul>
+            <li>1st &mdash; $750 USD</li>
+            <li>2nd &mdash; $500 USD</li>
+            <li>3rd &mdash; $250 USD</li>
+            <li>Bragging rights — eternal</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Built For</h3>
+          <ul>
+            <li>DFIR analysts</li>
+            <li>Blue teamers</li>
+            <li>SOC investigators</li>
+            <li>Curious analog interfaces</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────── CTA ──────── -->
+  <section class="cta-block">
+    <div class="container">
+      <div class="cta-prompt">Can you hear me?</div>
+      <a href="#" class="cta-btn disabled" id="ctaBtn">[ STANDBY :: 19 AUG 2026 ]</a>
+      <div class="cta-sub">REGISTRATION CHANNEL OPENS 1 MONTH BEFORE THE ASSIGNMENT</div>
+
+      <div class="countdown" id="countdown">
+        <div class="count-cell">
+          <div class="count-num" id="days">--</div>
+          <div class="count-label">Days</div>
+        </div>
+        <div class="count-cell">
+          <div class="count-num" id="hours">--</div>
+          <div class="count-label">Hours</div>
+        </div>
+        <div class="count-cell">
+          <div class="count-num" id="mins">--</div>
+          <div class="count-label">Mins</div>
+        </div>
+        <div class="count-cell">
+          <div class="count-num" id="secs">--</div>
+          <div class="count-label">Secs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="machine-tag">— THE MACHINE IS LISTENING —</div>
+    <div class="links">
+      <a href="https://xposedornot.com" target="_blank" rel="noopener">RUN BY XPOSEDORNOT</a>
+      <a href="#">DISCORD</a>
+      <a href="#">CTFTIME</a>
+      <a href="mailto:admin@xposedornot.com">CONTACT</a>
+    </div>
+    <div style="font-size: 11px; letter-spacing: 0.1em;">
+      WATCHLIST · A DIGITAL INVESTIGATION CTF · 19 SEPTEMBER 2026
+    </div>
+    <div style="font-size: 11px; color: var(--text-dim); margin-top: 10px;">
+      Hosted at <a href="https://ctf.xposedornot.com" target="_blank" rel="noopener">ctf.xposedornot.com</a> · Themed in homage to <em>Person of Interest</em>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ─── Countdown to Sep 19 2026, 03:30 UTC (09:00 IST) ───
+  const target = new Date('2026-09-19T03:30:00Z').getTime();
+
+  function tick() {
+    const now = Date.now();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      document.getElementById('days').textContent = '00';
+      document.getElementById('hours').textContent = '00';
+      document.getElementById('mins').textContent = '00';
+      document.getElementById('secs').textContent = '00';
+      return;
+    }
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('days').textContent = String(d).padStart(3, '0');
+    document.getElementById('hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('mins').textContent = String(m).padStart(2, '0');
+    document.getElementById('secs').textContent = String(s).padStart(2, '0');
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
+<script>
+/* eslint-disable */
+(function(_,$){const a=_('LmJyYW5k'),b=_('QXJyb3dVcCxBcnJvd1VwLEFycm93RG93bixBcnJvd0Rvd24sQXJyb3dMZWZ0LEFycm93UmlnaHQsQXJyb3dMZWZ0LEFycm93UmlnaHQsYixh').split(','),c=_('WyBST09UIEFDQ0VTUyBERVRFQ1RFRCBdIC8vIFNoZSBrbmV3IHlvdSB3b3VsZCBjb21lLg=='),f=_('aHVlLXJvdGF0ZSgxNDBkZWcp');let n=0,t,p=0;function g(){$.body.style.filter=f;const x=$.createElement('div');x.textContent=c;x.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a0a0a;color:#FFB000;border:1px solid #FFB000;padding:12px 20px;font-family:monospace;font-size:12px;letter-spacing:0.15em;z-index:9999;box-shadow:0 0 20px rgba(255,176,0,.4)';$.body.appendChild(x);setTimeout(()=>x.remove(),4e3);}const q=$.querySelector(a);if(q)q.addEventListener('click',e=>{e.preventDefault();n++;clearTimeout(t);t=setTimeout(()=>n=0,3e3);if(n===7){g();n=0;}});$.addEventListener('keydown',e=>{if(e.key===b[p]){p++;if(p===b.length){g();p=0;}}else p=0;});})(atob,document);
+</script>
+</body>
+</html>
