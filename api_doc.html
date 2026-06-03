@@ -236,7 +236,7 @@
               "
             ></i>
             <h4>Authentication</h4>
-            <p>Most endpoints are public. Domain endpoints require API key.</p>
+            <p>Most endpoints are public. Domain endpoints require an <a href="faq.html#collapse102">API key</a>.</p>
           </div>
           <div class="info-card">
             <i
@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>Rate Limit</h4>
-            <p>1 request per second across all endpoints.</p>
+            <p>2 requests per second per IP.</p>
           </div>
           <div class="info-card">
             <i
@@ -425,14 +425,12 @@ print(result)</pre
           </div>
         </div>
 
-        <!-- More SDKs -->
         <h3 style="text-align: center; margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1.1rem">Also Available For</h3>
         <p style="text-align: center; color: var(--secondary-color); margin-bottom: 1.25rem; font-size: 0.85rem">
           Click any card to view the package registry, or the GitHub icon for source code.
         </p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem;">
 
-          <!-- Go -->
           <div class="sdk-card" role="group" aria-label="Go SDK">
             <a href="https://pkg.go.dev/github.com/XposedOrNot/XposedOrNot-Go" target="_blank" rel="noopener" class="sdk-card-main" aria-label="View Go SDK on pkg.go.dev">
               <i class="fas fa-code" style="color: #00add8"></i>
@@ -444,7 +442,6 @@ print(result)</pre
             </a>
           </div>
 
-          <!-- Ruby -->
           <div class="sdk-card" role="group" aria-label="Ruby SDK">
             <a href="https://rubygems.org/gems/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="View Ruby SDK on RubyGems">
               <i class="fas fa-gem" style="color: #cc342d"></i>
@@ -456,7 +453,6 @@ print(result)</pre
             </a>
           </div>
 
-          <!-- PHP -->
           <div class="sdk-card" role="group" aria-label="PHP SDK">
             <a href="https://packagist.org/packages/xposedornot/xposedornot-php" target="_blank" rel="noopener" class="sdk-card-main" aria-label="View PHP SDK on Packagist">
               <i class="fab fa-php" style="color: #777bb4"></i>
@@ -468,7 +464,6 @@ print(result)</pre
             </a>
           </div>
 
-          <!-- Rust -->
           <div class="sdk-card" role="group" aria-label="Rust SDK">
             <a href="https://crates.io/crates/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="View Rust SDK on crates.io">
               <i class="fas fa-cog" style="color: #dea584"></i>
@@ -480,7 +475,6 @@ print(result)</pre
             </a>
           </div>
 
-          <!-- C# / .NET -->
           <div class="sdk-card" role="group" aria-label="C# .NET SDK">
             <a href="https://www.nuget.org/packages/XposedOrNot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="View C# .NET SDK on NuGet">
               <i class="fas fa-window-maximize" style="color: #512bd4"></i>
@@ -492,7 +486,6 @@ print(result)</pre
             </a>
           </div>
 
-          <!-- Java -->
           <div class="sdk-card" role="group" aria-label="Java SDK">
             <a href="https://central.sonatype.com/artifact/com.xposedornot/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="View Java SDK on Maven Central">
               <i class="fab fa-java" style="color: #f89820"></i>
@@ -638,12 +631,17 @@ print(result)</pre
                   >. This measure is in place to ensure that only verified
                   owners or authorities of the specified domains can access this
                   sensitive information.<br /><br />
-                  For experimentation and testing purposes, I warmly invite you
-                  to explore our API Playground. Here, you'll have the
-                  opportunity to familiarize yourself with the functionality of
-                  the XposedOrNot API in a user-friendly environment.
+                  To experiment with the endpoints, try the API Playground,
+                  where you can explore the XposedOrNot API interactively.
                   <br />
                   <hr />
+                  <p>
+                    <strong>Reading the examples:</strong> values shown in
+                    <code>{curly braces}</code> are placeholders. Replace
+                    each one (including the braces) with your own value. For
+                    example, <code>{email}</code> becomes
+                    <code>test&#64;example.com</code>.
+                  </p>
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>
@@ -654,21 +652,48 @@ print(result)</pre
                     </h4>
                   </div>
                   <p>
-                    This user-friendly API quickly checks if an email address
+                    This API checks if an email address
                     has been involved in any known data breaches. It searches a
                     comprehensive database of breaches and alerts you if the
                     email is at risk.
-                    <br /><br />
-                    This tool is invaluable for maintaining digital security and
-                    understanding the breach history of an email. It's a step
-                    towards better digital safety and awareness.
                   </p>
                   <br /><strong>API Endpoint:</strong>
                   <blockquote>
                     <pre>
-https://api.xposedornot.com/v1/check-email/[test&#64;example.com]</pre
+https://api.xposedornot.com/v1/check-email/{email}</pre
                     >
                   </blockquote>
+                  <strong>Parameters:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Parameters for the check-email endpoint</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Parameter</th>
+                          <th scope="col">In</th>
+                          <th scope="col">Required</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>email</code></th>
+                          <td>path</td>
+                          <td>Yes</td>
+                          <td>string</td>
+                          <td>Email address to check for breaches.</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>details</code></th>
+                          <td>query</td>
+                          <td>No</td>
+                          <td>boolean</td>
+                          <td>Include detailed breach information in the response. Defaults to <code>false</code> (accepts true/false, yes/no, 1/0).</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <strong> Example of Successful Breach Detection: </strong>
                   When a breach is detected, you'll receive a JSON response like
                   this:
@@ -700,7 +725,7 @@ https://api.xposedornot.com/v1/check-email/[test&#64;example.com]</pre
                   If the email address is not found in any breach database, you
                   will get the following JSON response:
                   <pre>
-{"Error":"Not found"}
+{"Error":"Not found","email":null}
  </pre
                   >
                   <hr />
@@ -724,9 +749,33 @@ https://api.xposedornot.com/v1/check-email/[test&#64;example.com]</pre
                   <br /><strong>API Endpoint:</strong>
                   <blockquote>
                     <pre>
-https://api.xposedornot.com/v1/breach-analytics?email=[email-address]</pre
+https://api.xposedornot.com/v1/breach-analytics?email={email}</pre
                     >
                   </blockquote>
+                  <strong>Parameters:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Parameters for the breach-analytics endpoint</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Parameter</th>
+                          <th scope="col">In</th>
+                          <th scope="col">Required</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>email</code></th>
+                          <td>query</td>
+                          <td>Yes</td>
+                          <td>string</td>
+                          <td>Email address to analyze.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
                   <p>
                     The API responds with two possible outcomes: success or
@@ -912,7 +961,7 @@ https://api.xposedornot.com/v1/breach-analytics?email=[email-address]</pre
     "breaches_details": [
       {
         "breach": "SweClockers",
-        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords—which were stored using a combination of MD5 and SHA512—were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
+        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords, which were stored using a combination of MD5 and SHA512, were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
         "domain": "sweclockers.com",
         "industry": "Electronics",
         "logo": "Sweclockers.png",
@@ -959,12 +1008,26 @@ https://api.xposedornot.com/v1/breach-analytics?email=[email-address]</pre
                     address:</strong
                   >
                   <pre>
-{  "Error": "Not found"}
+{
+  "BreachMetrics": null,
+  "BreachesSummary": {
+    "site": ""
+  },
+  "ExposedBreaches": null,
+  "ExposedPastes": null,
+  "PasteMetrics": null,
+  "PastesSummary": {
+    "cnt": 0,
+    "domain": "",
+    "tmpstmp": ""
+  }
+}
  </pre
                   >
                   <p>
-                    This also means that the email searched is not found in any
-                    of the data breaches loaded in XposedOrNot.
+                    An all-null response like the above (returned with HTTP 200)
+                    means the email was not found in any of the data breaches
+                    loaded in XposedOrNot.
                   </p>
                   <hr />
                   <div id="endpoint-3" class="alert alert-primary" role="alert">
@@ -977,17 +1040,46 @@ https://api.xposedornot.com/v1/breach-analytics?email=[email-address]</pre
                     </h4>
                   </div>
                   <p>
-                    If you're interested in checking for exposed passwords, this
-                    API is perfect for you. It provides results in two forms:
-                    successful or unsuccessful. Imagine you want to check the
-                    widely used password "123456" - this API can help.
+                    This endpoint checks whether a password has appeared in
+                    known breaches without revealing the password itself. You
+                    compute the SHA3 Keccak-512 hash of the password locally and
+                    send only its first 10 characters, so the password and the
+                    full hash never leave your machine. The response indicates a
+                    match or no match.
                   </p>
                   <br />
                   <blockquote>
                     <pre>
-https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre
+https://passwords.xposedornot.com/v1/pass/anon/{hash_prefix}</pre
                     >
                   </blockquote>
+                  Here <code>{hash_prefix}</code> is the first 10 characters of
+                  the SHA3 Keccak-512 hash of the password you want to check.
+                  <br /><br />
+                  <strong>Parameters:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Parameters for the anonymous password-check endpoint</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Parameter</th>
+                          <th scope="col">In</th>
+                          <th scope="col">Required</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>hash_prefix</code></th>
+                          <td>path</td>
+                          <td>Yes</td>
+                          <td>string</td>
+                          <td>First 10 characters of the SHA3 Keccak-512 hash of the password to check.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <strong
                     >Sample JSON output on successfully finding a matching
                     password hash:
@@ -1015,17 +1107,25 @@ https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-kecc
                   <br />
                   <ul>
                     <li>
-                      <strong>"anon" Element:</strong> Every password hash in
-                      our database includes the "anon" element. This is to
-                      ensure privacy for users who want to search while
-                      remaining anonymous.
+                      <strong><code>anon</code>:</strong> the hash prefix you
+                      queried, echoed back. Nothing that could reveal your
+                      password is stored or transmitted.
                     </li>
                     <li>
-                      <strong>"char" Element:</strong> This element provides a
-                      breakdown of the password's characteristics, like length,
-                      use of letters, numbers, and special characters. This is
-                      especially useful for understanding password strength and
-                      whether it meets various website requirements.
+                      <strong><code>char</code>:</strong> a breakdown of the
+                      password's composition, in the format
+                      <code>D:&lt;digits&gt;;A:&lt;alphabets&gt;;S:&lt;special&gt;;L:&lt;length&gt;</code>
+                      (see the table below).
+                    </li>
+                    <li>
+                      <strong><code>count</code>:</strong> the number of times
+                      this password was observed across the collected exposed
+                      data breaches.
+                    </li>
+                    <li>
+                      <strong><code>wordlist</code>:</strong> whether the
+                      password was found in a known wordlist
+                      (<code>1</code> = yes, <code>0</code> = no).
                     </li>
                   </ul>
                   <p>
@@ -1042,35 +1142,38 @@ https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-kecc
                     class="table table-condensed table-striped table-bordered table-hover"
                   >
                     <caption class="sr-only-caption">Password characteristics breakdown</caption>
-                    <thead class="sr-only-caption">
+                    <thead>
                       <tr>
+                        <th scope="col">Code</th>
                         <th scope="col">Characteristic</th>
                         <th scope="col">Description</th>
                       </tr>
                     </thead>
                     <tbody>
                     <tr>
+                      <th scope="row"><code>D</code></th>
                       <td>Digits</td>
                       <td>Count of numbers</td>
                     </tr>
                     <tr>
+                      <th scope="row"><code>A</code></th>
                       <td>Alphabets</td>
                       <td>Count of alphabets</td>
                     </tr>
                     <tr>
+                      <th scope="row"><code>S</code></th>
                       <td>Special chars</td>
                       <td>Count of special chars</td>
                     </tr>
                     <tr>
+                      <th scope="row"><code>L</code></th>
                       <td>Length</td>
                       <td>Length of the password</td>
                     </tr>
                     </tbody>
                   </table>
                   </div>
-                  The last one <strong>"count"</strong> denotes the number of
-                  times, this password was observed in the collected exposed
-                  data breaches. For a comprehensive list of all exposed
+                  For a comprehensive list of all exposed
                   websites, please visit
                   <a href="xposed.html">
                     <strong>Xposed websites in XON</strong> </a
@@ -1121,7 +1224,6 @@ adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05
         </pre
                   >
                   <hr />
-                  <hr />
                   <div id="endpoint-4" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>
@@ -1134,6 +1236,38 @@ adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05
                   <blockquote>
                     <pre>https://api.xposedornot.com/v1/breaches</pre>
                   </blockquote>
+                  <strong>Parameters:</strong> all optional. With no
+                  parameters the endpoint returns every loaded breach.
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Parameters for the breaches endpoint</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Parameter</th>
+                          <th scope="col">In</th>
+                          <th scope="col">Required</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>domain</code></th>
+                          <td>query</td>
+                          <td>No</td>
+                          <td>string</td>
+                          <td>Filter the results to a single domain.</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>breach_id</code></th>
+                          <td>query</td>
+                          <td>No</td>
+                          <td>string</td>
+                          <td>Filter the results to a single breach by its ID.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   The API returns a successful response in the format of JSON
                   only.<br />
                   <br />This JSON can be easily parsed by all scripting
@@ -1227,17 +1361,16 @@ adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05
       "searchable": true,
       "sensitive": false,
       "verified": true
-    },
-
-    and so on...
+    }
 	       </pre
                   >
-                  <br />Furthermore you can also send a parameter like a domain
-                  and filter the results to dispay content specific to that
+                  <em>… response truncated for brevity; the full list continues.</em>
+                  <br /><br />Furthermore you can also send a parameter like a domain
+                  and filter the results to display content specific to that
                   breach. <br />
                   <blockquote>
                     <pre>
-https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre
+https://api.xposedornot.com/v1/breaches?domain={domain}</pre
                     >
                   </blockquote>
                   <pre>
@@ -1286,18 +1419,59 @@ https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre
                   <blockquote>
                     <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
                   </blockquote>
+                  <strong>Parameters:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Headers for the domain-breaches endpoint</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Parameter</th>
+                          <th scope="col">In</th>
+                          <th scope="col">Required</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>x-api-key</code></th>
+                          <td>header</td>
+                          <td>Yes</td>
+                          <td>string</td>
+                          <td>Your domain API key. The domain is derived from the key.</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>Content-Length</code></th>
+                          <td>header</td>
+                          <td>Yes</td>
+                          <td><code>0</code></td>
+                          <td>This endpoint accepts no request body, so set the content length to 0.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   This is a POST request and requires the valid API key to be
-                  included in the header with the key 'x-api-key'. This endpoint
-                  does not accept any request body, hence, the content length
-                  header should be set to '0'.
+                  included in the header with the key 'x-api-key'. The domain is
+                  derived from the API key, so this endpoint does not accept any
+                  request body and the content length header should be set to
+                  '0'.
                   <br />
-                  ** For validated domains, API key is available in the
+                  ** Don't have a key yet? See
+                  <a href="faq.html#collapse102">how to get an API key for
+                  domain breach data</a>. It covers domain verification and
+                  retrieving the key from your
                   <a href="dashboard.html">dashboard</a>. <br /><br />
-                  Sample API request using curl:
+                  Sample API request using curl. Store your key in an
+                  environment variable rather than hard-coding it, so it stays
+                  out of your shell history and source control:
                   <blockquote>
                     <pre>
-curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/    
-	       </pre
+export XON_API_KEY="your_api_key_here"
+
+curl -L -X POST \
+  -H "x-api-key: $XON_API_KEY" \
+  -H "Content-Length: 0" \
+  https://api.xposedornot.com/v1/domain-breaches/</pre
                     >
                   </blockquote>
                   The response of the API is in JSON format. The main key
@@ -1375,21 +1549,18 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
 
 	       </pre
                   >
-                  <strong> Error Handling</strong>: In case of an invalid or
-                  missing API key, the response would be as follows:
+                  <strong> Error Handling</strong>: If the API key is invalid,
+                  the endpoint responds with HTTP 401 and the following JSON:
                   <pre>
 {
-  "message":"Invalid or missing API key",
-  "status":"error"
+  "detail": "Invalid or missing API key"
 }
 	       </pre
                   >
-                  The <strong>message</strong> field will contain a description
-                  of the error, and the <strong>status</strong> field will
-                  contain the string "error" to indicate that an error has
-                  occurred. <br /><br />
-                  Remember to replace "YOUR_API_KEY" with your actual API key
-                  when making a request to the endpoint.
+                  The <strong>detail</strong> field contains a description of
+                  the error. <br /><br />
+                  Remember to set <code>XON_API_KEY</code> to your actual API
+                  key before making a request to the endpoint.
                   <hr />
                   <div id="endpoint-6" class="alert alert-primary" role="alert">
                     <h4>
@@ -1405,8 +1576,9 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                   wrong url etc). Codes in the 5xx range indicate an error with
                   XposedOrNot's server. <br />
                   <br />
-                  In other words, codes in the 4xx range indicate an user
-                  error(You) and 5xx indicates a server error(Me). <br />
+                  In other words, codes in the 4xx range indicate a client-side
+                  error (your request) and 5xx codes indicate a server-side
+                  error (on our end). <br />
                   <br />
                   <div class="table-responsive">
                   <table class="table table-hover table-bordered">
@@ -1437,8 +1609,8 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                       <tr class="status-code-5xx">
                         <th scope="row">502/503</th>
                         <td>
-                          Server fault - Totally my problem to fix. Please shout
-                          across, if you see this ;)
+                          Server-side error. Please report it if you encounter
+                          this.
                         </td>
                       </tr>
                     </tbody>
@@ -1452,26 +1624,23 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
                       class="fas fa-exclamation-triangle"
                       style="font-size: 28px; color: red"
                     ></em>
-                    There will be a threshold of 1 query per second for each and
+                    There will be a threshold of 2 queries per second for each and
                     every API request. Request you to be kindly cognizant of
                     that and then re-try with a slow mode or sleep model. <br />
                     <br />
-                    Folks who regularly try to misuse or abuse this API for
-                    their own nefarious purposes will be kicked into deep dark
-                    dungeons by the not-so-famous
+                    Repeated misuse or abuse of this API is automatically
+                    blocked by
                     <a onclick="jsfunction()" href="javascript:void(0);"
                       >xGuardian</a
-                    >. You are warned. <br />
+                    >. Please use the API responsibly. <br />
                     <br />
                     <em
                       class="fa fa-bug"
                       aria-hidden="true"
                       style="font-size: 28px; color: red"
                     ></em>
-                    If you came across a bug in the API, feel free to message me
-                    at Twitter or email me. I would be more than happy to
-                    acknowledge and remediate the same for the benefit of all
-                    users.
+                    Found a bug? Report it via Twitter or email and it will be
+                    addressed.
                   </div>
                 </div>
               </div>

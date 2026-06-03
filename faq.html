@@ -1093,13 +1093,11 @@
     </head>
 
   <body>
-    <!-- Skip Links for Accessibility -->
     <nav class="skip-links" aria-label="Skip links">
       <a href="#main-content">Skip to main content</a>
       <a href="#faq-list">Skip to FAQ list</a>
     </nav>
 
-    <!-- Floating Table of Contents -->
     <nav class="faq-toc" id="faqToc">
       <h4>Quick Navigation</h4>
       <ul>
@@ -1123,6 +1121,7 @@
         <li><a href="#collapse101">Privacy Shield &amp; GDPR erasure</a></li>
         <li><a href="#collapse96">API commercial use</a></li>
         <li><a href="#collapse100">Official SDKs</a></li>
+        <li><a href="#collapse102">API key &amp; domain access</a></li>
         <li><a href="#collapse97">Search query logging</a></li>
         <li><a href="#collapse98">Breach coverage limits</a></li>
         <li><a href="#collapse99">Open source contributions</a></li>
@@ -1135,7 +1134,6 @@
       </ul>
     </nav>
 
-    <!-- Back to Top Button -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
       <i class="fas fa-arrow-up"></i>
     </button>
@@ -1236,7 +1234,6 @@
         </ol>
       </nav>
 
-      <!-- FAQ Search Box -->
       <div class="faq-search-container">
         <input
           type="text"
@@ -2311,7 +2308,7 @@
                     aria-labelledby="heading101"
                   >
                     <div class="card-body">
-                      Thank you for raising this — it's an important
+                      Thank you for raising this. It's an important
                       distinction and we want to be transparent about it.<br /><br />
                       <strong>What Privacy Shield does for you</strong><br />
                       Enabling
@@ -2333,7 +2330,7 @@
                       <strong>What we are unable to do, and why</strong><br />
                       XposedOrNot is an archive of publicly known
                       data-breach datasets. We do not collect personal data
-                      from individuals directly — every record we hold
+                      from individuals directly, every record we hold
                       originates from a third-party breach that is already
                       in the public domain. For that reason we are not in a
                       position to selectively erase individual records from
@@ -2349,20 +2346,20 @@
                       <strong>Legal basis for retention</strong><br />
                       We rely on the following bases under the GDPR for
                       retaining the underlying breach record:<br />
-                      • <strong>Art. 6(1)(f) — legitimate interests:</strong>
+                      • <strong>Art. 6(1)(f), legitimate interests:</strong>
                       operating a public-interest archive of data breaches
                       so that affected individuals, security researchers,
                       organisations and competent authorities can be
                       informed of, and respond to, breaches that have
                       already occurred.<br />
-                      • <strong>Art. 17(3)(d) and Art. 89(1) — archiving
+                      • <strong>Art. 17(3)(d) and Art. 89(1), archiving
                       in the public interest and scientific
                       research:</strong> the historical record of a breach
                       does not lose its public-interest value over time,
                       and Art. 17(3) expressly disapplies the right to
                       erasure where processing is necessary for these
                       purposes, subject to appropriate safeguards.<br />
-                      • <strong>Art. 17(3)(e) — legal claims:</strong> the
+                      • <strong>Art. 17(3)(e), legal claims:</strong> the
                       record may need to be referred to in the
                       establishment, exercise or defence of legal claims,
                       or to support lawful requests from regulators and
@@ -2375,12 +2372,12 @@
                       likewise retained for the same indefinite period, so
                       that public access remains masked permanently.<br /><br />
                       <strong>How your data is processed once shielded</strong><br />
-                      • <strong>Searchable?</strong> No — the address is
+                      • <strong>Searchable?</strong> No, the address is
                       removed from all public search indexes.<br />
                       • <strong>Accessible?</strong> No public access.
                       Internal access is restricted to the minimum
                       necessary to keep the shield in place.<br />
-                      • <strong>Shared?</strong> No — not with third
+                      • <strong>Shared?</strong> No, not with third
                       parties, not via the API, not via any export.<br />
                       • <strong>Otherwise processed?</strong> Only as
                       required to maintain the shield and to respond to
@@ -2388,7 +2385,7 @@
                       enforcement.<br /><br />
                       <strong>What we never held in the first place</strong><br />
                       We do not log search queries, IP addresses tied to
-                      lookups, or search history — see
+                      lookups, or search history, see
                       <a href="#collapse97"
                         ><strong>Search query logging</strong></a
                       >
@@ -2496,6 +2493,71 @@
                       <a href="api_doc.html"
                         ><strong>API Documentation</strong></a
                       >.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading102">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse102"
+                        aria-expanded="false"
+                        aria-controls="collapse102"
+                      >
+                        Q. How do I get an API key for domain breach data?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse102"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading102"
+                  >
+                    <div class="card-body">
+                      An API key is only needed for the domain breach endpoint
+                      (<code>POST /v1/domain-breaches/</code>). The email,
+                      breach-analytics, breaches and password endpoints are
+                      public and need no key. To get a key, confirm you own the
+                      domain and then collect the key from your dashboard:<br /><br />
+                      <ol>
+                        <li>
+                          Verify your domain ownership at
+                          <a
+                            href="domain.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            ><strong>Domain Verification</strong></a
+                          >, using either the DNS&nbsp;TXT or HTML page method.
+                        </li>
+                        <li>
+                          Open the
+                          <a
+                            href="dashboard.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            ><strong>CXO Dashboard</strong></a
+                          >
+                          using the secure, passwordless link emailed to your
+                          verified-domain address.
+                        </li>
+                        <li>Copy your API key from the dashboard.</li>
+                        <li>
+                          Send it on every request as the
+                          <code>x-api-key</code> header. The domain is derived
+                          from the key, so the request needs no body.
+                        </li>
+                      </ol>
+                      For the full request and response format, see the
+                      <a href="api_doc.html#endpoint-5"
+                        ><strong>domain breaches endpoint</strong></a
+                      >
+                      in the API documentation.
                     </div>
                   </div>
                 </div>
