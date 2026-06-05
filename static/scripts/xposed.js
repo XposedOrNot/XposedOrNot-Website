@@ -246,8 +246,31 @@ function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+function updateFilterStates() {
+    var controls = ['#filter-search', '#filter-industry', '#filter-year', '#filter-risk'];
+    var activeCount = 0;
+
+    controls.forEach(function(sel) {
+        var $el = $(sel);
+        var hasValue = $.trim($el.val() || '') !== '';
+        $el.toggleClass('has-value', hasValue);
+        if (hasValue) activeCount++;
+    });
+
+    $('#btn-reset').toggleClass('is-armed', activeCount > 0);
+
+    var $count = $('#active-filter-count');
+    if (activeCount > 0) {
+        $count.text(activeCount + (activeCount === 1 ? ' filter active' : ' filters active')).prop('hidden', false);
+    } else {
+        $count.text('').prop('hidden', true);
+    }
+}
+
 function applyFilters() {
     if (!breachesTable) return;
+
+    updateFilterStates();
 
     var searchText = $('#filter-search').val();
     var industry = $('#filter-industry').val();
@@ -279,6 +302,8 @@ function resetFilters() {
     $('#filter-industry').val('');
     $('#filter-year').val('');
     $('#filter-risk').val('');
+
+    updateFilterStates();
 
     if (breachesTable) {
         breachesTable.search('').columns().search('').draw();
@@ -318,6 +343,7 @@ $(document).ready(function() {
     });
 
     $('#filter-search').on('keyup', function() {
+        updateFilterStates();
         clearTimeout($.data(this, 'timer'));
         var wait = setTimeout(applyFilters, 300);
         $(this).data('timer', wait);

@@ -6,6 +6,8 @@
     --text-primary: #1a1a2e;
     --text-secondary: #6b7280;
     --primary-color: #5b7cfa;
+    --primary-rgb: 91, 124, 250;
+    --primary-strong: #3b5bdb;
     --primary-gradient: linear-gradient(135deg, #4a6cf7 0%, #6366f1 50%, #8b5cf6 100%);
     --success-color: #28a745;
     --warning-color: #f39c12;
@@ -234,6 +236,20 @@ body {
     color: var(--text-primary);
 }
 
+.filter-group input.has-value,
+.filter-group select.has-value {
+    border-color: var(--primary-strong);
+    background: rgba(var(--primary-rgb), 0.16);
+    box-shadow: inset 0 0 0 1px var(--primary-strong);
+    font-weight: 600;
+}
+
+[data-theme="dark"] .filter-group input.has-value,
+[data-theme="dark"] .filter-group select.has-value {
+    background: rgba(var(--primary-rgb), 0.2);
+    box-shadow: none;
+}
+
 .btn-reset {
     padding: 10px 20px;
     background: transparent;
@@ -248,6 +264,19 @@ body {
 .btn-reset:hover {
     border-color: var(--primary-color);
     color: var(--primary-color);
+}
+
+.btn-reset.is-armed {
+    border-color: var(--primary-strong);
+    background: rgba(var(--primary-rgb), 0.16);
+    box-shadow: inset 0 0 0 1px var(--primary-strong);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+[data-theme="dark"] .btn-reset.is-armed {
+    background: rgba(var(--primary-rgb), 0.2);
+    box-shadow: none;
 }
 
 .table-card {
@@ -291,6 +320,28 @@ body {
 .table-card-header .record-count {
     color: var(--text-secondary);
     font-size: 14px;
+}
+
+.table-card-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: var(--primary-strong);
+    color: #ffffff;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.filter-count[hidden] {
+    display: none;
 }
 
 .dataTables_wrapper {
