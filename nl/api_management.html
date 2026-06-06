@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="XposedOrNot: API-beheer voor geverifieerde domeinen — controleer datalekken via onze beveiligde API.">
+   <meta name="author" content="Devanand Premkumar">
+   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+   <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+   <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+   <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+   <title>XposedOrNot: API-beheer</title>
+   <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+   <link rel="dns-prefetch" href="static.hotjar.com">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+   <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <link rel=stylesheet
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset&display=swap'
+      type=text/css media=all defer async>
+   <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer>
+   <style>
+      .benefit-card {
+         border: none;
+         border-radius: 10px;
+         box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      .benefit-card:nth-child(even) {
+         background: #007bff;
+         color: #fff;
+      }
+
+      .benefit-card:nth-child(odd) {
+         background: #fff;
+         color: #007bff;
+      }
+
+      .benefit-card .card-title {
+         font-weight: 700;
+         font-size: 1.2em;
+      }
+
+      .benefit-card .card-text {
+         font-size: 1em;
+      }
+   </style>
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+<body>
+   <div class="kbanner">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+         <a class="navbar-brand" href="/nl/">XposedOrNot</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Navigatie omschakelen">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav navbar-right">
+               <li class="nav-item active">
+                  <a class="nav-link" href="password.html">Wachtwoord &nbsp; <span class="sr-only">(huidig)</span>
+                  </a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link" href="api_doc.html">API &nbsp;</a>
+               </li>
+               <li class="nav-item active">
+                  <a class="nav-link" href="https://blog.xposedornot.com/">Blog &nbsp;</a>
+               </li>
+               <li class="nav-item dropdown active">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false"> Meer tools </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                     <a class="dropdown-item" href="xposed.html">Blootgestelde datalekken</a>
+                     <a class="dropdown-item" href="domain.html">Domeinverificatie</a>
+                     <a class="dropdown-item" href="domains.html">Zoekopdracht op domeinniveau</a>
+                     <a class="dropdown-item" href="timeline.html">Tijdlijn van datalekken</a>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </nav>
+      &nbsp;
+   </div>
+   <div class="jumbotron" id="d1">
+      <div class="container" align="center">
+         <h1>XposedOrNot API-beheer</h1>
+         <br>
+         <p>
+            Voor het veilig bevragen van XposedOrNot voor geverifieerde domeinen.
+         </p>
+      </div>
+   </div>
+   <div class="container my-5">
+      <div class="row">
+         <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card benefit-card">
+               <div class="card-body">
+                  <h5 class="card-title">Datalekcontroles</h5>
+                  <p class="card-text">Onze API maakt controles op datalekken mogelijk en biedt actueel inzicht in mogelijke blootstelling van gebruikersgegevens voor alle geverifieerde domeinen.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card benefit-card">
+               <div class="card-body">
+                  <h5 class="card-title">Naadloze integratie</h5>
+                  <p class="card-text">Onze API is ontworpen voor naadloze integratie met SIEM, SOAR en andere beveiligingsbeheerssystemen, waardoor uw cyberbeveiligingspositie wordt versterkt.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card benefit-card">
+               <div class="card-body">
+                  <h5 class="card-title">Realtime updates</h5>
+                  <p class="card-text">Onze API levert realtime updates, waardoor een snelle reactie mogelijk is op nieuwe of opkomende datalekken die uw geverifieerde domeinen kunnen treffen.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card benefit-card">
+               <div class="card-body">
+                  <h5 class="card-title">Robuuste beveiliging</h5>
+                  <p class="card-text">De API is ontworpen met sterke beveiligingsmaatregelen die de bescherming van gevoelige gegevens waarborgen en tegelijkertijd een robuust instrument bieden voor lekbeheer.</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+<div class="container text-center" style="margin-top: 60px;">
+      <p class="h4 font-weight-bold mb-4" style="line-height: 1.6;">
+         Geverifieerde domeinen beschikken over een API om onze service te bevragen.
+      </p>
+      <a href="domain.html" class="btn btn-lg btn-primary px-4">
+         Ga naar domeinverificatie
+      </a>
+   </div>
+
+   <div class="container text-center" style="margin-top: 60px;">
+      <p class="h4 font-weight-bold mb-4" style="line-height: 1.6;">
+         Snelreferentie voor de API.
+      </p>
+      <a href="api_doc.html" class="btn btn-lg btn-primary px-4">
+         API-referentie
+      </a>
+   </div>
+   <div class="footer">
+      <div class="container">
+         <div style="text-align:center;margin-bottom:30px;">
+            <p>Doe mee en vorm mee aan deze volledig open source site! Bijdragen welkom ❤️ op onze <a
+                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+         </div>
+
+         <div class="footer-columns">
+            <div class="footer-group">
+               <h6>Juridisch</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Privacybeleid</a>
+               <a href="terms" class="footer-link">Gebruiksvoorwaarden</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+               <a href="our-repository" class="footer-link">Onze repository</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Vertrouwen</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Transparantie</a>
+              <a href="responsible-disclosure" class="footer-link">Verantwoorde openbaarmaking</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Volg ons</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                  <i class="fab fa-twitter"></i> Twitter (X)
+               </a>
+               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                  <i class="fab fa-facebook"></i> Facebook
+               </a>
+               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                  <i class="fab fa-mastodon"></i> Mastodon
+               </a>
+            </div>
+          </div>
+         </div>
+      </div>
+   </div>
+
+   <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+   <script src="/static/scripts/common.js"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

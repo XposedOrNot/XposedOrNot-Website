@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="dns-prefetch" href="cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="static.hotjar.com" />
+    <meta name="description" content="XposedOrNot: Verantwoorde Openbaarmaking" />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta property="og:title" content="Verantwoorde Openbaarmaking" />
+    <meta
+      property="og:description"
+      content="Richtlijnen van XposedOrNot voor verantwoorde openbaarmaking van beveiligingskwetsbaarheden."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta
+      property="og:url"
+      content="https://xposedornot.com/nl/responsible-disclosure"
+    />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="Verantwoorde Openbaarmaking" />
+    <meta
+      name="twitter:description"
+      content="Richtlijnen van XposedOrNot voor verantwoorde openbaarmaking van beveiligingskwetsbaarheden."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <title>XposedOrNot: Verantwoorde Openbaarmaking</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+  <body>
+    <div class="kbanner">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark bg-primary kbanner"
+        style="min-height: 70px; padding-top: 0.5rem; padding-bottom: 0.5rem"
+      >
+        <a
+          class="navbar-brand"
+          href="/nl/"
+          style="text-decoration: none"
+        >
+          <span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+              line-height: 1.2;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              line-height: 1;
+            "
+            >Community Edition</span
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Navigatiemenu in-/uitklappen"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password.html"
+                >Wachtwoord &nbsp; <span class="sr-only">(huidig)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="faq.html">FAQ &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >Blog &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Meer Tools
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed.html">Blootgestelde Datalekken</a>
+                <a class="dropdown-item" href="shield.html">Privacyschild</a>
+                <a class="dropdown-item" href="domain.html"
+                  >Domeinverificatie</a
+                >
+                <a class="dropdown-item" href="domains.html"
+                  >Domein-niveau Zoekopdracht</a
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse"
+                data-parent="#accordion"
+                href="#collapse1"
+              >
+                <h1>
+                  <strong
+                    >Verantwoorde Openbaarmaking van Bugs &amp; Kwetsbaarheden</strong
+                  >
+                </h1>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse">
+            <div class="panel-body">
+              <strong>Laatst bijgewerkt: 26-Aug-2025</strong>
+              <br />
+              <br />Hé daar, bugzoekers! Wat fijn dat jullie er zijn om XposedOrNot (XON) veilig en beveiligd te houden. Ik heb dit beleid voor verantwoorde openbaarmaking opgesteld zodat iedereen zich netjes gedraagt en ons helpt onze diensten, website en netwerk te beschermen tegen vervelende bugs of kwetsbaarheden. <br /><br />
+              Als je iets ontdekt dat mijn aandacht vereist, waardeer ik het als je dit verantwoord onderzoekt en rapporteert zodat ik het zo snel mogelijk kan oplossen. Jouw hulp bij het openbaar maken van beveiligingskwetsbaarheden helpt ons al onze gebruikers veilig te houden. <br /><br />
+              <h2>
+                <strong>Richtlijnen voor het Rapporteren:</strong>
+              </h2>
+              <br />
+              Wanneer je een bug of kwetsbaarheid rapporteert, zorg er dan voor dat je het volgende opneemt:
+              <ol>
+                <li>
+                  Een duidelijke beschrijving van de bug of kwetsbaarheid, met enig bewijs zoals schermafbeeldingen of uitvoergegevens. Wees niet verlegen, we horen graag wat je hebt gevonden!
+                </li>
+                <li>
+                  Een beschrijving van de mogelijke impact van de kwetsbaarheid, zodat we weten waarmee we te maken hebben.
+                </li>
+                <li>
+                  Je voorkeursnaam of gebruikersnaam zodat we je de erkenning kunnen geven die je verdient in onze XON Security Researcher Hall of Fame.
+                </li>
+                <li>
+                  Exacte stappen om het probleem te reproduceren zodat we het aan onze kant kunnen repliceren.
+                </li>
+                <li>
+                  Een video proof of concept wordt altijd gewaardeerd als je die hebt.
+                </li>
+                <li>
+                  Alle relevante informatie over platforms, besturingssystemen, versies, IP-adressen of URL's.
+                </li>
+                <li>
+                  Ondersteunend bewijs zoals logging- of traceringsgegevens is altijd nuttig.
+                </li>
+                <li>
+                  Jouw beoordeling van hoe exploiteerbaar het probleem kan zijn. We oordelen niet als het een 10 van de 10 scoort op de exploiteerbaarheidschaal.
+                </li>
+              </ol>
+              Bedankt dat je zo'n geweldige bugzoeker bent 🙌 en ons helpt XposedOrNot (XON) veilig en gezond te houden!
+              <br /><br />
+              <h2>
+                <strong>Geldige Inzendingen </strong>
+              </h2>
+              <br />
+              <ol>
+                <li>Lokale of externe bestandsinsluiting</li>
+                <li>Authenticatie-omzeiling</li>
+                <li>Directory Traversal</li>
+                <li>Ongeautoriseerd/onbedoeld gegevenslek</li>
+                <li>Externe code-uitvoering (RCE)</li>
+                <li>SQL/XXE-injectie en opdrachtinjectie</li>
+                <li>Cross-Site Scripting (XSS)</li>
+                <li>Server-side request forgery (SSRF)</li>
+                <li>Configuratieproblemen op servers of API</li>
+                <li>Problemen gerelateerd aan authenticatie en autorisatie</li>
+                <li>Cross-site request forgery (CSRF)</li>
+              </ol>
+              <br />
+              <h2>
+                <strong> Domeinen in Scope</strong>
+              </h2>
+              <br />
+              <p><strong>Primair domein:</strong> xposedornot.com</p>
+              <p>
+                <strong>Subdomeinen:</strong> Alle subdomeinen van xposedornot.com
+                (*.xposedornot.com)
+              </p>
+              <br />
+              <p>
+                <em
+                  >Dit omvat maar is niet beperkt tot: api.xposedornot.com,
+                  passwords.xposedornot.com, plus.xposedornot.com en eventuele toekomstige
+                  subdomeinen.</em
+                >
+              </p>
+              <br />
+              <h2>
+                <strong> Gebruik van informatie</strong>
+              </h2>
+              <br />
+              Wij beloven alle informatie over jou en onze diensten vertrouwelijk te behandelen. Deel dit dus niet met iemand buiten ons team!<br />
+              <br />
+              Wij zijn er alles aan gelegen om het internet een veiligere plek te maken, en we waarderen beveiligingsonderzoekers die ons daarbij helpen. Dus hartelijk dank 🙏 dat je deel uitmaakt van die inspanning! Door kwetsbaarheden die je vindt verantwoord openbaar te maken, help je ons onze gebruikers en hun gegevens te beschermen.<br />
+              <br />
+              <h2>
+                <strong> Beleid voor Aanvaardbaar Gebruik </strong>
+              </h2>
+              <br />
+              Even ter info: dit is geen typisch bugbountyprogramma waarbij we geldbeloningen aanbieden voor kwetsbaarheidsrapportages. We zitten nog niet op dat niveau. Maar als je ons iets belangrijks meldt, kunnen we je zeker enige waardering en erkenning tonen!<br />
+              <br />
+              Zorg er wel voor dat je ethisch te werk gaat, oké? Wij verwachten dat je je als een goed burger van het internet gedraagt en de regels volgt die we in ons Beleid voor Aanvaardbaar Gebruik hebben vastgelegd. Als je dat doet, geven we je met plezier erkenning op onze Hall of Fame-pagina — wat een beetje onze versie is van de Hollywood Walk of Fame, maar dan voor beveiligingsonderzoekers. Dus ga je gang, laat je vaardigheden zien en help ons XposedOrNot een veiligere plek voor iedereen te maken!<br />
+              <br />
+              <h2>
+                <strong> Bugmelders - Verwachtingen </strong>
+              </h2>
+              <br />
+              Bugzoekers, we zijn blij dat jullie aan boord zijn om XposedOrNot een veiligere plek voor iedereen te maken! Voordat je begint, zijn dit een aantal dingen die wij van je verwachten: <br /><br />
+              <ol>
+                <li>
+                  Doe niets wat XposedOrNot of onze gebruikers zou kunnen schaden of verstoren.
+                </li>
+                <li>
+                  We sturen je een ontvangstbevestiging binnen 1-3 dagen na ontvangst van je melding.
+                </li>
+                <li>
+                  Respecteer de privacy van onze gebruikers en probeer niet in hun accounts te snuffelen.
+                </li>
+                <li>Test alleen op je eigen accounts en e-mailadressen.</li>
+                <li>
+                  Als je een kritieke kwetsbaarheid vindt die je toegang geeft tot onze webserver of API, stop dan daar en laat ons het overnemen.
+                </li>
+                <li>
+                  Deel geen details over het probleem totdat we het hebben opgelost.
+                </li>
+                <li>
+                  Als je de kwetsbaarheid probeert te misbruiken voor persoonlijk gewin, moeten we je melding diskwalificeren.
+                </li>
+              </ol>
+              <br />
+              We waarderen je medewerking bij het veilig houden van ons platform. Laten we samenwerken om XposedOrNot het beste te maken wat het kan zijn!
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse in panel-collapse"
+                data-parent="#accordion"
+                href="#collapse25"
+              >
+                <strong>Richtlijnen voor Rapportage</strong>
+              </a>
+            </h4>
+          </div>
+          <div class="panel-body">
+            Bedankt dat je voor ons uitkijkt! Als je een bug of beveiligingskwetsbaarheid in XposedOrNot hebt ontdekt, horen we er graag over. Je kunt dit melden via e-mail op
+            <strong>deva @ xposedornot.com</strong> of tweet naar ons
+            <strong>@DevaOnBreaches</strong>. <br />
+            <br />
+            E-mail : deva @ xposedornot.com <br />
+            Twitter :
+            <a href="https://twitter.com/devaonbreaches">DevaOnBreaches </a>
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Help mee aan deze volledig open source site! Bijdragen welkom ❤️ op onze
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Juridisch</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Privacybeleid</a>
+              <a href="terms" class="footer-link">Gebruiksvoorwaarden</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Onze Repository</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Vertrouwen</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Transparantie</a>
+              <a href="responsible-disclosure" class="footer-link">Verantwoorde Openbaarmaking</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Volg Ons</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Donkere modus</label>
+        </div>
+      </div>
+    </div>
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+    <script src="/static/scripts/common.js"></script>
+      <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="nl">
+   <head>
+      <meta charset="utf-8">
+      <title>XposedOrNot: Pagina niet gevonden</title>
+      <link rel="dns-prefetch" href="cdnjs.cloudflare.com">
+      <link rel="dns-prefetch" href="static.hotjar.com">
+      <meta http-equiv="refresh" content="30; URL=https://XposedOrNot.com" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="XposedOrNot - Pagina niet gevonden">
+      <meta name="author" content="Devanand Premkumar">
+      <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+      <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+      <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+      <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+      <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+      <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+      <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+      <link href="/static/css/style.css" type="text/css" rel="stylesheet">
+      <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+         }
+         body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+         }
+         .error-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+         }
+         .error-content {
+            text-align: center;
+            max-width: 600px;
+         }
+         .error-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+         }
+         .ascii-art {
+            display: none;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.2;
+            color: #6daae0;
+            white-space: pre;
+            animation: search 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(109, 170, 224, 0.3);
+         }
+         @keyframes search {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(10px) rotate(5deg); }
+            50% { transform: translateX(0) rotate(0deg); }
+            75% { transform: translateX(-10px) rotate(-5deg); }
+         }
+         .magnify-glass {
+            animation: glassGlow 1.5s ease-in-out infinite alternate;
+         }
+         @keyframes glassGlow {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; text-shadow: 0 0 15px rgba(109, 170, 224, 0.6); }
+         }
+         @media (min-width: 992px) {
+            .ascii-art {
+               display: block;
+            }
+         }
+         .error-code {
+            font-size: 150px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3c5fec 0%, #6daae0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+         }
+         .error-icon {
+            font-size: 80px;
+            color: #6daae0;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+         }
+         @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+         }
+         .error-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+         }
+         .error-message {
+            font-size: 16px;
+            color: #6c757d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+         }
+         .error-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+         }
+         .btn-home {
+            background: linear-gradient(135deg, #3c5fec 0%, #6daae0 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+         }
+         .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(60, 95, 236, 0.4);
+            color: white;
+            text-decoration: none;
+         }
+         .btn-blog {
+            background: transparent;
+            color: #3c5fec;
+            border: 2px solid #3c5fec;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+         }
+         .btn-blog:hover {
+            background: #3c5fec;
+            color: white;
+            text-decoration: none;
+         }
+         .redirect-notice {
+            margin-top: 30px;
+            padding: 15px 25px;
+            background: rgba(109, 170, 224, 0.1);
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+         }
+         .redirect-notice i {
+            color: #6daae0;
+            animation: spin 2s linear infinite;
+         }
+         @keyframes spin {
+            100% { transform: rotate(360deg); }
+         }
+         .redirect-notice span {
+            color: #6c757d;
+            font-size: 14px;
+         }
+
+         /* Dark mode styles */
+         [data-theme="dark"] .error-container {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+         }
+         [data-theme="dark"] .ascii-art {
+            color: #6daae0;
+            text-shadow: 0 0 15px rgba(109, 170, 224, 0.4);
+         }
+         [data-theme="dark"] .error-title {
+            color: #ffffff;
+         }
+         [data-theme="dark"] .error-message {
+            color: #9fc0e0;
+         }
+         [data-theme="dark"] .redirect-notice {
+            background: rgba(109, 170, 224, 0.15);
+         }
+         [data-theme="dark"] .redirect-notice span {
+            color: #9fc0e0;
+         }
+         [data-theme="dark"] .btn-blog {
+            color: #6daae0;
+            border-color: #6daae0;
+         }
+         [data-theme="dark"] .btn-blog:hover {
+            background: #6daae0;
+            color: #1a1a2e;
+         }
+
+         /* Footer styles */
+         .footer {
+            padding: 40px 0 30px;
+            background: #ffffff;
+            border-top: 1px solid #ebedef;
+         }
+         .footer p { color: #3a4b5e; }
+         .footer a { color: #3c5fec; }
+         .footer-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 60px;
+            text-align: left;
+            padding: 0 40px;
+         }
+         .footer-group { flex: 1; min-width: 0; }
+         .footer-group h6 {
+            color: #2c3e50 !important;
+            font-size: 0.95em !important;
+            margin-bottom: 15px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+         }
+         .footer-group a.footer-link {
+            display: block;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            color: #3a4b5e;
+            text-decoration: none;
+         }
+         .footer-group a.footer-link:hover {
+            background-color: rgba(63, 113, 243, 0.15);
+            padding-left: 14px;
+            color: #3f71f3 !important;
+         }
+         @media (max-width: 768px) {
+            .footer-columns {
+               flex-direction: column;
+               text-align: center;
+               gap: 30px;
+               padding: 0 20px;
+            }
+	.footer-group {
+		border-bottom: 1px solid #ebedef;
+	}
+
+	.footer-group h6 {
+		cursor: pointer;
+		padding: 15px 20px;
+		margin: 0 !important;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.footer-group h6::after {
+		content: '+';
+		font-size: 20px;
+		font-weight: 300;
+		transition: transform 0.3s ease;
+	}
+
+	.footer-group.active h6::after {
+		content: '−';
+	}
+
+	.footer-group .footer-links-wrapper {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease;
+		padding: 0 20px;
+	}
+
+	.footer-group.active .footer-links-wrapper {
+		max-height: 300px;
+		padding: 0 20px 15px 20px;
+	}
+            .error-code { font-size: 100px; }
+            .error-icon { font-size: 60px; }
+            .error-title { font-size: 22px; }
+         }
+
+         /* Dark mode footer */
+         [data-theme="dark"] .footer {
+            background: #1a1a2e;
+            border-top-color: #2d2d44;
+         }
+         [data-theme="dark"] .footer p { color: #9fc0e0; }
+         [data-theme="dark"] .footer-group h6 { color: #ffffff !important; }
+         [data-theme="dark"] .footer-group a.footer-link { color: #9fc0e0; }
+         [data-theme="dark"] .footer-group a.footer-link:hover {
+            background-color: rgba(63, 113, 243, 0.2);
+            color: #6daae0 !important;
+         }
+      </style>
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+   <body>
+      <div class="kbanner">
+         <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
+            <a class="navbar-brand" href="/nl/">XposedOrNot</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Navigatie wisselen">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active">
+                     <a class="nav-link" href="password.html">Wachtwoord</a>
+                  </li>
+                  <li class="nav-item active">
+                     <a class="nav-link" href="api_doc.html">API</a>
+                  </li>
+                  <li class="nav-item active">
+                     <a class="nav-link" href="https://blog.xposedornot.com/">Blog</a>
+                  </li>
+                  <li class="nav-item dropdown active">
+                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">XoN</a>
+                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="xposed.html">Blootgestelde datalekken</a>
+                        <a class="dropdown-item" href="shield.html">Privacyschild</a>
+                        <a class="dropdown-item" href="domain.html">Domeinverificatie</a>
+                        <a class="dropdown-item" href="timeline.html">Tijdlijn datalekken</a>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+         </nav>
+      </div>
+
+      <div class="error-container">
+         <div class="error-wrapper">
+            <div class="ascii-art">
+<span class="magnify-glass">      .---.
+    /     \
+   |  ◉    |
+   |    ◉  |
+    \     /
+     '---'</span>
+        \
+         \
+          O
+          |
+         /|\
+        / | \
+</div>
+            <div class="error-content">
+               <div class="error-code">404</div>
+            <div class="error-icon">
+               <i class="far fa-compass"></i>
+            </div>
+            <h1 class="error-title">Oeps! Pagina niet gevonden</h1>
+            <p class="error-message">
+               De pagina die u zoekt lijkt verdwaald te zijn in de digitale leegte.
+               Geen zorgen, zelfs de beste ontdekkers raken soms de weg kwijt.
+            </p>
+            <div class="error-actions">
+               <a href="https://xposedornot.com" class="btn-home">
+                  <i class="fas fa-home"></i>&nbsp; Terug naar home
+               </a>
+               <a href="https://blog.xposedornot.com/" class="btn-blog">
+                  <i class="fas fa-book-open"></i>&nbsp; Bezoek blog
+               </a>
+            </div>
+            <div class="redirect-notice">
+               <i class="fas fa-sync-alt"></i>
+               <span>Doorverwijzen naar de startpagina over 30 seconden...</span>
+            </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="footer">
+         <div class="container">
+            <div style="text-align:center;margin-bottom:30px;">
+               <p>Doe mee en help deze volledig open source website vormgeven! Bijdragen welkom ❤️ op onze <a
+                     href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+            </div>
+
+            <div class="footer-columns">
+               <div class="footer-group">
+                  <h6>Juridisch</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Privacybeleid</a>
+                  <a href="terms" class="footer-link">Gebruiksvoorwaarden</a>
+            </div>
+          </div>
+               <div class="footer-group">
+                  <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+                  <a href="our-repository" class="footer-link">Onze repository</a>
+            </div>
+          </div>
+               <div class="footer-group">
+                  <h6>Vertrouwen</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Transparantie</a>
+              <a href="responsible-disclosure" class="footer-link">Verantwoorde openbaarmaking</a>
+            </div>
+          </div>
+               <div class="footer-group">
+                  <h6>Volg ons</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                     <i class="fab fa-twitter"></i> Twitter (X)
+                  </a>
+                  <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                     <i class="fab fa-facebook"></i> Facebook
+                  </a>
+                  <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                     <i class="fab fa-mastodon"></i> Mastodon
+                  </a>
+            </div>
+          </div>
+            </div>
+
+            <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+               <input type="checkbox" class="custom-control-input" id="darkSwitch">
+               <label class="custom-control-label" for="darkSwitch">Donkere modus</label>
+            </div>
+         </div>
+      </div>
+
+      <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+      <script src="/static/scripts/common.js"></script>
+       <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
