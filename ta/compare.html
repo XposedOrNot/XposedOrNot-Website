@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="ta">
+  <head>
+    <meta charset="utf-8" />
+    <title>மின்னஞ்சல் மீறல்களை ஒப்பிடுங்கள் - பகிரப்பட்ட வெளிப்பாடுகளைக் கண்டறியுங்கள் | XposedOrNot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0" />
+    <meta name="description" content="பகிரப்பட்ட தரவு வெளிப்பாடுகளுக்காக இரண்டு மின்னஞ்சல் முகவரிகளைப் பகுப்பாய்வு செய்ய இலவச மீறல் ஒப்பீட்டுக் கருவி. உங்கள் தனிப்பட்ட மற்றும் பணி மின்னஞ்சல்களை ஒப்பிடுங்கள், பகிரப்பட்ட கடவுச்சொல் வெளிப்பாடுகளைக் கண்டறியுங்கள், ஆபத்து மதிப்பெண்களைக் காணுங்கள் மற்றும் தனிப்பயனாக்கப்பட்ட பாதுகாப்பு பரிந்துரைகளைப் பெறுங்கள்." />
+    <meta name="keywords" content="மீறல் ஒப்பீட்டுக் கருவி, மின்னஞ்சல் மீறல் ஒப்பீடு, பகிரப்பட்ட தரவு மீறல், மின்னஞ்சல் பாதுகாப்பு ஒப்பீடு, கடவுச்சொல் வெளிப்பாடு சரிபார்ப்பி, தனிப்பட்ட பணி மின்னஞ்சல் சரிபார்ப்பு, பாதுகாப்பு தணிக்கை, தரவு மீறல் ஒன்றுடன் ஒன்று, சைபர் பாதுகாப்பு ஒப்பீடு, XposedOrNot" />
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="shortcut icon" type="image/ico" href="../favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <link rel="dns-prefetch" href="https://api.xposedornot.com" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="மின்னஞ்சல் மீறல்களை ஒப்பிடுங்கள் - பகிரப்பட்ட வெளிப்பாடுகளைக் கண்டறியுங்கள் | XposedOrNot" />
+    <meta property="og:description" content="பகிரப்பட்ட தரவு மீறல்களுக்காக இரண்டு மின்னஞ்சல்களை ஒப்பிட இலவச கருவி. பகிரப்பட்ட கடவுச்சொல் வெளிப்பாடுகளைக் கண்டறியுங்கள், ஆபத்து மதிப்பெண்களை ஒப்பிடுங்கள் மற்றும் தனிப்பயன் பாதுகாப்பு பரிந்துரைகளைப் பெறுங்கள்." />
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta property="og:url" content="https://xposedornot.com/ta/compare" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <meta property="og:locale" content="ta_IN" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta name="twitter:title" content="மின்னஞ்சல் மீறல்களை ஒப்பிடுங்கள் - பகிரப்பட்ட வெளிப்பாடுகளைக் கண்டறியுங்கள் | XposedOrNot" />
+    <meta name="twitter:description" content="பகிரப்பட்ட மீறல்களுக்காக இரண்டு மின்னஞ்சல்களை ஒப்பிட இலவச கருவி. பகிரப்பட்ட கடவுச்சொல் வெளிப்பாடுகளைக் கண்டறியுங்கள், ஆபத்து மதிப்பெண்களை ஒப்பிடுங்கள் மற்றும் பாதுகாப்பு பரிந்துரைகளைப் பெறுங்கள்." />
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png" />
+
+    <!-- Canonical & Hreflang -->
+    <link rel="canonical" href="https://xposedornot.com/ta/compare" />
+    <!-- SEO & Indexing -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#417ff9" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&display=swap&subset" type="text/css" media="all" />
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/compare.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" crossorigin="anonymous" />
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha384-y49Zu59jZHJL/PLKgZPv3k2WI9c0Yp3pWB76V8OBVCb0QBKS8l4Ff3YslzHVX76Y" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" integrity="sha384-0esPaJH+F9evp2lsJYN36SW7XkRbaYviuyF+PpnbjDXBC9i1CWGiJyGrXCyiyGqZ" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+      /* Override Font Awesome font-display: auto/block with swap to clear
+         Lighthouse FOIT warning and ensure icons don't blank during load */
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/compare" />
+    <link rel="alternate" hreflang="bn" href="https://xposedornot.com/bn/compare" />
+    <link rel="alternate" hreflang="de" href="https://xposedornot.com/de/compare" />
+    <link rel="alternate" hreflang="es" href="https://xposedornot.com/es/compare" />
+    <link rel="alternate" hreflang="fr" href="https://xposedornot.com/fr/compare" />
+    <link rel="alternate" hreflang="hi" href="https://xposedornot.com/hi/compare" />
+    <link rel="alternate" hreflang="it" href="https://xposedornot.com/it/compare" />
+    <link rel="alternate" hreflang="ja" href="https://xposedornot.com/ja/compare" />
+    <link rel="alternate" hreflang="nl" href="https://xposedornot.com/nl/compare" />
+    <link rel="alternate" hreflang="pt" href="https://xposedornot.com/pt/compare" />
+    <link rel="alternate" hreflang="ru" href="https://xposedornot.com/ru/compare" />
+    <link rel="alternate" hreflang="ta" href="https://xposedornot.com/ta/compare" />
+    <link rel="alternate" hreflang="zh" href="https://xposedornot.com/zh/compare" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/compare" />
+    </head>
+
+  <body data-spy="scroll" data-target=".menu" data-offset="50">
+    <!-- Mobile Header -->
+    <div class="mobileheader-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand abs" href="/ta/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">சமூக பதிப்பு</span>
+              </a>
+              <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="main-menu-part">
+                  <ul>
+                    <li><a href="/ta/">முகப்பு</a></li>
+                    <li><a href="password.html">கடவுச்சொல்</a></li>
+                    <li><a href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Header -->
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header-left">
+              <a href="https://XposedOrNot.com/ta/" style="text-decoration: none">
+                <span style="font-size: 1.5em; font-weight: bold; display: block; color: #417ff9;">XposedOrNot</span>
+                <span style="font-size: 0.8em; display: block; color: #417ff9; opacity: 0.85; margin-top: -10px;">சமூக பதிப்பு</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9">
+            <div class="header-right">
+              <ul>
+                <li><a href="/ta/">முகப்பு</a></li>
+                <li><a href="password.html">கடவுச்சொல்</a></li>
+                <li><a href="faq.html">அடிக்கடி கேட்கப்படும் கேள்விகள்</a></li>
+                <li><a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">வலைப்பதிவு</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="compare-hero">
+      <div class="container">
+        <h1><i class="fas fa-balance-scale"></i> மின்னஞ்சல் <span class="help-tooltip" title="தரவு மீறல் என்பது நீங்கள் பதிவு செய்த வலைத்தளங்களிலிருந்து ஹேக்கர்கள் உங்கள் மின்னஞ்சல், கடவுச்சொல் அல்லது தனிப்பட்ட தரவு போன்ற தகவல்களைத் திருடும்போது நிகழ்கிறது.">மீறல்களை<i class="fas fa-question-circle"></i></span> ஒப்பிடுங்கள்</h1>
+        <p>இரண்டு மின்னஞ்சல் முகவரிகளும் ஒரே தரவு மீறல்களில் சிக்கியுள்ளனவா எனச் சரிபார்த்து, எந்தத் தகவல் கசிந்தது என்பதைக் காணுங்கள்</p>
+      </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="use-cases-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-briefcase"></i>
+            <h6>தனிப்பட்ட மற்றும் பணி</h6>
+            <p>உங்கள் வீட்டு மற்றும் பணி மின்னஞ்சல்களைச் சரிபார்க்கவும்</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-envelope-open-text"></i>
+            <h6>பல மின்னஞ்சல்கள்</h6>
+            <p>உங்கள் எந்த மின்னஞ்சல்களையும் ஒப்பிடுங்கள்</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-exchange-alt"></i>
+            <h6>பழைய மற்றும் புதிய மின்னஞ்சல்</h6>
+            <p>பழைய மீறல்கள் உங்களைப் பின்தொடர்கின்றனவா எனச் சரிபார்க்கவும்</p>
+          </div>
+          <div class="col-md-3 col-6 use-case-item">
+            <i class="fas fa-clipboard-check"></i>
+            <h6>பாதுகாப்பு மதிப்பாய்வு</h6>
+            <p>உங்கள் முழுமையான மீறல் சித்திரத்தைக் காணுங்கள்</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="compare-input-section">
+      <div class="container">
+        <p class="instruction-text">
+          <i class="fas fa-info-circle"></i> இரண்டு மின்னஞ்சல் முகவரிகளும் ஒரே மீறல்களில் தோன்றுகின்றனவா எனப் பார்க்க கீழே அவற்றை உள்ளிடவும்.
+        </p>
+        <div class="row align-items-center">
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> முதல் மின்னஞ்சல்</h5>
+              <input type="email" class="form-control" id="email1" placeholder="ungal@gmail.com" autocomplete="email" maxlength="254" autofocus aria-label="சரிபார்க்க முதல் மின்னஞ்சல் முகவரி">
+            </div>
+          </div>
+          <div class="col-md-2 vs-divider">
+            <span>VS</span>
+          </div>
+          <div class="col-md-5">
+            <div class="email-input-card">
+              <h5><i class="fas fa-envelope" aria-hidden="true"></i> இரண்டாவது மின்னஞ்சல்</h5>
+              <input type="email" class="form-control" id="email2" placeholder="ungal@velai.com" autocomplete="email" maxlength="254" aria-label="ஒப்பிட இரண்டாவது மின்னஞ்சல் முகவரி">
+            </div>
+          </div>
+        </div>
+        <div class="row compare-button-wrapper">
+          <div class="col-12 text-center">
+            <button class="btn btn-compare" id="btnCompare" disabled aria-label="பகிரப்பட்ட மீறல்களுக்காக இரு மின்னஞ்சல்களையும் ஒப்பிடுங்கள்">
+              <i class="fas fa-search" aria-hidden="true"></i> மீறல்களை ஒப்பிடுங்கள்
+            </button>
+            <div class="error-message" id="errorMessage"></div>
+            <p class="privacy-notice">
+              <i class="fas fa-lock"></i> உங்கள் மின்னஞ்சல்கள் <strong>ஒருபோதும் சேமிக்கப்படுவதில்லை</strong>.
+              <a href="privacy" target="_blank" rel="noopener">தனியுரிமைக் கொள்கை</a>
+            </p>
+            <p class="consent-notice">
+              <i class="fas fa-user-check"></i> உங்களுக்குச் சொந்தமான அல்லது சரிபார்க்க உங்களுக்கு அனுமதி உள்ள மின்னஞ்சல்களை மட்டுமே சரிபார்க்கவும்.
+              <a href="shield.html" target="_blank" rel="noopener">தேடல்களில் தோன்ற விரும்பவில்லையா? தனியுரிமைக் கவசத்தை இயக்கவும்</a>
+            </p>
+            <p class="database-stats" id="databaseStats">
+              <i class="fas fa-database"></i> <span id="breachCount">...</span> மீறல்களில் <span id="recordCount">...</span> வெளிப்பட்ட கணக்குகளைத் தேடுகிறது
+              | <a href="our-repository" target="_blank" rel="noopener" title="அனைத்து மீறல்களையும் காண்க">முழு பட்டியலைக் காண்க <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+      <div class="container">
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="section-header">
+            <h2 class="h3">மீறல் ஒப்பீட்டு சுருக்கம்</h2>
+            <p>ஒவ்வொரு மின்னஞ்சலையும் எத்தனை மீறல்கள் பாதித்தன</p>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-a">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> முதல் மின்னஞ்சல்
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countA">0</div>
+                  <div class="label">மொத்த மீறல்கள்</div>
+                  <div class="email-label" id="labelA">மின்னஞ்சல் A</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card shared">
+                <div class="card-header">
+                  <i class="fas fa-link"></i> பகிரப்பட்ட மீறல்கள்
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countShared">0</div>
+                  <div class="label">இரு மின்னஞ்சல்களிலும்</div>
+                  <div class="email-label">இரு மின்னஞ்சல்கள்</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="summary-card email-b">
+                <div class="card-header">
+                  <i class="fas fa-envelope"></i> இரண்டாவது மின்னஞ்சல்
+                </div>
+                <div class="card-body">
+                  <div class="count" id="countB">0</div>
+                  <div class="label">மொத்த மீறல்கள்</div>
+                  <div class="email-label" id="labelB">மின்னஞ்சல் B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venn Diagram -->
+        <div class="venn-section">
+          <div class="section-header">
+            <h2 class="h3">பகிரப்பட்ட எதிராக தனித்துவ மீறல்கள்
+              <span class="help-tooltip" title="பகிரப்பட்ட மீறல்கள் குறிப்பாக ஆபத்தானவை. இரு மின்னஞ்சல்களிலும் ஒரே கடவுச்சொல்லைப் பயன்படுத்தியிருந்தால், ஹேக்கர்கள் பல கணக்குகளை அணுக முடியும்.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>எந்த மீறல்கள் ஒன்று அல்லது இரு மின்னஞ்சல்களையும் பாதிக்கின்றன</p>
+          </div>
+          <div class="venn-container" id="vennContainer">
+            <div class="venn-circle left" id="vennLeft">
+              <span class="count" id="vennCountA">0</span>
+              <span class="label" id="vennLabelA">மின்னஞ்சல் 1 மட்டும்</span>
+            </div>
+            <div class="venn-overlap" id="vennOverlap">
+              <span class="count" id="vennCountShared">0</span>
+              <span class="label">பகிரப்பட்டது</span>
+            </div>
+            <div class="venn-circle right" id="vennRight">
+              <span class="count" id="vennCountB">0</span>
+              <span class="label" id="vennLabelB">மின்னஞ்சல் 2 மட்டும்</span>
+            </div>
+          </div>
+          <div class="overlap-stats" id="overlapStats">
+            <span id="overlapText">ஒன்றுடன் ஒன்று கணக்கிடப்படுகிறது...</span>
+          </div>
+        </div>
+
+        <!-- Risk Comparison -->
+        <div class="risk-comparison-section">
+          <div class="section-header">
+            <h2 class="h3">பாதுகாப்பு ஆபத்து மதிப்பெண்
+              <span class="help-tooltip" title="உங்கள் ஆபத்து மதிப்பெண் (0-100) இவற்றை அடிப்படையாகக் கொண்டது: எத்தனை மீறல்கள் உங்களைப் பாதித்தன, கடவுச்சொற்கள் கசிந்தனவா, அந்தக் கடவுச்சொற்கள் எவ்வாறு சேமிக்கப்பட்டன, மற்றும் மீறல்கள் எவ்வளவு சமீபத்தியவை. அதிகம் = மிக அவசர நடவடிக்கை தேவை.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </h2>
+            <p>உங்கள் மீறல்களின் தீவிரத்தின் அடிப்படையில் நீங்கள் எவ்வளவு அவசரமாக நடவடிக்கை எடுக்க வேண்டும்</p>
+          </div>
+          <div class="risk-legend">
+            <span class="legend-item low"><i class="fas fa-circle"></i> குறைவு (0-33): உடனடி நடவடிக்கை தேவையில்லை</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> நடுத்தரம் (34-66): விரைவில் கடவுச்சொல்லை மாற்றவும்</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> அதிகம் (67-100): இன்றே கடவுச்சொல்லை மாற்றவும்</span>
+          </div>
+          <div id="riskMeters">
+            <!-- Risk meters will be populated dynamically -->
+          </div>
+          <div class="alert alert-info mt-3" id="combinedRiskAlert" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="combinedRiskText"></span>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-table-section">
+          <div class="section-header">
+            <h2 class="h3">விரிவான மீறல் ஒப்பீட்டு அட்டவணை</h2>
+            <p>ஒவ்வொரு மின்னஞ்சலையும் பாதிக்கும் தரவு மீறல்களின் முழுப் பட்டியல். வெளிப்பட்ட தரவு வகைகள், காலவரிசை மற்றும் பரிந்துரைக்கப்பட்ட நடவடிக்கைகள் உள்ளிட்ட முழு விவரங்களைக் காண <strong>எந்த மீறல் பெயரிலும் கிளிக் செய்யவும்</strong>.</p>
+          </div>
+          <div class="table-responsive">
+            <table class="comparison-table" id="comparisonTable">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">மீறல் பெயர்</th>
+                  <th id="thEmailA">மின்னஞ்சல் A</th>
+                  <th id="thEmailB">மின்னஞ்சல் B</th>
+                  <th style="text-align: left;">வெளிப்பட்ட தரவு
+                    <span class="help-tooltip" title="கசிந்த தனிப்பட்ட தகவலின் வகைகள்: கடவுச்சொற்கள், மின்னஞ்சல்கள், பெயர்கள், தொலைபேசி எண்கள், முகவரிகள் போன்றவை. கடவுச்சொற்கள் மிக முக்கியமானவை.">
+                      <i class="fas fa-question-circle"></i>
+                    </span>
+                  </th>
+                  <th>ஆண்டு</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Table rows will be populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-center">
+            <span class="badge badge-danger mr-2"><i class="fas fa-check"></i> பகிரப்பட்ட மீறல்கள்</span>
+            <span class="badge badge-secondary"><i class="fas fa-user"></i> தனித்துவ மீறல்கள்</span>
+          </div>
+        </div>
+
+        <!-- Data Types Comparison -->
+        <div class="data-types-section">
+          <div class="section-header">
+            <h2 class="h3">வெளிப்பட்ட தரவு வகைகள்</h2>
+            <p>எந்த வகையான தகவல் கசிந்தது</p>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <canvas id="dataTypesChart" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-section">
+          <div class="section-header">
+            <h2 class="h3">மீறல் காலவரிசை வரலாறு</h2>
+            <p>இந்த மின்னஞ்சல்கள் எப்போது மீறல்களில் சிக்கின? சமீபத்திய மீறல்களைக் கையாள்வது மிகவும் அவசரம்.</p>
+          </div>
+          <canvas id="timelineChart" height="250"></canvas>
+        </div>
+
+        <!-- Actionable Insights -->
+        <div class="insights-section">
+          <div class="section-header">
+            <h2 class="h3">பாதுகாப்பு பரிந்துரைகள்</h2>
+            <p>உங்கள் மீறல் ஒப்பீட்டு பகுப்பாய்வின் அடிப்படையில் தனிப்பயனாக்கப்பட்ட நடவடிக்கைகள்</p>
+          </div>
+          <div id="insightsContainer">
+            <!-- Insights will be populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+          <h3 class="h5"><i class="fas fa-download"></i> மீறல் ஒப்பீட்டு அறிக்கையை ஏற்றுமதி செய்யுங்கள்</h3>
+          <p>உங்கள் முழு மீறல் பகுப்பாய்வு முடிவுகளைப் பதிவிறக்கவும் அல்லது அச்சிடவும்</p>
+          <button class="btn btn-success btn-export" id="btnExportCSV">
+            <i class="fas fa-file-excel"></i> விரிதாள்
+          </button>
+          <button class="btn btn-info btn-export" id="btnPrint">
+            <i class="fas fa-print"></i> அச்சிடு / PDF ஆக சேமி
+          </button>
+        </div>
+
+        <!-- New Comparison Section -->
+        <div class="new-comparison-section">
+          <h3 class="h5"><i class="fas fa-redo"></i> வேறு மின்னஞ்சல்களைச் சரிபார்க்கவும்</h3>
+          <p>மற்ற மின்னஞ்சல் முகவரிகளை ஒப்பிட விரும்புகிறீர்களா?</p>
+          <button class="btn btn-outline-primary" id="btnNewComparison">
+            <i class="fas fa-envelope"></i> புதிய ஒப்பீட்டைத் தொடங்கவும்
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Celebration Section (No Breaches) -->
+    <div class="celebration-section" id="celebrationSection" style="display: none;">
+      <div class="container">
+        <div class="celebration-content">
+          <div class="celebration-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h2>நல்ல செய்தி!</h2>
+          <p class="celebration-subtitle">எந்த மின்னஞ்சலும் எந்தத் தரவு மீறலிலும் காணப்படவில்லை</p>
+          <div class="celebration-emails">
+            <span class="email-badge" id="celebrateEmailA"></span>
+            <span class="email-badge" id="celebrateEmailB"></span>
+          </div>
+          <div class="celebration-message">
+            <p>இரு மின்னஞ்சல்களும் சுத்தமாக உள்ளன! <strong>பல கோடி வெளிப்பட்ட பதிவுகள்</strong> கொண்ட எங்கள் தரவுத்தளத்தில் எந்த மீறலும் காணப்படவில்லை.</p>
+          </div>
+          <div class="celebration-tips">
+            <h5><i class="fas fa-lightbulb"></i> இதை இப்படியே வைத்திருங்கள்</h5>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> ஒவ்வொரு கணக்கிற்கும் தனித்துவமான, வலுவான கடவுச்சொற்களைப் பயன்படுத்துங்கள்</li>
+              <li><i class="fas fa-check-circle"></i> இரு-காரணி அங்கீகாரத்தை (2FA) இயக்கவும் — உள்நுழையும்போது உங்கள் தொலைபேசிக்கு அனுப்பப்படும் பாதுகாப்புக் குறியீடு</li>
+              <li><i class="fas fa-check-circle"></i> ஃபிஷிங் மின்னஞ்சல்களில் (கடவுச்சொல்லை வெளிப்படுத்த உங்களை ஏமாற்றும் போலி மின்னஞ்சல்கள்) கவனமாக இருங்கள்</li>
+              <li><i class="fas fa-check-circle"></i> XposedOrNot இல் உங்கள் கணக்குகளை வழக்கமாகச் சரிபார்க்கவும்</li>
+            </ul>
+          </div>
+          <div class="celebration-actions">
+            <button class="btn btn-primary" onclick="window.location.href = window.location.pathname">
+              <i class="fas fa-redo"></i> வேறு மின்னஞ்சல்களைச் சரிபார்க்கவும்
+            </button>
+            <a href="/ta/" class="btn btn-outline-primary">
+              <i class="fas fa-search"></i> முழு மீறல் சரிபார்ப்பு
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>இந்த திறந்த மூல தளத்தை உருவாக்க எங்களுடன் சேருங்கள்! எங்கள் <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> இல் பங்களிப்புகள் வரவேற்கப்படுகின்றன.</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>சட்டம்</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
+              <a href="terms" class="footer-link">விதிமுறைகள்</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>சமூகம்</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
+              <a href="our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>நம்பகத்தன்மை</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">நிலை</a>
+              <a href="transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
+              <a href="responsible-disclosure" class="footer-link">பொறுப்பான வெளிப்படுத்தல்</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>எங்களைப் பின்தொடரவும்</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turnstile Verification Modal -->
+    <div class="modal fade" id="turnstileModal" tabindex="-1" role="dialog" aria-labelledby="turnstileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content turnstile-modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="turnstileModalLabel">
+              <i class="fas fa-shield-alt"></i> பாதுகாப்பு சரிபார்ப்பு
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <p class="turnstile-instruction">தொடர தயவுசெய்து பாதுகாப்பு சரிபார்ப்பை முடிக்கவும்</p>
+            <div id="turnstileWidget" class="turnstile-wrapper"></div>
+            <div class="turnstile-loading" id="turnstileLoading">
+              <div class="turnstile-spinner">
+                <i class="fas fa-shield-alt fa-pulse"></i>
+              </div>
+              <p>பாதுகாப்பு சரிபார்ப்பு ஏற்றப்படுகிறது...</p>
+              <small class="text-muted">இது பொதுவாக சில வினாடிகள் எடுக்கும்</small>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+              <i class="fas fa-times"></i> ரத்து செய்
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js" integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc=" crossorigin="anonymous"></script>
+    <script src="/static/scripts/compare.js"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+  </body>
+</html>
