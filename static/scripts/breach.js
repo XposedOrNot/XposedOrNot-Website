@@ -145,6 +145,16 @@ function formatPasswordRisk(risk) {
     return '<span class="badge-status ' + level.cls + '"><i class="' + level.icon + '"></i> ' + level.text + '</span>';
 }
 
+function formatBreachType(type) {
+    var types = {
+        'DataBreach': { text: 'Data Breach', cls: 'badge-info', icon: 'fas fa-database' },
+        'StealerLogs': { text: 'Stealer Logs', cls: 'badge-danger', icon: 'fas fa-bug' },
+        'ComboList': { text: 'Combo List', cls: 'badge-warning', icon: 'fas fa-layer-group' }
+    };
+    var t = types[type] || { text: type || 'Unknown', cls: 'badge-warning', icon: 'fas fa-question-circle' };
+    return '<span class="badge-status ' + t.cls + '"><i class="' + t.icon + '"></i> ' + t.text + '</span>';
+}
+
 function formatStatus(value) {
     return value
         ? '<span class="badge-status badge-success"><i class="fas fa-check-circle"></i> Yes</span>'
@@ -302,6 +312,17 @@ function displayBreachData(breach) {
         badge.innerHTML = '<i class="' + getDataIcon(dataType) + '"></i> ' + dataType;
         exposedDataContainer.appendChild(badge);
     });
+
+    var breachTypeEl = document.getElementById('breach-type');
+    if (breachTypeEl) {
+        var breachTypeRow = breachTypeEl.closest('tr');
+        if (breach.breachType) {
+            breachTypeEl.innerHTML = formatBreachType(breach.breachType);
+            if (breachTypeRow) breachTypeRow.style.display = '';
+        } else if (breachTypeRow) {
+            breachTypeRow.style.display = 'none';
+        }
+    }
 
     var isSensitive = !breach.searchable;
     document.getElementById('searchable').innerHTML = formatStatus(breach.searchable);
