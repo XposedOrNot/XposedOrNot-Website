@@ -11,7 +11,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three-globe@2.23.0/dist/three-globe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
@@ -47,26 +47,110 @@
 
     #data-display {
       width: 100%;
-      max-width: 300px;
+      max-width: 320px;
       margin: 10px auto;
-      height: 400px;
+      height: 420px;
       overflow-y: auto;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
+      background: rgba(8, 18, 36, 0.82);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      color: #e6fbff;
+      padding: 14px;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 0 18px rgba(0, 229, 255, 0.12);
       font-size: 12px;
       display: block;
     }
 
-    #data-display h4 {
-      margin: 0 0 10px 0;
-      font-size: 16px;
-      text-align: center;
+    #feed-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.18);
     }
 
-    #data-display p {
-      margin: 5px 0;
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff3df0;
+      box-shadow: 0 0 8px #ff3df0;
+      animation: live-pulse 1.6s ease-in-out infinite;
+    }
+
+    #feed-count {
+      font-size: 11px;
+      color: #b6e2ef;
+    }
+
+    .conn-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      margin: 6px 0;
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.06);
+      animation: card-in 0.45s ease;
+    }
+
+    .conn-card:hover {
+      background: rgba(0, 229, 255, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .conn-dot {
+      flex: 0 0 auto;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #00e5ff;
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.85);
+    }
+
+    .conn-city {
+      flex: 1 1 auto;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .conn-time {
+      flex: 0 0 auto;
+      font-size: 10.5px;
+      color: #b6e2ef;
+    }
+
+    @keyframes live-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.4); }
+    }
+
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(-8px); }
+      60% { background: rgba(0, 229, 255, 0.22); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .live-dot,
+      .conn-card { animation: none; }
+      .conn-card:hover { transform: none; }
     }
 
     #footer {
@@ -135,7 +219,6 @@
     }
   </style>
     <style>
-      /* Override Font Awesome 6 font-display to swap (clears FOIT) */
       @font-face {
         font-family: "Font Awesome 6 Free";
         font-style: normal;
@@ -170,7 +253,10 @@
   </div>
   <canvas class="webgl"></canvas>
   <div id="data-display">
-    <h4>Incoming connections:</h4>
+    <div id="feed-header">
+      <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+      <span id="feed-count">0 in last 5 min</span>
+    </div>
     <div id="data-content"></div>
   </div>
 
@@ -181,7 +267,7 @@
   </div>
   <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
   <script src="main12.js"></script>
-  <!--  <script src="/static/scripts/common.js"></script>-->
+  <script src="/static/scripts/common.js"></script>
   <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
 </body>
 
