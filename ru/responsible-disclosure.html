@@ -1,33 +1,86 @@
+<!doctype html>
 <html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta name="description" content="XposedOrNot: Ответственное раскрытие" />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta property="og:title" content="Ответственное раскрытие" />
+    <meta
+      property="og:description"
+      content="Правила XposedOrNot по ответственному раскрытию уязвимостей безопасности."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta
+      property="og:url"
+      content="https://xposedornot.com/responsible-disclosure"
+    />
+    <meta property="og:type" content="website" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="XposedOrNot: Responsible Disclosure" name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <link href="/favicon.ico" rel="icon" type="image/x-icon" />
-  <title>Ответственное раскрытие информации</title>
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset&display=swap" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
-    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-    referrerpolicy="no-referrer" rel="stylesheet">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-  <script crossorigin="anonymous"
-    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-    referrerpolicy="no-referrer"
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="Ответственное раскрытие" />
+    <meta
+      name="twitter:description"
+      content="Правила XposedOrNot по ответственному раскрытию уязвимостей безопасности."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
 
-  </link>
-  </link>
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <title>XposedOrNot: Ответственное раскрытие</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -53,196 +106,395 @@
 
     </head>
 
-<body>
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com">Экспоуздорнот</a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password">Пароль<span class="sr-only">(текущий)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="faq">Часто задаваемые вопросы</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">Блог</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> Дополнительные инструменты</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed">Обнаруженные нарушения</a>
-              <a class="dropdown-item" href="shield">Защита конфиденциальности</a>
-              <a class="dropdown-item" href="domain">Проверка домена</a>
-              <a class="dropdown-item" href="domains">Поиск на уровне домена</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <div class="container">
-    <div class="panel-group" id="accordion">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-parent="#accordion" data-toggle="collapse" href="#collapse1">
-              <h1>
-                <strong>Ответственное раскрытие ошибок и уязвимостей</strong>
-              </h1>
-            </a>
-          </h4>
+  <body>
+    <div class="kbanner">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark bg-primary kbanner"
+        style="min-height: 70px; padding-top: 0.5rem; padding-bottom: 0.5rem"
+      >
+        <a
+          class="navbar-brand"
+          href="https://xposedornot.com"
+          style="text-decoration: none"
+        >
+          <span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+              line-height: 1.2;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              line-height: 1;
+            "
+            >Community Edition</span
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Переключить навигацию"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password"
+                >Пароль &nbsp; <span class="sr-only">(текущая)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="faq">FAQ &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >Blog &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Ещё инструменты
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed">Xposed Breaches</a>
+                <a class="dropdown-item" href="shield">Privacy Shield</a>
+                <a class="dropdown-item" href="domain"
+                  >Проверка домена</a
+                >
+                <a class="dropdown-item" href="domains"
+                  >Поиск по домену</a
+                >
+              </div>
+            </li>
+          </ul>
         </div>
-        <div class="panel-collapse" id="collapse1">
+      </nav>
+    </div>
+    <div class="container">
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse"
+                data-parent="#accordion"
+                href="#collapse1"
+              >
+                <h1>
+                  <strong
+                    >Ответственное раскрытие ошибок и уязвимостей</strong
+                  >
+                </h1>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse">
+            <div class="panel-body">
+              <strong>Последнее обновление: 26 августа 2025 г.</strong>
+              <br />
+              <br />Здравствуйте, охотники за ошибками! Мы очень рады, что вы
+              здесь и готовы помочь нам сохранять XposedOrNot (XON) в
+              безопасности. Я разработал эту Политику ответственного раскрытия,
+              чтобы все действовали добросовестно и помогали нам защищать наши
+              сервисы, сайт и сеть от любых надоедливых ошибок и уязвимостей.
+              <br /><br />
+              Если вы обнаружите что-то, на что мне стоит обратить внимание, я
+              буду признателен за ответственное расследование и сообщение об
+              этом, чтобы я мог как можно быстрее всё исправить. Ваша помощь в
+              раскрытии уязвимостей безопасности помогает нам обеспечивать защиту
+              всех наших пользователей. <br /><br />
+              <h2>
+                <strong>Рекомендации по составлению отчёта:</strong>
+              </h2>
+              <br />
+              Сообщая об ошибке или уязвимости, пожалуйста, обязательно укажите
+              следующее:
+              <ol>
+                <li>
+                  Чёткое описание ошибки или уязвимости с подтверждениями,
+                  например со снимками экрана или выходными данными. Не
+                  стесняйтесь — нам интересно увидеть, что вы нашли!
+                </li>
+                <li>
+                  Описание потенциальных последствий уязвимости, чтобы мы
+                  понимали, с чем имеем дело.
+                </li>
+                <li>
+                  Предпочитаемое имя или псевдоним, чтобы мы могли отметить ваши
+                  заслуги в нашем Зале славы исследователей безопасности XON.
+                </li>
+                <li>
+                  Точные шаги для воспроизведения проблемы, чтобы мы могли
+                  повторить её на своей стороне.
+                </li>
+                <li>
+                  Видео с подтверждением концепции (proof of concept) всегда
+                  приветствуется, если оно у вас есть.
+                </li>
+                <li>
+                  Любую полезную информацию о платформах, операционных системах,
+                  версиях, IP-адресах или URL-адресах.
+                </li>
+                <li>
+                  Вспомогательные данные, такие как журналы или данные
+                  трассировки, всегда полезны.
+                </li>
+                <li>
+                  Вашу оценку того, насколько проблема пригодна для эксплуатации.
+                  Мы не будем вас осуждать, даже если это 10 из 10 по шкале
+                  эксплуатируемости.
+                </li>
+              </ol>
+              Спасибо, что вы замечательный охотник за ошибками 🙌 и помогаете
+              нам сохранять XposedOrNot (XON) в безопасности!
+              <br /><br />
+              <h2>
+                <strong>Принимаемые сообщения </strong>
+              </h2>
+              <br />
+              <ol>
+                <li>Локальное или удалённое подключение файлов (LFI/RFI)</li>
+                <li>Обход аутентификации</li>
+                <li>Обход каталогов (Directory Traversal)</li>
+                <li>Несанкционированная или непреднамеренная утечка данных</li>
+                <li>Удалённое выполнение кода (RCE)</li>
+                <li>SQL/XXE-инъекции и инъекции команд</li>
+                <li>Межсайтовый скриптинг (XSS)</li>
+                <li>Подделка запросов на стороне сервера (SSRF)</li>
+                <li>Ошибки конфигурации на серверах или в API</li>
+                <li>Проблемы, связанные с аутентификацией и авторизацией</li>
+                <li>Межсайтовая подделка запросов (CSRF)</li>
+              </ol>
+              <br />
+              <h2>
+                <strong> Домены в области действия</strong>
+              </h2>
+              <br />
+              <p><strong>Основной домен:</strong> xposedornot.com</p>
+              <p>
+                <strong>Поддомены:</strong> все поддомены xposedornot.com
+                (*.xposedornot.com)
+              </p>
+              <br />
+              <p>
+                <em
+                  >Сюда входят, помимо прочего: api.xposedornot.com,
+                  passwords.xposedornot.com, plus.xposedornot.com и любые будущие
+                  поддомены.</em
+                >
+              </p>
+              <br />
+              <h2>
+                <strong> Использование информации</strong>
+              </h2>
+              <br />
+              Мы обязуемся сохранять конфиденциальность всей информации о вас и о
+              наших сервисах. Поэтому, пожалуйста, не раскрывайте её никому за
+              пределами нашей команды!<br />
+              <br />
+              Наша цель — сделать интернет более безопасным местом, и мы ценим
+              исследователей безопасности, которые помогают нам в этом. Поэтому
+              большое спасибо 🙏 за то, что вы вносите свой вклад! Ответственно
+              раскрывая обнаруженные ошибки или уязвимости, вы помогаете нам
+              защищать наших пользователей и их данные.<br />
+              <br />
+              <h2>
+                <strong> Политика допустимого использования </strong>
+              </h2>
+              <br />
+              Сразу уточним: это не типичная программа вознаграждений за ошибки
+              (bug bounty), в которой мы выплачиваем денежные награды за
+              сообщения об уязвимостях. У нас (пока) нет на это средств. Однако,
+              если вы сообщите нам о чём-то действительно важном, мы можем
+              отблагодарить вас и выразить признательность!<br />
+              <br />
+              Только, пожалуйста, соблюдайте этические нормы. Мы ожидаем, что вы
+              будете вести себя как добропорядочный участник интернет-сообщества
+              и соблюдать правила, изложенные в нашей Политике допустимого
+              использования. Если вы будете их соблюдать, мы с радостью отметим
+              ваши заслуги на странице Зала славы — это что-то вроде нашей версии
+              голливудской Аллеи славы, но для исследователей безопасности.
+              Дерзайте, покажите своё мастерство и помогите нам сделать
+              XposedOrNot безопаснее для всех!<br />
+              <br />
+              <h2>
+                <strong> Ожидания от тех, кто сообщает об ошибках </strong>
+              </h2>
+              <br />
+              Охотники за ошибками, мы рады, что вы помогаете нам сделать
+              XposedOrNot безопаснее для всех! Прежде чем вы приступите, вот
+              несколько вещей, которые мы от вас ожидаем: <br /><br />
+              <ol>
+                <li>
+                  Пожалуйста, не делайте ничего, что могло бы навредить
+                  XposedOrNot или нашим пользователям либо нарушить их работу.
+                </li>
+                <li>
+                  Мы направим вам подтверждение получения в течение 1–3 дней
+                  после получения вашего отчёта.
+                </li>
+                <li>
+                  Уважайте конфиденциальность наших пользователей и не пытайтесь
+                  получить доступ к их аккаунтам.
+                </li>
+                <li>
+                  Проводите тестирование только на своих аккаунтах и
+                  email-адресах.
+                </li>
+                <li>
+                  Если вы обнаружите критическую уязвимость, дающую доступ к
+                  нашему веб-серверу или API, пожалуйста, остановитесь на этом и
+                  позвольте нам взять дело в свои руки.
+                </li>
+                <li>
+                  Не раскрывайте никаких подробностей о проблеме, пока мы её не
+                  устраним.
+                </li>
+                <li>
+                  Если вы попытаетесь использовать уязвимость в личных целях, нам
+                  придётся отклонить ваш отчёт.
+                </li>
+              </ol>
+              <br />
+              Мы признательны вам за сотрудничество в обеспечении безопасности
+              нашей платформы. Давайте вместе сделаем XposedOrNot как можно
+              лучше!
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse in panel-collapse"
+                data-parent="#accordion"
+                href="#collapse25"
+              >
+                <strong>Рекомендации по составлению отчёта</strong>
+              </a>
+            </h4>
+          </div>
           <div class="panel-body">
-            <strong>Последнее обновление: 08 марта 2021 г.</strong>
+            Спасибо, что заботитесь о нас! Если вы обнаружили ошибку или
+            уязвимость безопасности в XposedOrNot, мы будем рады узнать об этом.
+            Вы можете сообщить о ней по email на адрес
+            <strong>deva @ xposedornot.com</strong> или написать нам в Twitter
+            <strong>@DevaOnBreaches</strong>. <br />
             <br />
-            <br />Привет, охотники за ошибками! Мы так рады, что вы здесь, чтобы помочь нам обеспечить безопасность и
-            надежность XposeOrNot (XON). Я установил эту Политику ответственного раскрытия информации, чтобы
-            гарантировать, что все ведут себя хорошо, и помогает нам защитить наши услуги, веб-сайт и сеть от любых
-            неприятных ошибок или уязвимостей.<br /><br />
-            Если вы обнаружите что-то, что требует моего внимания, я ценю ваше сотрудничество в ответственном
-            расследовании и сообщении об этом, чтобы я мог исправить это быстрее, чем летящая пуля. Ваша помощь в
-            обнаружении уязвимостей безопасности помогает нам обеспечить безопасность и сохранность всех наших
-            пользователей.<br /><br />
-            <h2>
-              <strong>Рекомендации по отчетности:</strong>
-            </h2>
-            <br /> Сообщая об ошибке или уязвимости, обязательно укажите следующее:
-            <ol>
-              <li> Четкое описание ошибки или уязвимости с некоторыми доказательствами, такими как снимки экрана или
-                выходные данные. Не стесняйтесь, нам нравится видеть, что вы нашли!</li>
-              <li> Описание потенциального воздействия уязвимости, чтобы мы знали, с чем имеем дело.</li>
-              <li> Ваше предпочтительное имя или псевдоним, чтобы мы могли предоставить вам заслуженное признание в
-                нашем Зале славы исследователей безопасности XON.</li>
-              <li> Точные шаги по воспроизведению проблемы, чтобы мы могли воспроизвести ее со своей стороны.</li>
-              <li> Видео-доказательство концепции всегда приветствуется, если оно у вас есть.</li>
-              <li> Любая соответствующая информация о платформах, операционных системах, версиях, IP-адресах или
-                URL-адресах.</li>
-              <li> Подтверждающие доказательства, такие как регистрация или отслеживание данных, всегда полезны.</li>
-              <li> Ваша оценка того, насколько уязвимой может быть проблема. Мы не будем вас судить, если это 10 из 10
-                по шкале эксплуатационной способности.</li>
-            </ol>
-            Спасибо за то, что вы замечательный охотник за ошибками 🙌 и помогаете нам сохранять XposeOrNot (XON) в
-            целости и сохранности!<br /><br />
-            <h2>
-              <strong>Действительные материалы</strong>
-            </h2>
+            Email: deva @ xposedornot.com <br />
+            Twitter:
+            <a href="https://twitter.com/devaonbreaches">DevaOnBreaches </a>
             <br />
-            <ol>
-              <li> Локальное или удаленное включение файлов</li>
-              <li> Обход аутентификации</li>
-              <li> Обход каталога</li>
-              <li> Несанкционированная/непреднамеренная утечка данных</li>
-              <li> Удаленное выполнение кода (RCE)</li>
-              <li> SQL/XXE-инъекция и внедрение команд</li>
-              <li> Межсайтовый скриптинг (XSS)</li>
-              <li> Подделка запроса на стороне сервера (SSRF)</li>
-              <li> Проблемы с неправильной конфигурацией серверов или API</li>
-              <li> Проблемы, связанные с аутентификацией и авторизацией</li>
-              <li> Подделка межсайтовых запросов (CSRF)</li>
-            </ol>
             <br />
-            <h2>
-              <strong> В области доменов</strong>
-            </h2>
-            <br />
-            <ol>
-              <li>https://xposedornot.com</li>
-              <li>https://api.xposeornot.com</li>
-              <li>https://пароли.xposeornot.com</li>
-            </ol>
-            <br />
-            <h2>
-              <strong> Использование информации</strong>
-            </h2>
-            <br />
-            Мы обещаем сохранять конфиденциальность всей информации о вас и наших услугах. Поэтому, пожалуйста, не
-            рассказывайте никому, кроме нашей команды!<br />
-            <br />
-            Мы стремимся сделать Интернет более безопасным, и мы ценим исследователей в области безопасности, которые
-            помогают нам в этом. Итак, большое спасибо 🙏 вам за участие в этих усилиях! Ответственно раскрывая любые
-            обнаруженные вами ошибки и уязвимости, вы помогаете нам защитить наших пользователей и их данные.<br />
-            <br />
-            <h2>
-              <strong> Политика приемлемого использования</strong>
-            </h2>
-            <br />
-            Внимание: это не обычная программа вознаграждений за обнаружение ошибок, в которой мы предлагаем денежные
-            вознаграждения за сообщения об уязвимостях. Мы не сделаны из денег (пока). Однако если вы сообщите нам о
-            чем-то важном, мы, возможно, просто проявим к вам немного любви и признательности в ответ!<br />
-            <br />
-            Просто соблюдай этику, ладно? Мы ожидаем, что вы будете вести себя как добропорядочный гражданин Интернета и
-            следовать правилам, изложенным в нашей Политике допустимого использования. Но если вы это сделаете, мы с
-            радостью предоставим вам признание на нашей странице Зала славы, которая чем-то похожа на нашу версию
-            Голливудской аллеи славы, но для исследователей безопасности. Так что вперед, покажите свои навыки и
-            помогите нам сделать XposedOrNot более безопасным местом для всех!<br />
-            <br />
-            <h2>
-              <strong> Сообщители об ошибках – ожидания</strong>
-            </h2>
-            <br />
-            Охотники за ошибками, мы рады, что вы примете участие и поможете нам сделать XposedOrNot более безопасным
-            местом для всех! Прежде чем вы начнете, вот несколько вещей, которые мы ожидаем от вас:<br /><br />
-            <ol>
-              <li> Пожалуйста, не делайте ничего, что могло бы повредить или нарушить работу XposedOrNot или наших
-                пользователей.</li>
-              <li> Мы отправим вам подтверждение в течение 1–3 дней с момента получения отчета.</li>
-              <li> Уважайте конфиденциальность наших пользователей и не пытайтесь шпионить за их учетными записями.</li>
-              <li> Тестируйте только на своих учетных записях и адресах электронной почты.</li>
-              <li> Если вы обнаружите критическую уязвимость, которая дает вам доступ к нашему веб-серверу или API,
-                остановитесь и позвольте нам взять на себя управление.</li>
-              <li> Не сообщайте никаких подробностей о проблеме, пока мы не решим ее.</li>
-              <li> Если вы попытаетесь использовать уязвимость в личных целях, нам придется дисквалифицировать ваше
-                сообщение.</li>
-            </ol>
-            <br />
-            Мы ценим ваше сотрудничество и помощь в обеспечении безопасности нашей платформы. Давайте работать вместе,
-            чтобы сделать XposeOrNot лучшим, чем он может быть!
           </div>
         </div>
       </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-parent="#accordion" data-toggle="collapse in panel-collapse" href="#collapse25">
-              <strong>Рекомендации по отчетности</strong>
-            </a>
-          </h4>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Присоединяйтесь к развитию этого полностью открытого сайта! Будем
+            рады вашему участию ❤️ на нашем
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >.
+          </p>
         </div>
-        <div class="panel-body"> Спасибо, что заботитесь о нас! Если вы обнаружили ошибку или уязвимость безопасности в
-          XposedOrNot, мы будем рады услышать об этом. Вы можете сообщить об этом по электронной почте:<strong>дева @
-            xposedornot.com</strong> или напишите нам в Твиттере@DevaOnBreaches.<br />
-          <br /> Электронная почта: deva[@]xposeornot.com<br /> Твиттер:<a
-            href="https://twitter.com/devaonbreaches">DevaOnBreaches</a>
-          <br />
-          <br />
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Правовая информация</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Политика конфиденциальности</a>
+              <a href="terms" class="footer-link">Условия использования</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Сообщество</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Наш репозиторий</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Доверие и безопасность</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Статус</a>
+              <a href="transparency" class="footer-link">Прозрачность</a>
+              <a href="responsible-disclosure" class="footer-link">Ответственное раскрытие</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Мы в соцсетях</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Тёмная тема</label>
         </div>
       </div>
     </div>
-  </div>
-
-
-  <div class="container text-center">
-    <footer>
-      <aside>
-        <p>Присоединяйтесь к нам в создании этого сайта с полностью открытым исходным кодом! Вклад приветствуется ❤️ —
-          загляните в наш<a href="https://github.com/XposedOrNot" rel="noopener" target="_blank">GitHub</a>.</p>
-      </aside>
-      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-        <input class="custom-control-input" id="darkSwitch" type="checkbox" />
-        <label class="custom-control-label" for="darkSwitch">Темный режим</label>
-      </div>
-    </footer>
-  </div>
-  <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-  <script src="/static/scripts/common.js"></script>
-</body>
-
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+    <script src="/static/scripts/common.js"></script>
+      <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
