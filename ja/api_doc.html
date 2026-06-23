@@ -1,31 +1,130 @@
+<!doctype html>
 <html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta name="twitter:title" content="XposedOrNot API リファレンス" />
+    <meta
+      name="twitter:description"
+      content="シームレスな統合のための XposedOrNot の API ドキュメント。エンドポイント、利用例、開発者向けガイドをご覧いただけます。"
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/api_reference.png"
+    />
+    <meta name="twitter:image:alt" content="XposedOrNot API ドキュメント" />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta property="og:image:alt" content="XposedOrNot Logo" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <title>
+      XposedOrNot API ドキュメント - データ侵害とパスワードのセキュリティを確認
+    </title>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta
+      name="description"
+      content="XposedOrNot の包括的な API ドキュメント。メールの侵害、パスワードのセキュリティ、ドメインレベルのデータ漏洩を確認できます。JSON レスポンスに対応した無料の RESTful API です。"
+    />
+    <meta
+      property="og:title"
+      content="XposedOrNot API ドキュメント - データ侵害とセキュリティの API"
+    />
+    <meta
+      property="og:description"
+      content="XposedOrNot の強力な API を利用して、データ侵害、パスワードのセキュリティ、ドメインレベルの漏洩を確認できます。例を交えた開発者向けドキュメントです。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/ja/api_doc" />
+    <meta
+      name="keywords"
+      content="API documentation, data breach API, password security, email breach detection, cybersecurity API, domain security, REST API, JSON API, security integration"
+    />
+    <link rel="canonical" href="https://xposedornot.com/ja/api_doc" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/api_doc" />
+    <link rel="alternate" hreflang="ta" href="https://xposedornot.com/ta/api_doc" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/api_doc" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="theme-color" content="#3f71f3" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="XposedOrNot: API Documentation " name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <meta content="XposedOrNot: API Documentation for Developers" property="og:title">
-  <title>XusedOrNot API リファレンス</title>
-  <link href="/favicon.ico" rel="icon" type="image/x-icon" />
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset&display=swap" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-  <script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+      crossorigin="anonymous"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+        crossorigin="anonymous"
+      />
+    </noscript>
 
-  </link>
-  </meta>
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+        type="text/css"
+        media="all"
+      />
+    </noscript>
+
+    <link rel="preload" href="/static/css/style-new.css" as="style" />
+    <link rel="preload" href="/static/css/api_doc.css" as="style" />
+    <link rel="preload" href="/static/scripts/api_doc_ui.js" as="script" />
+
+    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/api_doc.css" type="text/css" rel="stylesheet" />
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer
+    ></script>
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -51,85 +150,550 @@
 
     </head>
 
-<body>
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com"><span
-          style="font-size: 1.5em; font-weight: bold; display: block; color: white;">ＸｐｏｓｅｄＯｒＮｏｔ</span>
-        <span
-          style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">コミュニティ版</span></a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password">パスワード<span class="sr-only">（現在）</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="faq">よくある質問</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">ブログ</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> その他のツール</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed">暴露された侵害</a>
-              <a class="dropdown-item" href="shield">プライバシーシールド</a>
-              <a class="dropdown-item" href="domain">ドメインの検証</a>
-              <a class="dropdown-item" href="domains">ドメインレベルの検索</a>
-            </div>
-          </li>
-        </ul>
-      </div>
+  <body>
+<nav class="skip-links" aria-label="Skip links">
+      <a href="#main-content">メインコンテンツへスキップ</a>
+      <a href="#endpoint-1">API エンドポイントへスキップ</a>
     </nav>
-  </div>
-  <div class="container">
-    <div align="center">
-      API を試してテストするには、API プレイグラウンドを探索することをお勧めします。<br /><br />
-      <h3><a class="button-link" href="https://xposedornot.docs.apiary.io" target="_blank"> 🎮 API プレイグラウンド</a></h3>
+    <div class="banner" style="padding: 30px 0px 40px 0px;">
+      <div class="grid">
+        <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+          <a class="navbar-brand abs" href="/ja/" style="text-decoration: none;">
+            <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+            <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community Edition</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#collapsingNavbar" aria-controls="collapsingNavbar"
+            aria-expanded="false" aria-label="ナビゲーションメニューを切り替える">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="/ja/">ホーム</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="password">パスワード</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="xposed">侵害</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="faq">FAQ</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="api_doc">API</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     </div>
-    <br />
-    <div class="panel-group" id="accordion">
-      <div class="panel panel-default">
-        <div class="panel-heading"> APIクイックリファレンス</div>
-        最終更新日: 2023 年 6 月 5 日
-        <div class="panel-collapse" id="collapse1">
-          <div class="panel-body">
-            <br />
-            ご興味をお持ちいただきありがとうございます<strong>ＸｐｏｓｅｄＯｒＮｏｔ</strong>。目標は、API
-            を可能な限りアクセスしやすく応答性を高め、すべての人にとって価値のあるツールにすることです。で直接ホストされています<strong>Google インフラストラクチャ</strong>
-            そして堅牢にキャッシュされる<strong>クラウドフレア</strong>、<strong>XownedOrNot API</strong>
-            は、発信元に関係なく、あらゆるクエリに対して迅速な応答を提供します。<br /><br />
-            の<strong>XownedOrNot API</strong> ～の原則に準拠しています<strong>RESTアーキテクチャ</strong>。戻ります<strong>JSON
-              エンコードされた応答</strong> そして活用する<strong>標準のHTTP応答コード</strong>。 API
-            ルートの大部分では認証要件がないため、簡単なアクセスと使いやすさが保証されます。ただし、当社特有の<strong>ドメイン関連データのクエリに使用される API ルートには API
-              キー認証が必要です</strong>。この措置は、指定されたドメインの検証済みの所有者または権限者のみがこの機密情報にアクセスできるようにするために設けられています。<br /><br />
-            実験とテストの目的で、API プレイグラウンドを探索することを心からお勧めします。ここでは、ユーザーフレンドリーな環境で XusedOrNot API の機能に慣れる機会があります。
-            <br />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>1. API 呼び出し: メールアドレスのデータ侵害のチェック</strong>
-              </h4>
+<nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/ja/">
+            <span itemprop="name">ホーム</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name" class="current">API ドキュメント</span>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </nav>
+    <div class="container" id="main-content">
+      <div align="center" style="margin-bottom: 2rem">
+        <h1 style="margin-bottom: 0.75rem; font-size: 1.75rem">無料のデータ侵害 API</h1>
+        <p
+          style="
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+          "
+        >
+          無料の RESTful API で、数十億件の漏洩レコードを確認できます。API キーは不要です。
+        </p>
+
+<div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+          "
+        >
+          <div class="info-card">
+            <i
+              class="fas fa-key"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>認証</h4>
+            <p>ほとんどのエンドポイントは公開されています。ドメインのエンドポイントには <a href="faq#collapse102">API キー</a>が必要です。</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-tachometer-alt"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>レート制限</h4>
+            <p>IP ごとに 1 秒あたり 2 リクエスト。</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-code"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>レスポンス形式</h4>
+            <p>すべてのレスポンスは、標準的な HTTP コードとともに JSON で返されます。</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-globe"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>ベース URL</h4>
+            <p><code>api.xposedornot.com</code></p>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem">
+          <a
+            href="https://api.xposedornot.com/docs"
+            target="_blank"
+            class="button-link"
+            style="margin-right: 12px"
+            ><i class="fas fa-book"></i> Swagger ドキュメント</
+          >
+          <a
+            href="https://xposedornot.docs.apiary.io"
+            target="_blank"
+            class="button-link"
+            ><i class="fas fa-code"></i> API Playground</a
+          >
+        </div>
+      </div>
+
+<div
+        id="sdk-section"
+        style="
+          margin-top: 2rem;
+          margin-bottom: 1.5rem;
+          position: relative;
+          z-index: 100;
+        "
+      >
+        <h2 style="text-align: center; margin-bottom: 1rem; font-size: 1.4rem">公式 SDK</h2>
+        <p
+          style="
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+          "
+        >
+          公式ライブラリを使えば、わずか数行のコードで XposedOrNot をアプリケーションに統合できます。
+        </p>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+          "
+        >
+
+          <div class="panel" style="margin-bottom: 0">
+            <div
+              class="panel-heading"
+              style="display: flex; align-items: center; gap: 0.75rem"
+            >
+              <i
+                class="fab fa-npm"
+                style="font-size: 1.5em; color: #cb3837"
+              ></i>
+              Node.js / JavaScript
             </div>
-            <p>
-              このユーザーフレンドリーな API は、電子メール
-              アドレスが既知のデータ侵害に関与していないかどうかを迅速にチェックします。侵害に関する包括的なデータベースを検索し、電子メールが危険にさらされている場合は警告します。
-              <br /><br />
-              このツールは、デジタル セキュリティを維持し、電子メールの侵害履歴を理解するために非常に貴重です。これはデジタルの安全性と意識の向上に向けた一歩です。
-            </p>
-            <br /><strong>APIエンドポイント:</strong>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/check-email/[test@example.com]</pre>
-            </blockquote>
-            <strong> 侵害検出の成功例:</strong>
-            侵害が検出されると、次のような JSON 応答を受け取ります。
-            <pre>
+            <div class="panel-body">
+              <p style="margin-bottom: 1rem">
+                <strong>npm でインストール:</strong>
+              </p>
+              <pre style="margin-bottom: 1.5rem">npm install xposedornot</pre>
+              <p style="margin-bottom: 1rem"><strong>簡単な例:</strong></p>
+              <pre>
+const { XposedOrNot } = require('xposedornot');
+
+const xon = new XposedOrNot();
+
+// Check email for breaches
+const result = await xon.checkEmail('test&#64;example.com');
+console.log(result);</pre
+              >
+              <p style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap">
+                <a
+                  href="https://www.npmjs.com/package/xposedornot"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em"
+                  aria-label="XposedOrNot JavaScript SDK を npm で見る"
+                >
+                  <i class="fas fa-external-link-alt"></i> npm で見る
+                </a>
+                <a
+                  href="https://github.com/XposedOrNot/XposedOrNot-JS"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em; background: linear-gradient(135deg, #24292e, #40464e)"
+                  aria-label="XposedOrNot JavaScript SDK を GitHub で見る"
+                >
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-bottom: 0">
+            <div
+              class="panel-heading"
+              style="display: flex; align-items: center; gap: 0.75rem"
+            >
+              <i
+                class="fab fa-python"
+                style="font-size: 1.5em; color: #3776ab"
+              ></i>
+              Python
+            </div>
+            <div class="panel-body">
+              <p style="margin-bottom: 1rem">
+                <strong>pip でインストール:</strong>
+              </p>
+              <pre style="margin-bottom: 1.5rem">pip install xposedornot</pre>
+              <p style="margin-bottom: 1rem"><strong>簡単な例:</strong></p>
+              <pre>
+from xposedornot import XposedOrNot
+
+xon = XposedOrNot()
+
+# Check email for breaches
+result = xon.check_email('test&#64;example.com')
+print(result)</pre
+              >
+              <p style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap">
+                <a
+                  href="https://pypi.org/project/xposedornot/"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em"
+                  aria-label="XposedOrNot Python SDK を PyPI で見る"
+                >
+                  <i class="fas fa-external-link-alt"></i> PyPI で見る
+                </a>
+                <a
+                  href="https://github.com/XposedOrNot/XposedOrNot-Python"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em; background: linear-gradient(135deg, #24292e, #40464e)"
+                  aria-label="XposedOrNot Python SDK を GitHub で見る"
+                >
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="text-align: center; margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1.1rem">その他の対応言語</h3>
+        <p style="text-align: center; color: var(--secondary-color); margin-bottom: 1.25rem; font-size: 0.85rem">
+          カードをクリックするとパッケージレジストリを、GitHub アイコンをクリックするとソースコードを表示します。
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem;">
+
+          <div class="sdk-card" role="group" aria-label="Go SDK">
+            <a href="https://pkg.go.dev/github.com/XposedOrNot/XposedOrNot-Go" target="_blank" rel="noopener" class="sdk-card-main" aria-label="Go SDK を pkg.go.dev で見る">
+              <i class="fas fa-code" style="color: #00add8"></i>
+              <span class="sdk-card-lang">Go</span>
+              <code>go get</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-Go" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="Go SDK を GitHub で見る">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="Ruby SDK">
+            <a href="https://rubygems.org/gems/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="Ruby SDK を RubyGems で見る">
+              <i class="fas fa-gem" style="color: #cc342d"></i>
+              <span class="sdk-card-lang">Ruby</span>
+              <code>gem install</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-Ruby" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="Ruby SDK を GitHub で見る">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="PHP SDK">
+            <a href="https://packagist.org/packages/xposedornot/xposedornot-php" target="_blank" rel="noopener" class="sdk-card-main" aria-label="PHP SDK を Packagist で見る">
+              <i class="fab fa-php" style="color: #777bb4"></i>
+              <span class="sdk-card-lang">PHP</span>
+              <code>composer require</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-PHP" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="PHP SDK を GitHub で見る">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="Rust SDK">
+            <a href="https://crates.io/crates/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="Rust SDK を crates.io で見る">
+              <i class="fas fa-cog" style="color: #dea584"></i>
+              <span class="sdk-card-lang">Rust</span>
+              <code>cargo add</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-Rust" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="Rust SDK を GitHub で見る">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="C# .NET SDK">
+            <a href="https://www.nuget.org/packages/XposedOrNot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="C# .NET SDK を NuGet で見る">
+              <i class="fas fa-window-maximize" style="color: #512bd4"></i>
+              <span class="sdk-card-lang">C# / .NET</span>
+              <code>dotnet add</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-DotNet" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="C# .NET SDK を GitHub で見る">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="Java SDK">
+            <a href="https://central.sonatype.com/artifact/com.xposedornot/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="Java SDK を Maven Central で見る">
+              <i class="fab fa-java" style="color: #f89820"></i>
+              <span class="sdk-card-lang">Java</span>
+              <code>Maven Central</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-Jav" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="Java SDK を GitHub で見る">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+        </div>
+      </div>
+      <br />
+
+
+      <div class="mobile-toc" id="mobile-toc">
+        <div class="mobile-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+          <span><i class="fas fa-list-ul"></i> クイックナビゲーション</span>
+        </div>
+        <div class="mobile-toc-content">
+          <ul>
+            <li><a href="#sdk-section" class="toc-link"><i class="fas fa-cube"></i> 公式 SDK</a></li>
+            <li><a href="#endpoint-1" class="toc-link"><i class="fas fa-envelope"></i> メール侵害</a></li>
+            <li><a href="#endpoint-2" class="toc-link"><i class="fas fa-chart-line"></i> 分析</a></li>
+            <li><a href="#endpoint-3" class="toc-link"><i class="fas fa-key"></i> パスワード</a></li>
+            <li><a href="#endpoint-4" class="toc-link"><i class="fas fa-database"></i> 全侵害</a></li>
+            <li><a href="#endpoint-5" class="toc-link"><i class="fas fa-shield-alt"></i> ドメイン</a></li>
+            <li><a href="#endpoint-6" class="toc-link"><i class="fas fa-code"></i> レスポンスコード</a></li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div
+        style="
+          display: flex;
+          gap: 2rem;
+          align-items: flex-start;
+          max-width: 100%;
+        "
+      >
+
+        <nav
+          id="api-toc"
+          style="
+            position: sticky;
+            top: 2rem;
+            width: 240px;
+            flex-shrink: 0;
+            z-index: 1;
+          "
+        >
+          <div
+            style="
+              background: var(--panel-bg);
+              border: 1px solid var(--border-color);
+              border-radius: 12px;
+              padding: 1rem 1.25rem;
+            "
+          >
+            <h4
+              style="
+                margin-top: 0;
+                margin-bottom: 0.75rem;
+                color: var(--primary-color);
+                font-size: 0.95rem;
+              "
+            >
+              クイックナビゲーション
+            </h4>
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li style="margin-bottom: 0.5rem">
+                <a href="#sdk-section" class="toc-link"
+                  ><i class="fas fa-cube"></i> 公式 SDK</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-1" class="toc-link"
+                  ><i class="fas fa-envelope"></i> メール侵害チェック</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-2" class="toc-link"
+                  ><i class="fas fa-chart-line"></i> 侵害分析</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-3" class="toc-link"
+                  ><i class="fas fa-key"></i> パスワードチェック</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-4" class="toc-link"
+                  ><i class="fas fa-database"></i> 全侵害</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-5" class="toc-link"
+                  ><i class="fas fa-shield-alt"></i> ドメイン侵害</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-6" class="toc-link"
+                  ><i class="fas fa-code"></i> レスポンスコード</
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+
+        <div style="flex: 1; min-width: 0">
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                API クイックリファレンス
+                <span
+                  style="float: right; font-size: 0.9em; font-weight: normal"
+                  >最終更新: 2026年6月3日</span
+                >
+              </div>
+              <div id="collapse1" style="display: block">
+                <div class="panel-body">
+                  <br />
+                  <strong>XposedOrNot</strong> にご関心をお寄せいただきありがとうございます。
+                  私たちは API を可能な限りアクセスしやすく応答性の高いものに保ち、
+                  すべての方にとって価値あるツールとなることを目指しています。
+                  <strong>Google インフラストラクチャ</strong>上で直接ホストされ、
+                  <strong>Cloudflare</strong> によって強固にキャッシュされている
+                  <strong>XposedOrNot API</strong> は、リクエストの送信元を問わず、
+                  あらゆるクエリに対して迅速なレスポンスを提供します。<br /><br />
+                  <strong>XposedOrNot API</strong> は
+                  <strong>REST アーキテクチャ</strong>の原則に準拠しています。
+                  <strong>JSON エンコードされたレスポンス</strong>を返し、
+                  <strong>標準的な HTTP レスポンスコード</strong>を使用します。
+                  ほとんどの API ルートには認証要件がなく、簡単にアクセスでき、
+                  シンプルにご利用いただけます。
+                  ただし、
+                  <strong
+                    >ドメイン関連データのクエリに使用される特定の API ルートには、
+                    API キーによる認証が必要</strong
+                  >であることにご注意ください。これは、指定されたドメインの
+                  検証済みの所有者または権限者のみがこの機密情報に
+                  アクセスできるようにするための措置です。<br /><br />
+                  エンドポイントを試すには、API Playground をお使いください。
+                  XposedOrNot API をインタラクティブに探索できます。
+                  <br />
+                  <hr />
+                  <p>
+                    <strong>例の読み方:</strong>
+                    <code>{curly braces}</code> で示された値はプレースホルダーです。
+                    各値を（波括弧も含めて）ご自身の値に置き換えてください。
+                    たとえば、<code>{email}</code> は
+                    <code>test&#64;example.com</code> となります。
+                  </p>
+                  <div id="endpoint-1" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >1. API 呼び出し: メールアドレスのデータ侵害を確認する</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    この API は、メールアドレスが既知のデータ侵害に
+                    関与していないかどうかを確認します。包括的な侵害データベースを
+                    検索し、メールが危険にさらされている場合に通知します。
+                  </p>
+                  <br /><strong>API エンドポイント:</strong>
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/check-email/{email}</pre
+                    >
+                  </blockquote>
+                  <strong>パラメータ:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">check-email エンドポイントのパラメータ</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">パラメータ</th>
+                          <th scope="col">位置</th>
+                          <th scope="col">必須</th>
+                          <th scope="col">型</th>
+                          <th scope="col">説明</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>email</code></th>
+                          <td>path</td>
+                          <td>Yes</td>
+                          <td>string</td>
+                          <td>侵害を確認するメールアドレス。</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>details</code></th>
+                          <td>query</td>
+                          <td>No</td>
+                          <td>boolean</td>
+                          <td>レスポンスに詳細な侵害情報を含めます。デフォルトは <code>false</code> です（true/false、yes/no、1/0 を受け付けます）。</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <strong> 侵害検出に成功した場合の例: </strong>
+                  侵害が検出されると、次のような JSON レスポンスが返されます:
+                  <pre>
  {
   "breaches": [
     [
@@ -143,54 +707,131 @@
       "MyRepoSpace",
       "SweClockers"
     ]
-  ]
+  ],
+  "email": "test@example.com",
+  "status": "success"
 }
-		  </pre>
-            応答は JSON 形式であるため、任意のスクリプト言語で簡単に解析できます。これにより、データをアプリケーションに簡単に統合できます。
-            <br /> <strong>違反が見つからなかった場合の対応:</strong><br />
-            電子メール アドレスがどの侵害データベースにも見つからない場合は、次の JSON 応答を受け取ります。
-            <pre>
-{"Error":"Not found"}
- </pre>
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>2. API 呼び出し: 電子メール アドレスのデータ侵害分析</strong>
-              </h4>
-            </div>
-            <p>
-              当社の API は、電子メール
-              アドレスのデータ侵害履歴の詳細な分析を提供します。いつ、どこで侵害が発生したかを明らかにし、これらのインシデントの影響と重大度を評価するための重要な分析を提供します。このツールは、データ露出レベルを理解し、セキュリティ戦略を強化するための鍵となります。
-            </p>
-            <br /><strong>APIエンドポイント:</strong>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breach-analytics/[email-address]</pre>
-            </blockquote>
-            <p>API は、成功または失敗の 2 つの結果を返します。成功した応答の主なコンポーネントは次のとおりです。</p>
-            <br />
-            <ul>
-              <li><strong>違反の概要:</strong> 影響を受けるサイトのリストなど、電子メール アドレスに関連するすべての侵害の概要を簡単に把握できます。侵害履歴を迅速に確認するのに最適です。</li>
-              <br />
-              <li><strong>暴露された侵害:</strong> 侵害されたエンティティの名前、説明、ドメイン、業界、リスク レベル、参照、公開されたデータ
-                タイプ、公開された記録の年と数など、各侵害に関する詳細情報を受け取ります。これは、各侵害の詳細と深刻さを評価するのに役立ちます。</li>
-              <br />
-              <li><strong>ブリーチメトリクス:</strong> このコンポーネントは、影響を受ける業界、パスワードの強度、リスク
-                スコア、公開されたデータの種類、年次内訳など、侵害に関する分析を提供します。このデータは、侵害の影響を完全に理解するために非常に重要です。</li>
-              <br />
-              <li><strong>xposed_data:</strong>
-                名前、写真、国籍など、侵害で暴露された特定のデータの種類についての洞察が得られます。これは、個人データの暴露の性質と範囲を理解するのに役立ちます。</li>
-              <br />
-              <li><strong>ペーストの概要:</strong> 「ペースト」侵害 (ペーストビンのようなパブリック サービスでのデータ漏洩)
-                の概要を、件数と最新の発生状況を含めて提供します。これは、これらのプラットフォームでの露出を簡単に測定する方法です。</li>
-              <br />
-              <li><strong>公開されたペーストとペーストメトリクス:</strong> これらのコンポーネントは、ペースト違反の詳細な情報と年次分析を提供し、長期にわたる暴露傾向をより深く理解できるようにします。
-              </li>
-              <br />
-            </ul>
-            <p>この包括的な分析ツール スイートは、あらゆる電子メールのデータ侵害履歴を深く掘り下げ、より良いデジタル セキュリティ管理に必要な洞察を提供します。</p>
-            <br />
-            <strong>一致するレコードが正常に見つかった場合のサンプル JSON 出力:</strong>
-            <pre>
+		  </pre
+                  >
+                  レスポンスは JSON 形式のため、任意のスクリプト言語で簡単に
+                  解析できます。これにより、データをアプリケーションに
+                  容易に統合できます。
+                  <br />
+                  <strong>侵害が見つからなかった場合のレスポンス:</strong><br />
+                  メールアドレスがいずれの侵害データベースにも見つからなかった場合、
+                  次の JSON レスポンスが返されます:
+                  <pre>
+{"Error":"Not found","email":null}
+ </pre
+                  >
+                  <hr />
+                  <div id="endpoint-2" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >2. API 呼び出し: メールアドレスのデータ侵害分析</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    この API は、メールアドレスのデータ侵害履歴を詳細に分析します。
+                    侵害がいつ、どこで発生したかを明らかにし、これらのインシデントの
+                    影響と深刻度を評価するために不可欠な分析情報を提供します。
+                    このツールは、データ漏洩のレベルを把握し、セキュリティ戦略を
+                    強化するうえで重要な役割を果たします。
+                  </p>
+                  <br /><strong>API エンドポイント:</strong>
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/breach-analytics?email={email}</pre
+                    >
+                  </blockquote>
+                  <strong>パラメータ:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">breach-analytics エンドポイントのパラメータ</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">パラメータ</th>
+                          <th scope="col">位置</th>
+                          <th scope="col">必須</th>
+                          <th scope="col">型</th>
+                          <th scope="col">説明</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>email</code></th>
+                          <td>query</td>
+                          <td>Yes</td>
+                          <td>string</td>
+                          <td>分析するメールアドレス。</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <p>
+                    この API は、成功または失敗の 2 通りの結果を返します。
+                    以下は、成功時のレスポンスを構成する主な要素です:
+                  </p>
+                  <br />
+                  <ul>
+                    <li>
+                      <strong>BreachesSummary:</strong>
+                      メールアドレスに関連するすべての侵害の概要を、影響を受けた
+                      サイトの一覧とともに素早く把握できます。侵害履歴を手早く
+                      確認するのに最適です。
+                    </li>
+                    <br />
+                    <li>
+                      <strong>ExposedBreaches:</strong>
+                      各侵害について、侵害を受けた組織の名前、説明、ドメイン、業種、
+                      リスクレベル、参考情報、漏洩したデータの種類、漏洩した年と
+                      レコード数など、詳細な情報を取得できます。これにより、各侵害の
+                      具体的な内容と深刻度を評価できます。
+                    </li>
+                    <br />
+                    <li>
+                      <strong>BreachMetrics:</strong>
+                      この要素は、影響を受けた業種、パスワードの強度、リスクスコア、
+                      漏洩したデータの種類、年別の内訳など、侵害に関する分析情報を
+                      提供します。このデータは、侵害による影響の全体像を把握するうえで
+                      きわめて重要です。
+                    </li>
+                    <br />
+                    <li>
+                      <strong>xposed_data:</strong>
+                      名前、写真、国籍など、侵害で漏洩した具体的なデータの種類を
+                      把握できます。これにより、個人データの漏洩の性質と範囲を
+                      理解するのに役立ちます。
+                    </li>
+                    <br />
+                    <li>
+                      <strong>PastesSummary:</strong>
+                      「ペースト」侵害（pastebin のような公開サービス上での
+                      データ漏洩）の概要を、件数と最新の発生時期とともに提供します。
+                      これらのプラットフォームでの漏洩状況を素早く把握できます。
+                    </li>
+                    <br />
+                    <li>
+                      <strong>ExposedPastes & PasteMetrics:</strong>
+                      これらの要素は、ペースト侵害に関する詳細情報と年別の分析を
+                      提供し、時間の経過に伴う漏洩傾向をより深く理解できるように
+                      します。
+                    </li>
+                    <br />
+                  </ul>
+                  <p>
+                    この包括的な分析ツール群は、あらゆるメールのデータ侵害履歴を
+                    深く掘り下げ、より優れたデジタルセキュリティ管理に必要な
+                    インサイトを提供します。
+                  </p>
+                  <br />
+                  <strong
+                    >一致するレコードが見つかった場合の JSON 出力例:
+                  </strong>
+                  <pre>
 
 {
   "BreachMetrics": {
@@ -309,7 +950,7 @@
     "breaches_details": [
       {
         "breach": "SweClockers",
-        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords—which were stored using a combination of MD5 and SHA512—were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
+        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords, which were stored using a combination of MD5 and SHA512, were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
         "domain": "sweclockers.com",
         "industry": "Electronics",
         "logo": "Sweclockers.png",
@@ -331,36 +972,103 @@
     "tmpstmp": ""
   }
 }
-	       </pre>
-            BreachMetrics で使用されるデータ ポイントのいくつかは次のとおりです。
-            <ol>
-              <li>業界ごとの分類</li>
-              これにより、上位 19 の業界で摘発された侵害の数がわかります。<br />
-              <li>パスワードの強度</li>
-              これにより、1. クラックされやすいパスワード、2. プレーンテキストのパスワード、および 3. 強力で安全なパスワード ハッシュが使用されたパスワードを使用した侵害の数がわかります。<br />
-              <li>年度ごとの詳細</li>
-              これにより、2010 年から現在までのデータ侵害の履歴データが得られます。<br />
-            </ol>
-            <br />
-            <strong>一致する電子メール アドレスが見つからない場合の出力例:</strong>
-            <pre>
-{  "Error": "Not found"}
- </pre>
-            <p> これは、検索された電子メールが XusedOrNot にロードされたデータ侵害のいずれにも見つからないことも意味します。</p>
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>3. 公開されたパスワードを匿名でチェックするための API 呼び出し</strong>
-              </h4>
-            </div>
-            <p>公開されたパスワードをチェックすることに興味がある場合は、この API が最適です。結果は成功または失敗の 2
-              つの形式で提供されます。広く使用されているパスワード「123456」を確認したいと想像してください。この API が役に立ちます。</p>
-            <br />
-            <blockquote>
-              <pre>https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre>
-            </blockquote>
-            <strong>一致するパスワード ハッシュが正常に見つかった場合のサンプル JSON 出力:</strong>
-            <pre>
+	       </pre
+                  >
+                  BreachMetrics で使用されるデータポイントの一部は、以下の
+                  とおりです:
+                  <ol>
+                    <li>業種別の分類</li>
+                    主要 19 業種で漏洩した侵害の件数を示します。
+                    <br />
+                    <li>パスワードの強度</li>
+                    パスワードが 1. 解読が容易、2. 平文、3. 強固で安全な
+                    パスワードハッシュを使用、のいずれであった侵害の件数を
+                    示します。
+                    <br />
+                    <li>年別の詳細</li>
+                    2010 年から現在までのデータ侵害の履歴データを示します。
+                    <br />
+                  </ol>
+                  <br />
+                  <strong
+                    >一致するメールアドレスが見つからなかった場合の出力例:</strong
+                  >
+                  <pre>
+{
+  "BreachMetrics": null,
+  "BreachesSummary": {
+    "site": ""
+  },
+  "ExposedBreaches": null,
+  "ExposedPastes": null,
+  "PasteMetrics": null,
+  "PastesSummary": {
+    "cnt": 0,
+    "domain": "",
+    "tmpstmp": ""
+  }
+}
+ </pre
+                  >
+                  <p>
+                    上記のようにすべて null のレスポンス（HTTP 200 とともに返されます）は、
+                    そのメールが XposedOrNot に読み込まれているいずれのデータ侵害にも
+                    見つからなかったことを意味します。
+                  </p>
+                  <hr />
+                  <div id="endpoint-3" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >3. 漏洩したパスワードを匿名で確認する API 呼び出し</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    このエンドポイントは、パスワードそのものを明かすことなく、
+                    パスワードが既知の侵害に出現したかどうかを確認します。
+                    パスワードの SHA3 Keccak-512 ハッシュをローカルで計算し、
+                    その先頭 10 文字のみを送信するため、パスワードと完全なハッシュが
+                    お使いのマシンの外に出ることはありません。レスポンスは、
+                    一致したか一致しなかったかを示します。
+                  </p>
+                  <br />
+                  <blockquote>
+                    <pre>
+https://passwords.xposedornot.com/v1/pass/anon/{hash_prefix}</pre
+                    >
+                  </blockquote>
+                  ここで <code>{hash_prefix}</code> は、確認したいパスワードの
+                  SHA3 Keccak-512 ハッシュの先頭 10 文字です。
+                  <br /><br />
+                  <strong>パラメータ:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">匿名パスワードチェック エンドポイントのパラメータ</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">パラメータ</th>
+                          <th scope="col">位置</th>
+                          <th scope="col">必須</th>
+                          <th scope="col">型</th>
+                          <th scope="col">説明</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>hash_prefix</code></th>
+                          <td>path</td>
+                          <td>Yes</td>
+                          <td>string</td>
+                          <td>確認するパスワードの SHA3 Keccak-512 ハッシュの先頭 10 文字。</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <strong
+                    >一致するパスワードハッシュが見つかった場合の JSON 出力例:
+                  </strong>
+                  <pre>
  {
   "SearchPassAnon": {
     "anon": "808d63ba47",
@@ -369,180 +1077,399 @@
     "wordlist": 0
   }
 }
- </pre>
-            <p>API は結果を JSON 形式で提供します。これは、単純な「はい/いいえ」よりも有益です。この詳細な出力により、リアルタイムで公開されたパスワードの広範なリストをさらに分析し、拡張することができます。</p>
-            <br />
-            <h4>出力構造ガイド:</h4>
-            <br />
-            <ul>
-              <li><strong>「アノン」要素:</strong> 私たちのデータベース内のすべてのパスワード
-                ハッシュには、「anon」要素が含まれています。これは、匿名で検索したいユーザーのプライバシーを確保するためです。</li>
-              <li><strong>「char」要素:</strong> この要素は、長さ、文字、数字、特殊文字の使用など、パスワードの特性の内訳を提供します。これは、パスワードの強度や、Web
-                サイトのさまざまな要件を満たしているかどうかを理解するのに特に役立ちます。</li>
-            </ul>
-            <p>この API は、公開されたパスワードを特定するのに役立つだけでなく、より強力で安全なパスワード ポリシーの開発にも役立ちます。</p>
-            <br /> 次の表は、その特性について簡単に説明したものです。<br />
-            <br />
-            <table class="table table-condensed table-striped table-bordered table-hover">
-              <tr>
-                <td> 数字</td>
-                <td> 数字の数</td>
-              </tr>
-              <tr>
-                <td> アルファベット</td>
-                <td> アルファベットの数</td>
-              </tr>
-              <tr>
-                <td> 特殊文字</td>
-                <td> 特殊文字の数</td>
-              </tr>
-              <tr>
-                <td> 長さ</td>
-                <td> パスワードの長さ</td>
-              </tr>
-            </table>
-            最後のもの<strong>"カウント"</strong> は、収集された暴露データ侵害でこのパスワードが観察された回数を示します。公開されているすべての Web
-            サイトの包括的なリストについては、次のサイトをご覧ください。<a href="xposed">
-              <strong>XON で公開された Web サイト</strong>
-            </a>。<br />
-            <br /> また、もう 1 つの注意点は、<a href="https://en.wikipedia.org/wiki/SHA-3" rel="noopener" target="_blank">
-              <strong>SHA3 ケチャック-512</strong>
-            </a> XON でデータを検索および保存するためのハッシュ。 MD5 や SHA1 などの従来のハッシュ
-            アルゴリズムは現在非推奨となっており、また膨大な数のレコードが公開されていることを考慮して、私は次の方法を採用しました。<strong>SHA3 ケチャック-512</strong> アルゴリズム。
-            Keccak-512 ハッシュの長さは 128 文字です。<br />
-            <br /> シンプルで使いやすいのでぜひチェックしてください<a href="/samples/" target="_blank">
-              <strong>ログイン画面のサンプル、</strong>
-            </a>この API を利用します。<br />
-            <br /> 簡単に参照できるように、2 つの Keccak-512 ハッシュのサンプルを示します。<br />
-            <br /> Keccak-512(「テスト」)
-            <strong>
-              <pre>1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre>
-            </strong>
-            <br /> Keccak-512(「パス」)
-            <strong>
-              <pre>adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre>
-            </strong>
-            <br />
-            <strong>一致するパスワード ハッシュが見つからない場合の出力例:</strong>
-            <pre>
+ </pre
+                  >
+
+                  <p>
+                    この API は、単純な yes/no よりも情報量の多い JSON 形式で
+                    結果を返します。この詳細な出力により、リアルタイムで漏洩した
+                    パスワードの膨大なリストをさらに分析し、強化できます。
+                  </p>
+                  <br />
+                  <h4>出力構造ガイド:</h4>
+                  <br />
+                  <ul>
+                    <li>
+                      <strong><code>anon</code>:</strong>
+                      照会したハッシュのプレフィックスがそのまま返されます。
+                      パスワードを明らかにしうるものは一切保存も送信もされません。
+                    </li>
+                    <li>
+                      <strong><code>char</code>:</strong>
+                      パスワードの構成の内訳で、形式は
+                      <code>D:&lt;digits&gt;;A:&lt;alphabets&gt;;S:&lt;special&gt;;L:&lt;length&gt;</code>
+                      です（下記の表をご覧ください）。
+                    </li>
+                    <li>
+                      <strong><code>count</code>:</strong>
+                      収集された漏洩データ侵害全体で、このパスワードが観測された
+                      回数。
+                    </li>
+                    <li>
+                      <strong><code>wordlist</code>:</strong>
+                      パスワードが既知のワードリストに見つかったかどうか
+                      （<code>1</code> = はい、<code>0</code> = いいえ）。
+                    </li>
+                  </ul>
+                  <p>
+                    この API は、漏洩したパスワードの特定に役立つだけでなく、
+                    より強固で安全なパスワードポリシーの策定にも役立ちます。
+                  </p>
+                  <br />
+                  次の表では、これらの特性についてわかりやすく説明します: <br />
+                  <br />
+                  <div class="table-responsive">
+                  <table
+                    class="table table-condensed table-striped table-bordered table-hover"
+                  >
+                    <caption class="sr-only-caption">パスワードの特性の内訳</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">コード</th>
+                        <th scope="col">特性</th>
+                        <th scope="col">説明</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <th scope="row"><code>D</code></th>
+                      <td>数字</td>
+                      <td>数字の個数</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><code>A</code></th>
+                      <td>アルファベット</td>
+                      <td>アルファベットの個数</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><code>S</code></th>
+                      <td>特殊文字</td>
+                      <td>特殊文字の個数</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><code>L</code></th>
+                      <td>長さ</td>
+                      <td>パスワードの長さ</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                  漏洩したすべてのウェブサイトの包括的な一覧については、
+                  <a href="xposed">
+                    <strong>XON で漏洩したウェブサイト</strong> </a
+                  >をご覧ください。<br />
+                  <br />
+                  もう一点ご留意いただきたいのは、XON でのデータの検索と保存に
+                  <a
+                    href="https://en.wikipedia.org/wiki/SHA-3"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <strong>SHA3 Keccak-512</strong>
+                  </a>
+                  ハッシュを使用している点です。MD5 や SHA1 といった従来の
+                  ハッシュアルゴリズムは現在では非推奨であり、また漏洩している
+                  レコードの膨大さも考慮して、
+                  <strong>SHA3 Keccak-512</strong> アルゴリズムを採用しました。
+                  Keccak-512 ハッシュは 128 文字の長さです。<br />
+                  <br />
+                  この API を活用した、シンプルで使いやすい
+                  <a href="/samples/" target="_blank">
+                    <strong>サンプルのログイン画面</strong> </a
+                  >もぜひご覧ください。<br />
+                  <br />
+                  参考までに、2 つの Keccak-512 ハッシュの例を示します: <br />
+                  <br />
+                  Keccak-512("test")
+                  <strong>
+                    <pre>
+1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre
+                    >
+                  </strong>
+                  <br />
+                  Keccak-512("pass")
+                  <strong>
+                    <pre>
+adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre
+                    >
+                  </strong>
+                  <br />
+                  <strong
+                    >一致するパスワードハッシュが見つからなかった場合の出力例:</strong
+                  >
+                  <pre>
             {  "Error": "Not found"}
-        </pre>
-            <hr />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>4. XusedOrNot にロードされたすべてのデータ侵害をチェックするための API 呼び出し</strong>
-              </h4>
-            </div>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breaches</pre>
-            </blockquote>
-            API は成功した応答を JSON 形式のみで返します。<br />
-            <br />この JSON はすべてのスクリプト言語で簡単に解析でき、解釈が容易になり、それぞれのアプリケーションで使用するデータ要素を抽出できます。<br />
-            <pre>
-{
-  "Exposed Breaches": [
+        </pre
+                  >
+                  <hr />
+                  <div id="endpoint-4" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >4. XposedOrNot に読み込まれているすべてのデータ侵害を
+                        確認する API 呼び出し</strong
+                      >
+                    </h4>
+                  </div>
+                  <blockquote>
+                    <pre>https://api.xposedornot.com/v1/breaches</pre>
+                  </blockquote>
+                  <strong>パラメータ:</strong> すべて任意です。
+                  パラメータを指定しない場合、エンドポイントは読み込まれている
+                  すべての侵害を返します。
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">breaches エンドポイントのパラメータ</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">パラメータ</th>
+                          <th scope="col">位置</th>
+                          <th scope="col">必須</th>
+                          <th scope="col">型</th>
+                          <th scope="col">説明</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>domain</code></th>
+                          <td>query</td>
+                          <td>No</td>
+                          <td>string</td>
+                          <td>結果を単一のドメインに絞り込みます。</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>breach_id</code></th>
+                          <td>query</td>
+                          <td>No</td>
+                          <td>string</td>
+                          <td>結果を ID で単一の侵害に絞り込みます。</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  この API は、成功時のレスポンスを JSON 形式のみで返します。<br />
+                  <br />この JSON は、あらゆるスクリプト言語で簡単に解析でき、
+                  内容を容易に解釈したり、ご自身のアプリケーションで使用する
+                  データ要素を抽出したりできます。<br />
+                  <pre>
+   {
+  "exposedBreaches": [
     {
-      "Breach ID": "1.4BillionRecords",
-      "Breached Date": "2017-03-01T00:00:00+00:00",
-      "Domain": "Not-Applicable",
-      "Exposed Data": "Email addresses;Names",
-      "Exposed Records": 1114303554,
-      "Exposure Description": "\"A company called 4iQ in 2017, discovered a massive database of stolen usernames and passwords that was being traded on the dark web. The database, which was referred to as the \"\"largest-ever\"\" breach at the time, contained over 1.4 billion unique username and password combinations, as well as other personal information such as email addresses and IP addresses.\"",
-      "Industry": "Entertainment",
-      "Logo": "combolist.png",
-      "Password Risk": "unknown",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "Yes"
+      "breachID": "APK.TW",
+      "breachedDate": "2022-09-01T00:00:00+00:00",
+      "addedDate": "2023-11-08T06:30:35+00:00",
+      "domain": "apk.tw",
+      "exposedData": [
+        "Email addresses",
+        "Usernames",
+        "Passwords",
+        "IP addresses"
+      ],
+      "exposedRecords": 2457094,
+      "exposureDescription": "APK.TW, a Taiwanese Android forum, experienced a data breach in September 2022, affecting 3.7 million members. This incident exposed usernames, email addresses, IP addresses, and passwords encrypted with salted MD5 hashes.",
+      "industry": "Information Technology",
+      "logo": "https://xposedornot.com/static/logos/APKTW.png",
+      "passwordRisk": "easytocrack",
+      "referenceURL": "",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
     },
     {
-      "Breach ID": "123RF",
-      "Breached Date": "2020-03-01T00:00:00+00:00",
-      "Domain": "123rf.com",
-      "Exposed Data": "Usernames;Email addresses;Passwords;Names;IP addresses;Physical addresses;Phone numbers",
-      "Exposed Records": 8668646,
-      "Exposure Description": "123RF Stock photo site has suffered a data breach in March 2020. The exposed database contained 8.3 million user records leaked on a hacker forum. Exposed data includes full name, email address, MD5 hashed passwords, company name, phone number, address, PayPal email if used, and IP address.",
-      "Industry": "Information Technology",
-      "Logo": "123RF.png",
-      "Password Risk": "easytocrack",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "Yes"
+      "breachID": "Habibs",
+      "breachedDate": "2021-08-01T00:00:00+00:00",
+      "addedDate": "2023-11-08T06:30:35+00:00",
+      "domain": "habibs.com.br",
+      "exposedData": [
+        "Email addresses",
+        "Names",
+        "Phone numbers",
+        "Dates of birth",
+        "IP addresses"
+      ],
+      "exposedRecords": 3519666,
+      "exposureDescription": "Habib's, a Brazilian fast food restaurant, experienced a significant data breach in August 2021,  that impacted 3.5 million users, revealing personal information like email addresses, IP addresses, names, phone numbers, and dates of birth, along with CPF numbers and social media profile links. ",
+      "industry": "Food",
+      "logo": "https://xposedornot.com/static/logos/Habibs.png",
+      "passwordRisk": "unknown",
+      "referenceURL": "",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
     },
     {
-      "Breach ID": "17173",
-      "Breached Date": "2011-12-01T00:00:00+00:00",
-      "Domain": "17173.com",
-      "Exposed Data": "Usernames;Passwords;Email addresses",
-      "Exposed Records": 7482441,
-      "Exposure Description": "The 17173 gaming site breach in 2011 was part of a larger series of data breaches in China, affecting nearly 100 million users. Of these, 7.5 million were from 17173. The breach exposed usernames, email addresses, and salted MD5 password hashes.",
-      "Industry": "Energy",
-      "Logo": "17173.png",
-      "Password Risk": "plaintext",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "No"
+      "breachID": "GreenGaming",
+      "breachedDate": "2024-03-01T00:00:00+00:00",
+      "addedDate": "2024-04-15T10:22:18+00:00",
+      "domain": "mrgreengaming.com",
+      "exposedData": [
+        "Email addresses",
+        "IP addresses",
+        "Geographic locations",
+        "Usernames",
+        "Dates of birth"
+      ],
+      "exposedRecords": 27142,
+      "exposureDescription": "MrGreenGaming announced on their community forum reported a security breach due to unauthorized access via an inactive administrator account leading to a data breach on 01-Mar-2024. The intrusion led to vandalism and the potential exposure of user data, including usernames, email addresses, IP addresses at account creation, and birthdays.",
+      "industry": "Entertainment",
+      "logo": "https://xposedornot.com/static/logos/GreenGaming.png",
+      "passwordRisk": "unknown",
+      "referenceURL": "https://forums.mrgreengaming.com/topic/30151-%E2%9A%A0%EF%B8%8Fdata-breach%E2%9A%A0%EF%B8%8F/#comment-536079",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
     },
-    and so on...
-	       </pre>
-            <br />さらに、ドメインなどのパラメータを送信し、結果をフィルタリングして、その侵害に固有のコンテンツを表示することもできます。<br />
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre>
-            </blockquote>
-            <pre>
+    {
+      "breachID": "CutoutPro",
+      "breachedDate": "2024-02-01T00:00:00+00:00",
+      "addedDate": "2024-03-10T08:15:42+00:00",
+      "domain": "cutout.pro",
+      "exposedData": [
+        "Names",
+        "Passwords",
+        "Email addresses",
+        "IP addresses"
+      ],
+      "exposedRecords": 20021813,
+      "exposureDescription": "Cutout.Pro, an AI-powered photo editing platform, experienced a data breach affecting 20 million users. Information exposed includes email addresses, hashed passwords, IP addresses, and names. A cybercriminal posted 5.93 GB of data on hacker forum, including a 41.4 million record database dump with unique email addresses.",
+      "industry": "Information Technology",
+      "logo": "https://xposedornot.com/static/logos/Cutout.pro.png",
+      "passwordRisk": "easytocrack",
+      "referenceURL": "https://www.bleepingcomputer.com/news/security/20-million-cutoutpro-user-records-leaked-on-data-breach-forum/",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
+    }
+	       </pre
+                  >
+                  <em>… 簡潔さのためレスポンスは省略しています。実際にはリストが続きます。</em>
+                  <br /><br />さらに、ドメインなどのパラメータを送信して、
+                  その侵害に固有の内容を表示するよう結果を絞り込むこともできます。<br />
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/breaches?domain={domain}</pre
+                    >
+                  </blockquote>
+                  <pre>
 
 {
-  "Exposed Breaches": [
+  "exposedBreaches": [
     {
-      "Breach ID": "Twitter-Scraped",
-      "Breached Date": "2021-01-01T00:00:00+00:00",
-      "Domain": "twitter.com",
-      "Exposed Data": "Usernames;Email addresses;Names;Geographic locations;Profile photos;Phone numbers",
-      "Exposed Records": 208918735,
-      "Exposure Description": "\"The \"\"Twitter Email Addresses Leak\"\" involves a data leak of over 200 million Twitter user profiles around 2021. The leak includes email addresses, names, screen names, follow counts, and account creation dates. The data was obtained through a Twitter API vulnerability that allowed the input of email addresses and phone numbers to confirm their association with Twitter IDs.\"",
-      "Industry": "Information Technology",
-      "Logo": "Twitter.png",
-      "Password Risk": "unknown",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "Yes"
+      "breachID": "Twitter-Scraped",
+      "breachedDate": "2021-01-01T00:00:00+00:00",
+      "addedDate": "2023-11-08T06:30:35+00:00",
+      "domain": "twitter.com",
+      "industry": "Information Technology",
+      "logo": "https://xposedornot.com/static/logos/Twitter.png",
+      "passwordRisk": "unknown",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true,
+      "exposedData": [
+        "Usernames",
+        "Names",
+        "Email addresses",
+        "Phone numbers",
+        "Geographic locations"
+      ],
+      "exposedRecords": 208918735,
+      "exposureDescription": "The Twitter Email Addresses Leak involves a data leak of over 200 million Twitter user profiles around 2021. The leak includes email addresses, names, screen names, follow counts, and account creation dates. The data was obtained through a Twitter API vulnerability that allowed the input of email addresses and phone numbers to confirm their association with Twitter IDs.",
+      "referenceURL": ""
     }
   ],
   "status": "success"
 }
-		  </pre>
-            API は成功した応答を JSON 形式のみで返します。<br />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>5. 検証済みドメインのすべてのデータ侵害をチェックするための API 呼び出し</strong>
-              </h4>
-            </div>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
-            </blockquote>
-            これは POST リクエストであり、有効な API
-            キーがキー「x-api-key」とともにヘッダーに含まれている必要があります。このエンドポイントはリクエスト本文を受け入れないため、コンテンツ長ヘッダーを「0」に設定する必要があります。
-            <br />
-            ** 検証済みのドメインの場合、API キーは<a href="dashboard">ダッシュボード</a>。
-            <br /><br />
-            curl を使用したサンプル API リクエスト:
-            <blockquote>
-              <pre>
-curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/    
-	       </pre>
-            </blockquote>
-            API の応答は JSON 形式です。メインキーの「メトリクス」には、侵害に関する詳細が含まれています。以下は、「メトリクス」の各サブキーの説明です。<br /><br />
-            1.<strong>違反の概要</strong>: このフィールドには、組織ごとの侵害数の概要が表示されます。<br />
-            2.<strong>侵害_詳細</strong>: これは、侵害された組織の名前、ドメイン、侵害に関連付けられた電子メール アドレスなど、個々の侵害に関する詳細情報を含む配列です。<br />
-            3.<strong>侵害の詳細情報</strong>:
-            このフィールドには、侵害の日付、組織のロゴ、パスワードが危険にさらされているかどうか、侵害が検索可能かどうか、公開されたデータの種類、レコードの総数など、侵害の詳細な概要が含まれます。暴露と侵害の説明。<br />
-            4.<strong>ドメインの概要</strong>: これは、ドメインごとの違反数の概要を示します。<br />
-            5.<strong>トップ 10_違反</strong>: このフィールドには、上位 10 件の侵害のリストが表示されます。<br />
-            6.<strong>年間メトリクス</strong>: このフィールドには、2010 年から今年までの侵害件数の年次内訳が表示されます。<br />
-            <br />簡単に参照できるよう、サンプル出力が示されています。<br />
-            <pre>
+		  </pre
+                  >
+                  この API は、成功時のレスポンスを JSON 形式のみで返します。<br />
+                  <hr />
+                  <div id="endpoint-5" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-post">POST</span>
+                      <strong
+                        >5. 検証済みドメインのすべてのデータ侵害を確認する
+                        API 呼び出し</strong
+                      >
+                    </h4>
+                  </div>
+                  <blockquote>
+                    <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
+                  </blockquote>
+                  <strong>パラメータ:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">domain-breaches エンドポイントのヘッダー</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">パラメータ</th>
+                          <th scope="col">位置</th>
+                          <th scope="col">必須</th>
+                          <th scope="col">型</th>
+                          <th scope="col">説明</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>x-api-key</code></th>
+                          <td>header</td>
+                          <td>Yes</td>
+                          <td>string</td>
+                          <td>ドメインの API キー。ドメインはこのキーから導出されます。</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>Content-Length</code></th>
+                          <td>header</td>
+                          <td>Yes</td>
+                          <td><code>0</code></td>
+                          <td>このエンドポイントはリクエストボディを受け付けないため、コンテンツ長を 0 に設定します。</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  これは POST リクエストであり、有効な API キーを
+                  'x-api-key' というキーでヘッダーに含める必要があります。
+                  ドメインは API キーから導出されるため、このエンドポイントは
+                  リクエストボディを一切受け付けず、コンテンツ長ヘッダーは
+                  '0' に設定する必要があります。
+                  <br />
+                  ** まだキーをお持ちでない場合は、
+                  <a href="faq#collapse102">ドメイン侵害データ用の API キーの
+                  取得方法</a>をご覧ください。ドメインの検証方法や、
+                  <a href="dashboard">ダッシュボード</a>からキーを取得する方法を
+                  説明しています。<br /><br />
+                  curl を使用した API リクエストの例です。キーはハードコーディング
+                  せず環境変数に保存することで、シェルの履歴やソース管理に
+                  残らないようにしてください:
+                  <blockquote>
+                    <pre>
+export XON_API_KEY="your_api_key_here"
+
+curl -L -X POST \
+  -H "x-api-key: $XON_API_KEY" \
+  -H "Content-Length: 0" \
+  https://api.xposedornot.com/v1/domain-breaches/</pre
+                    >
+                  </blockquote>
+                  この API のレスポンスは JSON 形式です。メインキーの
+                  'metrics' に侵害に関する詳細が含まれます。以下は、'metrics'
+                  内の各サブキーの説明です:<br /><br />
+                  1.<strong>Breach_Summary</strong>:
+                  組織ごとの侵害件数の概要を提供します。<br />
+                  2.<strong>Breaches_Details</strong>:
+                  これは配列で、各侵害に関する詳細情報（侵害を受けた組織の名前、
+                  ドメイン、侵害に関連するメールアドレスを含む）が含まれます。<br />
+                  3.<strong>Detailed_Breach_Info</strong>:
+                  侵害の日付、組織のロゴ、パスワードが危険にさらされたかどうか、
+                  侵害が検索可能かどうか、漏洩したデータの種類、漏洩したレコードの
+                  総数、侵害の説明など、侵害の詳細な概要が含まれます。<br />
+                  4.<strong>Domain_Summary</strong>:
+                  ドメインごとの侵害件数の概要を提供します。<br />
+                  5.<strong>Top10_Breaches</strong>:
+                  上位 10 件の侵害の一覧を提供します。<br />
+                  6.<strong>Yearly_Metrics</strong>:
+                  2010 年から現在までの侵害件数の年別内訳を提供します。<br />
+                  <br />参考までに出力例を示します。<br />
+                  <pre>
 {
   "metrics": {
     "Breach_Summary": {
@@ -592,119 +1519,223 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
   "status": "success"
 }
 
-	       </pre>
-            <strong>エラー処理</strong>: API キーが無効または欠落している場合、応答は次のようになります。
-            <pre>
+	       </pre
+                  >
+                  <strong> エラー処理</strong>: API キーが無効な場合、
+                  エンドポイントは HTTP 401 と次の JSON を返します:
+                  <pre>
 {
-  "message":"Invalid or missing API key",
-  "status":"error"
+  "detail": "Invalid or missing API key"
 }
-	       </pre>
-            の<strong>メッセージ</strong> フィールドにはエラーの説明が含まれます。<strong>状態</strong> フィールドには、エラーが発生したことを示す文字列「error」が含まれます。
-            <br /><br />
-            エンドポイントにリクエストを行うときは、「YOUR_API_KEY」を実際の API キーに忘れずに置き換えてください。
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>6. APIレスポンスコード</strong>
-              </h4>
-              <br />
+	       </pre
+                  >
+                  <strong>detail</strong> フィールドには、エラーの説明が
+                  含まれます。<br /><br />
+                  エンドポイントにリクエストを送信する前に、<code>XON_API_KEY</code>
+                  に実際の API キーを設定することをお忘れなく。
+                  <hr />
+                  <div id="endpoint-6" class="alert alert-primary" role="alert">
+                    <h4>
+                      <strong>6. API レスポンスコード</strong>
+                    </h4>
+                    <br />
+                  </div>
+                  XposedOrNot API は、API リクエストの成功または失敗を示すために、
+                  一般的な HTTP レスポンスコードを使用します。概要は次のとおりです:
+                  2xx 番台のコードは成功を示します。4xx 番台のコードは、提供された
+                  情報に基づいて失敗したエラー（例: パラメータの誤り、クエリ
+                  オプションの不足、URL の誤りなど）を示します。5xx 番台のコードは、
+                  XposedOrNot のサーバー側のエラーを示します。<br />
+                  <br />
+                  言い換えると、4xx 番台のコードはクライアント側（お客様のリクエスト）の
+                  エラーを示し、5xx 番台のコードはサーバー側（当社側）のエラーを
+                  示します。<br />
+                  <br />
+                  <div class="table-responsive">
+                  <table class="table table-hover table-bordered">
+                    <caption class="sr-only-caption">HTTP レスポンスコードとその意味</caption>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">コード</th>
+                        <th scope="col">説明</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="status-code-200">
+                        <th scope="row">200</th>
+                        <td>成功時は JSON レスポンスを出力します</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">401</th>
+                        <td>無効または未認証の API キー</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">404</th>
+                        <td>入力エラー（データが見つかりません）</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">429</th>
+                        <td>速度制限に達しました - ペースを落としてください</td>
+                      </tr>
+                      <tr class="status-code-5xx">
+                        <th scope="row">502/503</th>
+                        <td>
+                          サーバー側のエラーです。発生した場合はご報告ください。
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                  <div class="alert alert-danger" role="alert">
+                    <strong>注意: </strong>パスワードの検索クエリは、
+                    時間や回数による制限を受けません。<br />
+                    <br />
+                    <em
+                      class="fas fa-exclamation-triangle"
+                      style="font-size: 28px; color: red"
+                    ></em>
+                    すべての API リクエストには、1 秒あたり 2 クエリという
+                    しきい値が設けられています。この点にご留意いただき、
+                    低速モードやスリープを挟んで再試行してください。<br />
+                    <br />
+                    この API の繰り返しの誤用や不正利用は、
+                    <a onclick="jsfunction()" href="javascript:void(0);"
+                      >xGuardian</a
+                    >によって自動的にブロックされます。API は責任を持って
+                    ご利用ください。<br />
+                    <br />
+                    <em
+                      class="fa fa-bug"
+                      aria-hidden="true"
+                      style="font-size: 28px; color: red"
+                    ></em>
+                    バグを見つけましたか? Twitter またはメールでご報告いただければ
+                    対応いたします。
+                  </div>
+                </div>
+              </div>
             </div>
-            XusedOrNot API は、従来の HTTP 応答コードを使用して、API リクエストの成功または失敗を示します。一般に、2xx 範囲のコードは成功を示します。 4xx
-            範囲のコードは、提供された情報に基づいて失敗したエラーを示します (例: 間違ったパラメーター、不十分なクエリ オプション、間違った URL など)。 5xx 範囲のコードは、XownedOrNot
-            のサーバーのエラーを示します。<br />
-            <br /> つまり、4xx 範囲のコードはユーザー エラー (You) を示し、5xx はサーバー エラー (Me) を示します。<br />
-            <br />
-            <table class="table table-hover table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">コード</th>
-                  <th scope="col">説明</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">200</th>
-                  <td>成功するとJSONレスポンスが出力されます</td>
-                </tr>
-                <tr>
-                  <th scope="row">401</th>
-                  <td>無効/未承認の API キー</td>
-                </tr>
-                <tr>
-                  <th scope="row">404</th>
-                  <td>入力エラー (データが見つかりません)</td>
-                </tr>
-                <tr>
-                  <th scope="row">429</th>
-                  <td>速度スロットルのヒット - 減速する時間</td>
-                </tr>
-                <tr>
-                  <th scope="row">502/503</th>
-                  <td>サーバー障害 - 完全に私が解決すべき問題です。これを見かけたら大声で叫んでください ;)</td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="alert alert-danger" role="alert">
-              <strong>注記：</strong>パスワードの検索クエリは時間や回数によって制限されません。<br />
-              <br />
-              <em class="fas fa-exclamation-triangle" style="font-size:28px;color:red"></em> すべての API リクエストには、1 秒あたり 1
-              クエリというしきい値があります。その点をご了承の上、低速モードまたはスリープ モデルで再試行してください。<br />
-              <br /> この API を自らの邪悪な目的で定期的に悪用または悪用しようとする者は、それほど有名ではない者によって深く暗いダンジョンに放り込まれることになります。<a
-                href="javascript:void(0);" onclick="jsfunction()">xガーディアン</a>。警告を受けています。<br />
-              <br />
-              <em aria-hidden="true" class="fa fa-bug" style="font-size:28px;color:red"></em> API のバグに遭遇した場合は、お気軽に
-              Twitter にメッセージを送信するか、メールで私に連絡してください。すべてのユーザーの利益のために、喜んでこの問題を認識し、修正させていただきます。
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            完全オープンソースのこのサイトづくりに、ぜひご参加ください!
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >でのコントリビューションを ❤️ お待ちしています。
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>法的情報</h6>
+            <div class="footer-links-wrapper">
+              <a href="/privacy" class="footer-link">プライバシーポリシー</a>
+              <a href="/terms" class="footer-link">利用規約</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>コミュニティ</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">ブログ</a>
+              <a href="/our-repository" class="footer-link">リポジトリ</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>信頼性</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">稼働状況</a>
+              <a href="/transparency" class="footer-link">透明性</a>
+              <a href="/responsible-disclosure" class="footer-link">責任ある開示</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>フォロー</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>AI要約</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                ChatGPT
+              </a>
+              <a href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Perplexity
+              </a>
+              <a href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Gemini
+              </a>
             </div>
           </div>
         </div>
-      </div>
-      <div class="container text-center">
-        <footer>
-          <aside>
-            <br />
-            <a aria-hidden="true" href="https://twitter.com/xposedornot" rel="noopener" style="color:#3c5fec"
-              target="_blank">  <em class="fab fa-twitter fa-3x"></em>
-            </a>
-            <a aria-hidden="true" href="https://facebook.com/xposedornot" rel="noopener" style="color:#3c5fec"
-              target="_blank">  <em class="fab fa-facebook fa-3x"></em>
-            </a>
-            <hr />
-            <p>この完全にオープンソースのサイトの構築に参加してください。貢献は大歓迎です❤️ —私たちの記事をチェックしてください<a href="https://github.com/XposedOrNot"
-                rel="noopener" target="_blank">GitHub</a>。</p>
-            <br />
-            <h3><a class="button-link" href="https://xposedornot.docs.apiary.io" target="_blank"> 🛠️ API プレイグラウンド</a>
-            </h3>
-            <style>
-              .button-link {
-                display: inline-block;
-                padding: 10px 20px;
-                color: #fff;
-                background-color: #007BFF;
-                text-decoration: none;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
-              }
 
-              .button-link:hover {
-                background-color: #FFBF00;
-              }
-            </style>
-          </aside>
-        </footer>
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">ダークモード</label>
+        </div>
       </div>
-      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-        <input class="custom-control-input" id="darkSwitch" type="checkbox" />
-        <label class="custom-control-label" for="darkSwitch">ダークモード</label>
-      </div>
-
-
     </div>
-    <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-    <script src="/static/scripts/bug-min.js" type="text/javascript"></script>
-    <script src="/static/scripts/api_doc.js" type="text/javascript"></script>
-    <script src="/static/scripts/common.js"></script>
-  </div>
-</body>
 
+<button id="backToTop" title="トップへ戻る">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+    <script src="/static/scripts/bug-min.js" defer></script>
+    <script src="/static/scripts/api_doc.js" defer></script>
+    <script src="/static/scripts/common.js" defer></script>
+    <script src="/static/scripts/api_doc_ui.js" defer></script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechnicalArticle",
+        "headline": "XposedOrNot API Documentation",
+        "description": "Complete documentation for XposedOrNot's security APIs including email breach detection, password security verification, and domain exposure analysis.",
+        "author": {
+          "@type": "Person",
+          "name": "Devanand Premkumar"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "XposedOrNot",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://xposedornot.com/static/images/xon.png"
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
