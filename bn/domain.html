@@ -1,49 +1,162 @@
+<!doctype html>
 <html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<head>
-  <meta charset="utf-8" />
-  <title>XposedOrNot: ডোমেন যাচাইকরণ</title>
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="Domain Verification: XposedOrNot" name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <link href="/favicon.ico" rel="icon" type="image/x-icon" />
-  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-  <script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset&display=swap" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
-    integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
-    rel="stylesheet">
-  <script crossorigin="anonymous"
-    integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <title>XposedOrNot - ডোমেন যাচাইকরণ | ডেটা লঙ্ঘন পর্যবেক্ষণ</title>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta
+      name="description"
+      content="বিস্তৃত ডেটা লঙ্ঘন পর্যবেক্ষণ অ্যাক্সেস করতে আপনার ডোমেনের মালিকানা যাচাই করুন। DNS এবং HTML ফাইল যাচাইকরণসহ একাধিক যাচাইকরণ পদ্ধতি উপলব্ধ।"
+    />
+    <meta
+      name="keywords"
+      content="ডোমেন যাচাইকরণ, ডেটা লঙ্ঘন পর্যবেক্ষণ, সাইবার নিরাপত্তা, DNS যাচাইকরণ, HTML যাচাইকরণ, ওয়েবসাইট নিরাপত্তা"
+    />
 
-  <style>
-    .input-field {
-      margin-right: -20px;
-    }
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/bn/domain" />
+    <meta property="og:title" content="XposedOrNot - ডোমেন যাচাইকরণ" />
+    <meta
+      property="og:description"
+      content="XposedOrNot-এর ডেটা লঙ্ঘন পর্যবেক্ষণ পরিষেবার জন্য নিরাপদ ডোমেন যাচাইকরণ প্রক্রিয়া। রিয়েল-টাইম লঙ্ঘন সতর্কতার মাধ্যমে আপনার ডোমেন সুরক্ষিত রাখুন।"
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon-og.png"
+    />
 
-    .copy-btn {
-      padding: 0.5rem 0.5rem;
-      width: auto;
-      margin-left: -30px;
-    }
-  </style>
-  </link>
-  </link>
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://xposedornot.com/bn/domain"
+    />
+    <meta
+      property="twitter:title"
+      content="XposedOrNot - ডোমেন যাচাইকরণ"
+    />
+    <meta
+      property="twitter:description"
+      content="XposedOrNot-এর বিস্তৃত ডেটা লঙ্ঘন পর্যবেক্ষণের মাধ্যমে আপনার ডোমেন সুরক্ষিত করুন। একাধিক পদ্ধতিসহ সহজ যাচাইকরণ প্রক্রিয়া।"
+    />
+    <meta
+      property="twitter:image"
+      content="https://xposedornot.com/static/images/xon-og.png"
+    />
+
+    <link rel="canonical" href="https://xposedornot.com/bn/domain" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/domain" />
+    <link rel="alternate" hreflang="ta" href="https://xposedornot.com/ta/domain" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/domain" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "XposedOrNot - Domain Verification",
+        "description": "Secure domain verification process for data breach monitoring service. Multiple verification methods including DNS and HTML file verification.",
+        "publisher": {
+          "@type": "Organization",
+          "name": "XposedOrNot",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://xposedornot.com/static/images/logo.png"
+          }
+        },
+        "mainEntity": {
+          "@type": "HowTo",
+          "name": "Domain Verification Process",
+          "description": "Steps to verify domain ownership for data breach monitoring",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "name": "Enter Domain",
+              "text": "Enter your domain name for verification"
+            },
+            {
+              "@type": "HowToStep",
+              "name": "Choose Method",
+              "text": "Select from DNS or HTML file verification methods"
+            },
+            {
+              "@type": "HowToStep",
+              "name": "Complete Verification",
+              "text": "Follow the specific steps for your chosen verification method"
+            }
+          ]
+        }
+      }
+    </script>
+
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="all"
+    />
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+      integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"
+      integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/domain.css" type="text/css" rel="stylesheet" />
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -69,482 +182,958 @@
 
     </head>
 
-<body style="color:#3c5fec;font-family: 'Poppins', sans-serif;">
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com"><span
-          style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-        <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">সম্প্রদায়
-          সংস্করণ</span></a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password">পাসওয়ার্ড<span class="sr-only">(বর্তমান)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="api_doc">API</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">ব্লগ</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> আরও টুল</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed">এক্সপোজড ব্রেচ</a>
-              <a class="dropdown-item" href="shield">গোপনীয়তা শিল্ড</a>
-              <a class="dropdown-item" href="domain">ডোমেন যাচাইকরণ</a>
-              <a class="dropdown-item" href="domains">ডোমেন-স্তরের অনুসন্ধান</a>
-              <a class="dropdown-item" href="timeline">টাইমলাইন ভঙ্গ করে</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-     
-  </div>
-  <div class="jumbotron" id="d1">
-    <div class="container">
-      <h1>ডোমেন যাচাইকরণ এবং বৈধতা</h1>
-      <br />
-      <p align="center"> আপনার ডোমেনে ডেটা লঙ্ঘনের এক্সপোজারের পরিমাণ মূল্যায়ন করতে, এইগুলি অনুসরণ করুন<strong>তিনটি
-          সহজ পদক্ষেপ</strong>আপনার তথ্য যাচাই করতে।</p>
-    </div>
-  </div>
-  <div class="container" id="div_input">
-    <p class="alert alert-primary">আমরা বুঝি যে আপনার ডোমেন ব্যবহারকারীদের সুরক্ষিত রাখা অত্যন্ত গুরুত্বপূর্ণ, তাই আমরা
-      ডোমেন অনুমোদন যাচাই করার তিনটি দুর্দান্ত উপায় পেয়েছি - ব্যবহার
-      করে<strong>ডিএনএস</strong>,<strong>এইচটিএমএল</strong>, এবং<strong>ইমেইল</strong>. আমাদের লক্ষ্য হল আপনার জন্য
-      আপনার প্রয়োজন অনুসারে সেরা পদ্ধতি বেছে নেওয়ার জন্য এটি সহজ করে তোলা।<br /><br />
-      <strong>ডিএনএস</strong>: প্রথম পদ্ধতিতে আপনার ডোমেনের DNS সেটিংসে একটি বিশেষ রেকর্ড যোগ করা জড়িত৷ এটি আপনার
-      ডোমেনকে একটি গোপন হ্যান্ডশেক দেওয়ার মতো এটি নিশ্চিত করার জন্য যে এটি আসল চুক্তি৷ আমরা আপনাকে প্রক্রিয়াটির
-      মাধ্যমে গাইড করব, এবং এটি হয়ে গেলে, আপনার ডোমেনের পরিচয় কিছুক্ষণের মধ্যেই যাচাই করা হবে!<br /><br />
-      <strong>এইচটিএমএল</strong>: আপনি যদি আরও হাতে-কলমে পন্থা পছন্দ করেন, আমরা আপনাকে কভার করেছি! আপনার ওয়েবসাইটের রুট
-      ডিরেক্টরিতে একটি অনন্য কোড সহ একটি HTML ফাইল যোগ করুন। এটি একটি ডিজিটাল পতাকা লাগানোর মতো যা বলে "হ্যাঁ, এটি আমার
-      ডোমেন!"। আমরা পতাকাটি পরীক্ষা করব, এবং যদি এটি সেখানে থাকে তবে আপনি যেতে পারেন!<br /><br />
-      <strong>ইমেইল</strong>: সবশেষে, যারা ইমেলের সুবিধা পছন্দ করেন তাদের জন্য, আমরা সরাসরি আপনার ইনবক্সে একটি যাচাইকরণ
-      লিঙ্ক পাঠাতে পারি। লিঙ্কে ক্লিক করুন, এবং voilà, আপনার ডোমেন অনুমোদিত! এটি আপনার প্রিয় ইমেল খোলা এবং একটি বোতাম
-      আলতো চাপার মতই সহজ।<br /><br />
-      মনে রাখবেন, এই প্রক্রিয়াটিকে যতটা সম্ভব মসৃণ এবং বন্ধুত্বপূর্ণ করতে আমরা এখানে আছি। তাই আপনার জন্য সবচেয়ে ভালো
-      কাজ করে এমন পদ্ধতি বেছে নিন এবং আসুন সেই ডোমেনটিকে অনুমোদিত করি! 🎉<br /><br />
-    </p>
-    <form id="defaultForm" method="post" onload="choices();" role="form">
-      <div class="form-group">
-        <input autocapitalize="off" autocorrect="off" autofocus="true" class="form-control" data-val="true"
-          data-val-maxlength="Maximum is only 255 ! " data-val-minlength-min="4" id="eventName" maxlength="255"
-          name="edhu" placeholder="Enter a valid domain name ...(e.g.: your-domain.com)" spellcheck="false"
-          type="text" />
-        <span class="input-group-btn">
-        </span>
-      </div>
-      <br />
-    </form>
-  </div>
-  <div align="center">
-    <button class="btn btn-primary btn-lg" id="alertMe" type="submit">যাচাইকরণ প্রক্রিয়া শুরু করুন<span
-        class="glyphicon glyphicon-ok" id="alertMe_i1"></span>
-    </button>
-  </div>
-  <div align="center" hidden="false" id="status">
-    <button class="btn btn-primary btn-lg"> যাচাইকরণ শুরু করা হচ্ছে...<em class="fa fa-spinner fa-spin"></em>
-    </button>
-  </div>
-  <input id="hid1" name="hid1" readonly="" type="hidden">
+  <body class="domain-page">
+    <a class="skip-link" href="#main-content">মূল বিষয়বস্তুতে যান</a>
 
-  <div id="div_s1">
-    <div align="center" id="lbl_1">
-      <div id="d1"></div>
-    </div>
-    <div class="selectContainer container" id="s1">
-      <select class="form-control input-nl2" data-style="btn-primary" id="strat" name="strat">
-        <option selected="" value="ver">উপলব্ধ যাচাইকরণ পদ্ধতিগুলির মধ্যে একটি নির্বাচন করুন ...</option>
-        <option value="email">ইমেল ভিত্তিক বৈধতা</option>
-        <option value="dns_txt">DNS পাঠ্য ভিত্তিক বৈধতা</option>
-        <option value="html">এইচটিএমএল পৃষ্ঠা ভিত্তিক বৈধতা</option>
-      </select>
-      <br />
-    </div>
-  </div>
-  <div align="center" class="alert alert-primary container" id="div_dns" role="alert"
-    style=" border-radius: 5px;border:2px solid #6daae0;">
-    <strong>DNS TXT রেকর্ড ভিত্তিক বৈধতা.!</strong> অনুগ্রহ করে নিচের মতো আপনার DNS-এ একটি অস্থায়ী TXT রেকর্ড তৈরি
-    করুন।<br />
-    <br />
-    <form id="dns_form" method="post">
-      <div class="input-group" id="div2">
-        <span class="input-group-addon">
-          <em class="fa fa-bullseye"></em>
-        </span>
-        <input autocapitalize="off" autofocus="true" class="form-control" data-val="true"
-          data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !"
-          data-val-minlength-min="3" id="edhu_dns" maxlength="255" name="edhu_dns" readonly="" />
-      </div>
-      <br />
-      <div align="left" class="input-group">
-        <input class="form-control input-lg" id="txt_dns" placeholder="Email address to receive the exposed data"
-          type="email" />
-        <span class="input-group-btn">
-          <button class="btn btn-lg btn-primary" id="searchMe_d" type="submit"> যাচাই করুন<span
-              class="glyphicon glyphicon-ok" id="searchMe_d_i1">
-            </span></button>
-        </span>
-      </div>
-    </form>
-  </div>
-  <div align="center" class="container alert alert-primary" id="div_meta" role="alert"
-    style=" border-radius: 5px;border:2px solid #6daae0;">
-    <strong>মেটা ট্যাগ ভিত্তিক বৈধতা.!</strong> নীচের দেখানো হিসাবে আপনার হোম পেজে একটি অস্থায়ী META ডেটা ট্যাগ তৈরি
-    করুন.<br />
-    <br />
-    <form id="meta_form" method="post">
-      <div class="input-group" id="div2">
-        <span class="input-group-addon">
-          <em class="fa fa-bullseye"></em>
-        </span>
-        <input autocapitalize="off" autofocus="true" class="form-control" data-val="true"
-          data-val-maxlength="Maximum is only 255 ! " data-val-maxlength-max="255" data-val-minlength="Minimum is '3' !"
-          data-val-minlength-min="3" id="edhu_meta" maxlength="255" name="edhu_meta" readonly="" />
-      </div>
-      <br />
-      <div align="left" class="input-group">
-        <input class="form-control input-lg" id="txt_email_m" placeholder="Email address to receive the exposed data"
-          type="email" />
-        <span class="input-group-btn">
-          <button class="btn btn-lg btn-primary" id="searchMe_m" type="submit"> যাচাই করুন<span
-              class="glyphicon glyphicon-ok" id="searchMe_m_i1">
-            </span></button>
-        </span>
-      </div>
-    </form>
-  </div>
-  <div align="center" class="alert alert-primary container" id="div_html" role="alert"
-    style="border-radius: 5px;border:2px solid #6daae0;">
-    <strong>HTML ফাইল ভিত্তিক বৈধতা!</strong> অনুগ্রহ করে আপনার রুট ডিরেক্টরিতে নিচের মত মান সহ একটি অস্থায়ী ফাইল তৈরি
-    করুন এবং তারপর যাচাই করুন ক্লিক করুন।<br /><br />
-    <form id="html_form" method="post">
-      <div class="form-group row align-items-center">
-        <label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filename">ফাইলের নাম:</label>
-        <div class="col-sm-9">
-          <input class="form-control input-lg input-field" data-val="true" id="edhu_html_filename"
-            name="edhu_html_filename" readonly="" type="text" />
-        </div>
-        <div class="col-sm-1">
-          <button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filename" type="button"><i
-              class="fas fa-copy"></i> কপি</button>
-        </div>
-      </div>
-      <div class="form-group row align-items-center">
-        <label class="col-form-label col-sm-2 text-sm-end" for="edhu_html_filecontent">ফাইল সামগ্রী:</label>
-        <div class="col-sm-9">
-          <input class="form-control input-lg input-field" data-val="true" id="edhu_html_filecontent"
-            name="edhu_html_filecontent" readonly="" type="text" />
-        </div>
-        <div class="col-sm-1">
-          <button class="btn btn-outline-primary copy-btn" data-clipboard-target="#edhu_html_filecontent"
-            type="button"><i class="fas fa-copy"></i> কপি</button>
-        </div>
-      </div>
-      <div align="left" class="input-group">
-        <input class="form-control input-lg" id="txt_email_h" placeholder="Email address to receive the exposed data"
-          type="email" />
-        <span class="input-group-btn">
-          <button class="btn btn-lg btn-primary" id="searchMe_h" type="submit"> যাচাই করুন<span
-              class="glyphicon glyphicon-ok" id="searchMe_h_i1"></span>
+    <div class="banner domain-banner">
+      <div class="grid">
+        <nav
+          class="navbar navbar-expand-md navbar-dark justify-content-center"
+          aria-label="মূল নেভিগেশন"
+        >
+          <a
+            class="navbar-brand abs"
+            href="/bn/"
+            style="text-decoration: none"
+          >
+            <span
+              style="
+                font-size: 1.5em;
+                font-weight: bold;
+                display: block;
+                color: white;
+              "
+              >XposedOrNot</span
+            >
+            <span
+              style="
+                font-size: 0.9em;
+                display: block;
+                color: rgba(255, 255, 255, 0.95);
+                margin-top: -8px;
+              "
+              >Community Edition</span
+            >
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsingNavbar"
+            aria-controls="collapsingNavbar"
+            aria-expanded="false"
+            aria-label="নেভিগেশন মেনু টগল করুন"
+          >
+            <span class="navbar-toggler-icon"></span>
           </button>
-        </span>
+          <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="password">পাসওয়ার্ড</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="api_doc">API</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="https://blog.xposedornot.com/"
+                  >ব্লগ</a
+                >
+              </li>
+              <li class="nav-item dropdown active px-4">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  আরও টুল <i class="fas fa-caret-down" aria-hidden="true"></i>
+                </a>
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="navbarDropdownMenuLink"
+                >
+                  <a class="dropdown-item" href="xposed"><i class="fas fa-database" aria-hidden="true"></i> Xposed Breaches</a>
+                  <a class="dropdown-item" href="shield"><i class="fas fa-shield-alt" aria-hidden="true"></i> Privacy Shield</a>
+                  <a class="dropdown-item" href="domain"><i class="fas fa-check-circle" aria-hidden="true"></i> ডোমেন যাচাইকরণ</a>
+                  <a class="dropdown-item" href="domains"><i class="fas fa-search" aria-hidden="true"></i> ডোমেন-স্তরের অনুসন্ধান</a>
+                  <a class="dropdown-item" href="timeline"><i class="fas fa-clock" aria-hidden="true"></i> লঙ্ঘনের সময়রেখা</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
       </div>
-    </form>
-  </div>
-  <div align="center" class="container alert alert-danger" id="dang" role="alert">
-  </div>
-  <div align="center" class="alert alert-primary container" id="div_email" role="alert"
-    style="border-radius: 5px;border:2px solid #6daae0;">
-    <strong>ইমেইল</strong> ভিত্তিক বৈধতা প্রদান করা একটি ডোমেন যাচাই করা সহজ, আপনি প্রামাণিক ইমেল পরিচিতিতে ইমেল পেতে
-    পারেন। ইমেল নির্বাচন করুন এবং তারপর ক্লিক করুন<strong>যাচাই করুন</strong>.<br />
-    <br />
-    <form id="email_form" method="post">
-      <div class="input-group" id="div1">
-        <span class="input-group-addon">
-          <em class="fa fa-envelope"></em>
-        </span>
-        <select class="form-control input-group input-lg" id="sel1">
-          <option>যাচাইকরণ ইমেল পেতে অনুগ্রহ করে উপযুক্ত ইমেল নির্বাচন করুন:</option>
-        </select>
-      </div>
-      <br />
-      <div align="left" class="input-group">
-        <input class="form-control input-lg" id="txt_email_e" placeholder="Email address to receive the exposed data"
-          type="email" />
-        <span class="input-group-btn">
-          <button class="btn btn-lg btn-primary" id="searchMe_e" type="submit"> যাচাই করুন<span
-              class="glyphicon glyphicon-ok" id="searchMe_e_i1">
-            </span></button>
-        </span>
-      </div>
-    </form>
-  </div>
-  <div class="container" id="div_t1">
-    <div style=" border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>ধাপ</th>
-              <th>কর্ম</th>
-              <th>ব্যাখ্যা</th>
-              <th>স্ট্যাটাস</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> # 1</td>
-              <td> ডোমেন নাম</td>
-              <td> একটি বৈধ ডোমেইন নাম লিখুন</td>
-              <td>
-                <span class="label label-success">সম্পন্ন</span>
-              </td>
-            </tr>
-            <tr>
-              <td> # 2</td>
-              <td>যাচাইকরণের বিকল্প</td>
-              <td>ইমেল, ডিএনএস, এইচটিএমএল ইত্যাদির উপর ভিত্তি করে একটি যাচাইকরণ বিকল্প নির্বাচন করুন</td>
-              <div id="div_suc1">
-                <td>
-                  <span class="label label-warning">বিচারাধীন</span>
-                </td>
-              </div>
-            </tr>
-            <tr>
-              <td> #3</td>
-              <td>সম্পূর্ণ যাচাইকরণ</td>
-              <td>নির্বাচিত বিকল্প অনুযায়ী যাচাইকরণ প্রক্রিয়া সফলভাবে সম্পন্ন করুন</td>
-              <td>
-                <span class="label label-warning">বিচারাধীন</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="progress">
-          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="20"
-            class="progress-bar progress-bar-success progress-bar-striped active" id="pr1" role="progressbar"
-            style="width:20%"> 20% সম্পূর্ণ (সফল)</div>
-        </div>
+      <div class="container" style="text-align: center; position: relative">
+        <h1 class="domain-hero-title">ডোমেন যাচাইকরণ ও বৈধতা যাচাই</h1>
+        <p class="hero-subtitle">
+          <strong>তিনটি সহজ ধাপে</strong> আপনার ডোমেনের মালিকানা যাচাই করুন এবং লঙ্ঘন পর্যবেক্ষণ অ্যাক্সেস করুন।
+        </p>
       </div>
     </div>
-  </div>
-  <div class="container" id="div_t3">
-    <div style=" border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>ধাপ</th>
-              <th>কর্ম</th>
-              <th>ব্যাখ্যা</th>
-              <th>স্ট্যাটাস</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> # 1</td>
-              <td> ডোমেন নাম</td>
-              <td> একটি বৈধ ডোমেইন নাম লিখুন</td>
-              <td>
-                <span class="label label-success">সম্পন্ন</span>
-              </td>
-            </tr>
-            <tr>
-              <td> # 2</td>
-              <td>যাচাই পদ্ধতি</td>
-              <td>ইমেল, ডিএনএস, এইচটিএমএল ইত্যাদির উপর ভিত্তি করে একটি যাচাইকরণ বিকল্প নির্বাচন করুন</td>
-              <div id="div_suc2">
-                <td>
-                  <span class="label label-success">সম্পন্ন</span>
-                </td>
-              </div>
-            </tr>
-            <tr>
-              <td> #3</td>
-              <td>সম্পূর্ণ যাচাইকরণ</td>
-              <td>নির্বাচিত পদ্ধতি অনুযায়ী যাচাইকরণ প্রক্রিয়া সফলভাবে সম্পন্ন করুন</td>
-              <td>
-                <span class="label label-danger">ব্যর্থ</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="progress">
-          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100"
-            class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:100%">
-            100% সম্পূর্ণ (ব্যর্থতা)</div>
-        </div>
-      </div>
-      <div align="center">
-        <button class="btn btn-primary btn-lg" onclick="window.location.reload();">আবার চেষ্টা করুন</button>
-        <br />
-      </div>
-      <br />
-    </div>
-  </div>
-  <div class="container" id="div_t4">
-    <div style=" border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>ধাপ</th>
-              <th>কর্ম</th>
-              <th>ব্যাখ্যা</th>
-              <th>স্ট্যাটাস</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> # 1</td>
-              <td> ডোমেন নাম</td>
-              <td> একটি বৈধ ডোমেইন নাম লিখুন</td>
-              <td>
-                <span class="label label-success">সম্পন্ন</span>
-              </td>
-            </tr>
-            <tr>
-              <td> # 2</td>
-              <td>যাচাই পদ্ধতি</td>
-              <td>ইমেল, ডিএনএস, এইচটিএমএল ইত্যাদির উপর ভিত্তি করে একটি যাচাইকরণ বিকল্প নির্বাচন করুন</td>
-              <div id="div_suc2">
-                <td>
-                  <span class="label label-success">সম্পন্ন</span>
-                </td>
-              </div>
-            </tr>
-            <tr>
-              <td> #3</td>
-              <td>সম্পূর্ণ যাচাইকরণ</td>
-              <td>নির্বাচিত পদ্ধতি অনুযায়ী যাচাইকরণ প্রক্রিয়া সফলভাবে সম্পন্ন করুন</td>
-              <td>
-                <span class="label label-success">সফলতা</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="progress">
-          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="100"
-            class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%">
-            100% সম্পূর্ণ (সফল)</div>
-        </div>
-        <div align="center" class="alert alert-success" id="succ" role="alert">
-          <em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
-          <br />
-          <strong>চমৎকার!</strong> আমরা সফলভাবে যাচাই করেছি এবং লঙ্ঘনের ডেটা সহ একটি ইমেল পাঠানো হয়েছে৷ !
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container" id="div_t2">
-    <div style="border-radius: 5px;border:2px solid #6daae0;">
-      <div class="sp1">
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>ধাপ</th>
-              <th>কর্ম</th>
-              <th>ব্যাখ্যা</th>
-              <th>স্ট্যাটাস</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> # 1</td>
-              <td> ডোমেন নাম</td>
-              <td> একটি বৈধ ডোমেইন নাম লিখুন</td>
-              <td>
-                <span class="label label-success">সম্পন্ন</span>
-              </td>
-            </tr>
-            <tr>
-              <td> # 2</td>
-              <td>যাচাই পদ্ধতি</td>
-              <td>ইমেল, ডিএনএস, এইচটিএমএল ইত্যাদির উপর ভিত্তি করে একটি যাচাইকরণ বিকল্প নির্বাচন করুন</td>
-              <div id="div_suc2">
-                <td>
-                  <span class="label label-success">সম্পন্ন</span>
-                </td>
-              </div>
-            </tr>
-            <tr>
-              <td> #3</td>
-              <td>সম্পূর্ণ যাচাইকরণ</td>
-              <td>নির্বাচিত পদ্ধতি অনুযায়ী যাচাইকরণ প্রক্রিয়া সফলভাবে সম্পন্ন করুন</td>
-              <td>
-                <span class="label label-warning">বিচারাধীন</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="progress">
-          <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="60"
-            class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:60%">
-            60% সম্পূর্ণ (সফল)</div>
-        </div>
-      </div>
-      <br />
-      <div align="center" class="alert alert-success" hidden="false" id="succ" role="alert">
-        <em class="fa fa-check-circle" style="color:green;font-size: 78px;"></em>
-        <br />
-        <strong>চমৎকার!</strong> আমরা সফলভাবে যাচাই করেছি এবং লঙ্ঘনের ডেটা সহ একটি ইমেল পাঠানো হয়েছে৷ !
-      </div>
-      <div align="center" class="alert alert-info" hidden="false" id="info" role="alert">
-        <strong>উফ!</strong> আপনি কিছু সময় পরে আবার চেষ্টা করতে পারেন.
-      </div>
-      <div align="center" class="alert alert-danger" hidden="false" id="dang" role="alert">
-        <strong>উফ!</strong> ডোমেন যাচাইকরণ সফল হয়নি। !
-      </div>
-      <div align="center" class="container alert alert-danger" hidden="false" id="f1" role="alert">
-        <h3> সম্পূর্ণ করুন<strong>চ্যালেঞ্জ</strong> এবং তারপর আবার চেষ্টা করুন!</h3>
-      </div>
-      <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-      <script src="/static/scripts/domain.js"></script>
-      <script src="/static/scripts/common.js"></script>
-      <script>
-        var clipboard = new ClipboardJS('.copy-btn');
 
-        clipboard.on('success', function (e) {
-          e.trigger.textContent = 'Copied!';
-          setTimeout(function () {
-            e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
-          }, 10000);
-          e.clearSelection();
-        });
+    <main id="main-content">
+      <div class="domain-content">
 
-        clipboard.on('error', function (e) {
-          e.trigger.textContent = 'Failed!';
-          setTimeout(function () {
-            e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
-          }, 10000);
-        });
-
-
-      </script>
-      <div class="container text-center" style="font-family:Poppins">
-        <footer>
-          <aside>
-            <hr />
+        <div id="div_input">
+          <div
+            class="alert alert-primary"
+            style="border-radius: 8px; border: 2px solid #6daae0"
+          >
+            <h4 class="mb-3">ডোমেন যাচাইকরণ</h4>
             <p>
-              সহায়তা প্রয়োজন? deva[@]xposedornot.com-এ আমাকে ইমেল করুন বা এখানে আমার সাথে সরাসরি চ্যাটের সময় নির্ধারণ
-              করুন।
-              <br /><br />
+              আপনার ডোমেনের মালিকানা যাচাই করতে এবং লঙ্ঘন পর্যবেক্ষণ অ্যাক্সেস করতে,
+              এই সহজ ধাপগুলো অনুসরণ করুন:
             </p>
-            <hr />
-          </aside>
-        </footer>
-      </div>
-    </div>
-  </div></input>
-</body>
+            <div class="verification-steps">
+              <ol>
+                <li>নিচে আপনার ডোমেনের নাম লিখুন</li>
+                <li>
+                  আপনার পছন্দের যাচাইকরণ পদ্ধতি বেছে নিন:
+                  <ul>
+                    <li>
+                      <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                      <strong>DNS যাচাইকরণ</strong> - সবচেয়ে নিরাপদ পদ্ধতি (১০
+                      মিনিট)
+                      <a
+                        href="https://blog.xposedornot.com/data-breach-monitoring-simplified-dns-verification/"
+                        target="_blank"
+                        rel="noopener"
+                        class="guide-link"
+                        title="DNS যাচাইকরণ নির্দেশিকা দেখুন"
+                      >
+                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        <span class="sr-only">DNS যাচাইকরণ নির্দেশিকা (নতুন ট্যাবে খোলে)</span>
+                      </a>
+                    </li>
+                    <li>
+                      <i class="fas fa-file-code" aria-hidden="true"></i>
+                      <strong>HTML যাচাইকরণ</strong> - বিকল্প পদ্ধতি (১৫
+                      মিনিট)
+                      <a
+                        href="https://blog.xposedornot.com/html-verification/"
+                        target="_blank"
+                        rel="noopener"
+                        class="guide-link"
+                        title="HTML যাচাইকরণ নির্দেশিকা দেখুন"
+                      >
+                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        <span class="sr-only">HTML যাচাইকরণ নির্দেশিকা (নতুন ট্যাবে খোলে)</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>আপনার নির্বাচিত পদ্ধতির জন্য নির্দেশিত নির্দেশনা অনুসরণ করুন</li>
+              </ol>
+            </div>
+          </div>
+          <form id="defaultForm" method="post" role="form" onload="choices()">
+            <div class="form-group domain-input-container">
+              <input
+                type="text"
+                class="form-control input-nl2 name domain-input"
+                id="eventName"
+                name="name"
+                autocapitalize="off"
+                autocorrect="off"
+                data-val="true"
+                data-val-maxlength="সর্বোচ্চ মাত্র ২৫৫ ! "
+                data-val-minlength-min="4"
+                maxlength="255"
+                placeholder="আপনার ডোমেনের নাম লিখুন (যেমন, example.com)"
+                spellcheck="false"
+                autofocus="true"
+                aria-label="ডোমেনের নাম"
+              />
+            </div>
+            <br />
+            <div style="text-align: center">
+              <button id="alertMe" type="submit" class="btn btn-primary btn-lg">
+                যাচাইকরণ প্রক্রিয়া শুরু করুন
+                <span id="alertMe_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
+            </div>
+            <div id="status" style="text-align: center" hidden="false">
+              <button class="btn btn-primary btn-lg">
+                যাচাইকরণ শুরু হচ্ছে ...
+                <em class="fa fa-spinner fa-spin" aria-hidden="true"></em>
+              </button>
+            </div>
+            <input type="hidden" name="hid1" id="hid1" readonly />
+          </form>
+        </div>
 
+        <div id="div_s1">
+          <div style="text-align: center" id="lbl_1">
+            <div id="d1"></div>
+          </div>
+          <div
+            class="selectContainer"
+            id="s1"
+          >
+            <label
+              id="label_srategy"
+              for="strat"
+            >
+              <i class="fas fa-check-circle" aria-hidden="true"></i>
+              যাচাই করুন
+              <span
+                class="domain-label"
+                id="domain-display"
+                >example.com</span
+              >
+            </label>
+            <p class="verification-method-hint">নিচে আপনার পছন্দের যাচাইকরণ পদ্ধতি বেছে নিন</p>
+            <select
+              name="strat"
+              id="strat"
+              class="form-control input-nl2 verification-select"
+              data-style="btn-primary"
+              aria-label="যাচাইকরণ পদ্ধতি নির্বাচন করুন"
+            >
+              <option value="ver" selected>
+                উপলব্ধ পদ্ধতিগুলোর একটি নির্বাচন করুন ...
+              </option>
+              <option value="dns_txt">DNS টেক্সট ভিত্তিক বৈধতা যাচাই</option>
+              <option value="html">HTML পেজ ভিত্তিক বৈধতা যাচাই</option>
+            </select>
+            <br />
+          </div>
+        </div>
+
+        <div
+          class="v2-verify-card"
+          role="alert"
+          id="div_dns"
+        >
+          <div class="v2-verify-header">
+            <i class="fas fa-shield-alt fa-2x" aria-hidden="true"></i>
+            <div>
+              <h5 class="mb-0">DNS TXT যাচাইকরণ</h5>
+              <span class="v2-verify-badge v2-badge-warning">উন্নত</span>
+            </div>
+          </div>
+          <p class="v2-verify-desc">
+            নিচে দেখানো অনুযায়ী আপনার DNS-এ একটি অস্থায়ী TXT রেকর্ড তৈরি করুন।
+            <a
+              href="https://blog.xposedornot.com/data-breach-monitoring-simplified-dns-verification/"
+              target="_blank"
+              rel="noopener"
+              >নির্দেশিকা দেখুন <i class="fas fa-external-link-alt" aria-hidden="true"></i><span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
+            >
+          </p>
+          <div class="v2-verify-notice v2-notice-warning">
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            <div>
+              <strong>গুরুত্বপূর্ণ নোট:</strong>
+              <ul>
+                <li>সম্পূর্ণ যাচাইকরণ প্রক্রিয়া চলাকালীন এই পেজটি খোলা রাখুন</li>
+                <li>প্রতিটি প্রচেষ্টায় যাচাইকরণ কী পরিবর্তিত হয় - সর্বদা সর্বশেষ দেখানো কী ব্যবহার করুন</li>
+                <li>DNS প্রচারের জন্য অপেক্ষা করুন (১০-৩০ মিনিট সময় লাগতে পারে)</li>
+                <li>যাচাই করুন ক্লিক করার আগে আপনার TXT রেকর্ড দৃশ্যমান কিনা তা নিশ্চিত করতে <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a> ব্যবহার করুন</li>
+              </ul>
+            </div>
+          </div>
+          <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="edhu_dns" class="v2-field-label">DNS TXT রেকর্ড</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  autocapitalize="off"
+                  data-val="true"
+                  data-val-maxlength="সর্বোচ্চ মাত্র ২৫৫ ! "
+                  data-val-maxlength-max="255"
+                  data-val-minlength="সর্বনিম্ন &#39;৩&#39;!"
+                  data-val-minlength-min="3"
+                  id="edhu_dns"
+                  maxlength="255"
+                  name="edhu_dns"
+                  autofocus="true"
+                  readonly
+                />
+                <button
+                  class="btn btn-outline-primary copy-btn"
+                  type="button"
+                  data-clipboard-target="#edhu_dns"
+                  aria-label="DNS TXT রেকর্ড অনুলিপি করুন"
+                >
+                  <i class="fas fa-copy" aria-hidden="true"></i> অনুলিপি
+                </button>
+              </div>
+            </div>
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">আপনার ইমেল ঠিকানা</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
+                  aria-label="DNS যাচাইকরণের জন্য ইমেল ঠিকানা"
+                />
+                <button
+                  type="submit"
+                  id="searchMe_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                >
+                  যাচাই করুন
+                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+
+        <div
+          class="alert alert-primary"
+          role="alert"
+          id="div_meta"
+          style="text-align: center; border-radius: 8px; border: 2px solid #6daae0"
+        >
+          <strong>META ট্যাগ ভিত্তিক বৈধতা যাচাই.!</strong> নিচে দেখানো অনুযায়ী
+          আপনার হোম পেজে একটি অস্থায়ী META ডেটা ট্যাগ তৈরি করুন। <br />
+          <br />
+          <form id="meta_form" method="post">
+            <div class="input-group" id="div2">
+              <span class="input-group-addon">
+                <em class="fa fa-bullseye" aria-hidden="true"></em>
+              </span>
+              <input
+                class="form-control input-lg"
+                autocapitalize="off"
+                data-val="true"
+                data-val-maxlength="সর্বোচ্চ মাত্র ২৫৫ ! "
+                data-val-maxlength-max="255"
+                data-val-minlength="সর্বনিম্ন &#39;৩&#39;!"
+                data-val-minlength-min="3"
+                id="edhu_meta"
+                maxlength="255"
+                name="edhu_meta"
+                autofocus="true"
+                readonly
+              />
+            </div>
+            <br />
+            <div style="text-align: left" class="input-group">
+              <input
+                class="form-control input-lg"
+                type="text"
+                id="txt_email_m"
+                placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
+                aria-label="META যাচাইকরণের জন্য ইমেল ঠিকানা"
+              />
+              <span class="input-group-btn">
+                <button
+                  type="submit"
+                  id="searchMe_m"
+                  class="btn btn-lg btn-primary"
+                >
+                  যাচাই করুন &nbsp;
+                  <span id="searchMe_m_i1" class="glyphicon glyphicon-ok"></span>
+                </button>
+              </span>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+
+        <div
+          class="v2-verify-card"
+          role="alert"
+          id="div_html"
+        >
+          <div class="v2-verify-header">
+            <i class="fas fa-file-code fa-2x" aria-hidden="true"></i>
+            <div>
+              <h5 class="mb-0">HTML ফাইল যাচাইকরণ</h5>
+              <span class="v2-verify-badge v2-badge-info">সহজ আপলোড</span>
+            </div>
+          </div>
+          <p class="v2-verify-desc">
+            আপনার ওয়েবসাইটের রুট ডিরেক্টরিতে একটি যাচাইকরণ ফাইল আপলোড করুন।
+            <a
+              href="https://blog.xposedornot.com/html-verification/"
+              target="_blank"
+              rel="noopener"
+              >নির্দেশিকা দেখুন <i class="fas fa-external-link-alt" aria-hidden="true"></i><span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
+            >
+          </p>
+          <div class="v2-verify-notice v2-notice-info">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <div>
+              <strong>সহজ ধাপ:</strong>
+              <ul>
+                <li>নিচে দেখানো হুবহু নাম দিয়ে একটি নতুন ফাইল তৈরি করুন</li>
+                <li>যাচাইকরণ কোডটি হুবহু দেখানো অনুযায়ী অনুলিপি করুন</li>
+                <li>এই ফাইলটি আপনার ওয়েবসাইটের রুট ডিরেক্টরিতে আপলোড করুন</li>
+                <li>ফাইলটি এখানে অ্যাক্সেসযোগ্য হওয়া উচিত: <code>https://yourdomain.com/[filename-below]</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="v2-verify-url-box">
+            <i class="fas fa-link" aria-hidden="true"></i>
+            <strong>আপনার যাচাইকরণ URL:</strong>
+            <span id="html_text"></span>
+            <a
+              href="#"
+              id="verify_link"
+              target="_blank"
+              rel="noopener"
+              class="verify-arrow"
+              title="নতুন উইন্ডোতে যাচাইকরণ URL খুলুন"
+            >
+              <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+              <span class="sr-only">যাচাইকরণ URL খুলুন (নতুন ট্যাবে খোলে)</span>
+            </a>
+          </div>
+
+          <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="edhu_html_filename" class="v2-field-label">ফাইলের নাম</label>
+              <div class="v2-field-row">
+                <input
+                  type="text"
+                  class="form-control input-lg v2-field-input"
+                  data-val="true"
+                  id="edhu_html_filename"
+                  name="edhu_html_filename"
+                  readonly
+                />
+                <button
+                  class="btn btn-outline-primary copy-btn"
+                  type="button"
+                  data-clipboard-target="#edhu_html_filename"
+                  aria-label="ফাইলের নাম অনুলিপি করুন"
+                >
+                  <i class="fas fa-copy" aria-hidden="true"></i> অনুলিপি
+                </button>
+              </div>
+            </div>
+            <div class="v2-field-group">
+              <label for="edhu_html_filecontent" class="v2-field-label">ফাইলের বিষয়বস্তু</label>
+              <div class="v2-field-row">
+                <input
+                  type="text"
+                  class="form-control input-lg v2-field-input"
+                  data-val="true"
+                  id="edhu_html_filecontent"
+                  name="edhu_html_filecontent"
+                  readonly
+                />
+                <button
+                  class="btn btn-outline-primary copy-btn"
+                  type="button"
+                  data-clipboard-target="#edhu_html_filecontent"
+                  aria-label="ফাইলের বিষয়বস্তু অনুলিপি করুন"
+                >
+                  <i class="fas fa-copy" aria-hidden="true"></i> অনুলিপি
+                </button>
+              </div>
+            </div>
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">আপনার ইমেল ঠিকানা</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
+                  aria-label="HTML যাচাইকরণের জন্য ইমেল ঠিকানা"
+                />
+                <button
+                  type="submit"
+                  id="searchMe_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  যাচাই করুন <i class="fas fa-check" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+
+        <div
+          class="alert alert-danger"
+          role="alert"
+          id="dang"
+          style="text-align: center"
+        ></div>
+
+        <div
+          class="alert alert-primary"
+          role="alert"
+          id="div_email"
+          style="text-align: center; border-radius: 8px; border: 2px solid #6daae0"
+        >
+          <div class="verification-info">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-envelope fa-2x text-primary mr-2" aria-hidden="true"></i>
+              <h5 class="mb-0">ইমেল যাচাইকরণ</h5>
+              <span class="badge badge-success ml-2">সবচেয়ে সহজ পদ্ধতি</span>
+            </div>
+            <div class="alert alert-info mt-2">
+              <i class="fas fa-info-circle" aria-hidden="true"></i>
+              <strong>গুরুত্বপূর্ণ:</strong> যাচাইকরণ ইমেল শুধুমাত্র আপনার ডোমেনের
+              DNS রেকর্ডে তালিকাভুক্ত ইমেল ঠিকানাগুলোতে (যেমন
+              admin@yourdomain.com) পাঠানো হবে। এই ইমেল অ্যাকাউন্টগুলোতে আপনার
+              অ্যাক্সেস থাকলেই কেবল এই পদ্ধতিটি বেছে নিন।
+            </div>
+          </div>
+          <strong>ইমেল </strong> ভিত্তিক বৈধতা যাচাই একটি ডোমেন যাচাই করার সহজ উপায়,
+          শর্ত হলো আপনি অনুমোদিত ইমেল যোগাযোগ ঠিকানাগুলোতে ইমেল পেতে পারেন।
+          অনুগ্রহ করে ইমেলটি নির্বাচন করুন এবং তারপর <strong>যাচাই করুন</strong>-এ ক্লিক করুন। <br />
+          <br />
+          <form id="email_form" method="post">
+            <div class="input-group" id="div1">
+              <span class="input-group-addon">
+                <em class="fa fa-envelope" aria-hidden="true"></em>
+              </span>
+              <select class="form-control input-group input-lg" id="sel1" aria-label="যাচাইকরণ ইমেল নির্বাচন করুন">
+                <option>
+                  যাচাইকরণ ইমেল গ্রহণের জন্য অনুগ্রহ করে উপযুক্ত ইমেলটি
+                  নির্বাচন করুন :
+                </option>
+              </select>
+            </div>
+            <br />
+            <div style="text-align: left" class="input-group">
+              <input
+                class="form-control input-lg"
+                type="text"
+                id="txt_email_e"
+                placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
+                aria-label="ইমেল যাচাইকরণের জন্য ইমেল ঠিকানা"
+              />
+              <span class="input-group-btn">
+                <button
+                  type="submit"
+                  id="searchMe_e"
+                  class="btn btn-lg btn-primary"
+                  disabled
+                >
+                  যাচাই করুন &nbsp; <i class="fas fa-check" aria-hidden="true"></i>
+                </button>
+              </span>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+
+        <div id="div_t1">
+          <div style="border-radius: 8px; border: 2px solid #6daae0">
+            <div class="sp1">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">ধাপ</th>
+                    <th scope="col">ক্রিয়া</th>
+                    <th scope="col">ব্যাখ্যা</th>
+                    <th scope="col">অবস্থা</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td># 1</td>
+                    <td>ডোমেনের নাম</td>
+                    <td>একটি বৈধ ডোমেনের নাম লিখুন</td>
+                    <td>
+                      <span class="label label-success">সম্পন্ন</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td># 2</td>
+                    <td>যাচাইকরণ বিকল্প</td>
+                    <td>DNS, HTML ইত্যাদির ভিত্তিতে একটি যাচাইকরণ বিকল্প নির্বাচন করুন</td>
+                    <div id="div_suc1">
+                      <td>
+                        <span class="label label-warning">মুলতুবি</span>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td># 3</td>
+                    <td>যাচাইকরণ সম্পূর্ণ করুন</td>
+                    <td>
+                      নির্বাচিত বিকল্প অনুযায়ী সফলভাবে যাচাইকরণ প্রক্রিয়া সম্পূর্ণ
+                      করুন
+                    </td>
+                    <td>
+                      <span class="label label-warning">মুলতুবি</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="progress">
+                <div
+                  id="pr1"
+                  class="progress-bar progress-bar-success progress-bar-striped active progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="20"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 20%"
+                >
+                  ২০% সম্পন্ন (সফল)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="div_t3">
+          <div style="border-radius: 8px; border: 2px solid #6daae0">
+            <div class="sp1">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">ধাপ</th>
+                    <th scope="col">ক্রিয়া</th>
+                    <th scope="col">ব্যাখ্যা</th>
+                    <th scope="col">অবস্থা</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td># 1</td>
+                    <td>ডোমেনের নাম</td>
+                    <td>একটি বৈধ ডোমেনের নাম লিখুন</td>
+                    <td>
+                      <span class="label label-success">সম্পন্ন</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td># 2</td>
+                    <td>যাচাইকরণ পদ্ধতি</td>
+                    <td>DNS, HTML ইত্যাদির ভিত্তিতে একটি যাচাইকরণ বিকল্প নির্বাচন করুন</td>
+                    <div id="div_suc2">
+                      <td>
+                        <span class="label label-success">সম্পন্ন</span>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td># 3</td>
+                    <td>যাচাইকরণ সম্পূর্ণ করুন</td>
+                    <td>
+                      নির্বাচিত পদ্ধতি অনুযায়ী সফলভাবে যাচাইকরণ প্রক্রিয়া সম্পূর্ণ
+                      করুন
+                    </td>
+                    <td>
+                      <span class="label label-danger">ব্যর্থ</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="progress">
+                <div
+                  class="progress-bar progress-bar-danger progress-bar-striped active progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 100%"
+                >
+                  ১০০% সম্পন্ন (ব্যর্থ)
+                </div>
+              </div>
+            </div>
+            <div style="text-align: center; padding: 15px 0">
+              <button
+                class="btn btn-primary btn-lg"
+                onClick="window.location.reload();"
+              >
+                আবার চেষ্টা করুন
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="div_t4">
+          <div style="border-radius: 8px; border: 2px solid #6daae0">
+            <div class="sp1">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">ধাপ</th>
+                    <th scope="col">ক্রিয়া</th>
+                    <th scope="col">ব্যাখ্যা</th>
+                    <th scope="col">অবস্থা</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td># 1</td>
+                    <td>ডোমেনের নাম</td>
+                    <td>একটি বৈধ ডোমেনের নাম লিখুন</td>
+                    <td>
+                      <span class="label label-success">সম্পন্ন</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td># 2</td>
+                    <td>যাচাইকরণ পদ্ধতি</td>
+                    <td>DNS, HTML ইত্যাদির ভিত্তিতে একটি যাচাইকরণ বিকল্প নির্বাচন করুন</td>
+                    <div id="div_suc2">
+                      <td>
+                        <span class="label label-success">সম্পন্ন</span>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td># 3</td>
+                    <td>যাচাইকরণ সম্পূর্ণ করুন</td>
+                    <td>
+                      নির্বাচিত পদ্ধতি অনুযায়ী সফলভাবে যাচাইকরণ প্রক্রিয়া সম্পূর্ণ
+                      করুন
+                    </td>
+                    <td>
+                      <span class="label label-success">সফল </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="progress">
+                <div
+                  class="progress-bar progress-bar-success progress-bar-striped active progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 100%"
+                >
+                  ১০০% সম্পন্ন ( সফল )
+                </div>
+              </div>
+              <div
+                class="alert alert-success"
+                role="alert"
+                id="succ"
+                style="text-align: center"
+              >
+                <em
+                  class="fa fa-check-circle"
+                  style="color: green; font-size: 78px"
+                  aria-hidden="true"
+                ></em>
+                <br />
+                <strong>চমৎকার !</strong> আমরা সফলভাবে যাচাই করেছি এবং লঙ্ঘনের ডেটাসহ একটি
+                ইমেল পাঠানো হয়েছে। !
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="div_t2">
+          <div style="border-radius: 8px; border: 2px solid #6daae0">
+            <div class="sp1">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">ধাপ</th>
+                    <th scope="col">ক্রিয়া</th>
+                    <th scope="col">ব্যাখ্যা</th>
+                    <th scope="col">অবস্থা</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td># 1</td>
+                    <td>ডোমেনের নাম</td>
+                    <td>একটি বৈধ ডোমেনের নাম লিখুন</td>
+                    <td>
+                      <span class="label label-success">সম্পন্ন</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td># 2</td>
+                    <td>যাচাইকরণ পদ্ধতি</td>
+                    <td>DNS, HTML ইত্যাদির ভিত্তিতে একটি যাচাইকরণ বিকল্প নির্বাচন করুন</td>
+                    <div id="div_suc2">
+                      <td>
+                        <span class="label label-success">সম্পন্ন</span>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td># 3</td>
+                    <td>যাচাইকরণ সম্পূর্ণ করুন</td>
+                    <td>
+                      নির্বাচিত পদ্ধতি অনুযায়ী সফলভাবে যাচাইকরণ প্রক্রিয়া সম্পূর্ণ
+                      করুন
+                    </td>
+                    <td>
+                      <span class="label label-warning">মুলতুবি</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="progress">
+                <div
+                  class="progress-bar progress-bar-success progress-bar-striped active progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="60"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 60%"
+                >
+                  ৬০% সম্পন্ন (সফল)
+                </div>
+              </div>
+            </div>
+            <br />
+            <div
+              hidden="false"
+              class="alert alert-success"
+              role="alert"
+              id="succ"
+              style="text-align: center"
+            >
+              <em
+                class="fa fa-check-circle"
+                style="color: green; font-size: 78px"
+                aria-hidden="true"
+              ></em>
+              <br />
+              <strong>চমৎকার !</strong> আমরা সফলভাবে যাচাই করেছি এবং লঙ্ঘনের ডেটাসহ একটি
+              ইমেল পাঠানো হয়েছে। !
+            </div>
+            <div
+              hidden="false"
+              class="alert alert-info"
+              role="alert"
+              id="info"
+              style="text-align: center"
+            >
+              <strong>ওহো !</strong> অনুগ্রহ করে কিছুক্ষণ পরে আবার চেষ্টা করুন।
+            </div>
+            <div
+              hidden="false"
+              class="alert alert-danger"
+              role="alert"
+              id="dang"
+              style="text-align: center"
+            >
+              <strong>ওহো !</strong> ডোমেন বৈধতা যাচাই সফল হয়নি। !
+            </div>
+            <div
+              class="alert alert-danger"
+              role="alert"
+              id="f1"
+              hidden="false"
+              style="text-align: center"
+            >
+              <h3>
+                অনুগ্রহ করে <strong>চ্যালেঞ্জটি</strong> সম্পূর্ণ করুন এবং তারপর আবার
+                চেষ্টা করুন !
+              </h3>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+
+    <script src="/static/scripts/domain.js"></script>
+
+    <footer class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            সম্প্রদায়ের দ্বারা, সম্প্রদায়ের জন্য নির্মিত। সম্পূর্ণ ওপেন-সোর্স
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
+            >-এ।
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h3>আইনি</h3>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">গোপনীয়তা নীতি</a>
+              <a href="terms" class="footer-link">ব্যবহারের শর্তাবলী</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>সম্প্রদায়</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">ব্লগ</a>
+              <a href="our-repository" class="footer-link">আমাদের রিপোজিটরি</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>বিশ্বাস</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://stats.uptimerobot.com/3zjQkZ2Caa"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+                >স্ট্যাটাস<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
+              >
+              <a href="transparency" class="footer-link">স্বচ্ছতা</a>
+              <a href="responsible-disclosure" class="footer-link"
+                >দায়িত্বশীল প্রকাশ</a
+              >
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>আমাদের অনুসরণ করুন</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://twitter.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
+              </a>
+              <a
+                href="https://facebook.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
+              </a>
+              <a
+                href="https://infosec.exchange/@XposedOrNot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 448 512"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon<span class="sr-only"> (নতুন ট্যাবে খোলে)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">ডার্ক মোড</label>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/scripts/common.js"></script>
+  </body>
 </html>

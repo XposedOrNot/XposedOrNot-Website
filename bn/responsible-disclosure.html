@@ -1,33 +1,86 @@
+<!doctype html>
 <html lang="bn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta name="description" content="XposedOrNot: দায়িত্বশীল প্রকাশ" />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta property="og:title" content="দায়িত্বশীল প্রকাশ" />
+    <meta
+      property="og:description"
+      content="নিরাপত্তা দুর্বলতার দায়িত্বশীল প্রকাশের জন্য XposedOrNot-এর নির্দেশিকা।"
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta
+      property="og:url"
+      content="https://xposedornot.com/responsible-disclosure"
+    />
+    <meta property="og:type" content="website" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="XposedOrNot: Responsible Disclosure" name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <link href="/favicon.ico" rel="icon" type="image/x-icon" />
-  <title>দায়িত্বশীল প্রকাশ</title>
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset&display=swap" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
-    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-    referrerpolicy="no-referrer" rel="stylesheet">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-  <script crossorigin="anonymous"
-    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-    referrerpolicy="no-referrer"
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="দায়িত্বশীল প্রকাশ" />
+    <meta
+      name="twitter:description"
+      content="নিরাপত্তা দুর্বলতার দায়িত্বশীল প্রকাশের জন্য XposedOrNot-এর নির্দেশিকা।"
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
 
-  </link>
-  </link>
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <title>XposedOrNot: দায়িত্বশীল প্রকাশ</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -53,195 +106,391 @@
 
     </head>
 
-<body>
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com">XposedOrNot</a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password">পাসওয়ার্ড<span class="sr-only">(বর্তমান)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="faq">FAQ</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">ব্লগ</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> আরও টুল</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed">এক্সপোজড ব্রেচ</a>
-              <a class="dropdown-item" href="shield">গোপনীয়তা শিল্ড</a>
-              <a class="dropdown-item" href="domain">ডোমেন যাচাইকরণ</a>
-              <a class="dropdown-item" href="domains">ডোমেন-স্তরের অনুসন্ধান</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <div class="container">
-    <div class="panel-group" id="accordion">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-parent="#accordion" data-toggle="collapse" href="#collapse1">
-              <h1>
-                <strong>বাগ এবং দুর্বলতার দায়িত্বশীল প্রকাশ</strong>
-              </h1>
-            </a>
-          </h4>
+  <body>
+    <div class="kbanner">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark bg-primary kbanner"
+        style="min-height: 70px; padding-top: 0.5rem; padding-bottom: 0.5rem"
+      >
+        <a
+          class="navbar-brand"
+          href="https://xposedornot.com"
+          style="text-decoration: none"
+        >
+          <span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+              line-height: 1.2;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              line-height: 1;
+            "
+            >Community Edition</span
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="নেভিগেশন টগল করুন"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password"
+                >পাসওয়ার্ড &nbsp; <span class="sr-only">(বর্তমান)</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="faq">FAQ &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >ব্লগ &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                আরও টুল
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed">Xposed লঙ্ঘনসমূহ</a>
+                <a class="dropdown-item" href="shield">Privacy Shield</a>
+                <a class="dropdown-item" href="domain"
+                  >ডোমেন যাচাইকরণ</a
+                >
+                <a class="dropdown-item" href="domains"
+                  >ডোমেন-স্তরের অনুসন্ধান</a
+                >
+              </div>
+            </li>
+          </ul>
         </div>
-        <div class="panel-collapse" id="collapse1">
+      </nav>
+    </div>
+    <div class="container">
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse"
+                data-parent="#accordion"
+                href="#collapse1"
+              >
+                <h1>
+                  <strong
+                    >বাগ ও দুর্বলতার দায়িত্বশীল প্রকাশ</strong
+                  >
+                </h1>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse">
+            <div class="panel-body">
+              <strong>সর্বশেষ হালনাগাদ: ২৬-আগস্ট-২০২৫</strong>
+              <br />
+              <br />স্বাগতম, বাগ অনুসন্ধানকারীগণ! XposedOrNot (XON)-কে নিরাপদ ও
+              সুরক্ষিত রাখতে সহায়তা করার জন্য আপনি এখানে এসেছেন বলে আমরা অত্যন্ত
+              আনন্দিত। আমাদের পরিষেবা, ওয়েবসাইট এবং নেটওয়ার্ককে যেকোনো বিরক্তিকর
+              বাগ বা দুর্বলতা থেকে সুরক্ষিত রাখতে এবং সবাই যাতে সঠিকভাবে সহযোগিতা
+              করেন তা নিশ্চিত করতে আমি এই দায়িত্বশীল প্রকাশ নীতি প্রণয়ন করেছি।
+              <br /><br />
+              আপনি যদি এমন কিছু খুঁজে পান যা আমার মনোযোগ প্রয়োজন, তাহলে তা
+              দায়িত্বশীলভাবে অনুসন্ধান ও রিপোর্ট করার জন্য আপনার সহযোগিতার আমি
+              কৃতজ্ঞতা জানাই, যাতে আমি তা দ্রুততার সাথে ঠিক করতে পারি। নিরাপত্তা
+              দুর্বলতা প্রকাশে আপনার সহায়তা আমাদের সকল ব্যবহারকারীকে নিরাপদ
+              রাখতে সাহায্য করে। <br /><br />
+              <h2>
+                <strong>রিপোর্ট করার নির্দেশিকা:</strong>
+              </h2>
+              <br />
+              আপনি যখন কোনো বাগ বা দুর্বলতা রিপোর্ট করবেন, তখন অনুগ্রহ করে
+              নিম্নলিখিত তথ্যগুলো অন্তর্ভুক্ত করতে ভুলবেন না:
+              <ol>
+                <li>
+                  বাগ বা দুর্বলতার একটি স্পষ্ট বিবরণ, সঙ্গে স্ক্রিন ক্যাপচার বা
+                  আউটপুট ডেটার মতো কিছু প্রমাণ। সংকোচ করবেন না, আপনি কী খুঁজে
+                  পেয়েছেন তা দেখতে আমরা পছন্দ করি!
+                </li>
+                <li>
+                  দুর্বলতার সম্ভাব্য প্রভাবের একটি বিবরণ, যাতে আমরা বুঝতে পারি যে
+                  আমরা কীসের সঙ্গে কাজ করছি।
+                </li>
+                <li>
+                  আপনার পছন্দের নাম বা হ্যান্ডেল, যাতে আমরা আমাদের XON নিরাপত্তা
+                  গবেষক সম্মাননা তালিকায় আপনার প্রাপ্য স্বীকৃতি দিতে পারি।
+                </li>
+                <li>
+                  সমস্যাটি পুনরুৎপাদনের সঠিক ধাপসমূহ, যাতে আমরা আমাদের দিক থেকে
+                  তা পুনরায় তৈরি করতে পারি।
+                </li>
+                <li>
+                  আপনার কাছে যদি একটি ভিডিও প্রুফ অফ কনসেপ্ট থাকে তবে তা সবসময়
+                  প্রশংসনীয়।
+                </li>
+                <li>
+                  প্ল্যাটফর্ম, অপারেটিং সিস্টেম, সংস্করণ, IP ঠিকানা বা URL
+                  সম্পর্কিত যেকোনো প্রাসঙ্গিক তথ্য।
+                </li>
+                <li>
+                  লগিং বা ট্রেসিং ডেটার মতো সহায়ক প্রমাণ সবসময়ই কাজে লাগে।
+                </li>
+                <li>
+                  সমস্যাটি কতটা শোষণযোগ্য হতে পারে সে সম্পর্কে আপনার মূল্যায়ন।
+                  এটি যদি শোষণযোগ্যতার স্কেলে ১০-এর মধ্যে ১০ হয়, তবুও আমরা আপনাকে
+                  বিচার করব না।
+                </li>
+              </ol>
+              একজন চমৎকার বাগ অনুসন্ধানকারী হওয়ার 🙌 এবং XposedOrNot (XON)-কে
+              নিরাপদ ও সুরক্ষিত রাখতে সহায়তা করার জন্য আপনাকে ধন্যবাদ!
+              <br /><br />
+              <h2>
+                <strong>বৈধ জমাসমূহ </strong>
+              </h2>
+              <br />
+              <ol>
+                <li>স্থানীয় বা দূরবর্তী ফাইল ইনক্লুশন</li>
+                <li>প্রমাণীকরণ বাইপাস</li>
+                <li>ডিরেক্টরি ট্রাভার্সাল</li>
+                <li>অননুমোদিত/অনিচ্ছাকৃত ডেটা ফাঁস</li>
+                <li>দূরবর্তী কোড এক্সিকিউশন (RCE)</li>
+                <li>SQL/XXE ইনজেকশন এবং কমান্ড ইনজেকশন</li>
+                <li>ক্রস-সাইট স্ক্রিপ্টিং (XSS)</li>
+                <li>সার্ভার সাইড রিকোয়েস্ট ফরজারি (SSRF)</li>
+                <li>সার্ভার বা API-তে ভুল কনফিগারেশন সংক্রান্ত সমস্যা</li>
+                <li>প্রমাণীকরণ ও অনুমোদন সম্পর্কিত সমস্যা</li>
+                <li>ক্রস সাইট রিকোয়েস্ট ফরজারি (CSRF)</li>
+              </ol>
+              <br />
+              <h2>
+                <strong> পরিধিভুক্ত ডোমেনসমূহ</strong>
+              </h2>
+              <br />
+              <p><strong>প্রাথমিক ডোমেন:</strong> xposedornot.com</p>
+              <p>
+                <strong>সাবডোমেন:</strong> xposedornot.com-এর সকল সাবডোমেন
+                (*.xposedornot.com)
+              </p>
+              <br />
+              <p>
+                <em
+                  >এর মধ্যে অন্তর্ভুক্ত কিন্তু সীমাবদ্ধ নয়: api.xposedornot.com,
+                  passwords.xposedornot.com, plus.xposedornot.com এবং ভবিষ্যতের
+                  যেকোনো সাবডোমেন।</em
+                >
+              </p>
+              <br />
+              <h2>
+                <strong> তথ্যের ব্যবহার</strong>
+              </h2>
+              <br />
+              আমরা আপনার ও আমাদের পরিষেবা সম্পর্কিত সকল তথ্য গোপন রাখার প্রতিশ্রুতি
+              দিচ্ছি। তাই অনুগ্রহ করে আমাদের দলের বাইরে কাউকে এসব তথ্য ফাঁস করবেন
+              না!<br />
+              <br />
+              আমরা ইন্টারনেটকে আরও নিরাপদ স্থানে পরিণত করতে নিবেদিত, এবং যেসব
+              নিরাপত্তা গবেষক আমাদের সেই লক্ষ্য অর্জনে সহায়তা করেন তাদের আমরা
+              সাধুবাদ জানাই। সুতরাং, সেই প্রচেষ্টার অংশ হওয়ার জন্য আপনাকে অসংখ্য
+              ধন্যবাদ 🙏! আপনি যেকোনো বাগ বা দুর্বলতা খুঁজে পেলে তা দায়িত্বশীলভাবে
+              প্রকাশ করার মাধ্যমে আমাদের ব্যবহারকারী ও তাদের ডেটা সুরক্ষিত রাখতে
+              সাহায্য করছেন।<br />
+              <br />
+              <h2>
+                <strong> গ্রহণযোগ্য ব্যবহার নীতি </strong>
+              </h2>
+              <br />
+              একটি কথা জানিয়ে রাখি - এটি আপনার চেনা সাধারণ বাগ বাউন্টি প্রোগ্রাম
+              নয় যেখানে আমরা দুর্বলতা জমা দেওয়ার বিনিময়ে নগদ পুরস্কার দিই। আমরা
+              (এখনও) এত সচ্ছল নই। তবে, আপনি যদি আমাদের কাছে গুরুত্বপূর্ণ কিছু
+              রিপোর্ট করেন, তাহলে বিনিময়ে আমরা হয়তো আপনাকে কিছুটা ভালোবাসা ও
+              কৃতজ্ঞতা জানাতে পারি!<br />
+              <br />
+              শুধু বিষয়টি নৈতিকভাবে পরিচালনা করতে ভুলবেন না, ঠিক আছে? আমরা আশা করি
+              আপনি ইন্টারনেটের একজন সুনাগরিকের মতো আচরণ করবেন এবং আমাদের গ্রহণযোগ্য
+              ব্যবহার নীতিতে নির্ধারিত নিয়মগুলো অনুসরণ করবেন। আপনি যদি তা করেন,
+              তাহলে আমরা সানন্দে আমাদের সম্মাননা তালিকা পৃষ্ঠায় আপনাকে কিছুটা স্বীকৃতি
+              দেব - যা অনেকটা আমাদের সংস্করণের হলিউড ওয়াক অফ ফেম-এর মতো, তবে
+              নিরাপত্তা গবেষকদের জন্য। সুতরাং এগিয়ে যান, আপনার দক্ষতা প্রদর্শন করুন
+              এবং XposedOrNot-কে সবার জন্য আরও নিরাপদ স্থানে পরিণত করতে আমাদের
+              সাহায্য করুন!<br />
+              <br />
+              <h2>
+                <strong> বাগ রিপোর্টকারী - প্রত্যাশা </strong>
+              </h2>
+              <br />
+              বাগ অনুসন্ধানকারীগণ, XposedOrNot-কে সবার জন্য আরও নিরাপদ স্থানে
+              পরিণত করতে আপনাকে আমাদের সঙ্গে পেয়ে আমরা উচ্ছ্বসিত! শুরু করার আগে,
+              আপনার কাছ থেকে আমরা কয়েকটি বিষয় প্রত্যাশা করি: <br /><br />
+              <ol>
+                <li>
+                  অনুগ্রহ করে এমন কিছু করবেন না যা XposedOrNot বা আমাদের
+                  ব্যবহারকারীদের ক্ষতি করে বা ব্যাহত করে।
+                </li>
+                <li>
+                  আপনার রিপোর্ট পাওয়ার ১-৩ দিনের মধ্যে আমরা আপনাকে একটি প্রাপ্তি
+                  স্বীকৃতি পাঠাব।
+                </li>
+                <li>
+                  আমাদের ব্যবহারকারীদের গোপনীয়তাকে সম্মান করুন এবং তাদের
+                  অ্যাকাউন্টে নজরদারি করার চেষ্টা করবেন না।
+                </li>
+                <li>শুধুমাত্র আপনার নিজের অ্যাকাউন্ট ও ইমেল ঠিকানায় পরীক্ষা করুন।</li>
+                <li>
+                  আপনি যদি এমন কোনো গুরুতর দুর্বলতা খুঁজে পান যা আপনাকে আমাদের
+                  ওয়েবসার্ভার বা API-তে প্রবেশাধিকার দেয়, তাহলে অনুগ্রহ করে সেখানেই
+                  থামুন এবং আমাদের তা পরিচালনা করতে দিন।
+                </li>
+                <li>
+                  আমরা সমস্যাটির সমাধান না করা পর্যন্ত এ সম্পর্কে কোনো বিবরণ শেয়ার
+                  করবেন না।
+                </li>
+                <li>
+                  আপনি যদি ব্যক্তিগত লাভের জন্য দুর্বলতাটি শোষণ করার চেষ্টা করেন,
+                  তাহলে আমাদের আপনার রিপোর্ট অযোগ্য ঘোষণা করতে হবে।
+                </li>
+              </ol>
+              <br />
+              আমাদের প্ল্যাটফর্ম সুরক্ষিত রাখতে সহায়তা করার জন্য আপনার সহযোগিতার
+              আমরা কৃতজ্ঞতা জানাই। আসুন একসঙ্গে কাজ করে XposedOrNot-কে যথাসম্ভব সেরা
+              করে তুলি!
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse in panel-collapse"
+                data-parent="#accordion"
+                href="#collapse25"
+              >
+                <strong>রিপোর্ট করার নির্দেশিকা</strong>
+              </a>
+            </h4>
+          </div>
           <div class="panel-body">
-            <strong>শেষ আপডেট: 08-Mar-2021</strong>
+            আমাদের খেয়াল রাখার জন্য আপনাকে ধন্যবাদ! আপনি যদি XposedOrNot-এ কোনো
+            বাগ বা নিরাপত্তা দুর্বলতা খুঁজে পেয়ে থাকেন, তাহলে সে সম্পর্কে শুনতে আমরা
+            আগ্রহী। আপনি তা ইমেলের মাধ্যমে
+            <strong>deva @ xposedornot.com</strong>-এ রিপোর্ট করতে পারেন অথবা
+            <strong>@DevaOnBreaches</strong>-এ আমাদের টুইট করতে পারেন। <br />
             <br />
-            <br />আরে, বাগ শিকারী! XposedOrNot (XON) নিরাপদ এবং সুরক্ষিত রাখতে আপনি এখানে আমাদের সাহায্য করার জন্য আমরা
-            খুবই আনন্দিত। আমি এই দায়িত্বশীল প্রকাশ নীতি সেট আপ করেছি যাতে সবাই ভাল খেলতে পারে এবং আমাদের পরিষেবা,
-            ওয়েবসাইট এবং নেটওয়ার্ককে যেকোন বিরক্তিকর বাগ বা দুর্বলতা থেকে নিরাপদ রাখতে সাহায্য করে।<br /><br />
-            আপনি যদি এমন কিছু খুঁজে পান যা আমার মনোযোগের প্রয়োজন হয়, আমি দায়িত্বশীলভাবে তদন্ত এবং প্রতিবেদন করার জন্য
-            আপনার সহযোগিতার প্রশংসা করি যাতে আমি দ্রুতগতির বুলেটের চেয়ে দ্রুত এটি ঠিক করতে পারি। নিরাপত্তা দুর্বলতা
-            প্রকাশে আপনার সাহায্য আমাদের সকল ব্যবহারকারীদের নিরাপদ ও সুস্থ রাখতে সাহায্য করে।<br /><br />
-            <h2>
-              <strong>রিপোর্ট করার জন্য নির্দেশিকা:</strong>
-            </h2>
-            <br /> যখন আপনি একটি বাগ বা দুর্বলতা রিপোর্ট করছেন, অনুগ্রহ করে নিম্নলিখিতগুলি অন্তর্ভুক্ত করা নিশ্চিত করুন:
-            <ol>
-              <li> স্ক্রিন ক্যাপচার বা আউটপুট ডেটার মতো কিছু প্রমাণ সহ বাগ বা দুর্বলতার একটি স্পষ্ট বিবরণ। লজ্জা পাবেন
-                না, আপনি যা পেয়েছেন তা দেখতে আমরা ভালোবাসি!</li>
-              <li> দুর্বলতার সম্ভাব্য প্রভাবের একটি বিবরণ, তাই আমরা জানি যে আমরা কী নিয়ে কাজ করছি।</li>
-              <li> আপনার পছন্দের নাম বা হ্যান্ডেল যাতে আমরা আপনাকে আমাদের XON নিরাপত্তা গবেষক হল অফ ফেমে আপনার প্রাপ্য
-                স্বীকৃতি দিতে পারি।</li>
-              <li> সমস্যাটি পুনরুত্পাদন করার জন্য সঠিক পদক্ষেপগুলি যাতে আমরা এটিকে আমাদের প্রান্তে প্রতিলিপি করতে পারি।
-              </li>
-              <li> ধারণার একটি ভিডিও প্রমাণ সবসময় প্রশংসা করা হয় যদি আপনার কাছে থাকে।</li>
-              <li> প্ল্যাটফর্ম, অপারেটিং সিস্টেম, সংস্করণ, আইপি ঠিকানা, বা URL সম্পর্কে যেকোন প্রাসঙ্গিক তথ্য।</li>
-              <li> লগিং বা ট্রেসিং ডেটার মতো সহায়ক প্রমাণ সবসময় সহায়ক।</li>
-              <li> সমস্যাটি কতটা শোষণযোগ্য হতে পারে তার আপনার মূল্যায়ন। শোষণের স্কেলে 10-এর মধ্যে 10 হলে আমরা আপনাকে
-                বিচার করব না।</li>
-            </ol>
-            একটি দুর্দান্ত বাগ শিকারী হওয়ার জন্য ধন্যবাদ 🙌 এবং আমাদেরকে XposedOrNot (XON) নিরাপদ এবং সুস্থ রাখতে
-            সাহায্য করার জন্য!<br /><br />
-            <h2>
-              <strong>বৈধ জমা</strong>
-            </h2>
+            ইমেল : deva @ xposedornot.com <br />
+            Twitter :
+            <a href="https://twitter.com/devaonbreaches">DevaOnBreaches </a>
             <br />
-            <ol>
-              <li> স্থানীয় বা দূরবর্তী ফাইল অন্তর্ভুক্তি</li>
-              <li> প্রমাণীকরণ বাইপাস</li>
-              <li> ডিরেক্টরি ট্রাভার্সাল</li>
-              <li> অননুমোদিত/অপ্রত্যাশিত ডেটা ফাঁস</li>
-              <li> রিমোট কোড এক্সিকিউশন (RCE)</li>
-              <li> SQL/XXE ইনজেকশন এবং কমান্ড ইনজেকশন</li>
-              <li> ক্রস-সাইট স্ক্রিপ্টিং (XSS)</li>
-              <li> সার্ভার সাইড অনুরোধ জালিয়াতি (SSRF)</li>
-              <li> সার্ভার বা API-এ ভুল কনফিগারেশন সমস্যা</li>
-              <li> প্রমাণীকরণ এবং অনুমোদন সম্পর্কিত সমস্যা</li>
-              <li> ক্রস সাইট অনুরোধ জালিয়াতি (CSRF)</li>
-            </ol>
             <br />
-            <h2>
-              <strong> স্কোপ ডোমেনে</strong>
-            </h2>
-            <br />
-            <ol>
-              <li>https://xposedornot.com</li>
-              <li>https://api.xposedornot.com</li>
-              <li>https://passwords.xposedornot.com</li>
-            </ol>
-            <br />
-            <h2>
-              <strong> তথ্যের ব্যবহার</strong>
-            </h2>
-            <br />
-            আমরা আপনার এবং আমাদের পরিষেবাগুলি সম্পর্কে সমস্ত তথ্য গোপন রাখার প্রতিশ্রুতি দিচ্ছি। তাই অনুগ্রহ করে, আমাদের
-            দলের বাইরে কারো কাছে মটরশুটি ছড়াবেন না!<br />
-            <br />
-            আমরা সবই ইন্টারনেটকে একটি নিরাপদ স্থান তৈরি করার বিষয়ে, এবং আমরা নিরাপত্তা গবেষকদের প্রশংসা করি যারা আমাদের
-            এটি অর্জনে সহায়তা করে। তাই, সেই প্রচেষ্টার অংশ হওয়ার জন্য আপনাকে অনেক ধন্যবাদ! আপনি যে কোনো বাগ বা
-            দুর্বলতা খুঁজে পান তা দায়িত্বের সাথে প্রকাশ করার মাধ্যমে, আপনি আমাদের ব্যবহারকারীদের এবং তাদের ডেটা রক্ষা
-            করতে আমাদের সাহায্য করছেন।<br />
-            <br />
-            <h2>
-              <strong> গ্রহনযোগ্য ব্যবহার নীতি</strong>
-            </h2>
-            <br />
-            শুধু একটি সতর্কতা - এটি আপনার সাধারণ বাগ বাউন্টি প্রোগ্রাম নয় যেখানে আমরা দুর্বলতা জমা দেওয়ার জন্য নগদ
-            পুরস্কার অফার করি। আমরা অর্থ দিয়ে তৈরি নই (এখনও)। যাইহোক, আপনি যদি আমাদের কাছে গুরুত্বপূর্ণ কিছু রিপোর্ট
-            করেন, আমরা বিনিময়ে আপনাকে কিছু ভালবাসা এবং প্রশংসা দেখাতে পারি!<br />
-            <br />
-            শুধু এটা নৈতিক রাখা নিশ্চিত করুন, ঠিক আছে? আমরা আশা করি আপনি ইন্টারনেটের একজন ভালো নাগরিকের মতো আচরণ করবেন
-            এবং আমাদের গ্রহণযোগ্য ব্যবহারের নীতিতে আমরা যে নিয়মগুলি দিয়েছি তা অনুসরণ করবেন। কিন্তু আপনি যদি তা করেন,
-            আমরা আনন্দের সাথে আপনাকে আমাদের হল অফ ফেম পৃষ্ঠায় কিছু স্বীকৃতি দেব - যা হলিউড ওয়াক অফ ফেমের আমাদের
-            সংস্করণের মতো, কিন্তু নিরাপত্তা গবেষকদের জন্য৷ তাই এগিয়ে যান, আপনার দক্ষতা দেখান এবং আমাদেরকে XposedOrNot
-            কে সবার জন্য একটি নিরাপদ জায়গা করতে সাহায্য করুন!<br />
-            <br />
-            <h2>
-              <strong> বাগ রিপোর্টার - প্রত্যাশা</strong>
-            </h2>
-            <br />
-            বাগ হান্টাররা, XposedOrNot সবার জন্য একটি নিরাপদ জায়গা তৈরিতে আমাদের সাহায্য করার জন্য আপনাকে বোর্ডে পেয়ে
-            আমরা আনন্দিত! আপনি শুরু করার আগে, এখানে আমরা আপনার কাছ থেকে কিছু জিনিস আশা করি:<br /><br />
-            <ol>
-              <li> XposedOrNot বা আমাদের ব্যবহারকারীদের ক্ষতি বা ব্যাহত করে এমন কিছু করবেন না দয়া করে।</li>
-              <li> আপনার রিপোর্ট পাওয়ার 1-3 দিনের মধ্যে আমরা আপনাকে একটি স্বীকৃতি পাঠাব।</li>
-              <li> আমাদের ব্যবহারকারীদের গোপনীয়তাকে সম্মান করুন এবং তাদের অ্যাকাউন্টের চারপাশে স্নুপ করার চেষ্টা করবেন
-                না।</li>
-              <li> শুধুমাত্র আপনার নিজের অ্যাকাউন্ট এবং ইমেল ঠিকানা পরীক্ষা.</li>
-              <li> আপনি যদি একটি গুরুতর দুর্বলতা খুঁজে পান যা আপনাকে আমাদের ওয়েবসার্ভার বা API-তে অ্যাক্সেস দেয়, দয়া
-                করে সেখানে থামুন এবং আমাদের গ্রহণ করতে দিন।</li>
-              <li> যতক্ষণ না আমরা এটির সমাধান না করি ততক্ষণ পর্যন্ত সমস্যাটি সম্পর্কে কোনো বিবরণ শেয়ার করবেন না।</li>
-              <li> আপনি যদি ব্যক্তিগত লাভের জন্য দুর্বলতাকে কাজে লাগানোর চেষ্টা করেন, তাহলে আমাদের আপনার প্রতিবেদনের
-                অযোগ্য ঘোষণা করতে হবে।</li>
-            </ol>
-            <br />
-            আমাদের প্ল্যাটফর্ম সুরক্ষিত রাখতে সাহায্য করার জন্য আমরা আপনার সহযোগিতার প্রশংসা করি। আসুন একসাথে কাজ করি
-            XposedOr না হতে পারে সেরা!
           </div>
         </div>
       </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-parent="#accordion" data-toggle="collapse in panel-collapse" href="#collapse25">
-              <strong>রিপোর্টিং নির্দেশিকা</strong>
-            </a>
-          </h4>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            এই সম্পূর্ণ ওপেন সোর্স সাইটটি গড়ে তুলতে আমাদের সঙ্গে যোগ দিন! আমাদের
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >-এ অবদান স্বাগত ❤️।
+          </p>
         </div>
-        <div class="panel-body"> আমাদের জন্য খুঁজছেন জন্য আপনাকে ধন্যবাদ! আপনি যদি XposedOrNot-এ কোনো বাগ বা নিরাপত্তা
-          দুর্বলতা খুঁজে পান, তাহলে আমরা এটি সম্পর্কে শুনতে চাই। আপনি ইমেল মাধ্যমে এটি রিপোর্ট করতে
-          পারেন<strong>deva[@]xposedornot.com</strong> অথবা আমাদের টুইট করুন@DevaOnBreaches.<br />
-          <br /> ইমেইল: deva[@]xposedornot.com<br /> টুইটার :<a
-            href="https://twitter.com/devaonbreaches">DevaOnBreaches</a>
-          <br />
-          <br />
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>আইনি</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">গোপনীয়তা নীতি</a>
+              <a href="terms" class="footer-link">ব্যবহারের শর্তাবলী</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>সম্প্রদায়</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">ব্লগ</a>
+              <a href="our-repository" class="footer-link">আমাদের রিপোজিটরি</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>বিশ্বাস</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">স্ট্যাটাস</a>
+              <a href="transparency" class="footer-link">স্বচ্ছতা</a>
+              <a href="responsible-disclosure" class="footer-link">দায়িত্বশীল প্রকাশ</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>আমাদের অনুসরণ করুন</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">ডার্ক মোড</label>
         </div>
       </div>
     </div>
-  </div>
-
-
-  <div class="container text-center">
-    <footer>
-      <aside>
-        <p>এই সম্পূর্ণ ওপেন সোর্স সাইট গঠনে আমাদের সাথে যোগ দিন! অবদান স্বাগত ❤️ —আমাদের দেখুন<a
-            href="https://github.com/XposedOrNot" rel="noopener" target="_blank">গিটহাব</a>.</p>
-      </aside>
-      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-        <input class="custom-control-input" id="darkSwitch" type="checkbox" />
-        <label class="custom-control-label" for="darkSwitch">ডার্ক মোড</label>
-      </div>
-    </footer>
-  </div>
-  <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-  <script src="/static/scripts/common.js"></script>
-</body>
-
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+    <script src="/static/scripts/common.js"></script>
+      <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
