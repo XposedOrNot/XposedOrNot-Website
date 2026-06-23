@@ -1,31 +1,130 @@
+<!doctype html>
 <html lang="hi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:creator" content="@DevaOnBreaches" />
+    <meta name="twitter:title" content="XposedOrNot API Reference" />
+    <meta
+      name="twitter:description"
+      content="निर्बाध एकीकरण के लिए XposedOrNot का API दस्तावेज़ीकरण देखें। एंडपॉइंट, उपयोग के उदाहरण और डेवलपर-अनुकूल मार्गदर्शिकाएँ जानें।"
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/api_reference.png"
+    />
+    <meta name="twitter:image:alt" content="XposedOrNot API Documentation" />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta property="og:image:alt" content="XposedOrNot Logo" />
+    <meta property="og:site_name" content="XposedOrNot" />
+    <title>
+      XposedOrNot API दस्तावेज़ीकरण - डेटा उल्लंघन और पासवर्ड सुरक्षा जाँचें
+    </title>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta
+      name="description"
+      content="XposedOrNot के लिए विस्तृत API दस्तावेज़ीकरण। ईमेल उल्लंघन, पासवर्ड सुरक्षा और डोमेन-स्तरीय डेटा एक्सपोज़र जाँचें। JSON प्रतिक्रियाओं वाला मुफ़्त, RESTful API।"
+    />
+    <meta
+      property="og:title"
+      content="XposedOrNot API दस्तावेज़ीकरण - डेटा उल्लंघन और सुरक्षा API"
+    />
+    <meta
+      property="og:description"
+      content="डेटा उल्लंघन, पासवर्ड सुरक्षा और डोमेन-स्तरीय एक्सपोज़र जाँचने के लिए XposedOrNot के शक्तिशाली API का उपयोग करें। उदाहरणों सहित डेवलपर-अनुकूल दस्तावेज़ीकरण।"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/hi/api_doc" />
+    <meta
+      name="keywords"
+      content="API दस्तावेज़ीकरण, डेटा उल्लंघन API, पासवर्ड सुरक्षा, ईमेल उल्लंघन पहचान, साइबर सुरक्षा API, डोमेन सुरक्षा, REST API, JSON API, सुरक्षा एकीकरण"
+    />
+    <link rel="canonical" href="https://xposedornot.com/hi/api_doc" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/api_doc" />
+    <link rel="alternate" hreflang="ta" href="https://xposedornot.com/ta/api_doc" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/api_doc" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="theme-color" content="#3f71f3" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="XposedOrNot: API Documentation " name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <meta content="XposedOrNot: API Documentation for Developers" property="og:title">
-  <title>XposedOrNot API संदर्भ</title>
-  <link href="/favicon.ico" rel="icon" type="image/x-icon" />
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset&display=swap" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-  <script crossorigin="anonymous" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+      crossorigin="anonymous"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+        crossorigin="anonymous"
+      />
+    </noscript>
 
-  </link>
-  </meta>
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+        type="text/css"
+        media="all"
+      />
+    </noscript>
+
+    <link rel="preload" href="/static/css/style-new.css" as="style" />
+    <link rel="preload" href="/static/css/api_doc.css" as="style" />
+    <link rel="preload" href="/static/scripts/api_doc_ui.js" as="script" />
+
+    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/api_doc.css" type="text/css" rel="stylesheet" />
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer
+    ></script>
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -51,94 +150,552 @@
 
     </head>
 
-<body>
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com"><span
-          style="font-size: 1.5em; font-weight: bold; display: block; color: white;">एक्सपोज़डऑरनॉट</span>
-        <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">सामुदायिक
-          संस्करण</span></a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password">पासवर्ड<span class="sr-only">(मौजूदा)</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="faq">सामान्य प्रश्न</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">ब्लॉग</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> अधिक उपकरण</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed">एक्सपोज़ड उल्लंघन</a>
-              <a class="dropdown-item" href="shield">गोपनीयता शील्ड</a>
-              <a class="dropdown-item" href="domain">डोमेन सत्यापन</a>
-              <a class="dropdown-item" href="domains">डोमेन-स्तरीय खोज</a>
-            </div>
-          </li>
-        </ul>
-      </div>
+  <body>
+<nav class="skip-links" aria-label="लिंक छोड़ें">
+      <a href="#main-content">मुख्य सामग्री पर जाएँ</a>
+      <a href="#endpoint-1">API एंडपॉइंट पर जाएँ</a>
     </nav>
-  </div>
-  <div class="container">
-    <div align="center">
-      हमारे एपीआई के साथ प्रयोग और परीक्षण करने के लिए, हम आपको हमारे एपीआई खेल के मैदान का पता लगाने के लिए आमंत्रित
-      करते हैं।<br /><br />
-      <h3><a class="button-link" href="https://xposedornot.docs.apiary.io" target="_blank"> 🎮एपीआई खेल का मैदान</a>
-      </h3>
+    <div class="banner" style="padding: 30px 0px 40px 0px;">
+      <div class="grid">
+        <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+          <a class="navbar-brand abs" href="/hi/" style="text-decoration: none;">
+            <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+            <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community Edition</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#collapsingNavbar" aria-controls="collapsingNavbar"
+            aria-expanded="false" aria-label="नेविगेशन मेनू टॉगल करें">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="/hi/">होम</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="password">पासवर्ड</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="xposed">उल्लंघन</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="faq">FAQ</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="api_doc">API</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     </div>
-    <br />
-    <div class="panel-group" id="accordion">
-      <div class="panel panel-default">
-        <div class="panel-heading"> एपीआई त्वरित संदर्भ</div>
-        अंतिम अद्यतन: 05-जून-2023
-        <div class="panel-collapse" id="collapse1">
-          <div class="panel-body">
-            <br />
-            आपकी रुचि के लिए धन्यवाद<strong>एक्सपोज़डऑरनॉट</strong>. लक्ष्य हमारे एपीआई को यथासंभव सुलभ और
-            प्रतिक्रियाशील बनाए रखना है, जिससे यह सभी के लिए एक मूल्यवान उपकरण बन जाए। पर सीधे होस्ट किया
-            गया<strong>गूगल इन्फ्रास्ट्रक्चर</strong> और मजबूती से कैश किया गया<strong>बादल भड़कना</strong>,
-            द<strong>एक्सपोज़डऑरनॉट एपीआई</strong> किसी भी प्रश्न के लिए त्वरित प्रतिक्रिया प्रदान करता है, चाहे उनका
-            मूल बिंदु कुछ भी हो।<br /><br />
-            <strong>एक्सपोज़डऑरनॉट एपीआई</strong> के सिद्धांतों का पालन करता है<strong>बाकी वास्तुकला</strong>. यह लौट
-            आता है<strong>JSON-एन्कोडेड प्रतिक्रियाएँ</strong> और उपयोग करता है<strong>मानक HTTP प्रतिक्रिया
-              कोड</strong>. हमारे अधिकांश एपीआई मार्गों के लिए, कोई प्रमाणीकरण आवश्यकताएं नहीं हैं, जिससे आसान पहुंच और
-            उपयोग में आसानी सुनिश्चित होती है। हालाँकि, कृपया ध्यान दें कि हमारा विशिष्ट<strong>डोमेन-संबंधित डेटा की
-              क्वेरी के लिए उपयोग किए जाने वाले एपीआई रूट के लिए एपीआई कुंजी प्राधिकरण की आवश्यकता होती है</strong>. यह
-            उपाय यह सुनिश्चित करने के लिए है कि केवल निर्दिष्ट डोमेन के सत्यापित मालिक या अधिकारी ही इस संवेदनशील
-            जानकारी तक पहुंच सकते हैं।<br /><br />
-            प्रयोग और परीक्षण उद्देश्यों के लिए, मैं आपको हमारे एपीआई प्लेग्राउंड का पता लगाने के लिए हार्दिक रूप से
-            आमंत्रित करता हूं। यहां, आपको उपयोगकर्ता के अनुकूल वातावरण में XposedOrNot API की कार्यक्षमता से परिचित होने
-            का अवसर मिलेगा।
-            <br />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>1. एपीआई कॉल: ईमेल पते के डेटा उल्लंघनों की जाँच करना</strong>
-              </h4>
+<nav class="breadcrumb-nav" aria-label="ब्रेडक्रंब">
+      <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/hi/">
+            <span itemprop="name">होम</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name" class="current">API दस्तावेज़ीकरण</span>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </nav>
+    <div class="container" id="main-content">
+      <div align="center" style="margin-bottom: 2rem">
+        <h1 style="margin-bottom: 0.75rem; font-size: 1.75rem">मुफ़्त डेटा उल्लंघन API</h1>
+        <p
+          style="
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+          "
+        >
+          हमारे मुफ़्त RESTful API के साथ अरबों एक्सपोज़ हुए रिकॉर्ड जाँचें। किसी API कुंजी की आवश्यकता नहीं।
+        </p>
+
+<div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+          "
+        >
+          <div class="info-card">
+            <i
+              class="fas fa-key"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>प्रमाणीकरण</h4>
+            <p>अधिकांश एंडपॉइंट सार्वजनिक हैं। डोमेन एंडपॉइंट के लिए <a href="faq#collapse102">API कुंजी</a> आवश्यक है।</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-tachometer-alt"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>दर सीमा</h4>
+            <p>प्रति IP प्रति सेकंड 2 अनुरोध।</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-code"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>प्रतिक्रिया प्रारूप</h4>
+            <p>सभी प्रतिक्रियाएँ मानक HTTP कोड के साथ JSON लौटाती हैं।</p>
+          </div>
+          <div class="info-card">
+            <i
+              class="fas fa-globe"
+              style="
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+              "
+            ></i>
+            <h4>आधार URL</h4>
+            <p><code>api.xposedornot.com</code></p>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem">
+          <a
+            href="https://api.xposedornot.com/docs"
+            target="_blank"
+            class="button-link"
+            style="margin-right: 12px"
+            ><i class="fas fa-book"></i> Swagger दस्तावेज़ीकरण</
+          >
+          <a
+            href="https://xposedornot.docs.apiary.io"
+            target="_blank"
+            class="button-link"
+            ><i class="fas fa-code"></i> API प्लेग्राउंड</
+          >
+        </div>
+      </div>
+
+<div
+        id="sdk-section"
+        style="
+          margin-top: 2rem;
+          margin-bottom: 1.5rem;
+          position: relative;
+          z-index: 100;
+        "
+      >
+        <h2 style="text-align: center; margin-bottom: 1rem; font-size: 1.4rem">आधिकारिक SDK</h2>
+        <p
+          style="
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+          "
+        >
+          XposedOrNot को अपने अनुप्रयोगों में केवल कुछ पंक्तियों के कोड के साथ
+          एकीकृत करने के लिए हमारी आधिकारिक लाइब्रेरियों का उपयोग करें।
+        </p>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+          "
+        >
+
+          <div class="panel" style="margin-bottom: 0">
+            <div
+              class="panel-heading"
+              style="display: flex; align-items: center; gap: 0.75rem"
+            >
+              <i
+                class="fab fa-npm"
+                style="font-size: 1.5em; color: #cb3837"
+              ></i>
+              Node.js / JavaScript
             </div>
-            <p>
-              यह उपयोगकर्ता-अनुकूल एपीआई तुरंत जांच करता है कि क्या कोई ईमेल पता किसी ज्ञात डेटा उल्लंघन में शामिल है।
-              यह उल्लंघनों का एक व्यापक डेटाबेस खोजता है और यदि ईमेल जोखिम में है तो आपको सचेत करता है।
-              <br /><br />
-              डिजिटल सुरक्षा बनाए रखने और ईमेल के उल्लंघन के इतिहास को समझने के लिए यह उपकरण अमूल्य है। यह बेहतर डिजिटल
-              सुरक्षा और जागरूकता की दिशा में एक कदम है।
-            </p>
-            <br /><strong>एपीआई समापन बिंदु:</strong>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/check-email/[test@example.com]</pre>
-            </blockquote>
-            <strong> सफल उल्लंघन का पता लगाने का उदाहरण:</strong>
-            जब उल्लंघन का पता चलता है, तो आपको इस तरह एक JSON प्रतिक्रिया प्राप्त होगी:
-            <pre>
+            <div class="panel-body">
+              <p style="margin-bottom: 1rem">
+                <strong>npm के माध्यम से इंस्टॉल करें:</strong>
+              </p>
+              <pre style="margin-bottom: 1.5rem">npm install xposedornot</pre>
+              <p style="margin-bottom: 1rem"><strong>त्वरित उदाहरण:</strong></p>
+              <pre>
+const { XposedOrNot } = require('xposedornot');
+
+const xon = new XposedOrNot();
+
+// Check email for breaches
+const result = await xon.checkEmail('test&#64;example.com');
+console.log(result);</pre
+              >
+              <p style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap">
+                <a
+                  href="https://www.npmjs.com/package/xposedornot"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em"
+                  aria-label="XposedOrNot JavaScript SDK को npm पर देखें"
+                >
+                  <i class="fas fa-external-link-alt"></i> npm पर देखें
+                </a>
+                <a
+                  href="https://github.com/XposedOrNot/XposedOrNot-JS"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em; background: linear-gradient(135deg, #24292e, #40464e)"
+                  aria-label="XposedOrNot JavaScript SDK को GitHub पर देखें"
+                >
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-bottom: 0">
+            <div
+              class="panel-heading"
+              style="display: flex; align-items: center; gap: 0.75rem"
+            >
+              <i
+                class="fab fa-python"
+                style="font-size: 1.5em; color: #3776ab"
+              ></i>
+              Python
+            </div>
+            <div class="panel-body">
+              <p style="margin-bottom: 1rem">
+                <strong>pip के माध्यम से इंस्टॉल करें:</strong>
+              </p>
+              <pre style="margin-bottom: 1.5rem">pip install xposedornot</pre>
+              <p style="margin-bottom: 1rem"><strong>त्वरित उदाहरण:</strong></p>
+              <pre>
+from xposedornot import XposedOrNot
+
+xon = XposedOrNot()
+
+# Check email for breaches
+result = xon.check_email('test&#64;example.com')
+print(result)</pre
+              >
+              <p style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap">
+                <a
+                  href="https://pypi.org/project/xposedornot/"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em"
+                  aria-label="XposedOrNot Python SDK को PyPI पर देखें"
+                >
+                  <i class="fas fa-external-link-alt"></i> PyPI पर देखें
+                </a>
+                <a
+                  href="https://github.com/XposedOrNot/XposedOrNot-Python"
+                  target="_blank"
+                  rel="noopener"
+                  class="button-link"
+                  style="padding: 10px 20px; font-size: 0.9em; background: linear-gradient(135deg, #24292e, #40464e)"
+                  aria-label="XposedOrNot Python SDK को GitHub पर देखें"
+                >
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="text-align: center; margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1.1rem">इनके लिए भी उपलब्ध</h3>
+        <p style="text-align: center; color: var(--secondary-color); margin-bottom: 1.25rem; font-size: 0.85rem">
+          पैकेज रजिस्ट्री देखने के लिए किसी भी कार्ड पर क्लिक करें, या सोर्स कोड के लिए GitHub आइकन पर क्लिक करें।
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem;">
+
+          <div class="sdk-card" role="group" aria-label="Go SDK">
+            <a href="https://pkg.go.dev/github.com/XposedOrNot/XposedOrNot-Go" target="_blank" rel="noopener" class="sdk-card-main" aria-label="Go SDK को pkg.go.dev पर देखें">
+              <i class="fas fa-code" style="color: #00add8"></i>
+              <span class="sdk-card-lang">Go</span>
+              <code>go get</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-Go" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="Go SDK को GitHub पर देखें">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="Ruby SDK">
+            <a href="https://rubygems.org/gems/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="Ruby SDK को RubyGems पर देखें">
+              <i class="fas fa-gem" style="color: #cc342d"></i>
+              <span class="sdk-card-lang">Ruby</span>
+              <code>gem install</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-Ruby" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="Ruby SDK को GitHub पर देखें">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="PHP SDK">
+            <a href="https://packagist.org/packages/xposedornot/xposedornot-php" target="_blank" rel="noopener" class="sdk-card-main" aria-label="PHP SDK को Packagist पर देखें">
+              <i class="fab fa-php" style="color: #777bb4"></i>
+              <span class="sdk-card-lang">PHP</span>
+              <code>composer require</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-PHP" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="PHP SDK को GitHub पर देखें">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="Rust SDK">
+            <a href="https://crates.io/crates/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="Rust SDK को crates.io पर देखें">
+              <i class="fas fa-cog" style="color: #dea584"></i>
+              <span class="sdk-card-lang">Rust</span>
+              <code>cargo add</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-Rust" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="Rust SDK को GitHub पर देखें">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="C# .NET SDK">
+            <a href="https://www.nuget.org/packages/XposedOrNot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="C# .NET SDK को NuGet पर देखें">
+              <i class="fas fa-window-maximize" style="color: #512bd4"></i>
+              <span class="sdk-card-lang">C# / .NET</span>
+              <code>dotnet add</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-DotNet" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="C# .NET SDK को GitHub पर देखें">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+          <div class="sdk-card" role="group" aria-label="Java SDK">
+            <a href="https://central.sonatype.com/artifact/com.xposedornot/xposedornot" target="_blank" rel="noopener" class="sdk-card-main" aria-label="Java SDK को Maven Central पर देखें">
+              <i class="fab fa-java" style="color: #f89820"></i>
+              <span class="sdk-card-lang">Java</span>
+              <code>Maven Central</code>
+            </a>
+            <a href="https://github.com/XposedOrNot/XposedOrNot-Jav" target="_blank" rel="noopener" class="sdk-card-gh" aria-label="Java SDK को GitHub पर देखें">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+
+        </div>
+      </div>
+      <br />
+
+
+      <div class="mobile-toc" id="mobile-toc">
+        <div class="mobile-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+          <span><i class="fas fa-list-ul"></i> त्वरित नेविगेशन</span>
+        </div>
+        <div class="mobile-toc-content">
+          <ul>
+            <li><a href="#sdk-section" class="toc-link"><i class="fas fa-cube"></i> आधिकारिक SDK</a></li>
+            <li><a href="#endpoint-1" class="toc-link"><i class="fas fa-envelope"></i> ईमेल उल्लंघन</a></li>
+            <li><a href="#endpoint-2" class="toc-link"><i class="fas fa-chart-line"></i> विश्लेषण</a></li>
+            <li><a href="#endpoint-3" class="toc-link"><i class="fas fa-key"></i> पासवर्ड</a></li>
+            <li><a href="#endpoint-4" class="toc-link"><i class="fas fa-database"></i> सभी उल्लंघन</a></li>
+            <li><a href="#endpoint-5" class="toc-link"><i class="fas fa-shield-alt"></i> डोमेन</a></li>
+            <li><a href="#endpoint-6" class="toc-link"><i class="fas fa-code"></i> प्रतिक्रिया कोड</a></li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div
+        style="
+          display: flex;
+          gap: 2rem;
+          align-items: flex-start;
+          max-width: 100%;
+        "
+      >
+
+        <nav
+          id="api-toc"
+          style="
+            position: sticky;
+            top: 2rem;
+            width: 240px;
+            flex-shrink: 0;
+            z-index: 1;
+          "
+        >
+          <div
+            style="
+              background: var(--panel-bg);
+              border: 1px solid var(--border-color);
+              border-radius: 12px;
+              padding: 1rem 1.25rem;
+            "
+          >
+            <h4
+              style="
+                margin-top: 0;
+                margin-bottom: 0.75rem;
+                color: var(--primary-color);
+                font-size: 0.95rem;
+              "
+            >
+              त्वरित नेविगेशन
+            </h4>
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li style="margin-bottom: 0.5rem">
+                <a href="#sdk-section" class="toc-link"
+                  ><i class="fas fa-cube"></i> आधिकारिक SDK</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-1" class="toc-link"
+                  ><i class="fas fa-envelope"></i> ईमेल उल्लंघन जाँच</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-2" class="toc-link"
+                  ><i class="fas fa-chart-line"></i> उल्लंघन विश्लेषण</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-3" class="toc-link"
+                  ><i class="fas fa-key"></i> पासवर्ड जाँच</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-4" class="toc-link"
+                  ><i class="fas fa-database"></i> सभी उल्लंघन</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-5" class="toc-link"
+                  ><i class="fas fa-shield-alt"></i> डोमेन उल्लंघन</
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="#endpoint-6" class="toc-link"
+                  ><i class="fas fa-code"></i> प्रतिक्रिया कोड</
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+
+        <div style="flex: 1; min-width: 0">
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                API त्वरित संदर्भ
+                <span
+                  style="float: right; font-size: 0.9em; font-weight: normal"
+                  >अंतिम अद्यतन: 03-Jun-2026</span
+                >
+              </div>
+              <div id="collapse1" style="display: block">
+                <div class="panel-body">
+                  <br />
+                  <strong>XposedOrNot</strong> में आपकी रुचि के लिए धन्यवाद।
+                  हमारा लक्ष्य अपने API को यथासंभव सुलभ और प्रतिक्रियाशील बनाए
+                  रखना है, ताकि यह सभी के लिए एक मूल्यवान उपकरण बन सके। सीधे
+                  <strong>Google इन्फ्रास्ट्रक्चर</strong> पर होस्ट और
+                  <strong>Cloudflare</strong> द्वारा सुदृढ़ रूप से कैश किया गया
+                  <strong>XposedOrNot API</strong> किसी भी क्वेरी के लिए, उनके
+                  मूल बिंदु की परवाह किए बिना, तीव्र प्रतिक्रियाएँ प्रदान करता है। <br /><br />
+                  <strong>XposedOrNot API</strong> <strong>REST आर्किटेक्चर</strong>
+                  के सिद्धांतों का पालन करता है। यह <strong>JSON-एन्कोडेड प्रतिक्रियाएँ</strong>
+                  लौटाता है और <strong>मानक HTTP प्रतिक्रिया कोड</strong> का उपयोग
+                  करता है। हमारे अधिकांश API रूट के लिए कोई प्रमाणीकरण आवश्यकता
+                  नहीं है, जिससे आसान पहुँच और उपयोग की सरलता सुनिश्चित होती है।
+                  हालाँकि, कृपया ध्यान दें कि हमारे विशिष्ट
+                  <strong
+                    >डोमेन-संबंधित डेटा क्वेरी करने के लिए उपयोग किए जाने वाले API
+                    रूट के लिए API कुंजी प्राधिकरण आवश्यक है</strong
+                  >। यह उपाय यह सुनिश्चित करने के लिए है कि केवल निर्दिष्ट डोमेन के
+                  सत्यापित स्वामी या प्राधिकारी ही इस संवेदनशील जानकारी तक पहुँच
+                  सकें।<br /><br />
+                  एंडपॉइंट के साथ प्रयोग करने के लिए, API प्लेग्राउंड आज़माएँ,
+                  जहाँ आप XposedOrNot API को अंतःक्रियात्मक रूप से जान सकते हैं।
+                  <br />
+                  <hr />
+                  <p>
+                    <strong>उदाहरण पढ़ना:</strong>
+                    <code>{curly braces}</code> में दिखाए गए मान प्लेसहोल्डर हैं।
+                    प्रत्येक को (कोष्ठकों सहित) अपने स्वयं के मान से बदलें।
+                    उदाहरण के लिए, <code>{email}</code>
+                    <code>test&#64;example.com</code> बन जाता है।
+                  </p>
+                  <div id="endpoint-1" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >1. API कॉल: ईमेल पते के डेटा उल्लंघन की
+                        जाँच</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    यह API जाँचता है कि कोई ईमेल पता किसी ज्ञात डेटा उल्लंघन
+                    में शामिल रहा है या नहीं। यह उल्लंघनों के एक विस्तृत डेटाबेस
+                    में खोज करता है और यदि ईमेल जोखिम में है तो आपको सचेत करता है।
+                  </p>
+                  <br /><strong>API एंडपॉइंट:</strong>
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/check-email/{email}</pre
+                    >
+                  </blockquote>
+                  <strong>पैरामीटर:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">check-email एंडपॉइंट के लिए पैरामीटर</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">पैरामीटर</th>
+                          <th scope="col">कहाँ</th>
+                          <th scope="col">आवश्यक</th>
+                          <th scope="col">प्रकार</th>
+                          <th scope="col">विवरण</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>email</code></th>
+                          <td>path</td>
+                          <td>हाँ</td>
+                          <td>string</td>
+                          <td>उल्लंघनों के लिए जाँचने हेतु ईमेल पता।</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>details</code></th>
+                          <td>query</td>
+                          <td>नहीं</td>
+                          <td>boolean</td>
+                          <td>प्रतिक्रिया में विस्तृत उल्लंघन जानकारी शामिल करें। डिफ़ॉल्ट <code>false</code> है (true/false, yes/no, 1/0 स्वीकार करता है)।</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <strong> सफल उल्लंघन पहचान का उदाहरण: </strong>
+                  जब कोई उल्लंघन पाया जाता है, तो आपको इस तरह की एक JSON
+                  प्रतिक्रिया प्राप्त होगी:
+                  <pre>
  {
   "breaches": [
     [
@@ -152,63 +709,134 @@
       "MyRepoSpace",
       "SweClockers"
     ]
-  ]
+  ],
+  "email": "test@example.com",
+  "status": "success"
 }
-		  </pre>
-            प्रतिक्रिया JSON प्रारूप में है, जिससे किसी भी स्क्रिप्टिंग भाषा के साथ पार्स करना आसान हो जाता है। इससे आप
-            आसानी से डेटा को अपने एप्लिकेशन में एकीकृत कर सकते हैं।
-            <br /> <strong>कोई उल्लंघन न पाए जाने पर प्रतिक्रिया:</strong><br />
-            यदि ईमेल पता किसी उल्लंघन डेटाबेस में नहीं मिलता है, तो आपको निम्नलिखित JSON प्रतिक्रिया मिलेगी:
-            <pre>
-{"Error":"Not found"}
- </pre>
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>2. एपीआई कॉल: ईमेल पते के लिए डेटा ब्रीच एनालिटिक्स</strong>
-              </h4>
-            </div>
-            <p>
-              हमारा एपीआई ईमेल पते के डेटा उल्लंघन इतिहास का गहन विश्लेषण प्रदान करता है। यह बताता है कि उल्लंघन कब और
-              कहाँ हुआ, इन घटनाओं के प्रभाव और गंभीरता का आकलन करने के लिए आवश्यक विश्लेषण प्रदान करता है। यह उपकरण डेटा
-              एक्सपोज़र स्तर को समझने और सुरक्षा रणनीतियों को बढ़ाने के लिए महत्वपूर्ण है।
-            </p>
-            <br /><strong>एपीआई समापन बिंदु:</strong>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breach-analytics/[email-address]</pre>
-            </blockquote>
-            <p>एपीआई दो संभावित परिणामों के साथ प्रतिक्रिया करता है: सफलता या विफलता। सफल प्रतिक्रिया के प्रमुख घटक नीचे
-              दिए गए हैं:</p>
-            <br />
-            <ul>
-              <li><strong>उल्लंघनसारांश:</strong> प्रभावित साइटों की सूची सहित ईमेल पते से जुड़े सभी उल्लंघनों का त्वरित
-                अवलोकन प्राप्त करें। उल्लंघन के इतिहास की त्वरित जांच के लिए आदर्श।</li>
-              <br />
-              <li><strong>उजागरउल्लंघन:</strong> प्रत्येक उल्लंघन पर विस्तृत जानकारी प्राप्त करें, जिसमें उल्लंघन की गई
-                इकाई का नाम, विवरण, डोमेन, उद्योग, जोखिम स्तर, संदर्भ, उजागर डेटा प्रकार और वर्ष और उजागर किए गए रिकॉर्ड
-                की संख्या शामिल है। इससे प्रत्येक उल्लंघन की विशिष्टता और गंभीरता का आकलन करने में मदद मिलती है।</li>
-              <br />
-              <li><strong>ब्रीचमेट्रिक्स:</strong> यह घटक उल्लंघनों के बारे में विश्लेषण प्रदान करता है, जैसे प्रभावित
-                उद्योग, पासवर्ड ताकत, जोखिम स्कोर, उजागर डेटा प्रकार और वार्षिक ब्रेकडाउन। उल्लंघनों के पूर्ण प्रभाव को
-                समझने के लिए यह डेटा महत्वपूर्ण है।</li>
-              <br />
-              <li><strong>एक्सपोज़ड_डेटा:</strong> उल्लंघनों में उजागर हुए विशिष्ट डेटा प्रकारों, जैसे नाम, फ़ोटो,
-                राष्ट्रीयता आदि के बारे में जानकारी प्राप्त करें। इससे व्यक्तिगत डेटा एक्सपोज़र की प्रकृति और सीमा को
-                समझने में मदद मिलती है।</li>
-              <br />
-              <li><strong>पेस्ट सारांश:</strong> गिनती और सबसे हालिया घटना सहित 'पेस्ट' उल्लंघनों (सार्वजनिक पेस्टबिन
-                जैसी सेवाओं पर डेटा एक्सपोज़र) का अवलोकन प्रदान करता है। यह इन प्लेटफ़ॉर्म पर एक्सपोज़र का आकलन करने का
-                एक त्वरित तरीका है।</li>
-              <br />
-              <li><strong>एक्सपोज़्डपेस्ट और पेस्टमेट्रिक्स:</strong> ये घटक विस्तृत जानकारी और पेस्ट उल्लंघनों का
-                वार्षिक विश्लेषण देते हैं, जिससे समय के साथ एक्सपोज़र रुझानों की गहरी समझ संभव हो पाती है।</li>
-              <br />
-            </ul>
-            <p>एनालिटिक्स टूल का यह व्यापक सूट किसी भी ईमेल के डेटा उल्लंघन इतिहास में गहरी जानकारी प्रदान करता है, जो
-              बेहतर डिजिटल सुरक्षा प्रबंधन के लिए आवश्यक अंतर्दृष्टि प्रदान करता है।</p>
-            <br />
-            <strong>मिलान रिकॉर्ड को सफलतापूर्वक ढूंढने पर नमूना JSON आउटपुट:</strong>
-            <pre>
+		  </pre
+                  >
+                  प्रतिक्रिया JSON प्रारूप में होती है, जिससे इसे किसी भी
+                  स्क्रिप्टिंग भाषा से पार्स करना सरल हो जाता है। इससे आप डेटा को
+                  अपने अनुप्रयोगों में आसानी से एकीकृत कर सकते हैं।
+                  <br />
+                  <strong>जब कोई उल्लंघन नहीं मिलता तब प्रतिक्रिया:</strong><br />
+                  यदि ईमेल पता किसी भी उल्लंघन डेटाबेस में नहीं मिलता है, तो आपको
+                  निम्नलिखित JSON प्रतिक्रिया मिलेगी:
+                  <pre>
+{"Error":"Not found","email":null}
+ </pre
+                  >
+                  <hr />
+                  <div id="endpoint-2" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >2. API कॉल: ईमेल पतों के लिए डेटा उल्लंघन
+                        विश्लेषण</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    हमारा API किसी ईमेल पते के डेटा उल्लंघन इतिहास का गहन
+                    विश्लेषण प्रदान करता है। यह बताता है कि उल्लंघन कब और कहाँ
+                    हुए, इन घटनाओं के प्रभाव और गंभीरता को मापने के लिए आवश्यक
+                    विश्लेषण प्रदान करता है। यह उपकरण डेटा एक्सपोज़र के स्तर को
+                    समझने और सुरक्षा रणनीतियों को बेहतर बनाने के लिए महत्वपूर्ण है।
+                  </p>
+                  <br /><strong>API एंडपॉइंट:</strong>
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/breach-analytics?email={email}</pre
+                    >
+                  </blockquote>
+                  <strong>पैरामीटर:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">breach-analytics एंडपॉइंट के लिए पैरामीटर</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">पैरामीटर</th>
+                          <th scope="col">कहाँ</th>
+                          <th scope="col">आवश्यक</th>
+                          <th scope="col">प्रकार</th>
+                          <th scope="col">विवरण</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>email</code></th>
+                          <td>query</td>
+                          <td>हाँ</td>
+                          <td>string</td>
+                          <td>विश्लेषण करने हेतु ईमेल पता।</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <p>
+                    API दो संभावित परिणामों के साथ प्रतिक्रिया करता है: सफलता
+                    या विफलता। नीचे एक सफल प्रतिक्रिया के प्रमुख घटक दिए गए हैं:
+                  </p>
+                  <br />
+                  <ul>
+                    <li>
+                      <strong>BreachesSummary:</strong> ईमेल पते से जुड़े सभी
+                      उल्लंघनों का त्वरित अवलोकन प्राप्त करें, जिसमें प्रभावित
+                      साइटों की सूची भी शामिल है। उल्लंघन इतिहास की तीव्र जाँच के
+                      लिए आदर्श।
+                    </li>
+                    <br />
+                    <li>
+                      <strong>ExposedBreaches:</strong> प्रत्येक उल्लंघन पर
+                      विस्तृत जानकारी प्राप्त करें, जिसमें उल्लंघित इकाई का नाम,
+                      विवरण, डोमेन, उद्योग, जोखिम स्तर, संदर्भ, एक्सपोज़ हुए डेटा
+                      प्रकार, और एक्सपोज़ हुए रिकॉर्ड का वर्ष एवं संख्या शामिल है।
+                      इससे प्रत्येक उल्लंघन की विशिष्टताओं और गंभीरता का आकलन करने
+                      में मदद मिलती है।
+                    </li>
+                    <br />
+                    <li>
+                      <strong>BreachMetrics:</strong> यह घटक उल्लंघनों के बारे
+                      में विश्लेषण प्रदान करता है, जैसे प्रभावित उद्योग, पासवर्ड
+                      मज़बूती, जोखिम स्कोर, एक्सपोज़ हुए डेटा प्रकार, और एक वार्षिक
+                      विवरण। यह डेटा उल्लंघनों के पूर्ण प्रभाव को समझने के लिए
+                      महत्वपूर्ण है।
+                    </li>
+                    <br />
+                    <li>
+                      <strong>xposed_data:</strong> उल्लंघनों में एक्सपोज़ हुए
+                      विशिष्ट डेटा प्रकारों, जैसे नाम, फ़ोटो, राष्ट्रीयता आदि की
+                      जानकारी प्राप्त करें। इससे व्यक्तिगत डेटा एक्सपोज़र की प्रकृति
+                      और सीमा को समझने में मदद मिलती है।
+                    </li>
+                    <br />
+                    <li>
+                      <strong>PastesSummary:</strong> 'paste' उल्लंघनों
+                      (सार्वजनिक pastebin जैसी सेवाओं पर डेटा एक्सपोज़र) का अवलोकन
+                      प्रदान करता है, जिसमें एक गणना और सबसे हालिया घटना शामिल है।
+                      इन प्लेटफ़ॉर्म पर एक्सपोज़र मापने का यह एक त्वरित तरीका है।
+                    </li>
+                    <br />
+                    <li>
+                      <strong>ExposedPastes और PasteMetrics:</strong> ये घटक
+                      paste उल्लंघनों की विस्तृत जानकारी और एक वार्षिक विश्लेषण
+                      प्रदान करते हैं, जिससे समय के साथ एक्सपोज़र की प्रवृत्तियों को
+                      गहराई से समझा जा सकता है।
+                    </li>
+                    <br />
+                  </ul>
+                  <p>
+                    विश्लेषण उपकरणों का यह व्यापक समूह किसी भी ईमेल के डेटा
+                    उल्लंघन इतिहास में गहराई से उतरने की सुविधा देता है, जो बेहतर
+                    डिजिटल सुरक्षा प्रबंधन के लिए आवश्यक अंतर्दृष्टि प्रदान करता है।
+                  </p>
+                  <br />
+                  <strong
+                    >मिलान करने वाला रिकॉर्ड सफलतापूर्वक मिलने पर नमूना JSON
+                    आउटपुट:
+                  </strong>
+                  <pre>
 
 {
   "BreachMetrics": {
@@ -327,7 +955,7 @@
     "breaches_details": [
       {
         "breach": "SweClockers",
-        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords—which were stored using a combination of MD5 and SHA512—were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
+        "details": "SweClockers experienced a data breach in early 2015, where 255k accounts were exposed. As a result, usernames, email addresses, and salted hashes of passwords, which were stored using a combination of MD5 and SHA512, were disclosed. Exposed data: Usernames, Email addresses, Passwords.",
         "domain": "sweclockers.com",
         "industry": "Electronics",
         "logo": "Sweclockers.png",
@@ -349,39 +977,108 @@
     "tmpstmp": ""
   }
 }
-	       </pre>
-            ब्रीचमेट्रिक्स में उपयोग किए गए कुछ डेटा बिंदु इस प्रकार हैं:
-            <ol>
-              <li>उद्योगवार वर्गीकरण</li>
-              यह आपको शीर्ष-19 उद्योगों में उजागर हुए उल्लंघनों की गिनती देता है।<br />
-              <li>पासवर्ड की मजबूती</li>
-              यह आपको उन उल्लंघनों की गिनती देता है जिनमें पासवर्ड थे 1. क्रैक करना आसान, 2. सादा पाठ पासवर्ड और 3.
-              मजबूत और सुरक्षित पासवर्ड हैश का उपयोग किया गया।<br />
-              <li>वर्षवार विवरण</li>
-              यह आपको वर्ष 2010 से लेकर अब तक डेटा उल्लंघनों का ऐतिहासिक डेटा देता है।<br />
-            </ol>
-            <br />
-            <strong>मेल खाता ईमेल पता न मिलने पर नमूना आउटपुट:</strong>
-            <pre>
-{  "Error": "Not found"}
- </pre>
-            <p> इसका मतलब यह भी है कि खोजा गया ईमेल XposedOrNot में लोड किए गए किसी भी डेटा उल्लंघन में नहीं पाया गया
-              है।</p>
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>3. गुमनाम रूप से उजागर पासवर्ड की जांच करने के लिए एपीआई कॉल</strong>
-              </h4>
-            </div>
-            <p>यदि आप उजागर पासवर्ड की जाँच करने में रुचि रखते हैं, तो यह एपीआई आपके लिए एकदम सही है। यह दो रूपों में
-              परिणाम प्रदान करता है: सफल या असफल। कल्पना कीजिए कि आप व्यापक रूप से उपयोग किए जाने वाले पासवर्ड "123456"
-              की जांच करना चाहते हैं - यह एपीआई मदद कर सकता है।</p>
-            <br />
-            <blockquote>
-              <pre>https://passwords.xposedornot.com/v1/pass/anon/[first 10 characters of SHA3-keccak-512 hash]</pre>
-            </blockquote>
-            <strong>मिलान पासवर्ड हैश को सफलतापूर्वक ढूंढने पर नमूना JSON आउटपुट:</strong>
-            <pre>
+	       </pre
+                  >
+                  BreachMetrics में उपयोग किए गए कुछ डेटा बिंदु निम्नलिखित
+                  हैं:
+                  <ol>
+                    <li>उद्योग-वार वर्गीकरण</li>
+                    यह आपको शीर्ष-19 उद्योगों में एक्सपोज़ हुए उल्लंघनों की संख्या
+                    देता है।
+                    <br />
+                    <li>पासवर्ड मज़बूती</li>
+                    यह आपको उन उल्लंघनों की संख्या देता है जिनमें ऐसे पासवर्ड थे
+                    जो 1. आसानी से क्रैक होने वाले, 2. प्लेन टेक्स्ट पासवर्ड और
+                    3. मज़बूत एवं सुरक्षित पासवर्ड हैश वाले थे।
+                    <br />
+                    <li>वर्ष-वार विवरण</li>
+                    यह आपको वर्ष 2010 से अब तक के डेटा उल्लंघनों का ऐतिहासिक डेटा
+                    देता है।
+                    <br />
+                  </ol>
+                  <br />
+                  <strong
+                    >मिलान करने वाला ईमेल पता न मिलने पर नमूना
+                    आउटपुट:</strong
+                  >
+                  <pre>
+{
+  "BreachMetrics": null,
+  "BreachesSummary": {
+    "site": ""
+  },
+  "ExposedBreaches": null,
+  "ExposedPastes": null,
+  "PasteMetrics": null,
+  "PastesSummary": {
+    "cnt": 0,
+    "domain": "",
+    "tmpstmp": ""
+  }
+}
+ </pre
+                  >
+                  <p>
+                    ऊपर जैसी पूर्णतः null प्रतिक्रिया (HTTP 200 के साथ लौटाई गई)
+                    का अर्थ है कि ईमेल XposedOrNot में लोड किए गए किसी भी डेटा
+                    उल्लंघन में नहीं मिला।
+                  </p>
+                  <hr />
+                  <div id="endpoint-3" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >3. एक्सपोज़ हुए पासवर्ड की अनाम रूप से जाँच करने हेतु
+                        API कॉल</strong
+                      >
+                    </h4>
+                  </div>
+                  <p>
+                    यह एंडपॉइंट जाँचता है कि कोई पासवर्ड पासवर्ड को स्वयं उजागर
+                    किए बिना ज्ञात उल्लंघनों में दिखाई दिया है या नहीं। आप पासवर्ड
+                    का SHA3 Keccak-512 हैश स्थानीय रूप से गणना करते हैं और केवल
+                    इसके पहले 10 अक्षर भेजते हैं, ताकि पासवर्ड और पूर्ण हैश कभी
+                    आपकी मशीन से बाहर न जाएँ। प्रतिक्रिया मिलान या अमिलान दर्शाती
+                    है।
+                  </p>
+                  <br />
+                  <blockquote>
+                    <pre>
+https://passwords.xposedornot.com/v1/pass/anon/{hash_prefix}</pre
+                    >
+                  </blockquote>
+                  यहाँ <code>{hash_prefix}</code> उस पासवर्ड के SHA3 Keccak-512
+                  हैश के पहले 10 अक्षर हैं जिसे आप जाँचना चाहते हैं।
+                  <br /><br />
+                  <strong>पैरामीटर:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">अनाम password-check एंडपॉइंट के लिए पैरामीटर</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">पैरामीटर</th>
+                          <th scope="col">कहाँ</th>
+                          <th scope="col">आवश्यक</th>
+                          <th scope="col">प्रकार</th>
+                          <th scope="col">विवरण</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>hash_prefix</code></th>
+                          <td>path</td>
+                          <td>हाँ</td>
+                          <td>string</td>
+                          <td>जाँचे जाने वाले पासवर्ड के SHA3 Keccak-512 हैश के पहले 10 अक्षर।</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <strong
+                    >मिलान करने वाला पासवर्ड हैश सफलतापूर्वक मिलने पर नमूना JSON
+                    आउटपुट:
+                  </strong>
+                  <pre>
  {
   "SearchPassAnon": {
     "anon": "808d63ba47",
@@ -390,192 +1087,404 @@
     "wordlist": 0
   }
 }
- </pre>
-            <p>एपीआई JSON प्रारूप में परिणाम देता है, जो साधारण हां/नहीं की तुलना में अधिक जानकारीपूर्ण है। यह विस्तृत
-              आउटपुट वास्तविक समय में उजागर पासवर्ड की व्यापक सूची के आगे के विश्लेषण और संवर्द्धन को सक्षम बनाता है।
-            </p>
-            <br />
-            <h4>आउटपुट संरचना गाइड:</h4>
-            <br />
-            <ul>
-              <li><strong>"अनॉन" तत्व:</strong> हमारे डेटाबेस में प्रत्येक पासवर्ड हैश में "एनोन" तत्व शामिल है। यह उन
-                उपयोगकर्ताओं के लिए गोपनीयता सुनिश्चित करने के लिए है जो गुमनाम रहते हुए खोज करना चाहते हैं।</li>
-              <li><strong>"चार" तत्व:</strong> यह तत्व पासवर्ड की विशेषताओं, जैसे लंबाई, अक्षरों का उपयोग, संख्याओं और
-                विशेष वर्णों का विवरण प्रदान करता है। यह पासवर्ड की ताकत को समझने और यह समझने के लिए विशेष रूप से उपयोगी
-                है कि यह विभिन्न वेबसाइट आवश्यकताओं को पूरा करता है या नहीं।</li>
-            </ul>
-            <p>यह एपीआई न केवल उजागर पासवर्ड की पहचान करने के लिए उपयोगी है बल्कि मजबूत, अधिक सुरक्षित पासवर्ड नीतियों
-              को विकसित करने में भी मदद करता है।</p>
-            <br /> निम्नलिखित तालिका सरल शब्दों में विशेषताओं के बारे में कुछ और बताती है:<br />
-            <br />
-            <table class="table table-condensed table-striped table-bordered table-hover">
-              <tr>
-                <td> अंक</td>
-                <td> संख्याओं की गिनती</td>
-              </tr>
-              <tr>
-                <td> अक्षर</td>
-                <td> अक्षरों की गिनती</td>
-              </tr>
-              <tr>
-                <td> विशेष वर्ण</td>
-                <td> विशेष वर्णों की गिनती</td>
-              </tr>
-              <tr>
-                <td> लंबाई</td>
-                <td> पासवर्ड की लंबाई</td>
-              </tr>
-            </table>
-            अंतिम एक<strong>"गिनती करना"</strong> एकत्रित उजागर डेटा उल्लंघनों में यह पासवर्ड कितनी बार देखा गया, इसकी
-            संख्या दर्शाता है। सभी उजागर वेबसाइटों की विस्तृत सूची के लिए, कृपया देखें<a href="xposed">
-              <strong>XON में एक्सपोज़ड वेबसाइटें</strong>
-            </a>.<br />
-            <br /> इसके अलावा, ध्यान देने योग्य एक अन्य बिंदु का उपयोग है<a href="https://en.wikipedia.org/wiki/SHA-3"
-              rel="noopener" target="_blank">
-              <strong>SHA3 केकैक-512</strong>
-            </a> XON में डेटा खोजने और संग्रहीत करने के लिए हैशिंग। MD5 और SHA1 जैसे पारंपरिक हैशिंग एल्गोरिदम वर्तमान
-            में अप्रचलित हैं और बड़ी संख्या में रिकॉर्ड उजागर होने पर भी, मैं आगे बढ़ गया हूं<strong>SHA3
-              केकैक-512</strong> कलन विधि। केकक-512 हैश 128 अक्षर लंबे हैं।<br />
-            <br /> कृपया सरल और उपयोग में आसान की जाँच करें<a href="/" target="_blank">
-              <strong>नमूना लॉगिन स्क्रीन,</strong>
-            </a>इस एपीआई का उपयोग करना।<br />
-            <br /> आसान संदर्भ के लिए केकक-512 हैश के दो नमूने दिए गए हैं:<br />
-            <br /> केकक-512("परीक्षण")
-            <strong>
-              <pre>1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre>
-            </strong>
-            <br /> केकक-512("पास")
-            <strong>
-              <pre>adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre>
-            </strong>
-            <br />
-            <strong>मिलान पासवर्ड हैश न मिलने पर नमूना आउटपुट:</strong>
-            <pre>
+ </pre
+                  >
+
+                  <p>
+                    API परिणाम JSON प्रारूप में प्रदान करता है, जो एक साधारण
+                    हाँ/नहीं की तुलना में अधिक जानकारीपूर्ण है। यह विस्तृत आउटपुट
+                    वास्तविक समय के एक्सपोज़ हुए पासवर्डों की व्यापक सूची के आगे
+                    विश्लेषण और संवर्धन को सक्षम बनाता है।
+                  </p>
+                  <br />
+                  <h4>आउटपुट संरचना मार्गदर्शिका:</h4>
+                  <br />
+                  <ul>
+                    <li>
+                      <strong><code>anon</code>:</strong> आपके द्वारा क्वेरी
+                      किया गया हैश उपसर्ग, वापस प्रतिध्वनित। ऐसा कुछ भी संग्रहीत या
+                      प्रेषित नहीं होता जो आपके पासवर्ड को उजागर कर सके।
+                    </li>
+                    <li>
+                      <strong><code>char</code>:</strong> पासवर्ड की संरचना का
+                      विवरण, इस प्रारूप में
+                      <code>D:&lt;digits&gt;;A:&lt;alphabets&gt;;S:&lt;special&gt;;L:&lt;length&gt;</code>
+                      (नीचे दी गई तालिका देखें)।
+                    </li>
+                    <li>
+                      <strong><code>count</code>:</strong> एकत्रित एक्सपोज़ हुए
+                      डेटा उल्लंघनों में यह पासवर्ड कितनी बार देखा गया, उसकी संख्या।
+                    </li>
+                    <li>
+                      <strong><code>wordlist</code>:</strong> क्या पासवर्ड किसी
+                      ज्ञात wordlist में पाया गया
+                      (<code>1</code> = हाँ, <code>0</code> = नहीं)।
+                    </li>
+                  </ul>
+                  <p>
+                    यह API न केवल एक्सपोज़ हुए पासवर्डों की पहचान करने के लिए
+                    उपयोगी है, बल्कि मज़बूत, अधिक सुरक्षित पासवर्ड नीतियाँ विकसित
+                    करने में भी मदद करता है।
+                  </p>
+                  <br />
+                  निम्नलिखित तालिका विशेषताओं के बारे में सरल शब्दों में थोड़ा
+                  और समझाती है : <br />
+                  <br />
+                  <div class="table-responsive">
+                  <table
+                    class="table table-condensed table-striped table-bordered table-hover"
+                  >
+                    <caption class="sr-only-caption">पासवर्ड विशेषताओं का विवरण</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">कोड</th>
+                        <th scope="col">विशेषता</th>
+                        <th scope="col">विवरण</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <th scope="row"><code>D</code></th>
+                      <td>अंक</td>
+                      <td>संख्याओं की गिनती</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><code>A</code></th>
+                      <td>अक्षर</td>
+                      <td>अक्षरों की गिनती</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><code>S</code></th>
+                      <td>विशेष वर्ण</td>
+                      <td>विशेष वर्णों की गिनती</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><code>L</code></th>
+                      <td>लंबाई</td>
+                      <td>पासवर्ड की लंबाई</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                  सभी एक्सपोज़ हुई वेबसाइटों की विस्तृत सूची के लिए, कृपया
+                  देखें
+                  <a href="xposed">
+                    <strong>XON में Xposed वेबसाइटें</strong> </a
+                  >। <br />
+                  <br />
+                  साथ ही, एक अन्य ध्यान देने योग्य बात XON में डेटा खोजने और
+                  संग्रहीत करने के लिए
+                  <a
+                    href="https://en.wikipedia.org/wiki/SHA-3"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <strong>SHA3 Keccak-512</strong>
+                  </a>
+                  हैशिंग का उपयोग है। MD5 और SHA1 जैसे पारंपरिक हैशिंग एल्गोरिदम
+                  वर्तमान में अप्रचलित हैं और एक्सपोज़ हुए रिकॉर्ड की विशाल संख्या
+                  को देखते हुए, मैंने
+                  <strong>SHA3 Keccak-512</strong> एल्गोरिदम चुना है। Keccak-512
+                  हैश 128 अक्षर लंबे होते हैं। <br />
+                  <br />
+                  कृपया इस API का उपयोग करने वाली सरल और उपयोग में आसान
+                  <a href="/samples/" target="_blank">
+                    <strong>नमूना लॉगिन स्क्रीन </strong> </a
+                  >देखें। <br />
+                  <br />
+                  आसान संदर्भ के लिए दो नमूना Keccak-512 हैश दिए गए हैं: <br />
+                  <br />
+                  Keccak-512("test")
+                  <strong>
+                    <pre>
+1e2e9fc2002b002d75198b7503210c05a1baac4560916a3c6d93bcce3a50d7f00fd395bf1647b9abb8d1afcc9c76c289b0c9383ba386a956da4b38934417789e</pre
+                    >
+                  </strong>
+                  <br />
+                  Keccak-512("pass")
+                  <strong>
+                    <pre>
+adf34f3e63a8e0bd2938f3e09ddc161125a031c3c86d06ec59574a5c723e7fdbe04c2c15d9171e05e90a9c822936185f12b9d7384b2bedb02e75c4c5fe89e4d4</pre
+                    >
+                  </strong>
+                  <br />
+                  <strong
+                    >मिलान करने वाला पासवर्ड हैश न मिलने पर नमूना
+                    आउटपुट:</strong
+                  >
+                  <pre>
             {  "Error": "Not found"}
-        </pre>
-            <hr />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>4. XposedOrNot में लोड किए गए सभी डेटा उल्लंघनों की जांच के लिए एपीआई कॉल</strong>
-              </h4>
-            </div>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breaches</pre>
-            </blockquote>
-            एपीआई केवल JSON के प्रारूप में एक सफल प्रतिक्रिया देता है।<br />
-            <br />आसान व्याख्या के लिए और आपके संबंधित अनुप्रयोगों में उपयोग किए जाने वाले डेटा तत्वों को निकालने के लिए
-            इस JSON को सभी स्क्रिप्टिंग भाषाओं द्वारा आसानी से पार्स किया जा सकता है।<br />
-            <pre>
-{
-  "Exposed Breaches": [
+        </pre
+                  >
+                  <hr />
+                  <div id="endpoint-4" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-get">GET</span>
+                      <strong
+                        >4. XposedOrNot में लोड किए गए सभी डेटा उल्लंघनों की
+                        जाँच करने हेतु API कॉल</strong
+                      >
+                    </h4>
+                  </div>
+                  <blockquote>
+                    <pre>https://api.xposedornot.com/v1/breaches</pre>
+                  </blockquote>
+                  <strong>पैरामीटर:</strong> सभी वैकल्पिक हैं। बिना किसी
+                  पैरामीटर के एंडपॉइंट प्रत्येक लोड किए गए उल्लंघन को लौटाता है।
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">breaches एंडपॉइंट के लिए पैरामीटर</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">पैरामीटर</th>
+                          <th scope="col">कहाँ</th>
+                          <th scope="col">आवश्यक</th>
+                          <th scope="col">प्रकार</th>
+                          <th scope="col">विवरण</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>domain</code></th>
+                          <td>query</td>
+                          <td>नहीं</td>
+                          <td>string</td>
+                          <td>परिणामों को एकल डोमेन तक सीमित करें।</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>breach_id</code></th>
+                          <td>query</td>
+                          <td>नहीं</td>
+                          <td>string</td>
+                          <td>परिणामों को उसके ID द्वारा एकल उल्लंघन तक सीमित करें।</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  API केवल JSON प्रारूप में एक सफल प्रतिक्रिया लौटाता है।<br />
+                  <br />इस JSON को सभी स्क्रिप्टिंग भाषाओं द्वारा आसान व्याख्या और
+                  आपके संबंधित अनुप्रयोगों में उपयोग किए जाने वाले डेटा तत्वों को
+                  निकालने के लिए आसानी से पार्स किया जा सकता है। <br />
+                  <pre>
+   {
+  "exposedBreaches": [
     {
-      "Breach ID": "1.4BillionRecords",
-      "Breached Date": "2017-03-01T00:00:00+00:00",
-      "Domain": "Not-Applicable",
-      "Exposed Data": "Email addresses;Names",
-      "Exposed Records": 1114303554,
-      "Exposure Description": "\"A company called 4iQ in 2017, discovered a massive database of stolen usernames and passwords that was being traded on the dark web. The database, which was referred to as the \"\"largest-ever\"\" breach at the time, contained over 1.4 billion unique username and password combinations, as well as other personal information such as email addresses and IP addresses.\"",
-      "Industry": "Entertainment",
-      "Logo": "combolist.png",
-      "Password Risk": "unknown",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "Yes"
+      "breachID": "APK.TW",
+      "breachedDate": "2022-09-01T00:00:00+00:00",
+      "addedDate": "2023-11-08T06:30:35+00:00",
+      "domain": "apk.tw",
+      "exposedData": [
+        "Email addresses",
+        "Usernames",
+        "Passwords",
+        "IP addresses"
+      ],
+      "exposedRecords": 2457094,
+      "exposureDescription": "APK.TW, a Taiwanese Android forum, experienced a data breach in September 2022, affecting 3.7 million members. This incident exposed usernames, email addresses, IP addresses, and passwords encrypted with salted MD5 hashes.",
+      "industry": "Information Technology",
+      "logo": "https://xposedornot.com/static/logos/APKTW.png",
+      "passwordRisk": "easytocrack",
+      "referenceURL": "",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
     },
     {
-      "Breach ID": "123RF",
-      "Breached Date": "2020-03-01T00:00:00+00:00",
-      "Domain": "123rf.com",
-      "Exposed Data": "Usernames;Email addresses;Passwords;Names;IP addresses;Physical addresses;Phone numbers",
-      "Exposed Records": 8668646,
-      "Exposure Description": "123RF Stock photo site has suffered a data breach in March 2020. The exposed database contained 8.3 million user records leaked on a hacker forum. Exposed data includes full name, email address, MD5 hashed passwords, company name, phone number, address, PayPal email if used, and IP address.",
-      "Industry": "Information Technology",
-      "Logo": "123RF.png",
-      "Password Risk": "easytocrack",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "Yes"
+      "breachID": "Habibs",
+      "breachedDate": "2021-08-01T00:00:00+00:00",
+      "addedDate": "2023-11-08T06:30:35+00:00",
+      "domain": "habibs.com.br",
+      "exposedData": [
+        "Email addresses",
+        "Names",
+        "Phone numbers",
+        "Dates of birth",
+        "IP addresses"
+      ],
+      "exposedRecords": 3519666,
+      "exposureDescription": "Habib's, a Brazilian fast food restaurant, experienced a significant data breach in August 2021,  that impacted 3.5 million users, revealing personal information like email addresses, IP addresses, names, phone numbers, and dates of birth, along with CPF numbers and social media profile links. ",
+      "industry": "Food",
+      "logo": "https://xposedornot.com/static/logos/Habibs.png",
+      "passwordRisk": "unknown",
+      "referenceURL": "",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
     },
     {
-      "Breach ID": "17173",
-      "Breached Date": "2011-12-01T00:00:00+00:00",
-      "Domain": "17173.com",
-      "Exposed Data": "Usernames;Passwords;Email addresses",
-      "Exposed Records": 7482441,
-      "Exposure Description": "The 17173 gaming site breach in 2011 was part of a larger series of data breaches in China, affecting nearly 100 million users. Of these, 7.5 million were from 17173. The breach exposed usernames, email addresses, and salted MD5 password hashes.",
-      "Industry": "Energy",
-      "Logo": "17173.png",
-      "Password Risk": "plaintext",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "No"
+      "breachID": "GreenGaming",
+      "breachedDate": "2024-03-01T00:00:00+00:00",
+      "addedDate": "2024-04-15T10:22:18+00:00",
+      "domain": "mrgreengaming.com",
+      "exposedData": [
+        "Email addresses",
+        "IP addresses",
+        "Geographic locations",
+        "Usernames",
+        "Dates of birth"
+      ],
+      "exposedRecords": 27142,
+      "exposureDescription": "MrGreenGaming announced on their community forum reported a security breach due to unauthorized access via an inactive administrator account leading to a data breach on 01-Mar-2024. The intrusion led to vandalism and the potential exposure of user data, including usernames, email addresses, IP addresses at account creation, and birthdays.",
+      "industry": "Entertainment",
+      "logo": "https://xposedornot.com/static/logos/GreenGaming.png",
+      "passwordRisk": "unknown",
+      "referenceURL": "https://forums.mrgreengaming.com/topic/30151-%E2%9A%A0%EF%B8%8Fdata-breach%E2%9A%A0%EF%B8%8F/#comment-536079",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
     },
-    and so on...
-	       </pre>
-            <br />इसके अलावा आप एक डोमेन की तरह एक पैरामीटर भी भेज सकते हैं और उस उल्लंघन के लिए विशिष्ट सामग्री वितरित
-            करने के लिए परिणामों को फ़िल्टर कर सकते हैं।<br />
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/breaches?domain=[twitter.com]</pre>
-            </blockquote>
-            <pre>
+    {
+      "breachID": "CutoutPro",
+      "breachedDate": "2024-02-01T00:00:00+00:00",
+      "addedDate": "2024-03-10T08:15:42+00:00",
+      "domain": "cutout.pro",
+      "exposedData": [
+        "Names",
+        "Passwords",
+        "Email addresses",
+        "IP addresses"
+      ],
+      "exposedRecords": 20021813,
+      "exposureDescription": "Cutout.Pro, an AI-powered photo editing platform, experienced a data breach affecting 20 million users. Information exposed includes email addresses, hashed passwords, IP addresses, and names. A cybercriminal posted 5.93 GB of data on hacker forum, including a 41.4 million record database dump with unique email addresses.",
+      "industry": "Information Technology",
+      "logo": "https://xposedornot.com/static/logos/Cutout.pro.png",
+      "passwordRisk": "easytocrack",
+      "referenceURL": "https://www.bleepingcomputer.com/news/security/20-million-cutoutpro-user-records-leaked-on-data-breach-forum/",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true
+    }
+	       </pre
+                  >
+                  <em>… संक्षिप्तता के लिए प्रतिक्रिया को छोटा किया गया है; पूरी सूची जारी रहती है।</em>
+                  <br /><br />इसके अलावा आप डोमेन जैसा कोई पैरामीटर भी भेज सकते हैं
+                  और उस उल्लंघन से विशिष्ट सामग्री प्रदर्शित करने के लिए परिणामों
+                  को फ़िल्टर कर सकते हैं। <br />
+                  <blockquote>
+                    <pre>
+https://api.xposedornot.com/v1/breaches?domain={domain}</pre
+                    >
+                  </blockquote>
+                  <pre>
 
 {
-  "Exposed Breaches": [
+  "exposedBreaches": [
     {
-      "Breach ID": "Twitter-Scraped",
-      "Breached Date": "2021-01-01T00:00:00+00:00",
-      "Domain": "twitter.com",
-      "Exposed Data": "Usernames;Email addresses;Names;Geographic locations;Profile photos;Phone numbers",
-      "Exposed Records": 208918735,
-      "Exposure Description": "\"The \"\"Twitter Email Addresses Leak\"\" involves a data leak of over 200 million Twitter user profiles around 2021. The leak includes email addresses, names, screen names, follow counts, and account creation dates. The data was obtained through a Twitter API vulnerability that allowed the input of email addresses and phone numbers to confirm their association with Twitter IDs.\"",
-      "Industry": "Information Technology",
-      "Logo": "Twitter.png",
-      "Password Risk": "unknown",
-      "Searchable": "Yes",
-      "Sensitive": "No",
-      "Verified": "Yes"
+      "breachID": "Twitter-Scraped",
+      "breachedDate": "2021-01-01T00:00:00+00:00",
+      "addedDate": "2023-11-08T06:30:35+00:00",
+      "domain": "twitter.com",
+      "industry": "Information Technology",
+      "logo": "https://xposedornot.com/static/logos/Twitter.png",
+      "passwordRisk": "unknown",
+      "searchable": true,
+      "sensitive": false,
+      "verified": true,
+      "exposedData": [
+        "Usernames",
+        "Names",
+        "Email addresses",
+        "Phone numbers",
+        "Geographic locations"
+      ],
+      "exposedRecords": 208918735,
+      "exposureDescription": "The Twitter Email Addresses Leak involves a data leak of over 200 million Twitter user profiles around 2021. The leak includes email addresses, names, screen names, follow counts, and account creation dates. The data was obtained through a Twitter API vulnerability that allowed the input of email addresses and phone numbers to confirm their association with Twitter IDs.",
+      "referenceURL": ""
     }
   ],
   "status": "success"
 }
-		  </pre>
-            एपीआई केवल JSON के प्रारूप में एक सफल प्रतिक्रिया देता है।<br />
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>5. सत्यापित डोमेन के लिए सभी डेटा उल्लंघनों की जांच के लिए एपीआई कॉल</strong>
-              </h4>
-            </div>
-            <blockquote>
-              <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
-            </blockquote>
-            यह एक POST अनुरोध है और हेडर में कुंजी 'x-api-key' के साथ वैध API कुंजी को शामिल करने की आवश्यकता है। यह
-            समापन बिंदु किसी भी अनुरोध निकाय को स्वीकार नहीं करता है, इसलिए, सामग्री लंबाई शीर्षलेख को '0' पर सेट किया
-            जाना चाहिए।
-            <br />
-            ** मान्य डोमेन के लिए, एपीआई कुंजी उपलब्ध है<a href="dashboard">डैशबोर्ड</a>.
-            <br /><br />
-            कर्ल का उपयोग करके नमूना एपीआई अनुरोध:
-            <blockquote>
-              <pre>
-curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/    
-	       </pre>
-            </blockquote>
-            एपीआई की प्रतिक्रिया JSON प्रारूप में है। मुख्य कुंजी 'मेट्रिक्स' में उल्लंघन के बारे में विवरण शामिल हैं।
-            नीचे 'मेट्रिक्स' में प्रत्येक उप-कुंजी का विवरण दिया गया है:<br /><br />
-            1.<strong>उल्लंघन_सारांश</strong>: यह फ़ील्ड प्रति संगठन उल्लंघनों की संख्या का सारांश प्रदान करती है।<br />
-            2.<strong>उल्लंघन_विवरण</strong>: यह एक सारणी है जिसमें प्रत्येक व्यक्तिगत उल्लंघन के बारे में विस्तृत
-            जानकारी शामिल है, जिसमें उल्लंघन किए गए संगठन का नाम, डोमेन और उल्लंघन से जुड़ा ईमेल पता शामिल है।<br />
-            3.<strong>विस्तृत_उल्लंघन_जानकारी</strong>: इस फ़ील्ड में उल्लंघनों का विस्तृत सारांश शामिल है, जिसमें
-            उल्लंघन की तारीख, संगठन का लोगो, पासवर्ड जोखिम में था या नहीं, उल्लंघन खोजा जा सकता है या नहीं, उजागर किए गए
-            डेटा का प्रकार, रिकॉर्ड की कुल संख्या शामिल है। उजागर, और उल्लंघन का विवरण।<br />
-            4.<strong>डोमेन_सारांश</strong>: यह प्रति डोमेन उल्लंघनों की संख्या का सारांश प्रदान करता है।<br />
-            5.<strong>शीर्ष10_उल्लंघन</strong>: यह फ़ील्ड शीर्ष 10 उल्लंघनों की सूची प्रदान करती है।<br />
-            6.<strong>वार्षिक_मेट्रिक्स</strong>: यह फ़ील्ड 2010 से वर्तमान वर्ष तक उल्लंघनों की संख्या का वार्षिक विवरण
-            प्रदान करता है।<br />
-            <br />आसान संदर्भ के लिए नमूना आउटपुट दिया गया है।<br />
-            <pre>
+		  </pre
+                  >
+                  API केवल JSON प्रारूप में एक सफल प्रतिक्रिया लौटाता है।<br />
+                  <hr />
+                  <div id="endpoint-5" class="alert alert-primary" role="alert">
+                    <h4>
+                      <span class="http-badge http-post">POST</span>
+                      <strong
+                        >5. सत्यापित डोमेन के लिए सभी डेटा उल्लंघनों की जाँच
+                        करने हेतु API कॉल</strong
+                      >
+                    </h4>
+                  </div>
+                  <blockquote>
+                    <pre>https://api.xposedornot.com/v1/domain-breaches/</pre>
+                  </blockquote>
+                  <strong>पैरामीटर:</strong>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">domain-breaches एंडपॉइंट के लिए हेडर</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">पैरामीटर</th>
+                          <th scope="col">कहाँ</th>
+                          <th scope="col">आवश्यक</th>
+                          <th scope="col">प्रकार</th>
+                          <th scope="col">विवरण</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row"><code>x-api-key</code></th>
+                          <td>header</td>
+                          <td>हाँ</td>
+                          <td>string</td>
+                          <td>आपकी डोमेन API कुंजी। डोमेन कुंजी से प्राप्त किया जाता है।</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><code>Content-Length</code></th>
+                          <td>header</td>
+                          <td>हाँ</td>
+                          <td><code>0</code></td>
+                          <td>यह एंडपॉइंट कोई अनुरोध बॉडी स्वीकार नहीं करता, इसलिए content length को 0 पर सेट करें।</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  यह एक POST अनुरोध है और इसके लिए 'x-api-key' कुंजी के साथ
+                  हेडर में वैध API कुंजी शामिल करना आवश्यक है। डोमेन API कुंजी से
+                  प्राप्त किया जाता है, इसलिए यह एंडपॉइंट कोई अनुरोध बॉडी स्वीकार
+                  नहीं करता और content length हेडर को '0' पर सेट किया जाना चाहिए।
+                  <br />
+                  ** अभी तक कुंजी नहीं है? देखें
+                  <a href="faq#collapse102">डोमेन उल्लंघन डेटा के लिए API कुंजी
+                  कैसे प्राप्त करें</a>। इसमें डोमेन सत्यापन और आपके
+                  <a href="dashboard">डैशबोर्ड</a> से कुंजी प्राप्त करना शामिल है। <br /><br />
+                  curl का उपयोग करके नमूना API अनुरोध। अपनी कुंजी को हार्ड-कोड
+                  करने के बजाय एक environment variable में संग्रहीत करें, ताकि वह
+                  आपके shell इतिहास और सोर्स कंट्रोल से बाहर रहे:
+                  <blockquote>
+                    <pre>
+export XON_API_KEY="your_api_key_here"
+
+curl -L -X POST \
+  -H "x-api-key: $XON_API_KEY" \
+  -H "Content-Length: 0" \
+  https://api.xposedornot.com/v1/domain-breaches/</pre
+                    >
+                  </blockquote>
+                  API की प्रतिक्रिया JSON प्रारूप में होती है। मुख्य कुंजी
+                  'metrics' में उल्लंघन के बारे में विवरण होता है। नीचे 'metrics'
+                  में प्रत्येक उप-कुंजी का विवरण दिया गया है:<br /><br />
+                  1.<strong>Breach_Summary</strong>: यह फ़ील्ड प्रति संगठन
+                  उल्लंघनों की संख्या का सारांश प्रदान करता है।<br />
+                  2.<strong>Breaches_Details</strong>: यह एक array है जिसमें
+                  प्रत्येक व्यक्तिगत उल्लंघन के बारे में विस्तृत जानकारी होती है,
+                  जिसमें उल्लंघित संगठन का नाम, डोमेन, और उल्लंघन से जुड़ा ईमेल पता
+                  शामिल है।<br />
+                  3.<strong>Detailed_Breach_Info</strong>: इस फ़ील्ड में
+                  उल्लंघनों का विस्तृत सारांश होता है, जिसमें उल्लंघन की तिथि,
+                  संगठन का लोगो, पासवर्ड जोखिम में था या नहीं, उल्लंघन खोजने योग्य
+                  है या नहीं, एक्सपोज़ हुए डेटा का प्रकार, एक्सपोज़ हुए रिकॉर्ड की
+                  कुल संख्या, और उल्लंघन का विवरण शामिल है।<br />
+                  4.<strong>Domain_Summary</strong>: यह प्रति डोमेन उल्लंघनों की संख्या का सारांश
+                  प्रदान करता है।<br />
+                  5.<strong>Top10_Breaches</strong>: यह फ़ील्ड शीर्ष 10
+                  उल्लंघनों की सूची प्रदान करता है।<br />
+                  6.<strong>Yearly_Metrics</strong>: यह फ़ील्ड 2010 से वर्तमान
+                  वर्ष तक उल्लंघनों की संख्या का वार्षिक विवरण प्रदान करता है।<br />
+                  <br />आसान संदर्भ के लिए नमूना आउटपुट दिया गया है।<br />
+                  <pre>
 {
   "metrics": {
     "Breach_Summary": {
@@ -625,126 +1534,224 @@ curl -L -X POST -H "x-api-key: 2a447449965fe2b3f1729b65ee94197d" -H "Content-Len
   "status": "success"
 }
 
-	       </pre>
-            <strong>त्रुटि प्रबंधन</strong>: अमान्य या गुम एपीआई कुंजी के मामले में, प्रतिक्रिया इस प्रकार होगी:
-            <pre>
+	       </pre
+                  >
+                  <strong> त्रुटि प्रबंधन</strong>: यदि API कुंजी अमान्य है, तो
+                  एंडपॉइंट HTTP 401 और निम्नलिखित JSON के साथ प्रतिक्रिया करता है:
+                  <pre>
 {
-  "message":"Invalid or missing API key",
-  "status":"error"
+  "detail": "Invalid or missing API key"
 }
-	       </pre>
-            <strong>संदेश</strong> फ़ील्ड में त्रुटि का विवरण होगा, और<strong>स्थिति</strong> फ़ील्ड में "त्रुटि"
-            स्ट्रिंग होगी जो इंगित करेगी कि कोई त्रुटि हुई है।
-            <br /><br />
-            एंडपॉइंट पर अनुरोध करते समय "YOUR_API_KEY" को अपनी वास्तविक एपीआई कुंजी से बदलना याद रखें।
-            <hr />
-            <div class="alert alert-primary" role="alert">
-              <h4>
-                <strong>6. एपीआई प्रतिक्रिया कोड</strong>
-              </h4>
-              <br />
+	       </pre
+                  >
+                  <strong>detail</strong> फ़ील्ड में त्रुटि का विवरण होता है। <br /><br />
+                  एंडपॉइंट पर अनुरोध करने से पहले <code>XON_API_KEY</code> को अपनी
+                  वास्तविक API कुंजी पर सेट करना याद रखें।
+                  <hr />
+                  <div id="endpoint-6" class="alert alert-primary" role="alert">
+                    <h4>
+                      <strong>6. API प्रतिक्रिया कोड</strong>
+                    </h4>
+                    <br />
+                  </div>
+                  XposedOrNot API किसी API अनुरोध की सफलता या विफलता को दर्शाने
+                  के लिए पारंपरिक HTTP प्रतिक्रिया कोड का उपयोग करता है। सामान्य
+                  तौर पर: 2xx श्रेणी के कोड सफलता दर्शाते हैं। 4xx श्रेणी के कोड
+                  प्रदान की गई जानकारी के आधार पर विफल हुई एक त्रुटि दर्शाते हैं
+                  (जैसे, गलत पैरामीटर, अपर्याप्त क्वेरी विकल्प, गलत url आदि)। 5xx
+                  श्रेणी के कोड XposedOrNot के सर्वर के साथ एक त्रुटि दर्शाते हैं। <br />
+                  <br />
+                  दूसरे शब्दों में, 4xx श्रेणी के कोड क्लाइंट-साइड त्रुटि (आपका
+                  अनुरोध) दर्शाते हैं और 5xx कोड सर्वर-साइड त्रुटि (हमारी ओर से)
+                  दर्शाते हैं। <br />
+                  <br />
+                  <div class="table-responsive">
+                  <table class="table table-hover table-bordered">
+                    <caption class="sr-only-caption">HTTP प्रतिक्रिया कोड और उनके अर्थ</caption>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">कोड</th>
+                        <th scope="col">विवरण</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="status-code-200">
+                        <th scope="row">200</th>
+                        <td>सफलता एक JSON प्रतिक्रिया आउटपुट करेगी</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">401</th>
+                        <td>अमान्य/अनधिकृत API कुंजी</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">404</th>
+                        <td>इनपुट में त्रुटि ( कोई डेटा नहीं मिला )</td>
+                      </tr>
+                      <tr class="status-code-4xx">
+                        <th scope="row">429</th>
+                        <td>गति सीमा पार हुई - धीमा करने का समय</td>
+                      </tr>
+                      <tr class="status-code-5xx">
+                        <th scope="row">502/503</th>
+                        <td>
+                          सर्वर-साइड त्रुटि। यदि आपको इसका सामना हो तो कृपया इसकी
+                          रिपोर्ट करें।
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                  <div class="alert alert-danger" role="alert">
+                    <strong>नोट: </strong>पासवर्ड के लिए खोज क्वेरी समय या गणना
+                    द्वारा प्रतिबंधित नहीं हैं। <br />
+                    <br />
+                    <em
+                      class="fas fa-exclamation-triangle"
+                      style="font-size: 28px; color: red"
+                    ></em>
+                    प्रत्येक API अनुरोध के लिए प्रति सेकंड 2 क्वेरी की एक सीमा
+                    होगी। आपसे अनुरोध है कि कृपया इसका ध्यान रखें और फिर धीमे मोड
+                    या स्लीप मॉडल के साथ पुनः प्रयास करें। <br />
+                    <br />
+                    इस API का बार-बार दुरुपयोग या गलत उपयोग
+                    <a onclick="jsfunction()" href="javascript:void(0);"
+                      >xGuardian</a
+                    > द्वारा स्वचालित रूप से अवरुद्ध कर दिया जाता है। कृपया API का
+                    ज़िम्मेदारी से उपयोग करें। <br />
+                    <br />
+                    <em
+                      class="fa fa-bug"
+                      aria-hidden="true"
+                      style="font-size: 28px; color: red"
+                    ></em>
+                    कोई बग मिला? इसे Twitter या ईमेल के माध्यम से रिपोर्ट करें और
+                    इसका समाधान किया जाएगा।
+                  </div>
+                </div>
+              </div>
             </div>
-            XposedOrNot API किसी API अनुरोध की सफलता या विफलता को इंगित करने के लिए पारंपरिक HTTP प्रतिक्रिया कोड का
-            उपयोग करता है। सामान्य तौर पर: 2xx रेंज में कोड सफलता का संकेत देते हैं। 4xx रेंज में कोड एक त्रुटि का संकेत
-            देते हैं जो प्रदान की गई जानकारी (उदाहरण के लिए, गलत पैरामीटर, अपर्याप्त क्वेरी विकल्प, गलत यूआरएल आदि) को
-            देखते हुए विफल हो गई। 5xx श्रेणी के कोड XposedOrNot के सर्वर में एक त्रुटि दर्शाते हैं।<br />
-            <br /> दूसरे शब्दों में, 4xx रेंज में कोड उपयोगकर्ता त्रुटि (आप) को इंगित करते हैं और 5xx सर्वर त्रुटि (Me)
-            को इंगित करते हैं।<br />
-            <br />
-            <table class="table table-hover table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">कोड</th>
-                  <th scope="col">विवरण</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">200</th>
-                  <td>सफलता JSON प्रतिक्रिया आउटपुट करेगी</td>
-                </tr>
-                <tr>
-                  <th scope="row">401</th>
-                  <td>अमान्य/अनधिकृत एपीआई कुंजी</td>
-                </tr>
-                <tr>
-                  <th scope="row">404</th>
-                  <td>इनपुट में त्रुटि (कोई डेटा नहीं मिला)</td>
-                </tr>
-                <tr>
-                  <th scope="row">429</th>
-                  <td>स्पीड थ्रॉटल हिट - धीमा करने का समय</td>
-                </tr>
-                <tr>
-                  <th scope="row">502/503</th>
-                  <td>सर्वर दोष - मेरी समस्या को पूरी तरह से ठीक करना है। यदि आप इसे देखें तो कृपया ज़ोर से चिल्लाएँ;)
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="alert alert-danger" role="alert">
-              <strong>टिप्पणी:</strong>पासवर्ड के लिए खोज क्वेरी समय या गिनती से प्रतिबंधित नहीं हैं।<br />
-              <br />
-              <em class="fas fa-exclamation-triangle" style="font-size:28px;color:red"></em> प्रत्येक एपीआई अनुरोध के
-              लिए प्रति सेकंड 1 क्वेरी की सीमा होगी। आपसे अनुरोध है कि कृपया इस पर ध्यान दें और फिर धीमे मोड या स्लीप
-              मॉडल के साथ पुनः प्रयास करें।<br />
-              <br /> जो लोग नियमित रूप से अपने स्वयं के नापाक उद्देश्यों के लिए इस एपीआई का दुरुपयोग या दुरुपयोग करने का
-              प्रयास करते हैं, उन्हें गैर-प्रसिद्ध लोगों द्वारा गहरी अंधेरी कालकोठरी में डाल दिया जाएगा।<a
-                href="javascript:void(0);" onclick="jsfunction()">xअभिभावक</a>. आपको चेतावनी दी जाती है.<br />
-              <br />
-              <em aria-hidden="true" class="fa fa-bug" style="font-size:28px;color:red"></em> यदि आपको एपीआई में कोई बग
-              दिखाई देता है, तो बेझिझक मुझे ट्विटर पर संदेश भेजें या मुझे ईमेल करें। मुझे सभी उपयोगकर्ताओं के लाभ के लिए
-              इसे स्वीकार करने और इसका समाधान करने में बहुत खुशी होगी।
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            इस पूर्णतः ओपन सोर्स साइट को आकार देने में हमारे साथ जुड़ें!
+            हमारे
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            > पर योगदान का ❤️ स्वागत है।
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>कानूनी</h6>
+            <div class="footer-links-wrapper">
+              <a href="/privacy" class="footer-link">गोपनीयता नीति</a>
+              <a href="/terms" class="footer-link">शर्तें</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>समुदाय</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">ब्लॉग</a>
+              <a href="/our-repository" class="footer-link">हमारी रिपॉज़िटरी</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>विश्वास</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">स्थिति</a>
+              <a href="/transparency" class="footer-link">पारदर्शिता</a>
+              <a href="/responsible-disclosure" class="footer-link">ज़िम्मेदार प्रकटीकरण</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>हमें फ़ॉलो करें</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>AI सारांश</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                ChatGPT
+              </a>
+              <a href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Perplexity
+              </a>
+              <a href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Gemini
+              </a>
             </div>
           </div>
         </div>
-      </div>
-      <div class="container text-center">
-        <footer>
-          <aside>
-            <br />
-            <a aria-hidden="true" href="https://twitter.com/xposedornot" rel="noopener" style="color:#3c5fec"
-              target="_blank">  <em class="fab fa-twitter fa-3x"></em>
-            </a>
-            <a aria-hidden="true" href="https://facebook.com/xposedornot" rel="noopener" style="color:#3c5fec"
-              target="_blank">  <em class="fab fa-facebook fa-3x"></em>
-            </a>
-            <hr />
-            <p>इस पूर्णतः मुक्त स्रोत साइट को आकार देने में हमारे साथ जुड़ें! योगदान का स्वागत है ❤️—हमारी जाँच करें<a
-                href="https://github.com/XposedOrNot" rel="noopener" target="_blank">GitHub</a>.</p>
-            <br />
-            <h3><a class="button-link" href="https://xposedornot.docs.apiary.io" target="_blank"> 🛠️एपीआई खेल का
-                मैदान</a></h3>
-            <style>
-              .button-link {
-                display: inline-block;
-                padding: 10px 20px;
-                color: #fff;
-                background-color: #007BFF;
-                text-decoration: none;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
-              }
 
-              .button-link:hover {
-                background-color: #FFBF00;
-              }
-            </style>
-          </aside>
-        </footer>
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">डार्क मोड</label>
+        </div>
       </div>
-      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-        <input class="custom-control-input" id="darkSwitch" type="checkbox" />
-        <label class="custom-control-label" for="darkSwitch">डार्क मोड</label>
-      </div>
-
-
     </div>
-    <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-    <script src="/static/scripts/bug-min.js" type="text/javascript"></script>
-    <script src="/static/scripts/api_doc.js" type="text/javascript"></script>
-    <script src="/static/scripts/common.js"></script>
-  </div>
-</body>
 
+<button id="backToTop" title="ऊपर जाएँ">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+    <script src="/static/scripts/bug-min.js" defer></script>
+    <script src="/static/scripts/api_doc.js" defer></script>
+    <script src="/static/scripts/common.js" defer></script>
+    <script src="/static/scripts/api_doc_ui.js" defer></script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechnicalArticle",
+        "headline": "XposedOrNot API Documentation",
+        "description": "Complete documentation for XposedOrNot's security APIs including email breach detection, password security verification, and domain exposure analysis.",
+        "author": {
+          "@type": "Person",
+          "name": "Devanand Premkumar"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "XposedOrNot",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://xposedornot.com/static/images/xon.png"
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
