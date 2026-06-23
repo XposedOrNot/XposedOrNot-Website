@@ -1,33 +1,86 @@
+<!doctype html>
 <html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta name="description" content="XposedOrNot：负责任的披露" />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta property="og:title" content="负责任的披露" />
+    <meta
+      property="og:description"
+      content="XposedOrNot 关于安全漏洞负责任披露的指南。"
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta
+      property="og:url"
+      content="https://xposedornot.com/responsible-disclosure"
+    />
+    <meta property="og:type" content="website" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="XposedOrNot: Responsible Disclosure" name="description" />
-  <meta content="Devanand Premkumar" name="author" />
-  <link href="/favicon.ico" rel="icon" type="image/x-icon" />
-  <title>负责任的披露</title>
-  <link async="" defer=""
-    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset&display=swap" media="all"
-    rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
-    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-    referrerpolicy="no-referrer" rel="stylesheet">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-  <script crossorigin="anonymous"
-    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-    referrerpolicy="no-referrer"
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
-  <link defer="" href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="负责任的披露" />
+    <meta
+      name="twitter:description"
+      content="XposedOrNot 关于安全漏洞负责任披露的指南。"
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
 
-  </link>
-  </link>
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <title>XposedOrNot：负责任的披露</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -53,171 +106,361 @@
 
     </head>
 
-<body>
-  <div class="kbanner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-      <a class="navbar-brand" href="https://xposedornot.com">是否Xpose</a>
-      <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
-        class="navbar-toggler" data-target="#navbarNavDropdown" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="password">密码<span class="sr-only">（当前的）</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="faq">常问问题</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="https://blog.xposedornot.com/">博客</a>
-          </li>
-          <li class="nav-item dropdown active">
-            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-              href="#" id="navbarDropdownMenuLink"> 更多工具</a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-              <a class="dropdown-item" href="xposed">Xpose 违规</a>
-              <a class="dropdown-item" href="shield">隐私盾</a>
-              <a class="dropdown-item" href="domain">域名验证</a>
-              <a class="dropdown-item" href="domains">域级搜索</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <div class="container">
-    <div class="panel-group" id="accordion">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-parent="#accordion" data-toggle="collapse" href="#collapse1">
-              <h1>
-                <strong>负责任地披露错误和漏洞</strong>
-              </h1>
-            </a>
-          </h4>
+  <body>
+    <div class="kbanner">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark bg-primary kbanner"
+        style="min-height: 70px; padding-top: 0.5rem; padding-bottom: 0.5rem"
+      >
+        <a
+          class="navbar-brand"
+          href="https://xposedornot.com"
+          style="text-decoration: none"
+        >
+          <span
+            style="
+              font-size: 1.5em;
+              font-weight: bold;
+              display: block;
+              color: white;
+              line-height: 1.2;
+            "
+            >XposedOrNot</span
+          >
+          <span
+            style="
+              font-size: 0.8em;
+              display: block;
+              color: white;
+              opacity: 0.85;
+              line-height: 1;
+            "
+            >Community Edition</span
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="切换导航"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="password"
+                >密码 &nbsp; <span class="sr-only">（当前）</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="faq">常见问题 &nbsp;</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://blog.xposedornot.com/"
+                >博客 &nbsp;</a
+              >
+            </li>
+            <li class="nav-item dropdown active">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                更多工具
+              </a>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <a class="dropdown-item" href="xposed">Xposed 泄露事件</a>
+                <a class="dropdown-item" href="shield">Privacy Shield</a>
+                <a class="dropdown-item" href="domain"
+                  >域名验证</a
+                >
+                <a class="dropdown-item" href="domains"
+                  >域名级搜索</a
+                >
+              </div>
+            </li>
+          </ul>
         </div>
-        <div class="panel-collapse" id="collapse1">
+      </nav>
+    </div>
+    <div class="container">
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse"
+                data-parent="#accordion"
+                href="#collapse1"
+              >
+                <h1>
+                  <strong
+                    >漏洞与缺陷的负责任披露</strong
+                  >
+                </h1>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse">
+            <div class="panel-body">
+              <strong>最后更新：2025年8月26日</strong>
+              <br />
+              <br />各位漏洞猎手，你们好！非常感谢你们前来协助我们保障
+              XposedOrNot（XON）的安全。我制定了这份负责任披露政策，以确保大家都遵守规则，
+              共同帮助我们让服务、网站和网络免受任何讨厌的漏洞或缺陷的侵扰。 <br /><br />
+              如果你发现了需要我关注的问题，感谢你以负责任的方式进行调查和报告，
+              以便我能够尽快修复。你在披露安全漏洞方面的帮助，
+              让我们所有的用户都能安然无虞。 <br /><br />
+              <h2>
+                <strong>报告指南：</strong>
+              </h2>
+              <br />
+              在报告漏洞或缺陷时，请务必包含以下内容：
+              <ol>
+                <li>
+                  对漏洞或缺陷的清晰描述，并附上屏幕截图或输出数据等证据。
+                  不必拘谨，我们很乐意看到你的发现！
+                </li>
+                <li>
+                  对该漏洞潜在影响的描述，以便我们了解所面对的问题。
+                </li>
+                <li>
+                  你希望使用的姓名或昵称，以便我们能在 XON 安全研究员名人堂中
+                  给予你应得的认可。
+                </li>
+                <li>
+                  复现该问题的确切步骤，以便我们在自己这边重现。
+                </li>
+                <li>
+                  如果你有概念验证（proof of concept）视频，我们将不胜感激。
+                </li>
+                <li>
+                  关于平台、操作系统、版本、IP 地址或 URL 的任何相关信息。
+                </li>
+                <li>
+                  日志或追踪数据等佐证信息总是很有帮助。
+                </li>
+                <li>
+                  你对该问题可利用程度的评估。即便它在可利用性上是满分十分，
+                  我们也不会因此评判你。
+                </li>
+              </ol>
+              感谢你成为一名出色的漏洞猎手 🙌，并帮助我们保障
+              XposedOrNot（XON）的安全！
+              <br /><br />
+              <h2>
+                <strong>有效的提交内容 </strong>
+              </h2>
+              <br />
+              <ol>
+                <li>本地或远程文件包含（LFI/RFI）</li>
+                <li>身份验证绕过</li>
+                <li>目录遍历</li>
+                <li>未经授权/非预期的数据泄露</li>
+                <li>远程代码执行（RCE）</li>
+                <li>SQL/XXE 注入及命令注入</li>
+                <li>跨站脚本（XSS）</li>
+                <li>服务器端请求伪造（SSRF）</li>
+                <li>服务器或 API 的配置错误问题</li>
+                <li>身份验证与授权相关问题</li>
+                <li>跨站请求伪造（CSRF）</li>
+              </ol>
+              <br />
+              <h2>
+                <strong> 适用范围内的域名</strong>
+              </h2>
+              <br />
+              <p><strong>主域名：</strong> xposedornot.com</p>
+              <p>
+                <strong>子域名：</strong> xposedornot.com 的所有子域名
+                （*.xposedornot.com）
+              </p>
+              <br />
+              <p>
+                <em
+                  >包括但不限于：api.xposedornot.com、
+                  passwords.xposedornot.com、plus.xposedornot.com 以及任何未来新增的子域名。</em
+                >
+              </p>
+              <br />
+              <h2>
+                <strong> 信息的使用</strong>
+              </h2>
+              <br />
+              我们承诺对有关你以及我们服务的所有信息予以保密。因此，
+              请不要向我们团队以外的任何人透露相关信息！<br />
+              <br />
+              我们致力于让互联网变得更加安全，也十分感激协助我们实现这一目标的安全研究员。
+              因此，由衷感谢 🙏 你成为这份努力的一部分！通过负责任地披露你所发现的任何漏洞或缺陷，
+              你正在帮助我们保护用户及其数据。<br />
+              <br />
+              <h2>
+                <strong> 可接受使用政策 </strong>
+              </h2>
+              <br />
+              友情提示——这并不是那种为漏洞提交提供现金奖励的典型漏洞赏金（bug bounty）计划。
+              我们（暂时）还没有那么财大气粗。不过，如果你确实向我们报告了重要问题，
+              我们或许会以一些关爱与谢意作为回报！<br />
+              <br />
+              只要记得守住道德底线，好吗？我们期望你做一名优秀的互联网公民，
+              并遵守我们在可接受使用政策中所列出的规则。只要你做到这一点，
+              我们将乐于在名人堂页面上给予你认可——它有点像我们为安全研究员打造的
+              好莱坞星光大道。所以，尽管来一展身手，帮助我们让 XposedOrNot 成为一个
+              对所有人都更安全的地方吧！<br />
+              <br />
+              <h2>
+                <strong> 对漏洞报告者的期望 </strong>
+              </h2>
+              <br />
+              各位漏洞猎手，我们很高兴你加入进来，帮助我们让 XposedOrNot 成为一个
+              对所有人都更安全的地方！在你开始之前，以下是我们对你的几点期望： <br /><br />
+              <ol>
+                <li>
+                  请勿做出任何会损害或扰乱 XposedOrNot 或我们用户的行为。
+                </li>
+                <li>
+                  在收到你的报告后，我们将在 1 至 3 天内向你发送确认回执。
+                </li>
+                <li>
+                  尊重我们用户的隐私，请勿试图窥探他们的账户。
+                </li>
+                <li>请仅在你自己的账户和电子邮件地址上进行测试。</li>
+                <li>
+                  如果你发现某个可让你访问我们 Web 服务器或 API 的严重漏洞，
+                  请就此停止，并交由我们接手处理。
+                </li>
+                <li>
+                  在我们解决该问题之前，请勿分享有关该问题的任何细节。
+                </li>
+                <li>
+                  如果你试图利用该漏洞牟取私利，我们将不得不取消你报告的资格。
+                </li>
+              </ol>
+              <br />
+              感谢你的配合，帮助我们保障平台的安全。让我们携手努力，
+              将 XposedOrNot 打造得尽善尽美！
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse in panel-collapse"
+                data-parent="#accordion"
+                href="#collapse25"
+              >
+                <strong>报告指南</strong>
+              </a>
+            </h4>
+          </div>
           <div class="panel-body">
-            <strong>最后更新时间：2021 年 3 月 8 日</strong>
+            感谢你为我们留心！如果你在 XposedOrNot 中发现了漏洞或
+            安全缺陷，我们很乐意听到你的报告。
+            你可以通过电子邮件
+            <strong>deva @ xposedornot.com</strong> 报告，或在推特上联系我们
+            <strong>@DevaOnBreaches</strong>。 <br />
             <br />
-            <br />嘿，昆虫猎人！我们很高兴您能帮助我们确保 XposedOrNot (XON)
-            的安全。我制定了这份负责任的披露政策，以确保每个人都表现良好，并帮助我们保持我们的服务、网站和网络免受任何讨厌的错误或漏洞的影响。<br /><br />
-            如果您发现一些需要我注意的事情，我感谢您的合作，负责任地调查和报告它，以便我可以比高速子弹更快地解决它。您帮助披露安全漏洞有助于我们保证所有用户的安全。<br /><br />
-            <h2>
-              <strong>报告指南：</strong>
-            </h2>
-            <br /> 当您报告错误或漏洞时，请确保包含以下内容：
-            <ol>
-              <li> 对错误或漏洞的清晰描述，并提供一些证据，例如屏幕截图或输出数据。不要害羞，我们很高兴看到您的发现！</li>
-              <li> 对漏洞潜在影响的描述，以便我们知道我们正在处理什么。</li>
-              <li> 您首选的姓名或昵称，以便我们在 XON 安全研究员名人堂中给予您应有的认可。</li>
-              <li> 重现问题的确切步骤，以便我们可以在我们这边重现它。</li>
-              <li> 如果您有概念视频证明，我们将不胜感激。</li>
-              <li> 有关平台、操作系统、版本、IP 地址或 URL 的任何相关信息。</li>
-              <li> 支持证据（例如记录或跟踪数据）总是有帮助的。</li>
-              <li> 您对该问题的可利用性的评估。如果您的可利用性评分为 10 分（满分 10 分），我们不会对您进行评判。</li>
-            </ol>
-            感谢您成为一名出色的 bug 猎人 🙌 并帮助我们保持 XposedOrNot (XON) 的安全！<br /><br />
-            <h2>
-              <strong>有效提交</strong>
-            </h2>
+            电子邮件 ：deva @ xposedornot.com <br />
+            Twitter ：
+            <a href="https://twitter.com/devaonbreaches">DevaOnBreaches </a>
             <br />
-            <ol>
-              <li> 本地或远程文件包含</li>
-              <li> 身份验证绕过</li>
-              <li> 目录遍历</li>
-              <li> 未经授权/非故意的数据泄露</li>
-              <li> 远程代码执行（RCE）</li>
-              <li> SQL/XXE注入和命令注入</li>
-              <li> 跨站脚本 (XSS)</li>
-              <li> 服务器端请求伪造 (SSRF)</li>
-              <li> 服务器或 API 上的错误配置问题</li>
-              <li> 身份验证和授权相关问题</li>
-              <li> 跨站请求伪造 (CSRF)</li>
-            </ol>
             <br />
-            <h2>
-              <strong> 在范围域内</strong>
-            </h2>
-            <br />
-            <ol>
-              <li>https://xposeornot.com</li>
-              <li>https://api.xposedornot.com</li>
-              <li>https://passwords.xposedornot.com</li>
-            </ol>
-            <br />
-            <h2>
-              <strong> 信息的用途</strong>
-            </h2>
-            <br />
-            我们承诺对有关您和我们服务的所有信息保密。所以请不要向我们团队以外的任何人泄露秘密！<br />
-            <br />
-            我们致力于让互联网变得更安全，我们感谢帮助我们实现这一目标的安全研究人员。因此，非常感谢🙏您参与这项努力！通过负责任地披露您发现的任何错误或漏洞，您正在帮助我们保护我们的用户及其数据。<br />
-            <br />
-            <h2>
-              <strong> 可接受的使用政策</strong>
-            </h2>
-            <br />
-            请注意 - 这不是典型的错误赏金计划，我们为漏洞提交提供现金奖励。我们还不是由金钱组成的。然而，如果您确实向我们报告了一些重要的事情，我们可能只会向您表达一些爱和感激作为回报！<br />
-            <br />
-            只要确保遵守道德即可，好吗？我们希望您像互联网上的好公民一样行事，并遵守我们在可接受使用政策中制定的规则。但如果您这样做，我们很乐意在我们的名人堂页面上给予您一些认可 -
-            这有点像我们版本的好莱坞星光大道，但针对的是安全研究人员。所以，继续吧，展示你的技能，帮助我们让 XposedOrNot 成为一个对每个人来说更安全的地方！<br />
-            <br />
-            <h2>
-              <strong> Bug 报告者 - 期望</strong>
-            </h2>
-            <br />
-            Bug 猎人，我们很高兴您能加入，帮助我们让 XposedOrNot 成为一个对每个人来说更安全的地方！在开始之前，我们对您的期望如下：<br /><br />
-            <ol>
-              <li> 请不要做任何会伤害或扰乱 XposedOrNot 或我们的用户的事情。</li>
-              <li> 我们将在收到您的报告后 1-3 天内向您发送确认函。</li>
-              <li> 尊重我们用户的隐私，不要试图窥探他们的帐户。</li>
-              <li> 仅在您自己的帐户和电子邮件地址上进行测试。</li>
-              <li> 如果您发现可让您访问我们的网络服务器或 API 的严重漏洞，请停止并让我们接管。</li>
-              <li> 在我们解决问题之前，请勿透露有关该问题的任何详细信息。</li>
-              <li> 如果您试图利用该漏洞谋取私利，我们将不得不取消您的报告资格。</li>
-            </ol>
-            <br />
-            感谢您的合作，帮助我们确保平台安全。让我们共同努力，让 XposedOrNot 成为最好的！
           </div>
         </div>
       </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-parent="#accordion" data-toggle="collapse in panel-collapse" href="#collapse25">
-              <strong>报告指南</strong>
-            </a>
-          </h4>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            欢迎加入我们，共同打造这个完全开源的网站！期待你在我们的
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            > 上贡献力量 ❤️。
+          </p>
         </div>
-        <div class="panel-body"> 感谢您对我们的关注！如果您发现 XposedOrNot
-          中的错误或安全漏洞，我们很乐意了解。您可以通过电子邮件举报<strong>德瓦@xposedornot.com</strong> 或发推文给我们@DevaOnBreaches。<br />
-          <br /> 电子邮件：deva[@]xposedornot.com<br /> 推特 ：<a href="https://twitter.com/devaonbreaches">德瓦违约</a>
-          <br />
-          <br />
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>法律</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">隐私政策</a>
+              <a href="terms" class="footer-link">使用条款</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>社区</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link">博客</a>
+              <a href="our-repository" class="footer-link">我们的代码库</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>信任</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">状态</a>
+              <a href="transparency" class="footer-link">透明度</a>
+              <a href="responsible-disclosure" class="footer-link">负责任的披露</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>关注我们</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">深色模式</label>
         </div>
       </div>
     </div>
-  </div>
-
-
-  <div class="container text-center">
-    <footer>
-      <aside>
-        <p>与我们一起塑造这个完全开源的网站！欢迎贡献❤️ —查看我们的<a href="https://github.com/XposedOrNot" rel="noopener"
-            target="_blank">GitHub</a>。</p>
-      </aside>
-      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-        <input class="custom-control-input" id="darkSwitch" type="checkbox" />
-        <label class="custom-control-label" for="darkSwitch">深色模式</label>
-      </div>
-    </footer>
-  </div>
-  <script async="" defer="" src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-  <script src="/static/scripts/common.js"></script>
-</body>
-
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+    <script src="/static/scripts/common.js"></script>
+      <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
