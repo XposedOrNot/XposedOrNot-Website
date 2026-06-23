@@ -3,10 +3,16 @@
 
 <head>
    <meta charset="utf-8">
-   <title>XposedOrNot: தரவு மீறல் அபாய அறிக்கை</title>
+   <title>XposedOrNot: தரவு மீறல் இடர் அறிக்கை</title>
    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
    <link rel="dns-prefetch" href="https://static.hotjar.com">
-   <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+   <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+   <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+   <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
    <link rel=stylesheet
       href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset&display=swap'
       type=text/css media=all>
@@ -22,7 +28,7 @@
    <link rel="stylesheet" type="text/css" href="/static/scripts/libs/clippy/src/clippy.css" media="all">
    <link rel="stylesheet" href="/static/css/jquery.hortree.min.css">
    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description" content="XposedOrNot: உங்கள் தரவு மீறல் வெளிப்பாட்டின் விரிவான அறிக்கையைப் பெறுங்கள்">
+   <meta name="description" content="XposedOrNot: உங்கள் தரவு மீறல் வெளிப்பாடு குறித்த விரிவான அறிக்கையைப் பெறுங்கள்">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="author" content="Devanand Premkumar">
    <script src="/static/scripts/libs/clippy/build/clippy.js"></script>
@@ -89,8 +95,6 @@
       integrity="sha512-gbruucq/Opx9jlHfqqZeAg2LNK3Y4BbpXHKDhRC88/tARL/izPOE4Zt2w6X9Sn1UeWaGbL38zW7nkL2jdn5JIw=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -143,7 +147,7 @@
                               <a href="faq">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
                            </li>
                            <li>
-                              <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">வலைப்பதிவு</a>
+                              <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
                            </li>
                            <li>
                               <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
@@ -178,7 +182,7 @@
                         <a href="faq">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
                      </li>
                      <li>
-                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">வலைப்பதிவு</a>
+                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
                      </li>
                      <li>
                         <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
@@ -197,14 +201,15 @@
          <div class="row">
             <div class="col-lg-8 col-md-12">
                <div class="xon-row2-left">
-                  <div align="center" class="alert alert-primary"><strong>உங்கள் வெளிப்படுத்தப்பட்ட தரவு மீறல்களின் வருடாந்திர போக்கு</strong></div>
+                  <div align="center" class="alert alert-primary"><strong>உங்கள் வெளிப்பட்ட தரவு மீறல்களின்
+                        ஆண்டுவாரிப் போக்கு</strong></div>
                   <canvas id="bc" style="height: 341px; width: 682px;" class="chartjs-render-monitor" width="750"
                      height="375"></canvas>
                </div>
             </div>
             <div class="col-lg-4 col-md-12">
                <div class="xon-row2-right">
-                  <h3 id="risk">உங்கள் ஆபத்து மதிப்பெண்: </h3>
+                  <h3 id="risk">உங்கள் இடர் மதிப்பெண்: </h3>
                   <div id="chart_div"></div>
                </div>
             </div>
@@ -215,7 +220,7 @@
       <div class="container">
          <div class="row">
             <div align="center" style="width:100%">
-               <div align="center" class="alert alert-primary"><strong>வெளிப்படுத்தப்பட்ட தரவு மீறல்களின் காட்சிப்படுத்தல்</strong>
+               <div align="center" class="alert alert-primary"><strong>வெளிப்பட்ட தரவு மீறல்களின் காட்சிப்படுத்தல்</strong>
                </div>
                <div id="tree-container" class="xon-row-left" style="width:100%"></div>
             </div>
@@ -228,15 +233,15 @@
             <div style="width:100%">
                <div class="xon-row-left" style="height :auto; width:100%">
                   <div class="xon-row-left_a" id="email">
-                     <p style="background-color:white;">மின்னஞ்சலுக்கான தரவு மீறல் அறிக்கை: <strong>மின்னஞ்சல்</strong>
+                     <p style="background-color:white;">மின்னஞ்சலுக்கான தரவு மீறல்கள் அறிக்கை: <strong>Email</strong>
                      </p>
                   </div>
                   <table class="table table-hover table-striped table-bordered">
                      <thead>
                         <tr>
-                           <th style="width: 200px">மீறல் பெயர்</th>
+                           <th style="width: 200px">மீறலின் பெயர்</th>
                            <th>மீறல் விவரங்கள்</th>
-                           <th style="width: 200px">வெளிப்படுத்தப்பட்ட பதிவுகள்</th>
+                           <th style="width: 200px">வெளிப்பட்ட பதிவுகள்</th>
                         </tr>
                      </thead>
                      <tbody id="data_breach"></tbody>
@@ -244,11 +249,12 @@
                   <div class="alert alert-success" role="alert" id="db-s" style="display:none" align="center">
                      <em class="fas fa-check-circle"></em>
                      <h3>
-                        <strong>நல்ல செய்தி 🎉</strong>
+                        <strong>நற்செய்தி 🎉</strong>
                      </h3>
-                     <strong> XposedOrNot இல் ஏற்றப்பட்ட தரவு மீறல்களில் உங்கள் மின்னஞ்சல் காணப்படவில்லை</strong>
+                     <strong> XposedOrNot-இல் ஏற்றப்பட்ட எந்த தரவு மீறலிலும் உங்கள் மின்னஞ்சல் காணப்படவில்லை</strong>
                      <p style="color:green;font-size:20px"></p>
-                     <br>நீங்கள் இதைப் பார்க்கிறீர்கள் என்றால், XposedOrNot இல் ஏற்றப்பட்ட தரவு மீறல்கள் எதிலும் உங்கள் மின்னஞ்சல் வெளிப்படவில்லை.
+                     <br>இதை நீங்கள் பார்க்கிறீர்கள் என்றால், XposedOrNot-இல் ஏற்றப்பட்ட எந்த தரவு மீறலிலும் உங்கள் மின்னஞ்சல்
+                     வெளிப்படவில்லை.
                      <p></p>
                   </div>
                </div>
@@ -262,25 +268,25 @@
             <div style="width:100%">
                <div class="xon-row-left" style="height :auto; width:100%">
                   <div class="xon-row-left_a" id="email_sensitive">
-                     <p style="background-color:white;">மின்னஞ்சலுக்கான உணர்திறன் தரவு மீறல் அறிக்கை: <strong>மின்னஞ்சல்</strong>
+                     <p style="background-color:white;">மின்னஞ்சலுக்கான முக்கிய தரவு மீறல்கள் அறிக்கை: <strong>Email</strong>
                      </p>
                   </div>
                   <table class="table table-hover table-striped table-bordered">
                      <thead>
                         <tr>
-                           <th style="width: 200px">உணர்திறன் மீறல்</th>
+                           <th style="width: 200px">முக்கிய மீறல்</th>
                            <th>மீறல் விவரங்கள்</th>
-                           <th style="width: 200px">வெளிப்படுத்தப்பட்ட பதிவுகள்</th>
+                           <th style="width: 200px">வெளிப்பட்ட பதிவுகள்</th>
                         </tr>
                      </thead>
                      <tbody id="data_breach_sensitive"></tbody>
                   </table>
                   <div class="alert alert-success" role="alert" id="db-sensitive" style="display:none" align="center">
                      <em class="fas fa-check-circle"></em>
-                     <strong> XposedOrNot இல் ஏற்றப்பட்ட எந்த உணர்திறன் தரவு மீறல்களிலும் உங்கள் மின்னஞ்சல் காணப்படவில்லை</strong>
+                     <strong> XposedOrNot-இல் ஏற்றப்பட்ட எந்த முக்கிய தரவு மீறலிலும் உங்கள் மின்னஞ்சல் காணப்படவில்லை</strong>
                      <p style="color:green;font-size:20px"></p>
                      <h3>
-                        <strong>நல்ல செய்தி 🎉</strong>
+                        <strong>நற்செய்தி 🎉</strong>
                      </h3>
                      <p></p>
                   </div>
@@ -295,27 +301,27 @@
             <div style="width:100%">
                <div class="xon-row-left" style="width:100%">
                   <div class="xon-row-left_a" id="paste">
-                     <p style="background-color:white;">மின்னஞ்சலுக்கான பேஸ்ட் அறிக்கை: <strong> மின்னஞ்சல்</strong>
+                     <p style="background-color:white;">மின்னஞ்சலுக்கான பேஸ்ட்கள் அறிக்கை: <strong> Email</strong>
                      </p>
                   </div>
                   <table class="table table-hover table-striped table-bordered">
                      <thead>
                         <tr>
                            <th style="width: 150px">பேஸ்ட் அடையாளங்காட்டி</th>
-                           <th>பேஸ்ட் வெளிப்பாடு தேதி</th>
-                           <th style="width: 150px">வெளிப்படுத்தப்பட்ட பதிவுகள்</th>
+                           <th>பேஸ்ட் வெளிப்பாட்டுத் தேதி</th>
+                           <th style="width: 150px">வெளிப்பட்ட பதிவுகள்</th>
                         </tr>
                      </thead>
                      <tbody id="paste_breach"></tbody>
                   </table>
                   <div class="alert alert-success" role="alert" id="db-p" style="display:none" align="center">
                      <em class="fas fa-check-circle"></em>
-                     <strong> XposedOrNot இல் ஏற்றப்பட்ட வெளிப்படையான பொது பேஸ்ட்களில் உங்கள் மின்னஞ்சல் காணப்படவில்லை!</strong>
+                     <strong> XposedOrNot-இல் ஏற்றப்பட்ட எந்த வெளிப்பட்ட பொது பேஸ்ட்களிலும் உங்கள் மின்னஞ்சல் காணப்படவில்லை!</strong>
                      <p style="color:green;font-size:20px"></p>
                      <h4>
                         <strong>அருமை 🙌</strong>
                      </h4>
-                     பாதுகாப்பான பக்கத்தில் இருக்க, உங்கள் மற்ற மின்னஞ்சல்களையும் சரிபார்க்கவும்.
+                     பாதுகாப்பாக இருக்க, உங்கள் மற்ற மின்னஞ்சல்களையும் தயங்காமல் சரிபார்க்கவும்.
                      <p></p>
                   </div>
                </div>
@@ -332,7 +338,7 @@
                            <div class="col-6">
                               <div class="xon-row2-right">
                                  <div align="center" class="alert alert-primary"><strong>உங்கள் தரவு மீறல்கள் &amp;
-                                       கடவுச்சொற்கள் சேமிப்பக அபாயங்கள்</strong></div>
+                                       கடவுச்சொல் சேமிப்பு இடர்கள்</strong></div>
                                  <div class="xon-row2-right_a1">
                                     <div>
                                        <canvas id="passwords"></canvas>
@@ -342,7 +348,8 @@
                            </div>
                            <div class="col-6">
                               <div class="xon-row2-right">
-                                 <div align="center" class="alert alert-primary"><strong>உங்கள் முதல் 10 வெளிப்படுத்தப்பட்ட தரவு மீறல்கள்</strong></div>
+                                 <div align="center" class="alert alert-primary"><strong>உங்கள் முதல் 10 வெளிப்பட்ட தரவு
+                                       மீறல்கள்</strong></div>
                                  <div style="width:100%">
                                     <canvas id="top5breaches"></canvas>
                                  </div>
@@ -363,7 +370,8 @@
                                  <div class="col-6">
                                     <div class="xon-row2-right">
                                        <div class="xon-row2-right_a1">
-                                          <div align="center" class="alert alert-primary"><strong>தொழில் வாரியான வெளிப்பாடு</strong></div>
+                                          <div align="center" class="alert alert-primary"><strong>தொழில்துறை வாரியான
+                                                வெளிப்பாடு</strong></div>
                                           <div class="xon-row2-right_a2" id="industry"></div>
                                        </div>
                                     </div>
@@ -375,9 +383,11 @@
                                        </div>
                                        <div class="text-center">
                                           <br>
-                                          <p>GitHub இல் உங்கள் ஆதரவையும் அன்பையும் காட்டுங்கள் 😍 <br> புதிய அம்சக் கோரிக்கை உள்ளதா அல்லது ஏற்கனவே உள்ளதை மேம்படுத்த விரும்புகிறீர்களா? <br><br> நான் <strong>உங்களிடமிருந்து கேட்க</strong> விரும்புகிறேன்! ஒன்றாக இதை இன்னும் சிறப்பாக செய்வோம்!</p>
+                                          <p>GitHub-இல் உங்கள் ஆதரவையும் அன்பையும் காட்டுங்கள் 😍 <br> புதிய அம்ச
+                                             கோரிக்கை உள்ளதா அல்லது ஏற்கனவே உள்ள ஒன்றை மேம்படுத்த விரும்புகிறீர்களா? <br><br> உங்களிடமிருந்து <strong>கேட்க
+                                                விரும்புகிறேன்</strong>! இதை இன்னும் சிறப்பாக ஒன்றாக ஆக்குவோம்!</p>
                                           <br> <a href="https://github.com/xposedornot" class="btn btn-primary"
-                                             target="_blank">எங்கள் GitHub ஐப் பார்வையிடவும்</a>
+                                             target="_blank">எங்கள் GitHub-ஐப் பார்வையிடவும்</a>
                                        </div>
                                     </div>
                                  </div>
@@ -396,7 +406,8 @@
                                        <div></div>
                                        <div>
                                           <div class="xon-row3-right">
-                                             <div align="center" class="alert alert-primary"><strong>உங்கள் வெளிப்படுத்தப்பட்ட தரவு மீறல்கள் விரிவாக</strong></div>
+                                             <div align="center" class="alert alert-primary"><strong>உங்கள் வெளிப்பட்ட தரவு
+                                                   மீறல்கள் விரிவாக</strong></div>
                                              <div>
                                                 <div>
                                                    <div id="details">
@@ -413,7 +424,7 @@
                                     <div class="modal-dialog" role="document">
                                        <div class="modal-content">
                                           <div id="h2head_friend" class="modal-header modal-header-success">
-                                             <h3 class="modal-title" id="alertMeModalLabel">என் நண்பரை எச்சரிக்கவும் </h3>
+                                             <h3 class="modal-title" id="alertMeModalLabel">நண்பருக்கு அறிவிக்கவும் </h3>
                                              <button type="button" class="close" data-dismiss="modal"
                                                 aria-label="Close">
                                                 <span aria-hidden="true">×</span>
@@ -424,9 +435,10 @@
                                                 <div class="form-group"></div>
                                                 <div class="form-group">
                                                    <div class="alert-success" disabled="" id="message-text_">
-                                                      உங்கள் நண்பரின் தரவு மீறல் வெளிப்பாட்டைச் சரிபார்க்க அழைப்பை Facebook, Twitter, LinkedIn அல்லது மின்னஞ்சல் மூலம் அனுப்பலாம் 😎. <br>
+                                                      உங்கள் நண்பர் தங்கள் தரவு மீறல் வெளிப்பாட்டைச் சரிபார்க்க ஓர் அழைப்பை
+                                                      Facebook, Twitter, LinkedIn அல்லது மின்னஞ்சல் வழியாக அனுப்பலாம் 😎. <br>
                                                       <br>பகிர்வதற்கு கீழே கொடுக்கப்பட்டுள்ள இணைப்புகளைப் பயன்படுத்தவும். <br>
-                                                      <br>பகிர்தலே அக்கறை காட்டுதல்! <br>
+                                                      <br>பகிர்வதே அக்கறை! <br>
                                                       <br>
                                                       <strong>நம் நண்பர்களை விட்டுவிடாமல் இருப்போம்.</strong>
                                                       <br>
@@ -464,16 +476,18 @@
                                              <button type="button" class="btn-lg btn-primary"
                                                 style="background-color:#FC9E11;color:white" data-toggle="modal"
                                                 data-target="#alertMeModal">
-                                                <em class="fa fa-bell"></em>&nbsp;எதிர்கால மீறல்கள் அனைத்திற்கும் என்னை எச்சரிக்கவும்
+                                                <em class="fa fa-bell"></em>&nbsp;எதிர்கால அனைத்து மீறல்களிலும் என்னை எச்சரிக்கவும்
                                              </button>
                                           </div>
                                           <div style="font-size:22px" align="center">
-                                             <br> 💡 இதை உங்கள் நண்பர்கள் &amp; குடும்பத்தினருடன் பகிர்ந்து கொள்ளுங்கள் <br>
-                                             <br> <strong>வலிமிகு கணக்கு கைப்பற்றல்களில்</strong> நம் நண்பர்களையும் குடும்பத்தாரையும் விட்டுவிடக்கூடாது.
+                                             <br> 💡 இதை உங்கள் நண்பர்கள் &amp; குடும்பத்தினருடன் பகிருங்கள் <br>
+                                             <br> நம் நண்பர்களையும் குடும்பத்தினரையும் <strong>வேதனையான கணக்கு
+                                                கையகப்படுத்தல்களில்</strong> விட்டுவிடாமல் இருப்போம்.
                                              <br>
                                              <br>
                                              <style="font-size:18px;margin: 20px 0px;">
-                                                <u> உங்கள் மின்னஞ்சல், Facebook, Twitter போன்றவற்றின் மூலம் இதை எளிதாகப் பகிரலாம்</u>
+                                                <u> இதை உங்கள் மின்னஞ்சல், Facebook, Twitter போன்றவற்றின் மூலம் எளிதாகப்
+                                                   பகிரலாம்</u>
                                                 <br>
                                                 <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https://xposedornot.com&amp;p[images][0]=&amp;p[title]=You%20Are%20Invited!&amp;p[summary]=Check%20if%20your%20email%20is%20exposed%20in%20any%20data%20breach!"
                                                    target="_blank" rel="noopener noreferrer"
@@ -486,9 +500,11 @@
                                                    <em class="fab fa-twitter"></em> Twitter </a>
                                                 <br>
                                                 <button type="button" id="inviteFriend" class="btn-lg btn-primary"
-                                                   data-toggle="modal" data-target="#alertFriendModal"> சரிபார்க்க எனது நண்பர்களை அழைக்கவும் </button>
+                                                   data-toggle="modal" data-target="#alertFriendModal"> சரிபார்க்க என்
+                                                   நண்பர்களை அழைக்கவும் </button>
                                                 <button type="button" class="btn-lg btn-primary"
-                                                   onclick="location.href='https://XposedOrNot.com'"> மற்றொரு மின்னஞ்சலைச் சரிபார்க்கவும் </button>
+                                                   onclick="location.href='https://XposedOrNot.com'"> மற்றொரு மின்னஞ்சலைச்
+                                                   சரிபார்க்கவும் </button>
                                                 <br>
                                                 <br>
                                           </div>
@@ -511,19 +527,21 @@
                                  <div class="modal-body" align="left">
                                     <form>
                                        <div class="form-group">
-                                          <label for="recipient-name" class="form-control-label"><strong>கண்காணிக்க வேண்டிய மின்னஞ்சல்:</strong></label>
+                                          <label for="recipient-name" class="form-control-label"><strong>கண்காணிக்கப்பட
+                                                வேண்டிய மின்னஞ்சல்:</strong></label>
                                           <input type="text" class="form-control" id="recipient-name">
                                        </div>
                                        <div class="form-group">
-                                          <label for="message-text" class="form-control-label"><strong>அடுத்த படிகள்:</strong></label>
+                                          <label for="message-text" class="form-control-label"><strong>அடுத்த
+                                                படிகள்:</strong></label>
                                           <textarea disabled class="form-control" id="message-text"
-                                             rows="2">எதிர்கால தரவு மீறல்கள் பற்றிய இலவச மின்னஞ்சல் விழிப்பூட்டல்களைப் பெற மின்னஞ்சல் முகவரியைச் சரிபார்த்து, பின்னர் 'என்னை எச்சரிக்கவும்' என்பதைக் கிளிக் செய்யவும். </textarea>
+                                             rows="2">எதிர்கால அனைத்து தரவு மீறல்களின் இலவச மின்னஞ்சல் விழிப்பூட்டல்களைப் பெற, மின்னஞ்சல் முகவரியைச் சரிபார்த்து, பின்னர் 'என்னை எச்சரிக்கவும்' என்பதைக் கிளிக் செய்யவும். </textarea>
                                        </div>
                                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAAA_T_0Qt4kJbXno"></div>
                                        <br>
                                        <div class="alert alert-danger" role="alert" id="a_succ" hidden="false"
                                           align="center">
-                                          <strong>அச்சச்சோ !</strong> சவாலை முடித்துவிட்டு மீண்டும் முயற்சிக்கவும் !
+                                          <strong>அய்யோ !</strong> சவாலை முடித்து, பின்னர் மீண்டும் முயற்சிக்கவும் !
                                        </div>
                                     </form>
                                  </div>
@@ -538,38 +556,63 @@
                         <div class="footer">
                            <div class="container">
                               <div style="text-align:center;margin-bottom:30px;">
-                                 <p>இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ எங்கள் <a
-                                       href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> இல்.</p>
+                                 <p>முழுமையாக திறந்த மூல இந்த தளத்தை வடிவமைப்பதில் எங்களுடன் இணையுங்கள்! எங்கள் <a
+                                       href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>-இல் பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️.</p>
                               </div>
 
                               <div class="footer-columns">
                                  <div class="footer-group">
                                     <h6>சட்டம்</h6>
-                                    <a href="privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
-                                    <a href="terms" class="footer-link">விதிமுறைகள்</a>
+                                    <div class="footer-links-wrapper">
+                                       <a href="privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
+                                       <a href="terms" class="footer-link">பயன்பாட்டு விதிமுறைகள்</a>
+                                    </div>
                                  </div>
                                  <div class="footer-group">
                                     <h6>சமூகம்</h6>
-                                    <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
-                                    <a href="/our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+                                    <div class="footer-links-wrapper">
+                                       <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+                                       <a href="our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+                                    </div>
                                  </div>
                                  <div class="footer-group">
                                     <h6>நம்பகத்தன்மை</h6>
-                                    <a href="transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
-                                    <a href="responsible-disclosure" class="footer-link">பொறுப்பான வெளிப்படுத்தல்</a>
-                                    <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">நிலை</a>
+                                    <div class="footer-links-wrapper">
+                                       <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">நிலை</a>
+                                       <a href="transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
+                                       <a href="responsible-disclosure" class="footer-link">பொறுப்பான வெளிப்படுத்தல்</a>
+                                    </div>
                                  </div>
                                  <div class="footer-group">
                                     <h6>எங்களைப் பின்தொடரவும்</h6>
-                                    <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                                       <i class="fab fa-twitter"></i> Twitter
-                                    </a>
-                                    <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                                       <i class="fab fa-facebook"></i> Facebook
-                                    </a>
-                                    <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-                                       <i class="fab fa-mastodon"></i> Mastodon
-                                    </a>
+                                    <div class="footer-links-wrapper">
+                                       <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                                          <i class="fab fa-twitter"></i> Twitter (X)
+                                       </a>
+                                       <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                                          <i class="fab fa-facebook"></i> Facebook
+                                       </a>
+                                       <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                                          <i class="fab fa-mastodon"></i> Mastodon
+                                       </a>
+                                    </div>
+                                 </div>
+                                 <div class="footer-group">
+                                    <h6>AI சுருக்கம்</h6>
+                                    <div class="footer-links-wrapper">
+                                       <a href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                                          <img src="/static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                                          ChatGPT
+                                       </a>
+                                       <a href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                                          <img src="/static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                                          Perplexity
+                                       </a>
+                                       <a href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                                          <img src="/static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                                          Gemini
+                                       </a>
+                                    </div>
                                  </div>
                               </div>
 
@@ -596,6 +639,20 @@
                            src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback"
                            async defer></script>
                         <script src="/static/scripts/common.js"></script>
-</body>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 
 </html>

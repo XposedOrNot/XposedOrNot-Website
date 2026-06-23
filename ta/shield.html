@@ -1,71 +1,116 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ta">
+  <head>
+    <meta charset="utf-8" />
+    <title>XposedOrNot: Privacy Shield - பொது தேடல்களில் இருந்து உங்கள் மின்னஞ்சலை மறைக்கவும்</title>
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="description"
+      content="XposedOrNot இல் பொது தரவு மீறல் தேடல்களில் இருந்து உங்கள் மின்னஞ்சலை மறைக்க Privacy Shield ஐ இயக்கவும். உங்கள் சொந்த தரவு மீறல் அறிக்கைகளுக்கான முழு அணுகல் உங்களிடம் இருக்கும் அதே வேளையில் உங்கள் தரவு தனிப்பட்டதாக இருக்கும்."
+    />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta
+      property="og:title"
+      content="XposedOrNot: Privacy Shield"
+    />
+    <meta
+      property="og:description"
+      content="பொது தரவு மீறல் தேடல்களில் இருந்து உங்கள் மின்னஞ்சலை மறைக்கவும். XposedOrNot இல் கண்ணுக்குத் தெரியாமல் இருக்க Privacy Shield ஐ இயக்கவும்."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/privacy_shield.png"
+    />
+    <meta property="og:url" content="https://xposedornot.com/ta/privacy-shield" />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#3f71f3" />
 
-<head>
-   <meta charset="utf-8">
-   <title>XposedOrNot: தனியுரிமைக் கேடயம்</title>
-   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-   <link rel="dns-prefetch" href="https://static.hotjar.com">
-   <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
-   <link rel=stylesheet
-      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset&display=swap'
-      type=text/css media=all>
-   <link href="/static/css/style.css" type="text/css" rel="stylesheet">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="XposedOrNot: Privacy Shield" />
+    <meta
+      name="twitter:description"
+      content="பொது தரவு மீறல் தேடல்களில் இருந்து உங்கள் மின்னஞ்சலை மறைக்கவும். XposedOrNot இல் கண்ணுக்குத் தெரியாமல் இருக்க Privacy Shield ஐ இயக்கவும்."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/privacy_shield_twitter.png"
+    />
+
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
       integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
-   <script src="/static/scripts/utils.js"></script>
-   <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
-   <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
-   <link rel="stylesheet" href="/static/css/jquery.hortree.min.css">
-   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description" content="XposedOrNot தனியுரிமைக் கேடயம் - பொதுத் தேடல்களில் இருந்து உங்கள் மின்னஞ்சலைப் பாதுகாக்கவும்">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="author" content="Devanand Premkumar">
-   <meta property="og:title" content="XposedOrNot: தனியுரிமைக் கேடயம்" />
-   <meta property="og:description"
-      content="XposedOrNot தனியுரிமைக் கேடயக் கொள்கை மற்றும் தரவுப் பாதுகாப்பிற்கான எங்கள் அர்ப்பணிப்பு பற்றி அறிக." />
-   <meta property="og:image" content="https://xposedornot.com/static/images/privacy_shield.png" />
-   <meta property="og:url" content="https://xposedornot.com/ta/shield" />
-   <meta property="og:type" content="website" />
-
-   <meta name="twitter:card" content="summary_large_image">
-   <meta name="twitter:site" content="@XposedOrNot">
-   <meta name="twitter:title" content="XposedOrNot: தனியுரிமைக் கேடயம்">
-   <meta name="twitter:description"
-      content="XposedOrNot தனியுரிமைக் கேடயக் கொள்கை மற்றும் தரவுப் பாதுகாப்பிற்கான எங்கள் அர்ப்பணிப்பு பற்றி அறிக.">
-   <meta name="twitter:image" content="https://xposedornot.com/static/images/privacy_shield_twitter.png">
-
-   <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
-      integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy-bundle.umd.min.js"
-      integrity="sha512-gbruucq/Opx9jlHfqqZeAg2LNK3Y4BbpXHKDhRC88/tARL/izPOE4Zt2w6X9Sn1UeWaGbL38zW7nkL2jdn5JIw=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <style>
-      body {
-         background-color: #f5f5f5;
-      }
-
-      .navbar {
-         margin-bottom: 20px;
-      }
-
-      .card {
-         box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
-      }
-
-      h3 {
-         color: #007bff;
-      }
-   </style>
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+      crossorigin="anonymous"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+        crossorigin="anonymous"
+      />
+    </noscript>
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      />
+    </noscript>
+    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/dashboard.css" type="text/css" rel="stylesheet" />
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
+      .dashboard-input.form-control {
+        height: auto;
+      }
+      .dashboard-form .help-block {
+        color: #dc2626;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+      body[data-theme="dark"] .dashboard-form .help-block {
+        color: #fca5a5;
+      }
+    </style>
+    <style>
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -91,156 +136,329 @@
 
     </head>
 
-<body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
-   <div class="mobileheader-area">
-      <div class="container">
-         <div class="row">
-            <div class="col-lg-12">
-               <nav class="navbar navbar-expand-lg navbar-light">
-                  <a class="navbar-brand abs" href="./" style="text-decoration: none;">
-                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-                     <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">சமூக பதிப்பு</span>
-                  </a>
-                  <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse"
-                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                     aria-label="வழிசெலுத்தலை மாற்று">
-                     <span class="hamburger-box">
-                        <span class="hamburger-inner"></span>
-                     </span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav mr-auto"></ul>
-                     <div class="main-menu-part">
-                        <ul>
-                           <li>
-                              <a href="password">கடவுச்சொல்</a>
-                           </li>
-                           <li>
-                              <a href="faq">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
-                           </li>
-                           <li>
-                              <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">வலைப்பதிவு</a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </nav>
-            </div>
-         </div>
-      </div>
-   </div>
-   <header class="header-area">
-      <div class="container">
-         <div class="row">
-            <div class="col-lg-3 col-md-3">
-               <div class="header-left">
-                  <a href="https://XposedOrNot.com">
-                     <p>XposedorNot</p>
-                  </a>
-               </div>
-            </div>
-            <div class="col-lg-9 col-md-9">
-               <div class="header-right">
-                  <ul>
-                     <li>
-                        <a href="password">கடவுச்சொல்</a>
-                     </li>
-                     <li>
-                        <a href="faq">அடிக்கடி கேட்கப்படும் கேள்விகள்</a>
-                     </li>
-                     <li>
-                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">வலைப்பதிவு</a>
-                     </li>
-                  </ul>
-               </div>
-            </div>
-         </div>
-      </div>
-   </header>
-   <div class="container">
-      <div class="row justify-content-center align-items-center" style="height:80vh">
-         <div class="col-12">
-            <h3 class="text-center mb-5">தனியுரிமை விழிப்புணர்வுள்ள பயனர்கள்</h3>
-            <p align="center">XposedOrNot இல் பொதுத் தேடல்களிலிருந்து உங்கள் மின்னஞ்சலைப் பாதுகாக்க, உங்கள் மின்னஞ்சல் முகவரியை உள்ளிட்டு <strong>தனியுரிமைக் கேடயத்தை</strong> செயல்படுத்தவும். XposedOrNot இல் பொதுத் தேடல்களின் போது உங்கள் மின்னஞ்சல் தெரியாமல் இருக்கும் என்று தனியுரிமைக் கேடயம் உத்தரவாதம் அளிக்கிறது.
-               <br><br>
-            <div class="card" align="center">
-               <div class="card-body">
-                  <form id="emailForm">
-                     <div class="form-group">
-                        <input type="email" class="form-control w-75 form-control" id="email" name="email"
-                           placeholder="உங்கள் மின்னஞ்சல் முகவரியை உள்ளிடவும்...">
-                     </div>
-                     <button type="submit" class="btn btn-primary" id="alertMe">
-                        தனியுரிமைக் கேடயத்தை செயல்படுத்து &nbsp;<span class="glyphicon glyphicon-ok"></span>
-                        <span id="submitSpinner" class="spinner-border spinner-border-sm d-none" role="status"
-                           aria-hidden="true"></span>
-                     </button>
-                  </form>
-                  <div id="rateLimitMessage" class="alert alert-warning mt-3" style="display: none;">
-                     <i class="fas fa-exclamation-triangle"></i> அதிக கோரிக்கைகள். தயவுசெய்து சிறிது நேரம் காத்திருந்து மீண்டும் முயற்சிக்கவும்.
-                  </div>
-                  <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
-                     <i class="fas fa-check-circle"></i>
-                  </div>
-                  <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
-                     <i class="fas fa-times-circle"></i> உங்கள் கோரிக்கையைச் செயல்படுத்துவதில் பிழை ஏற்பட்டது. பின்னர் மீண்டும் முயற்சிக்கவும்.
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="footer">
-      <div class="container">
-         <div style="text-align:center;margin-bottom:30px;">
-            <p>இந்த முழு திறந்த மூல தளத்தை வடிவமைப்பதில் எங்களுடன் சேருங்கள்! பங்களிப்புகள் வரவேற்கப்படுகின்றன ❤️ எங்கள் <a
-                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener noreferrer">GitHub</a> இல்.</p>
-         </div>
+  <body class="dashboard-page">
+    <a class="skip-link" href="#main-content">முதன்மை உள்ளடக்கத்திற்குச் செல்லவும்</a>
 
-         <div class="footer-columns">
-            <div class="footer-group">
-               <h6>சட்டம்</h6>
-               <a href="privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
-               <a href="terms" class="footer-link">விதிமுறைகள்</a>
-            </div>
-            <div class="footer-group">
-               <h6>சமூகம்</h6>
-               <a href="https://blog.xposedornot.com" target="_blank" rel="noopener noreferrer" class="footer-link">வலைப்பதிவு</a>
-               <a href="our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
-            </div>
-            <div class="footer-group">
-               <h6>நம்பகத்தன்மை</h6>
-               <a href="transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
-               <a href="responsible-disclosure" class="footer-link">பொறுப்பான வெளிப்படுத்தல்</a>
-               <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener noreferrer" class="footer-link">நிலை</a>
-            </div>
-            <div class="footer-group">
-               <h6>எங்களைப் பின்தொடரவும்</h6>
-               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener noreferrer" class="footer-link">
-                  <i class="fab fa-twitter"></i> Twitter
-               </a>
-               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener noreferrer" class="footer-link">
-                  <i class="fab fa-facebook"></i> Facebook
-               </a>
-               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener noreferrer" class="footer-link">
-                  <i class="fab fa-mastodon"></i> Mastodon
-               </a>
-            </div>
-         </div>
-
-         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
-            <input type="checkbox" class="custom-control-input" id="darkSwitch">
-            <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
-         </div>
+    <div class="banner dashboard-banner">
+      <div class="grid">
+        <nav
+          class="navbar navbar-expand-md navbar-dark justify-content-center"
+          aria-label="முதன்மை வழிசெலுத்தல்"
+        >
+          <a
+            class="navbar-brand abs"
+            href="/ta/"
+            style="text-decoration: none"
+          >
+            <span
+              style="
+                font-size: 1.5em;
+                font-weight: bold;
+                display: block;
+                color: white;
+              "
+              >XposedOrNot</span
+            >
+            <span
+              style="
+                font-size: 0.8em;
+                display: block;
+                color: rgba(255, 255, 255, 0.95);
+                margin-top: -10px;
+              "
+              >Community Edition</span
+            >
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsingNavbar"
+            aria-controls="collapsingNavbar"
+            aria-expanded="false"
+            aria-label="வழிசெலுத்தல் பட்டியலை நிலைமாற்று"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="password">கடவுச்சொல்</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="faq">FAQ</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a
+                  class="nav-link"
+                  href="https://plus.xposedornot.com"
+                  target="_blank"
+                  rel="noopener"
+                  >xonPlus<span class="sr-only"> (புதிய தாவலில் திறக்கிறது)</span></a
+                >
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="api_doc">API</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
       </div>
-   </div>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      <div class="container" style="text-align: center; position: relative;">
+        <h1 class="dashboard-hero-title">Privacy Shield</h1>
+        <p class="hero-subtitle">
+          பொது தரவு மீறல் தேடல்களில் இருந்து உங்கள் மின்னஞ்சலை மறைக்கவும்.
+          உங்கள் தரவு தனிப்பட்டதாக இருக்கும். உங்கள் சொந்த முடிவுகளை நீங்கள் மட்டுமே பார்க்க முடியும்.
+        </p>
+      </div>
+    </div>
+
+    <main id="main-content">
+      <div class="dashboard-content">
+        <div class="dashboard-card" role="region" aria-label="Privacy Shield செயல்படுத்தும் படிவம்">
+          <h2><i class="fas fa-shield-alt" aria-hidden="true"></i> Privacy Shield ஐ இயக்கவும்</h2>
+          <p class="card-desc">
+            XposedOrNot இல் பொது தேடல் முடிவுகளில் இருந்து விலகிக்கொள்ள உங்கள் மின்னஞ்சலை உள்ளிடவும்.
+            உங்கள் சொந்த வெளிப்பாட்டை நீங்கள் இன்னும் சரிபார்க்க முடியும். மற்றவர்கள் அதைப் பார்க்க மாட்டார்கள்.
+          </p>
+
+          <form id="emailForm" class="dashboard-form">
+            <div class="form-group">
+              <label for="email" class="sr-only">மின்னஞ்சல் முகவரி</label>
+              <div class="dashboard-input-row">
+                <input
+                  type="email"
+                  class="dashboard-input form-control"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  required
+                  aria-required="true"
+                  aria-describedby="emailHelp"
+                />
+                <button
+                  type="submit"
+                  class="dashboard-submit"
+                  id="alertMe"
+                >
+                  <span id="submitText">Shield ஐ இயக்கு</span>
+                  <span
+                    id="submitSpinner"
+                    class="spinner-border spinner-border-sm d-none"
+                    role="status"
+                    aria-label="ஏற்றுகிறது"
+                  ></span>
+                </button>
+              </div>
+              <span id="emailHelp" class="sr-only"
+                >Privacy Shield ஐ இயக்கி, பொது தரவு மீறல் தேடல்களில் இருந்து மறைக்க உங்கள் மின்னஞ்சல் முகவரியை உள்ளிடவும்.</span
+              >
+            </div>
+          </form>
+
+          <div
+            id="infoMessage"
+            class="dashboard-alert dashboard-alert-info show"
+            role="status"
+          >
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <span>
+              <strong>இது எப்படி வேலை செய்கிறது:</strong> சமர்ப்பித்த பிறகு, இயக்கத்தை
+              முடிக்க உறுதிப்படுத்தல் மின்னஞ்சலுக்காக உங்கள் இன்பாக்ஸைச் சரிபார்க்கவும்.
+            </span>
+          </div>
+
+          <div
+            id="successMessage"
+            class="dashboard-alert dashboard-alert-success show"
+            role="status"
+            style="display: none"
+          >
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span></span>
+          </div>
+
+          <div
+            id="errorMessage"
+            class="dashboard-alert dashboard-alert-error show"
+            role="alert"
+            style="display: none"
+          >
+            <i class="fas fa-times-circle" aria-hidden="true"></i>
+            <span></span>
+          </div>
+
+          <div
+            id="rateLimitMessage"
+            class="dashboard-alert dashboard-alert-warning show"
+            role="alert"
+            style="display: none"
+          >
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            <span><strong>தயவுசெய்து காத்திருக்கவும்:</strong> அதிக முயற்சிகள். சில நிமிடங்களில் மீண்டும் முயற்சிக்கவும்.</span>
+          </div>
+        </div>
+
+        <h2 class="gradient-text" style="text-align: center; margin-bottom: 24px; font-size: 24px; font-weight: 600;">இது எப்படி வேலை செய்கிறது</h2>
+        <div class="dashboard-steps" role="list" aria-label="Privacy Shield ஐ இயக்கும் படிகள்">
+          <div class="dashboard-step" role="listitem">
+            <div class="step-icon" aria-hidden="true">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <span class="step-number">படி 1</span>
+            <h3>உங்கள் மின்னஞ்சலை உள்ளிடவும்</h3>
+            <p>பொது தேடல்களில் இருந்து மறைக்க விரும்பும் மின்னஞ்சலைச் சமர்ப்பிக்கவும்.</p>
+          </div>
+          <div class="dashboard-step" role="listitem">
+            <div class="step-icon" aria-hidden="true">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <span class="step-number">படி 2</span>
+            <h3>உரிமையை உறுதிப்படுத்தவும்</h3>
+            <p>உங்கள் இன்பாக்ஸுக்கு அனுப்பப்பட்ட சரிபார்ப்பு இணைப்பைக் கிளிக் செய்யவும்.</p>
+          </div>
+          <div class="dashboard-step" role="listitem">
+            <div class="step-icon" aria-hidden="true">
+              <i class="fas fa-eye-slash"></i>
+            </div>
+            <span class="step-number">படி 3</span>
+            <h3>நீங்கள் மறைக்கப்பட்டுவிட்டீர்கள்</h3>
+            <p>பொது தரவு மீறல் தேடல்களில் உங்கள் மின்னஞ்சல் தோன்றாது.</p>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 32px;">
+          <nav class="dashboard-links" aria-label="தொடர்புடைய கருவிகள்">
+            <a href="/ta/" class="dashboard-link">
+              <i class="fas fa-search" aria-hidden="true"></i>
+              மின்னஞ்சலைச் சரிபார்க்கவும்
+            </a>
+            <a href="/dashboard" class="dashboard-link">
+              <i class="fas fa-chart-bar" aria-hidden="true"></i>
+              CxO டாஷ்போர்டு
+            </a>
+            <a href="/faq" class="dashboard-link">
+              <i class="fas fa-question-circle" aria-hidden="true"></i>
+              FAQ
+            </a>
+          </nav>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer" aria-label="தள அடிக்குறிப்பு">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            சமூகத்தால், சமூகத்திற்காக உருவாக்கப்பட்டது.
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub<span class="sr-only"> (புதிய தாவலில் திறக்கிறது)</span></a
+            > இல் முழுமையாக திறந்த மூலமாக உள்ளது.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h3>சட்டம்</h3>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">தனியுரிமைக் கொள்கை</a>
+              <a href="terms" class="footer-link">பயன்பாட்டு விதிமுறைகள்</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>சமூகம்</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" target="_blank" rel="noopener" class="footer-link"
+                >வலைப்பதிவு<span class="sr-only"> (புதிய தாவலில் திறக்கிறது)</span></a
+              >
+              <a href="our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>நம்பகத்தன்மை</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://stats.uptimerobot.com/3zjQkZ2Caa"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+                >நிலை<span class="sr-only"> (புதிய தாவலில் திறக்கிறது)</span></a
+              >
+              <a href="transparency" class="footer-link">வெளிப்படைத்தன்மை</a>
+              <a href="responsible-disclosure" class="footer-link"
+                >பொறுப்பான வெளிப்படுத்தல்</a
+              >
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>எங்களைப் பின்தொடரவும்</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://twitter.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)<span class="sr-only"> (புதிய தாவலில் திறக்கிறது)</span>
+              </a>
+              <a
+                href="https://facebook.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook<span class="sr-only"> (புதிய தாவலில் திறக்கிறது)</span>
+              </a>
+              <a
+                href="https://infosec.exchange/@XposedOrNot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 448 512"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon<span class="sr-only"> (புதிய தாவலில் திறக்கிறது)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
       integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY" rel="preconnect"></script>
-   <script src="/static/scripts/common.js"></script>
-   <script src="/static/scripts/shield.js"></script>
-
-</body>
-
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer
+    ></script>
+    <script src="/static/scripts/common.js" defer></script>
+    <script src="/static/scripts/shield.js" defer></script>
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+  </body>
 </html>
