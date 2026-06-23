@@ -4,24 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualização de Vazamentos de Dados</title>
+    <title>Visualização de violações de dados</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <meta property="og:title" content="XposedOrNot: Repositório de Vazamentos de Dados" />
+    <meta property="og:title" content="XposedOrNot: Repositório de violações de dados" />
     <meta name="description"
-        content="Visualize vazamentos de dados com XposedOrNot. Obtenha insights através de gráficos interativos para entender melhor as tendências e impactos dos vazamentos." />
+        content="Visualize violações de dados com o XposedOrNot. Obtenha insights por meio de gráficos interativos para entender melhor as tendências e os impactos das violações." />
     <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
-    <meta property="og:url" content="https://xposedornot.com/pt/breaches-visualisations.html" />
+    <meta property="og:url" content="https://xposedornot.com/pt/data_breaches" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@XposedOrNot">
-    <meta name="twitter:title" content="XposedOrNot: Repositório de Vazamentos de Dados">
+    <meta name="twitter:title" content="XposedOrNot: Repositório de violações de dados">
     <meta name="twitter:description"
-        content="Visualize vazamentos de dados com XposedOrNot. Obtenha insights através de gráficos interativos para entender melhor as tendências e impactos dos vazamentos.">
+        content="Visualize violações de dados com o XposedOrNot. Obtenha insights por meio de gráficos interativos para entender melhor as tendências e os impactos das violações.">
     <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
     <script>
@@ -53,6 +53,7 @@
             font-family: 'Inter', Arial, sans-serif;
             background-color: #1a1a1a;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         #chart {
@@ -60,36 +61,59 @@
             padding: 20px;
             margin: 0 auto;
             position: relative;
+            box-sizing: border-box;
+        }
+
+        #chart svg {
+            max-width: 100%;
+            display: block;
+            background: radial-gradient(ellipse at 50% 0%, rgba(60, 95, 236, 0.04) 0%, transparent 60%);
         }
 
         .navbar-custom {
-            background-color: #2563eb;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(-220deg, #3c5fec, #4284fb);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+            padding: 12px 0;
         }
 
-        .navbar-brand,
-        .nav-link {
+        .navbar-brand {
             color: white !important;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-link {
+            color: #fff !important;
             font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px !important;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .tooltip {
             position: absolute;
-            background-color: rgba(30, 30, 34, 0.95);
+            background-color: rgba(22, 24, 32, 0.97);
             border: none;
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 14px;
             pointer-events: none;
             opacity: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            max-width: 320px;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2);
+            max-width: 340px;
             color: #f8f9fa;
             font-size: 14px;
             line-height: 1.6;
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .tooltip-title {
@@ -126,20 +150,23 @@
         }
 
         .axis text.year-label {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             fill: currentColor;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
             padding: 5px 10px;
+            letter-spacing: 0.3px;
         }
 
         .year-badge-bg {
-            fill: rgba(255, 255, 255, 0.1);
+            fill: rgba(255, 255, 255, 0.05);
             stroke: currentColor;
-            stroke-width: 1px;
-            stroke-opacity: 0.3;
-            rx: 5px;
-            ry: 5px;
+            stroke-width: 1.5px;
+            stroke-opacity: 0.35;
+            rx: 8px;
+            ry: 8px;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
         }
 
         @keyframes pulse-badge {
@@ -164,15 +191,24 @@
 
         .axis line.year-grid {
             stroke: currentColor;
-            stroke-opacity: 0.3;
+            stroke-opacity: 0.15;
             stroke-width: 1px;
-            stroke-dasharray: 3, 3;
+            stroke-dasharray: 4, 6;
         }
 
         .circle {
             cursor: pointer;
             transition: all 0.3s ease-in-out;
-            filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3));
+            filter: drop-shadow(0 4px 12px rgb(0 0 0 / 0.4));
+        }
+
+        .breach:hover .circle {
+            filter: drop-shadow(0 6px 20px rgb(0 0 0 / 0.5)) brightness(1.15);
+        }
+
+        .breach:hover .breach-title {
+            opacity: 1 !important;
+            font-weight: 700;
         }
 
         .axis path {
@@ -215,16 +251,55 @@
             transition: transform 0.3s ease-out;
         }
 
-        .page-title {
-            color: white;
+        .breach:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 4px;
+            border-radius: 50%;
+        }
+
+        .breach:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        .breach:focus-visible {
+            outline: 2px solid #60a5fa;
+            outline-offset: 4px;
+        }
+
+        .breach:focus > circle {
+            stroke: #60a5fa;
+            stroke-width: 3px;
+        }
+
+        .page-title-wrapper {
             text-align: center;
-            margin: 2rem 0;
-            font-weight: 600;
-            font-size: 2rem;
-            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            margin: 2.5rem 0 1.5rem;
+        }
+
+        .page-title {
+            color: #f0f4ff;
+            text-align: center;
+            margin: 0 0 8px;
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #8bb4ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #8b9dc3;
+            font-size: 1rem;
+            font-weight: 400;
+            margin: 0;
+            letter-spacing: 0.2px;
+        }
+
+        .page-subtitle span {
+            color: #60a5fa;
+            font-weight: 600;
         }
 
         .overlay-container {
@@ -246,204 +321,268 @@
         }
 
         .overlay-content {
-            max-width: 800px;
-            background-color: rgba(30, 30, 30, 0.9);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 560px;
+            background: linear-gradient(160deg, #1e2235 0%, #161927 100%);
+            border-radius: 20px;
+            padding: 40px 36px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .overlay-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #3c5fec, #4284fb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            box-shadow: 0 8px 24px rgba(60, 95, 236, 0.3);
         }
 
         .overlay-container h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #3b82f6, #2563eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            color: #f0f4ff;
             text-align: center;
+            font-weight: 700;
         }
 
-        .overlay-container p {
-            max-width: 600px;
-            margin-bottom: 1.5rem;
+        .overlay-container .overlay-desc {
+            color: #8b9dc3;
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
             line-height: 1.6;
-            font-size: 1rem;
-            opacity: 0.9;
         }
 
-        .overlay-container ul {
-            text-align: left;
-            margin-bottom: 1.5rem;
-            padding-left: 20px;
+        .overlay-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 28px;
         }
 
-        .overlay-container li {
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
+        .overlay-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .overlay-feature i {
+            color: #60a5fa;
+            font-size: 16px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .overlay-feature span {
+            font-size: 0.85rem;
+            color: #c8d6e5;
+            line-height: 1.4;
         }
 
         .overlay-container button {
-            background: #2563eb;
+            background: linear-gradient(135deg, #3c5fec, #4284fb);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 14px 32px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
             font-size: 1rem;
-            margin-top: 1rem;
+            margin-top: 4px;
+            box-shadow: 0 4px 16px rgba(60, 95, 236, 0.3);
+            width: 100%;
         }
 
         .overlay-container button:hover,
         .overlay-container button:focus {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+            background: linear-gradient(135deg, #4a6ff5, #5a8eff);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(60, 95, 236, 0.4);
         }
 
         .overlay-container button:focus {
-            outline: 3px solid rgba(59, 130, 246, 0.5);
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
         }
 
         @media (max-width: 768px) {
             .overlay-content {
-                width: 90%;
-                padding: 20px;
+                width: 92%;
+                padding: 28px 20px;
             }
 
             .overlay-container h2 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
 
-            .overlay-container p,
-            .overlay-container li {
-                font-size: 0.9rem;
+            .overlay-features {
+                grid-template-columns: 1fr;
             }
         }
 
-        .info-button {
+        .bottom-buttons {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #2563eb;
-            color: white;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            gap: 10px;
+            z-index: 101;
+        }
+
+        .bottom-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(22, 25, 39, 0.8);
+            backdrop-filter: blur(12px);
+            color: #8b9dc3;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            z-index: 100;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(96, 165, 250, 0.12);
         }
 
-        .info-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-            background: #1d4ed8;
+        .bottom-btn:hover {
+            color: #60a5fa;
+            background: rgba(22, 25, 39, 0.95);
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        .bottom-btn:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        .bottom-btn.active {
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(30, 40, 70, 0.9);
         }
 
         .industry-filter {
-            position: absolute;
-            top: 80px;
-            right: 20px;
-            background: rgba(37, 99, 235, 0.9);
-            padding: 15px;
-            border-radius: 8px;
+            position: fixed;
+            bottom: 80px;
+            right: 24px;
+            background: rgba(22, 25, 39, 0.92);
+            padding: 20px;
+            border-radius: 14px;
             color: white;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
             opacity: 0;
-            transform: translateY(-10px);
-            width: 280px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            transform: translateY(10px) scale(0.95);
+            width: 240px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(96, 165, 250, 0.12);
         }
 
         .industry-filter.visible {
             opacity: 1;
-            transform: translateY(0);
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
         }
 
         .industry-filter h4 {
-            margin: 0 0 15px 0;
-            font-size: 18px;
-            color: white;
-            text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 0 0 16px 0;
+            font-size: 15px;
+            color: #c8d6e5;
+            text-align: left;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
+            letter-spacing: 0.3px;
         }
 
         .active-industry {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
+            display: block;
+            background: rgba(96, 165, 250, 0.1);
             padding: 8px 12px;
-            border-radius: 4px;
-            margin-top: 15px;
-            font-size: 14px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 12px;
             text-align: center;
-            width: 100%;
+            color: #60a5fa;
             font-weight: 500;
+            border: 1px solid rgba(96, 165, 250, 0.15);
         }
 
         .industry-filter label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            font-size: 15px;
-            white-space: nowrap;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 12px;
+            color: #8b9dc3;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
 
         .industry-filter select {
             width: 100%;
             padding: 10px 12px;
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(30, 30, 34, 0.8);
-            color: white;
-            font-size: 14px;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            font-size: 13px;
+            margin-bottom: 8px;
             max-height: 200px;
             overflow-y: auto;
+            transition: border-color 0.2s ease;
         }
 
         .industry-filter select option {
-            background-color: #2a2a2a;
-            color: white;
+            background-color: #1e2235;
+            color: #e2e8f0;
             padding: 8px;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .industry-filter select:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+            outline: 2px solid #60a5fa;
+            outline-offset: 1px;
+            border-color: transparent;
         }
 
         .industry-filter button {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 14px;
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #c8d6e5;
+            padding: 9px 14px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
+            font-size: 13px;
+            transition: all 0.2s ease;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 6px;
             font-weight: 500;
         }
 
         .industry-filter button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .industry-filter button:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 1px;
         }
 
         @keyframes pulse-circle {
@@ -479,21 +618,54 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-            100% {
-                transform: rotate(360deg);
-            }
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 16px;
+            background: #2563eb;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 0 0 8px 8px;
+            z-index: 10000;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+            outline: 3px solid #60a5fa;
+            outline-offset: 2px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid rgba(96, 165, 250, 0.15);
+            border-top-color: #60a5fa;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        .loading-text {
+            color: #8b9dc3;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
     </style>
     <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -521,17 +693,18 @@
 
 <body>
     <div id="loadingOverlay"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(17, 24, 39, 0.95); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+        role="status" aria-live="polite"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(14, 15, 25, 0.97); display: flex; justify-content: center; align-items: center; z-index: 9999;">
         <div style="text-align: center;">
-            <i class="fas fa-spinner fa-spin fa-3x" style="color: #3b82f6;"></i>
-            <p style="margin-top: 15px; font-weight: 600; color: #e5e7eb; font-size: 1.1rem;">Carregando visualização...</p>
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Carregando visualização</p>
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="../">XposedOrNot</a>
-        <div class="navbar-collapse collapse justify-content-center">
-        </div>
+    <a href="#chart" class="skip-link">Ir para a visualização</a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <a class="navbar-brand" href="/pt/">XposedOrNot</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
             <span class="navbar-toggler-icon"></span>
@@ -543,51 +716,63 @@
             </ul>
         </div>
     </nav>
-    <br>
-    <h1 class="page-title">Visualização de Vazamentos de Dados (Atualizado 2026)</h1>
 
-    <div id="chart"></div>
-
-    <!-- Info button -->
-    <button class="info-button" id="infoButton" aria-label="Mostrar informações da visualização">i</button>
-
-    <!-- Industry filter -->
-    <div class="industry-filter" id="industryFilter">
-        <h4>Filtrar Vazamentos de Dados</h4>
-        <label for="industrySelect">Selecionar Categoria da Indústria</label>
-        <select id="industrySelect">
-            <option value="all">Todas as Indústrias</option>
-            <!-- Industry options will be populated dynamically -->
-        </select>
-        <button id="resetFilter">Redefinir Filtro</button>
-        <div class="active-industry" id="activeIndustry">Exibindo: Todas as Indústrias</div>
+    <main id="main-content">
+    <div class="page-title-wrapper">
+        <h1 class="page-title">Visualização de violações de dados</h1>
+        <p class="page-subtitle" id="pageSubtitle">Explorando dados de violações por setores e anos</p>
     </div>
 
-    <!-- Custom overlay for visualization details -->
-    <div class="overlay-container" id="infoOverlay">
+    <div id="chart" role="region" aria-label="Gráfico de bolhas interativo mostrando violações de dados organizadas por ano. Cada bolha representa uma violação, dimensionada pelo número de registros expostos."></div>
+    </main>
+
+    <div class="bottom-buttons">
+        <button class="bottom-btn" id="filterButton" aria-label="Alternar filtro por setor" aria-expanded="false" title="Filtrar por setor"><i class="fas fa-filter" aria-hidden="true"></i></button>
+        <button class="bottom-btn" id="infoButton" aria-label="Mostrar informações da visualização" title="Informações">i</button>
+    </div>
+
+    <div class="industry-filter" id="industryFilter">
+        <h4><i class="fas fa-filter" style="margin-right: 6px; font-size: 12px;" aria-hidden="true"></i> Filtrar por setor</h4>
+        <label for="industrySelect">Setor</label>
+        <select id="industrySelect">
+            <option value="all">Todos os setores</option>
+        </select>
+        <button id="resetFilter" aria-label="Redefinir filtro por setor"><i class="fas fa-undo" style="margin-right: 4px; font-size: 11px;" aria-hidden="true"></i> Redefinir</button>
+        <div class="active-industry" id="activeIndustry" aria-live="polite">Exibindo: Todos os setores</div>
+    </div>
+
+    <div class="overlay-container" id="infoOverlay" role="dialog" aria-modal="true" aria-label="Guia da visualização">
         <div class="overlay-content">
-            <h2>Entendendo a Visualização de Vazamentos de Dados</h2>
-            <p>Esta visualização interativa exibe os principais vazamentos de dados organizados por ano, fornecendo insights sobre
-                o escopo e impacto dos incidentes de segurança cibernética ao longo do tempo.</p>
+            <div class="overlay-icon"><i class="fas fa-shield-alt" aria-hidden="true"></i></div>
+            <h2>Visualização de violações de dados</h2>
+            <p class="overlay-desc">Mapa interativo das principais violações de dados organizadas por ano. Passe o cursor sobre qualquer bolha para explorar os detalhes da violação.</p>
 
-            <p><strong>Como usar esta visualização:</strong></p>
-            <ul>
-                <li><strong>Tamanho do Círculo:</strong> Representa o número de registros expostos em cada vazamento</li>
-                <li><strong>Esquema de Cores:</strong> As cores são agrupadas por ano para ajudar a identificar tendências</li>
-                <li><strong>Logotipos:</strong> Identificadores de empresas/organizações aparecem no centro de cada círculo</li>
-                <li><strong>Passar o Mouse:</strong> Mova o cursor sobre qualquer vazamento para ver informações detalhadas</li>
-            </ul>
+            <div class="overlay-features">
+                <div class="overlay-feature">
+                    <i class="fas fa-circle" aria-hidden="true"></i>
+                    <span><strong>Tamanho</strong> = registros expostos</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-palette" aria-hidden="true"></i>
+                    <span><strong>Cor</strong> = ano da violação</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-image" aria-hidden="true"></i>
+                    <span><strong>Logo</strong> = organização afetada</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+                    <span><strong>Filtrar</strong> por setor</span>
+                </div>
+            </div>
 
-            <p>A visualização organiza automaticamente os vazamentos para minimizar sobreposições, mantendo-os organizados por
-                ano.</p>
-
-            <button id="closeOverlay" tabindex="0" aria-label="Continuar para a visualização">Continuar para a
-                Visualização</button>
+            <button id="closeOverlay" tabindex="0" aria-label="Continuar para a visualização">Explorar violações</button>
         </div>
     </div>
 
     <script>
         let allBreachData = [];
+        let floatAnimId = null;
 
         document.getElementById('loadingOverlay').style.display = 'flex';
 
@@ -600,13 +785,17 @@
                 createGraph(allBreachData);
                 document.getElementById('loadingOverlay').style.display = 'none';
 
-                setTimeout(() => {
-                    document.getElementById('industryFilter').classList.add('visible');
-                }, 500);
+                const industries = new Set(apiData['exposedBreaches'].map(b => b.industry).filter(Boolean));
+                document.getElementById('pageSubtitle').innerHTML =
+                    'Explorando <span>' + allBreachData.length + '+ violações</span> em <span>' + industries.size + ' setores</span>';
+
+
+
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('loadingOverlay').innerHTML =
+                    '<div style="text-align:center;"><p class="loading-text" style="color:#fca5a5;">Não foi possível carregar os dados de violações. Atualize a página.</p></div>';
             });
 
         function populateIndustryFilter(breaches) {
@@ -617,7 +806,7 @@
                 if (breach.industry && breach.industry.trim() !== '') {
                     industries.add(breach.industry);
                 } else {
-                    industries.add('Uncategorized');
+                    industries.add('Sem categoria');
                 }
             });
 
@@ -645,7 +834,7 @@
                     logo: breach['logo'],
                     description: breach['exposureDescription'],
                     count: breach['exposedRecords'],
-                    industry: breach['industry'] || 'Uncategorized'
+                    industry: breach['industry'] || 'Sem categoria'
                 };
             });
         }
@@ -676,16 +865,15 @@
             }));
 
             const maxBreaches = Math.max(...breachesPerYear.map(d => d.count));
-            const margin = { top: 40, right: 60, bottom: 40, left: 160 };
-            const width = Math.min(2000, window.innerWidth) - margin.left - margin.right;
+            const margin = { top: 40, right: 60, bottom: 40, left: 195 };
+            const chartPadding = 40;
+            const width = Math.min(2000, window.innerWidth - chartPadding) - margin.left - margin.right;
 
-            // Calculate optimal base height based on average circle size
             function getOptimalHeight(count) {
-                if (count <= 3) return 100; // Minimal height for very few breaches
-                if (count <= 10) return 120; // Slightly more for < 10 breaches
+                if (count <= 3) return 100;
+                if (count <= 10) return 120;
 
                 const avgCircleSize = 45;
-                // More aggressive row calculation for very dense years
                 const rowMultiplier = count > 45 ? 2.2 :
                     count > 30 ? 1.8 :
                         count > 20 ? 1.5 : 1.2;
@@ -693,14 +881,11 @@
                 return rows * (avgCircleSize + 10);
             }
 
-            // More compact space allocation
             const linesPerYear = breachesPerYear.map(d => {
-                // Special static allocation for 2019 and 2020
-                if (d.year === 2020) return 4.2; // Maximum space for 2020
-                if (d.year === 2019) return 3.8; // Large space for 2019
+                if (d.year === 2020) return 4.2;
+                if (d.year === 2019) return 3.8;
 
                 const baseHeight = getOptimalHeight(d.count);
-                // Regular rules for other years
                 if (d.count <= 3) return 0.8;
                 if (d.count <= 10) return 1.0;
                 if (d.count > 45) return 3.5;
@@ -716,7 +901,9 @@
             const tooltip = d3.select("body").selectAll(".tooltip").data([0])
                 .enter()
                 .append("div")
-                .attr("class", "tooltip");
+                .attr("class", "tooltip")
+                .attr("role", "tooltip")
+                .attr("aria-hidden", "true");
 
             const svg = d3.select("#chart").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -728,7 +915,7 @@
             let currentHeight = 0;
             years.forEach((year, idx) => {
                 const yearHeight = baseHeight * linesPerYear[years.indexOf(year)];
-                const verticalOffset = idx === 0 ? 0 : 10; // Reduced gap between years
+                const verticalOffset = idx === 0 ? 0 : 10;
 
                 yearRanges.set(year, {
                     start: currentHeight + verticalOffset,
@@ -745,6 +932,7 @@
                 .padding(0.1);
 
             const colorPalettes = {
+                2027: ['#F0A500', '#E09400', '#D08400', '#C07400', '#B06400'].reverse(),
                 2026: ['#4CC9F0', '#4895EF', '#4361EE', '#3F37C9', '#3A0CA3'].reverse(),
                 2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
                 2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
@@ -781,20 +969,24 @@
                 .call(yAxis)
                 .call(g => g.select(".domain").remove());
 
+            const labelColorOverrides = { 2011: '#BA68C8' };
+
             gAxis.selectAll(".tick")
                 .each(function (year) {
                     const yearRange = yearRanges.get(year);
                     const palette = colorPalettes[year] || defaultPalette;
-                    const baseColor = palette[0];
+                    const labelColor = labelColorOverrides[year] || palette[palette.length - 1];
+                    const gridColor = palette[Math.floor(palette.length / 2)];
                     const count = dataByYear.get(year).length;
 
                     d3.select(this)
                         .attr("transform", `translate(0,${yearRange.center})`)
                         .select("text")
                         .attr("class", "year-label")
-                        .text(`${year} (${count} vazamentos)`)
-                        .style("fill", baseColor)
-                        .style("font-weight", "600");
+                        .attr("dx", "-8")
+                        .text(`${year} (${count} violações)`)
+                        .style("fill", labelColor)
+                        .style("font-weight", "700");
 
                     const textNode = d3.select(this).select("text").node();
                     if (textNode) {
@@ -805,13 +997,14 @@
                             .attr("y", textBox.y - 5)
                             .attr("width", textBox.width + 20)
                             .attr("height", textBox.height + 10)
-                            .style("stroke", baseColor);
+                            .style("stroke", labelColor)
+                            .style("stroke-opacity", "0.4");
                     }
 
                     d3.select(this)
                         .select("line")
                         .attr("class", "year-grid")
-                        .style("stroke", baseColor);
+                        .style("stroke", gridColor);
                 });
 
             data.forEach((d, i) => {
@@ -824,22 +1017,18 @@
             function calculateForceParameters(yearData) {
                 const count = yearData.length;
 
-                // More space between circles for dense years
                 const baseCollisionPadding = count > 60 ? 3 :
                     count > 45 ? 2.8 :
                         count > 20 ? 2.5 : 3;
 
-                // Stronger repulsion for dense years
                 const chargeStrength = count > 60 ? -120 :
                     count > 45 ? -110 :
                         count > 20 ? -90 : -70;
 
-                // Weaker center attraction for dense years to allow more spread
                 const xStrength = count > 60 ? 0.06 :
                     count > 45 ? 0.07 :
                         count > 20 ? 0.1 : 0.15;
 
-                // Balanced vertical constraint
                 const yStrength = count > 60 ? 0.12 :
                     count > 45 ? 0.15 :
                         count > 20 ? 0.18 : 0.25;
@@ -858,17 +1047,14 @@
                 const forceParams = calculateForceParameters(yearData);
                 const yearRange = yearRanges.get(year);
 
-                // Special handling for 2019 and 2020
                 const is2020 = year === 2020;
                 const is2019 = year === 2019;
                 const isSpecialYear = is2020 || is2019;
 
-                // Regular density checks
                 const isVeryFewBreaches = yearData.length <= 3;
                 const isHighDensity = !isSpecialYear && yearData.length > 30;
                 const isVeryHighDensity = !isSpecialYear && yearData.length > 45;
 
-                // Assign fixed target centers to prevent jittery movement
                 const centers2020 = [width * 0.2, width * 0.4, width * 0.6, width * 0.8];
                 const centers2019 = [width * 0.25, width * 0.5, width * 0.75];
                 const centersDefault = [width * 0.25, width * 0.5, width * 0.75];
@@ -885,19 +1071,16 @@
                     }
                 });
 
-                // Initial positioning
                 yearData.forEach((d) => {
                     if (is2020) {
-                        // Special 2020 positioning: wider spread, more vertical space
                         const padding = circleSize(d.count);
                         const randomX = padding + Math.random() * (width - 2 * padding);
-                        const verticalPadding = yearRange.height * 0.05; // Use more vertical space
+                        const verticalPadding = yearRange.height * 0.05;
                         const randomY = yearRange.start + verticalPadding +
                             Math.random() * (yearRange.height - 2 * verticalPadding);
                         d.x = randomX;
                         d.y = randomY;
                     } else if (is2019) {
-                        // Special 2019 positioning: slightly less spread than 2020
                         const padding = circleSize(d.count) * 1.1;
                         const randomX = padding + Math.random() * (width - 2 * padding);
                         const verticalPadding = yearRange.height * 0.06;
@@ -906,7 +1089,6 @@
                         d.x = randomX;
                         d.y = randomY;
                     } else if (isVeryFewBreaches) {
-                        // Existing centered positioning for few breaches
                         const totalBreaches = yearData.length;
                         const index = yearData.indexOf(d);
                         const startX = width * 0.33;
@@ -914,7 +1096,6 @@
                         d.x = startX + (availableWidth / (totalBreaches + 1)) * (index + 1);
                         d.y = yearRange.center;
                     } else {
-                        // Regular positioning for other years
                         const padding = circleSize(d.count) * (isHighDensity ? 1.2 : 1.3);
                         const randomX = padding + Math.random() * (width - 2 * padding);
                         const verticalPadding = yearRange.height * (
@@ -996,55 +1177,13 @@
                 simulations.push(yearSimulation);
             });
 
-            function addJitter() {
-                try {
-                    simulations.forEach(sim => {
-                        const nodes = sim.nodes();
-                        if (nodes.length === 0) return;
-
-                        // Jitter 15% of nodes randomly for subtle movement
-                        const jitterCount = Math.ceil(nodes.length * 0.15);
-                        const nodesToJitter = d3.shuffle(nodes).slice(0, jitterCount);
-
-                        nodesToJitter.forEach(node => {
-                            // Random angle between 0 and 2π (full circle)
-                            const angle = Math.random() * Math.PI * 2;
-                            // Reduced distance for smoother movement
-                            const distance = 0.2 + Math.random() * 0.5;
-
-                            // Calculate x and y movements using trigonometry
-                            const dx = Math.cos(angle) * distance;
-                            const dy = Math.sin(angle) * distance;
-
-                            // Apply the movement
-                            node.x += dx;
-                            node.y += dy;
-                        });
-
-                        // Restart simulation with a lower alpha for gentler movement
-                        sim.alpha(0.05).restart();
-                    });
-                } catch (error) {
-                    console.error("Error in jitter function:", error);
-                }
-            }
-
-            const jitterInterval = setInterval(addJitter, 3000);
-
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    clearInterval(jitterInterval);
-                } else {
-                    if (!jitterInterval) {
-                        setInterval(addJitter, 3000);
-                    }
-                }
-            });
-
             const breaches = svg.selectAll(".breach")
                 .data(data)
                 .enter().append("g")
                 .attr("class", "breach")
+                .attr("tabindex", "0")
+                .attr("role", "button")
+                .attr("aria-label", d => `${d.name} (${d.year}): ${d3.format(",")(d.count)} registros expostos`)
                 .attr("data-industry", d => d.industry)
                 .attr("transform", d => {
                     const yearRange = yearRanges.get(d.year);
@@ -1086,10 +1225,13 @@
                 .attr("class", "circle")
                 .attr("r", 0)
                 .style("fill", (d, i) => `url(#gradient-${d.year}-${i})`)
-                .style("opacity", 0.9)
+                .style("opacity", 0)
                 .transition()
-                .duration(1000)
-                .attr("r", d => circleSize(d.count));
+                .delay((d, i) => i * 15)
+                .duration(800)
+                .ease(d3.easeBackOut.overshoot(0.8))
+                .attr("r", d => circleSize(d.count))
+                .style("opacity", 0.9);
 
             breaches.append("image")
                 .attr("class", "breach-logo")
@@ -1100,7 +1242,7 @@
                 .attr("height", d => logoSize(d.count))
                 .style("opacity", 0)
                 .transition()
-                .delay(500)
+                .delay((d, i) => 400 + i * 15)
                 .duration(500)
                 .style("opacity", 1);
 
@@ -1110,9 +1252,9 @@
                 .text(d => d.name)
                 .style("opacity", 0)
                 .transition()
-                .delay(1000)
+                .delay((d, i) => 800 + i * 15)
                 .duration(500)
-                .style("opacity", 1);
+                .style("opacity", 0.85);
 
             let previousSize = null;
             let activeElement = null;
@@ -1133,18 +1275,19 @@
 
                 const tooltipContent = `
                     <div class="tooltip-title" style="border-color: ${palette[0]}">
-                        ${d.name} <span style="opacity: 0.8; font-size: 0.9em;">(${d.year})</span>
+                        ${d.name} <span style="color: #c8d6e5; font-size: 0.9em;">(${d.year})</span>
                     </div>
-                    <img src="${d.logo}" alt="Logo" class="tooltip-logo">
+                    <img src="${d.logo}" alt="Logotipo de ${d.name}" class="tooltip-logo">
                     <div class="tooltip-description">
                         ${d.description}
                     </div>
-                    <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[0]}; border: 1px solid ${palette[0]}40">
+                    <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[palette.length - 1]}; border: 1px solid ${palette[0]}40">
                         Registros expostos: ${d3.format(",")(d.count)}
                     </div>
                 `;
 
                 tooltip.html(tooltipContent)
+                    .attr("aria-hidden", "false")
                     .style("opacity", 0)
                     .style("display", "block")
                     .style("border-left", `4px solid ${palette[0]}`);
@@ -1210,17 +1353,154 @@
                         .duration(500)
                         .style("opacity", 0)
                         .on("end", function () {
-                            tooltip.style("display", "none");
+                            tooltip.style("display", "none").attr("aria-hidden", "true");
                         });
 
                     activeElement = null;
+                })
+                .on("focus", function (event, d) {
+                    const element = d3.select(this);
+                    activeElement = element;
+                    previousSize = circleSize(d.count);
+                    const palette = colorPalettes[d.year] || defaultPalette;
+
+                    element.select("circle")
+                        .transition()
+                        .duration(300)
+                        .attr("r", previousSize + 10)
+                        .style("opacity", 1);
+
+                    element.raise();
+
+                    const tooltipContent = `
+                        <div class="tooltip-title" style="border-color: ${palette[0]}">
+                            ${d.name} <span style="color: #c8d6e5; font-size: 0.9em;">(${d.year})</span>
+                        </div>
+                        <img src="${d.logo}" alt="Logotipo de ${d.name}" class="tooltip-logo">
+                        <div class="tooltip-description">
+                            ${d.description}
+                        </div>
+                        <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[palette.length - 1]}; border: 1px solid ${palette[0]}40">
+                            Registros expostos: ${d3.format(",")(d.count)}
+                        </div>
+                    `;
+
+                    tooltip.html(tooltipContent)
+                        .attr("aria-hidden", "false")
+                        .style("opacity", 0)
+                        .style("display", "block")
+                        .style("border-left", `4px solid ${palette[0]}`);
+
+                    const svgRect = svg.node().closest('svg').getBoundingClientRect();
+                    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const tooltipRect = tooltip.node().getBoundingClientRect();
+                    let left = svgRect.left + scrollX + margin.left + d.x - (tooltipRect.width / 2);
+                    let top = svgRect.top + scrollY + margin.top + d.y + previousSize + 20;
+
+                    if (left < scrollX + 20) left = scrollX + 20;
+                    if (left + tooltipRect.width > scrollX + window.innerWidth - 20)
+                        left = scrollX + window.innerWidth - tooltipRect.width - 20;
+                    if (top + tooltipRect.height > scrollY + window.innerHeight - 20)
+                        top = svgRect.top + scrollY + margin.top + d.y - tooltipRect.height - 20;
+
+                    tooltip
+                        .style("left", `${Math.round(left)}px`)
+                        .style("top", `${Math.round(top)}px`)
+                        .transition()
+                        .duration(200)
+                        .style("opacity", 1);
+                })
+                .on("blur", function (event, d) {
+                    if (activeElement) {
+                        activeElement.select("circle")
+                            .transition()
+                            .duration(300)
+                            .attr("r", previousSize)
+                            .style("opacity", 0.9);
+                    }
+
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0)
+                        .on("end", function () {
+                            tooltip.style("display", "none").attr("aria-hidden", "true");
+                        });
+
+                    activeElement = null;
+                })
+                .on("keydown", function (event, d) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        this.focus();
+                    }
                 });
+
+            if (floatAnimId) cancelAnimationFrame(floatAnimId);
+
+            breaches.each(function(d) {
+                d.floatPhaseX = Math.random() * Math.PI * 2;
+                d.floatPhaseY = Math.random() * Math.PI * 2;
+                d.floatAmpX = 0.6 + Math.random() * 1.0;
+                d.floatAmpY = 0.4 + Math.random() * 0.8;
+                d.floatSpeedX = 0.00015 + Math.random() * 0.00025;
+                d.floatSpeedY = 0.0001 + Math.random() * 0.0002;
+                d.driftX = 0;
+                d.driftY = 0;
+                d.driftTargetX = 0;
+                d.driftTargetY = 0;
+                d.driftLerp = 0.003 + Math.random() * 0.004;
+                d.nextNudge = performance.now() + 2000 + Math.random() * 6000;
+                d.baseX = d.x;
+                d.baseY = d.y;
+            });
+
+            function waitForSettled() {
+                const allSettled = simulations.every(sim => sim.alpha() < 0.02);
+                if (allSettled) {
+                    breaches.each(function(d) {
+                        d.baseX = d.x;
+                        d.baseY = d.y;
+                    });
+                    startFloating();
+                } else {
+                    setTimeout(waitForSettled, 500);
+                }
+            }
+
+            function startFloating() {
+                function animate(now) {
+                    breaches.each(function(d) {
+                        if (now > d.nextNudge) {
+                            d.driftTargetX = (Math.random() - 0.5) * 4;
+                            d.driftTargetY = (Math.random() - 0.5) * 3;
+                            d.nextNudge = now + 3000 + Math.random() * 8000;
+                        }
+                        d.driftX += (d.driftTargetX - d.driftX) * d.driftLerp;
+                        d.driftY += (d.driftTargetY - d.driftY) * d.driftLerp;
+
+                        const dx = Math.sin(now * d.floatSpeedX + d.floatPhaseX) * d.floatAmpX + d.driftX;
+                        const dy = Math.cos(now * d.floatSpeedY + d.floatPhaseY) * d.floatAmpY + d.driftY;
+                        d.x = d.baseX + dx;
+                        d.y = d.baseY + dy;
+                    });
+
+                    breaches.attr("transform", d => `translate(${d.x},${d.y})`);
+                    floatAnimId = requestAnimationFrame(animate);
+                }
+
+                floatAnimId = requestAnimationFrame(animate);
+            }
+
+            setTimeout(waitForSettled, 2000);
         }
 
         document.addEventListener('DOMContentLoaded', function () {
             const overlay = document.getElementById('infoOverlay');
             const closeBtn = document.getElementById('closeOverlay');
             const infoBtn = document.getElementById('infoButton');
+            const filterBtn = document.getElementById('filterButton');
+            const filterPanel = document.getElementById('industryFilter');
             const industryFilter = document.getElementById('industrySelect');
             const resetBtn = document.getElementById('resetFilter');
 
@@ -1233,21 +1513,59 @@
                 filterByIndustry('all');
             });
 
-            infoBtn.addEventListener('click', function () {
-                overlay.style.display = 'flex';
+            function showFilter() {
+                filterPanel.classList.add('visible');
+                filterBtn.classList.add('active');
+                filterBtn.setAttribute('aria-expanded', 'true');
+                industryFilter.focus();
+            }
+
+            function hideFilter() {
+                filterPanel.classList.remove('visible');
+                filterBtn.classList.remove('active');
+                filterBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            filterBtn.addEventListener('click', function () {
+                if (filterPanel.classList.contains('visible')) {
+                    hideFilter();
+                } else {
+                    showFilter();
+                }
             });
 
-            closeBtn.addEventListener('click', function () {
-                overlay.style.display = 'none';
+            document.addEventListener('click', function (e) {
+                if (!filterPanel.contains(e.target) && !filterBtn.contains(e.target) && filterPanel.classList.contains('visible')) {
+                    hideFilter();
+                }
             });
+
+            function openOverlay() {
+                overlay.style.display = 'flex';
+                closeBtn.focus();
+            }
+
+            function closeOverlay() {
+                overlay.style.display = 'none';
+                infoBtn.focus();
+            }
+
+            infoBtn.addEventListener('click', openOverlay);
+            closeBtn.addEventListener('click', closeOverlay);
 
             document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && overlay.style.display === 'flex') {
-                    overlay.style.display = 'none';
+                if (e.key === 'Escape') {
+                    if (overlay.style.display === 'flex') {
+                        closeOverlay();
+                    } else if (filterPanel.classList.contains('visible')) {
+                        hideFilter();
+                        filterBtn.focus();
+                    }
                 }
 
-                if (e.key === 'Enter' && document.activeElement === closeBtn) {
-                    overlay.style.display = 'none';
+                if (overlay.style.display === 'flex' && e.key === 'Tab') {
+                    e.preventDefault();
+                    closeBtn.focus();
                 }
             });
         });
@@ -1255,7 +1573,7 @@
         function filterByIndustry(industry) {
             document.getElementById('loadingOverlay').style.display = 'flex';
 
-            let displayName = 'Todas as Indústrias';
+            let displayName = 'Todos os setores';
             if (industry !== 'all') {
                 const selectedOption = document.querySelector(`#industrySelect option[value="${industry}"]`);
                 if (selectedOption) {
@@ -1275,8 +1593,6 @@
 
             d3.select("#chart").selectAll("svg").remove();
 
-            document.getElementById('industryFilter').classList.add('visible');
-
             setTimeout(() => {
                 createGraph(filteredData);
                 document.getElementById('loadingOverlay').style.display = 'none';
@@ -1284,16 +1600,18 @@
         }
     </script>
     <style>
-      .footer { padding: 40px 0 30px; background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
-      .footer p { color: #9fc0e0; }
+      .footer { padding: 40px 0 30px; background: #111320; border-top: 1px solid rgba(96, 165, 250, 0.08); margin-top: 40px; }
+      .footer p { color: #8b9dc3; }
+      .footer p a { color: #60a5fa; text-decoration: none; }
+      .footer p a:hover { color: #93b4ff; text-decoration: underline; }
       .footer-columns { display: flex; justify-content: space-between; gap: 60px; text-align: left; padding: 0 40px; }
       .footer-group { flex: 1; min-width: 0; }
-      .footer-group h6 { color: #ffffff !important; font-size: 0.95em !important; margin-bottom: 15px !important; font-weight: 700 !important; text-transform: uppercase; letter-spacing: 0.8px; }
-      .footer-group a.footer-link { display: block; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; transition: all 0.3s ease; color: #9fc0e0; text-decoration: none; }
-      .footer-group a.footer-link:hover { background-color: rgba(63, 113, 243, 0.2); padding-left: 14px; color: #6daae0 !important; }
+      .footer-group h6 { color: #c8d6e5 !important; font-size: 0.85em !important; margin-bottom: 15px !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 1px; }
+      .footer-group a.footer-link { display: block; margin-bottom: 6px; padding: 6px 10px; border-radius: 6px; transition: all 0.2s ease; color: #8b9dc3; text-decoration: none; font-size: 0.9em; }
+      .footer-group a.footer-link:hover { background-color: rgba(96, 165, 250, 0.1); padding-left: 14px; color: #60a5fa !important; }
       @media (max-width: 768px) { .footer-columns { flex-direction: column; text-align: center; gap: 30px; padding: 0 20px; }
 	.footer-group {
-		border-bottom: 1px solid #ebedef;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 	}
 
 	.footer-group h6 {
@@ -1305,10 +1623,16 @@
 		align-items: center;
 	}
 
+	.footer-group h6:focus {
+		outline: 2px solid #60a5fa;
+		outline-offset: -2px;
+	}
+
 	.footer-group h6::after {
 		content: '+';
 		font-size: 20px;
 		font-weight: 300;
+		color: #8b9dc3;
 		transition: transform 0.3s ease;
 	}
 
@@ -1331,27 +1655,27 @@
     <div class="footer">
       <div class="container">
         <div style="text-align:center;margin-bottom:30px;">
-          <p>Junte-se a nós para moldar este site totalmente open source! Contribuições são bem-vindas no nosso <a
+          <p>Participe da construção deste site totalmente open source! Contribuições são bem-vindas ❤️ no nosso <a
                 href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
         </div>
 
         <div class="footer-columns">
           <div class="footer-group">
-            <h6>Legal</h6>
+            <h6 role="button" tabindex="0" aria-expanded="false">Legal</h6>
             <div class="footer-links-wrapper">
               <a href="privacy" class="footer-link">Política de Privacidade</a>
-            <a href="terms" class="footer-link">Termos</a>
+              <a href="terms" class="footer-link">Termos de Uso</a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>Comunidade</h6>
+            <h6 role="button" tabindex="0" aria-expanded="false">Comunidade</h6>
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
-            <a href="our-repository" class="footer-link">Nosso Repositório</a>
+              <a href="our-repository" class="footer-link">Nosso repositório</a>
             </div>
           </div>
           <div class="footer-group">
-            <h6>Confiança</h6>
+            <h6 role="button" tabindex="0" aria-expanded="false">Confiança</h6>
             <div class="footer-links-wrapper">
               <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
               <a href="transparency" class="footer-link">Transparência</a>
@@ -1359,17 +1683,17 @@
             </div>
           </div>
           <div class="footer-group">
-            <h6>Siga-nos</h6>
+            <h6 role="button" tabindex="0" aria-expanded="false">Siga-nos</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
-            </a>
-            <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
-            </a>
-            <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
-            </a>
+                <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
+              </a>
             </div>
           </div>
         </div>
@@ -1377,16 +1701,23 @@
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-    <script src="../static/scripts/common.js"></script>
+    <script src="/static/scripts/common.js"></script>
     <script>
-      // Footer accordion for mobile
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {
-          header.addEventListener('click', function() {
+          function toggle() {
             if (window.innerWidth <= 768) {
-              var group = this.parentElement;
-              group.classList.toggle('active');
+              var group = header.parentElement;
+              var isActive = group.classList.toggle('active');
+              header.setAttribute('aria-expanded', isActive);
+            }
+          }
+          header.addEventListener('click', toggle);
+          header.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggle();
             }
           });
         });

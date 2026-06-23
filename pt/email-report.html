@@ -1,98 +1,100 @@
+<!DOCTYPE html>
 <html lang="pt">
 
 <head>
-  <meta charset="utf-8" />
-  <title>XposedOrNot: Relatório de risco de violação de dados</title>
-  <link href="https://cdnjs.cloudflare.com" rel="dns-prefetch" />
-  <link href="https://static.hotjar.com" rel="dns-prefetch" />
-  <link href="/favicon.ico" rel="shortcut icon" type="image/ico">
-  <link href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&amp;subset&display=swap"
-    media="all" rel="stylesheet" type="text/css" />
-  <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
-    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
-    referrerpolicy="no-referrer" rel="stylesheet">
-  <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" rel="stylesheet">
-  <script src="/static/scripts/utils.js"></script>
-  <link defer="" href="/static/css/style2.css" rel="stylesheet" type="text/css" />
-  <link defer="" href="/static/css/xon-report.css" rel="stylesheet" type="text/css" />
-  <link href="/static/scripts/libs/clippy/src/clippy.css" media="all" rel="stylesheet" type="text/css" />
-  <link href="/static/css/jquery.hortree.min.css" rel="stylesheet" />
-  <meta content="width=device-width, maximum-scale=5.0, initial-scale=1.0" name="viewport" />
-  <meta content="XposedOrNot: Get a detailed report of your data breach exposure" name="description" />
-  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
-  <meta content="Devanand Premkumar" name="author" />
-  <script src="/static/scripts/libs/clippy/build/clippy.js"></script>
-  <script async="" src="/static/scripts/analytics.js"></script>
-  <script src="/static/scripts/Chart.js"></script>
-  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-  <script crossorigin="anonymous"
-    integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg=="
-    referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
-  <script src="/static/scripts/jquery.line.js" type="text/javascript"></script>
-  <script src="/static/scripts/jquery.hortree.min.js" type="text/javascript"></script>
-  <script src="/static/scripts/d3.v3.min.js"></script>
-  <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
-  <style type="text/css">
-    @keyframes chartjs-render-animation {
-      from {
-        opacity: .99
+   <meta charset="utf-8">
+   <title>XposedOrNot: Relatório de risco de violação de dados</title>
+   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+   <link rel="dns-prefetch" href="https://static.hotjar.com">
+   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+   <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+   <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+   <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+   <link rel=stylesheet
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset&display=swap'
+      type=text/css media=all>
+   <link href="/static/css/style.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+   <script src="/static/scripts/utils.js"></script>
+   <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
+   <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
+   <link rel="stylesheet" type="text/css" href="/static/scripts/libs/clippy/src/clippy.css" media="all">
+   <link rel="stylesheet" href="/static/css/jquery.hortree.min.css">
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="description" content="XposedOrNot: Receba um relatório detalhado da sua exposição a violações de dados">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="author" content="Devanand Premkumar">
+   <script src="/static/scripts/libs/clippy/build/clippy.js"></script>
+   <script async="" src="/static/scripts/analytics.js"></script>
+   <script src="/static/scripts/Chart.js"></script>
+   <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"
+      integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="/static/scripts/jquery.line.js" type="text/javascript"></script>
+   <script src="/static/scripts/jquery.hortree.min.js" type="text/javascript"></script>
+   <script src="/static/scripts/d3.v3.min.js"></script>
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <style type="text/css">
+      @keyframes chartjs-render-animation {
+         from {
+            opacity: .99
+         }
+
+         to {
+            opacity: 1
+         }
       }
 
-      to {
-        opacity: 1
+      .chartjs-render-monitor {
+         animation: chartjs-render-animation 1ms
       }
-    }
 
-    .chartjs-render-monitor {
-      animation: chartjs-render-animation 1ms
-    }
+      .chartjs-size-monitor,
+      .chartjs-size-monitor-expand,
+      .chartjs-size-monitor-shrink {
+         position: absolute;
+         direction: ltr;
+         left: 0;
+         top: 0;
+         right: 0;
+         bottom: 0;
+         overflow: hidden;
+         pointer-events: none;
+         visibility: hidden;
+         z-index: -1
+      }
 
-    .chartjs-size-monitor,
-    .chartjs-size-monitor-expand,
-    .chartjs-size-monitor-shrink {
-      position: absolute;
-      direction: ltr;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      overflow: hidden;
-      pointer-events: none;
-      visibility: hidden;
-      z-index: -1
-    }
+      .chartjs-size-monitor-expand>div {
+         position: absolute;
+         width: 100000px;
+         height: 1000000px;
+         left: 0;
+         top: 0
+      }
 
-    .chartjs-size-monitor-expand>div {
-      position: absolute;
-      width: 100000px;
-      height: 1000000px;
-      left: 0;
-      top: 0
-    }
-
-    .chartjs-size-monitor-shrink>div {
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      left: 0;
-      top: 0
-    }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
+      .chartjs-size-monitor-shrink>div {
+         position: absolute;
+         width: 200%;
+         height: 200%;
+         left: 0;
+         top: 0
+      }
+   </style>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
       integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy-bundle.umd.min.js"
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy-bundle.umd.min.js"
       integrity="sha512-gbruucq/Opx9jlHfqqZeAg2LNK3Y4BbpXHKDhRC88/tARL/izPOE4Zt2w6X9Sn1UeWaGbL38zW7nkL2jdn5JIw=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  </link>
-  </link>
-  </link>
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -118,492 +120,538 @@
 
     </head>
 
-<body class="" data-gr-c-s-loaded="true" data-gr-ext-installed="" data-new-gr-c-s-check-loaded="8.884.0" style="">
-  <div class="mobileheader-area">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="./">
-              <p>XposedorNot</p>
-            </a>
-            <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
-              class="hamburger hamburger--squeeze navbar-toggler" data-target="#navbarSupportedContent"
-              data-toggle="collapse" type="button">
-              <span class="hamburger-box">
-                <span class="hamburger-inner"></span>
-              </span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto"></ul>
-              <div class="main-menu-part">
-                <ul>
-                  <li>
-                    <a href="password">Senha</a>
-                  </li>
-                  <li>
-                    <a href="faq">Perguntas frequentes</a>
-                  </li>
-                  <li>
-                    <a href="https://blog.xposedornot.com/" rel="noopener noreferrer" target="_blank">Blogue</a>
-                  </li>
-                  <li>
-                    <a href="https://twitter.com/XposedOrNot" rel="noopener noreferrer" target="_blank">
-                      <em class="fab fa-twitter"></em>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </div>
-  <header class="header-area">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-3 col-md-3">
-          <div class="header-left">
-            <a href="https://XposedOrNot.com">
-              <p>XposedorNot</p>
-            </a>
-          </div>
-        </div>
-        <div class="col-lg-9 col-md-9">
-          <div class="header-right">
-            <ul>
-              <li>
-                <a href="password">Senha</a>
-              </li>
-              <li>
-                <a href="faq">Perguntas frequentes</a>
-              </li>
-              <li>
-                <a href="https://blog.xposedornot.com/" rel="noopener noreferrer" target="_blank">Blogue</a>
-              </li>
-              <li>
-                <a href="https://twitter.com/XposedOrNot" rel="noopener noreferrer" target="_blank">
-                  <em class="fab fa-twitter"></em>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="xon-row2-area">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-12">
-          <div class="xon-row2-left">
-            <div align="center" class="alert alert-primary"><strong>Tendência anual das violações de dados
-                expostas</strong></div>
-            <canvas class="chartjs-render-monitor" height="375" id="bc" style="height: 341px; width: 682px;"
-              width="750"></canvas>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-12">
-          <div class="xon-row2-right">
-            <h3 id="risk">Sua pontuação de risco:</h3>
-            <div id="chart_div"></div>
-            &lt;div id="chart_div" style="largura: 400px; altura: 120px;"&gt;&lt;/div&gt;
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="xon-row-area">
-    <div class="container">
-      <div class="row">
-        <div align="center" style="width:100%">
-          <div align="center" class="alert alert-primary"><strong>Visualização de violações de dados expostas</strong>
-          </div>
-          <div class="xon-row-left" id="tree-container" style="width:100%"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="xon-row-area">
-    <div class="container">
-      <div class="row">
-        <div style="width:100%">
-          <div class="xon-row-left" style="height :auto; width:100%">
-            <div class="xon-row-left_a" id="email">
-              <p style="background-color:white;">Relatório de violações de dados para e-mail:<strong>E-mail</strong>
-              </p>
-            </div>
-            <table class="table table-hover table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th style="width: 200px">Nome da violação</th>
-                  <th>Detalhes da violação</th>
-                  <th style="width: 200px">Registros expostos</th>
-                </tr>
-              </thead>
-              <tbody id="data_breach"></tbody>
-            </table>
-            <div align="center" class="alert alert-success" id="db-s" role="alert" style="display:none">
-              <em class="fas fa-check-circle"></em>
-              <h3>
-                <strong>Boas notícias 🎉</strong>
-              </h3>
-              <strong> Seu e-mail não foi encontrado em nenhuma violação de dados carregada no XposedOrNot</strong>
-              <p style="color:green;font-size:20px"></p>
-              <br />Se você está vendo isso, então seu e-mail não foi exposto em nenhuma das violações de dados
-              carregadas no XposedOrNot.
-              <p></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="xon-row-area">
-    <div class="container">
-      <div class="row">
-        <div style="width:100%">
-          <div class="xon-row-left" style="height :auto; width:100%">
-            <div class="xon-row-left_a" id="email_sensitive">
-              <p style="background-color:white;">Relatório de violações de dados confidenciais para
-                e-mail:<strong>E-mail</strong>
-              </p>
-            </div>
-            <table class="table table-hover table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th style="width: 200px">Violação sensível</th>
-                  <th>Detalhes da violação</th>
-                  <th style="width: 200px">Registros expostos</th>
-                </tr>
-              </thead>
-              <tbody id="data_breach_sensitive"></tbody>
-            </table>
-            <div align="center" class="alert alert-success" id="db-sensitive" role="alert" style="display:none">
-              <em class="fas fa-check-circle"></em>
-              <strong> Seu e-mail não foi encontrado em nenhuma violação de dados confidenciais carregada no
-                XposedOrNot</strong>
-              <p style="color:green;font-size:20px"></p>
-              <h3>
-                <strong>Boas notícias 🎉</strong>
-              </h3>
-              <p></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="xon-row-area">
-    <div class="container">
-      <div class="row">
-        <div style="width:100%">
-          <div class="xon-row-left" style="width:100%">
-            <div class="xon-row-left_a" id="paste">
-              <p style="background-color:white;">Cola relatório para email:<strong> E-mail</strong>
-              </p>
-            </div>
-            <table class="table table-hover table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th style="width: 150px">Colar identificador</th>
-                  <th>Colar data de exposição</th>
-                  <th style="width: 150px">Registros expostos</th>
-                </tr>
-              </thead>
-              <tbody id="paste_breach"></tbody>
-            </table>
-            <div align="center" class="alert alert-success" id="db-p" role="alert" style="display:none">
-              <em class="fas fa-check-circle"></em>
-              <strong> Seu e-mail não foi encontrado em nenhuma pasta pública exposta carregada no XposedOrNot!</strong>
-              <p style="color:green;font-size:20px"></p>
-              <h4>
-                <strong>Excelente 🙌</strong>
-              </h4>
-              Sinta-se à vontade para verificar seus outros e-mails também, para garantir a segurança.
-              <p></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="banner-row">
-      <div align="center">
-        <div>
-          <div>
-            <div class="xon-row2-area">
-              <div class="container">
-                <div class="row">
-                  <div class="col-6">
-                    <div class="xon-row2-right">
-                      <div align="center" class="alert alert-primary"><strong>Suas violações de dados e riscos de
-                          armazenamento de senhas</strong></div>
-                      <div class="xon-row2-right_a1">
-                        <div>
-                          <canvas id="passwords"></canvas>
-                        </div>
-                      </div>
-                    </div>
+<body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
+   <div class="mobileheader-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12">
+               <nav class="navbar navbar-expand-lg navbar-light">
+                  <a class="navbar-brand" href="./">
+                     <p>XposedorNot</p>
+                  </a>
+                  <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse"
+                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                     aria-label="Toggle navigation">
+                     <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                     </span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="navbar-nav mr-auto"></ul>
+                     <div class="main-menu-part">
+                        <ul>
+                           <li>
+                              <a href="password">Senha</a>
+                           </li>
+                           <li>
+                              <a href="faq">FAQ</a>
+                           </li>
+                           <li>
+                              <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                           </li>
+                           <li>
+                              <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
+                                 <em class="fab fa-twitter"></em>
+                              </a>
+                           </li>
+                        </ul>
+                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="xon-row2-right">
-                      <div align="center" class="alert alert-primary"><strong>Suas 10 principais violações de dados
-                          expostas</strong></div>
-                      <div style="width:100%">
-                        <canvas id="top5breaches"></canvas>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+               </nav>
             </div>
-          </div>
-        </div>
-        <div class="banner-row">
-          <div>
+         </div>
+      </div>
+   </div>
+   <header class="header-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-3 col-md-3">
+               <div class="header-left">
+                  <a href="https://XposedOrNot.com">
+                     <p>XposedorNot</p>
+                  </a>
+               </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+               <div class="header-right">
+                  <ul>
+                     <li>
+                        <a href="password">Senha</a>
+                     </li>
+                     <li>
+                        <a href="faq">FAQ</a>
+                     </li>
+                     <li>
+                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                     </li>
+                     <li>
+                        <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
+                           <em class="fab fa-twitter"></em>
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </header>
+   </div>
+   <div class="xon-row2-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-8 col-md-12">
+               <div class="xon-row2-left">
+                  <div align="center" class="alert alert-primary"><strong>Tendência anual das suas violações de
+                        dados expostas</strong></div>
+                  <canvas id="bc" style="height: 341px; width: 682px;" class="chartjs-render-monitor" width="750"
+                     height="375"></canvas>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+               <div class="xon-row2-right">
+                  <h3 id="risk">Sua pontuação de risco: </h3>
+                  <div id="chart_div"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="xon-row-area">
+      <div class="container">
+         <div class="row">
+            <div align="center" style="width:100%">
+               <div align="center" class="alert alert-primary"><strong>Visualização das violações de dados expostas</strong>
+               </div>
+               <div id="tree-container" class="xon-row-left" style="width:100%"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="xon-row-area">
+      <div class="container">
+         <div class="row">
+            <div style="width:100%">
+               <div class="xon-row-left" style="height :auto; width:100%">
+                  <div class="xon-row-left_a" id="email">
+                     <p style="background-color:white;">Relatório de violações de dados para o e-mail: <strong>Email</strong>
+                     </p>
+                  </div>
+                  <table class="table table-hover table-striped table-bordered">
+                     <thead>
+                        <tr>
+                           <th style="width: 200px">Nome da violação</th>
+                           <th>Detalhes da violação</th>
+                           <th style="width: 200px">Registros expostos</th>
+                        </tr>
+                     </thead>
+                     <tbody id="data_breach"></tbody>
+                  </table>
+                  <div class="alert alert-success" role="alert" id="db-s" style="display:none" align="center">
+                     <em class="fas fa-check-circle"></em>
+                     <h3>
+                        <strong>Boas notícias 🎉</strong>
+                     </h3>
+                     <strong> Seu e-mail não foi encontrado em nenhuma violação de dados carregada no XposedOrNot</strong>
+                     <p style="color:green;font-size:20px"></p>
+                     <br>Se você está vendo isto, seu e-mail não foi exposto em nenhuma das violações de dados carregadas no
+                     XposedOrNot.
+                     <p></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="xon-row-area">
+      <div class="container">
+         <div class="row">
+            <div style="width:100%">
+               <div class="xon-row-left" style="height :auto; width:100%">
+                  <div class="xon-row-left_a" id="email_sensitive">
+                     <p style="background-color:white;">Relatório de violações de dados sensíveis para o e-mail: <strong>Email</strong>
+                     </p>
+                  </div>
+                  <table class="table table-hover table-striped table-bordered">
+                     <thead>
+                        <tr>
+                           <th style="width: 200px">Violação sensível</th>
+                           <th>Detalhes da violação</th>
+                           <th style="width: 200px">Registros expostos</th>
+                        </tr>
+                     </thead>
+                     <tbody id="data_breach_sensitive"></tbody>
+                  </table>
+                  <div class="alert alert-success" role="alert" id="db-sensitive" style="display:none" align="center">
+                     <em class="fas fa-check-circle"></em>
+                     <strong> Seu e-mail não foi encontrado em nenhuma violação de dados sensíveis carregada no XposedOrNot</strong>
+                     <p style="color:green;font-size:20px"></p>
+                     <h3>
+                        <strong>Boas notícias 🎉</strong>
+                     </h3>
+                     <p></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="xon-row-area">
+      <div class="container">
+         <div class="row">
+            <div style="width:100%">
+               <div class="xon-row-left" style="width:100%">
+                  <div class="xon-row-left_a" id="paste">
+                     <p style="background-color:white;">Relatório de pastes para o e-mail: <strong> Email</strong>
+                     </p>
+                  </div>
+                  <table class="table table-hover table-striped table-bordered">
+                     <thead>
+                        <tr>
+                           <th style="width: 150px">Identificador do paste</th>
+                           <th>Data de exposição do paste</th>
+                           <th style="width: 150px">Registros expostos</th>
+                        </tr>
+                     </thead>
+                     <tbody id="paste_breach"></tbody>
+                  </table>
+                  <div class="alert alert-success" role="alert" id="db-p" style="display:none" align="center">
+                     <em class="fas fa-check-circle"></em>
+                     <strong> Seu e-mail não foi encontrado em nenhum paste público exposto carregado no XposedOrNot!</strong>
+                     <p style="color:green;font-size:20px"></p>
+                     <h4>
+                        <strong>Excelente 🙌</strong>
+                     </h4>
+                     Fique à vontade para verificar seus outros e-mails também, para garantir.
+                     <p></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="banner-row">
+         <div align="center">
             <div>
-              <div>
-                <div class="xon-row3-area">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-6">
-                        <div class="xon-row2-right">
-                          <div class="xon-row2-right_a1">
-                            <div align="center" class="alert alert-primary"><strong>Exposição sábia da
-                                indústria</strong></div>
-                            <div class="xon-row2-right_a2" id="industry"></div>
-                          </div>
+               <div>
+                  <div class="xon-row2-area">
+                     <div class="container">
+                        <div class="row">
+                           <div class="col-6">
+                              <div class="xon-row2-right">
+                                 <div align="center" class="alert alert-primary"><strong>Suas violações de dados &amp;
+                                       riscos de armazenamento de senhas</strong></div>
+                                 <div class="xon-row2-right_a1">
+                                    <div>
+                                       <canvas id="passwords"></canvas>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-6">
+                              <div class="xon-row2-right">
+                                 <div align="center" class="alert alert-primary"><strong>Suas 10 principais violações de
+                                       dados expostas</strong></div>
+                                 <div style="width:100%">
+                                    <canvas id="top5breaches"></canvas>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="xon-row2-right">
-                          <div align="center" class="alert alert-info">
-                            <strong>✨ Próximas atualizações ✨</strong>
-                          </div>
-                          <div class="text-center">
-                            <br />
-                            <p>Mostre seu apoio e amor no GitHub 😍<br /> Recebeu uma solicitação de novo recurso ou
-                              deseja melhorar um já existente?<br /><br /> Eu adoraria<strong>ouvir de TI</strong>!
-                              Vamos tornar isso ainda melhor juntos!</p>
-                            <br /> <a class="btn btn-primary" href="https://github.com/xposedornot"
-                              target="_blank">Visite nosso GitHub</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                     </div>
                   </div>
-                </div>
-              </div>
+               </div>
             </div>
             <div class="banner-row">
-              <div align="center">
-                <div>
+               <div>
                   <div>
-                    <div class="xon-row3-area">
-                      <div class="container">
-                        <div class="row">
-                          <div></div>
-                          <div>
-                            <div class="xon-row3-right">
-                              <div align="center" class="alert alert-primary"><strong>Suas violações de dados expostas
-                                  em detalhes</strong></div>
-                              <div>
-                                <div>
-                                  <div id="details">
-                                    <div></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div aria-hidden="true" aria-labelledby="alertMeModalLabel" class="modal fade"
-                        id="alertFriendModal" role="dialog" style="display: none;" tabindex="-1">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header modal-header-success" id="h2head_friend">
-                              <h3 class="modal-title" id="alertMeModalLabel">Alerte meu amigo</h3>
-                              <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                                <span aria-hidden="true">×</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <form id="defaultForm">
-                                <div class="form-group"></div>
-                                <div class="form-group">
-                                  <div class="alert-success" disabled="" id="message-text_">
-                                    Um convite para seu amigo verificar a exposição à violação de dados pode ser enviado
-                                    pelo Facebook, Twitter, LinkedIn ou e-mail 😎.<br />
-                                    <br />Por favor, use os links abaixo para compartilhar.<br />
-                                    <br />Compartilhar é se importar!<br />
-                                    <br />
-                                    <strong>Não deixemos nossos amigos para trás.</strong>
-                                    <br />
-                                    <div>
-                                      <a class="btn btn-twitter btn-lg"
-                                        href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https://xposedornot.com&amp;p[images][0]=&amp;p[title]=You%20Are%20Invited!&amp;p[summary]=Check%20if%20your%20email%20is%20exposed%20in%20any%20data%20breach!"
-                                        onclick="window.open(this.href,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=250'); return false"
-                                        rel="noopener noreferrer" target="_blank">
-                                        <em class="fab fa-facebook"></em> Facebook</a>
-                                      <a class="btn btn-twitter btn-lg"
-                                        href="https://twitter.com/share?url=Check%20the%20new%20data%20breach%20exposure%20alerts%20and%20analytics%20at%20https://XposedOrNot.com%20for%20your%20email.%20@XposedOrNot"
-                                        rel="noopener noreferrer" target="_blank" title="Twitter">
-                                        <em class="fab fa-twitter"></em> Twitter</a>
+                     <div>
+                        <div class="xon-row3-area">
+                           <div class="container">
+                              <div class="row">
+                                 <div class="col-6">
+                                    <div class="xon-row2-right">
+                                       <div class="xon-row2-right_a1">
+                                          <div align="center" class="alert alert-primary"><strong>Exposição por
+                                                setor</strong></div>
+                                          <div class="xon-row2-right_a2" id="industry"></div>
+                                       </div>
                                     </div>
-                                  </div>
-                                </div>
-                              </form>
-                            </div>
-                            <div class="modal-footer">
-                              <button class="btn btn-primary" data-dismiss="modal" id="alertMe_"
-                                type="button">Fechar</button>
-                            </div>
-                          </div>
+                                 </div>
+                                 <div class="col-6">
+                                    <div class="xon-row2-right">
+                                       <div align="center" class="alert alert-info">
+                                          <strong>✨ Próximas atualizações ✨</strong>
+                                       </div>
+                                       <div class="text-center">
+                                          <br>
+                                          <p>Mostre seu apoio e carinho no GitHub 😍 <br> Tem uma nova sugestão de recurso ou
+                                             quer melhorar um já existente? <br><br> Eu adoraria <strong>ouvir
+                                                você</strong>! Vamos tornar isto ainda melhor juntos!</p>
+                                          <br> <a href="https://github.com/xposedornot" class="btn btn-primary"
+                                             target="_blank">Visite nosso GitHub</a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                      </div>
-                      <div>
-                        <div id="details"></div>
-                      </div>
-                      <br />
-                      <div class="xon">
+                     </div>
+                  </div>
+                  <div class="banner-row">
+                     <div align="center">
                         <div>
-                          <div>
-                            <br />
-                            <div align="center">
-                              <button class="btn-lg btn-primary" data-target="#alertMeModal" data-toggle="modal"
-                                style="background-color:#FC9E11;color:white" type="button">
-                                <em class="fa fa-bell"></em>Alerte-me sobre todas as violações futuras</button>
-                            </div>
-                            <div align="center" style="font-size:22px">
-                              <br /> 💡 Compartilhe isso com seus amigos e familiares<br />
-                              <br /> Não deixemos nossos amigos e familiares para trás<strong>dolorosas aquisições de
-                                contas.</strong>
-                              <br />
-                              <br />
-                              <style="font-size:18px;margin: 0px;"="" 20px="">
-                                <u> Você pode compartilhar isso facilmente através de seu e-mail, Facebook, Twitter
-                                  etc.</u>
-                                <br />
-                                <a class="btn btn-twitter btn-lg"
-                                  href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https://xposedornot.com&amp;p[images][0]=&amp;p[title]=You%20Are%20Invited!&amp;p[summary]=Check%20if%20your%20email%20is%20exposed%20in%20any%20data%20breach!"
-                                  onclick="window.open(this.href,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=250'); return false"
-                                  rel="noopener noreferrer" target="_blank">
-                                  <em class="fab fa-facebook"></em> Facebook</a>
-                                <a class="btn btn-twitter btn-lg"
-                                  href="https://twitter.com/share?url=Check%20the%20new%20data%20breach%20exposure%20alerts%20and%20analytics%20at%20https://XposedOrNot.com%20for%20your%20email.%20@XposedOrNot"
-                                  rel="noopener noreferrer" target="_blank" title="Twitter">
-                                  <em class="fab fa-twitter"></em> Twitter</a>
-                                <br />
-                                <button class="btn-lg btn-primary" data-target="#alertFriendModal" data-toggle="modal"
-                                  id="inviteFriend" type="button"> Convide meus amigos para verificar</button>
-                                <button class="btn-lg btn-primary" onclick="location.href='https://XposedOrNot.com'"
-                                  type="button"> Verifique outro e-mail</button>
-                                <br />
-                                <br />
-                              </style="font-size:18px;margin:>
-                            </div>
-                          </div>
+                           <div>
+                              <div class="xon-row3-area">
+                                 <div class="container">
+                                    <div class="row">
+                                       <div></div>
+                                       <div>
+                                          <div class="xon-row3-right">
+                                             <div align="center" class="alert alert-primary"><strong>Suas violações de dados
+                                                   expostas em detalhe</strong></div>
+                                             <div>
+                                                <div>
+                                                   <div id="details">
+                                                      <div></div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="modal fade" id="alertFriendModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="alertMeModalLabel" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog" role="document">
+                                       <div class="modal-content">
+                                          <div id="h2head_friend" class="modal-header modal-header-success">
+                                             <h3 class="modal-title" id="alertMeModalLabel">Alertar um amigo </h3>
+                                             <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                             </button>
+                                          </div>
+                                          <div class="modal-body">
+                                             <form id="defaultForm">
+                                                <div class="form-group"></div>
+                                                <div class="form-group">
+                                                   <div class="alert-success" disabled="" id="message-text_">
+                                                      Um convite para seu amigo verificar a exposição dele em violações de dados pode
+                                                      ser enviado pelo Facebook, Twitter, LinkedIn ou e-mail 😎. <br>
+                                                      <br>Use os links abaixo para compartilhar. <br>
+                                                      <br>Compartilhar é cuidar! <br>
+                                                      <br>
+                                                      <strong>Não vamos deixar nossos amigos para trás.</strong>
+                                                      <br>
+                                                      <div>
+                                                         <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https://xposedornot.com&amp;p[images][0]=&amp;p[title]=You%20Are%20Invited!&amp;p[summary]=Check%20if%20your%20email%20is%20exposed%20in%20any%20data%20breach!"
+                                                            target="_blank" rel="noopener noreferrer"
+                                                            onclick="window.open(this.href,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=250'); return false"
+                                                            class="btn btn-twitter btn-lg">
+                                                            <em class="fab fa-facebook"></em> Facebook </a>
+                                                         <a href="https://twitter.com/share?url=Check%20the%20new%20data%20breach%20exposure%20alerts%20and%20analytics%20at%20https://XposedOrNot.com%20for%20your%20email.%20@XposedOrNot"
+                                                            target="_blank" rel="noopener noreferrer" title="Twitter"
+                                                            class="btn btn-twitter btn-lg">
+                                                            <em class="fab fa-twitter"></em> Twitter </a>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </form>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button id="alertMe_" type="button" data-dismiss="modal"
+                                                class="btn btn-primary">Fechar </button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div>
+                                    <div id="details"></div>
+                                 </div>
+                                 <br>
+                                 <div class="xon">
+                                    <div>
+                                       <div>
+                                          <br>
+                                          <div align="center">
+                                             <button type="button" class="btn-lg btn-primary"
+                                                style="background-color:#FC9E11;color:white" data-toggle="modal"
+                                                data-target="#alertMeModal">
+                                                <em class="fa fa-bell"></em>&nbsp;Alerte-me sobre todas as futuras violações
+                                             </button>
+                                          </div>
+                                          <div style="font-size:22px" align="center">
+                                             <br> 💡 Compartilhe isto com seus amigos &amp; familiares <br>
+                                             <br> Não vamos deixar nossos amigos e familiares para trás diante de <strong>dolorosos
+                                                sequestros de conta.</strong>
+                                             <br>
+                                             <br>
+                                             <style="font-size:18px;margin: 20px 0px;">
+                                                <u> Você pode compartilhar isto facilmente pelo seu e-mail, Facebook, Twitter
+                                                   etc</u>
+                                                <br>
+                                                <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https://xposedornot.com&amp;p[images][0]=&amp;p[title]=You%20Are%20Invited!&amp;p[summary]=Check%20if%20your%20email%20is%20exposed%20in%20any%20data%20breach!"
+                                                   target="_blank" rel="noopener noreferrer"
+                                                   onclick="window.open(this.href,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=250'); return false"
+                                                   class="btn btn-twitter btn-lg">
+                                                   <em class="fab fa-facebook"></em> Facebook </a>
+                                                <a href="https://twitter.com/share?url=Check%20the%20new%20data%20breach%20exposure%20alerts%20and%20analytics%20at%20https://XposedOrNot.com%20for%20your%20email.%20@XposedOrNot"
+                                                   target="_blank" rel="noopener noreferrer" title="Twitter"
+                                                   class="btn btn-twitter btn-lg">
+                                                   <em class="fab fa-twitter"></em> Twitter </a>
+                                                <br>
+                                                <button type="button" id="inviteFriend" class="btn-lg btn-primary"
+                                                   data-toggle="modal" data-target="#alertFriendModal"> Convidar meus
+                                                   amigos para verificar </button>
+                                                <button type="button" class="btn-lg btn-primary"
+                                                   onclick="location.href='https://XposedOrNot.com'"> Verificar outro
+                                                   e-mail </button>
+                                                <br>
+                                                <br>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div aria-hidden="true" aria-labelledby="alertMeModalLabel" class="modal fade" id="alertMeModal"
-                  role="dialog" tabindex="-1">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header modal-header-primary" id="h2head">
-                        <h3 class="modal-title" id="alertMeModalLabel">Alerte-me</h3>
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                          <span aria-hidden="true">×</span>
-                        </button>
-                      </div>
-                      <div align="left" class="modal-body">
-                        <form>
-                          <div class="form-group">
-                            <label class="form-control-label" for="recipient-name"><strong>E-mail a ser
-                                monitorado:</strong></label>
-                            <input class="form-control" id="recipient-name" type="text" />
-                          </div>
-                          <div class="form-group">
-                            <label class="form-control-label" for="message-text"><strong>Próximos
-                                passos:</strong></label>
-                            <textarea class="form-control" disabled="" id="message-text"
-                              rows="2">Certifique-se de verificar o endereço de e-mail para receber alertas GRATUITOS por e-mail sobre todas as futuras violações de dados e clique em 'Alertar-me'.</textarea>
-                          </div>
-                          <div class="cf-turnstile" data-sitekey="0x4AAAAAAAA_T_0Qt4kJbXno"></div>
-                          <br />
-                          <div align="center" class="alert alert-danger" hidden="false" id="a_succ" role="alert">
-                            <strong>Ops!</strong> Por favor, complete o desafio e tente novamente!
-                          </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button class="btn btn-primary" id="alertMe" type="button">Alerte-me</button>
-                        <button class="btn btn-success" data-dismiss="modal" id="alertMeClose" style="display: none;"
-                          type="button">Fechar</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="container text-center" style="font-family:Poppins">
-                  <footer>
-                    <aside>
-                      <hr />
-                      <a href="https://twitter.com/xposedornot" name="twitter" rel="noopener" style="color:#3c5fec"
-                        target="_blank">Consulte-nos em<em class="fab fa-twitter fa-3x"></em>
-                      </a>
-                      <a href="https://facebook.com/xposedornot" name="fb" rel="noopener" style="color:#3c5fec"
-                        target="_blank">e<em class="fab fa-facebook fa-3x"></em>
-                      </a>
-                      <br />
-                      <br />
-                      <div about="https://creativecommons.org" xmlns:cc="https://creativecommons.org/ns#">
-                        <p>
-                        <p>Junte-se a nós na criação deste site totalmente de código aberto! Contribuições são
-                          bem-vindas ❤️ - confira nosso<a href="https://github.com/XposedOrNot" rel="noopener"
-                            target="_blank">GitHub</a>.</p>
-                        <div style="width:30%;Text-align:center;float:left;">
-                          <a href="privacy" style="color:blue">política de Privacidade</a> -<a
-                            href="responsible-disclosure" style="color:blue"> Divulgação Responsável</a>
+                        <div class="modal fade" id="alertMeModal" tabindex="-1" role="dialog"
+                           aria-labelledby="alertMeModalLabel" aria-hidden="true">
+                           <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                 <div id="h2head" class="modal-header modal-header-primary">
+                                    <h3 class="modal-title" id="alertMeModalLabel">Alerte-me </h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                       <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <div class="modal-body" align="left">
+                                    <form>
+                                       <div class="form-group">
+                                          <label for="recipient-name" class="form-control-label"><strong>E-mail a ser
+                                                monitorado:</strong></label>
+                                          <input type="text" class="form-control" id="recipient-name">
+                                       </div>
+                                       <div class="form-group">
+                                          <label for="message-text" class="form-control-label"><strong>Próximos
+                                                passos:</strong></label>
+                                          <textarea disabled class="form-control" id="message-text"
+                                             rows="2">Confira o endereço de e-mail para receber alertas GRATUITOS por e-mail sobre todas as futuras violações de dados e depois clique em 'Alerte-me'. </textarea>
+                                       </div>
+                                       <div class="cf-turnstile" data-sitekey="0x4AAAAAAAA_T_0Qt4kJbXno"></div>
+                                       <br>
+                                       <div class="alert alert-danger" role="alert" id="a_succ" hidden="false"
+                                          align="center">
+                                          <strong>Ops !</strong> Complete o desafio e tente novamente !
+                                       </div>
+                                    </form>
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button id="alertMe" type="button" class="btn btn-primary">Alerte-me </button>
+                                    <button style="display: none;" data-dismiss="modal" id="alertMeClose" type="button"
+                                       class="btn btn-success">Fechar </button>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                        </p>
-                      </div>
-                      <p>
-                      <div class="custom-control custom-switch" style="Text-align:right;Width:30%;float:right">
-                        <input class="custom-control-input" id="darkSwitch" type="checkbox" />
-                        <label class="custom-control-label" for="darkSwitch">Modo escuro</label>
-                      </div>
-                      </p>
-                    </aside>
-                  </footer>
-                </div>
-                <script crossorigin="anonymous"
-                  integrity="sha512-8cU710tp3iH9RniUh6fq5zJsGnjLzOWLWdZqBMLtqaoZUA6AWIE34lwMB3ipUNiTBP5jEZKY95SfbNnQ8cCKvA=="
-                  referrerpolicy="no-referrer"
-                  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
-                <script crossorigin="anonymous"
-                  integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
-                  referrerpolicy="no-referrer"
-                  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
-                <script crossorigin="anonymous" integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc="
-                  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"></script>
-                <script src="/static/scripts/email-report.js"></script>
-                <script async="" rel="preconnect"
-                  src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-                <script async="" defer=""
-                  src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback"></script>
-                <script src="/static/scripts/common.js"></script>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
+                        <div class="footer">
+                           <div class="container">
+                              <div style="text-align:center;margin-bottom:30px;">
+                                 <p>Junte-se a nós para moldar este site totalmente open source! Contribuições são bem-vindas ❤️ no nosso <a
+                                       href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+                              </div>
+
+                              <div class="footer-columns">
+                                 <div class="footer-group">
+                                    <h6>Legal</h6>
+                                    <div class="footer-links-wrapper">
+                                       <a href="privacy" class="footer-link">Política de Privacidade</a>
+                                       <a href="terms" class="footer-link">Termos de Uso</a>
+                                    </div>
+                                 </div>
+                                 <div class="footer-group">
+                                    <h6>Comunidade</h6>
+                                    <div class="footer-links-wrapper">
+                                       <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+                                       <a href="our-repository" class="footer-link">Nosso repositório</a>
+                                    </div>
+                                 </div>
+                                 <div class="footer-group">
+                                    <h6>Confiança</h6>
+                                    <div class="footer-links-wrapper">
+                                       <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+                                       <a href="transparency" class="footer-link">Transparência</a>
+                                       <a href="responsible-disclosure" class="footer-link">Divulgação Responsável</a>
+                                    </div>
+                                 </div>
+                                 <div class="footer-group">
+                                    <h6>Siga-nos</h6>
+                                    <div class="footer-links-wrapper">
+                                       <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                                          <i class="fab fa-twitter"></i> Twitter (X)
+                                       </a>
+                                       <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                                          <i class="fab fa-facebook"></i> Facebook
+                                       </a>
+                                       <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                                          <i class="fab fa-mastodon"></i> Mastodon
+                                       </a>
+                                    </div>
+                                 </div>
+                                 <div class="footer-group">
+                                    <h6>Resumo IA</h6>
+                                    <div class="footer-links-wrapper">
+                                       <a href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                                          <img src="/static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                                          ChatGPT
+                                       </a>
+                                       <a href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                                          <img src="/static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                                          Perplexity
+                                       </a>
+                                       <a href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                                          <img src="/static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                                          Gemini
+                                       </a>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+                                 <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                                 <label class="custom-control-label" for="darkSwitch">Modo escuro</label>
+                              </div>
+                           </div>
+                        </div>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"
+                           integrity="sha512-8cU710tp3iH9RniUh6fq5zJsGnjLzOWLWdZqBMLtqaoZUA6AWIE34lwMB3ipUNiTBP5jEZKY95SfbNnQ8cCKvA=="
+                           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+                           integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+                           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                        <script
+                           src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"
+                           integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc="
+                           crossorigin="anonymous"></script>
+                        <script src="/static/scripts/email-report.js"></script>
+                        <script async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+                           rel="preconnect"></script>
+                        <script
+                           src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback"
+                           async defer></script>
+                        <script src="/static/scripts/common.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 
 </html>
