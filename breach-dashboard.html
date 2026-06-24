@@ -847,144 +847,281 @@
 
       /* xonPlus Modal Styling */
       .xonplus-modal {
-        border-radius: 15px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        --svc-accent: #2980b9;
+        --svc-ink: #1f6391;
+        --svc-cta: #1f6391;
+        --svc-tint: rgba(41, 137, 185, 0.12);
+        --xp-surface: #ffffff;
+        --xp-text: #1f2933;
+        --xp-muted: #5b6470;
+        --xp-border: #e7ebef;
+        --xp-card: #f6f8fa;
         border: none;
+        border-radius: 18px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
         overflow: hidden;
+        background: var(--xp-surface);
+        color: var(--xp-text);
+      }
+
+      .xonplus-modal.svc-teams {
+        --svc-accent: #6264a7;
+        --svc-ink: #444791;
+        --svc-cta: #444791;
+        --svc-tint: rgba(98, 100, 167, 0.13);
+      }
+
+      .xonplus-modal.svc-slack {
+        --svc-accent: #611f69;
+        --svc-ink: #4a154b;
+        --svc-cta: #4a154b;
+        --svc-tint: rgba(97, 31, 105, 0.12);
+      }
+
+      .xonplus-modal.svc-webhook {
+        --svc-accent: #0e7490;
+        --svc-ink: #0b5566;
+        --svc-cta: #0b5566;
+        --svc-tint: rgba(14, 116, 144, 0.12);
       }
 
       .xonplus-header {
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-        border-bottom: none;
-        color: white;
-        padding: 1.5rem;
+        background: var(--xp-surface);
+        border-bottom: 1px solid var(--xp-border);
+        color: var(--xp-text);
+        padding: 1.5rem 1.75rem;
+        align-items: flex-start;
+      }
+
+      .xonplus-app-tile {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--svc-tint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .xonplus-app-tile i {
+        color: var(--svc-accent);
+        font-size: 1.75rem;
+      }
+
+      .xonplus-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--svc-ink);
+        background: var(--svc-tint);
+        padding: 0.22rem 0.6rem;
+        border-radius: 999px;
+        margin-bottom: 0.5rem;
       }
 
       .xonplus-header .modal-title {
-        color: white;
-        font-weight: 600;
+        color: var(--xp-text);
+        font-weight: 700;
+        font-size: 1.3rem;
+        line-height: 1.25;
+        margin: 0;
       }
 
-      .xonplus-header .text-muted {
-        color: rgba(255, 255, 255, 0.8) !important;
+      .xonplus-header .xonplus-sub {
+        color: var(--xp-muted);
+        font-size: 0.92rem;
+        margin: 0.25rem 0 0;
       }
 
       .xonplus-header .close {
-        color: white;
-        opacity: 0.8;
+        color: var(--xp-muted);
+        opacity: 0.7;
         text-shadow: none;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin: -0.25rem -0.25rem 0 0;
       }
 
       .xonplus-header .close:hover {
         opacity: 1;
-        color: white;
+        color: var(--xp-text);
       }
 
       .xonplus-body {
-        padding: 2rem;
-        background: #f8f9fa;
+        padding: 1.5rem 1.75rem 0.75rem;
+        background: var(--xp-surface);
       }
 
       .xonplus-body .lead {
-        color: #2c3e50;
+        color: var(--xp-text);
         font-weight: 500;
+        font-size: 1.02rem;
+        line-height: 1.55;
+        margin-bottom: 1.25rem;
       }
 
-      .feature-item {
-        padding: 1rem;
-        background: white;
+      .xonplus-preview {
+        border: 1px solid var(--xp-border);
+        border-radius: 14px;
+        background: var(--xp-card);
+        padding: 0.9rem 1rem;
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+      }
+
+      .xonplus-preview-avatar {
+        width: 38px;
+        height: 38px;
         border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
-        height: 100%;
+        background: var(--svc-tint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
 
-      .feature-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      .xonplus-preview-avatar i {
+        color: var(--svc-accent);
+        font-size: 1.1rem;
       }
 
-      .feature-item h6 {
-        color: #2c3e50;
+      .xonplus-preview-meta {
+        font-size: 0.8rem;
+        color: var(--xp-muted);
+        margin-bottom: 0.15rem;
+      }
+
+      .xonplus-preview-meta strong {
+        color: var(--xp-text);
+        font-weight: 700;
+      }
+
+      .xonplus-preview-body {
+        color: var(--xp-text);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      .xonplus-preview-tag {
+        color: var(--svc-ink);
         font-weight: 600;
-        margin-bottom: 0.5rem;
+      }
+
+      .xonplus-feature {
+        display: flex;
+        gap: 0.7rem;
+        align-items: flex-start;
+        padding: 0.55rem 0.25rem;
+      }
+
+      .xonplus-feature-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        background: var(--svc-tint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .xonplus-feature-icon i {
+        color: var(--svc-accent);
+        font-size: 1rem;
+      }
+
+      .xonplus-feature h6 {
+        color: var(--xp-text);
+        font-weight: 700;
+        font-size: 0.92rem;
+        margin: 0 0 0.12rem;
+      }
+
+      .xonplus-feature small {
+        color: var(--xp-muted);
+        font-size: 0.82rem;
+        line-height: 1.35;
       }
 
       .xonplus-footer {
-        background: white;
-        border-top: 1px solid #e9ecef;
-        padding: 1.5rem 2rem;
+        background: var(--xp-surface);
+        border-top: 1px solid var(--xp-border);
+        padding: 1.25rem 1.75rem;
+        gap: 0.75rem;
       }
 
       .xonplus-footer .btn {
-        border-radius: 25px;
-        padding: 0.75rem 2rem;
+        border-radius: 12px;
+        padding: 0.7rem 1.5rem;
         font-weight: 600;
-        transition: all 0.3s ease;
-        border-width: 2px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        border-width: 1.5px;
       }
 
       .xonplus-footer .btn-outline-primary {
-        border-color: #3498db;
-        color: #3498db;
+        border-color: var(--xp-border);
+        color: var(--xp-text);
+        background: transparent;
       }
 
       .xonplus-footer .btn-outline-primary:hover {
-        background: #3498db;
-        border-color: #3498db;
-        color: #ffffff !important;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        border-color: var(--svc-accent);
+        color: var(--svc-ink);
+        background: var(--svc-tint);
       }
 
       .xonplus-footer .btn-primary {
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-        border-color: #3498db;
-        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        background: var(--svc-cta);
+        border-color: var(--svc-cta);
+        color: #ffffff;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
       }
 
       .xonplus-footer .btn-primary:hover {
-        background: linear-gradient(135deg, #2980b9 0%, #1c5d8b 100%);
-        border-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        background: var(--svc-accent);
+        border-color: var(--svc-accent);
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.22);
       }
 
       /* Dark theme support for xonPlus modal */
       [data-theme="dark"] .xonplus-modal {
-        background: #2c3e50;
-        color: #ecf0f1;
+        --svc-accent: #5dade2;
+        --svc-ink: #93c9ec;
+        --svc-tint: rgba(93, 173, 226, 0.16);
+        --xp-surface: #1e2937;
+        --xp-text: #f1f5f9;
+        --xp-muted: #9aa7b5;
+        --xp-border: #334155;
+        --xp-card: #243244;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
       }
 
-      [data-theme="dark"] .xonplus-header {
-        background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+      [data-theme="dark"] .xonplus-modal.svc-teams {
+        --svc-accent: #a6a8e0;
+        --svc-ink: #c4c6f0;
+        --svc-tint: rgba(166, 168, 224, 0.16);
       }
 
-      [data-theme="dark"] .xonplus-body {
-        background: #34495e;
-        color: #ecf0f1;
+      [data-theme="dark"] .xonplus-modal.svc-slack {
+        --svc-accent: #cd8fd4;
+        --svc-ink: #e0b3e6;
+        --svc-tint: rgba(205, 143, 212, 0.16);
       }
 
-      [data-theme="dark"] .xonplus-body .lead {
-        color: #ecf0f1;
-      }
-
-      [data-theme="dark"] .feature-item {
-        background: #2c3e50;
-        color: #ecf0f1;
-        border: 1px solid #34495e;
-      }
-
-      [data-theme="dark"] .feature-item h6 {
-        color: #ecf0f1;
-      }
-
-      [data-theme="dark"] .xonplus-footer {
-        background: #2c3e50;
-        border-top-color: #34495e;
+      [data-theme="dark"] .xonplus-modal.svc-webhook {
+        --svc-accent: #5fc5dd;
+        --svc-ink: #93d8e8;
+        --svc-tint: rgba(95, 197, 221, 0.16);
       }
 
       /* Responsive adjustments */
@@ -992,20 +1129,17 @@
         .xonplus-header,
         .xonplus-body,
         .xonplus-footer {
-          padding: 1rem;
+          padding-left: 1.1rem;
+          padding-right: 1.1rem;
         }
 
-        .feature-item {
-          margin-bottom: 1rem;
+        .xonplus-footer {
+          flex-direction: column-reverse;
         }
 
         .xonplus-footer .btn {
           width: 100%;
-          margin-bottom: 0.5rem;
-        }
-
-        .xonplus-footer .btn.mr-3 {
-          margin-right: 0 !important;
+          margin: 0;
         }
       }
 
@@ -1834,23 +1968,23 @@
       aria-labelledby="xonPlusModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content xonplus-modal">
           <div class="modal-header xonplus-header">
-            <div class="d-flex align-items-center">
-              <div id="xonPlusModalIcon" class="mr-3">
-                <i
-                  class="fa fa-rocket"
-                  style="color: #3498db; font-size: 2.5rem"
-                ></i>
+            <div class="d-flex">
+              <div id="xonPlusModalIcon" class="xonplus-app-tile mr-3">
+                <i class="fas fa-rocket"></i>
               </div>
               <div>
-                <h4 class="modal-title mb-1" id="xonPlusModalLabel">
-                  🚀 Upgrade to xonPlus
+                <span class="xonplus-eyebrow">
+                  <i class="fas fa-bolt"></i> xonPlus &middot; Pro integration
+                </span>
+                <h4 class="modal-title" id="xonPlusModalLabel">
+                  Send breach alerts to your team
                 </h4>
-                <h5 class="text-muted mb-0" id="xonPlusModalTitle">
-                  Advanced Integration
-                </h5>
+                <p class="xonplus-sub" id="xonPlusModalTitle">
+                  Advanced integration
+                </p>
               </div>
             </div>
             <button
@@ -1863,70 +1997,92 @@
             </button>
           </div>
           <div class="modal-body xonplus-body">
-            <div class="text-center mb-4">
-              <p class="lead" id="xonPlusModalDescription">
-                Enhanced notification features are now available in xonPlus -
-                our commercial platform.
-              </p>
+            <p class="lead" id="xonPlusModalDescription">
+              Enhanced notification features are available in xonPlus, our
+              commercial platform.
+            </p>
+
+            <div class="xonplus-preview" aria-hidden="true">
+              <div class="xonplus-preview-avatar">
+                <i id="xonPlusPreviewIcon" class="fas fa-shield-alt"></i>
+              </div>
+              <div>
+                <div class="xonplus-preview-meta">
+                  <strong>XposedOrNot</strong>
+                  <span id="xonPlusPreviewApp">via integration</span>
+                  &middot; now
+                </div>
+                <div class="xonplus-preview-body">
+                  <span class="xonplus-preview-tag">🔴 New breach detected</span>
+                  — 3 monitored emails were exposed in a fresh leak. Review now,
+                  before attackers do.
+                </div>
+              </div>
             </div>
 
-            <div class="row text-center mb-4">
-              <div class="col-md-3 col-6 mb-3">
-                <div class="feature-item">
-                  <i
-                    class="fa fa-bell text-primary mb-2"
-                    style="font-size: 2rem"
-                  ></i>
-                  <h6>Advanced Alerting</h6>
-                  <small class="text-muted">Real-time notifications</small>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="xonplus-feature">
+                  <div class="xonplus-feature-icon">
+                    <i class="fas fa-bolt"></i>
+                  </div>
+                  <div>
+                    <h6>Real-time alerts</h6>
+                    <small>The moment a breach lands, your channel knows.</small>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-3 col-6 mb-3">
-                <div class="feature-item">
-                  <i
-                    class="fa fa-link text-primary mb-2"
-                    style="font-size: 2rem"
-                  ></i>
-                  <h6>Custom Webhooks</h6>
-                  <small class="text-muted">Flexible integrations</small>
+              <div class="col-sm-6">
+                <div class="xonplus-feature">
+                  <div class="xonplus-feature-icon">
+                    <i class="fas fa-plug"></i>
+                  </div>
+                  <div>
+                    <h6>Custom webhooks</h6>
+                    <small>Route alerts to any channel or workflow.</small>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-3 col-6 mb-3">
-                <div class="feature-item">
-                  <i
-                    class="fa fa-filter text-primary mb-2"
-                    style="font-size: 2rem"
-                  ></i>
-                  <h6>Smart Filtering</h6>
-                  <small class="text-muted">Customizable rules</small>
+              <div class="col-sm-6">
+                <div class="xonplus-feature">
+                  <div class="xonplus-feature-icon">
+                    <i class="fas fa-sliders-h"></i>
+                  </div>
+                  <div>
+                    <h6>Smart filtering</h6>
+                    <small>Only the breaches that matter to you.</small>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-3 col-6 mb-3">
-                <div class="feature-item">
-                  <i
-                    class="fa fa-headset text-primary mb-2"
-                    style="font-size: 2rem"
-                  ></i>
-                  <h6>Priority Support</h6>
-                  <small class="text-muted">24/7 assistance</small>
+              <div class="col-sm-6">
+                <div class="xonplus-feature">
+                  <div class="xonplus-feature-icon">
+                    <i class="fas fa-headset"></i>
+                  </div>
+                  <div>
+                    <h6>Priority support</h6>
+                    <small>Real humans, whenever you need them.</small>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer xonplus-footer justify-content-center">
+          <div class="modal-footer xonplus-footer justify-content-end">
             <a
               href="https://plus.xposedornot.com"
               target="_blank"
-              class="btn btn-outline-primary btn-lg mr-3"
+              rel="noopener"
+              class="btn btn-outline-primary"
             >
-              <i class="fa fa-info-circle mr-2"></i>Learn More
+              Learn more
             </a>
             <a
               href="https://plus.xposedornot.com/products/enterprise"
               target="_blank"
-              class="btn btn-primary btn-lg"
+              rel="noopener"
+              class="btn btn-primary"
             >
-              <i class="fa fa-rocket mr-2"></i>Try xonPlus
+              <i class="fas fa-rocket mr-2"></i>Upgrade to xonPlus
             </a>
           </div>
         </div>
