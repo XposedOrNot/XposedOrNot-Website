@@ -497,18 +497,10 @@ function processSearchError(error, email) {
     if (error.status === 429) {
         $("#mbody").show();
         $("#spins").hide();
-        $("#succ").html("You are currently being throttled. Please slow down and try again !");
+        $("#succ").html(STATUS_MESSAGES.throttled);
         $('#data_email').html(`<b>Email Checked </b> <span class="badge">${escapeHtml(email)}</span>`);
-    } else if (error.status === 502) {
-        $("#hhead").attr("class", "modal-header modal-header-danger");
-        $("#dismiss").attr("class", "btn btn-primary");
-        $("#mbody, #info").show();
-        $("#spins, #succ").hide();
-        $("#ssvisible").html('<h2 id="thedudalModalLabel">Oops unexpected error...</h2>');
-        $("#info").html("Embarassing and looks like something is not right at server end. I have notified the right person to check on this. Please try again after some time.");
-        $('#data_email').html(`<b>Email Checked </b> <span class="badge">${escapeHtml(email)}</span>`);
-    } else {
-        // No breaches found - show same celebration as processSearchResponse
+        updateBreachBadge('Check not completed');
+    } else if (error.status === 404) {
         $(".modal-content").css({
             'background-color': isDark ? '#131c15' : '#f8fff8',
             'border': isDark ? '2px solid #1b5e20' : '2px solid #28a745'
@@ -536,8 +528,31 @@ function processSearchError(error, email) {
         $("#alert_").show();
         $("#succ").html(STATUS_MESSAGES.success);
 
-        // Fire confetti animation
         setTimeout(fireConfetti, 100);
+    } else {
+        $(".modal-content").css({
+            'background-color': '',
+            'border': ''
+        });
+
+        $("#hhead").attr("class", "modal-header modal-header-danger");
+        $("#dismiss").attr("class", "btn btn-primary");
+        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-exclamation-triangle fa-2x text-white" aria-hidden="true"></i>&nbsp;&nbsp;We Couldn\'t Check Right Now</h2>');
+
+        $('#data_email')
+            .removeClass('alert-success alert-danger')
+            .addClass('alert-primary')
+            .html('<b>Email Checked </b> <span class="badge">' + escapeHtml(email) + '</span>');
+
+        $('#data_breach')
+            .removeClass('alert-success alert-danger')
+            .addClass('alert-primary')
+            .html('<b>Breaches Found </b> <span class="badge">Check not completed</span>');
+
+        $("#detailedReport").hide();
+        $("#spins, #succ, #warn").hide();
+        $("#mbody, #info").show();
+        $("#info").html(STATUS_MESSAGES.serverError);
     }
 }
 
