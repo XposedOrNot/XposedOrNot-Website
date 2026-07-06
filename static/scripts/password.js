@@ -164,27 +164,31 @@ $(document).ready(function () {
                 }
             })
             .fail(function (response) {
-                if (response.status === 429) {
-                    $("#mbody").show();
-                    $("#spins").hide();
-                    $("#succ").html("You are currently being throttled. Please slow down and try again !")
-                    $('#data_email').text(email);
-                } else if (response.status === 502 || response.status === 504) {
-                    document.getElementById("hhead").className = "modal-header-danger";
-                    $("#mbody").show();
-                    $("#info").show();
-                    $("#dismiss").hide();
-                    $("#spins").hide();
-                    $("#succ").hide();
-                    $("#info").html("Embarassing ! Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time.<br><br>Regret the inconvenience caused !")
-                    $('#data_email').text(email);
-                } else {
+                if (response.status === 404) {
                     $("#mbody").show();
                     $("#spins").hide();
                     $("#warn").hide();
                     $('#data_email').text(email);
                     $('#data_breach').html('No breaches found !');
                     $("#ssvisible").html('<h2>Search results for you</h2>');
+                } else if (response.status === 429) {
+                    $("#mbody").show();
+                    $("#spins").hide();
+                    $("#succ").html("You are currently being throttled. Please slow down and try again !")
+                    $('#data_email').text(email);
+                    $('#data_breach').html('Check not completed');
+                } else {
+                    document.getElementById("hhead").className = "modal-header-danger";
+                    document.getElementById("dismiss").className = "btn btn-danger";
+                    $("#mbody").show();
+                    $("#info").show();
+                    $("#spins").hide();
+                    $("#succ").hide();
+                    $("#warn").hide();
+                    $("#ssvisible").html('<h2>We couldn\'t check right now</h2>');
+                    $("#info").html("We're experiencing technical difficulties. Please try again in a few minutes.");
+                    $('#data_email').text(email);
+                    $('#data_breach').html('Check not completed');
                 }
             })
         $('#thedudalModal').modal()

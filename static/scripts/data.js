@@ -1464,6 +1464,7 @@ $(document).ready(function () {
         var successMessage = "Verification email sent! Check your inbox to activate free breach monitoring.";
         var alreadySubscribedMessage = "You're already protected! This email is registered for breach alerts.";
         var unableToDeliverMessage = "Unable to send email to this address. Please check and try again.";
+        var signupFailedMessage = "We couldn't set up alerts right now. Please try again in a few minutes.";
 
         $.ajax({
             url: apiUrl,
@@ -1482,13 +1483,18 @@ $(document).ready(function () {
                 var message = alreadySubscribedMessage;
                 var headerClass = "modal-header-success";
 
-                try {
-                    var response = jqXHR.responseJSON || JSON.parse(jqXHR.responseText);
-                    if (response && response.status === "Error") {
-                        message = unableToDeliverMessage;
-                        headerClass = "modal-header-danger";
+                if (jqXHR.status === 0 || jqXHR.status === 429 || jqXHR.status >= 500) {
+                    message = signupFailedMessage;
+                    headerClass = "modal-header-danger";
+                } else {
+                    try {
+                        var response = jqXHR.responseJSON || JSON.parse(jqXHR.responseText);
+                        if (response && response.status === "Error") {
+                            message = unableToDeliverMessage;
+                            headerClass = "modal-header-danger";
+                        }
+                    } catch (e) {
                     }
-                } catch (e) {
                 }
 
                 $('#message-text').val(message);

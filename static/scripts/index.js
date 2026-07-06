@@ -173,15 +173,18 @@ $(document).ready(function () {
                 let message = ALERT_MESSAGES.alreadySubscribed;
                 let headerClass = "modal-header-success";
 
-                // Check if response indicates email delivery failure
-                try {
-                    const response = jqXHR.responseJSON || JSON.parse(jqXHR.responseText);
-                    if (response && response.status === "Error") {
-                        message = ALERT_MESSAGES.unableToDeliver;
-                        headerClass = "modal-header-danger";
+                if (jqXHR.status === 0 || jqXHR.status === 429 || jqXHR.status >= 500) {
+                    message = ALERT_MESSAGES.signupFailed;
+                    headerClass = "modal-header-danger";
+                } else {
+                    try {
+                        const response = jqXHR.responseJSON || JSON.parse(jqXHR.responseText);
+                        if (response && response.status === "Error") {
+                            message = ALERT_MESSAGES.unableToDeliver;
+                            headerClass = "modal-header-danger";
+                        }
+                    } catch (e) {
                     }
-                } catch (e) {
-                    // If parsing fails, use default (already subscribed)
                 }
 
                 $('#message-text').val(message);
@@ -296,7 +299,8 @@ const ALERT_MESSAGES = {
     subscribe: "Get instant notifications if your email appears in future data breaches",
     subscribeSuccess: "Verification email sent! Check your inbox to activate free breach monitoring.",
     alreadySubscribed: "You're already protected! This email is registered for breach alerts.",
-    unableToDeliver: "Unable to send email to this address. Please check and try again."
+    unableToDeliver: "Unable to send email to this address. Please check and try again.",
+    signupFailed: "We couldn't set up alerts right now. Please try again in a few minutes."
 };
 
 // Lazy-load confetti library
