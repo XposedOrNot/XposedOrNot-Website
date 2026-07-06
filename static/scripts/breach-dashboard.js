@@ -13,6 +13,14 @@ try {
 // Validate authentication - check if email and token are present
 var authValid = email && token && email !== '0' && token !== '0' && email !== 'undefined' && token !== 'undefined';
 
+if (authValid) {
+    $(function () {
+        $('.my-dashboard-link').attr('href',
+            'my-dashboard.html?email=' + encodeURIComponent(email) +
+            '&token=' + encodeURIComponent(token));
+    });
+}
+
 $.LoadingOverlaySetup({
     background: "rgba(0, 0, 0, 0.5)",
     image: "static/images/shield-alt.svg",

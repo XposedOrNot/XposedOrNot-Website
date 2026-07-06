@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>XposedOrNot: Sign in to My Dashboard</title>
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap"
+    />
+    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/dashboard.css" type="text/css" rel="stylesheet" />
+    <style>
+      .dashboard-banner {
+        padding-bottom: 28px;
+        min-height: 0;
+      }
+      .dashboard-banner .container {
+        padding-top: 6px;
+      }
+      .dashboard-hero-title {
+        font-size: 1.7rem;
+        margin: 2px 0 2px;
+      }
+      .dashboard-banner .hero-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+      }
+      .login-content {
+        max-width: 960px;
+        margin: 28px auto 0;
+        padding: 0 20px 60px;
+      }
+      .login-content .dashboard-card {
+        padding: 40px 36px;
+      }
+      .login-content .dashboard-input {
+        min-width: 0;
+        font-size: 17px;
+        padding: 16px 20px;
+      }
+      .login-content .dashboard-submit {
+        flex-shrink: 0;
+      }
+      @media (min-width: 768px) and (max-width: 991px) {
+        .login-content .dashboard-input-row {
+          flex-wrap: wrap;
+        }
+        .login-content .dashboard-submit {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+      .login-perks {
+        list-style: none;
+        margin: 18px 0 0;
+        padding: 0;
+      }
+      .login-perks li {
+        display: flex;
+        gap: 11px;
+        align-items: flex-start;
+        padding: 7px 0;
+        font-size: 0.9rem;
+        color: #435268;
+        line-height: 1.55;
+      }
+      .login-perks li i {
+        color: #2e9e5b;
+        margin-top: 4px;
+        flex: 0 0 15px;
+        font-size: 0.82rem;
+      }
+      body[data-theme="dark"] .login-perks li {
+        color: #c3d3e8;
+      }
+    </style>
+  </head>
+
+  <body class="dashboard-page">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <div class="banner dashboard-banner">
+      <div class="grid">
+        <nav
+          class="navbar navbar-expand-md navbar-dark justify-content-center"
+          aria-label="Main navigation"
+        >
+          <a class="navbar-brand abs" href="/" style="text-decoration: none">
+            <span
+              style="
+                font-size: 1.5em;
+                font-weight: bold;
+                display: block;
+                color: white;
+              "
+              >XposedOrNot</span
+            >
+            <span
+              style="
+                font-size: 0.8em;
+                display: block;
+                color: rgba(255, 255, 255, 0.95);
+                margin-top: -10px;
+              "
+              >Community Edition</span
+            >
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsingNavbar"
+            aria-controls="collapsingNavbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation menu"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="password">Password</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="faq">FAQ</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a
+                  class="nav-link"
+                  href="https://plus.xposedornot.com"
+                  target="_blank"
+                  rel="noopener"
+                  >xonPlus<span class="sr-only"> (opens in new tab)</span></a
+                >
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="api_doc">API</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="container" style="text-align: center; position: relative">
+        <h1 class="dashboard-hero-title">My Dashboard</h1>
+        <p class="hero-subtitle">
+          Your breaches, alerts, domains, and next steps. One sign-in, no
+          password.
+        </p>
+      </div>
+    </div>
+
+    <main id="main-content">
+      <div class="login-content">
+        <div class="dashboard-card" role="region" aria-label="Sign in form">
+          <h2><i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign in</h2>
+          <p class="card-desc">
+            Enter your email and we'll send you a secure sign-in link. No
+            password, no account setup.
+          </p>
+
+          <form id="emailForm" class="dashboard-form" novalidate>
+            <div class="form-group">
+              <label for="email" class="sr-only">Email address</label>
+              <div class="dashboard-input-row">
+                <input
+                  type="email"
+                  class="dashboard-input"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  autofocus
+                  required
+                  aria-required="true"
+                  aria-describedby="emailHelp"
+                />
+                <button
+                  type="submit"
+                  class="dashboard-submit"
+                  id="submitButton"
+                  disabled
+                >
+                  <span id="submitText">Email me a sign-in link</span>
+                  <span
+                    id="submitSpinner"
+                    class="spinner-border spinner-border-sm d-none"
+                    role="status"
+                    aria-label="Loading"
+                  ></span>
+                </button>
+              </div>
+              <span id="emailHelp" class="sr-only"
+                >Enter your email address to receive a secure sign-in link for
+                your personal dashboard.</span
+              >
+            </div>
+          </form>
+
+          <div
+            id="successMessage"
+            class="dashboard-alert dashboard-alert-success"
+            role="status"
+            style="display: none"
+          >
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span
+              ><strong>Check your inbox.</strong> Your sign-in link is on its
+              way. It signs you straight in, no password needed.</span
+            >
+          </div>
+
+          <div
+            id="errorMessage"
+            class="dashboard-alert dashboard-alert-error"
+            role="alert"
+            style="display: none"
+          >
+            <i class="fas fa-times-circle" aria-hidden="true"></i>
+            <span
+              ><strong>That didn't work.</strong> Check the email address and
+              try again. If you haven't used XposedOrNot before, run a
+              <a href="/">free breach check</a> or
+              <a href="domain">verify your domain</a> first.</span
+            >
+          </div>
+
+          <div
+            id="rateLimitMessage"
+            class="dashboard-alert dashboard-alert-warning"
+            role="alert"
+            style="display: none"
+          >
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            <span
+              ><strong>Please wait.</strong> Too many attempts. Try again in a
+              few minutes.</span
+            >
+          </div>
+
+          <ul class="login-perks">
+            <li>
+              <i class="fas fa-check" aria-hidden="true"></i>
+              <span>Every breach that exposes your email, with what to do
+                next</span>
+            </li>
+            <li>
+              <i class="fas fa-check" aria-hidden="true"></i>
+              <span>Company-wide exposure, VIP and phishing analysis for your
+                verified domains</span>
+            </li>
+            <li>
+              <i class="fas fa-check" aria-hidden="true"></i>
+              <span>Breach alerts, Privacy Shield, and your API key in one
+                place</span>
+            </li>
+          </ul>
+        </div>
+
+        <div
+          class="dashboard-alert dashboard-alert-info show"
+          role="status"
+        >
+          <i class="fas fa-info-circle" aria-hidden="true"></i>
+          <span>
+            Monitoring a company domain? The same link opens your
+            <strong>CxO Dashboard</strong> too. New here? Start by
+            <a href="domain">verifying your domain</a>.
+          </span>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer" aria-label="Site footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Built by the community, for the community. Fully open-source on
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub<span class="sr-only"> (opens in new tab)</span></a
+            >.
+          </p>
+        </div>
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer
+    ></script>
+    <script src="/static/scripts/common.js" defer></script>
+    <script src="/static/scripts/my-dashboard-login.js" defer></script>
+  </body>
+</html>
