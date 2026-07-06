@@ -207,10 +207,4 @@ $(document).ready(function () {
     videoModal.on('hide.bs.modal', function (event) {
         videoElement.attr('src', videoSrc);
     });
-
-    $("#detailedReport").click(function () {
-        var url = "data-breaches-risks.html?e=" + document.getElementById("edhu").value.toLowerCase();
-        window.open(url);
-        window.opener = null;
-    });
 });
