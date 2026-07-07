@@ -578,7 +578,7 @@ function handleVideoModal() {
     });
 }
 
-const apiUrl = 'https://api.xposedornot.com/v1/metrics';
+const apiUrl = 'https://xon-api-test.xposedornot.com/v1/metrics';
 
 const pastesCountElement = $("#p1");
 const pastesRecordsElement = $("#p2");
@@ -621,7 +621,25 @@ function fetchMetrics() {
         .done(function (response) {
             metricsData = response;
             startCounters();
+            renderLastBreachAdded();
         });
+}
+
+function renderLastBreachAdded() {
+    var wrap = document.getElementById('stats-freshness');
+    var dateEl = document.getElementById('last-breach-added');
+    if (!wrap || !dateEl || !metricsData || !metricsData.Last_Breach_Added) return;
+    var added = new Date(metricsData.Last_Breach_Added);
+    if (isNaN(added.getTime())) return;
+    var lang = document.documentElement.lang || 'en';
+    var formatted;
+    try {
+        formatted = added.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (e) {
+        formatted = added.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    dateEl.textContent = formatted;
+    wrap.hidden = false;
 }
 
 // Set up Intersection Observer for the stats section
@@ -771,12 +789,12 @@ function populateHeroMetrics() {
     var heroRecordCount = document.getElementById('hero-record-count');
     if (!heroBreachCount && !heroRecordCount) return;
 
-    $.ajax('https://api.xposedornot.com/v1/metrics')
+    $.ajax(apiUrl)
         .done(function (response) {
-            // Cache for stats section
             if (!metricsData) {
                 metricsData = response;
             }
+            renderLastBreachAdded();
 
             var breachCount = parseInt(response.Breaches_Count, 10);
             if (heroBreachCount) {
