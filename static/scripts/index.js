@@ -292,8 +292,7 @@ const STATUS_MESSAGES = {
     success: "🎉 Good news! Your email isn't in any of the data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.",
     invalidEmail: "Please enter a valid email address to check",
     throttled: "Please wait a moment before trying again",
-    serverError: "We're experiencing technical difficulties. Please try again in a few minutes.",
-    breachFound: "Your email was found in the following data breaches. We recommend changing your passwords immediately:"
+    serverError: "We're experiencing technical difficulties. Please try again in a few minutes."
 };
 
 function successMessage() {
@@ -500,6 +499,16 @@ function processSearchResponse(response, email) {
         warningMessage += '</div>';
         $("#warn").html(warningMessage);
         $("#warn").show();
+    }
+
+    if (breachSummary && breachSummary.length > 0) {
+        warningMessage += '<p class="breach-intro" style="margin-top:16px">Do this now:</p>' +
+            '<ol style="text-align: left; display: inline-block; margin: 0; padding-left: 1.4em">' +
+            '<li>Change your password on the breached sites above.</li>' +
+            '<li>Turn on two-factor authentication on your email account.</li>' +
+            '<li>Set up free alerts so you know the moment a new breach hits.</li>' +
+            '</ol>';
+        $("#warn").html(warningMessage);
     }
 
 }
