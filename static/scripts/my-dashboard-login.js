@@ -51,7 +51,7 @@
 
             $.ajax({
                 url: "https://xon-api-test.xposedornot.com/v1/domain-alert/" +
-                    encodeURIComponent(emailVal),
+                    encodeURIComponent(emailVal) + "?dashboard=my",
                 type: "GET",
                 success: function () {
                     showAlert("#successMessage");
