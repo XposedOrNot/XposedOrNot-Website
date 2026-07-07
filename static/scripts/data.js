@@ -449,7 +449,8 @@ var j = $.ajax(url)
                             '</th>' +
                             '<td><div class="text">' + escapeHtml(sensitiveBreaches[i].details) + '</div>' +
                             '<button type="button" class="see-more" aria-expanded="false">See More</button></td>' +
-                            '<td style="text-align: right;">' + parseInt(sensitiveBreaches[i].xposed_records).toLocaleString() + '</td>' +
+                            '<td style="text-align: right;">' + parseInt(sensitiveBreaches[i].xposed_records).toLocaleString() +
+                            (formatAddedDate(sensitiveBreaches[i].added, true) ? '<br><span class="xr-added-pill">Added ' + formatAddedDate(sensitiveBreaches[i].added, true) + '</span>' : '') + '</td>' +
                             '</tr>';
                     }
                     $("#data_breach_sensitive").html(tableRowsHtml);
@@ -889,7 +890,8 @@ var j = $.ajax(url)
                         '</th>' +
                         '<td><div class="text">' + escapeHtml(regularBreaches[i].details) + '</div>' +
                         '<button type="button" class="see-more" aria-expanded="false">See More</button></td>' +
-                        '<td style="text-align: right;">' + parseInt(regularBreaches[i].xposed_records).toLocaleString() + '</td>' +
+                        '<td style="text-align: right;">' + parseInt(regularBreaches[i].xposed_records).toLocaleString() +
+                        (formatAddedDate(regularBreaches[i].added, true) ? '<br><span class="xr-added-pill">Added ' + formatAddedDate(regularBreaches[i].added, true) + '</span>' : '') + '</td>' +
                         '</tr>';
 
                     breachesDetailsHtml += generateBreachDetailHtml(regularBreaches[i], false);
@@ -2358,7 +2360,21 @@ $(document).ajaxStart(function () {
     $('#sr-loading-status').text('Report loaded.');
 });
 
+function formatAddedDate(added, monthYearOnly) {
+    if (!added) return '';
+    var d = new Date(added);
+    if (isNaN(d.getTime())) return '';
+    var lang = document.documentElement.lang || 'en';
+    var opts = monthYearOnly ? { year: 'numeric', month: 'short' } : { year: 'numeric', month: 'short', day: 'numeric' };
+    try {
+        return d.toLocaleDateString(lang, opts);
+    } catch (e) {
+        return d.toLocaleDateString('en', opts);
+    }
+}
+
 function generateBreachDetailHtml(breach, isSensitive) {
+    const addedStr = formatAddedDate(breach.added);
     let html = "<div><b><span class='notser'>" + escapeHtml(breach.xposed_date) + "</span></b><br><br><div class='row'><div class='col-sm-4' style='text-align: center'><img height='75' width='100' src='";
     html += breach.logo + "' alt='" + escapeHtml(breach.breach) + " logo'></div><div class='col-sm-4' style='text-align: center'><h3><strong><a href='breach.html#" + encodeURIComponent(breach.breach) + "' target='_blank' rel='noopener'>";
     html += escapeHtml(breach.breach) + "<span class='sr-only'> (opens in new tab)</span></a></strong></h3></div><div class='col-sm-4' style='text-align: center'><img height='75' width='75' src='";
@@ -2368,6 +2384,9 @@ function generateBreachDetailHtml(breach, isSensitive) {
     html += "<caption class='sr-only'>Breach details for " + escapeHtml(breach.breach) + "</caption>";
     html += "<thead><tr><th scope='col'>Detail</th><th scope='col'>Value</th></tr></thead><tbody>";
     html += "<tr><th scope='row'>Number of Records Exposed</th><td>" + parseInt(breach.xposed_records).toLocaleString() + "</td></tr>";
+    if (addedStr) {
+        html += "<tr><th scope='row'>Added to XposedOrNot</th><td>" + addedStr + "</td></tr>";
+    }
     html += "<tr><th scope='row'>Data Types Exposed</th><td>" + escapeHtml(breach.xposed_data.replace(/;/g, ', ')) + "</td></tr>";
     html += "<tr><th scope='row'>Password/Hash Status</th><td>" + escapeHtml(breach.password_risk) + "</td></tr>";
     html += "<tr><th scope='row'>Affected Domain</th><td>" + escapeHtml(breach.domain) + "</td></tr></tbody></table>";
