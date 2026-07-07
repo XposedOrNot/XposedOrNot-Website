@@ -77,14 +77,33 @@ $(document).ready(function () {
         var myjson;
         var j = $.ajax(koodudal)
             .done(function (n) {
-                $('#message-text').html("Successfully added to the alert service. Please check your email and click on the verification link to confirm");
+                $('#message-text').val("Successfully added to the alert service. Please check your email and click on the verification link to confirm");
                 document.getElementById("h2head").className = "modal-header-success";
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
-            .fail(function (n) {
-                $('#message-text').html("We thank you for your interest. However our records indicate you are already added to the AlertMe Service.");
-                document.getElementById("h2head").className = "modal-header-danger";
+            .fail(function (jqXHR) {
+                var message = "You're already protected! This email is registered for breach alerts.";
+                var headerClass = "modal-header-success";
+                if (jqXHR.status === 0 || jqXHR.status === 429 || jqXHR.status >= 500) {
+                    message = "We couldn't set up alerts right now. Please try again in a few minutes.";
+                    headerClass = "modal-header-danger";
+                } else {
+                    var response = jqXHR.responseJSON;
+                    if (!response) {
+                        try {
+                            response = JSON.parse(jqXHR.responseText);
+                        } catch (e) {
+                            response = null;
+                        }
+                    }
+                    if (response && response.status === "Error") {
+                        message = "Unable to send email to this address. Please check and try again.";
+                        headerClass = "modal-header-danger";
+                    }
+                }
+                $('#message-text').val(message);
+                document.getElementById("h2head").className = headerClass;
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
