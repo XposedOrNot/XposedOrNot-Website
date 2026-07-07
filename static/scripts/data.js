@@ -196,7 +196,7 @@ function showNoBreachView(emailAddr) {
                 '<strong>' + safeEmail + '</strong> was not found in any data breaches loaded in XposedOrNot.' +
             '</p>' +
             '<p style="font-size: 16px; color: ' + (isDark ? '#aaa' : '#777') + '; margin-bottom: 30px;">' +
-                'Your email doesn\'t appear in our database of known breaches. Stay protected by setting up free alerts — we\'ll notify you if this changes.' +
+                'Your email doesn\'t appear in our database of known breaches. Stay protected by setting up free alerts: we\'ll notify you if this changes.' +
             '</p>' +
             '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal" style="margin-top: 10px;">' +
                 '<i class="fa fa-bell" aria-hidden="true"></i>&nbsp; Get Free Breach Alerts' +
@@ -359,7 +359,7 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
     html += '<div class="risk-cta">';
     html += '<p>Don\'t wait for the next breach to find out.</p>';
     html += '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal">';
-    html += '<i class="fa fa-bell" aria-hidden="true"></i>&nbsp; Get Breach Alerts — Free</button>';
+    html += '<i class="fa fa-bell" aria-hidden="true"></i>&nbsp; Get Free Breach Alerts</button>';
     html += '</div>';
 
     html += '</div>';
@@ -1597,6 +1597,7 @@ function _turnstileCb() {
 document.getElementById('clippy-button').addEventListener('click', function () {
     this.style.display = 'none';
     clippy.load('Clippy', function (agent) {
+        var hasBreaches = typeof breachesSite !== 'undefined' && breachesSite && breachesSite.length > 0;
         agent.show();
         agent.speak('Hi there! I\'m XON Clippy, your friendly security assistant! 👋');
         agent.gestureAt(200, 200);
@@ -1606,19 +1607,27 @@ document.getElementById('clippy-button').addEventListener('click', function () {
         agent.animate();
         agent.gestureAt(200, 200);
         agent.moveTo(200, 200);
-        agent.speak('I noticed your email was found in some data breaches - but don\'t worry, I\'m here to help you take control! 💪');
+        if (hasBreaches) {
+            agent.speak('I noticed your email was found in some data breaches - but don\'t worry, I\'m here to help you take control! 💪');
+        } else {
+            agent.speak('Good news: your email isn\'t in any breach we\'ve indexed! Let\'s keep it that way 🎉');
+        }
         agent.animate();
         agent.animate();
         agent.moveTo(1550, 650);
         agent.animate();
         agent.animate();
-        agent.speak('First things first: Let\'s make sure this doesn\'t happen again. I recommend enabling breach alerts right away! 🔔');
+        if (hasBreaches) {
+            agent.speak('First things first: Let\'s make sure this doesn\'t happen again. I recommend enabling breach alerts right away! 🔔');
+        } else {
+            agent.speak('To stay ahead of future leaks, I recommend enabling free breach alerts! 🔔');
+        }
         agent.animate();
         agent.animate();
-        agent.speak('Just click that "Alert Me" button, and I\'ll keep watch over your email 24/7. Think of me as your personal security guard! 🕵️');
+        agent.speak('Just click that "Get Free Breach Alerts" button, and I\'ll keep watch over your email 24/7. Think of me as your personal security guard! 🕵️');
         agent.animate();
         agent.animate();
-        agent.speak('Did you know? We\'ve identified over 10 billion exposed records in our database. That\'s why staying informed is crucial! 📊');
+        agent.speak('Did you know? We\'ve identified billions of exposed records in our database. That\'s why staying informed is crucial! 📊');
         agent.animate();
         agent.animate();
         agent.speak('Here\'s a shocking fact: Nearly 80% of data breaches involve weak or stolen passwords. But we can fix that! 🔑');

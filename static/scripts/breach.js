@@ -193,7 +193,7 @@ function generateActionCards(exposedData) {
     var cards = [];
 
     if (has('password')) {
-        cards.push({ priority: 'urgent', cls: 'urgent', icon: 'fas fa-key', title: 'Change Your Passwords', text: 'Update your password immediately \u2014 use 12+ characters with numbers and symbols.' });
+        cards.push({ priority: 'urgent', cls: 'urgent', icon: 'fas fa-key', title: 'Change Your Passwords', text: 'Update your password immediately, using 12+ characters with numbers and symbols.' });
     }
 
     if (has('email') || has('password') || has('username')) {
@@ -223,7 +223,7 @@ function generateActionCards(exposedData) {
     cards.push({ priority: 'Recommended', cls: 'medium', icon: 'fas fa-eye', title: 'Monitor Your Accounts', text: 'Set up login alerts and review account activity regularly for suspicious access.' });
 
     if (has('password')) {
-        cards.push({ priority: 'Best Practice', cls: 'info', icon: 'fas fa-lock', title: 'Use a Password Manager', text: 'Never reuse passwords \u2014 use a password manager to generate unique ones for each account.' });
+        cards.push({ priority: 'Best Practice', cls: 'info', icon: 'fas fa-lock', title: 'Use a Password Manager', text: 'Never reuse passwords: use a password manager to generate unique ones for each account.' });
     }
 
     return cards.map(function(c) {
