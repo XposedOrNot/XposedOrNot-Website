@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>Rate Limit</h4>
-            <p>2 requests per second per IP.</p>
+            <p>2 requests per second per IP, plus hourly and daily caps per endpoint. <a href="#rate-limits">See limits</a>.</p>
           </div>
           <div class="info-card">
             <i
@@ -642,6 +642,23 @@ print(result)</pre
                     example, <code>{email}</code> becomes
                     <code>test&#64;example.com</code>.
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>Rate Limits</strong></h4>
+                  </div>
+                  <p>Free-tier limits per IP address, per endpoint:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Free tier rate limits by endpoint</caption>
+                      <thead><tr><th scope="col">Endpoint</th><th scope="col">Per second</th><th scope="col">Per hour</th><th scope="col">Per day</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">Separate high-volume service; no fixed published limit.</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 means you hit an hourly or daily cap: wait for the window to reset before retrying. The response includes a link to higher-limit plans.</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>Need higher rate limits?</strong></h4>
+                    <p style="margin-bottom: 0">The free API is for personal and low-volume use, and it stays free. If you are building a product on breach data or need more throughput, <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> offers paid plans from $5/month with rate limits up to 25,000 requests/minute, API-key access, and commercial support. It is the same breach data, and it is what keeps the free tier free.</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

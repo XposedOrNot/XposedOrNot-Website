@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>விகித வரம்பு</h4>
-            <p>ஒரு IP-க்கு வினாடிக்கு 2 கோரிக்கைகள்.</p>
+            <p>ஒரு IP-க்கு வினாடிக்கு 2 கோரிக்கைகள்; கூடுதலாக ஒவ்வொரு எண்ட்பாயிண்டுக்கும் மணிநேர மற்றும் தினசரி வரம்புகள். <a href="#rate-limits">வரம்புகளைப் பார்க்க</a>.</p>
           </div>
           <div class="info-card">
             <i
@@ -641,6 +641,23 @@ print(result)</pre
                     எடுத்துக்காட்டாக, <code>{email}</code> என்பது
                     <code>test&#64;example.com</code> ஆக மாறுகிறது.
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>வேக வரம்புகள்</strong></h4>
+                  </div>
+                  <p>இலவச நிலையின் வரம்புகள், IP முகவரி மற்றும் எண்ட்பாயிண்ட் வாரியாக:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">எண்ட்பாயிண்ட் வாரியான இலவச நிலை வரம்புகள்</caption>
+                      <thead><tr><th scope="col">எண்ட்பாயிண்ட்</th><th scope="col">வினாடிக்கு</th><th scope="col">மணிநேரத்திற்கு</th><th scope="col">நாளுக்கு</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">தனி உயர் அளவு சேவை; நிலையான வெளியிடப்பட்ட வரம்பு இல்லை.</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 என்பது மணிநேர அல்லது தினசரி வரம்பை அடைந்துவிட்டீர்கள் என்பதைக் குறிக்கிறது: மீண்டும் முயற்சிக்கும் முன் சாளரம் மீட்டமையும் வரை காத்திருங்கள். பதிலில் உயர் வரம்பு திட்டங்களுக்கான இணைப்பு உள்ளது.</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>அதிக வேக வரம்புகள் தேவையா?</strong></h4>
+                    <p style="margin-bottom: 0">இலவச API தனிப்பட்ட மற்றும் குறைந்த அளவு பயன்பாட்டுக்கானது; அது இலவசமாகவே இருக்கும். மீறல் தரவின் மீது ஒரு தயாரிப்பை உருவாக்குகிறீர்கள் அல்லது அதிக செயல்திறன் தேவைப்பட்டால், <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> மாதம் $5 முதல் கட்டண திட்டங்களை வழங்குகிறது; நிமிடத்திற்கு 25,000 கோரிக்கைகள் வரை வரம்புகள், API-விசை அணுகல், வணிக ஆதரவு ஆகியவை அடங்கும். அதே மீறல் தரவுதான்; இதுவே இலவச நிலையை இலவசமாக வைத்திருக்கிறது.</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

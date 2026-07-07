@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>Ratenbegrenzung</h4>
-            <p>2 Anfragen pro Sekunde pro IP.</p>
+            <p>2 Anfragen pro Sekunde und IP, plus stündliche und tägliche Obergrenzen je Endpunkt. <a href="#rate-limits">Zu den Limits</a>.</p>
           </div>
           <div class="info-card">
             <i
@@ -644,6 +644,23 @@ print(result)</pre
                     eigenen Wert. Beispielsweise wird aus <code>{email}</code> dann
                     <code>test&#64;example.com</code>.
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>Ratenlimits</strong></h4>
+                  </div>
+                  <p>Limits der kostenlosen Stufe pro IP-Adresse und Endpunkt:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Ratenlimits der kostenlosen Stufe nach Endpunkt</caption>
+                      <thead><tr><th scope="col">Endpunkt</th><th scope="col">Pro Sekunde</th><th scope="col">Pro Stunde</th><th scope="col">Pro Tag</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">Separater Hochlast-Dienst; kein festes veröffentlichtes Limit.</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 bedeutet, dass Sie eine stündliche oder tägliche Obergrenze erreicht haben: Warten Sie, bis das Zeitfenster zurückgesetzt wird. Die Antwort enthält einen Link zu Tarifen mit höheren Limits.</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>Höhere Ratenlimits benötigt?</strong></h4>
+                    <p style="margin-bottom: 0">Die kostenlose API ist für den persönlichen Gebrauch und geringe Volumen gedacht, und sie bleibt kostenlos. Wenn Sie ein Produkt auf Basis von Breach-Daten entwickeln oder mehr Durchsatz benötigen, bietet <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> kostenpflichtige Tarife ab 5 $/Monat mit Ratenlimits von bis zu 25.000 Anfragen/Minute, API-Schlüssel-Zugang und kommerziellem Support. Es sind dieselben Breach-Daten, und genau das hält die kostenlose Stufe kostenlos.</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

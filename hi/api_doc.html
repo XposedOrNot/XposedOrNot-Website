@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>दर सीमा</h4>
-            <p>प्रति IP प्रति सेकंड 2 अनुरोध।</p>
+            <p>प्रति IP प्रति सेकंड 2 अनुरोध, साथ ही हर एंडपॉइंट पर प्रति घंटा और प्रति दिन की सीमाएँ। <a href="#rate-limits">सीमाएँ देखें</a>।</p>
           </div>
           <div class="info-card">
             <i
@@ -641,6 +641,23 @@ print(result)</pre
                     उदाहरण के लिए, <code>{email}</code>
                     <code>test&#64;example.com</code> बन जाता है।
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>रेट लिमिट</strong></h4>
+                  </div>
+                  <p>फ्री टियर की सीमाएँ, प्रति IP पता और प्रति एंडपॉइंट:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">एंडपॉइंट के अनुसार फ्री टियर रेट लिमिट</caption>
+                      <thead><tr><th scope="col">एंडपॉइंट</th><th scope="col">प्रति सेकंड</th><th scope="col">प्रति घंटा</th><th scope="col">प्रति दिन</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">अलग हाई-वॉल्यूम सेवा; कोई निश्चित प्रकाशित सीमा नहीं।</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 का अर्थ है कि आप प्रति घंटा या प्रति दिन की सीमा तक पहुँच गए हैं: दोबारा प्रयास करने से पहले विंडो रीसेट होने की प्रतीक्षा करें। रिस्पॉन्स में उच्च सीमा वाले प्लान का लिंक शामिल है।</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>अधिक रेट लिमिट चाहिए?</strong></h4>
+                    <p style="margin-bottom: 0">फ्री API व्यक्तिगत और कम-वॉल्यूम उपयोग के लिए है, और यह फ्री ही रहेगा। यदि आप ब्रीच डेटा पर कोई प्रोडक्ट बना रहे हैं या अधिक थ्रूपुट चाहिए, तो <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> $5/माह से शुरू होने वाले पेड प्लान देता है, जिनमें 25,000 अनुरोध/मिनट तक की रेट लिमिट, API-की एक्सेस और व्यावसायिक सहायता शामिल है। डेटा वही है, और यही फ्री टियर को फ्री रखता है।</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>রেট সীমা</h4>
-            <p>প্রতি IP-তে প্রতি সেকেন্ডে ২টি অনুরোধ।</p>
+            <p>প্রতি IP-তে প্রতি সেকেন্ডে ২টি অনুরোধ, সাথে প্রতিটি এন্ডপয়েন্টে ঘণ্টা ও দৈনিক সীমা। <a href="#rate-limits">সীমা দেখুন</a>।</p>
           </div>
           <div class="info-card">
             <i
@@ -642,6 +642,23 @@ print(result)</pre
                     উদাহরণস্বরূপ, <code>{email}</code> হয়ে যায়
                     <code>test&#64;example.com</code>।
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>রেট লিমিট</strong></h4>
+                  </div>
+                  <p>ফ্রি টিয়ারের সীমা, প্রতি IP ঠিকানা ও প্রতি এন্ডপয়েন্ট:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">এন্ডপয়েন্ট অনুযায়ী ফ্রি টিয়ারের রেট লিমিট</caption>
+                      <thead><tr><th scope="col">এন্ডপয়েন্ট</th><th scope="col">প্রতি সেকেন্ডে</th><th scope="col">প্রতি ঘণ্টায়</th><th scope="col">প্রতি দিনে</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">আলাদা উচ্চ-ভলিউম পরিষেবা; কোনো নির্দিষ্ট প্রকাশিত সীমা নেই।</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 মানে আপনি ঘণ্টা বা দৈনিক সীমায় পৌঁছে গেছেন: আবার চেষ্টার আগে উইন্ডো রিসেট হওয়া পর্যন্ত অপেক্ষা করুন। রেসপন্সে উচ্চ সীমার প্ল্যানের লিঙ্ক থাকে।</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>আরও বেশি রেট লিমিট দরকার?</strong></h4>
+                    <p style="margin-bottom: 0">ফ্রি API ব্যক্তিগত ও কম-ভলিউম ব্যবহারের জন্য, এবং এটি ফ্রিই থাকবে। আপনি যদি ব্রিচ ডেটার উপর কোনো প্রোডাক্ট তৈরি করেন বা বেশি থ্রুপুট দরকার হয়, <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> মাসে $5 থেকে পেইড প্ল্যান দেয়, যাতে প্রতি মিনিটে 25,000 অনুরোধ পর্যন্ত রেট লিমিট, API-কি অ্যাক্সেস ও বাণিজ্যিক সাপোর্ট রয়েছে। ডেটা একই, আর এটিই ফ্রি টিয়ারকে ফ্রি রাখে।</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

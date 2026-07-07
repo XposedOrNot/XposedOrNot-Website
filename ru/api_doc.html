@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>Ограничение частоты</h4>
-            <p>2 запроса в секунду на один IP.</p>
+            <p>2 запроса в секунду с одного IP, плюс почасовые и суточные лимиты по каждому эндпоинту. <a href="#rate-limits">Смотреть лимиты</a>.</p>
           </div>
           <div class="info-card">
             <i
@@ -643,6 +643,23 @@ print(result)</pre
                     Например, <code>{email}</code> превращается в
                     <code>test&#64;example.com</code>.
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>Лимиты запросов</strong></h4>
+                  </div>
+                  <p>Лимиты бесплатного уровня на IP-адрес по эндпоинтам:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Лимиты бесплатного уровня по эндпоинтам</caption>
+                      <thead><tr><th scope="col">Эндпоинт</th><th scope="col">В секунду</th><th scope="col">В час</th><th scope="col">В сутки</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">Отдельный высоконагруженный сервис; фиксированный лимит не публикуется.</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 означает, что вы достигли почасового или суточного лимита: дождитесь сброса окна перед повтором. Ответ содержит ссылку на тарифы с повышенными лимитами.</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>Нужны более высокие лимиты?</strong></h4>
+                    <p style="margin-bottom: 0">Бесплатный API предназначен для личного использования и небольших объёмов, и он останется бесплатным. Если вы создаёте продукт на данных об утечках или вам нужна большая пропускная способность, <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> предлагает платные тарифы от 5 $/месяц с лимитами до 25 000 запросов/минуту, доступом по API-ключу и коммерческой поддержкой. Это те же данные об утечках, и именно это позволяет бесплатному уровню оставаться бесплатным.</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

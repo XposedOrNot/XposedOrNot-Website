@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>レート制限</h4>
-            <p>IP ごとに 1 秒あたり 2 リクエスト。</p>
+            <p>IPごとに毎秒2リクエストに加え、エンドポイントごとに時間・日単位の上限があります。<a href="#rate-limits">上限を見る</a></p>
           </div>
           <div class="info-card">
             <i
@@ -641,6 +641,23 @@ print(result)</pre
                     たとえば、<code>{email}</code> は
                     <code>test&#64;example.com</code> となります。
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>レート制限</strong></h4>
+                  </div>
+                  <p>無料プランのIPアドレスごと・エンドポイントごとの上限:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">エンドポイント別の無料プランのレート制限</caption>
+                      <thead><tr><th scope="col">エンドポイント</th><th scope="col">毎秒</th><th scope="col">毎時</th><th scope="col">毎日</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">別の大容量サービスのため、固定の公開上限はありません。</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 は時間または日単位の上限に達したことを意味します。ウィンドウがリセットされるまで待ってから再試行してください。レスポンスには上位プランへのリンクが含まれます。</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>より高いレート制限が必要ですか？</strong></h4>
+                    <p style="margin-bottom: 0">無料APIは個人利用・低ボリューム向けで、今後も無料のままです。侵害データを使った製品を構築する場合や、より高いスループットが必要な場合は、<a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> が月額5ドルからの有料プランを提供しています（毎分最大25,000リクエスト、APIキーによるアクセス、商用サポート付き）。同じ侵害データであり、これが無料プランを無料に保っています。</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

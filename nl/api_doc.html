@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>Aanvraaglimiet</h4>
-            <p>2 aanvragen per seconde per IP.</p>
+            <p>2 verzoeken per seconde per IP, plus limieten per uur en per dag per endpoint. <a href="#rate-limits">Bekijk de limieten</a>.</p>
           </div>
           <div class="info-card">
             <i
@@ -642,6 +642,23 @@ print(result)</pre
                     eigen waarde. Bijvoorbeeld, <code>{email}</code> wordt
                     <code>test&#64;example.com</code>.
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>Snelheidslimieten</strong></h4>
+                  </div>
+                  <p>Limieten van het gratis niveau per IP-adres en per endpoint:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Limieten van het gratis niveau per endpoint</caption>
+                      <thead><tr><th scope="col">Endpoint</th><th scope="col">Per seconde</th><th scope="col">Per uur</th><th scope="col">Per dag</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">Aparte dienst voor hoge volumes; geen vaste gepubliceerde limiet.</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 betekent dat u een uur- of daglimiet heeft bereikt: wacht tot het venster is gereset voordat u het opnieuw probeert. Het antwoord bevat een link naar abonnementen met hogere limieten.</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>Hogere limieten nodig?</strong></h4>
+                    <p style="margin-bottom: 0">De gratis API is bedoeld voor persoonlijk gebruik en lage volumes, en blijft gratis. Bouwt u een product op breach-data of heeft u meer doorvoer nodig, dan biedt <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> betaalde abonnementen vanaf $ 5/maand met limieten tot 25.000 verzoeken/minuut, API-sleuteltoegang en commerciële ondersteuning. Het zijn dezelfde data, en dat houdt het gratis niveau gratis.</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

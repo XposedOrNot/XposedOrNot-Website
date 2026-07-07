@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>Límite de solicitudes</h4>
-            <p>2 solicitudes por segundo por IP.</p>
+            <p>2 solicitudes por segundo por IP, más límites por hora y por día según el endpoint. <a href="#rate-limits">Ver límites</a>.</p>
           </div>
           <div class="info-card">
             <i
@@ -643,6 +643,23 @@ print(result)</pre
                     propio valor. Por ejemplo, <code>{email}</code> se convierte
                     en <code>test&#64;example.com</code>.
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>Límites de tasa</strong></h4>
+                  </div>
+                  <p>Límites del nivel gratuito por dirección IP y endpoint:</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">Límites de tasa del nivel gratuito por endpoint</caption>
+                      <thead><tr><th scope="col">Endpoint</th><th scope="col">Por segundo</th><th scope="col">Por hora</th><th scope="col">Por día</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">Servicio independiente de alto volumen; sin límite fijo publicado.</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 significa que alcanzó un límite por hora o por día: espere a que se reinicie la ventana antes de reintentar. La respuesta incluye un enlace a planes con límites superiores.</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>¿Necesita límites de tasa más altos?</strong></h4>
+                    <p style="margin-bottom: 0">La API gratuita está pensada para uso personal y de bajo volumen, y seguirá siendo gratuita. Si está construyendo un producto sobre datos de filtraciones o necesita más rendimiento, <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> ofrece planes de pago desde 5 $/mes con límites de hasta 25.000 solicitudes/minuto, acceso con clave de API y soporte comercial. Son los mismos datos de filtraciones, y es lo que mantiene gratuito el nivel gratuito.</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>

@@ -248,7 +248,7 @@
               "
             ></i>
             <h4>速率限制</h4>
-            <p>每个 IP 每秒 2 次请求。</p>
+            <p>每个 IP 每秒 2 个请求，另有各端点的每小时和每日上限。<a href="#rate-limits">查看限制</a></p>
           </div>
           <div class="info-card">
             <i
@@ -636,6 +636,23 @@ print(result)</pre
                     <code>{email}</code> 应替换为
                     <code>test&#64;example.com</code>。
                   </p>
+                  <div id="rate-limits" class="alert alert-primary" role="alert">
+                    <h4><strong>速率限制</strong></h4>
+                  </div>
+                  <p>免费版按 IP 地址、按端点的限制：</p>
+                  <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-bordered table-hover">
+                      <caption class="sr-only-caption">免费版各端点速率限制</caption>
+                      <thead><tr><th scope="col">端点</th><th scope="col">每秒</th><th scope="col">每小时</th><th scope="col">每日</th></tr></thead>
+                      <tbody><tr><th scope="row"><code>/v1/check-email/{email}</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breach-analytics</code></th><td>2</td><td>25</td><td>100</td></tr><tr><th scope="row"><code>/v1/breaches</code></th><td>2</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/v1/domain-breaches</code></th><td>2</td><td>25</td><td>50</td></tr><tr><th scope="row"><code>/v1/metrics</code></th><td>5/min</td><td>50</td><td>100</td></tr><tr><th scope="row"><code>/api/v1/pass/anon/{prefix}</code></th><td colspan="3">独立的高容量服务；无固定公开限制。</td></tr></tbody>
+                    </table>
+                  </div>
+                  <p>HTTP 429 表示您达到了每小时或每日上限：请等待窗口重置后再重试。响应中包含指向更高限额方案的链接。</p>
+                  <div class="alert alert-primary" role="alert">
+                    <h4><strong>需要更高的速率限制？</strong></h4>
+                    <p style="margin-bottom: 0">免费 API 面向个人和低用量使用，并将保持免费。如果您要基于泄露数据构建产品或需要更高吞吐量，<a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> 提供每月 5 美元起的付费方案，速率限制高达每分钟 25,000 个请求，支持 API 密钥访问和商业支持。数据完全相同，正是它让免费版得以保持免费。</p>
+                  </div>
+                  <hr />
                   <div id="endpoint-1" class="alert alert-primary" role="alert">
                     <h4>
                       <span class="http-badge http-get">GET</span>
