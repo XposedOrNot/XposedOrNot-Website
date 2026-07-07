@@ -208,6 +208,7 @@ $(document).ready(function () {
 
     $("#searchMe").click(function (event) {
         event.preventDefault();
+        fetchMetrics();
         let email = $("#edhu").val().toLowerCase().trim();
         let apiUrl = apiUrlBase + encodeURIComponent(email);
         $('#recipient-name').val(email);
@@ -288,12 +289,20 @@ function updateModalForInvalidEmail(email) {
 
 const STATUS_MESSAGES = {
     searching: "Checking your email against our breach database...",
-    success: "🎉 Great news! Your email wasn't found in any known data breaches. Stay protected by setting up free alerts.",
+    success: "🎉 Good news! Your email isn't in any of the data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.",
     invalidEmail: "Please enter a valid email address to check",
     throttled: "Please wait a moment before trying again",
     serverError: "We're experiencing technical difficulties. Please try again in a few minutes.",
     breachFound: "Your email was found in the following data breaches. We recommend changing your passwords immediately:"
 };
+
+function successMessage() {
+    const count = metricsData ? parseInt(metricsData.Breaches_Count, 10) : 0;
+    if (count > 0) {
+        return "🎉 Good news! Your email isn't in any of the " + count.toLocaleString() + " data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.";
+    }
+    return STATUS_MESSAGES.success;
+}
 
 const ALERT_MESSAGES = {
     subscribe: "Get instant notifications if your email appears in future data breaches",
@@ -437,7 +446,7 @@ function processSearchResponse(response, email) {
         $("#info").hide();
         $("#succ").show();
         $("#alert_").show();
-        $("#succ").html(STATUS_MESSAGES.success);
+        $("#succ").html(successMessage());
 
         // Fire confetti animation
         setTimeout(fireConfetti, 100);
@@ -530,7 +539,7 @@ function processSearchError(error, email) {
         $("#mbody").show();
         $("#succ").show();
         $("#alert_").show();
-        $("#succ").html(STATUS_MESSAGES.success);
+        $("#succ").html(successMessage());
 
         setTimeout(fireConfetti, 100);
     } else {
