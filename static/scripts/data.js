@@ -511,78 +511,23 @@ var j = $.ajax(url)
             renderSampleAttackPath();
         }
 
-        google.charts.load('current', {
-            'packages': ['gauge']
-        });
-        google.charts.setOnLoadCallback(drawChart);
+        renderRiskBand(Math.round(riskScore));
 
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Label', 'Value'],
-                ['Risk Score', Math.round(riskScore)]
-            ]);
-
-            const isMobile = window.innerWidth <= 767;
-
-            var options = {
-                width: isMobile ? 300 : 500,
-                height: isMobile ? 200 : 300,
-                greenFrom: 0,
-                greenTo: 25,
-                yellowFrom: 26,
-                yellowTo: 50,
-                redFrom: 51,
-                redTo: 100,
-                minorTicks: 5,
-                max: 100,
-                majorTicks: ['0', '20', '40', '60', '80', '100']
-            };
-
-            var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-
-            const applyTextColor = function() {
-                const isDarkMode = document.body.classList.contains('dark-mode') ||
-                                  document.documentElement.getAttribute('data-theme') === 'dark';
-                const chartDiv = document.getElementById('chart_div');
-                if (chartDiv) {
-                    const textElements = chartDiv.querySelectorAll('svg text');
-                    textElements.forEach(text => {
-                        text.setAttribute('fill', isDarkMode ? '#ffffff' : '#000000');
-                        text.style.fill = isDarkMode ? '#ffffff' : '#000000';
-                        text.style.fontWeight = '600';
-                    });
-                }
-            };
-
-            chart.draw(data, options);
-
-            setTimeout(applyTextColor, 150);
-
-            window.addEventListener('resize', function () {
-                const isMobile = window.innerWidth <= 767;
-                options.width = isMobile ? 300 : 500;
-                options.height = isMobile ? 200 : 300;
-                chart.draw(data, options);
-                setTimeout(applyTextColor, 150);
-            });
-
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme') {
-                        setTimeout(applyTextColor, 50);
-                    }
-                });
-            });
-
-            observer.observe(document.body, {
-                attributes: true,
-                attributeFilter: ['class']
-            });
-
-            observer.observe(document.documentElement, {
-                attributes: true,
-                attributeFilter: ['data-theme']
-            });
+        function renderRiskBand(score) {
+            var el = document.getElementById('chart_div');
+            if (!el) return;
+            var clamped = Math.max(0, Math.min(100, score));
+            el.innerHTML =
+                '<div class="xr-riskband-wrap">' +
+                '<div class="xr-riskband-score">' + clamped + '<span> / 100</span></div>' +
+                '<div class="xr-riskband" role="img" aria-label="Risk score ' + clamped + ' out of 100. Bands: Low 0 to 25, Moderate 26 to 50, High 51 to 75, Critical 76 to 100.">' +
+                '<span class="xr-riskband-marker" style="left: ' + clamped + '%"></span>' +
+                '</div>' +
+                '<div class="xr-riskband-scale" aria-hidden="true"><span>Low</span><span>Moderate</span><span>High</span><span>Critical</span></div>' +
+                '<details class="xr-howcalc"><summary>How is this calculated? <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>' +
+                '<p>The score weighs four things: how many breaches your email appears in, how recent they are, whether passwords were exposed and how they were stored (plaintext weighs most, strong hashes least), and whether sensitive data or stealer-log captures are involved. One recent plaintext exposure can outweigh several old, well-hashed ones.</p>' +
+                '</details>' +
+                '</div>';
         }
 
         let alertType;
@@ -603,7 +548,7 @@ var j = $.ajax(url)
                 alertType = "warning";
         }
 
-        const riskScoreHtml = `<h2 class="section-heading section-heading-${alertType}">Your Risk Score: <span class="risk-level-${alertType}">${riskLabel}</span>&nbsp;&nbsp;<span class="help-icon" tabindex="0" role="button" aria-label="Risk score explanation" data-toggle="tooltip" data-placement="auto" title="Calculated based on the number and severity of data breaches, the time since the last breach, and the strength of the exposed password. Please read FAQ for more details on this."><i class="fas fa-question-circle" aria-hidden="true"></i></span></h2>`;
+        const riskScoreHtml = `<h2 class="section-heading section-heading-${alertType}">Your Risk Score: <span class="risk-level-${alertType}">${riskLabel}</span></h2>`;
         $('#risk').html(riskScoreHtml);
 
         if (xposedData.toString().length > 0) {
