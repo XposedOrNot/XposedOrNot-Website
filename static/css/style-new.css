@@ -3862,10 +3862,19 @@ body.v2 .banner-text .hero-subheadline {
 .social-proof-items {
 	display: flex;
 	justify-content: center;
-	gap: 50px;
+	gap: clamp(60px, 12vw, 160px);
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 0 20px;
+}
+
+.social-proof-item a {
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
 }
 
 .social-proof-item {
@@ -3901,8 +3910,10 @@ body.v2 .banner-text .hero-subheadline {
 
 @media (max-width: 767px) {
 	.social-proof-items {
-		flex-direction: column;
-		gap: 10px;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		gap: 14px 32px;
 		align-items: center;
 	}
 
