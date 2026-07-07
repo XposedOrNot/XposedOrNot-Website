@@ -141,7 +141,7 @@ function getUrlParameter(name) {
 }
 
 async function checkDomain(domain) {
-    const API_ENDPOINT = 'https://api.xposedornot.com/v1/domain-phishing/';
+    const API_ENDPOINT = 'https://xon-api-test.xposedornot.com/v1/domain-phishing/';
     try {
 
         const email = getUrlParameter('email');

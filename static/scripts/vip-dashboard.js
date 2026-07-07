@@ -66,7 +66,7 @@ $.LoadingOverlaySetup({
 });
 
 // Configuration
-var API_BASE_URL = 'https://api.xposedornot.com/v1';
+var API_BASE_URL = 'https://xon-api-test.xposedornot.com/v1';
 
 // Store domains list for dropdown
 var availableDomains = [];

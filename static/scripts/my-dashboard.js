@@ -1,6 +1,6 @@
 (function () {
     var SVGNS = "http://www.w3.org/2000/svg";
-    var API = "https://api.xposedornot.com/v1";
+    var API = "https://xon-api-test.xposedornot.com/v1";
     var params = new URLSearchParams(window.location.search);
     var email = (params.get("email") || "").toLowerCase().trim();
     var token = params.get("token") || "";
@@ -19,6 +19,27 @@
     function setText(id, text) {
         var el = document.getElementById(id);
         if (el) el.textContent = text;
+    }
+
+    function navPill(id, value, good) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = value;
+        el.hidden = false;
+        el.classList.remove("pd-navcount-ok", "pd-navcount-bad");
+        if (good === true) el.classList.add("pd-navcount-ok");
+        if (good === false) el.classList.add("pd-navcount-bad");
+    }
+
+    function dataEmoji(name) {
+        var s = String(name).toLowerCase();
+        if (/(password|security question|auth|session|cookie|two-factor|2fa|pin)/.test(s)) return "🔒";
+        if (/(email|phone|messenger|chat|social)/.test(s)) return "📞";
+        if (/(credit|card|bank|financial|iban|purchase|payment|transaction|salar|income|tax|insurance|loan)/.test(s)) return "💳";
+        if (/(ip address|device|browser|user agent|mac address|network|geolocation|website activity)/.test(s)) return "🖥️";
+        if (/(gender|age|date of birth|dob|ethnic|nationalit|marital|education|occupation|job|employer|language|religion)/.test(s)) return "👥";
+        if (/(name|address|government|passport|id number|national id|photo|biometric|health|medical)/.test(s)) return "👤";
+        return "📄";
     }
 
     function fmtDate(d) {
@@ -42,11 +63,13 @@
     }
 
     function yearOf(info) {
-        if (info.xposed_date) return String(info.xposed_date);
-        var d = info.breachedDate || info.breached_date || info.xposedDate || "";
-        if (d) return String(d).slice(0, 4);
-        d = info.added || info.addedDate || "";
-        return d ? String(d).slice(0, 4) : "";
+        var fields = [info.xposed_date, info.breachedDate, info.breached_date,
+            info.xposedDate, info.added, info.addedDate];
+        for (var i = 0; i < fields.length; i++) {
+            var m = String(fields[i] || "").match(/\b(19|20)\d{2}\b/);
+            if (m) return m[0];
+        }
+        return "";
     }
 
     function dataOf(info) {
@@ -100,6 +123,7 @@
             }
             if (name === "analysis" && analysisTable) analysisTable.columns.adjust();
             if (name === "phishing" && phishingTable) phishingTable.columns.adjust();
+            if (name === "vip" && vipTable) vipTable.columns.adjust();
         }
         links.forEach(function (l) {
             l.addEventListener("click", function () {
@@ -163,7 +187,12 @@
             }
             svg.appendChild(g);
         });
-        [minYear, Math.round(minYear + span * 0.33), Math.round(minYear + span * 0.66)].forEach(function (yr) {
+        var ticks = [];
+        [0, 0.2, 0.4, 0.6, 0.8].forEach(function (f) {
+            var yr = Math.round(minYear + span * f);
+            if (ticks.indexOf(yr) === -1 && yr < thisYear) ticks.push(yr);
+        });
+        ticks.forEach(function (yr) {
             var lbl = svgEl("text", { x: x(yr), y: 150, "text-anchor": "middle" }, "pd-chart-yearlabel");
             lbl.textContent = yr;
             svg.appendChild(lbl);
@@ -277,17 +306,37 @@
         });
     }
 
-    function breachCard(b, stealer) {
+    function loadDbFreshness() {
+        $.ajax(API + "/metrics/detailed")
+            .done(function (m) {
+                if (!m || !m.Last_Breach_Added) return;
+                var d = new Date(m.Last_Breach_Added);
+                if (isNaN(d.getTime())) return;
+                var name = (m.Recent_Breaches && m.Recent_Breaches[0] &&
+                    m.Recent_Breaches[0].breachid) || "";
+                var link = name
+                    ? ' &middot; <a href="breach.html#' + encodeURIComponent(name) +
+                        '" target="_blank" rel="noopener">' + esc(name) +
+                        '<span class="sr-only"> (opens in new tab)</span></a>'
+                    : "";
+                document.getElementById("pd-freshness-date").innerHTML = fmtDate(d) + link;
+                document.querySelector(".pd-freshline").hidden = false;
+            });
+    }
+
+    function breachCard(b, stealer, sensitive) {
         var chips = (b.xposed_data || "").split(";").filter(Boolean).map(function (c) {
             var pw = /password|cookie/i.test(c);
-            return '<span class="pd-data-chip' + (pw ? " pd-data-chip-pw" : "") + '">' + esc(c.trim()) + "</span>";
+            return '<span class="pd-data-chip' + (pw ? " pd-data-chip-pw" : "") + '">' +
+                '<span aria-hidden="true">' + dataEmoji(c) + "</span> " + esc(c.trim()) + "</span>";
         }).join("");
         var risk = { plaintext: "Plaintext passwords", easytocrack: "Easy-to-crack hashes", hardtocrack: "Strong hashes", unknown: "Password storage unknown" }[b.password_risk] || "";
         return '<article class="pd-breach">' +
             '<img class="pd-breach-logo" src="' + esc(b.logo || "/static/images/logos/logo.svg") + '" alt="" loading="lazy" onerror="this.src=\'/static/images/logos/logo.svg\'" />' +
             '<div class="pd-breach-main"><div class="pd-breach-title">' +
-            '<a href="breach.html#' + encodeURIComponent(b.breach) + '">' + esc(b.breach) + "</a>" +
+            '<a href="breach.html#' + encodeURIComponent(b.breach) + '" target="_blank" rel="noopener">' + esc(b.breach) + '<span class="sr-only"> (opens in new tab)</span></a>' +
             (stealer ? '<span class="pd-badge-stealer"><i class="fas fa-bug" aria-hidden="true"></i> Stealer log</span>' : "") +
+            (sensitive ? '<span class="pd-badge-sensitive"><span aria-hidden="true">🔥</span> Sensitive</span>' : "") +
             '<span class="pd-breach-meta">' + esc(b.xposed_date || "") +
             (b.xposed_records ? " &middot; " + Number(parseInt(b.xposed_records, 10) || 0).toLocaleString() + " accounts" : "") +
             "</span></div>" +
@@ -319,7 +368,7 @@
             html += '<div class="dashboard-card pd-card"><h2><i class="fas fa-user-secret" aria-hidden="true"></i> Sensitive breaches <span class="pd-count">' +
                 sensitive.length + "</span></h2>" +
                 '<p class="pd-panel-sub" style="margin-bottom:12px">Hidden from public search. Visible to you because you opened this page with your access token.</p>' +
-                sensitive.map(function (b) { return breachCard(b, false); }).join("") + "</div>";
+                sensitive.map(function (b) { return breachCard(b, false, true); }).join("") + "</div>";
         }
         var LIMIT = 30;
         var shown = rest.slice(0, LIMIT);
@@ -332,7 +381,8 @@
             "</div>";
         html += '<p class="pd-empty-note">Want the full visual report with heat maps and attack paths? ' +
             '<a href="data-breaches-risks.html?email=' + encodeURIComponent(email) +
-            (token ? "&token=" + encodeURIComponent(token) : "") + '">Open your detailed report</a>.</p>';
+            (token ? "&token=" + encodeURIComponent(token) : "") +
+            '" target="_blank" rel="noopener">Open your detailed report<span class="sr-only"> (opens in new tab)</span></a>.</p>';
         host.innerHTML = html;
         var btn = document.getElementById("pd-show-all");
         if (btn) {
@@ -342,10 +392,12 @@
                 btn.remove();
             });
         }
-        setText("pd-nav-breaches", String(sorted.length + (sensitive ? sensitive.length : 0)));
+        var total = sorted.length + (sensitive ? sensitive.length : 0);
+        navPill("pd-nav-breaches", String(total), total === 0);
     }
 
     function populateOverview(data) {
+        hideOverlay();
         document.getElementById("pd-overview-loading").hidden = true;
         var breaches = (data.ExposedBreaches && data.ExposedBreaches.breaches_details) || [];
         var sensitive = (data.ExposedBreaches && data.ExposedBreaches.sensitive_breaches_details) || [];
@@ -385,14 +437,6 @@
         if (breaches.length) {
             document.getElementById("pd-chart-card").hidden = false;
             buildPersonalChart(breaches);
-            var latest = breaches.reduce(function (a, b) {
-                return (b.added || "") > (a.added || "") ? b : a;
-            });
-            if (latest.added) {
-                document.querySelector(".pd-freshline").hidden = false;
-                setText("pd-freshness-date",
-                    "latest exposure added " + fmtDate(new Date(latest.added)) + " (" + latest.breach + ")");
-            }
         } else {
             document.getElementById("pd-chart-card").hidden = true;
             note(document.getElementById("pd-overview-note"),
@@ -496,7 +540,7 @@
             var when = addedOf(b.info);
             return '<div class="pd-mini-breach">' +
                 '<img class="pd-mini-logo" src="' + esc(logoFor(b.name)) + '" alt="" onerror="this.src=\'/static/images/logos/logo.svg\'" />' +
-                '<div><span class="pd-mini-name"><a href="breach.html#' + encodeURIComponent(b.name) + '">' + esc(b.name) + "</a></span> " +
+                '<div><span class="pd-mini-name"><a href="breach.html#' + encodeURIComponent(b.name) + '" target="_blank" rel="noopener">' + esc(b.name) + '<span class="sr-only"> (opens in new tab)</span></a></span> ' +
                 '<span class="pd-breach-meta">' + esc(when ? fmtDate(new Date(when)) : yearOf(b.info)) + "</span></div>" +
                 '<div class="pd-mini-right"><span class="pd-breach-meta">' + cnt + (cnt === 1 ? " email" : " emails") + "</span></div></div>";
         }).join("") || '<p class="pd-panel-sub">No breaches affect this domain.</p>';
@@ -525,7 +569,7 @@
             var info = breachInfo[r.breach] || {};
             return [
                 esc(r.email),
-                "<a href='breach.html#" + encodeURIComponent(r.breach) + "'>" + esc(r.breach) + "</a>",
+                "<a href='breach.html#" + encodeURIComponent(r.breach) + "' target='_blank' rel='noopener'>" + esc(r.breach) + "</a>",
                 esc(yearOf(info)),
                 esc(dataOf(info).split(";").join(", "))
             ];
@@ -539,10 +583,15 @@
                 pageLength: 25,
                 order: [[2, "desc"]],
                 dom: '<"d-flex align-items-center justify-content-between flex-wrap"lfB>rtip',
-                buttons: [
-                    { extend: "copy", text: "Copy" },
-                    { extend: "csv", text: "Export CSV", filename: "xon-domain-exposures" }
-                ],
+                buttons: [{
+                    extend: "collection",
+                    text: '<i class="fas fa-download" aria-hidden="true"></i> Export',
+                    autoClose: true,
+                    buttons: [
+                        { extend: "csv", text: '<i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV', filename: "xon-domain-exposures" },
+                        { extend: "copy", text: '<i class="fas fa-copy" aria-hidden="true"></i> Copy to clipboard' }
+                    ]
+                }],
                 language: { emptyTable: "No exposures for the selected domain." }
             });
         }
@@ -555,14 +604,24 @@
     function renderAlertsPanel() {
         var host = document.getElementById("pd-alerts-live");
         var am = domainData && domainData.Alert_Management;
-        if (!am || !am.alerts || !am.alerts.length) {
-            host.innerHTML = '<div class="dashboard-card pd-card"><div class="pd-allclear"><i class="fas fa-check-circle" aria-hidden="true"></i>All clear<small>No pending breach alerts for your monitored domains.</small></div></div>';
-            setText("pd-nav-alerts", "0");
+        var cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+        var alerts = ((am && am.alerts) || []).filter(function (a) {
+            var t = new Date(a.alert_time).getTime();
+            return !isNaN(t) && t >= cutoff;
+        }).sort(function (a, b) {
+            return new Date(b.alert_time) - new Date(a.alert_time);
+        });
+        if (!alerts.length) {
+            host.innerHTML = '<div class="dashboard-card pd-card"><div class="pd-allclear"><i class="fas fa-check-circle" aria-hidden="true"></i>All clear<small>No breach alerts for your monitored domains in the last 30 days.</small></div></div>';
+            navPill("pd-nav-alerts", "0", true);
             return;
         }
-        var pending = (am.summary && am.summary.pending_count) || 0;
-        setText("pd-nav-alerts", String(pending));
-        host.innerHTML = '<ul class="pd-feed">' + am.alerts.map(function (a) {
+        var pending = alerts.filter(function (a) {
+            return (a.status || "").toLowerCase() !== "acknowledged";
+        }).length;
+        navPill("pd-nav-alerts", String(pending), pending === 0);
+        host.innerHTML = '<p class="pd-panel-sub" style="margin-bottom:10px">New breaches requiring your acknowledgment, from the last 30 days.</p>' +
+            '<ul class="pd-feed">' + alerts.map(function (a) {
             var info = breachInfo[a.breach_id] || {};
             var when = a.alert_time ? fmtDate(new Date(a.alert_time)) : "";
             var ack = (a.status || "").toLowerCase() === "acknowledged";
@@ -603,6 +662,8 @@
                 domainDataState = "done";
                 domainData = response || {};
                 buildInfoMap(domainData.Detailed_Breach_Info);
+                navPill("pd-nav-domains",
+                    String(Object.keys(domainData.Domain_Summary || {}).length));
                 document.querySelectorAll(".pd-needs-domain, .pd-domain-loading").forEach(function (el) { el.hidden = true; });
                 populatePhishingDomains();
                 renderDomainsPanel();
@@ -641,7 +702,18 @@
         $.ajax(API + "/domain-seniority?email=" + encodeURIComponent(email) +
             "&token=" + encodeURIComponent(token))
             .done(function (response) {
-                var data = (response && response.seniority_data) || [];
+                var data = [];
+                if (response && Array.isArray(response.seniority_data)) {
+                    data = response.seniority_data;
+                } else if (response && response.domains) {
+                    Object.keys(response.domains).forEach(function (d) {
+                        (((response.domains[d] || {}).seniority_data) || []).forEach(function (item) {
+                            var row = Object.assign({}, item);
+                            row.domain = row.domain || d;
+                            data.push(row);
+                        });
+                    });
+                }
                 renderVip(data);
             })
             .fail(function (error) {
@@ -650,28 +722,67 @@
             });
     }
 
+    var vipData = [];
+    var vipTable = null;
+    function normLevel(v) {
+        return String(v || "").toLowerCase().replace(/[^a-z]/g, "");
+    }
+
     function renderVip(data) {
+        if (data) vipData = data;
+        var counts = { csuite: 0, vp: 0, director: 0 };
+        vipData.forEach(function (r) {
+            var n = normLevel(r.seniority);
+            if (counts[n] !== undefined) counts[n]++;
+        });
+        setText("pd-vip-count-all", String(vipData.length));
+        setText("pd-vip-count-csuite", String(counts.csuite));
+        setText("pd-vip-count-vp", String(counts.vp));
+        setText("pd-vip-count-director", String(counts.director));
         var filter = document.querySelector(".pd-vip-filter .pd-domchip-on");
         var level = filter ? filter.getAttribute("data-level") : "all";
-        function norm(v) {
-            return String(v || "").toLowerCase().replace(/[^a-z]/g, "");
-        }
-        var rows = data.filter(function (r) {
-            return level === "all" || norm(r.seniority) === norm(level);
+        var rows = vipData.filter(function (r) {
+            return level === "all" || normLevel(r.seniority) === normLevel(level);
+        }).map(function (r) {
+            var breaches = (Array.isArray(r.breaches) ? r.breaches : []).map(function (b) {
+                if (typeof b === "string") return b;
+                return (b && (b.breach_name || b.breach || b.breach_id)) || "";
+            }).filter(Boolean);
+            return [
+                esc(r.email) + (r.domain ? '<span class="pd-vip-domain">' + esc(r.domain) + "</span>" : ""),
+                esc(r.seniority || ""),
+                String(breaches.length),
+                esc(breaches.slice(0, 4).join(", ")) +
+                (breaches.length > 4 ? " +" + (breaches.length - 4) + " more" : "")
+            ];
         });
-        document.getElementById("pd-vip-body").innerHTML = rows.map(function (r) {
-            var breaches = Array.isArray(r.breaches) ? r.breaches : [];
-            return "<tr><td>" + esc(r.email) + "</td><td>" + esc(r.seniority || "") + "</td><td>" +
-                breaches.length + "</td><td>" + esc(breaches.slice(0, 4).join(", ")) +
-                (breaches.length > 4 ? " +" + (breaches.length - 4) + " more" : "") + "</td></tr>";
-        }).join("") || '<tr><td colspan="4"><div class="pd-allclear"><i class="fas fa-check-circle" aria-hidden="true"></i>No exposed people at this level<small>That is exactly what you want to see here.</small></div></td></tr>';
+        if (vipTable) {
+            vipTable.clear().rows.add(rows).draw();
+        } else if ($.fn.DataTable) {
+            vipTable = $("#pd-vip-table").DataTable({
+                data: rows,
+                pageLength: 25,
+                order: [[2, "desc"]],
+                dom: '<"d-flex align-items-center justify-content-between flex-wrap"lfB>rtip',
+                buttons: [{
+                    extend: "collection",
+                    text: '<i class="fas fa-download" aria-hidden="true"></i> Export',
+                    autoClose: true,
+                    buttons: [
+                        { extend: "csv", text: '<i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV', filename: "xon-vip-exposure" },
+                        { extend: "copy", text: '<i class="fas fa-copy" aria-hidden="true"></i> Copy to clipboard' }
+                    ]
+                }],
+                language: { emptyTable: "No exposed people at this level. That is exactly what you want to see here." }
+            });
+        }
         document.querySelectorAll(".pd-vip-filter button").forEach(function (btn) {
             btn.onclick = function () {
                 document.querySelectorAll(".pd-vip-filter button").forEach(function (b) {
                     b.classList.remove("pd-domchip-on");
                 });
                 btn.classList.add("pd-domchip-on");
-                renderVip(data);
+                renderVip();
             };
         });
         document.getElementById("pd-vip-note").hidden = true;
@@ -701,15 +812,10 @@
                     setText("pd-ph-scanned", (data.total_scanned || 0).toLocaleString());
                     setText("pd-ph-live", (data.total_live || 0).toLocaleString());
                     setText("pd-ph-checked", data.last_checked ? fmtDate(new Date(data.last_checked)) : "-");
-                    var rows = (Array.isArray(data.raw_results) ? data.raw_results : []).map(function (r) {
+                    var rows = (Array.isArray(data.live_domains) ? data.live_domains : []).map(function (d) {
                         return [
-                            esc(r.domain || ""),
-                            esc(r.fuzzer || ""),
-                            esc((Array.isArray(r.dns_a) ? r.dns_a : []).join(", ")),
-                            esc((Array.isArray(r.dns_ns) ? r.dns_ns : []).join(", ")),
-                            esc((Array.isArray(r.dns_mx) ? r.dns_mx : []).join(", ")),
-                            esc(r.whois_created || ""),
-                            esc(r.whois_registrar || "")
+                            esc(String(d)),
+                            '<span class="pd-badge-stealer"><i class="fas fa-exclamation-circle" aria-hidden="true"></i> Live</span>'
                         ];
                     });
                     if (phishingTable) {
@@ -718,11 +824,17 @@
                         phishingTable = $("#pd-ph-table").DataTable({
                             data: rows,
                             pageLength: 25,
+                            order: [[0, "asc"]],
                             dom: '<"d-flex align-items-center justify-content-between flex-wrap"lfB>rtip',
-                            buttons: [
-                                { extend: "copy", text: "Copy" },
-                                { extend: "csv", text: "Export CSV", filename: "xon-phishing-domains" }
-                            ],
+                            buttons: [{
+                                extend: "collection",
+                                text: '<i class="fas fa-download" aria-hidden="true"></i> Export',
+                                autoClose: true,
+                                buttons: [
+                                    { extend: "csv", text: '<i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV', filename: "xon-phishing-domains" },
+                                    { extend: "copy", text: '<i class="fas fa-copy" aria-hidden="true"></i> Copy to clipboard' }
+                                ]
+                            }],
                             language: { emptyTable: "No live lookalike domains found. Good news." }
                         });
                     }
@@ -764,6 +876,10 @@
         var box = document.getElementById("pd-key-box");
         var noteEl = document.getElementById("pd-key-note");
         noteEl.hidden = true;
+        setText("pd-key-endpoint", API + "/domain-breaches/");
+        document.getElementById("pd-key-curl").textContent =
+            'curl -L -X POST -H "x-api-key: ' + (key || "YOUR_API_KEY") +
+            '" -H "Content-Length: 0" ' + API + "/domain-breaches/";
         if (key) {
             box.hidden = false;
             var masked = key.slice(0, 4) + "************" + key.slice(-4);
@@ -806,8 +922,6 @@
                     fallback();
                 }
             };
-            document.getElementById("pd-key-curl").textContent =
-                'curl -L -X POST -H "x-api-key: ' + key + '" -H "Content-Length: 0" ' + API + "/domain-breaches/";
         } else {
             box.hidden = true;
             note(noteEl, "No API key exists yet for this account. Generate one below.");
@@ -833,17 +947,32 @@
         };
     }
 
-    function loadLive() {
-        document.querySelectorAll(".pd-preview-ribbon, .pd-sample-note").forEach(function (el) {
-            el.hidden = true;
+    var overlayShown = false;
+    function showOverlay() {
+        if (overlayShown || !$.LoadingOverlay) return;
+        overlayShown = true;
+        $.LoadingOverlaySetup({
+            background: "rgba(0, 0, 0, 0.5)",
+            image: "/static/images/shield-alt.svg",
+            imageAnimation: "1s fadein",
+            imageColor: "#6daae0"
         });
+        $.LoadingOverlay("show");
+    }
+    function hideOverlay() {
+        if (!overlayShown || !$.LoadingOverlay) return;
+        overlayShown = false;
+        $.LoadingOverlay("hide");
+    }
+
+    function loadLive() {
+        showOverlay();
         document.querySelector(".pd-email").textContent = email;
-        document.querySelector(".pd-who-chips").hidden = true;
         setText("pd-greeting", greeting());
         setText("pd-greeting-sub", "Here is where " + email + " stands today, " + fmtDate(new Date()) + ".");
         document.getElementById("pd-signout").addEventListener("click", function (e) {
             e.preventDefault();
-            window.location.href = "/";
+            window.location.href = "login";
         });
         document.getElementById("pd-overview-loading").hidden = false;
         setText("pd-risk-num", "-");
@@ -852,7 +981,7 @@
         ["pd-stat-breaches", "pd-stat-stealer", "pd-stat-passwords", "pd-stat-pastes"].forEach(function (id) {
             setText(id, "-");
         });
-        setText("pd-nav-breaches", "-");
+        navPill("pd-nav-breaches", "-");
         document.getElementById("pd-chart-card").hidden = true;
         document.getElementById("pd-strength").hidden = true;
         document.querySelector(".pd-checklist").innerHTML = "";
@@ -862,66 +991,59 @@
             cxo.href = "breach-dashboard.html?email=" + encodeURIComponent(email) +
                 "&token=" + encodeURIComponent(token);
         }
-        document.querySelectorAll(".pd-sample-only").forEach(function (el) { el.hidden = true; });
         document.querySelectorAll(".pd-live-only").forEach(function (el) { el.hidden = false; });
         if (!token) {
             document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
-                note(el, "This section needs your access token. Open the dashboard link from your domain-verification email, which includes both email and token.");
+                note(el, "This section needs a signed-in session. <a href='login'>Email me a sign-in link</a> and open this page from that email.");
             });
         }
 
-        fetchAnalytics(Boolean(token), false);
+        fetchAnalytics(Boolean(token));
+        loadDbFreshness();
+        if (token) loadDomainData();
     }
 
-    function fetchAnalytics(withToken, tokenRejected) {
+    function fetchAnalytics(withToken) {
         var analyticsUrl = API + "/breach-analytics?email=" + encodeURIComponent(email) +
             (withToken ? "&token=" + encodeURIComponent(token) : "");
         $.ajax(analyticsUrl)
             .done(function (response) {
                 try {
                     populateOverview(response);
-                    if (tokenRejected) {
-                        note(document.getElementById("pd-overview-note"),
-                            "Heads up: your dashboard token is for domain monitoring and was not accepted for the personal breach report, so this is the public view. Shielded and sensitive details stay hidden.");
-                    }
                 } catch (e) {
                     note(document.getElementById("pd-overview-note"),
-                        "We hit a problem rendering your data. Please reload. If it persists, tell us.", "error");
+                        "We hit a problem rendering your data. Please reload the page.", "error");
                     populateBreachesPanel([], []);
                 }
             })
             .fail(function (error) {
-                document.getElementById("pd-overview-loading").hidden = true;
                 if (withToken && (error.status === 403 || error.status === 401 || error.status === 400)) {
-                    fetchAnalytics(false, true);
+                    fetchAnalytics(false);
                     return;
                 }
+                hideOverlay();
+                document.getElementById("pd-overview-loading").hidden = true;
                 if (error.status === 404) {
                     populateOverview({});
                     setText("pd-risk-num", "0");
                     setText("pd-risk-word", "Low");
-                    var msg;
-                    if (tokenRejected) {
-                        msg = "There is no public breach data for this email. If Privacy Shield is on for it, results are hidden by design, and your domain-monitoring token cannot unlock the personal report yet. The Domains, Breach Analysis, VIP, Phishing, Alerts, and API Keys sections all work normally.";
-                    } else if (token) {
-                        msg = "No breach data was found for this email.";
-                    } else {
-                        msg = "No breach data was found. If Privacy Shield is on for this email, results are hidden by design.";
-                    }
-                    note(document.getElementById("pd-overview-note"), msg);
+                    note(document.getElementById("pd-overview-note"),
+                        token
+                            ? "No breach data was found for this email."
+                            : "No breach data was found. If Privacy Shield is on for this email, results are hidden by design. <a href='login'>Sign in</a> to see your own shielded data.");
                 } else if (error.status === 0) {
-                    var blockMsg = "The request to api.xposedornot.com was blocked before it left your browser, most likely by an ad blocker: the endpoint name contains the word analytics, which many blocker filter lists match. Allow xposedornot.com in your blocker or pause it for this page, then reload.";
+                    var blockMsg = "The request to the breach-data API was blocked before it left your browser, most likely by an ad blocker: the endpoint name contains the word analytics, which many blocker filter lists match. Allow xposedornot.com in your blocker or pause it for this page, then reload.";
                     note(document.getElementById("pd-overview-note"), blockMsg, "error");
                     populateBreachesPanel([], []);
                     document.getElementById("pd-breaches-live").innerHTML =
                         '<p class="pd-empty-note">' + blockMsg + "</p>";
-                    setText("pd-nav-breaches", "-");
+                    navPill("pd-nav-breaches", "-");
                 } else {
                     note(document.getElementById("pd-overview-note"), authFailHtml(error.status), "error");
                     populateBreachesPanel([], []);
                     document.getElementById("pd-breaches-live").innerHTML =
                         '<p class="pd-empty-note">' + authFailHtml(error.status) + "</p>";
-                    setText("pd-nav-breaches", "-");
+                    navPill("pd-nav-breaches", "-");
                 }
             });
     }
@@ -931,19 +1053,23 @@
         if (!btn) return;
         btn.addEventListener("click", function () {
             var noteEl = document.getElementById("pd-shield-note");
-            if (!liveMode) {
-                note(noteEl, "Design preview: open the dashboard with your email to manage Privacy Shield.");
-                return;
-            }
+            var original = btn.innerHTML;
             btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i> Sending...';
             $.ajax({ url: API + "/shield-on/" + encodeURIComponent(email), type: "GET" })
-                .done(function () {
-                    btn.disabled = false;
-                    note(noteEl, "A confirmation email is on its way to " + esc(email) +
-                        ". Privacy Shield turns on when you click the link in that email. Until then, nothing changes.");
+                .done(function (res) {
+                    var already = res && res.Success === "AlreadyOn";
+                    btn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> ' +
+                        (already ? "Already on" : "Email sent");
+                    note(noteEl, already
+                        ? "Privacy Shield is already on for " + esc(email) +
+                            ". This email is hidden from public breach searches in XposedOrNot."
+                        : "A confirmation email is on its way to " + esc(email) +
+                            ". Privacy Shield turns on when you click the link in that email.");
                 })
                 .fail(function (error) {
                     btn.disabled = false;
+                    btn.innerHTML = original;
                     note(noteEl, error.status === 429
                         ? "Rate limited. Wait a moment and try again."
                         : "We couldn't process the Shield request right now. Try again later.", "error");
@@ -952,29 +1078,13 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
+        if (!liveMode) {
+            window.location.replace("login");
+            return;
+        }
         initNav();
         initPhishing();
         initShield();
-        if (liveMode) {
-            loadLive();
-        } else if (params.has("email") || params.has("token")) {
-            document.querySelectorAll(".pd-preview-ribbon, .pd-sample-note").forEach(function (el) {
-                el.hidden = true;
-            });
-            document.querySelectorAll(".pd-sample-only").forEach(function (el) { el.hidden = true; });
-            setText("pd-greeting", "We couldn't sign you in");
-            setText("pd-greeting-sub", "The link is missing a valid email address.");
-            note(document.getElementById("pd-overview-note"),
-                "This dashboard link looks incomplete or invalid. Open the most recent dashboard link from your XposedOrNot email, or request a fresh one from the <a href='domains'>domain verification page</a>.", "error");
-            document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
-                note(el, "Sign in with a valid dashboard link to see this section.");
-            });
-            setText("pd-nav-breaches", "-");
-            setText("pd-nav-alerts", "-");
-        } else {
-            document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
-                note(el, "This is the design preview. Open the dashboard with your email and access token to see live data here.");
-            });
-        }
+        loadLive();
     });
 })();

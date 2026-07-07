@@ -155,7 +155,7 @@ if (!authValid) {
     $.LoadingOverlay("hide");
 } else {
 
-var emailVerificationUrl = 'https://api.xposedornot.com/v1/send_domain_breaches?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+var emailVerificationUrl = 'https://xon-api-test.xposedornot.com/v1/send_domain_breaches?email=' + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
 
 var myjson;
 $.ajax(emailVerificationUrl)
@@ -1065,7 +1065,7 @@ function addDomainSummaryToTable(domainSummary, email, token) {
 }
 
 function updateApiCall(timeFilter) {
-    const emailVerificationUrl = `https://api.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&time_filter=${timeFilter}`;
+    const emailVerificationUrl = `https://xon-api-test.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&time_filter=${timeFilter}`;
     $.LoadingOverlay("show");
 
     $.ajax(emailVerificationUrl)
@@ -1478,7 +1478,7 @@ $('#confirmAcknowledgeBtn').on('click', function() {
     confirmBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Processing...');
 
     // Make API call to acknowledge the alert
-    const apiUrl = `https://api.xposedornot.com/v1/update_alert_status?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+    const apiUrl = `https://xon-api-test.xposedornot.com/v1/update_alert_status?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
 
     $.ajax({
         url: apiUrl,
@@ -1674,7 +1674,7 @@ $('#confirmUnacknowledgeBtn').on('click', function() {
     confirmBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Processing...');
 
     // Make API call to un-acknowledge the alert
-    const apiUrl = `https://api.xposedornot.com/v1/update_alert_status?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+    const apiUrl = `https://xon-api-test.xposedornot.com/v1/update_alert_status?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
 
     $.ajax({
         url: apiUrl,

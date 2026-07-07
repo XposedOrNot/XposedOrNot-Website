@@ -331,7 +331,7 @@
                   <div id="curl" name="curl" class="alert alert-primary mt-3">
                      <blockquote>
                         curl -L -X POST -H "x-api-key: [KEY]" -H "Content-Length: 0"
-                        https://api.xposedornot.com/v1/domain-breaches/
+                        https://xon-api-test.xposedornot.com/v1/domain-breaches/
                      </blockquote>
                   </div>
                   <div class="container my-5">
@@ -418,14 +418,14 @@
             });
          });
 
-         let api_url = "https://api.xposedornot.com/v1/get-api-key/" + token;
+         let api_url = "https://xon-api-test.xposedornot.com/v1/get-api-key/" + token;
 
          $.ajax({
             url: api_url,
             type: 'GET',
             success: function (res) {
                $('#api_key').val(res.api_key);
-               message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+               message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://xon-api-test.xposedornot.com/v1/domain-breaches/'
                document.getElementById('curl').innerText = message
             },
             error: function (error) {
@@ -462,7 +462,7 @@
 
             hideAllMessages();
 
-            fetch(`https://api.xposedornot.com/v1/create-api-key/${token}`)
+            fetch(`https://xon-api-test.xposedornot.com/v1/create-api-key/${token}`)
                .then(response => {
                   if (!response.ok) {
                      if (response.status === 429) {
@@ -478,7 +478,7 @@
                   if (data.status === "success") {
                      document.getElementById('api_key').value = data.api_key;
                      showSuccessMessage();
-                     message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + data.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                     message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + data.api_key + '" -H "Content-Length: 0" https://xon-api-test.xposedornot.com/v1/domain-breaches/'
                      document.getElementById('curl').innerText = message
 
                   } else {

@@ -399,8 +399,8 @@ $("#db-sensitive").html(`
 `);
 
 const url = token
-    ? `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
-    : `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
+    ? `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
+    : `https://xon-api-test.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`;
 
 let jsonResponse;
 
@@ -1458,7 +1458,7 @@ $(document).ready(function () {
         $("#alertMe_i1").addClass("fa fa-spinner fa-spin");
         $("#alertMe_i2").removeClass("fa fa-bell ring");
 
-        var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
+        var apiUrl = 'https://xon-api-test.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
         var headers = turnstileResponse ? { 'X-Turnstile-Token': turnstileResponse } : {};
 
         var successMessage = "Verification email sent! Check your inbox to activate free breach monitoring.";
@@ -1590,7 +1590,7 @@ window.addEventListener('resize', function () {
 if (token) {
     $('section[aria-label="Breach timeline visualization"]').hide();
 } else {
-    var analyticsApiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
+    var analyticsApiUrl = `https://xon-api-test.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
 
     $.get(analyticsApiUrl)
         .done(function (response) {
