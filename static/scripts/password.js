@@ -125,13 +125,13 @@ $(document).ready(function () {
         $("#spins").show();
         $("#alert_").show();
         $('#data_email').text(email);
-        $('#data_breach').html('No breaches found !');
+        $('#data_breach').html("Good news: this password isn't in any known data breach. Still, never reuse passwords across sites.");
 
         if (!email || !domain) {
             document.getElementById("hhead").className = "modal-header-danger";
             document.getElementById("dismiss").className = "btn btn-danger";
             $('#data_email').text(email);
-            $('#data_breach').html('Not a valid email to check');
+            $('#data_breach').html('Please enter a password to check');
             $("#succ").hide();
             $("#spins").hide();
             $("#warn").hide();
@@ -139,6 +139,8 @@ $(document).ready(function () {
             document.getElementById("info").className = "modal-header-danger";
             $("#info").show();
             $("#mbody").show();
+            $('#thedudalModal').modal();
+            return;
         }
 
         const apiUrl = 'https://passwords.xposedornot.com/api/v1/pass/anon/';
@@ -152,7 +154,7 @@ $(document).ready(function () {
                 const breachChars = myjson.SearchPassAnon.char;
                 const breachWordList = myjson.SearchPassAnon.wordlist;
                 if (breachChars.toString().length < 0) {
-                    $('#data_breach').html('No breaches found !');
+                    $('#data_breach').html("Good news: this password isn't in any known data breach. Still, never reuse passwords across sites.");
                 } else {
                     document.getElementById("hhead").className = "modal-header-danger";
                     document.getElementById("dismiss").className = "btn-danger btn";
@@ -171,7 +173,7 @@ $(document).ready(function () {
                     if (breachCount > 0) {
                         nn = '<b>Oops</b> ! This <b>password</b> has already been exposed in a previous data breach and it was seen  <b>' + breachCount + ' </b>time(s).  ' + nn1 + '<br>We would recommend you to change & avoid using this credential for any of your accounts/transactions. <br>  <br>Please read <a href="https://blog.xposedornot.com/password-security-guide/" target="_blank"> password best practices </a>and stay safe.<b>';
                     } else {
-                        nn = '<b>Excellent</b> ! This <b>password</b> is safe for now.  <br>We would recommend you to change & avoid using this credential for any of your accounts/transactions. <br><b>';
+                        nn = '<b>Good news</b>: this <b>password</b> isn\'t in any known data breach. <br>Still, never reuse passwords across sites, and consider using a password manager. <br>';
                     }
                     $("#warn").html(nn);
                 }
@@ -188,7 +190,7 @@ $(document).ready(function () {
                     $("#spins").hide();
                     $("#warn").hide();
                     $('#data_email').text(email);
-                    $('#data_breach').html('No breaches found !');
+                    $('#data_breach').html("Good news: this password isn't in any known data breach. Still, never reuse passwords across sites.");
                     $("#ssvisible").html('<h2>Search results for you</h2>');
                 } else if (response.status === 429) {
                     $("#mbody").show();
