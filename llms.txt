@@ -32,14 +32,14 @@ XposedOrNot provides a RESTful API with JSON responses for developers to integra
 
 ### Public API Endpoints (No Authentication Required)
 
-- `GET /api/v1/check-email/{email}` - Check if an email appears in any breach
-- `GET /api/v1/breach-analytics/{email}` - Get detailed breach analytics for an email
-- `GET /api/v1/pass/anon/{first10_keccak512_hash}` - Check if a password is exposed (returns 200 if exposed, 404 if safe)
-- `GET /api/v1/breaches` - Retrieve list of all indexed data breaches
+- `GET https://api.xposedornot.com/v1/check-email/{email}` - Check if an email appears in any breach
+- `GET https://api.xposedornot.com/v1/breach-analytics?email={email}` - Get detailed breach analytics for an email
+- `GET https://passwords.xposedornot.com/api/v1/pass/anon/{first10_keccak512_hash}` - Check if a password is exposed (returns 200 if exposed, 404 if safe)
+- `GET https://api.xposedornot.com/v1/breaches` - Retrieve list of all indexed data breaches
 
 ### Domain API Endpoints (API Key Required)
 
-- `GET /api/v1/domain-breaches/` - Check breaches affecting a verified domain
+- `POST https://api.xposedornot.com/v1/domain-breaches/` - Check breaches affecting a verified domain (send the API key in the `x-api-key` header)
 - API keys are available in the domain dashboard after verification
 
 ### Higher Rate Limits
