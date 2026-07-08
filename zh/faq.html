@@ -54,6 +54,113 @@
     <link rel="canonical" href="https://xposedornot.com/zh/faq" />
     <link rel="alternate" hreflang="en" href="https://xposedornot.com/faq" />
     <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/faq" />
+    <style>
+      #banner {
+        min-height: 150px !important;
+        padding-bottom: 30px;
+        overflow: visible !important;
+      }
+      .grid {
+        overflow: visible !important;
+      }
+      .navbar {
+        overflow: visible !important;
+      }
+      .dropdown-menu {
+        position: absolute !important;
+        z-index: 1050 !important;
+        max-height: none !important;
+      }
+      .banner {
+        margin: 0;
+        padding: 50px 0 120px 0;
+        background: linear-gradient(-220deg, #3c5fec, #376fdd);
+        overflow: hidden;
+        width: 100%;
+        border-bottom: 2px solid whitesmoke;
+      }
+
+      .grid {
+        margin: 0 auto;
+        max-width: 1645px;
+        padding: 0 15px;
+      }
+
+      .navbar-dark .navbar-nav .nav-link {
+        font-size: 20px;
+        color: #fff;
+      }
+
+      .navbar-nav .nav-link:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.9);
+        outline-offset: 2px;
+      }
+
+      .nav-link.xon-nav-tip {
+        position: relative;
+      }
+
+      .nav-link.xon-nav-tip::before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        right: 28px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 8px solid #23272f;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip::after {
+        content: attr(data-tip);
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        display: block;
+        width: 260px;
+        box-sizing: border-box;
+        background: #23272f;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.5;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 10px 24px rgba(20, 24, 60, 0.35);
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: break-word;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip:hover::before,
+      .nav-link.xon-nav-tip:focus::before,
+      .nav-link.xon-nav-tip:hover::after,
+      .nav-link.xon-nav-tip:focus::after {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      @media (max-width: 767px) {
+        .nav-link.xon-nav-tip::before,
+        .nav-link.xon-nav-tip::after {
+          display: none;
+        }
+      }
+
+    </style>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
@@ -873,6 +980,7 @@
       }
 
       /* Hide TOC on smaller screens */
+
       @media (max-width: 1200px) {
         .faq-toc {
           display: none;
@@ -1090,6 +1198,50 @@
       }
     </style>
 
+    <style>
+      .faq-layout {
+        display: flex;
+        align-items: flex-start;
+        gap: 24px;
+        max-width: 1720px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      .faq-layout .faq-toc {
+        position: sticky;
+        top: 20px;
+        left: auto;
+        flex: 0 0 260px;
+        max-height: calc(100vh - 40px);
+      }
+
+      .faq-layout main.container {
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+        margin: 0;
+      }
+
+      .faq-toc.toc-stopped {
+        position: sticky;
+        top: 20px;
+        bottom: auto;
+      }
+
+      @media (max-width: 1200px) {
+        .faq-layout {
+          display: block;
+          padding: 0;
+        }
+
+        .faq-layout main.container {
+          max-width: 100%;
+          margin: 0 auto;
+          padding: 0 15px;
+        }
+      }
+    </style>
     </head>
 
   <body>
@@ -1098,6 +1250,65 @@
       <a href="#faq-list">跳至常见问题列表</a>
     </nav>
 
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <div class="searchMe">
+         <div class="banner" id="banner">
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/zh/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
+                        Edition</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password">密码</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq">FAQ</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link xon-nav-tip" href="https://plus.xposedornot.com" target="_blank" data-tip="xonPlus 企业版：面向团队和企业的泄露监控" aria-label="xonPlus 企业版：面向团队和企业的泄露监控">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc">API</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> Language <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+    <div class="faq-layout">
     <nav class="faq-toc" id="faqToc">
       <h4>快速导航</h4>
       <ul>
@@ -1134,89 +1345,6 @@
         <li><a href="#collapse10">联系方式</a></li>
       </ul>
     </nav>
-
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">
-      <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <div class="kbanner">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-        <a class="navbar-brand" href="https://xposedornot.com"
-          ><span
-            style="
-              font-size: 1.5em;
-              font-weight: bold;
-              display: block;
-              color: white;
-            "
-            >XposedOrNot</span
-          >
-          <span
-            style="
-              font-size: 0.8em;
-              display: block;
-              color: white;
-              opacity: 0.85;
-              margin-top: -1px;
-            "
-            >Community Edition</span
-          ></a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="password"
-                >密码 &nbsp; <span class="sr-only">(当前)</span>
-              </a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="api_doc">API &nbsp;</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="https://blog.xposedornot.com/"
-                >博客 &nbsp;</a
-              >
-            </li>
-            <li class="nav-item dropdown active">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownMenuLink"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                更多工具
-              </a>
-              <div
-                class="dropdown-menu dropdown-menu-right"
-                aria-labelledby="navbarDropdownMenuLink"
-              >
-                <a class="dropdown-item" href="xposed">已知泄露事件</a>
-                <a class="dropdown-item" href="shield">Privacy Shield</a>
-                <a class="dropdown-item" href="domain"
-                  >域名验证</a
-                >
-                <a class="dropdown-item" href="domains"
-                  >域名级搜索</a
-                >
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
     <main class="container" id="main-content">
       <div class="faq-header">
         <h1>常见问题。数据泄露搜索与安全</h1>
@@ -2903,6 +3031,7 @@
               </div>
             </section>
     </main>
+    </div>
 
     <div class="footer">
       <div class="container">
@@ -3013,6 +3142,9 @@
     defer
     src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
   ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+     integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="/static/scripts/common.js"></script>
   <script type="application/ld+json">
     {
@@ -3239,29 +3371,6 @@
           $("#backToTop").removeClass("visible");
         }
 
-        // Stop TOC before footer
-        var $toc = $(".faq-toc");
-        var $footer = $(".footer");
-
-        if ($toc.length && $footer.length && $(window).width() > 1200) {
-          var tocHeight = $toc.outerHeight();
-          var tocTop = 110; // Fixed top position
-          var footerTop = $footer.offset().top;
-          var scrollTop = $(window).scrollTop();
-          var stopPoint = footerTop - tocHeight - 30; // 30px gap from footer
-
-          if (scrollTop + tocTop > stopPoint) {
-            $toc.css({
-              'position': 'absolute',
-              'top': (stopPoint) + 'px'
-            });
-          } else {
-            $toc.css({
-              'position': 'fixed',
-              'top': tocTop + 'px'
-            });
-          }
-        }
       });
 
       // Back to top button click handler
