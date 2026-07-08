@@ -972,7 +972,21 @@
         setText("pd-greeting-sub", "Here is where " + email + " stands today, " + fmtDate(new Date()) + ".");
         document.getElementById("pd-signout").addEventListener("click", function (e) {
             e.preventDefault();
-            window.location.href = "login";
+            var link = this;
+            if (link.dataset.busy) return;
+            link.dataset.busy = "1";
+            function done() {
+                window.location.href = "login";
+            }
+            if (email && token) {
+                $.ajax({
+                    url: API + "/dashboard/sign-out?email=" + encodeURIComponent(email) +
+                        "&token=" + encodeURIComponent(token),
+                    type: "POST"
+                }).always(done);
+            } else {
+                done();
+            }
         });
         document.getElementById("pd-overview-loading").hidden = false;
         setText("pd-risk-num", "-");
