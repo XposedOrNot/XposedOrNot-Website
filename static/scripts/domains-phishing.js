@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const API_ENDPOINT = 'https://xon-api-test.xposedornot.com/v1/domain-phishing/';
+    const API_ENDPOINT = 'https://api.xposedornot.com/v1/domain-phishing/';
     const domainForm = document.getElementById('domainForm');
     const domainInput = document.getElementById('domainInput');
     const submitButton = document.getElementById('submitButton');

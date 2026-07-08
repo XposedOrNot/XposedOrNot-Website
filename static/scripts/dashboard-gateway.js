@@ -12,7 +12,7 @@ $(document).ready(function () {
         $submitButton.prop('disabled', true);
 
         $.ajax({
-            url: 'https://xon-api-test.xposedornot.com/v1/domain-alert/' + email,
+            url: 'https://api.xposedornot.com/v1/domain-alert/' + email,
             type: 'GET',
             success: function (response) {
                 $('#successMessage').show();

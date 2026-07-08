@@ -1,6 +1,6 @@
 (function () {
     var SVGNS = "http://www.w3.org/2000/svg";
-    var API = "https://xon-api-test.xposedornot.com/v1";
+    var API = "https://api.xposedornot.com/v1";
     var params = new URLSearchParams(window.location.search);
     var email = (params.get("email") || "").toLowerCase().trim();
     var token = params.get("token") || "";

@@ -50,7 +50,7 @@
             $("#submitSpinner").removeClass("d-none").addClass("d-inline-block");
 
             $.ajax({
-                url: "https://xon-api-test.xposedornot.com/v1/domain-alert/" +
+                url: "https://api.xposedornot.com/v1/domain-alert/" +
                     encodeURIComponent(emailVal) + "?dashboard=my",
                 type: "GET",
                 success: function () {
