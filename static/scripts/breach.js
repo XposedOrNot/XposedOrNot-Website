@@ -193,7 +193,7 @@ function generateActionCards(exposedData) {
     var cards = [];
 
     if (has('password')) {
-        cards.push({ priority: 'urgent', cls: 'urgent', icon: 'fas fa-key', title: 'Change Your Passwords', text: 'Update your password immediately, using 12+ characters with numbers and symbols.' });
+        cards.push({ priority: 'Urgent', cls: 'urgent', icon: 'fas fa-key', title: 'Change Your Passwords', text: 'Update your password immediately, using 12+ characters with numbers and symbols.' });
     }
 
     if (has('email') || has('password') || has('username')) {

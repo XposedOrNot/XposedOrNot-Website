@@ -193,7 +193,7 @@ function showNoBreachView(emailAddr) {
             '<div style="font-size: 72px; margin-bottom: 20px;" role="img" aria-label="Celebration">&#127881;</div>' +
             '<h2 style="color: ' + (isDark ? '#5bb8d0' : '#28a745') + '; font-size: 28px; font-weight: 700; margin-bottom: 16px;">All Clear!</h2>' +
             '<p style="font-size: 18px; color: ' + (isDark ? '#ccc' : '#555') + '; margin-bottom: 12px;">' +
-                '<strong>' + safeEmail + '</strong> was not found in any data breaches loaded in XposedOrNot.' +
+                '<strong>' + safeEmail + '</strong> was not found in any of the breaches we have indexed.' +
             '</p>' +
             '<p style="font-size: 16px; color: ' + (isDark ? '#aaa' : '#777') + '; margin-bottom: 30px;">' +
                 'Your email doesn\'t appear in our database of known breaches. Stay protected by setting up free alerts: we\'ll notify you if this changes.' +

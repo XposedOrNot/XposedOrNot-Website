@@ -178,7 +178,7 @@ def action_cards(exposed):
     has = lambda k: k in lower
     cards = []
     if has("password"):
-        cards.append(("urgent", "urgent", "fas fa-key", "Change Your Passwords",
+        cards.append(("Urgent", "urgent", "fas fa-key", "Change Your Passwords",
                       "Update your password immediately, using 12+ characters with numbers and symbols."))
     if has("email") or has("password") or has("username"):
         cards.append(("High Priority", "high", "fas fa-shield-alt", "Enable Two-Factor Authentication",
