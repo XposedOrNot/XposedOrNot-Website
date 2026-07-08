@@ -1,3 +1,8 @@
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var speedInput = document.getElementById('edhu');
+    if (speedInput) speedInput.focus();
+}
+
 function escapeHtml(unsafe) {
     if (typeof unsafe !== 'string') return unsafe;
     return unsafe

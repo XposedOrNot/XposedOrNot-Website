@@ -206,6 +206,11 @@ $(document).ready(function () {
 
     const apiUrlBase = 'https://api.xposedornot.com/v1/breach-analytics?email=';
 
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        var searchInput = document.getElementById('edhu');
+        if (searchInput) searchInput.focus();
+    }
+
     $("#searchMe").click(function (event) {
         event.preventDefault();
         fetchMetrics();
