@@ -429,9 +429,29 @@
         navPill("pd-nav-breaches", String(total), total === 0);
     }
 
+    function renderShieldStatus(on) {
+        var btn = document.getElementById("pd-shield-btn");
+        if (!btn) return;
+        var badge = document.getElementById("pd-shield-badge");
+        if (on) {
+            btn.hidden = true;
+            if (!badge) {
+                btn.insertAdjacentHTML("afterend",
+                    '<span class="pd-badge-on" id="pd-shield-badge">' +
+                    '<i class="fas fa-check" aria-hidden="true"></i> Enabled</span>');
+            }
+        } else {
+            if (badge) badge.remove();
+            btn.hidden = false;
+        }
+    }
+
     function populateOverview(data) {
         hideOverlay();
         document.getElementById("pd-overview-loading").hidden = true;
+        if (token && typeof data.ShieldOn === "boolean") {
+            renderShieldStatus(data.ShieldOn);
+        }
         var breaches = (data.ExposedBreaches && data.ExposedBreaches.breaches_details) || [];
         var sensitive = (data.ExposedBreaches && data.ExposedBreaches.sensitive_breaches_details) || [];
         var metrics = data.BreachMetrics || {};
@@ -1111,8 +1131,11 @@
             $.ajax({ url: API + "/shield-on/" + encodeURIComponent(email), type: "GET" })
                 .done(function (res) {
                     var already = res && res.Success === "AlreadyOn";
-                    btn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> ' +
-                        (already ? "Already on" : "Email sent");
+                    if (already) {
+                        renderShieldStatus(true);
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Email sent';
+                    }
                     note(noteEl, already
                         ? "Privacy Shield is already on for " + esc(email) +
                             ". This email is hidden from public breach searches in XposedOrNot."
