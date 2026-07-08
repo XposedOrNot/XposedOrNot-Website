@@ -8,6 +8,18 @@
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=yes"
     />
     <title>Directorio y base de datos de filtraciones: explore más de 760 filtraciones conocidas | XposedOrNot</title>
+    <script src="/breach/ids.js"></script>
+    <script>
+        (function () {
+            var h = decodeURIComponent((location.hash || '').slice(1));
+            if (!h) return;
+            if (window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(h) !== -1) {
+                location.replace('/breach/' + encodeURIComponent(h));
+            } else {
+                location.replace('/breach-detail' + location.hash);
+            }
+        })();
+    </script>
     <meta
       name="description"
       content="Explore nuestro directorio completo de más de 760 filtraciones de datos. Busque por empresa, fecha o tipo de dato expuesto. Base de datos de filtraciones gratuita con recuentos de registros, niveles de riesgo y detalles."

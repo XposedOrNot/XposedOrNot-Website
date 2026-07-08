@@ -146,7 +146,9 @@ function initDataTable(breaches) {
         var logoHtml = '<img src="' + defaultLogo + '" data-src="' + logoSrc + '" ' +
                        'alt="' + breach.breachID + '" class="breach-logo lazy-logo">';
 
-        var nameHtml = '<a href="breach.html#' + breach.breachID + '" target="_blank" rel="noopener noreferrer" class="breach-name-link">' +
+        var hasStatic = window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(breach.breachID) !== -1;
+        var breachHref = hasStatic ? '/breach/' + encodeURIComponent(breach.breachID) : '/breach-detail#' + encodeURIComponent(breach.breachID);
+        var nameHtml = '<a href="' + breachHref + '" target="_blank" rel="noopener noreferrer" class="breach-name-link">' +
                        '<div class="breach-name">' + breach.breachID +
                        '<i class="fas fa-chevron-right breach-chevron" aria-hidden="true"></i></div>' +
                        '<div class="breach-domain">' + (breach.domain || '-') + '</div>' +
@@ -163,7 +165,7 @@ function initDataTable(breaches) {
 
         var statusHtml = getStatusBadges(breach);
 
-        var actionsHtml = '<a href="breach.html#' + breach.breachID + '" target="_blank" rel="noopener noreferrer" class="btn-details">' +
+        var actionsHtml = '<a href="' + breachHref + '" target="_blank" rel="noopener noreferrer" class="btn-details">' +
                           '<i class="fas fa-eye" aria-hidden="true"></i> Details<span class="sr-only">(opens in new tab)</span></a>';
 
         var breachYear = breach.breachedDate ? new Date(breach.breachedDate).getFullYear().toString() : '';

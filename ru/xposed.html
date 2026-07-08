@@ -8,6 +8,18 @@
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=yes"
     />
     <title>Каталог и база данных утечек: более 760 известных утечек | XposedOrNot</title>
+    <script src="/breach/ids.js"></script>
+    <script>
+        (function () {
+            var h = decodeURIComponent((location.hash || '').slice(1));
+            if (!h) return;
+            if (window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(h) !== -1) {
+                location.replace('/breach/' + encodeURIComponent(h));
+            } else {
+                location.replace('/breach-detail' + location.hash);
+            }
+        })();
+    </script>
     <meta
       name="description"
       content="Изучите наш полный каталог из более чем 760 утечек данных. Поиск по компании, дате или типу раскрытых данных. Бесплатная база данных утечек с количеством записей, уровнями риска и подробностями."

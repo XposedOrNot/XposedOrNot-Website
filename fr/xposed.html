@@ -8,6 +8,18 @@
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=yes"
     />
     <title>Annuaire et base de données des violations : parcourez plus de 760 violations connues | XposedOrNot</title>
+    <script src="/breach/ids.js"></script>
+    <script>
+        (function () {
+            var h = decodeURIComponent((location.hash || '').slice(1));
+            if (!h) return;
+            if (window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(h) !== -1) {
+                location.replace('/breach/' + encodeURIComponent(h));
+            } else {
+                location.replace('/breach-detail' + location.hash);
+            }
+        })();
+    </script>
     <meta
       name="description"
       content="Parcourez notre annuaire complet de plus de 760 violations de données. Recherchez par entreprise, date ou type de données exposées. Base de données gratuite avec nombre d'enregistrements, niveaux de risque et détails."

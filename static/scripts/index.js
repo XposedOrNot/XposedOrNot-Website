@@ -479,7 +479,7 @@ function processSearchResponse(response, email) {
 
         const breaches = breachSummary.split(";");
         for (let i = 0; i < breaches.length; i++) {
-            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="Click for details" href="breach.html#' + encodeURIComponent(breaches[i]) + '">' + escapeHtml(breaches[i]) + '<span class="sr-only"> (opens in new tab)</span></a>';
+            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="Click for details" href="/breach/' + encodeURIComponent(breaches[i]) + '">' + escapeHtml(breaches[i]) + '<span class="sr-only"> (opens in new tab)</span></a>';
         }
         warningMessage += '</div>';
 

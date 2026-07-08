@@ -8,6 +8,18 @@
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=yes"
     />
     <title>数据泄露目录与数据库：浏览 760+ 已知泄露事件 | XposedOrNot</title>
+    <script src="/breach/ids.js"></script>
+    <script>
+        (function () {
+            var h = decodeURIComponent((location.hash || '').slice(1));
+            if (!h) return;
+            if (window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(h) !== -1) {
+                location.replace('/breach/' + encodeURIComponent(h));
+            } else {
+                location.replace('/breach-detail' + location.hash);
+            }
+        })();
+    </script>
     <meta
       name="description"
       content="浏览我们完整的 760+ 数据泄露事件目录。按公司、日期或泄露的数据类型搜索。免费的泄露数据库，提供记录数量、风险等级和详细信息。"

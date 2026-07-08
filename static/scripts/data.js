@@ -2376,7 +2376,7 @@ function formatAddedDate(added, monthYearOnly) {
 function generateBreachDetailHtml(breach, isSensitive) {
     const addedStr = formatAddedDate(breach.added);
     let html = "<div><b><span class='notser'>" + escapeHtml(breach.xposed_date) + "</span></b><br><br><div class='row'><div class='col-sm-4' style='text-align: center'><img height='75' width='100' src='";
-    html += breach.logo + "' alt='" + escapeHtml(breach.breach) + " logo'></div><div class='col-sm-4' style='text-align: center'><h3><strong><a href='breach.html#" + encodeURIComponent(breach.breach) + "' target='_blank' rel='noopener'>";
+    html += breach.logo + "' alt='" + escapeHtml(breach.breach) + " logo'></div><div class='col-sm-4' style='text-align: center'><h3><strong><a href='" + '/breach/' + encodeURIComponent(breach.breach) + "' target='_blank' rel='noopener'>";
     html += escapeHtml(breach.breach) + "<span class='sr-only'> (opens in new tab)</span></a></strong></h3></div><div class='col-sm-4' style='text-align: center'><img height='75' width='75' src='";
     html += 'static/logos/industry/' + encodeURIComponent(breach.industry) + ".png' alt='" + escapeHtml(breach.industry) + " industry icon'>";
     html += "<p>Industry: " + escapeHtml(breach.industry) + "</p></div></div><br>";

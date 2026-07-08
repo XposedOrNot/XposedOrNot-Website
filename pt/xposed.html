@@ -8,6 +8,18 @@
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=yes"
     />
     <title>Diretório e banco de dados de violações: navegue por mais de 760 violações conhecidas | XposedOrNot</title>
+    <script src="/breach/ids.js"></script>
+    <script>
+        (function () {
+            var h = decodeURIComponent((location.hash || '').slice(1));
+            if (!h) return;
+            if (window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(h) !== -1) {
+                location.replace('/breach/' + encodeURIComponent(h));
+            } else {
+                location.replace('/breach-detail' + location.hash);
+            }
+        })();
+    </script>
     <meta
       name="description"
       content="Navegue pelo nosso diretório completo com mais de 760 violações de dados. Pesquise por empresa, data ou tipo de dado exposto. Banco de dados gratuito de violações com contagem de registros, níveis de risco e detalhes."
