@@ -715,8 +715,10 @@
                 domainDataState = "done";
                 domainData = response || {};
                 buildInfoMap(domainData.Detailed_Breach_Info);
-                navPill("pd-nav-domains",
-                    String(Object.keys(domainData.Domain_Summary || {}).length));
+                var domainCount = Object.keys(domainData.Domain_Summary || {}).length;
+                navPill("pd-nav-domains", String(domainCount));
+                var channelRows = document.getElementById("pd-channel-rows");
+                if (channelRows) channelRows.hidden = domainCount === 0;
                 document.querySelectorAll(".pd-needs-domain, .pd-domain-loading").forEach(function (el) { el.hidden = true; });
                 populatePhishingDomains();
                 renderDomainsPanel();
