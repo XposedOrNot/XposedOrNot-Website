@@ -6,7 +6,7 @@ Usage:
 
 Fetches /v1/breaches (or reads a cached JSON file), renders the newest N
 breaches (default: all, sensitive included) through
-tools/breach_page_template.html into breach/{breachID}/index.html, and
+tools/breach_page_template.html into breach/{breachID}.html, and
 writes sitemap-breaches.xml. The template and all formatting mirror the
 client-rendered breach.html detail page (breach.js). BreachIDs are used
 as-is (case preserved). Never hand-edit files under breach/ - rerun this
@@ -429,13 +429,12 @@ def main():
     total = len(public)
 
     for breach in to_render:
-        page_dir = OUT_DIR / breach["breachID"]
-        page_dir.mkdir(exist_ok=True)
-        with open(page_dir / "index.html", "w", encoding="utf-8", newline="") as f:
+        with open(OUT_DIR / f"{breach['breachID']}.html", "w",
+                  encoding="utf-8", newline="") as f:
             f.write(render(template, breach, public,
                            rank_of[breach["breachID"]], total))
 
-    existing = {p.name for p in OUT_DIR.iterdir() if p.is_dir()}
+    existing = {p.stem for p in OUT_DIR.glob("*.html") if p.name != "index.html"}
     live = [r for r in public if r["breachID"] in existing]
 
     ids_js = ("window.XON_STATIC_BREACH_IDS=" +

@@ -80,45 +80,170 @@
       }
     </style>
 
+    <style>
+      #banner {
+        min-height: 150px !important;
+        padding-bottom: 30px;
+        overflow: visible !important;
+      }
+
+      .grid {
+        margin: 0 auto;
+        max-width: 1645px;
+        padding: 0 15px;
+        overflow: visible !important;
+      }
+
+      .banner {
+        margin: 0;
+        padding: 50px 0 120px 0;
+        background: linear-gradient(-220deg, #3c5fec, #376fdd);
+        overflow: hidden;
+        width: 100%;
+        border-bottom: 2px solid whitesmoke;
+      }
+
+      .banner .navbar {
+        overflow: visible !important;
+      }
+
+      .banner .dropdown-menu {
+        position: absolute !important;
+        z-index: 1050 !important;
+        max-height: none !important;
+      }
+
+      .banner .navbar-dark .navbar-nav .nav-link {
+        font-size: 20px;
+        color: #fff;
+      }
+
+      .banner .navbar-nav .nav-link:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.9);
+        outline-offset: 2px;
+      }
+
+      .nav-link.xon-nav-tip {
+        position: relative;
+      }
+
+      .nav-link.xon-nav-tip::before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        right: 28px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 8px solid #23272f;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip::after {
+        content: attr(data-tip);
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        display: block;
+        width: 260px;
+        box-sizing: border-box;
+        background: #23272f;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.5;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 10px 24px rgba(20, 24, 60, 0.35);
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: break-word;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip:hover::before,
+      .nav-link.xon-nav-tip:focus::before,
+      .nav-link.xon-nav-tip:hover::after,
+      .nav-link.xon-nav-tip:focus::after {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      @media (max-width: 767px) {
+        .nav-link.xon-nav-tip::before,
+        .nav-link.xon-nav-tip::after {
+          display: none;
+        }
+      }
+    </style>
     </head>
 
 <body>
     <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
-    <div class="kbanner">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary kbanner">
-            <a class="navbar-brand" href="https://xposedornot.com">
-                <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
-                <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -1px;">Community Edition</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="ナビゲーションの切り替え">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="password">パスワード &nbsp;</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="api_doc">API &nbsp;</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://blog.xposedornot.com/">Blog &nbsp;</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"> その他のツール </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="xposed">漏洩した侵害</a>
-                            <a class="dropdown-item" href="shield">Privacy Shield</a>
-                            <a class="dropdown-item" href="domain">ドメイン認証</a>
-                            <a class="dropdown-item" href="domains">ドメイン単位の検索</a>
-                        </div>
-                    </li>
-                </ul>
+    <div class="searchMe">
+         <div class="banner" id="banner">
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/ja/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
+                        Edition</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password">パスワード</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq">よくある質問</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link xon-nav-tip" href="https://plus.xposedornot.com" target="_blank" data-tip="xonPlus（法人向け）：チーム・企業向けの侵害監視" aria-label="xonPlus（法人向け）：チーム・企業向けの侵害監視">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc">API</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> 言語 <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
             </div>
-        </nav>
-    </div>
+         </div>
+      </div>
 
 
     <main id="main-content" class="container my-5" tabindex="-1">
