@@ -52,6 +52,39 @@
         el.style.borderLeft = tone === "error" ? "4px solid #cf222e" : "";
     }
 
+    var authRedirecting = false;
+    function authRedirect(error) {
+        var status = error && error.status;
+        var errText = "";
+        if (error && error.responseJSON) {
+            var d = error.responseJSON.detail || error.responseJSON;
+            errText = String(d.Error || d.error || "");
+        }
+        var isAuth = status === 400 || status === 401 || status === 403 ||
+            (status === 404 && /session/i.test(errText));
+        if (!isAuth) return false;
+        if (authRedirecting) return true;
+        authRedirecting = true;
+        try {
+            $.LoadingOverlay("hide");
+        } catch (ex) { }
+        var box = document.createElement("div");
+        box.setAttribute("role", "alert");
+        box.style.cssText = "position:fixed;inset:0;display:flex;align-items:center;" +
+            "justify-content:center;background:rgba(14,15,25,0.55);z-index:3000;padding:16px;";
+        box.innerHTML = '<div style="background:#fff;color:#1f2a3a;max-width:420px;width:100%;' +
+            'border-radius:12px;padding:24px;text-align:center;' +
+            'box-shadow:0 12px 40px rgba(0,0,0,0.35);font-size:15px;line-height:1.6;">' +
+            '<i class="fas fa-sign-out-alt" aria-hidden="true" style="font-size:1.6em;color:#3c5fec;"></i>' +
+            '<p style="margin:12px 0 0;"><strong>Your session has ended or this link is no longer valid.</strong>' +
+            '<br>Taking you to sign in&hellip;</p></div>';
+        document.body.appendChild(box);
+        setTimeout(function () {
+            window.location.href = "login";
+        }, 3000);
+        return true;
+    }
+
     function authFailHtml(status) {
         if (status === 400 || status === 401 || status === 403) {
             return "Your dashboard link is invalid or has expired. Request a fresh link from the <a href='domains'>domain verification page</a>, then open this page again from that email.";
@@ -674,6 +707,7 @@
             .fail(function (error) {
                 domainDataState = "idle";
                 document.querySelectorAll(".pd-domain-loading").forEach(function (el) { el.hidden = true; });
+                if (authRedirect(error)) return;
                 var html;
                 if (error.status === 404) {
                     html = "No verified domains yet for this account. <a href='domain'>Add and verify a domain</a> to unlock company-wide monitoring.";
@@ -718,6 +752,7 @@
             })
             .fail(function (error) {
                 vipLoaded = false;
+                if (authRedirect(error)) return;
                 note(document.getElementById("pd-vip-note"), authFailHtml(error.status), "error");
             });
     }
@@ -864,6 +899,7 @@
             .fail(function (error) {
                 keyLoaded = false;
                 document.getElementById("pd-key-loading").hidden = true;
+                if (authRedirect(error)) return;
                 if (error.status === 404) {
                     renderApiKey(null);
                 } else {
@@ -942,6 +978,7 @@
                 })
                 .catch(function (e) {
                     gen.disabled = false;
+                    if (authRedirect(e)) return;
                     note(noteEl, authFailHtml(e && e.status), "error");
                 });
         };
@@ -1053,6 +1090,7 @@
                         '<p class="pd-empty-note">' + blockMsg + "</p>";
                     navPill("pd-nav-breaches", "-");
                 } else {
+                    if (authRedirect(error)) return;
                     note(document.getElementById("pd-overview-note"), authFailHtml(error.status), "error");
                     populateBreachesPanel([], []);
                     document.getElementById("pd-breaches-live").innerHTML =
