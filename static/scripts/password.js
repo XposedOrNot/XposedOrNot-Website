@@ -18,7 +18,7 @@ $("#edhu").on("change keyup paste", function () {
 })
 $('#alertMeModal').on('hidden.bs.modal', function (e) {
     document.getElementById("h2head").className = "modal-header-primary";
-    $('#message-text').val("You are currently being added to the alert notification service of XposedOrNot. Please make sure to complete the below shown challenge and then click 'Alert Me'.");
+    $('#message-text').text("We'll notify you instantly if your email appears in any new data breach. You can unsubscribe anytime. This service is completely free.");
     $("#alertMe").show();
     $("#alertMeClose").hide();
     $("#a_succ").hide();
@@ -77,7 +77,7 @@ $(document).ready(function () {
         var myjson;
         var j = $.ajax(koodudal)
             .done(function (n) {
-                $('#message-text').val("Successfully added to the alert service. Please check your email and click on the verification link to confirm");
+                $('#message-text').text("Verification email sent! Check your inbox to activate free breach monitoring.");
                 document.getElementById("h2head").className = "modal-header-success";
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
@@ -102,7 +102,7 @@ $(document).ready(function () {
                         headerClass = "modal-header-danger";
                     }
                 }
-                $('#message-text').val(message);
+                $('#message-text').text(message);
                 document.getElementById("h2head").className = headerClass;
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
