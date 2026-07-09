@@ -191,20 +191,25 @@
   <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content dark-mode">
-        <div class="modal-header">
-          <h5 class="modal-title" id="domainModalLabel">Check for Phishing Domains</h5>
-        </div>
-        <div class="modal-body light-mode">
+      <div class="modal-content">
+        <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="Close and return to home">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="modal-body domain-modal-body">
           <form id="domainForm" autocomplete="off">
-            <div class="form-group text-center">
-              <p>Enter your domain name below to scan for potential phishing domains.</p><br><br>
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">Check for Phishing Domains</h5>
+              <p class="domain-modal-desc">Scan for lookalike domains that could impersonate your brand.</p>
               <label for="domainInput" class="sr-only">Domain Name</label>
-              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <input type="text" class="domain-modal-input" id="domainInput" placeholder="example.com" required>
               <div class="invalid-feedback">
                 Please enter a valid domain name.
               </div>
-              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
                 Scan Domain
               </button>
               <div id="scanProgress" style="display:none; margin-top: 20px;">
@@ -222,7 +227,7 @@
             </div>
           </form>
           <div id="noBreachMessage" style="display: none;">
-            <div class="text-center">
+            <div class="domain-modal-inner">
               <i class="fas fa-shield-alt fa-3x text-success"></i>
               <h4 class="text-success mt-3">No phishing domains found for <span id="searchedDomain"
                   class="font-weight-bold"></span>!</h4>

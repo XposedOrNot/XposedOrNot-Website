@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const scanMessage = document.getElementById('scanMessage');
     const progressBar = document.getElementById('progressBar');
 
+    $('#modalCloseBtn').on('click', function () {
+        window.location.href = 'index.html';
+    });
+
     // Scan messages to cycle through
     const scanMessages = [
         "🚀 Initializing scan...",
