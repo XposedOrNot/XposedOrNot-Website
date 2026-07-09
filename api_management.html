@@ -4,6 +4,7 @@
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="theme-color" content="#3f71f3">
    <meta name="description" content="XposedOrNot: API Management">
    <meta name="author" content="Devanand Premkumar">
    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
@@ -56,6 +57,15 @@
 
       .benefit-card .card-text {
          font-size: 1em;
+      }
+
+      [data-theme="dark"] .benefit-card:nth-child(odd) {
+         background: #181b2d;
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .benefit-card:nth-child(even) {
+         background: #3567e8;
       }
    </style>
     <style>
@@ -192,6 +202,12 @@
     </head>
 
 <body>
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
     <div class="searchMe">
          <div class="banner" id="banner">
             <div class="grid">
@@ -368,6 +384,11 @@
                </a>
             </div>
           </div>
+         </div>
+
+         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+            <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
          </div>
       </div>
    </div>

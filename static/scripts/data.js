@@ -183,8 +183,7 @@ function showNoBreachView(emailAddr) {
     $('section[aria-label="Attack path visualization"]').hide();
 
     var safeEmail = escapeHtml(emailAddr);
-    var isDark = document.body.classList.contains('dark-mode') ||
-                 document.documentElement.getAttribute('data-theme') === 'dark';
+    var isDark = isDarkModeActive();
 
     $('section[aria-label="Risk score overview"] .container').html(
         '<h1 class="report-h1">Your Data Breach Report</h1>' +
@@ -194,7 +193,7 @@ function showNoBreachView(emailAddr) {
             '<p style="font-size: 18px; color: ' + (isDark ? '#ccc' : '#555') + '; margin-bottom: 12px;">' +
                 '<strong>' + safeEmail + '</strong> was not found in any of the breaches we have indexed.' +
             '</p>' +
-            '<p style="font-size: 16px; color: ' + (isDark ? '#aaa' : '#777') + '; margin-bottom: 30px;">' +
+            '<p style="font-size: 16px; color: ' + (isDark ? '#aaa' : '#6c757d') + '; margin-bottom: 30px;">' +
                 'Your email doesn\'t appear in our database of known breaches. Stay protected by setting up free alerts: we\'ll notify you if this changes.' +
             '</p>' +
             '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal" style="margin-top: 10px;">' +
@@ -810,7 +809,7 @@ var j = $.ajax(url)
                     align-items: center;
                     padding: 10px 15px;
                     border-radius: 8px;
-                    background-color: ${document.body.classList.contains('dark-mode') ? '#2d3436' : '#f8f9fa'};
+                    background-color: #f8f9fa;
                     transition: all 0.3s ease;
                     margin-bottom: 8px;
                 }
@@ -820,7 +819,7 @@ var j = $.ajax(url)
                 }
                 .industry-name {
                     font-weight: 500;
-                    color: ${document.body.classList.contains('dark-mode') ? '#fff' : '#2d3436'};
+                    color: #2d3436;
                 }
                 .badge {
                     padding: 6px 12px;
@@ -839,7 +838,7 @@ var j = $.ajax(url)
                     background-color: #2874a6;
                     color: white;
                 }
-                [data-theme="dark"] .badge-low, .dark-mode .badge-low {
+                [data-theme="dark"] .badge-low {
                     background-color: #2874a6;
                     color: white;
                     border: none;
@@ -1989,7 +1988,7 @@ function renderAttackPaths(paths) {
         tabsContainer.removeAttribute('role');
         var desc = section.querySelector('.attack-path-description');
         if (desc) desc.style.display = 'none';
-        var isDark = document.body.classList.contains('dark-mode') || document.documentElement.getAttribute('data-theme') === 'dark';
+        var isDark = isDarkModeActive();
         contentContainer.innerHTML = '<div style="text-align:center; padding: 32px 24px; max-width: 500px; margin: 0 auto; border-radius: 12px; background:' + (isDark ? '#0f2a1f' : '#f0fdf4') + '; border: 1px solid ' + (isDark ? '#16a34a44' : '#bbf7d0') + ';">' +
             '<div style="font-size: 40px; margin-bottom: 8px;" role="img" aria-label="Shield">&#128737;&#65039;</div>' +
             '<h3 style="margin-bottom: 6px; color:' + (isDark ? '#86efac' : '#166534') + ';">You\'re looking good</h3>' +

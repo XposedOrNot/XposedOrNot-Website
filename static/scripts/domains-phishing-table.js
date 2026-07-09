@@ -369,26 +369,11 @@ $(document).ready(function () {
         ],
         initComplete: function () {
 
-            $('.dataTables_wrapper').css('color', '#fff');
-            $('.dataTables_length').css('color', '#fff');
-            $('.dataTables_filter').css({
-                'color': '#fff',
-                'margin-left': 'auto'
-            });
-            $('.dataTables_paginate').css('color', '#fff');
-            $('.btn-light').css('color', '#000');
-
+            $('.dataTables_filter').css('margin-left', 'auto');
 
             $('.dt-buttons').css({
                 'display': 'inline-block',
                 'margin-right': '15px'
-            });
-
-            $('.dt-buttons .btn').css({
-                'background-color': '#D63031',
-                'border-color': '#D63031',
-                'color': '#fff',
-                'margin-right': '5px'
             });
 
 

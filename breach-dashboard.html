@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <script src="/static/scripts/session.js"></script>
     <title>XposedOrNot: CxO Dashboard</title>
+    <meta name="theme-color" content="#3f71f3">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
     <link rel="dns-prefetch" href="https://static.hotjar.com" />
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
@@ -257,8 +258,8 @@
       }
 
       [data-theme="dark"] .btn-utility {
-        background: #2c3e50;
-        color: #ecf0f1 !important;
+        background: #181b2d;
+        color: #e2e8f0 !important;
         border-width: 2px;
       }
 
@@ -292,16 +293,16 @@
       }
 
       [data-theme="dark"] .domain-dropdown {
-        background: #2c3e50;
-        border-color: #34495e;
+        background: #181b2d;
+        border-color: #2a2f4a;
       }
 
       [data-theme="dark"] .domain-dropdown-item {
-        color: #ecf0f1;
+        color: #c3d3e8;
       }
 
       [data-theme="dark"] .domain-dropdown-item:hover {
-        background-color: #34495e;
+        background-color: #1e2235;
         color: #fff;
       }
 
@@ -663,17 +664,17 @@
       }
 
       [data-theme="dark"] #dynamic_breach_alerts_table tbody tr {
-        border-top: 1px solid #4a5568 !important;
-        border-bottom: 1px solid #4a5568 !important;
+        border-top: 1px solid #2a2f4a !important;
+        border-bottom: 1px solid #2a2f4a !important;
       }
 
       [data-theme="dark"] #dynamic_breach_alerts_table tbody tr td {
-        border: 1px solid #4a5568 !important;
-        color: #ecf0f1 !important;
+        border: 1px solid #2a2f4a !important;
+        color: #c3d3e8 !important;
       }
 
       [data-theme="dark"] #dynamic_breach_alerts_table {
-        border-color: #4a5568 !important;
+        border-color: #2a2f4a !important;
       }
     </style>
     <script
@@ -768,7 +769,7 @@
       [data-theme="dark"] div.dt-buttons a.btn:hover,
       [data-theme="dark"] div.dt-buttons a.btn:focus {
         background-color: #232742 !important;
-        color: #ecf0f1 !important;
+        color: #e2e8f0 !important;
       }
 
       .pwd-risk {
@@ -843,7 +844,7 @@
       [data-theme="dark"] div.dt-button-collection .btn:hover,
       [data-theme="dark"] div.dt-button-collection .dt-button:hover {
         background-color: #232742 !important;
-        color: #ecf0f1 !important;
+        color: #e2e8f0 !important;
       }
 
       /* xonPlus Modal Styling */
@@ -1099,11 +1100,11 @@
         --svc-accent: #5dade2;
         --svc-ink: #93c9ec;
         --svc-tint: rgba(93, 173, 226, 0.16);
-        --xp-surface: #1e2937;
-        --xp-text: #f1f5f9;
-        --xp-muted: #9aa7b5;
-        --xp-border: #334155;
-        --xp-card: #243244;
+        --xp-surface: #181b2d;
+        --xp-text: #e2e8f0;
+        --xp-muted: #6daae0;
+        --xp-border: #2a2f4a;
+        --xp-card: #1e2235;
         box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
       }
 
@@ -1283,15 +1284,15 @@
       }
 
       [data-theme="dark"] .auth-modal-title {
-        color: #ecf0f1;
+        color: #e2e8f0;
       }
 
       [data-theme="dark"] .auth-modal-message {
-        color: #95a5a6;
+        color: #6daae0;
       }
 
       [data-theme="dark"] .auth-modal-progress {
-        background: #2c3e50;
+        background: #2a2d40;
       }
     </style>
     <style>
@@ -1327,6 +1328,12 @@
     data-new-gr-c-s-check-loaded="8.884.0"
     data-gr-ext-installed=""
   >
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
     <div class="mobileheader-area">
       <div class="container">
         <div class="row">
@@ -1743,7 +1750,7 @@
                         style="height: auto; width: 100%"
                       >
                         <div class="xon-row-left_a" id="email_details">
-                          <p style="background-color: white">
+                          <p>
                             Data Breaches report for email:
                             <strong>Email</strong>
                           </p>
@@ -1807,7 +1814,7 @@
                         style="height: auto; width: 100%"
                       >
                         <div class="xon-row-left_a" id="email">
-                          <p style="background-color: white">
+                          <p>
                             Data Breaches Summary Report for email:
                             <strong>Email</strong>
                           </p>
@@ -2150,13 +2157,13 @@
             </div>
             <p
               class="text-center"
-              style="font-size: 1.1rem; color: #2c3e50; margin-bottom: 1.5rem"
+              style="font-size: 1.1rem; margin-bottom: 1.5rem"
             >
               Are you sure you want to acknowledge this breach alert?
             </p>
             <div
               class="alert alert-light"
-              style="border-left: 4px solid #e74c3c; background-color: #fff5f5"
+              style="border-left: 4px solid #e74c3c"
             >
               <strong>Breach:</strong> <span id="modal-breach-name"></span
               ><br />
@@ -2166,19 +2173,14 @@
                 style="font-family: monospace; font-size: 0.9rem"
               ></span>
             </div>
-            <p style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 0">
+            <p style="font-size: 0.9rem; margin-bottom: 0">
               <i class="fas fa-info-circle mr-1"></i>
               This will mark the alert as reviewed and notify your team.
             </p>
           </div>
           <div
             class="modal-footer"
-            style="
-              border-top: 1px solid #e9ecef;
-              padding: 1rem 2rem;
-              background-color: #f8f9fa;
-              border-radius: 0 0 15px 15px;
-            "
+            style="padding: 1rem 2rem; border-radius: 0 0 15px 15px"
           >
             <button
               type="button"
@@ -2265,13 +2267,13 @@
             </div>
             <p
               class="text-center"
-              style="font-size: 1.1rem; color: #2c3e50; margin-bottom: 1.5rem"
+              style="font-size: 1.1rem; margin-bottom: 1.5rem"
             >
               Do you want to mark this alert as pending again?
             </p>
             <div
               class="alert alert-light"
-              style="border-left: 4px solid #f39c12; background-color: #fff9f5"
+              style="border-left: 4px solid #f39c12"
             >
               <strong>Breach:</strong> <span id="unack-modal-breach-name"></span
               ><br />
@@ -2281,7 +2283,7 @@
                 style="font-family: monospace; font-size: 0.9rem"
               ></span>
             </div>
-            <p style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 0">
+            <p style="font-size: 0.9rem; margin-bottom: 0">
               <i class="fas fa-info-circle mr-1"></i>
               This will revert the alert status back to pending and require
               re-acknowledgment.
@@ -2289,12 +2291,7 @@
           </div>
           <div
             class="modal-footer"
-            style="
-              border-top: 1px solid #e9ecef;
-              padding: 1rem 2rem;
-              background-color: #f8f9fa;
-              border-radius: 0 0 15px 15px;
-            "
+            style="padding: 1rem 2rem; border-radius: 0 0 15px 15px"
           >
             <button
               type="button"

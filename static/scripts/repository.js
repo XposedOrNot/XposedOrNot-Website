@@ -45,7 +45,7 @@ function getSubTextColor() {
 }
 
 function getMutedColor() {
-  return isDarkMode() ? '#718096' : '#718096';
+  return isDarkMode() ? '#6daae0' : '#718096';
 }
 
 function getGridColor() {

@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#3f71f3">
   <title>Check Your Email for Data Breaches | AI-Powered Breach Insights by XposedOrNot</title>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://static.hotjar.com">
@@ -47,6 +48,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
+    :root {
+      color-scheme: light;
+    }
+
+    html:has(body[data-theme="dark"]) {
+      color-scheme: dark;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -327,6 +336,99 @@
         max-width: 300px;
       }
     }
+
+    .custom-control.custom-switch {
+      text-align: center;
+      padding: 10px 0 20px;
+    }
+
+    .custom-control-input {
+      margin-right: 6px;
+    }
+
+    body[data-theme="dark"] {
+      background-color: #0e0f19;
+      color: #c3d3e8;
+    }
+
+    body[data-theme="dark"] header a {
+      color: #5b9aff;
+    }
+
+    body[data-theme="dark"] .container {
+      background-color: #181b2d;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    body[data-theme="dark"] h1 {
+      color: #5b9aff;
+    }
+
+    body[data-theme="dark"] input[type="text"] {
+      background-color: #1e2235;
+      border-color: #2a2d40;
+      color: #e2e8f0;
+    }
+
+    body[data-theme="dark"] input[type="text"]:focus {
+      border-color: #5b9aff;
+    }
+
+    body[data-theme="dark"] button {
+      background-color: #4284fb;
+    }
+
+    body[data-theme="dark"] .error-message {
+      color: #ef9a9a;
+    }
+
+    body[data-theme="dark"] .result-container {
+      background: #181b2d;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    body[data-theme="dark"] .result-header {
+      border-bottom-color: #5b9aff;
+    }
+
+    body[data-theme="dark"] .risk-high {
+      background-color: #3b1a1a;
+      color: #ff9999;
+    }
+
+    body[data-theme="dark"] .risk-medium {
+      background-color: #3a3020;
+      color: #ffca28;
+    }
+
+    body[data-theme="dark"] .risk-low,
+    body[data-theme="dark"] .success-message {
+      background-color: #0f2a1f;
+      color: #86efac;
+    }
+
+    body[data-theme="dark"] .breach-details {
+      background-color: #1e2235;
+    }
+
+    body[data-theme="dark"] .recommendations {
+      background-color: #1a2744;
+    }
+
+    body[data-theme="dark"] .loader {
+      border-color: #2a2d40;
+      border-top-color: #5b9aff;
+    }
+
+    body[data-theme="dark"] .blog-tile {
+      background-color: #181b2d;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    body[data-theme="dark"] .blog-tile h3,
+    body[data-theme="dark"] .blog-tile a {
+      color: #5b9aff;
+    }
   </style>
     <style>
       @font-face {
@@ -355,6 +457,12 @@
     </head>
 
 <body onload="document.getElementById('emailInput').focus();">
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
   <header>
     <a href="https://xposedornot.com" target="_blank">XposedOrNot</a>
   </header>
@@ -556,6 +664,16 @@
 		max-height: 300px;
 		padding: 0 20px 15px 20px;
 	} }
+
+    body[data-theme="dark"] .footer { background: #0e0f19; border-top-color: #2a2d40; }
+    body[data-theme="dark"] .footer p { color: #9fc0e0; }
+    body[data-theme="dark"] .footer a { color: #5b9aff; }
+    body[data-theme="dark"] .footer-group h6 { color: #e2e8f0 !important; }
+    body[data-theme="dark"] .footer-group a.footer-link { color: #9fc0e0; }
+    body[data-theme="dark"] .footer-group a.footer-link:hover { background-color: rgba(91, 154, 255, 0.15); color: #93b4ff !important; }
+    @media (max-width: 768px) {
+      body[data-theme="dark"] .footer-group { border-bottom-color: #2a2d40; }
+    }
   </style>
   <div class="footer">
     <div class="container">
@@ -611,6 +729,11 @@
           </a>
             </div>
           </div>
+      </div>
+
+      <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
+        <input type="checkbox" class="custom-control-input" id="darkSwitch">
+        <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
       </div>
     </div>
   </div>
