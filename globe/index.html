@@ -4,269 +4,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>XON Globe</title>
+  <title>Live Breach Check Globe | XposedOrNot</title>
+  <meta name="description"
+    content="Watch anonymized data breach exposure checks happen around the world in real time on the XposedOrNot live globe." />
+  <link rel="canonical" href="https://xposedornot.com/globe/" />
+  <meta name="theme-color" content="#0a1a2f" />
+  <meta property="og:title" content="Live Breach Check Globe | XposedOrNot" />
+  <meta property="og:description"
+    content="Watch anonymized data breach exposure checks happen around the world in real time on the XposedOrNot live globe." />
+  <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+  <meta property="og:image:alt" content="XposedOrNot Logo" />
+  <meta property="og:url" content="https://xposedornot.com/globe/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="XposedOrNot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@XposedOrNot" />
+  <meta name="twitter:creator" content="@DevaOnBreaches" />
+  <meta name="twitter:title" content="Live Breach Check Globe | XposedOrNot" />
+  <meta name="twitter:description"
+    content="Watch anonymized data breach exposure checks happen around the world in real time on the XposedOrNot live globe." />
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png" />
+  <meta name="twitter:image:alt" content="XposedOrNot Logo" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
-
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three-globe@2.23.0/dist/three-globe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    #globe-banner {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 48px;
-      pointer-events: none;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-      z-index: 10;
-    }
-
-    .webgl {
-      width: 100%;
-      height: 70vh;
-      display: block;
-    }
-
-    #data-display {
-      width: 100%;
-      max-width: 320px;
-      margin: 10px auto;
-      height: 420px;
-      overflow-y: auto;
-      background: rgba(8, 18, 36, 0.82);
-      -webkit-backdrop-filter: blur(14px);
-      backdrop-filter: blur(14px);
-      color: #e6fbff;
-      padding: 14px;
-      border: 1px solid rgba(0, 229, 255, 0.35);
-      border-radius: 14px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 0 18px rgba(0, 229, 255, 0.12);
-      font-size: 12px;
-      display: block;
-    }
-
-    #feed-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.18);
-    }
-
-    .live-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: #ffffff;
-    }
-
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #ff3df0;
-      box-shadow: 0 0 8px #ff3df0;
-      animation: live-pulse 1.6s ease-in-out infinite;
-    }
-
-    #feed-count {
-      font-size: 11px;
-      color: #b6e2ef;
-    }
-
-    .conn-card {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      margin: 6px 0;
-      border-radius: 10px;
-      background: rgba(0, 229, 255, 0.06);
-      animation: card-in 0.45s ease;
-    }
-
-    .conn-card:hover {
-      background: rgba(0, 229, 255, 0.12);
-      transform: translateY(-1px);
-    }
-
-    .conn-dot {
-      flex: 0 0 auto;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #00e5ff;
-      box-shadow: 0 0 8px rgba(0, 229, 255, 0.85);
-    }
-
-    .conn-city {
-      flex: 1 1 auto;
-      font-weight: 600;
-      color: #ffffff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .conn-time {
-      flex: 0 0 auto;
-      font-size: 10.5px;
-      color: #b6e2ef;
-    }
-
-    @keyframes live-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(1.4); }
-    }
-
-    @keyframes card-in {
-      from { opacity: 0; transform: translateY(-8px); }
-      60% { background: rgba(0, 229, 255, 0.22); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .live-dot,
-      .conn-card { animation: none; }
-      .conn-card:hover { transform: none; }
-    }
-
-    #footer {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 14px;
-      pointer-events: none;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-      z-index: 10;
-    }
-
-    @media (max-width: 767px) {
-      #globe-banner {
-        font-size: 24px;
-      }
-
-      .webgl {
-        height: 60vh; 
-        width: 100%;
-      }
-
-      #data-display {
-        position: fixed; 
-        bottom: 10px; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        width: 90%; 
-        max-width: none; 
-        height: 150px; 
-        font-size: 10px; 
-        z-index: 10; 
-      }
-
-      #footer {
-        font-size: 12px; 
-      }
-    }
-
-    @media (min-width: 768px) {
-      body {
-        flex-direction: row;
-      }
-
-      .webgl {
-        height: 100vh;
-        width: calc(100% - 320px);
-      }
-
-      #data-display {
-        position: fixed;
-        right: 10px;
-        bottom: 10px;
-        width: 300px;
-        margin: 0;
-      }
-
-      #footer {
-        position: fixed;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    }
-  </style>
-    <style>
-      @font-face {
-        font-family: "Font Awesome 6 Free";
-        font-style: normal;
-        font-weight: 400;
-        font-display: swap;
-        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-regular-400.woff2") format("woff2");
-      }
-      @font-face {
-        font-family: "Font Awesome 6 Free";
-        font-style: normal;
-        font-weight: 900;
-        font-display: swap;
-        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2") format("woff2");
-      }
-      @font-face {
-        font-family: "Font Awesome 6 Brands";
-        font-style: normal;
-        font-weight: normal;
-        font-display: swap;
-        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2") format("woff2");
-      }
-    </style>
-
-    </head>
+</head>
 
 <body>
-  <div id="globe-banner">XON Globe</div>
-  <div id="loading" class="display">
-    <div>
-      <i class="fa-solid fa-spinner fa-spin"></i>
-    </div>
+  <header id="globe-header">
+    <h1 id="globe-banner">Live Breach Check Globe</h1>
+    <p id="globe-tagline">Anonymized locations of exposure checks on XposedOrNot, as they happen</p>
+  </header>
+  <div id="loading" class="display" role="status">
+    <span class="spinner" aria-hidden="true"></span>
+    <span class="visually-hidden">Loading globe</span>
   </div>
-  <canvas class="webgl"></canvas>
-  <div id="data-display">
+  <canvas class="webgl" tabindex="0" role="img"
+    aria-label="Interactive globe showing live breach check locations. Drag or use arrow keys to rotate."></canvas>
+  <section id="data-display" aria-label="Live activity feed">
     <div id="feed-header">
       <span class="live-badge"><span class="live-dot"></span>LIVE</span>
       <span id="feed-count">0 in last 5 min</span>
     </div>
-    <div id="data-content"></div>
-  </div>
+    <p id="feed-top"></p>
+    <div id="data-content" role="log" aria-label="Latest breach checks by city"></div>
+  </section>
 
-  <div id="footer">Powered by XposedOrNot</div>
-  <div class="custom-control custom-switch" style="display: none;">
-    <input type="checkbox" class="custom-control-input" id="darkSwitch">
-    <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
-  </div>
+  <footer id="footer"><a href="/">Powered by XposedOrNot</a></footer>
+  <script src="/static/scripts/libs/three-0.152.2.min.js"></script>
+  <script src="/static/scripts/libs/three-orbit-controls-0.147.0.js"></script>
+  <script src="/static/scripts/libs/three-globe-2.23.0.min.js"></script>
+  <script src="main13.js"></script>
   <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-  <script src="main12.js"></script>
   <script src="/static/scripts/common.js"></script>
   <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
 </body>

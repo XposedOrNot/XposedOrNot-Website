@@ -22,7 +22,7 @@ let lastUpdateTime = 0;
 const updateInterval = 1000;
 
 const maxDataRows = 100;
-let feedTimes = [];
+let feedLog = [];
 
 const prefersReducedMotion = window.matchMedia &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -55,24 +55,40 @@ const arcAltFor = (aLat, aLng, bLat, bLng) => {
   return lerp(0.3, 0.7, ang / Math.PI);
 };
 
+const hideLoading = () => {
+  const loadingElem = document.querySelector("#loading");
+  if (loadingElem) loadingElem.classList.replace("display", "hidden");
+};
+
 const fetchAssets = async () => {
   try {
     const countriesResponse = await fetch('./assets/custom.geo.json');
-    const mapResponse = await fetch('./assets/map.json');
-    const linesResponse = await fetch('./assets/lines.json');
-
     const countries = await countriesResponse.json();
-    const map = await mapResponse.json();
-    const lines = await linesResponse.json();
-
-    initGlobe(countries, map, lines);
-  } catch (error) {}
+    initGlobe(countries);
+  } catch (error) {
+    hideLoading();
+  }
 };
 
-let scene, globe, camera, renderer;
+let scene, globe, camera, renderer, controls;
+let autoRotateTimer;
 
-const initGlobe = (countries, map, lines) => {
+const stopAutoRotate = () => {
+  clearTimeout(autoRotateTimer);
+  if (controls) controls.autoRotate = false;
+};
+
+const queueAutoRotateResume = () => {
+  clearTimeout(autoRotateTimer);
+  if (prefersReducedMotion) return;
+  autoRotateTimer = setTimeout(() => {
+    if (controls) controls.autoRotate = true;
+  }, 5000);
+};
+
+const initGlobe = (countries) => {
   if (typeof THREE === 'undefined' || typeof ThreeGlobe === 'undefined') {
+    hideLoading();
     return;
   }
   try {
@@ -98,16 +114,11 @@ const initGlobe = (countries, map, lines) => {
     .ringPropagationSpeed(4)
     .ringRepeatPeriod(600)
     .onGlobeReady(() => {
-      setTimeout(() => {
-        const loadingElem = document.querySelector("#loading");
-        const containerElem = document.querySelector("#container");
-        if (loadingElem) loadingElem.classList.replace("display", "hidden");
-        if (containerElem) containerElem.classList.replace("hidden", "display");
-      }, 100);
+      setTimeout(hideLoading, 100);
     });
 
   const textureLoader = new THREE.TextureLoader();
-  textureLoader.load('./154750.jpg', function (texture) {
+  textureLoader.load('./background.webp', function (texture) {
     scene.background = texture;
   });
 
@@ -126,9 +137,9 @@ const initGlobe = (countries, map, lines) => {
 
   camera = new THREE.PerspectiveCamera(45, sizes.w / sizes.h);
   if (window.innerWidth < 768) {
-    camera.position.set(0, 0, 800); 
+    camera.position.set(0, 0, 800);
   } else {
-    camera.position.set(60, 10, 20); 
+    camera.position.set(60, 10, 20);
   }
   scene.add(camera);
 
@@ -147,21 +158,42 @@ const initGlobe = (countries, map, lines) => {
   renderer.setSize(sizes.w, sizes.h);
   renderer.setPixelRatio(window.devicePixelRatio);
 
-  const controls = new THREE.OrbitControls(camera, canvas);
+  controls = new THREE.OrbitControls(camera, canvas);
   controls.enableDamping = true;
   controls.enableZoom = true;
   controls.enablePan = false;
   controls.minDistance = 400;
   controls.maxDistance = 500;
+  controls.autoRotate = !prefersReducedMotion;
+  controls.autoRotateSpeed = 0.3;
+  controls.addEventListener('start', stopAutoRotate);
+  controls.addEventListener('end', queueAutoRotateResume);
+
+  canvas.addEventListener('keydown', (e) => {
+    if (!globe) return;
+    const step = 0.12;
+    if (e.key === 'ArrowLeft') {
+      globe.rotation.y -= step;
+    } else if (e.key === 'ArrowRight') {
+      globe.rotation.y += step;
+    } else if (e.key === 'ArrowUp') {
+      globe.rotation.x = Math.max(globe.rotation.x - step, -0.6);
+    } else if (e.key === 'ArrowDown') {
+      globe.rotation.x = Math.min(globe.rotation.x + step, 0.6);
+    } else {
+      return;
+    }
+    e.preventDefault();
+  });
 
   window.addEventListener("resize", () => {
     sizes.w = window.innerWidth;
     sizes.h = window.innerHeight;
 
     if (window.innerWidth < 768) {
-      camera.position.set(0, 0, 800); 
+      camera.position.set(0, 0, 800);
     } else {
-      camera.position.set(60, 10, 20); 
+      camera.position.set(60, 10, 20);
     }
 
     renderer.setSize(sizes.w, sizes.h);
@@ -170,8 +202,6 @@ const initGlobe = (countries, map, lines) => {
   });
 
   const loop = () => {
-    globe.rotation.x = 0;
-    globe.rotation.y += 0.0005;
     controls.update();
     renderer.render(scene, camera);
     requestAnimationFrame(loop);
@@ -198,36 +228,75 @@ const initGlobe = (countries, map, lines) => {
     }
   }, 1000);
   } catch (error) {
+    hideLoading();
     globe = undefined;
   }
 };
 
-const connectToStream = () => {
-  const streamUrl = 'https://streamer-test-325858668484.us-west1.run.app/stream';
-  let eventSource;
+const pulseAt = (lat, lng) => {
+  if (!globe || prefersReducedMotion) return;
+  ringsArray.push({ lat, lng, ts: Date.now() });
+  globe.ringsData(ringsArray);
+  rebuildArcs(lat, lng);
+};
 
-  const establishConnection = () => {
-    eventSource = new EventSource(streamUrl);
+const focusLocation = (lat, lng) => {
+  if (!globe || !camera || !controls) return;
+  const c = globe.getCoords(lat, lng, 0);
+  const p = new THREE.Vector3(c.x, c.y, c.z).applyEuler(globe.rotation);
+  const dist = Math.min(Math.max(camera.position.length(), controls.minDistance), controls.maxDistance);
+  camera.position.copy(p.normalize().multiplyScalar(dist));
+  stopAutoRotate();
+  queueAutoRotateResume();
+  controls.update();
+  pulseAt(lat, lng);
+};
 
-    eventSource.onmessage = (event) => {
-      const raw = event.data;
-      if (!raw || raw.charAt(0) === ':') return;
-      let data;
-      try {
-        data = JSON.parse(raw);
-      } catch (err) {
-        return;
-      }
-      updateGlobeWithStreamData(data);
-    };
+let eventSource;
+let retryDelay = 2000;
+let retryTimer;
+const retryDelayMax = 60000;
+const streamUrl = 'https://streamer-test-325858668484.us-west1.run.app/stream';
 
-    eventSource.onerror = () => {
-      if (eventSource.readyState === EventSource.CLOSED) {
-        setTimeout(establishConnection, 5000);
-      }
-    };
+const establishConnection = () => {
+  if (document.hidden) return;
+  eventSource = new EventSource(streamUrl);
+
+  eventSource.onopen = () => {
+    retryDelay = 2000;
   };
 
+  eventSource.onmessage = (event) => {
+    const raw = event.data;
+    if (!raw || raw.charAt(0) === ':') return;
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (err) {
+      return;
+    }
+    updateGlobeWithStreamData(data);
+  };
+
+  eventSource.onerror = () => {
+    if (eventSource.readyState === EventSource.CLOSED) {
+      clearTimeout(retryTimer);
+      retryTimer = setTimeout(establishConnection, retryDelay);
+      retryDelay = Math.min(retryDelay * 2, retryDelayMax);
+    }
+  };
+};
+
+const connectToStream = () => {
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearTimeout(retryTimer);
+      if (eventSource) eventSource.close();
+    } else if (!eventSource || eventSource.readyState === EventSource.CLOSED) {
+      retryDelay = 2000;
+      establishConnection();
+    }
+  });
   establishConnection();
 };
 
@@ -240,26 +309,57 @@ const relativeTime = (ts) => {
   return `${Math.floor(m / 60)}h ago`;
 };
 
-const updateFeedCount = () => {
-  const el = document.getElementById('feed-count');
-  if (!el) return;
+const updateFeedStats = () => {
   const now = Date.now();
-  feedTimes = feedTimes.filter(t => now - t < dataRetentionTime);
-  el.textContent = `${feedTimes.length} in last 5 min`;
+  feedLog = feedLog.filter(e => now - e.ts < dataRetentionTime);
+
+  const countEl = document.getElementById('feed-count');
+  if (countEl) countEl.textContent = `${feedLog.length} in last 5 min`;
+
+  const topEl = document.getElementById('feed-top');
+  if (topEl) {
+    const tally = {};
+    let top = '';
+    let max = 0;
+    feedLog.forEach(e => {
+      tally[e.city] = (tally[e.city] || 0) + 1;
+      if (tally[e.city] > max) {
+        max = tally[e.city];
+        top = e.city;
+      }
+    });
+    topEl.textContent = max > 1 ? `Most active: ${top}` : '';
+  }
 };
 
-const renderConnCard = (data) => {
+const renderConnCard = (data, lat, lon) => {
   const dataContent = document.getElementById('data-content');
   if (!dataContent) return;
   const city = (data.city || '').trim();
   if (!city || city.toLowerCase() === 'unknown') return;
 
   const ts = Date.now();
-  feedTimes.push(ts);
+  feedLog.push({ ts, city });
 
-  const card = document.createElement('div');
+  const first = dataContent.firstElementChild;
+  if (first && first.dataset.city === city) {
+    const n = Number(first.dataset.count) + 1;
+    first.dataset.count = n;
+    first.dataset.ts = ts;
+    const countEl = first.querySelector('.conn-count');
+    if (countEl) countEl.textContent = `x${n}`;
+    const timeEl = first.querySelector('.conn-time');
+    if (timeEl) timeEl.textContent = relativeTime(ts);
+    updateFeedStats();
+    return;
+  }
+
+  const card = document.createElement('button');
+  card.type = 'button';
   card.className = 'conn-card';
   card.dataset.ts = ts;
+  card.dataset.city = city;
+  card.dataset.count = 1;
 
   const dot = document.createElement('span');
   dot.className = 'conn-dot';
@@ -268,18 +368,30 @@ const renderConnCard = (data) => {
   name.className = 'conn-city';
   name.textContent = city;
 
+  const count = document.createElement('span');
+  count.className = 'conn-count';
+
   const time = document.createElement('span');
   time.className = 'conn-time';
   time.textContent = relativeTime(ts);
 
-  card.append(dot, name, time);
+  card.append(dot, name, count, time);
+
+  if (lat !== null && lon !== null) {
+    card.dataset.lat = lat;
+    card.dataset.lon = lon;
+    card.addEventListener('click', () => {
+      focusLocation(parseFloat(card.dataset.lat), parseFloat(card.dataset.lon));
+    });
+  }
+
   dataContent.prepend(card);
 
   while (dataContent.childElementCount > maxDataRows) {
     dataContent.removeChild(dataContent.lastElementChild);
   }
 
-  updateFeedCount();
+  updateFeedStats();
 };
 
 const startFeedTicker = () => {
@@ -288,7 +400,7 @@ const startFeedTicker = () => {
       const t = card.querySelector('.conn-time');
       if (t) t.textContent = relativeTime(Number(card.dataset.ts));
     });
-    updateFeedCount();
+    updateFeedStats();
   }, 1000);
 };
 
@@ -345,11 +457,14 @@ const rebuildArcs = (focusLat, focusLng) => {
 const updateGlobeWithStreamData = (data) => {
   if (!data || typeof data !== 'object') return;
 
-  renderConnCard(data);
-
   const lat = parseFloat(data.lat);
   const lon = parseFloat(data.lon);
-  if (isNaN(lat) || isNaN(lon)) return;
+  const valid = Number.isFinite(lat) && Number.isFinite(lon) &&
+    Math.abs(lat) <= 90 && Math.abs(lon) <= 180;
+
+  renderConnCard(data, valid ? lat : null, valid ? lon : null);
+
+  if (!valid) return;
 
   const timestamp = Date.now();
   dataBuffer.push({ ...data, lat, lon, timestamp });
