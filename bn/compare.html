@@ -356,7 +356,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>পুরানো এবং নতুন ইমেল</h6>
-            <p>পুরানো লঙ্ঘন আপনাকে অনুসরণ করেছে কিনা যাচাই করুন</p>
+            <p>আপনার পুরানো ঠিকানা এখনও আপনাকে ঝুঁকিতে ফেলছে কিনা দেখুন</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -401,11 +401,11 @@
               <a href="privacy" target="_blank" rel="noopener">গোপনীয়তা নীতি</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> শুধুমাত্র আপনার নিজের বা যাচাই করার অনুমতি আছে এমন ইমেল যাচাই করুন।
+              <i class="fas fa-user-check"></i> শুধুমাত্র আপনার নিজের বা অনুসন্ধান করার অনুমতি আছে এমন ঠিকানা যাচাই করুন।
               <a href="shield" target="_blank" rel="noopener">অনুসন্ধানে দেখাতে চান না? প্রাইভেসি শিল্ড সক্ষম করুন</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> <span id="breachCount">...</span> লঙ্ঘন এবং <span id="recordCount">...</span> উন্মুক্ত অ্যাকাউন্টে অনুসন্ধান
+              <i class="fas fa-database"></i> আমরা <span id="breachCount">...</span> লঙ্ঘনের বিপরীতে যাচাই করি, যাতে <span id="recordCount">...</span> উন্মুক্ত অ্যাকাউন্ট অন্তর্ভুক্ত
               | <a href="our-repository" target="_blank" rel="noopener" title="সমস্ত লঙ্ঘন দেখুন">সম্পূর্ণ তালিকা দেখুন <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -432,7 +432,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">মোট লঙ্ঘন</div>
-                  <div class="email-label" id="labelA">ইমেল A</div>
+                  <div class="email-label" id="labelA">প্রথম ইমেল</div>
                 </div>
               </div>
             </div>
@@ -456,7 +456,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">মোট লঙ্ঘন</div>
-                  <div class="email-label" id="labelB">ইমেল B</div>
+                  <div class="email-label" id="labelB">দ্বিতীয় ইমেল</div>
                 </div>
               </div>
             </div>
@@ -476,7 +476,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">শুধু ইমেল ১</span>
+              <span class="label" id="vennLabelA">শুধু প্রথম ইমেল</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -484,7 +484,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">শুধু ইমেল ২</span>
+              <span class="label" id="vennLabelB">শুধু দ্বিতীয় ইমেল</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -503,9 +503,10 @@
             <p>আপনার লঙ্ঘনের তীব্রতার উপর ভিত্তি করে আপনাকে কতটা জরুরি পদক্ষেপ নিতে হবে</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> নিম্ন (০-৩৩): জরুরি পদক্ষেপ প্রয়োজন নেই</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> মাঝারি (৩৪-৬৬): শীঘ্রই পাসওয়ার্ড পরিবর্তন করুন</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> উচ্চ (৬৭-১০০): আজই পাসওয়ার্ড পরিবর্তন করুন</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> নিম্ন (০-২৫): জরুরি পদক্ষেপ প্রয়োজন নেই</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> মাঝারি (২৬-৫০): শীঘ্রই পাসওয়ার্ড পরিবর্তন করুন</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> উচ্চ (৫১-৭৫): এই সপ্তাহে পাসওয়ার্ড পরিবর্তন করুন</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> গুরুতর (৭৬-১০০): আজই পাসওয়ার্ড পরিবর্তন করুন</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -527,8 +528,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">লঙ্ঘনের নাম</th>
-                  <th id="thEmailA">ইমেল A</th>
-                  <th id="thEmailB">ইমেল B</th>
+                  <th id="thEmailA">প্রথম ইমেল</th>
+                  <th id="thEmailB">দ্বিতীয় ইমেল</th>
                   <th style="text-align: left;">উন্মুক্ত ডেটা
                     <span class="help-tooltip" title="ফাঁস হওয়া ব্যক্তিগত তথ্যের ধরন: পাসওয়ার্ড, ইমেল, নাম, ফোন নম্বর, ঠিকানা ইত্যাদি। পাসওয়ার্ড সবচেয়ে গুরুত্বপূর্ণ।">
                       <i class="fas fa-question-circle"></i>
@@ -586,7 +587,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> লঙ্ঘন তুলনা রিপোর্ট এক্সপোর্ট করুন</h3>
           <p>আপনার সম্পূর্ণ লঙ্ঘন বিশ্লেষণ ফলাফল ডাউনলোড বা প্রিন্ট করুন</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> স্প্রেডশিট
+            <i class="fas fa-file-excel"></i> CSV ডাউনলোড করুন
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> প্রিন্ট / PDF হিসাবে সংরক্ষণ করুন
@@ -619,7 +620,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>উভয় ইমেলই নিরাপদ! <strong>বিলিয়ন উন্মুক্ত রেকর্ডের</strong> আমাদের ডাটাবেসে কোনো লঙ্ঘন পাওয়া যায়নি।</p>
+            <p>আমরা আমাদের <strong>বিলিয়ন উন্মুক্ত রেকর্ডের</strong> ডাটাবেস যাচাই করেছি এবং কোনো ঠিকানার জন্যই কিছু পাইনি।</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> এভাবেই চালিয়ে যান</h5>

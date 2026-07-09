@@ -664,6 +664,10 @@ function truncateEmail(email, maxLength = 20) {
     return email.substring(0, maxLength - 3) + '...';
 }
 
+function breachWord(count) {
+    return count === 1 ? 'breach' : 'breaches';
+}
+
 /**
  * Render summary cards
  */
@@ -695,9 +699,8 @@ function renderVennDiagram() {
     $('#vennCountB').text(onlyB);
     $('#vennCountShared').text(shared);
 
-    // Update Venn labels - keep simple "Email 1" / "Email 2" for clarity
-    $('#vennLabelA').text('Only Email 1');
-    $('#vennLabelB').text('Only Email 2');
+    $('#vennLabelA').text('Only first email');
+    $('#vennLabelB').text('Only second email');
 
     // Add full email as tooltip
     $('#vennLeft').attr('title', comparisonData.emailA);
@@ -788,8 +791,9 @@ function renderRiskComparison() {
     // Show combined risk alert if shared breaches exist
     if (comparisonData.sharedBreaches.size > 0 && combinedScore > Math.max(riskA.risk_score, riskB.risk_score)) {
         $('#combinedRiskAlert').show();
+        const sharedCount = comparisonData.sharedBreaches.size;
         $('#combinedRiskText').text(
-            `Combined risk is HIGHER than individual - ${comparisonData.sharedBreaches.size} shared breach(es) mean potential password reuse across both accounts.`
+            `${sharedCount} shared ${breachWord(sharedCount)} ${sharedCount === 1 ? 'raises' : 'raise'} your combined risk: if you reused a password across these accounts, one leak could unlock both.`
         );
     } else {
         $('#combinedRiskAlert').hide();
@@ -1182,9 +1186,9 @@ function renderInsights() {
         insights.push({
             type: 'critical',
             icon: 'fa-exclamation-circle',
-            title: 'CRITICAL - Shared Password Risk',
+            title: 'Critical: Shared Password Risk',
             content: `
-                <p>Both emails appear in <strong>${sharedPasswordBreaches.length} breach(es)</strong> where passwords were stolen.</p>
+                <p>Both emails appear in <strong>${sharedPasswordBreaches.length} ${breachWord(sharedPasswordBreaches.length)}</strong> where passwords were stolen.</p>
                 <p><strong>What this means:</strong> If you used the same password for both emails on any of these sites, hackers may already have access to your accounts.</p>
                 <div class="action-checklist">
                     <p><strong>Action checklist:</strong></p>
@@ -1208,9 +1212,9 @@ function renderInsights() {
         insights.push({
             type: 'warning',
             icon: 'fa-phone',
-            title: 'WARNING - Shared Phone Number',
+            title: 'Warning: Shared Phone Number',
             content: `
-                <p>Both accounts have phone numbers exposed in <strong>${sharedPhoneBreaches.length} breach(es)</strong>.</p>
+                <p>Both accounts have phone numbers exposed in <strong>${sharedPhoneBreaches.length} ${breachWord(sharedPhoneBreaches.length)}</strong>.</p>
                 <p><strong>What this means:</strong> Scammers may call or text you pretending to be your bank or a company you trust.</p>
                 <div class="action-checklist">
                     <p><strong>Action checklist:</strong></p>
@@ -1235,9 +1239,9 @@ function renderInsights() {
         insights.push({
             type: 'critical',
             icon: 'fa-unlock-alt',
-            title: 'CRITICAL - Weak Password Storage',
+            title: 'Critical: Weak Password Storage',
             content: `
-                <p><strong>${highRiskBreaches.length} shared breach(es)</strong> stored passwords without proper protection.</p>
+                <p><strong>${highRiskBreaches.length} shared ${breachWord(highRiskBreaches.length)}</strong> stored passwords without proper protection.</p>
                 <p><strong>What this means:</strong> Your exact passwords from these sites are likely known to hackers: ${highRiskBreaches.map(b => escapeHtml(b)).join(', ')}</p>
                 <div class="action-checklist">
                     <p><strong>Action checklist:</strong></p>
@@ -1256,10 +1260,10 @@ function renderInsights() {
         insights.push({
             type: 'positive',
             icon: 'fa-shield-alt',
-            title: 'POSITIVE - No Shared Breaches',
+            title: 'Good News: No Shared Breaches',
             content: `
-                <p>Good news! These emails were not found in any of the same data breaches.</p>
-                <p>This suggests the accounts have been used on different services or one has better security practices.</p>
+                <p>These emails were not found in any of the same data breaches.</p>
+                <p>This lowers the chance that a single stolen password unlocks both accounts.</p>
             `
         });
     }
@@ -1269,7 +1273,7 @@ function renderInsights() {
         insights.push({
             type: 'positive',
             icon: 'fa-check-circle',
-            title: 'EXCELLENT - No Breaches Found',
+            title: 'Excellent: No Breaches Found',
             content: `
                 <p>Neither email appears in any known data breaches.</p>
                 <p>Keep up the good security practices!</p>
@@ -1282,9 +1286,9 @@ function renderInsights() {
         insights.push({
             type: 'warning',
             icon: 'fa-key',
-            title: 'RECOMMENDATION - Protect Your Accounts',
+            title: 'Recommendation: Protect Your Accounts',
             content: `
-                <p>Since these emails share <strong>${sharedCount} breach(es)</strong>, here is how to stay safe:</p>
+                <p>Since these emails share <strong>${sharedCount} ${breachWord(sharedCount)}</strong>, here is how to stay safe:</p>
                 <div class="action-checklist">
                     <ol>
                         <li><strong>Use unique passwords</strong> for every account (never reuse passwords)</li>
@@ -1368,7 +1372,7 @@ function exportToCSV() {
     const safeEmailA = sanitizeCSV(comparisonData.emailA);
     const safeEmailB = sanitizeCSV(comparisonData.emailB);
 
-    let csv = `Breach Name,Email A (${safeEmailA}),Email B (${safeEmailB}),Shared,Data Exposed,Date\n`;
+    let csv = `Breach Name,First Email (${safeEmailA}),Second Email (${safeEmailB}),Shared,Data Exposed,Date\n`;
 
     comparisonData.allBreaches.forEach((breach, name) => {
         const isShared = breach.inA && breach.inB;

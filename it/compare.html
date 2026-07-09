@@ -449,7 +449,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>Email vecchia e nuova</h6>
-            <p>Verifica se le vecchie violazioni ti hanno seguito</p>
+            <p>Scopri se il tuo vecchio indirizzo ti mette ancora a rischio</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -494,11 +494,11 @@
               <a href="privacy" target="_blank" rel="noopener">Informativa sulla privacy</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> Verifica solo le email che possiedi o che hai il permesso di controllare.
+              <i class="fas fa-user-check"></i> Verifica solo gli indirizzi che possiedi o che hai il permesso di consultare.
               <a href="shield" target="_blank" rel="noopener">Non vuoi comparire nelle ricerche? Attiva Privacy Shield</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> Ricerca tra <span id="breachCount">...</span> violazioni con <span id="recordCount">...</span> account esposti
+              <i class="fas fa-database"></i> Verifichiamo su <span id="breachCount">...</span> violazioni che coprono <span id="recordCount">...</span> account esposti
               | <a href="our-repository" target="_blank" rel="noopener" title="Visualizza tutte le violazioni">Vedi l'elenco completo <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -525,7 +525,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">Violazioni totali</div>
-                  <div class="email-label" id="labelA">Email A</div>
+                  <div class="email-label" id="labelA">Prima email</div>
                 </div>
               </div>
             </div>
@@ -549,7 +549,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">Violazioni totali</div>
-                  <div class="email-label" id="labelB">Email B</div>
+                  <div class="email-label" id="labelB">Seconda email</div>
                 </div>
               </div>
             </div>
@@ -569,7 +569,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">Solo Email 1</span>
+              <span class="label" id="vennLabelA">Solo prima email</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -577,7 +577,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">Solo Email 2</span>
+              <span class="label" id="vennLabelB">Solo seconda email</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -596,9 +596,10 @@
             <p>Con quanta urgenza devi agire, in base alla gravità delle tue violazioni</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> Basso (0-33): nessuna azione urgente necessaria</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> Medio (34-66): cambia le password al più presto</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> Alto (67-100): cambia le password oggi stesso</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> Basso (0-25): nessuna azione urgente necessaria</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Moderato (26-50): cambia le password al più presto</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> Alto (51-75): cambia le password questa settimana</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> Critico (76-100): cambia le password oggi stesso</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -620,8 +621,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">Nome della violazione</th>
-                  <th id="thEmailA">Email A</th>
-                  <th id="thEmailB">Email B</th>
+                  <th id="thEmailA">Prima email</th>
+                  <th id="thEmailB">Seconda email</th>
                   <th style="text-align: left;">Dati esposti
                     <span class="help-tooltip" title="Tipi di informazioni personali trapelate: password, email, nomi, numeri di telefono, indirizzi, ecc. Le password sono le più critiche.">
                       <i class="fas fa-question-circle"></i>
@@ -679,7 +680,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> Esporta il report di confronto delle violazioni</h3>
           <p>Scarica o stampa i risultati completi della tua analisi delle violazioni</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> Foglio di calcolo
+            <i class="fas fa-file-excel"></i> Scarica CSV
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> Stampa / Salva come PDF
@@ -712,7 +713,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>Entrambi gli indirizzi email sono puliti! Nessuna violazione è stata trovata nel nostro database di <strong>miliardi di record esposti</strong>.</p>
+            <p>Abbiamo controllato il nostro database di <strong>miliardi di record esposti</strong> e non abbiamo trovato nulla per nessuno dei due indirizzi.</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> Mantieni la situazione così</h5>

@@ -354,7 +354,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>Alte und Neue E-Mail</h6>
-            <p>Prüfen Sie, ob alte Lecks Sie verfolgt haben</p>
+            <p>Sehen Sie, ob Ihre alte Adresse Sie noch gefährdet</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -399,11 +399,11 @@
               <a href="privacy" target="_blank" rel="noopener">Datenschutzrichtlinie</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> Überprüfen Sie nur E-Mails, die Ihnen gehören oder für die Sie die Erlaubnis haben.
+              <i class="fas fa-user-check"></i> Überprüfen Sie nur Adressen, die Ihnen gehören oder die Sie mit Erlaubnis abfragen dürfen.
               <a href="shield" target="_blank" rel="noopener">Möchten Sie nicht in Suchen erscheinen? Aktivieren Sie den Datenschutz-Schild</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> Durchsuchen von <span id="breachCount">...</span> Datenlecks mit <span id="recordCount">...</span> betroffenen Konten
+              <i class="fas fa-database"></i> Wir prüfen gegen <span id="breachCount">...</span> Datenlecks mit <span id="recordCount">...</span> betroffenen Konten
               | <a href="our-repository" target="_blank" rel="noopener" title="Alle Datenlecks anzeigen">Vollständige Liste anzeigen <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -430,7 +430,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">Gesamtzahl der Lecks</div>
-                  <div class="email-label" id="labelA">E-Mail A</div>
+                  <div class="email-label" id="labelA">Erste E-Mail</div>
                 </div>
               </div>
             </div>
@@ -454,7 +454,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">Gesamtzahl der Lecks</div>
-                  <div class="email-label" id="labelB">E-Mail B</div>
+                  <div class="email-label" id="labelB">Zweite E-Mail</div>
                 </div>
               </div>
             </div>
@@ -474,7 +474,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">Nur E-Mail 1</span>
+              <span class="label" id="vennLabelA">Nur erste E-Mail</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -482,7 +482,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">Nur E-Mail 2</span>
+              <span class="label" id="vennLabelB">Nur zweite E-Mail</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -501,9 +501,10 @@
             <p>Wie dringend Sie handeln müssen, basierend auf der Schwere Ihrer Lecks</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> Niedrig (0-33): Keine dringenden Maßnahmen erforderlich</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> Mittel (34-66): Passwörter bald ändern</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> Hoch (67-100): Passwörter heute ändern</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> Niedrig (0-25): Keine dringenden Maßnahmen erforderlich</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Mittel (26-50): Passwörter bald ändern</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> Hoch (51-75): Passwörter diese Woche ändern</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> Kritisch (76-100): Passwörter heute ändern</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -525,8 +526,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">Name des Lecks</th>
-                  <th id="thEmailA">E-Mail A</th>
-                  <th id="thEmailB">E-Mail B</th>
+                  <th id="thEmailA">Erste E-Mail</th>
+                  <th id="thEmailB">Zweite E-Mail</th>
                   <th style="text-align: left;">Betroffene Daten
                     <span class="help-tooltip" title="Arten von geleakten persönlichen Informationen: Passwörter, E-Mails, Namen, Telefonnummern, Adressen usw. Passwörter sind am kritischsten.">
                       <i class="fas fa-question-circle"></i>
@@ -584,7 +585,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> Datenleck-Vergleichsbericht exportieren</h3>
           <p>Laden Sie Ihre vollständigen Analyseergebnisse herunter oder drucken Sie sie aus</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> Tabelle
+            <i class="fas fa-file-excel"></i> CSV herunterladen
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> Drucken / Als PDF speichern
@@ -617,7 +618,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>Beide E-Mails sind sauber! In unserer Datenbank mit <strong>Milliarden von betroffenen Datensätzen</strong> wurden keine Lecks gefunden.</p>
+            <p>Wir haben unsere Datenbank mit <strong>Milliarden von betroffenen Datensätzen</strong> durchsucht und für keine der beiden Adressen etwas gefunden.</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> So bleibt es dabei</h5>

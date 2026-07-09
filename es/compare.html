@@ -449,7 +449,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>Correo antiguo y nuevo</h6>
-            <p>Compruebe si las filtraciones antiguas le siguen</p>
+            <p>Vea si su dirección antigua aún le pone en riesgo</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -494,11 +494,11 @@
               <a href="privacy" target="_blank" rel="noopener">Política de privacidad</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> Compruebe únicamente correos que le pertenezcan o para los que tenga permiso.
+              <i class="fas fa-user-check"></i> Compruebe únicamente direcciones que le pertenezcan o para las que tenga permiso de consulta.
               <a href="shield" target="_blank" rel="noopener">¿No desea aparecer en las búsquedas? Active Privacy Shield</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> Buscando en <span id="breachCount">...</span> filtraciones con <span id="recordCount">...</span> cuentas expuestas
+              <i class="fas fa-database"></i> Consultamos <span id="breachCount">...</span> filtraciones que abarcan <span id="recordCount">...</span> cuentas expuestas
               | <a href="our-repository" target="_blank" rel="noopener" title="Ver todas las filtraciones">Ver lista completa <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -525,7 +525,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">Total de filtraciones</div>
-                  <div class="email-label" id="labelA">Correo A</div>
+                  <div class="email-label" id="labelA">Primer correo</div>
                 </div>
               </div>
             </div>
@@ -549,7 +549,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">Total de filtraciones</div>
-                  <div class="email-label" id="labelB">Correo B</div>
+                  <div class="email-label" id="labelB">Segundo correo</div>
                 </div>
               </div>
             </div>
@@ -569,7 +569,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">Solo correo 1</span>
+              <span class="label" id="vennLabelA">Solo el primer correo</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -577,7 +577,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">Solo correo 2</span>
+              <span class="label" id="vennLabelB">Solo el segundo correo</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -596,9 +596,10 @@
             <p>Con qué urgencia debe actuar, según la gravedad de sus filtraciones</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> Bajo (0-33): no se requiere acción urgente</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> Medio (34-66): cambie las contraseñas pronto</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> Alto (67-100): cambie las contraseñas hoy</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> Bajo (0-25): no se requiere acción urgente</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Moderado (26-50): cambie las contraseñas pronto</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> Alto (51-75): cambie las contraseñas esta semana</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> Crítico (76-100): cambie las contraseñas hoy</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -620,8 +621,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">Nombre de la filtración</th>
-                  <th id="thEmailA">Correo A</th>
-                  <th id="thEmailB">Correo B</th>
+                  <th id="thEmailA">Primer correo</th>
+                  <th id="thEmailB">Segundo correo</th>
                   <th style="text-align: left;">Datos expuestos
                     <span class="help-tooltip" title="Tipos de información personal filtrada: contraseñas, correos, nombres, números de teléfono, direcciones, etc. Las contraseñas son lo más crítico.">
                       <i class="fas fa-question-circle"></i>
@@ -679,7 +680,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> Exportar informe de comparación de filtraciones</h3>
           <p>Descargue o imprima los resultados completos de su análisis de filtraciones</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> Hoja de cálculo
+            <i class="fas fa-file-excel"></i> Descargar CSV
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> Imprimir / Guardar como PDF
@@ -712,7 +713,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>¡Ambos correos electrónicos están limpios! No se encontró ninguna filtración en nuestra base de datos de <strong>miles de millones de registros expuestos</strong>.</p>
+            <p>Hemos revisado nuestra base de datos de <strong>miles de millones de registros expuestos</strong> y no hemos encontrado nada para ninguna de las dos direcciones.</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> Manténgalo así</h5>

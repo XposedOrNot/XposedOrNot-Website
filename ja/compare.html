@@ -449,7 +449,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>新旧のメール</h6>
-            <p>過去の侵害が引き継がれていないか確認</p>
+            <p>古いメールアドレスが今もリスクになっていないか確認</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -494,11 +494,11 @@
               <a href="privacy" target="_blank" rel="noopener">プライバシーポリシー</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> ご自身が所有している、または確認の許可を得ているメールのみを確認してください。
+              <i class="fas fa-user-check"></i> ご自身が所有している、または照会の許可を得ているメールアドレスのみを確認してください。
               <a href="shield" target="_blank" rel="noopener">検索結果に表示されたくない場合は Privacy Shield を有効化</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> <span id="breachCount">...</span> 件のデータ侵害（漏洩したアカウント <span id="recordCount">...</span> 件）を検索しています
+              <i class="fas fa-database"></i> <span id="breachCount">...</span> 件のデータ侵害（漏洩したアカウント <span id="recordCount">...</span> 件）と照合しています
               | <a href="our-repository" target="_blank" rel="noopener" title="すべてのデータ侵害を表示">全リストを見る <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -525,7 +525,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">データ侵害の合計</div>
-                  <div class="email-label" id="labelA">メール A</div>
+                  <div class="email-label" id="labelA">1つ目のメール</div>
                 </div>
               </div>
             </div>
@@ -549,7 +549,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">データ侵害の合計</div>
-                  <div class="email-label" id="labelB">メール B</div>
+                  <div class="email-label" id="labelB">2つ目のメール</div>
                 </div>
               </div>
             </div>
@@ -569,7 +569,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">メール1のみ</span>
+              <span class="label" id="vennLabelA">1つ目のメールのみ</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -577,7 +577,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">メール2のみ</span>
+              <span class="label" id="vennLabelB">2つ目のメールのみ</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -596,9 +596,10 @@
             <p>侵害の深刻度に基づき、どれだけ早急に対応すべきかを示します</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> 低（0〜33）：緊急の対応は不要</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> 中（34〜66）：早めにパスワードを変更</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> 高（67〜100）：今すぐパスワードを変更</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> 低（0〜25）：緊急の対応は不要</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> 中（26〜50）：早めにパスワードを変更</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> 高（51〜75）：今週中にパスワードを変更</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> 重大（76〜100）：今日中にパスワードを変更</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -620,8 +621,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">侵害名</th>
-                  <th id="thEmailA">メール A</th>
-                  <th id="thEmailB">メール B</th>
+                  <th id="thEmailA">1つ目のメール</th>
+                  <th id="thEmailB">2つ目のメール</th>
                   <th style="text-align: left;">漏洩したデータ
                     <span class="help-tooltip" title="漏洩した個人情報の種類：パスワード、メール、氏名、電話番号、住所など。なかでもパスワードが最も重大です。">
                       <i class="fas fa-question-circle"></i>
@@ -679,7 +680,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> データ侵害比較レポートをエクスポート</h3>
           <p>侵害分析の結果一式をダウンロードまたは印刷できます</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> スプレッドシート
+            <i class="fas fa-file-excel"></i> CSVをダウンロード
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> 印刷 / PDF として保存
@@ -712,7 +713,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>両方のメールアドレスとも安全です！<strong>数十億件の漏洩レコード</strong>を収録した当社のデータベースで、侵害は見つかりませんでした。</p>
+            <p><strong>数十億件の漏洩レコード</strong>を収録した当社のデータベースを確認しましたが、どちらのメールアドレスにも該当はありませんでした。</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> この状態を保ちましょう</h5>

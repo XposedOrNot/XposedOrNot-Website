@@ -449,7 +449,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>Старый и новый email</h6>
-            <p>Проверьте, не тянутся ли за вами старые утечки</p>
+            <p>Узнайте, не подвергает ли вас риску ваш старый адрес</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -494,11 +494,11 @@
               <a href="privacy" target="_blank" rel="noopener">Политика конфиденциальности</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> Проверяйте только те email, которые принадлежат вам или которые вам разрешено проверять.
+              <i class="fas fa-user-check"></i> Проверяйте только те адреса, которые принадлежат вам или которые вам разрешено проверять.
               <a href="shield" target="_blank" rel="noopener">Не хотите появляться в результатах поиска? Включите Privacy Shield</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> Поиск по <span id="breachCount">...</span> утечкам с <span id="recordCount">...</span> раскрытыми аккаунтами
+              <i class="fas fa-database"></i> Мы сверяем данные с <span id="breachCount">...</span> утечками, охватывающими <span id="recordCount">...</span> раскрытых аккаунтов
               | <a href="our-repository" target="_blank" rel="noopener" title="Посмотреть все утечки">Полный список <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -525,7 +525,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">Всего утечек</div>
-                  <div class="email-label" id="labelA">Email A</div>
+                  <div class="email-label" id="labelA">Первый email</div>
                 </div>
               </div>
             </div>
@@ -549,7 +549,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">Всего утечек</div>
-                  <div class="email-label" id="labelB">Email B</div>
+                  <div class="email-label" id="labelB">Второй email</div>
                 </div>
               </div>
             </div>
@@ -569,7 +569,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">Только Email 1</span>
+              <span class="label" id="vennLabelA">Только первый email</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -577,7 +577,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">Только Email 2</span>
+              <span class="label" id="vennLabelB">Только второй email</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -596,9 +596,10 @@
             <p>Насколько срочно вам нужно действовать, исходя из серьёзности ваших утечек</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> Низкий (0–33): срочных мер не требуется</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> Средний (34–66): смените пароли в ближайшее время</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> Высокий (67–100): смените пароли сегодня</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> Низкий (0–25): срочных мер не требуется</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Умеренный (26–50): смените пароли в ближайшее время</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> Высокий (51–75): смените пароли на этой неделе</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> Критический (76–100): смените пароли сегодня</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -620,8 +621,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">Название утечки</th>
-                  <th id="thEmailA">Email A</th>
-                  <th id="thEmailB">Email B</th>
+                  <th id="thEmailA">Первый email</th>
+                  <th id="thEmailB">Второй email</th>
                   <th style="text-align: left;">Раскрытые данные
                     <span class="help-tooltip" title="Типы попавшей в утечку личной информации: пароли, email, имена, номера телефонов, адреса и т. д. Пароли — самое критичное.">
                       <i class="fas fa-question-circle"></i>
@@ -679,7 +680,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> Экспорт отчёта о сравнении утечек</h3>
           <p>Скачайте или распечатайте полные результаты анализа утечек</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> Таблица
+            <i class="fas fa-file-excel"></i> Скачать CSV
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> Печать / Сохранить как PDF
@@ -712,7 +713,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>Оба email-адреса чисты! В нашей базе из <strong>миллиардов раскрытых записей</strong> не найдено ни одной утечки.</p>
+            <p>Мы проверили нашу базу из <strong>миллиардов раскрытых записей</strong> и не нашли ничего ни по одному из адресов.</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> Сохраните это так</h5>

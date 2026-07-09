@@ -357,7 +357,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>पुराना और नया ईमेल</h6>
-            <p>जांचें कि क्या पुराने उल्लंघन आपका पीछा कर रहे हैं</p>
+            <p>देखें कि क्या आपका पुराना पता अभी भी आपको जोखिम में डालता है</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -402,11 +402,11 @@
               <a href="privacy" target="_blank" rel="noopener">गोपनीयता नीति</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> केवल उन ईमेल की जांच करें जो आपके हैं या जिनकी जांच करने की आपको अनुमति है।
+              <i class="fas fa-user-check"></i> केवल उन पतों की जांच करें जो आपके हैं या जिन्हें खोजने की आपको अनुमति है।
               <a href="shield" target="_blank" rel="noopener">खोजों में दिखना नहीं चाहते? गोपनीयता शील्ड सक्षम करें</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> <span id="breachCount">...</span> उल्लंघनों में <span id="recordCount">...</span> उजागर खातों की खोज
+              <i class="fas fa-database"></i> हम <span id="breachCount">...</span> उल्लंघनों के विरुद्ध जांच करते हैं जिनमें <span id="recordCount">...</span> उजागर खाते शामिल हैं
               | <a href="our-repository" target="_blank" rel="noopener" title="सभी उल्लंघन देखें">पूर्ण सूची देखें <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -433,7 +433,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">कुल उल्लंघन</div>
-                  <div class="email-label" id="labelA">ईमेल A</div>
+                  <div class="email-label" id="labelA">पहला ईमेल</div>
                 </div>
               </div>
             </div>
@@ -457,7 +457,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">कुल उल्लंघन</div>
-                  <div class="email-label" id="labelB">ईमेल B</div>
+                  <div class="email-label" id="labelB">दूसरा ईमेल</div>
                 </div>
               </div>
             </div>
@@ -477,7 +477,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">केवल ईमेल 1</span>
+              <span class="label" id="vennLabelA">केवल पहला ईमेल</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -485,7 +485,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">केवल ईमेल 2</span>
+              <span class="label" id="vennLabelB">केवल दूसरा ईमेल</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -504,9 +504,10 @@
             <p>आपके उल्लंघनों की गंभीरता के आधार पर आपको कितनी तत्काल कार्रवाई करने की आवश्यकता है</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> कम (0-33): कोई तत्काल कार्रवाई आवश्यक नहीं</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> मध्यम (34-66): जल्द पासवर्ड बदलें</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> उच्च (67-100): आज ही पासवर्ड बदलें</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> कम (0-25): कोई तत्काल कार्रवाई आवश्यक नहीं</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> मध्यम (26-50): जल्द पासवर्ड बदलें</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> उच्च (51-75): इस सप्ताह पासवर्ड बदलें</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> गंभीर (76-100): आज ही पासवर्ड बदलें</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -528,8 +529,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">उल्लंघन का नाम</th>
-                  <th id="thEmailA">ईमेल A</th>
-                  <th id="thEmailB">ईमेल B</th>
+                  <th id="thEmailA">पहला ईमेल</th>
+                  <th id="thEmailB">दूसरा ईमेल</th>
                   <th style="text-align: left;">उजागर डेटा
                     <span class="help-tooltip" title="लीक हुई व्यक्तिगत जानकारी के प्रकार: पासवर्ड, ईमेल, नाम, फोन नंबर, पते, आदि। पासवर्ड सबसे महत्वपूर्ण हैं।">
                       <i class="fas fa-question-circle"></i>
@@ -587,7 +588,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> उल्लंघन तुलना रिपोर्ट निर्यात करें</h3>
           <p>अपने पूर्ण उल्लंघन विश्लेषण परिणाम डाउनलोड या प्रिंट करें</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> स्प्रेडशीट
+            <i class="fas fa-file-excel"></i> CSV डाउनलोड करें
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> प्रिंट / PDF के रूप में सहेजें
@@ -620,7 +621,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>दोनों ईमेल साफ हैं! <strong>अरबों उजागर रिकॉर्ड</strong> के हमारे डेटाबेस में कोई उल्लंघन नहीं मिला।</p>
+            <p>हमने <strong>अरबों उजागर रिकॉर्ड</strong> के अपने डेटाबेस की जांच की और दोनों में से किसी भी पते के लिए कुछ नहीं मिला।</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> इसे ऐसे ही रखें</h5>

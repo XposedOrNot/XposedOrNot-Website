@@ -354,7 +354,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>旧邮箱和新邮箱</h6>
-            <p>检查旧泄露是否跟随您</p>
+            <p>查看您的旧邮箱是否仍使您面临风险</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -399,11 +399,11 @@
               <a href="privacy" target="_blank" rel="noopener">隐私政策</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> 仅检查您拥有或有权检查的邮箱。
+              <i class="fas fa-user-check"></i> 仅查询您拥有或有权查询的邮箱地址。
               <a href="shield" target="_blank" rel="noopener">不想出现在搜索中？启用隐私盾</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> 在 <span id="breachCount">...</span> 次泄露中搜索，共 <span id="recordCount">...</span> 个泄露账户
+              <i class="fas fa-database"></i> 我们比对 <span id="breachCount">...</span> 次泄露，涵盖 <span id="recordCount">...</span> 个泄露账户
               | <a href="our-repository" target="_blank" rel="noopener" title="查看所有泄露">查看完整列表 <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -430,7 +430,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">泄露总数</div>
-                  <div class="email-label" id="labelA">邮箱 A</div>
+                  <div class="email-label" id="labelA">第一个邮箱</div>
                 </div>
               </div>
             </div>
@@ -454,7 +454,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">泄露总数</div>
-                  <div class="email-label" id="labelB">邮箱 B</div>
+                  <div class="email-label" id="labelB">第二个邮箱</div>
                 </div>
               </div>
             </div>
@@ -474,7 +474,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">仅邮箱 1</span>
+              <span class="label" id="vennLabelA">仅第一个邮箱</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -482,7 +482,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">仅邮箱 2</span>
+              <span class="label" id="vennLabelB">仅第二个邮箱</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -501,9 +501,10 @@
             <p>根据您的泄露严重程度，您需要多紧急地采取行动</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> 低 (0-33): 无需紧急行动</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> 中 (34-66): 尽快更改密码</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> 高 (67-100): 今天更改密码</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> 低 (0-25): 无需紧急行动</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> 中 (26-50): 尽快更改密码</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> 高 (51-75): 本周更改密码</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> 严重 (76-100): 今天更改密码</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -525,8 +526,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">泄露名称</th>
-                  <th id="thEmailA">邮箱 A</th>
-                  <th id="thEmailB">邮箱 B</th>
+                  <th id="thEmailA">第一个邮箱</th>
+                  <th id="thEmailB">第二个邮箱</th>
                   <th style="text-align: left;">泄露数据
                     <span class="help-tooltip" title="泄露的个人信息类型：密码、邮箱、姓名、电话号码、地址等。密码是最关键的。">
                       <i class="fas fa-question-circle"></i>
@@ -584,7 +585,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> 导出泄露比较报告</h3>
           <p>下载或打印您的完整泄露分析结果</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> 电子表格
+            <i class="fas fa-file-excel"></i> 下载 CSV
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> 打印 / 保存为 PDF
@@ -617,7 +618,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>两个邮箱都是干净的！在我们<strong>数十亿泄露记录</strong>的数据库中未发现任何泄露。</p>
+            <p>我们检查了包含<strong>数十亿泄露记录</strong>的数据库，两个邮箱地址均未发现任何泄露。</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> 保持安全</h5>

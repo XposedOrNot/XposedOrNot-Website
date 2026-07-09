@@ -449,7 +449,7 @@
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-exchange-alt"></i>
             <h6>E-mail antigo e novo</h6>
-            <p>Veja se violações antigas seguiram você</p>
+            <p>Veja se seu endereço antigo ainda coloca você em risco</p>
           </div>
           <div class="col-md-3 col-6 use-case-item">
             <i class="fas fa-clipboard-check"></i>
@@ -494,11 +494,11 @@
               <a href="privacy" target="_blank" rel="noopener">Política de Privacidade</a>
             </p>
             <p class="consent-notice">
-              <i class="fas fa-user-check"></i> Verifique apenas e-mails que você possui ou tem permissão para verificar.
+              <i class="fas fa-user-check"></i> Verifique apenas endereços que você possui ou tem permissão para consultar.
               <a href="shield" target="_blank" rel="noopener">Não quer aparecer nas buscas? Ative o Privacy Shield</a>
             </p>
             <p class="database-stats" id="databaseStats">
-              <i class="fas fa-database"></i> Pesquisando em <span id="breachCount">...</span> violações com <span id="recordCount">...</span> contas expostas
+              <i class="fas fa-database"></i> Verificamos em <span id="breachCount">...</span> violações que abrangem <span id="recordCount">...</span> contas expostas
               | <a href="our-repository" target="_blank" rel="noopener" title="Ver todas as violações">Ver lista completa <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a>
             </p>
           </div>
@@ -525,7 +525,7 @@
                 <div class="card-body">
                   <div class="count" id="countA">0</div>
                   <div class="label">Total de violações</div>
-                  <div class="email-label" id="labelA">E-mail A</div>
+                  <div class="email-label" id="labelA">Primeiro e-mail</div>
                 </div>
               </div>
             </div>
@@ -549,7 +549,7 @@
                 <div class="card-body">
                   <div class="count" id="countB">0</div>
                   <div class="label">Total de violações</div>
-                  <div class="email-label" id="labelB">E-mail B</div>
+                  <div class="email-label" id="labelB">Segundo e-mail</div>
                 </div>
               </div>
             </div>
@@ -569,7 +569,7 @@
           <div class="venn-container" id="vennContainer">
             <div class="venn-circle left" id="vennLeft">
               <span class="count" id="vennCountA">0</span>
-              <span class="label" id="vennLabelA">Apenas e-mail 1</span>
+              <span class="label" id="vennLabelA">Apenas o primeiro e-mail</span>
             </div>
             <div class="venn-overlap" id="vennOverlap">
               <span class="count" id="vennCountShared">0</span>
@@ -577,7 +577,7 @@
             </div>
             <div class="venn-circle right" id="vennRight">
               <span class="count" id="vennCountB">0</span>
-              <span class="label" id="vennLabelB">Apenas e-mail 2</span>
+              <span class="label" id="vennLabelB">Apenas o segundo e-mail</span>
             </div>
           </div>
           <div class="overlap-stats" id="overlapStats">
@@ -596,9 +596,10 @@
             <p>Com que urgência você precisa agir, com base na gravidade das suas violações</p>
           </div>
           <div class="risk-legend">
-            <span class="legend-item low"><i class="fas fa-circle"></i> Baixo (0-33): Nenhuma ação urgente necessária</span>
-            <span class="legend-item medium"><i class="fas fa-circle"></i> Médio (34-66): Troque as senhas em breve</span>
-            <span class="legend-item high"><i class="fas fa-circle"></i> Alto (67-100): Troque as senhas hoje</span>
+            <span class="legend-item low"><i class="fas fa-circle"></i> Baixo (0-25): Nenhuma ação urgente necessária</span>
+            <span class="legend-item medium"><i class="fas fa-circle"></i> Moderado (26-50): Troque as senhas em breve</span>
+            <span class="legend-item high"><i class="fas fa-circle"></i> Alto (51-75): Troque as senhas esta semana</span>
+            <span class="legend-item critical"><i class="fas fa-circle"></i> Crítico (76-100): Troque as senhas hoje</span>
           </div>
           <div id="riskMeters">
             <!-- Risk meters will be populated dynamically -->
@@ -620,8 +621,8 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">Nome da violação</th>
-                  <th id="thEmailA">E-mail A</th>
-                  <th id="thEmailB">E-mail B</th>
+                  <th id="thEmailA">Primeiro e-mail</th>
+                  <th id="thEmailB">Segundo e-mail</th>
                   <th style="text-align: left;">Dados expostos
                     <span class="help-tooltip" title="Tipos de informações pessoais vazadas: senhas, e-mails, nomes, números de telefone, endereços, etc. As senhas são as mais críticas.">
                       <i class="fas fa-question-circle"></i>
@@ -679,7 +680,7 @@
           <h3 class="h5"><i class="fas fa-download"></i> Exportar relatório de comparação de violações</h3>
           <p>Baixe ou imprima os resultados completos da sua análise de violações</p>
           <button class="btn btn-success btn-export" id="btnExportCSV">
-            <i class="fas fa-file-excel"></i> Planilha
+            <i class="fas fa-file-excel"></i> Baixar CSV
           </button>
           <button class="btn btn-info btn-export" id="btnPrint">
             <i class="fas fa-print"></i> Imprimir / Salvar como PDF
@@ -712,7 +713,7 @@
             <span class="email-badge" id="celebrateEmailB"></span>
           </div>
           <div class="celebration-message">
-            <p>Ambos os endereços de e-mail estão limpos! Nenhuma violação foi encontrada em nosso banco de dados de <strong>bilhões de registros expostos</strong>.</p>
+            <p>Verificamos nosso banco de dados de <strong>bilhões de registros expostos</strong> e não encontramos nada para nenhum dos endereços.</p>
           </div>
           <div class="celebration-tips">
             <h5><i class="fas fa-lightbulb"></i> Mantenha assim</h5>
