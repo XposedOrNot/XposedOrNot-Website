@@ -1541,20 +1541,6 @@ $(document).ready(function () {
     $(window).on('resize', adjustLayoutForScreenSize);
 });
 
-var floatingButton = document.getElementById('floating-button');
-
-function getFloatingButtonTop() {
-    return window.innerWidth < 992 ? '70px' : '10px';
-}
-
-floatingButton.style.position = 'fixed';
-floatingButton.style.top = getFloatingButtonTop();
-floatingButton.style.right = '20px';
-
-window.addEventListener('resize', function () {
-    floatingButton.style.top = getFloatingButtonTop();
-});
-
 if (token) {
     $('section[aria-label="Breach timeline visualization"]').hide();
 } else {
@@ -2332,17 +2318,52 @@ function _heatMapResizeHandler() {
 }
 
 $(document).ready(function () {
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 50) {
-            $('#back-to-top').fadeIn();
-        } else {
-            $('#back-to-top').fadeOut();
+    var $backToTop = $('#back-to-top');
+    var $floatingButton = $('#floating-button');
+    var usesVisibleClass = $backToTop.hasClass('back-to-top');
+    var backToTopShown = false;
+    var floatingScrolled = false;
+
+    function updateFloatingControls() {
+        var y = $(window).scrollTop();
+        var showBackToTop = y > 300;
+        var pastHeader = y > 80;
+
+        if (showBackToTop !== backToTopShown) {
+            backToTopShown = showBackToTop;
+            if (usesVisibleClass) {
+                $backToTop.toggleClass('visible', showBackToTop);
+            } else if (showBackToTop) {
+                $backToTop.fadeIn();
+            } else {
+                $backToTop.fadeOut();
+            }
         }
-    });
-    $('#back-to-top').click(function () {
-        $('body,html').animate({
-            scrollTop: 0
-        }, 400);
+
+        if (pastHeader !== floatingScrolled) {
+            floatingScrolled = pastHeader;
+            $floatingButton.toggleClass('fb-scrolled', pastHeader);
+        }
+    }
+
+    $(window).on('scroll', updateFloatingControls);
+    updateFloatingControls();
+
+    $backToTop.click(function () {
+        var focusMain = function () {
+            var main = document.getElementById('main-content');
+            if (main) {
+                main.focus({ preventScroll: true });
+            }
+        };
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            window.scrollTo(0, 0);
+            focusMain();
+        } else {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 400, focusMain);
+        }
         return false;
     });
 
