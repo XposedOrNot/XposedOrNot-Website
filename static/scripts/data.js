@@ -421,6 +421,28 @@ if (!token) {
     `);
 }
 
+(function () {
+    var nudge = document.getElementById('dash-nudge');
+    if (!nudge || token) return;
+    var storageKey = 'xon-dash-nudge-dismissed';
+    try {
+        var dismissedAt = parseInt(localStorage.getItem(storageKey), 10);
+        if (dismissedAt && Date.now() - dismissedAt < 1209600000) return;
+    } catch (e) {}
+    var link = document.getElementById('dash-nudge-link');
+    if (link && email && email.indexOf('@') > -1) {
+        link.href = '/login?email=' + encodeURIComponent(email);
+    }
+    nudge.hidden = false;
+    var dismiss = document.getElementById('dash-nudge-dismiss');
+    if (dismiss) {
+        dismiss.addEventListener('click', function () {
+            nudge.hidden = true;
+            try { localStorage.setItem(storageKey, String(Date.now())); } catch (e) {}
+        });
+    }
+})();
+
 var j = $.ajax(url)
     .done(function (response) {
         jsonResponse = response;

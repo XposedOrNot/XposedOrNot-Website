@@ -35,6 +35,11 @@
             $submit.prop("disabled", !valid);
         });
 
+        var prefill = new URLSearchParams(window.location.search).get("email");
+        if (prefill) {
+            $email.val(prefill.trim()).trigger("input");
+        }
+
         $("#emailForm").on("submit", function (e) {
             e.preventDefault();
             var emailVal = $email.val().trim();
