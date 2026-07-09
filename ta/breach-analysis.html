@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="ta" data-bs-theme="dark">
+<html lang="ta" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot - தரவு மீறல் பகுப்பாய்வு டாஷ்போர்டு</title>
+    <title>XposedOrNot - தரவு மீறல் பகுப்பாய்வு</title>
     <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
-    <!-- CSS Dependencies -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
@@ -66,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> டாஷ்போர்டுக்குத் திரும்பு
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> டாஷ்போர்டுக்குத் திரும்பு
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -84,172 +86,262 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="மீறல் தரவு ஏற்றப்படுகிறது">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">வடிகட்டிகள்</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> அனைத்து வடிகட்டிகளையும் அழி
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">ஏதோ தவறு நடந்துவிட்டது</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> டாஷ்போர்டுக்குத் திரும்பு
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">மின்னஞ்சல் முகவரி</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="மின்னஞ்சல்களைத் தேட தட்டச்சு செய்யவும்..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> அழி
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>தரவு மீறல் பகுப்பாய்வு</h1>
+                        <p class="dashboard-purpose">உங்கள் கண்காணிக்கப்படும் டொமைன்களைப் பாதிக்கும் ஒவ்வொரு மீறலையும் ஆழமாக ஆராய்ந்து, மின்னஞ்சல், டொமைன் அல்லது ஆண்டு அடிப்படையில் வடிகட்டி, விவரங்களை உங்கள் பாதுகாப்புக் குழுவிற்காக ஏற்றுமதி செய்யலாம்.</p>
+                        <p id="headerContext">வெளிப்பாடு சுருக்கம் ஏற்றப்படுகிறது...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>தனித்துவ மீறல்கள்</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>இடர் மதிப்பெண்
+                            <button type="button" class="info-tip"
+                                title="தனித்துவ மீறல்களில் கடவுச்சொல் வெளிப்பாட்டின் அடிப்படையில் 0 முதல் 100 வரையிலான மதிப்பெண். எளிய உரை கடவுச்சொற்களை வெளிப்படுத்திய மீறல்கள் அதிக எடையும், வலுவாக ஹாஷ் செய்யப்பட்ட கடவுச்சொற்கள் குறைந்த எடையும் பெறும்."
+                                aria-label="இடர் மதிப்பெண் எவ்வாறு கணக்கிடப்படுகிறது: தனித்துவ மீறல்களில் கடவுச்சொல் வெளிப்பாட்டின் அடிப்படையில் 0 முதல் 100 வரையிலான மதிப்பெண். எளிய உரை கடவுச்சொற்களை வெளிப்படுத்திய மீறல்கள் அதிக எடையும், வலுவாக ஹாஷ் செய்யப்பட்ட கடவுச்சொற்கள் குறைந்த எடையும் பெறும்.">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>வெளிப்பட்ட மின்னஞ்சல்கள்</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">பரிந்துரைக்கப்பட்ட நடவடிக்கைகள்</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">வடிகட்டிகள்</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> அனைத்து வடிகட்டிகளையும் அழி
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">மின்னஞ்சல் முகவரி</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="மின்னஞ்சல்களைத் தேட தட்டச்சு செய்யவும்..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="மின்னஞ்சல் வடிகட்டியை அழி">
+                                            <i class="bi bi-x" aria-hidden="true"></i> அழி
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">டொமைன்</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">அனைத்து டொமைன்கள்</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">மீறல் ஆண்டு</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">அனைத்து ஆண்டுகள்</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">மீறல் வகை</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">அனைத்து மீறல்கள்</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">டொமைன்</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">அனைத்து டொமைன்கள்</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">காலப்போக்கில் வெளிப்பாடு</h2>
+                            <small class="text-muted">மீறல் ஆண்டின்படி மின்னஞ்சல் வெளிப்பாடுகள்</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="மீறல் ஆண்டின்படி மின்னஞ்சல் வெளிப்பாடுகளின் பட்டை விளக்கப்படம்"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">மீறல் ஆண்டு</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">அனைத்து ஆண்டுகள்</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">தற்போதைய வடிகட்டிகளுக்குப் பொருந்தும் மீறல்கள் எதுவும் இல்லை.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">முதல் 10 மீறல்கள்</h2>
+                            <small class="text-muted">வெளிப்பட்ட மின்னஞ்சல்களின் எண்ணிக்கையின்படி</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>மீறல்</th>
+                                            <th>வெளிப்பட்ட மின்னஞ்சல்கள்</th>
+                                            <th>கடவுச்சொல் இடர்</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">மீறல் வகை</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">அனைத்து மீறல்கள்</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">முதல் 10 வெளிப்பட்ட மின்னஞ்சல்கள்</h2>
+                            <small class="text-muted">மீறல்களின் எண்ணிக்கையின்படி</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>மின்னஞ்சல்</th>
+                                            <th>மீறல்கள்</th>
+                                            <th>டொமைன்கள்</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>மொத்த மீறல்கள்</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>இடர் மதிப்பெண்</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>தனித்துவ மின்னஞ்சல்கள்</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">முதல் 10 மீறல்கள்</h5>
-                        <small class="text-muted">வெளிப்பட்ட மின்னஞ்சல்களின் எண்ணிக்கையின்படி</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>மீறல் பெயர்</th>
-                                        <th>மின்னஞ்சல் எண்ணிக்கை</th>
-                                        <th>இடர் நிலை</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">மீறல் விவரங்கள்</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">முதல் 10 வெளிப்பட்ட மின்னஞ்சல்கள்</h5>
-                        <small class="text-muted">மீறல்களின் எண்ணிக்கையின்படி</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>மின்னஞ்சல்</th>
-                                        <th>மீறல் எண்ணிக்கை</th>
-                                        <th>டொமைன்கள்</th>
+                                        <th>டொமைன்</th>
+                                        <th>மீறல்</th>
+                                        <th>மீறல் தேதி</th>
+                                        <th>வெளிப்பட்ட தரவு</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">மீறல் விவரங்கள்</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>மின்னஞ்சல்</th>
-                                    <th>டொமைன்</th>
-                                    <th>மீறல்</th>
-                                    <th>மீறல் தேதி</th>
-                                    <th>வெளிப்பட்ட தரவு</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">மீறல் காட்சிப்படுத்தல்</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">வடிகட்டப்பட்ட காட்சி</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">டொமைன் மற்றும் மீறல் வரைபடம்</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">வடிகட்டப்பட்ட காட்சி</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="காட்சியை மீட்டமை">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>காட்சியை மீட்டமை</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="காட்சிப்படுத்தலை விரிவாக்கு">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">விரிவாக்கு</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> காட்சியை மீட்டமை
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">சுருக்கு</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>டொமைன்</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>மீறல்</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>மின்னஞ்சல்</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="வரைபட பெரிதாக்கல் கட்டுப்பாடுகள்">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="பெரிதாக்கு">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="சிறிதாக்கு">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="வரைபடத்தை காட்சிக்குப் பொருத்து">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">வெளிப்பட்ட மின்னஞ்சல் கணக்குகளைக் காண ஒரு டொமைன் அல்லது மீறல் முனையைக் கிளிக் செய்யவும். நகர்த்த இழுக்கவும், பெரிதாக்க பெரிதாக்கல் பொத்தான்களை அல்லது Ctrl உடன் ஸ்க்ரோலைப் பயன்படுத்தவும்.</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">தற்போதைய வடிகட்டிகளுக்குக் காட்சிப்படுத்த தரவு எதுவும் இல்லை.</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -284,10 +376,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Back to Dashboard Button -->
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>டாஷ்போர்டுக்குத் திரும்பு</span>
         </a>
     </div>
@@ -335,30 +426,67 @@
             <h6>எங்களைப் பின்தொடரவும்</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">இருண்ட பயன்முறை</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">இருண்ட பயன்முறை</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script>
+      window.BA_I18N = {
+        riskBandLow: 'குறைவு',
+        riskBandMedium: 'உயர்நிலை',
+        riskBandHigh: 'அதிகம்',
+        riskPlaintext: 'எளிய உரை கடவுச்சொற்கள்',
+        riskWeakHash: 'பலவீனமான ஹாஷிங்',
+        riskStrongHash: 'வலுவான ஹாஷிங்',
+        riskUnknown: 'தெரியவில்லை',
+        headerContext: 'கண்காணிக்கப்படும் டொமைன்கள்: {domains} ({list}). வெளிப்பட்ட மின்னஞ்சல் கணக்குகள்: {emails}. மீறல்கள்: {breaches}.',
+        headerContextMore: 'மேலும் {n}',
+        actionNoExposures: 'தற்போதைய வடிகட்டிகளுக்குப் பொருந்தும் வெளிப்பாடுகள் எதுவும் இல்லை.',
+        actionResetPasswords: 'எளிய உரை கடவுச்சொற்களுடன் வெளிப்பட்ட கணக்குகளுக்கு கடவுச்சொல் மீட்டமைப்பைக் கட்டாயமாக்கவும் (பாதிக்கப்பட்ட கணக்குகள்: {accounts}, மீறல்கள்: {breaches}).',
+        actionMfa: 'வெளிப்பட்ட அனைத்து மின்னஞ்சல் கணக்குகளிலும் பல காரணி அங்கீகாரத்தை அமல்படுத்தவும் (மொத்தம் {emails}).',
+        actionExport: 'கீழே உள்ள மீறல் விவரங்களை ஏற்றுமதி செய்து உங்கள் பாதுகாப்புக் குழுவிற்குத் தெரிவிக்கவும்.',
+        vizExpand: 'விரிவாக்கு',
+        vizCollapse: 'சுருக்கு',
+        vizExpandAria: 'காட்சிப்படுத்தலை விரிவாக்கு',
+        vizCollapseAria: 'காட்சிப்படுத்தலைச் சுருக்கு',
+        noResults: 'தற்போதைய வடிகட்டிகளுக்குப் பொருந்தும் முடிவுகள் எதுவும் இல்லை.',
+        noBreachRows: 'தற்போதைய வடிகட்டிகளுக்குப் பொருந்தும் மீறல்கள் எதுவும் இல்லை.',
+        domainsBadgeOne: '{n} டொமைன்',
+        domainsBadgeMany: '{n} டொமைன்கள்',
+        chartSeries: 'மின்னஞ்சல் வெளிப்பாடுகள்',
+        chartAria: 'மீறல் ஆண்டின்படி மின்னஞ்சல் வெளிப்பாடுகளின் பட்டை விளக்கப்படம், {from} முதல் {to} வரை',
+        dateUnknown: 'தெரியவில்லை',
+        errMissingTitle: 'உள்நுழைவு விவரங்கள் இல்லை',
+        errMissingMessage: 'இந்தப் பக்கத்திற்கு CxO டாஷ்போர்டிலிருந்து செல்லுபடியாகும் அமர்வு தேவை. டாஷ்போர்டுக்குத் திரும்பி மீறல் பகுப்பாய்வை மீண்டும் திறக்கவும்.',
+        errSessionTitle: 'அமர்வு காலாவதியானது',
+        errSessionMessage: 'உங்கள் டாஷ்போர்டு அமர்வு இனி செல்லுபடியாகாது. டாஷ்போர்டுக்குத் திரும்பி மீண்டும் உள்நுழையவும்.',
+        errLoadTitle: 'தரவை ஏற்ற முடியவில்லை',
+        errLoadMessage: 'மீறல் தரவை ஏற்றும்போது ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கப் பக்கத்தைப் புதுப்பிக்கவும் அல்லது டாஷ்போர்டுக்குத் திரும்பவும்.',
+        dtSearch: 'தேடல்:',
+        dtLengthMenu: 'ஒரு பக்கத்திற்கு _MENU_ பதிவுகள்',
+        dtInfo: 'மொத்தம் _TOTAL_ பதிவுகளில் _START_ முதல் _END_ வரை காட்டப்படுகிறது',
+        dtExport: 'ஏற்றுமதி'
+      };
+    </script>
     <script src="/static/scripts/common.js"></script>
     <script src="/static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {

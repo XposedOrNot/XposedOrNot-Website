@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt" data-bs-theme="dark">
+<html lang="pt" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot - Painel de análise de violações de dados</title>
+    <title>XposedOrNot - Análise de violações de dados</title>
     <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
-    <!-- CSS Dependencies -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
@@ -66,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> Voltar ao painel
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar ao painel
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -84,172 +86,269 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="Carregando dados de violações">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Filtros</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> Limpar todos os filtros
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">Algo deu errado</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar ao painel
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">Endereço de e-mail</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="Digite para pesquisar e-mails..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> Limpar
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>Análise de violações</h1>
+                        <p class="dashboard-purpose">Explore em detalhe cada violação que afeta seus domínios
+                            monitorados, filtre por e-mail, domínio ou ano e exporte os detalhes para sua equipe de
+                            segurança.</p>
+                        <p id="headerContext">Carregando o resumo de exposição...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Violações únicas</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Pontuação de risco
+                            <button type="button" class="info-tip"
+                                title="Pontuação de 0 a 100 baseada na exposição de senhas nas violações únicas. Violações que expuseram senhas em texto simples pesam mais, senhas com hash forte pesam menos."
+                                aria-label="Como a pontuação de risco é calculada: pontuação de 0 a 100 baseada na exposição de senhas nas violações únicas. Violações que expuseram senhas em texto simples pesam mais, senhas com hash forte pesam menos.">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>E-mails expostos</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Ações recomendadas</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Filtros</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> Limpar todos os filtros
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">Endereço de e-mail</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="Digite para pesquisar e-mails..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="Limpar filtro de e-mail">
+                                            <i class="bi bi-x" aria-hidden="true"></i> Limpar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">Domínio</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">Todos os domínios</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">Ano da violação</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">Todos os anos</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">Tipo de violação</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">Todas as violações</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">Domínio</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">Todos os domínios</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Exposição ao longo do tempo</h2>
+                            <small class="text-muted">Exposições de e-mail por ano da violação</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="Gráfico de barras das exposições de e-mail por ano da violação"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">Ano da violação</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">Todos os anos</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">Nenhuma violação corresponde aos
+                                filtros atuais.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">10 principais violações</h2>
+                            <small class="text-muted">Por número de e-mails expostos</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Violação</th>
+                                            <th>E-mails expostos</th>
+                                            <th>Risco de senha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">Tipo de violação</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">Todas as violações</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">10 principais e-mails expostos</h2>
+                            <small class="text-muted">Por número de violações</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>E-mail</th>
+                                            <th>Violações</th>
+                                            <th>Domínios</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Total de violações</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Pontuação de risco</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>E-mails únicos</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">10 principais violações</h5>
-                        <small class="text-muted">Por número de e-mails expostos</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>Nome da violação</th>
-                                        <th>Número de e-mails</th>
-                                        <th>Nível de risco</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Detalhes das violações</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">10 principais e-mails expostos</h5>
-                        <small class="text-muted">Por número de violações</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>E-mail</th>
-                                        <th>Número de violações</th>
-                                        <th>Domínios</th>
+                                        <th>Domínio</th>
+                                        <th>Violação</th>
+                                        <th>Data da violação</th>
+                                        <th>Dados expostos</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Detalhes das violações</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>E-mail</th>
-                                    <th>Domínio</th>
-                                    <th>Violação</th>
-                                    <th>Data da violação</th>
-                                    <th>Dados expostos</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">Visualização das violações</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">Visualização filtrada</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">Mapa de domínios e violações</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">Visualização
+                                    filtrada</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="Redefinir visualização">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>Redefinir visualização</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="Expandir visualização">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">Expandir</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> Redefinir visualização
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">Recolher</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>Domínio</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>Violação</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>E-mail</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="Controles de zoom do mapa">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="Aumentar zoom">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="Diminuir zoom">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="Ajustar mapa à visualização">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">Clique em um nó de domínio ou violação para revelar as contas de e-mail
+                                expostas. Arraste para mover, use os botões de zoom ou Ctrl e a roda do mouse para
+                                ampliar ou reduzir.</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">Não há dados para visualizar com os
+                                filtros atuais.</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -284,10 +383,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Back to Dashboard Button -->
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>Voltar ao painel</span>
         </a>
     </div>
@@ -335,30 +433,67 @@
             <h6>Siga-nos</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">Modo escuro</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">Modo escuro</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script>
+      window.BA_I18N = {
+        riskBandLow: 'Baixo',
+        riskBandMedium: 'Elevado',
+        riskBandHigh: 'Alto',
+        riskPlaintext: 'Senhas em texto simples',
+        riskWeakHash: 'Hash fraco',
+        riskStrongHash: 'Hash forte',
+        riskUnknown: 'Desconhecido',
+        headerContext: 'Domínios monitorados: {domains} ({list}). Contas de e-mail expostas: {emails}. Violações: {breaches}.',
+        headerContextMore: 'e mais {n}',
+        actionNoExposures: 'Nenhuma exposição corresponde aos filtros atuais.',
+        actionResetPasswords: 'Force a redefinição de senha das contas expostas com senhas em texto simples (contas afetadas: {accounts}, violações: {breaches}).',
+        actionMfa: 'Exija autenticação multifator em todas as contas de e-mail expostas ({emails} no total).',
+        actionExport: 'Exporte os detalhes das violações abaixo e informe sua equipe de segurança.',
+        vizExpand: 'Expandir',
+        vizCollapse: 'Recolher',
+        vizExpandAria: 'Expandir visualização',
+        vizCollapseAria: 'Recolher visualização',
+        noResults: 'Nenhum resultado corresponde aos filtros atuais.',
+        noBreachRows: 'Nenhuma violação corresponde aos filtros atuais.',
+        domainsBadgeOne: '{n} domínio',
+        domainsBadgeMany: '{n} domínios',
+        chartSeries: 'Exposições de e-mail',
+        chartAria: 'Gráfico de barras das exposições de e-mail por ano da violação, de {from} a {to}',
+        dateUnknown: 'Desconhecida',
+        errMissingTitle: 'Dados de acesso ausentes',
+        errMissingMessage: 'Esta página precisa de uma sessão válida do painel CxO. Volte ao painel e abra a Análise de violações novamente.',
+        errSessionTitle: 'Sessão expirada',
+        errSessionMessage: 'Sua sessão do painel não é mais válida. Volte ao painel e entre novamente.',
+        errLoadTitle: 'Não foi possível carregar os dados',
+        errLoadMessage: 'Algo deu errado ao carregar os dados de violações. Atualize a página para tentar novamente ou volte ao painel.',
+        dtSearch: 'Pesquisar:',
+        dtLengthMenu: '_MENU_ registros por página',
+        dtInfo: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
+        dtExport: 'Exportar'
+      };
+    </script>
     <script src="/static/scripts/common.js"></script>
     <script src="/static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {

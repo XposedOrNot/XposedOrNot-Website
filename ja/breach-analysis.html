@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="ja" data-bs-theme="dark">
+<html lang="ja" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot - データ漏洩分析ダッシュボード</title>
+    <title>XposedOrNot: データ漏洩分析</title>
+    <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
-    <!-- CSS Dependencies -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
@@ -22,10 +25,8 @@
         integrity="sha512-XGV/5wp80o12Hi4G56UU4rHw02xfL+vOqNWa7FokGx3kT7nS+iSd1aXWBa2xO3IfQ+3bLn5JGBgmHXeByoiJ2g==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900&display=swap" rel="stylesheet">
-    <link href="../static/css/breach-analysis.css" rel="stylesheet">
+    <link href="/static/css/breach-analysis.css" rel="stylesheet">
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -58,7 +59,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header-left">
-                        <a href="https://XposedOrNot.com/ja/" style="text-decoration: none;">
+                        <a href="https://XposedOrNot.com" style="text-decoration: none;">
                             <p>XposedOrNot</p>
                         </a>
                     </div>
@@ -67,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> ダッシュボードに戻る
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> ダッシュボードに戻る
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -85,172 +86,262 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="漏洩データを読み込み中">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">フィルター</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> すべてのフィルターをクリア
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">問題が発生しました</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> ダッシュボードに戻る
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">メールアドレス</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="メールを検索..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> クリア
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>データ漏洩分析</h1>
+                        <p class="dashboard-purpose">監視対象ドメインに影響するすべての漏洩を詳しく分析し、メール、ドメイン、年でフィルターして、詳細をセキュリティチーム向けにエクスポートできます。</p>
+                        <p id="headerContext">流出状況の概要を読み込み中...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>ユニークな漏洩数</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>リスクスコア
+                            <button type="button" class="info-tip"
+                                title="ユニークな漏洩全体でのパスワード流出状況に基づく0から100のスコアです。平文パスワードが流出した漏洩の比重が最も大きく、強力にハッシュ化されたパスワードの比重が最も小さくなります。"
+                                aria-label="リスクスコアの計算方法: ユニークな漏洩全体でのパスワード流出状況に基づく0から100のスコアです。平文パスワードが流出した漏洩の比重が最も大きく、強力にハッシュ化されたパスワードの比重が最も小さくなります。">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>流出したメール</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">推奨アクション</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">フィルター</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> すべてのフィルターをクリア
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">メールアドレス</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="メールを検索..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="メールフィルターをクリア">
+                                            <i class="bi bi-x" aria-hidden="true"></i> クリア
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">ドメイン</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">すべてのドメイン</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">漏洩年</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">すべての年</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">漏洩タイプ</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">すべての漏洩</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">ドメイン</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">すべてのドメイン</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">時系列の流出状況</h2>
+                            <small class="text-muted">漏洩年別のメール流出数</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="漏洩年別のメール流出数の棒グラフ"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">漏洩年</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">すべての年</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">現在のフィルターに一致する漏洩はありません。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">トップ10漏洩</h2>
+                            <small class="text-muted">流出したメール数順</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>漏洩名</th>
+                                            <th>メール数</th>
+                                            <th>パスワードリスク</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">漏洩タイプ</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">すべての漏洩</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">トップ10流出メール</h2>
+                            <small class="text-muted">漏洩数順</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>メール</th>
+                                            <th>漏洩数</th>
+                                            <th>ドメイン</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>漏洩総数</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>リスクスコア</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>ユニークなメール</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">トップ10漏洩</h5>
-                        <small class="text-muted">流出したメール数順</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>漏洩名</th>
-                                        <th>メール数</th>
-                                        <th>リスクレベル</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">漏洩の詳細</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">トップ10流出メール</h5>
-                        <small class="text-muted">漏洩数順</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>メール</th>
-                                        <th>漏洩数</th>
                                         <th>ドメイン</th>
+                                        <th>漏洩</th>
+                                        <th>漏洩日</th>
+                                        <th>流出したデータ</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">漏洩の詳細</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>メール</th>
-                                    <th>ドメイン</th>
-                                    <th>漏洩</th>
-                                    <th>漏洩日</th>
-                                    <th>流出したデータ</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">漏洩ビジュアライゼーション</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">フィルター表示</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">ドメインと漏洩のマップ</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">フィルター表示</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="表示をリセット">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>表示をリセット</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="ビジュアライゼーションを展開">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">展開</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> 表示をリセット
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">折りたたむ</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>ドメイン</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>漏洩</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>メール</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="マップのズーム操作">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="ズームイン">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="ズームアウト">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="マップを画面に合わせる">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">ドメインまたは漏洩のノードをクリックすると、流出したメールアカウントが表示されます。ドラッグで移動し、ズームボタンまたはCtrlキーを押しながらスクロールでズームできます。</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">現在のフィルターで可視化できるデータはありません。</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -285,10 +376,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Back to Dashboard Button -->
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>ダッシュボードに戻る</span>
         </a>
     </div>
@@ -296,8 +386,8 @@
     <div class="footer">
       <div class="container">
         <div style="text-align:center;margin-bottom:30px;">
-          <p>このオープンソースサイトの作成にご参加ください！<a
-                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>での貢献を歓迎します。</p>
+          <p>この完全オープンソースサイトの作成にご参加ください！<a
+                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>での貢献を歓迎します ❤️</p>
         </div>
 
         <div class="footer-columns">
@@ -336,30 +426,67 @@
             <h6>フォローする</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">ダークモード</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">ダークモード</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-    <script src="../static/scripts/common.js"></script>
-    <script src="../static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
+      window.BA_I18N = {
+        riskBandLow: '低',
+        riskBandMedium: 'やや高い',
+        riskBandHigh: '高',
+        riskPlaintext: '平文パスワード',
+        riskWeakHash: '弱いハッシュ化',
+        riskStrongHash: '強力なハッシュ化',
+        riskUnknown: '不明',
+        headerContext: '監視対象ドメイン: {domains} ({list})。流出したメールアカウント: {emails}。漏洩: {breaches}。',
+        headerContextMore: '他 {n} 件',
+        actionNoExposures: '現在のフィルターに一致する流出はありません。',
+        actionResetPasswords: '平文パスワードが流出したアカウントのパスワードを強制的にリセットしてください (対象アカウント: {accounts}、漏洩: {breaches})。',
+        actionMfa: '流出したすべてのメールアカウントで多要素認証を必須にしてください (合計 {emails} 件)。',
+        actionExport: '以下の漏洩の詳細をエクスポートし、セキュリティチームに報告してください。',
+        vizExpand: '展開',
+        vizCollapse: '折りたたむ',
+        vizExpandAria: 'ビジュアライゼーションを展開',
+        vizCollapseAria: 'ビジュアライゼーションを折りたたむ',
+        noResults: '現在のフィルターに一致する結果はありません。',
+        noBreachRows: '現在のフィルターに一致する漏洩はありません。',
+        domainsBadgeOne: '{n} ドメイン',
+        domainsBadgeMany: '{n} ドメイン',
+        chartSeries: 'メール流出数',
+        chartAria: '漏洩年別のメール流出数の棒グラフ ({from} から {to} まで)',
+        dateUnknown: '不明',
+        errMissingTitle: 'サインイン情報がありません',
+        errMissingMessage: 'このページを表示するには、CxOダッシュボードの有効なセッションが必要です。ダッシュボードに戻り、データ漏洩分析をもう一度開いてください。',
+        errSessionTitle: 'セッションの有効期限が切れました',
+        errSessionMessage: 'ダッシュボードのセッションは無効になりました。ダッシュボードに戻り、もう一度サインインしてください。',
+        errLoadTitle: 'データを読み込めません',
+        errLoadMessage: '漏洩データの読み込み中に問題が発生しました。ページを更新して再試行するか、ダッシュボードに戻ってください。',
+        dtSearch: '検索:',
+        dtLengthMenu: '1ページあたり _MENU_ 件',
+        dtInfo: '_TOTAL_ 件中 _START_ 件から _END_ 件を表示',
+        dtExport: 'エクスポート'
+      };
+    </script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/breach-analysis.js"></script>
+    <script>
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {

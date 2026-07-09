@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="hi" data-bs-theme="dark">
+<html lang="hi" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot - डेटा उल्लंघन विश्लेषण डैशबोर्ड</title>
+    <title>XposedOrNot: डेटा उल्लंघन विश्लेषण</title>
+    <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
-    <!-- CSS Dependencies -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
@@ -22,10 +25,8 @@
         integrity="sha512-XGV/5wp80o12Hi4G56UU4rHw02xfL+vOqNWa7FokGx3kT7nS+iSd1aXWBa2xO3IfQ+3bLn5JGBgmHXeByoiJ2g==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900&display=swap" rel="stylesheet">
-    <link href="../static/css/breach-analysis.css" rel="stylesheet">
+    <link href="/static/css/breach-analysis.css" rel="stylesheet">
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -58,7 +59,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header-left">
-                        <a href="https://XposedOrNot.com/hi/" style="text-decoration: none;">
+                        <a href="https://XposedOrNot.com" style="text-decoration: none;">
                             <p>XposedOrNot</p>
                         </a>
                     </div>
@@ -67,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> डैशबोर्ड पर वापस
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> डैशबोर्ड पर वापस
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -85,172 +86,267 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="उल्लंघन डेटा लोड हो रहा है">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">फ़िल्टर</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> सभी फ़िल्टर साफ़ करें
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">कुछ गड़बड़ हो गई</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> डैशबोर्ड पर वापस
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">ईमेल पता</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="ईमेल खोजने के लिए टाइप करें..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> साफ़ करें
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>डेटा उल्लंघन विश्लेषण</h1>
+                        <p class="dashboard-purpose">आपके निगरानी वाले डोमेन को प्रभावित करने वाले हर उल्लंघन की गहराई से जांच करें,
+                            ईमेल, डोमेन या वर्ष के अनुसार फ़िल्टर करें, और अपनी सुरक्षा टीम के लिए विवरण निर्यात करें।</p>
+                        <p id="headerContext">एक्सपोज़र सारांश लोड हो रहा है...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>अद्वितीय उल्लंघन</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>जोखिम स्कोर
+                            <button type="button" class="info-tip"
+                                title="अद्वितीय उल्लंघनों में पासवर्ड एक्सपोज़र के आधार पर 0 से 100 तक का स्कोर। जिन उल्लंघनों में प्लेनटेक्स्ट पासवर्ड उजागर हुए उनका भार सबसे अधिक होता है, मजबूत हैशिंग वाले पासवर्ड का सबसे कम।"
+                                aria-label="जोखिम स्कोर की गणना कैसे होती है: अद्वितीय उल्लंघनों में पासवर्ड एक्सपोज़र के आधार पर 0 से 100 तक का स्कोर। जिन उल्लंघनों में प्लेनटेक्स्ट पासवर्ड उजागर हुए उनका भार सबसे अधिक होता है, मजबूत हैशिंग वाले पासवर्ड का सबसे कम।">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>उजागर ईमेल</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">अनुशंसित कार्रवाइयां</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">फ़िल्टर</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> सभी फ़िल्टर साफ़ करें
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">ईमेल पता</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="ईमेल खोजने के लिए टाइप करें..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="ईमेल फ़िल्टर साफ़ करें">
+                                            <i class="bi bi-x" aria-hidden="true"></i> साफ़ करें
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">डोमेन</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">सभी डोमेन</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">उल्लंघन वर्ष</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">सभी वर्ष</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">उल्लंघन प्रकार</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">सभी उल्लंघन</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">डोमेन</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">सभी डोमेन</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">समय के साथ एक्सपोज़र</h2>
+                            <small class="text-muted">उल्लंघन वर्ष के अनुसार ईमेल एक्सपोज़र</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="उल्लंघन वर्ष के अनुसार ईमेल एक्सपोज़र का बार चार्ट"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">उल्लंघन वर्ष</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">सभी वर्ष</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">वर्तमान फ़िल्टर से मेल खाने वाला
+                                कोई उल्लंघन नहीं है।</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">शीर्ष 10 उल्लंघन</h2>
+                            <small class="text-muted">उजागर ईमेल की संख्या के अनुसार</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>उल्लंघन</th>
+                                            <th>उजागर ईमेल</th>
+                                            <th>पासवर्ड जोखिम</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">उल्लंघन प्रकार</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">सभी उल्लंघन</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">शीर्ष 10 उजागर ईमेल</h2>
+                            <small class="text-muted">उल्लंघनों की संख्या के अनुसार</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ईमेल</th>
+                                            <th>उल्लंघनों की संख्या</th>
+                                            <th>डोमेन</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>कुल उल्लंघन</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>जोखिम स्कोर</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>अद्वितीय ईमेल</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">शीर्ष 10 उल्लंघन</h5>
-                        <small class="text-muted">उजागर ईमेल की संख्या के अनुसार</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>उल्लंघन का नाम</th>
-                                        <th>ईमेल की संख्या</th>
-                                        <th>जोखिम स्तर</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">उल्लंघन विवरण</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">शीर्ष 10 उजागर ईमेल</h5>
-                        <small class="text-muted">उल्लंघनों की संख्या के अनुसार</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>ईमेल</th>
-                                        <th>उल्लंघनों की संख्या</th>
                                         <th>डोमेन</th>
+                                        <th>उल्लंघन</th>
+                                        <th>उल्लंघन तिथि</th>
+                                        <th>उजागर डेटा</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">उल्लंघन विवरण</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>ईमेल</th>
-                                    <th>डोमेन</th>
-                                    <th>उल्लंघन</th>
-                                    <th>उल्लंघन तिथि</th>
-                                    <th>उजागर डेटा</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">उल्लंघन विज़ुअलाइज़ेशन</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">फ़िल्टर किया गया दृश्य</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">डोमेन और उल्लंघन मानचित्र</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">फ़िल्टर
+                                    किया गया दृश्य</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="दृश्य रीसेट करें">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>दृश्य रीसेट करें</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="विज़ुअलाइज़ेशन का विस्तार करें">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">विस्तार करें</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> दृश्य रीसेट करें
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">छोटा करें</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>डोमेन</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>उल्लंघन</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>ईमेल</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="मानचित्र ज़ूम नियंत्रण">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="ज़ूम इन करें">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="ज़ूम आउट करें">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="मानचित्र को दृश्य में फ़िट करें">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">किसी डोमेन या उल्लंघन नोड पर क्लिक करके उसके उजागर ईमेल खाते देखें।
+                                पैन करने के लिए ड्रैग करें, ज़ूम करने के लिए ज़ूम बटन या Ctrl और स्क्रॉल का उपयोग करें।</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">वर्तमान फ़िल्टर के लिए विज़ुअलाइज़
+                                करने हेतु कोई डेटा नहीं है।</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -285,10 +381,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Back to Dashboard Button -->
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>डैशबोर्ड पर वापस</span>
         </a>
     </div>
@@ -296,8 +391,8 @@
     <div class="footer">
       <div class="container">
         <div style="text-align:center;margin-bottom:30px;">
-          <p>इस ओपन-सोर्स साइट को बनाने में हमसे जुड़ें! हमारे <a
-                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> पर योगदान का स्वागत है।</p>
+          <p>इस पूरी तरह ओपन-सोर्स साइट को आकार देने में हमसे जुड़ें! हमारे <a
+                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> पर योगदान का स्वागत है ❤️।</p>
         </div>
 
         <div class="footer-columns">
@@ -336,30 +431,67 @@
             <h6>हमें फॉलो करें</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">डार्क मोड</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">डार्क मोड</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-    <script src="../static/scripts/common.js"></script>
-    <script src="../static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
+      window.BA_I18N = {
+        riskBandLow: 'कम',
+        riskBandMedium: 'बढ़ा हुआ',
+        riskBandHigh: 'उच्च',
+        riskPlaintext: 'प्लेनटेक्स्ट पासवर्ड',
+        riskWeakHash: 'कमज़ोर हैशिंग',
+        riskStrongHash: 'मजबूत हैशिंग',
+        riskUnknown: 'अज्ञात',
+        headerContext: 'निगरानी वाले डोमेन: {domains} ({list})। उजागर ईमेल खाते: {emails}। उल्लंघन: {breaches}।',
+        headerContextMore: 'और {n} अन्य',
+        actionNoExposures: 'वर्तमान फ़िल्टर से मेल खाने वाला कोई एक्सपोज़र नहीं है।',
+        actionResetPasswords: 'प्लेनटेक्स्ट पासवर्ड के साथ उजागर हुए खातों के लिए पासवर्ड रीसेट अनिवार्य करें (प्रभावित खाते: {accounts}, उल्लंघन: {breaches})।',
+        actionMfa: 'सभी उजागर ईमेल खातों पर मल्टी-फैक्टर प्रमाणीकरण लागू करें (कुल {emails})।',
+        actionExport: 'नीचे दिए गए उल्लंघन विवरण निर्यात करें और अपनी सुरक्षा टीम को जानकारी दें।',
+        vizExpand: 'विस्तार करें',
+        vizCollapse: 'छोटा करें',
+        vizExpandAria: 'विज़ुअलाइज़ेशन का विस्तार करें',
+        vizCollapseAria: 'विज़ुअलाइज़ेशन छोटा करें',
+        noResults: 'वर्तमान फ़िल्टर से मेल खाने वाला कोई परिणाम नहीं है।',
+        noBreachRows: 'वर्तमान फ़िल्टर से मेल खाने वाला कोई उल्लंघन नहीं है।',
+        domainsBadgeOne: '{n} डोमेन',
+        domainsBadgeMany: '{n} डोमेन',
+        chartSeries: 'ईमेल एक्सपोज़र',
+        chartAria: 'उल्लंघन वर्ष के अनुसार ईमेल एक्सपोज़र का बार चार्ट, {from} से {to} तक',
+        dateUnknown: 'अज्ञात',
+        errMissingTitle: 'साइन-इन विवरण मौजूद नहीं है',
+        errMissingMessage: 'इस पेज के लिए CxO डैशबोर्ड से एक मान्य सत्र आवश्यक है। डैशबोर्ड पर लौटें और डेटा उल्लंघन विश्लेषण फिर से खोलें।',
+        errSessionTitle: 'सत्र समाप्त हो गया',
+        errSessionMessage: 'आपका डैशबोर्ड सत्र अब मान्य नहीं है। डैशबोर्ड पर लौटें और फिर से साइन इन करें।',
+        errLoadTitle: 'डेटा लोड नहीं हो सका',
+        errLoadMessage: 'उल्लंघन डेटा लोड करते समय कुछ गड़बड़ हो गई। फिर से प्रयास करने के लिए पेज रीफ़्रेश करें, या डैशबोर्ड पर लौटें।',
+        dtSearch: 'खोजें:',
+        dtLengthMenu: 'प्रति पेज _MENU_ प्रविष्टियां',
+        dtInfo: 'कुल _TOTAL_ प्रविष्टियों में से _START_ से _END_ तक दिखाई जा रही हैं',
+        dtExport: 'निर्यात करें'
+      };
+    </script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/breach-analysis.js"></script>
+    <script>
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {

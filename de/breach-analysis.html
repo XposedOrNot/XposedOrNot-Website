@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="de" data-bs-theme="dark">
+<html lang="de" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot - Datenleck-Analyse-Dashboard</title>
+    <title>XposedOrNot - Datenleck-Analyse</title>
+    <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
-    <!-- CSS Dependencies -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
@@ -22,10 +25,8 @@
         integrity="sha512-XGV/5wp80o12Hi4G56UU4rHw02xfL+vOqNWa7FokGx3kT7nS+iSd1aXWBa2xO3IfQ+3bLn5JGBgmHXeByoiJ2g==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900&display=swap" rel="stylesheet">
-    <link href="../static/css/breach-analysis.css" rel="stylesheet">
+    <link href="/static/css/breach-analysis.css" rel="stylesheet">
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -58,7 +59,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header-left">
-                        <a href="https://XposedOrNot.com/de/" style="text-decoration: none;">
+                        <a href="https://XposedOrNot.com" style="text-decoration: none;">
                             <p>XposedOrNot</p>
                         </a>
                     </div>
@@ -67,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> Zurück zum Dashboard
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Zurück zum Dashboard
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -85,172 +86,269 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="Datenleck-Daten werden geladen">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Filter</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> Alle Filter löschen
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">Etwas ist schiefgelaufen</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> Zurück zum Dashboard
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">E-Mail-Adresse</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="Tippen Sie, um E-Mails zu suchen..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> Löschen
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>Datenleck-Analyse</h1>
+                        <p class="dashboard-purpose">Analysieren Sie jedes Datenleck, das Ihre überwachten Domains
+                            betrifft, filtern Sie nach E-Mail, Domain oder Jahr und exportieren Sie die Details für Ihr
+                            Sicherheitsteam.</p>
+                        <p id="headerContext">Zusammenfassung der Betroffenheit wird geladen...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Eindeutige Lecks</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Risikobewertung
+                            <button type="button" class="info-tip"
+                                title="Wert von 0 bis 100, basierend auf der Passwort-Exponierung über eindeutige Lecks hinweg. Lecks mit offengelegten Klartext-Passwörtern wiegen am schwersten, stark gehashte Passwörter am wenigsten."
+                                aria-label="So wird die Risikobewertung berechnet: Wert von 0 bis 100, basierend auf der Passwort-Exponierung über eindeutige Lecks hinweg. Lecks mit offengelegten Klartext-Passwörtern wiegen am schwersten, stark gehashte Passwörter am wenigsten.">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Betroffene E-Mails</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Empfohlene Maßnahmen</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Filter</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> Alle Filter löschen
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">E-Mail-Adresse</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="Tippen Sie, um E-Mails zu suchen..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="E-Mail-Filter löschen">
+                                            <i class="bi bi-x" aria-hidden="true"></i> Löschen
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">Domain</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">Alle Domains</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">Jahr des Lecks</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">Alle Jahre</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">Art des Lecks</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">Alle Lecks</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">Domain</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">Alle Domains</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Betroffenheit im Zeitverlauf</h2>
+                            <small class="text-muted">Betroffene E-Mails nach Jahr des Lecks</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="Balkendiagramm der betroffenen E-Mails nach Jahr des Lecks"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">Jahr des Lecks</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">Alle Jahre</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">Keine Lecks entsprechen den
+                                aktuellen Filtern.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Top 10 Lecks</h2>
+                            <small class="text-muted">Nach Anzahl der betroffenen E-Mails</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Leck</th>
+                                            <th>Betroffene E-Mails</th>
+                                            <th>Passwortrisiko</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">Art des Lecks</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">Alle Lecks</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Top 10 Betroffene E-Mails</h2>
+                            <small class="text-muted">Nach Anzahl der Lecks</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>E-Mail</th>
+                                            <th>Lecks</th>
+                                            <th>Domains</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Gesamtzahl der Lecks</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Risikobewertung</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Eindeutige E-Mails</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Top 10 Lecks</h5>
-                        <small class="text-muted">Nach Anzahl der betroffenen E-Mails</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>Name des Lecks</th>
-                                        <th>Anzahl E-Mails</th>
-                                        <th>Risikostufe</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Details zum Datenleck</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Top 10 Betroffene E-Mails</h5>
-                        <small class="text-muted">Nach Anzahl der Lecks</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>E-Mail</th>
-                                        <th>Anzahl der Lecks</th>
-                                        <th>Domains</th>
+                                        <th>Domain</th>
+                                        <th>Leck</th>
+                                        <th>Datum des Lecks</th>
+                                        <th>Betroffene Daten</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Details zum Datenleck</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>E-Mail</th>
-                                    <th>Domain</th>
-                                    <th>Leck</th>
-                                    <th>Datum des Lecks</th>
-                                    <th>Betroffene Daten</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">Visualisierung der Lecks</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">Gefilterte Ansicht</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">Karte der Domains und Lecks</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">Gefilterte
+                                    Ansicht</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="Ansicht zurücksetzen">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>Ansicht zurücksetzen</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="Visualisierung ausklappen">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">Ausklappen</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> Ansicht zurücksetzen
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">Einklappen</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>Domain</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>Leck</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>E-Mail</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="Zoom-Steuerung der Karte">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="Vergrößern">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="Verkleinern">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="Karte an Ansicht anpassen">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">Klicken Sie auf einen Domain- oder Leck-Knoten, um die betroffenen
+                                E-Mail-Konten anzuzeigen. Ziehen Sie zum Verschieben, nutzen Sie die Zoom-Schaltflächen
+                                oder Strg und Scrollen zum Zoomen.</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">Keine Daten zur Visualisierung für
+                                die aktuellen Filter.</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -285,10 +383,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Back to Dashboard Button -->
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>Zurück zum Dashboard</span>
         </a>
     </div>
@@ -296,7 +393,7 @@
     <div class="footer">
       <div class="container">
         <div style="text-align:center;margin-bottom:30px;">
-          <p>Hilf uns, diese Open-Source-Website zu erstellen! Beiträge sind willkommen auf unserem <a
+          <p>Gestalten Sie diese vollständig quelloffene Website mit! Beiträge sind willkommen ❤️ auf unserem <a
                 href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
         </div>
 
@@ -336,30 +433,67 @@
             <h6>Folge uns</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">Dunkelmodus</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">Dunkelmodus</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-    <script src="../static/scripts/common.js"></script>
-    <script src="../static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
+      window.BA_I18N = {
+        riskBandLow: 'Niedrig',
+        riskBandMedium: 'Erhöht',
+        riskBandHigh: 'Hoch',
+        riskPlaintext: 'Klartext-Passwörter',
+        riskWeakHash: 'Schwaches Hashing',
+        riskStrongHash: 'Starkes Hashing',
+        riskUnknown: 'Unbekannt',
+        headerContext: 'Überwachte Domains: {domains} ({list}). Betroffene E-Mail-Konten: {emails}. Lecks: {breaches}.',
+        headerContextMore: 'und {n} weitere',
+        actionNoExposures: 'Keine betroffenen Konten entsprechen den aktuellen Filtern.',
+        actionResetPasswords: 'Erzwingen Sie das Zurücksetzen der Passwörter für Konten, die mit Klartext-Passwörtern betroffen sind (betroffene Konten: {accounts}, Lecks: {breaches}).',
+        actionMfa: 'Erzwingen Sie Multi-Faktor-Authentifizierung für alle betroffenen E-Mail-Konten (insgesamt {emails}).',
+        actionExport: 'Exportieren Sie die untenstehenden Details zum Datenleck und informieren Sie Ihr Sicherheitsteam.',
+        vizExpand: 'Ausklappen',
+        vizCollapse: 'Einklappen',
+        vizExpandAria: 'Visualisierung ausklappen',
+        vizCollapseAria: 'Visualisierung einklappen',
+        noResults: 'Keine Ergebnisse entsprechen den aktuellen Filtern.',
+        noBreachRows: 'Keine Lecks entsprechen den aktuellen Filtern.',
+        domainsBadgeOne: '{n} Domain',
+        domainsBadgeMany: '{n} Domains',
+        chartSeries: 'Betroffene E-Mails',
+        chartAria: 'Balkendiagramm der betroffenen E-Mails nach Jahr des Lecks, {from} bis {to}',
+        dateUnknown: 'Unbekannt',
+        errMissingTitle: 'Fehlende Anmeldedaten',
+        errMissingMessage: 'Diese Seite benötigt eine gültige Sitzung aus dem CxO-Dashboard. Kehren Sie zum Dashboard zurück und öffnen Sie die Datenleck-Analyse erneut.',
+        errSessionTitle: 'Sitzung abgelaufen',
+        errSessionMessage: 'Ihre Dashboard-Sitzung ist nicht mehr gültig. Kehren Sie zum Dashboard zurück und melden Sie sich erneut an.',
+        errLoadTitle: 'Daten konnten nicht geladen werden',
+        errLoadMessage: 'Beim Laden der Datenleck-Daten ist etwas schiefgelaufen. Aktualisieren Sie die Seite, um es erneut zu versuchen, oder kehren Sie zum Dashboard zurück.',
+        dtSearch: 'Suchen:',
+        dtLengthMenu: '_MENU_ Einträge pro Seite',
+        dtInfo: 'Zeige _START_ bis _END_ von _TOTAL_ Einträgen',
+        dtExport: 'Exportieren'
+      };
+    </script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/breach-analysis.js"></script>
+    <script>
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {

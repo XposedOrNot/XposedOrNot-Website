@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="bn" data-bs-theme="dark">
+<html lang="bn" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot - ডেটা লঙ্ঘন বিশ্লেষণ ড্যাশবোর্ড</title>
+    <title>XposedOrNot - ডেটা লঙ্ঘন বিশ্লেষণ</title>
+    <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
-    <!-- CSS Dependencies -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
@@ -22,10 +25,8 @@
         integrity="sha512-XGV/5wp80o12Hi4G56UU4rHw02xfL+vOqNWa7FokGx3kT7nS+iSd1aXWBa2xO3IfQ+3bLn5JGBgmHXeByoiJ2g==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900&display=swap" rel="stylesheet">
-    <link href="../static/css/breach-analysis.css" rel="stylesheet">
+    <link href="/static/css/breach-analysis.css" rel="stylesheet">
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -58,7 +59,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header-left">
-                        <a href="https://XposedOrNot.com/bn/" style="text-decoration: none;">
+                        <a href="https://XposedOrNot.com" style="text-decoration: none;">
                             <p>XposedOrNot</p>
                         </a>
                     </div>
@@ -67,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরুন
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> ড্যাশবোর্ডে ফিরুন
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -85,172 +86,264 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="লঙ্ঘনের ডেটা লোড হচ্ছে">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">ফিল্টার</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> সমস্ত ফিল্টার সাফ করুন
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">কিছু ভুল হয়েছে</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> ড্যাশবোর্ডে ফিরুন
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">ইমেল ঠিকানা</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="ইমেল খুঁজতে টাইপ করুন..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> সাফ করুন
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>ডেটা লঙ্ঘন বিশ্লেষণ</h1>
+                        <p class="dashboard-purpose">আপনার পর্যবেক্ষণ করা ডোমেইনগুলিকে প্রভাবিত করা প্রতিটি লঙ্ঘন গভীরভাবে দেখুন,
+                            ইমেল, ডোমেইন বা বছর অনুসারে ফিল্টার করুন এবং আপনার নিরাপত্তা দলের জন্য বিবরণ রপ্তানি করুন।</p>
+                        <p id="headerContext">এক্সপোজার সারসংক্ষেপ লোড হচ্ছে...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>অনন্য লঙ্ঘন</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>ঝুঁকির স্কোর
+                            <button type="button" class="info-tip"
+                                title="অনন্য লঙ্ঘন জুড়ে পাসওয়ার্ড এক্সপোজারের ভিত্তিতে ০ থেকে ১০০ পর্যন্ত স্কোর। যেসব লঙ্ঘনে প্লেইনটেক্সট পাসওয়ার্ড উন্মুক্ত হয়েছে সেগুলির ওজন সবচেয়ে বেশি, শক্তিশালীভাবে হ্যাশ করা পাসওয়ার্ডের ওজন সবচেয়ে কম।"
+                                aria-label="ঝুঁকির স্কোর কীভাবে গণনা করা হয়: অনন্য লঙ্ঘন জুড়ে পাসওয়ার্ড এক্সপোজারের ভিত্তিতে ০ থেকে ১০০ পর্যন্ত স্কোর। যেসব লঙ্ঘনে প্লেইনটেক্সট পাসওয়ার্ড উন্মুক্ত হয়েছে সেগুলির ওজন সবচেয়ে বেশি, শক্তিশালীভাবে হ্যাশ করা পাসওয়ার্ডের ওজন সবচেয়ে কম।">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>উন্মুক্ত ইমেল</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">প্রস্তাবিত পদক্ষেপ</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">ফিল্টার</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> সমস্ত ফিল্টার সাফ করুন
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">ইমেল ঠিকানা</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="ইমেল খুঁজতে টাইপ করুন..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="ইমেল ফিল্টার সাফ করুন">
+                                            <i class="bi bi-x" aria-hidden="true"></i> সাফ করুন
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">ডোমেইন</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">সমস্ত ডোমেইন</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">লঙ্ঘনের বছর</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">সমস্ত বছর</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">লঙ্ঘনের ধরন</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">সমস্ত লঙ্ঘন</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">ডোমেইন</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">সমস্ত ডোমেইন</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">সময়ের সাথে এক্সপোজার</h2>
+                            <small class="text-muted">লঙ্ঘনের বছর অনুসারে ইমেল এক্সপোজার</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="লঙ্ঘনের বছর অনুসারে ইমেল এক্সপোজারের বার চার্ট"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">লঙ্ঘনের বছর</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">সমস্ত বছর</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">বর্তমান ফিল্টারের সাথে কোনো লঙ্ঘন মেলে না।</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">শীর্ষ ১০ লঙ্ঘন</h2>
+                            <small class="text-muted">উন্মুক্ত ইমেল সংখ্যা অনুসারে</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>লঙ্ঘন</th>
+                                            <th>উন্মুক্ত ইমেল</th>
+                                            <th>পাসওয়ার্ড ঝুঁকি</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">লঙ্ঘনের ধরন</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">সমস্ত লঙ্ঘন</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">শীর্ষ ১০ উন্মুক্ত ইমেল</h2>
+                            <small class="text-muted">লঙ্ঘন সংখ্যা অনুসারে</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ইমেল</th>
+                                            <th>লঙ্ঘন</th>
+                                            <th>ডোমেইন</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>মোট লঙ্ঘন</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>ঝুঁকির স্কোর</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>অনন্য ইমেল</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">শীর্ষ ১০ লঙ্ঘন</h5>
-                        <small class="text-muted">উন্মুক্ত ইমেল সংখ্যা অনুসারে</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>লঙ্ঘনের নাম</th>
-                                        <th>ইমেল সংখ্যা</th>
-                                        <th>ঝুঁকির মাত্রা</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">লঙ্ঘনের বিবরণ</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">শীর্ষ ১০ উন্মুক্ত ইমেল</h5>
-                        <small class="text-muted">লঙ্ঘন সংখ্যা অনুসারে</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>ইমেল</th>
-                                        <th>লঙ্ঘন সংখ্যা</th>
                                         <th>ডোমেইন</th>
+                                        <th>লঙ্ঘন</th>
+                                        <th>লঙ্ঘনের তারিখ</th>
+                                        <th>উন্মুক্ত ডেটা</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">লঙ্ঘনের বিবরণ</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>ইমেল</th>
-                                    <th>ডোমেইন</th>
-                                    <th>লঙ্ঘন</th>
-                                    <th>লঙ্ঘনের তারিখ</th>
-                                    <th>উন্মুক্ত ডেটা</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">লঙ্ঘন ভিজ্যুয়ালাইজেশন</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">ফিল্টার করা ভিউ</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">ডোমেইন এবং লঙ্ঘন মানচিত্র</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">ফিল্টার করা ভিউ</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="ভিউ রিসেট করুন">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>ভিউ রিসেট করুন</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="ভিজ্যুয়ালাইজেশন প্রসারিত করুন">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">প্রসারিত করুন</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> ভিউ রিসেট করুন
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">সংকুচিত করুন</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>ডোমেইন</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>লঙ্ঘন</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>ইমেল</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="মানচিত্র জুম নিয়ন্ত্রণ">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="জুম ইন করুন">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="জুম আউট করুন">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="মানচিত্র ভিউতে ফিট করুন">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">উন্মুক্ত ইমেল অ্যাকাউন্টগুলি দেখতে একটি ডোমেইন বা লঙ্ঘন নোডে ক্লিক করুন।
+                                প্যান করতে টেনে আনুন, জুম করতে জুম বোতাম অথবা Ctrl চেপে স্ক্রল ব্যবহার করুন।</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">বর্তমান ফিল্টারের জন্য ভিজ্যুয়ালাইজ করার মতো কোনো ডেটা নেই।</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -285,10 +378,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Back to Dashboard Button -->
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>ড্যাশবোর্ডে ফিরুন</span>
         </a>
     </div>
@@ -296,8 +388,8 @@
     <div class="footer">
       <div class="container">
         <div style="text-align:center;margin-bottom:30px;">
-          <p>এই ওপেন সোর্স সাইট তৈরিতে আমাদের সাথে যোগ দিন! আমাদের <a
-                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>-এ অবদান স্বাগত।</p>
+          <p>এই সম্পূর্ণ ওপেন সোর্স সাইট তৈরিতে আমাদের সাথে যোগ দিন! আমাদের <a
+                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>-এ অবদান স্বাগত ❤️।</p>
         </div>
 
         <div class="footer-columns">
@@ -336,30 +428,67 @@
             <h6>আমাদের অনুসরণ করুন</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">ডার্ক মোড</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">ডার্ক মোড</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
-    <script src="../static/scripts/common.js"></script>
-    <script src="../static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
+      window.BA_I18N = {
+        riskBandLow: 'কম',
+        riskBandMedium: 'বর্ধিত',
+        riskBandHigh: 'উচ্চ',
+        riskPlaintext: 'প্লেইনটেক্সট পাসওয়ার্ড',
+        riskWeakHash: 'দুর্বল হ্যাশিং',
+        riskStrongHash: 'শক্তিশালী হ্যাশিং',
+        riskUnknown: 'অজানা',
+        headerContext: 'পর্যবেক্ষণ করা ডোমেইন: {domains} ({list})। উন্মুক্ত ইমেল অ্যাকাউন্ট: {emails}। লঙ্ঘন: {breaches}।',
+        headerContextMore: 'এবং আরও {n}টি',
+        actionNoExposures: 'বর্তমান ফিল্টারের সাথে কোনো এক্সপোজার মেলে না।',
+        actionResetPasswords: 'প্লেইনটেক্সট পাসওয়ার্ডসহ উন্মুক্ত অ্যাকাউন্টগুলির জন্য পাসওয়ার্ড রিসেট বাধ্যতামূলক করুন (প্রভাবিত অ্যাকাউন্ট: {accounts}, লঙ্ঘন: {breaches})।',
+        actionMfa: 'সমস্ত উন্মুক্ত ইমেল অ্যাকাউন্টে মাল্টি-ফ্যাক্টর প্রমাণীকরণ প্রয়োগ করুন (মোট {emails}টি)।',
+        actionExport: 'নিচের লঙ্ঘনের বিবরণ রপ্তানি করুন এবং আপনার নিরাপত্তা দলকে অবহিত করুন।',
+        vizExpand: 'প্রসারিত করুন',
+        vizCollapse: 'সংকুচিত করুন',
+        vizExpandAria: 'ভিজ্যুয়ালাইজেশন প্রসারিত করুন',
+        vizCollapseAria: 'ভিজ্যুয়ালাইজেশন সংকুচিত করুন',
+        noResults: 'বর্তমান ফিল্টারের সাথে কোনো ফলাফল মেলে না।',
+        noBreachRows: 'বর্তমান ফিল্টারের সাথে কোনো লঙ্ঘন মেলে না।',
+        domainsBadgeOne: '{n}টি ডোমেইন',
+        domainsBadgeMany: '{n}টি ডোমেইন',
+        chartSeries: 'ইমেল এক্সপোজার',
+        chartAria: 'লঙ্ঘনের বছর অনুসারে ইমেল এক্সপোজারের বার চার্ট, {from} থেকে {to}',
+        dateUnknown: 'অজানা',
+        errMissingTitle: 'সাইন-ইন বিবরণ অনুপস্থিত',
+        errMissingMessage: 'এই পৃষ্ঠাটির জন্য CxO ড্যাশবোর্ড থেকে একটি বৈধ সেশন প্রয়োজন। ড্যাশবোর্ডে ফিরে যান এবং আবার ডেটা লঙ্ঘন বিশ্লেষণ খুলুন।',
+        errSessionTitle: 'সেশনের মেয়াদ শেষ',
+        errSessionMessage: 'আপনার ড্যাশবোর্ড সেশন আর বৈধ নয়। ড্যাশবোর্ডে ফিরে যান এবং আবার সাইন ইন করুন।',
+        errLoadTitle: 'ডেটা লোড করা যায়নি',
+        errLoadMessage: 'লঙ্ঘনের ডেটা লোড করার সময় কিছু ভুল হয়েছে। আবার চেষ্টা করতে পৃষ্ঠাটি রিফ্রেশ করুন, অথবা ড্যাশবোর্ডে ফিরে যান।',
+        dtSearch: 'খুঁজুন:',
+        dtLengthMenu: 'প্রতি পৃষ্ঠায় _MENU_টি এন্ট্রি',
+        dtInfo: '_TOTAL_টি এন্ট্রির মধ্যে _START_ থেকে _END_ দেখানো হচ্ছে',
+        dtExport: 'রপ্তানি'
+      };
+    </script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/breach-analysis.js"></script>
+    <script>
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {

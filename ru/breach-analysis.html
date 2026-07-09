@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="ru" data-bs-theme="dark">
+<html lang="ru" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot — Панель анализа утечек данных</title>
+    <title>XposedOrNot: Анализ утечек данных</title>
     <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
-    <!-- CSS Dependencies -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
@@ -66,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> Назад к панели
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Назад к панели
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -84,172 +86,267 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="Загрузка данных об утечках">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Фильтры</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> Сбросить все фильтры
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">Что-то пошло не так</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> Назад к панели
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">Адрес email</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="Начните вводить email для поиска..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> Очистить
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>Анализ утечек</h1>
+                        <p class="dashboard-purpose">Изучите каждую утечку, затронувшую ваши отслеживаемые домены,
+                            отфильтруйте данные по email, домену или году и экспортируйте подробности для вашей команды безопасности.</p>
+                        <p id="headerContext">Загрузка сводки по раскрытым данным...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Уникальные утечки</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Оценка риска
+                            <button type="button" class="info-tip"
+                                title="Оценка от 0 до 100 на основе раскрытия паролей в уникальных утечках. Наибольший вес имеют утечки, раскрывшие пароли в открытом виде, наименьший вес у надёжно хешированных паролей."
+                                aria-label="Как рассчитывается оценка риска: оценка от 0 до 100 на основе раскрытия паролей в уникальных утечках. Наибольший вес имеют утечки, раскрывшие пароли в открытом виде, наименьший вес у надёжно хешированных паролей.">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Раскрытые email</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Рекомендуемые действия</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Фильтры</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> Сбросить все фильтры
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">Адрес email</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="Начните вводить email для поиска..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="Очистить фильтр email">
+                                            <i class="bi bi-x" aria-hidden="true"></i> Очистить
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">Домен</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">Все домены</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">Год утечки</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">Все годы</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">Тип утечки</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">Все утечки</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">Домен</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">Все домены</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Динамика раскрытий</h2>
+                            <small class="text-muted">Раскрытия email по годам утечек</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="Столбчатая диаграмма раскрытий email по годам утечек"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">Год утечки</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">Все годы</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">Нет утечек, соответствующих
+                                текущим фильтрам.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Топ-10 утечек</h2>
+                            <small class="text-muted">По числу раскрытых email</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Утечка</th>
+                                            <th>Раскрытые email</th>
+                                            <th>Риск паролей</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">Тип утечки</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">Все утечки</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Топ-10 раскрытых email</h2>
+                            <small class="text-muted">По числу утечек</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Email</th>
+                                            <th>Утечки</th>
+                                            <th>Домены</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Всего утечек</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Оценка риска</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Уникальные email</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Топ-10 утечек</h5>
-                        <small class="text-muted">По числу раскрытых email</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>Название утечки</th>
-                                        <th>Число email</th>
-                                        <th>Уровень риска</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Подробности утечек</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Топ-10 раскрытых email</h5>
-                        <small class="text-muted">По числу утечек</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Email</th>
-                                        <th>Число утечек</th>
-                                        <th>Домены</th>
+                                        <th>Домен</th>
+                                        <th>Утечка</th>
+                                        <th>Дата утечки</th>
+                                        <th>Раскрытые данные</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Подробности утечек</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Email</th>
-                                    <th>Домен</th>
-                                    <th>Утечка</th>
-                                    <th>Дата утечки</th>
-                                    <th>Раскрытые данные</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">Визуализация утечек</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">Отфильтровано</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">Карта доменов и утечек</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">Отфильтрованный
+                                    вид</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="Сбросить вид">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>Сбросить вид</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="Развернуть визуализацию">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">Развернуть</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> Сбросить вид
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">Свернуть</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>Домен</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>Утечка</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>Email</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="Элементы управления масштабом карты">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="Приблизить">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="Отдалить">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="Вписать карту в область просмотра">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">Нажмите на узел домена или утечки, чтобы увидеть связанные раскрытые email-аккаунты.
+                                Перетаскивайте для перемещения, используйте кнопки масштабирования или Ctrl и прокрутку для изменения масштаба.</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">Нет данных для визуализации по текущим
+                                фильтрам.</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -284,10 +381,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Back to Dashboard Button -->
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>Назад к панели</span>
         </a>
     </div>
@@ -310,7 +406,7 @@
           <div class="footer-group">
             <h6>Сообщество</h6>
             <div class="footer-links-wrapper">
-              <a href="https://blog.xposedornot.com" class="footer-link">Блог</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
             <a href="our-repository" class="footer-link">Наш репозиторий</a>
             </div>
           </div>
@@ -335,30 +431,67 @@
             <h6>Мы в соцсетях</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">Тёмная тема</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">Тёмная тема</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script>
+      window.BA_I18N = {
+        riskBandLow: 'Низкий',
+        riskBandMedium: 'Повышенный',
+        riskBandHigh: 'Высокий',
+        riskPlaintext: 'Пароли в открытом виде',
+        riskWeakHash: 'Слабое хеширование',
+        riskStrongHash: 'Надёжное хеширование',
+        riskUnknown: 'Неизвестно',
+        headerContext: 'Отслеживаемые домены: {domains} ({list}). Раскрытые email-аккаунты: {emails}. Утечки: {breaches}.',
+        headerContextMore: 'и ещё {n}',
+        actionNoExposures: 'Нет раскрытий, соответствующих текущим фильтрам.',
+        actionResetPasswords: 'Принудительно смените пароли для аккаунтов, раскрытых с паролями в открытом виде (затронутые аккаунты: {accounts}, утечки: {breaches}).',
+        actionMfa: 'Включите многофакторную аутентификацию для всех раскрытых email-аккаунтов (всего: {emails}).',
+        actionExport: 'Экспортируйте подробности утечек ниже и проинформируйте вашу команду безопасности.',
+        vizExpand: 'Развернуть',
+        vizCollapse: 'Свернуть',
+        vizExpandAria: 'Развернуть визуализацию',
+        vizCollapseAria: 'Свернуть визуализацию',
+        noResults: 'Нет результатов, соответствующих текущим фильтрам.',
+        noBreachRows: 'Нет утечек, соответствующих текущим фильтрам.',
+        domainsBadgeOne: '{n} домен',
+        domainsBadgeMany: '{n} доменов',
+        chartSeries: 'Раскрытия email',
+        chartAria: 'Столбчатая диаграмма раскрытий email по годам утечек, с {from} по {to}',
+        dateUnknown: 'Неизвестно',
+        errMissingTitle: 'Отсутствуют данные для входа',
+        errMissingMessage: 'Для этой страницы требуется действительная сессия панели CxO. Вернитесь на панель и снова откройте раздел «Анализ утечек».',
+        errSessionTitle: 'Сессия истекла',
+        errSessionMessage: 'Ваша сессия панели больше недействительна. Вернитесь на панель и войдите снова.',
+        errLoadTitle: 'Не удалось загрузить данные',
+        errLoadMessage: 'При загрузке данных об утечках произошла ошибка. Обновите страницу, чтобы попробовать снова, или вернитесь на панель.',
+        dtSearch: 'Поиск:',
+        dtLengthMenu: '_MENU_ записей на странице',
+        dtInfo: 'Показано с _START_ по _END_ из _TOTAL_ записей',
+        dtExport: 'Экспорт'
+      };
+    </script>
     <script src="/static/scripts/common.js"></script>
     <script src="/static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {

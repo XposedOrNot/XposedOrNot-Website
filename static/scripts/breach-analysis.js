@@ -6,25 +6,83 @@ let emailTypeahead = null;
 let currentZoom = null;
 let currentSvg = null;
 let nodeToCenterOnLoad = null;
+let trendChart = null;
+const nodePositions = new Map();
+
+const I18N = Object.assign({
+    riskBandLow: 'Low',
+    riskBandMedium: 'Elevated',
+    riskBandHigh: 'High',
+    riskPlaintext: 'Plaintext passwords',
+    riskWeakHash: 'Weak hashing',
+    riskStrongHash: 'Strong hashing',
+    riskUnknown: 'Unknown',
+    headerContext: 'Monitored domains: {domains} ({list}). Exposed email accounts: {emails}. Breaches: {breaches}.',
+    headerContextMore: 'and {n} more',
+    actionNoExposures: 'No exposures match the current filters.',
+    actionResetPasswords: 'Force password resets for accounts exposed with plaintext passwords (affected accounts: {accounts}, breaches: {breaches}).',
+    actionMfa: 'Enforce multi-factor authentication on all exposed email accounts ({emails} total).',
+    actionExport: 'Export the breach details below and brief your security team.',
+    vizExpand: 'Expand',
+    vizCollapse: 'Collapse',
+    vizExpandAria: 'Expand visualization',
+    vizCollapseAria: 'Collapse visualization',
+    noResults: 'No results match the current filters.',
+    noBreachRows: 'No breaches match the current filters.',
+    domainsBadgeOne: '{n} domain',
+    domainsBadgeMany: '{n} domains',
+    chartSeries: 'Email exposures',
+    chartAria: 'Bar chart of email exposures by breach year, {from} to {to}',
+    dateUnknown: 'Unknown',
+    errMissingTitle: 'Missing sign-in details',
+    errMissingMessage: 'This page needs a valid session from the CxO dashboard. Return to the dashboard and open Breach Analysis again.',
+    errSessionTitle: 'Session expired',
+    errSessionMessage: 'Your dashboard session is no longer valid. Return to the dashboard and sign in again.',
+    errLoadTitle: 'Unable to load data',
+    errLoadMessage: 'Something went wrong while loading breach data. Refresh the page to try again, or return to the dashboard.',
+    dtSearch: 'Search:',
+    dtLengthMenu: '_MENU_ entries per page',
+    dtInfo: 'Showing _START_ to _END_ of _TOTAL_ entries',
+    dtExport: 'Export'
+}, window.BA_I18N || {});
+
+function fmt(template, values) {
+    return template.replace(/\{(\w+)\}/g, (match, key) =>
+        Object.prototype.hasOwnProperty.call(values, key) ? values[key] : match);
+}
+
+function getRiskLabel(risk) {
+    switch (risk) {
+        case 'plaintext': return I18N.riskPlaintext;
+        case 'easytocrack': return I18N.riskWeakHash;
+        case 'hardtocrack': return I18N.riskStrongHash;
+        default: return I18N.riskUnknown;
+    }
+}
 
 
 function initializeTheme() {
     const darkSwitch = document.getElementById('darkSwitch');
     const html = document.documentElement;
 
-    darkSwitch.addEventListener('change', () => {
-        const isDark = darkSwitch.checked;
+    const applyTheme = (isDark) => {
         html.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
 
         d3.selectAll('#visualization text:not(.fa)')
-            .attr('fill', isDark ? '#fff' : '#000')
+            .attr('fill', isDark ? '#e9ecef' : '#000')
             .attr('stroke', isDark ? 'none' : '#ffffff');
-    });
 
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    html.setAttribute('data-bs-theme', savedTheme);
-    darkSwitch.checked = savedTheme === 'dark';
+        if (allData) {
+            updateTrendChart();
+        }
+    };
+
+    const isDark = localStorage.getItem('darkSwitch') === 'dark';
+    if (darkSwitch) {
+        darkSwitch.checked = isDark;
+        darkSwitch.addEventListener('change', () => applyTheme(darkSwitch.checked));
+    }
+    applyTheme(isDark);
 }
 
 
@@ -33,6 +91,7 @@ function initializeVisualizationToggle() {
     const vizCard = document.getElementById('visualizationCard');
     const vizIcon = document.getElementById('vizToggleIcon');
     const vizText = document.getElementById('vizToggleText');
+    if (!toggleBtn || !vizCard) return;
 
     toggleBtn.addEventListener('click', () => {
         const isCollapsed = vizCard.classList.contains('collapsed');
@@ -40,17 +99,63 @@ function initializeVisualizationToggle() {
         if (isCollapsed) {
             vizCard.classList.remove('collapsed');
             vizIcon.className = 'fas fa-chevron-up';
-            vizText.textContent = 'Collapse';
+            vizText.textContent = I18N.vizCollapse;
             toggleBtn.classList.remove('collapsed');
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            toggleBtn.setAttribute('aria-label', I18N.vizCollapseAria);
+            updateVisualizationSize();
         } else {
             vizCard.classList.add('collapsed');
             vizIcon.className = 'fas fa-chevron-down';
-            vizText.textContent = 'Expand';
+            vizText.textContent = I18N.vizExpand;
             toggleBtn.classList.add('collapsed');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.setAttribute('aria-label', I18N.vizExpandAria);
         }
     });
 
-    document.getElementById('resetVisualization').addEventListener('click', clearAllFilters);
+    const resetBtn = document.getElementById('resetVisualization');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', clearAllFilters);
+    }
+}
+
+
+function initializeZoomControls() {
+    const zoomIn = document.getElementById('zoomIn');
+    const zoomOut = document.getElementById('zoomOut');
+    const zoomFit = document.getElementById('zoomFit');
+    if (!zoomIn || !zoomOut || !zoomFit) return;
+
+    const zoomBy = (factor) => {
+        if (currentSvg && currentZoom) {
+            currentSvg.transition().duration(200).call(currentZoom.scaleBy, factor);
+        }
+    };
+
+    zoomIn.addEventListener('click', () => zoomBy(1.3));
+    zoomOut.addEventListener('click', () => zoomBy(1 / 1.3));
+    zoomFit.addEventListener('click', fitVisualization);
+}
+
+
+function fitVisualization() {
+    if (!currentSvg || !currentZoom) return;
+    const container = document.getElementById('visualization');
+    const g = currentSvg.select('g').node();
+    if (!container || !g) return;
+
+    const bounds = g.getBBox();
+    if (!bounds.width || !bounds.height) return;
+
+    const scale = Math.max(0.3, Math.min(3,
+        0.9 * Math.min(container.clientWidth / bounds.width, container.clientHeight / bounds.height)));
+    const tx = container.clientWidth / 2 - scale * (bounds.x + bounds.width / 2);
+    const ty = container.clientHeight / 2 - scale * (bounds.y + bounds.height / 2);
+
+    currentSvg.transition()
+        .duration(400)
+        .call(currentZoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
 }
 
 
@@ -60,6 +165,22 @@ function showLoading() {
 
 function hideLoading() {
     document.getElementById('loadingOverlay').style.display = 'none';
+}
+
+
+function showErrorState(title, message) {
+    hideLoading();
+    const errorState = document.getElementById('errorState');
+    const content = document.getElementById('dashboardContent');
+    if (!errorState || !content) {
+        alert(message);
+        window.location.href = 'breach-dashboard.html';
+        return;
+    }
+    document.getElementById('errorTitle').textContent = title;
+    document.getElementById('errorMessage').textContent = message;
+    content.classList.add('d-none');
+    errorState.classList.remove('d-none');
 }
 
 
@@ -76,35 +197,50 @@ async function init() {
     showLoading();
     initializeTheme();
     initializeVisualizationToggle();
+    initializeZoomControls();
 
     const params = getUrlParams();
-    if (!params.email || !params.token) {
-        hideLoading();
-        alert('Missing required parameters');
-        window.location.href = 'breach-dashboard.html';
+    const hasParams = Boolean(params.email && params.token);
+    const dashboardUrl = hasParams
+        ? `breach-dashboard.html?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`
+        : 'breach-dashboard.html';
+
+    ['backToDashboard', 'bottomBackToDashboard', 'errorBackLink'].forEach(id => {
+        const link = document.getElementById(id);
+        if (link) {
+            link.href = dashboardUrl;
+        }
+    });
+
+    if (!hasParams) {
+        showErrorState(I18N.errMissingTitle, I18N.errMissingMessage);
         return;
     }
 
-
-    // Handle both header and bottom back buttons
-    const dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`;
-    document.getElementById('backToDashboard').addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = dashboardUrl;
-    });
-    document.getElementById('bottomBackToDashboard').addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = dashboardUrl;
-    });
-
     try {
         const response = await fetch(`https://api.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`);
+        if (response.status === 401 || response.status === 403) {
+            showErrorState(I18N.errSessionTitle, I18N.errSessionMessage);
+            return;
+        }
+        if (!response.ok) {
+            throw new Error(`API responded with status ${response.status}`);
+        }
+
         allData = await response.json();
+        if (!allData || !Array.isArray(allData.Breaches_Details)) {
+            throw new Error('Unexpected API response shape');
+        }
+        allData.Detailed_Breach_Info = allData.Detailed_Breach_Info || {};
+        allData.Yearly_Metrics = allData.Yearly_Metrics || {};
         filteredData = allData;
 
         populateFilters();
         setupFilterListeners();
+        updateHeaderContext();
         updateSummaryTiles();
+        updateRecommendedActions();
+        updateTrendChart();
         initializeVisualization();
         initializeDataTable();
         updateTop10Lists();
@@ -112,16 +248,36 @@ async function init() {
 
     } catch (error) {
         console.error('Error initializing application:', error);
-        alert('Error loading data. Please try again.');
+        showErrorState(I18N.errLoadTitle, I18N.errLoadMessage);
     } finally {
         hideLoading();
     }
 }
 
 
+function updateHeaderContext() {
+    const contextEl = document.getElementById('headerContext');
+    if (!contextEl) return;
+
+    const domains = [...new Set(allData.Breaches_Details.map(item => item.domain))];
+    const emails = new Set(allData.Breaches_Details.map(item => item.email)).size;
+    const breaches = new Set(allData.Breaches_Details.map(item => item.breach)).size;
+    const shown = domains.slice(0, 3).join(', ');
+    const list = domains.length > 3
+        ? `${shown} ${fmt(I18N.headerContextMore, { n: domains.length - 3 })}`
+        : shown;
+
+    contextEl.textContent = fmt(I18N.headerContext, {
+        domains: domains.length,
+        list: list,
+        emails: emails,
+        breaches: breaches
+    });
+}
+
+
 function initializeEmailTypeahead() {
     const emails = [...new Set(allData.Breaches_Details.map(item => item.email))];
-
 
     const emailEngine = new Bloodhound({
         local: emails,
@@ -129,11 +285,9 @@ function initializeEmailTypeahead() {
         datumTokenizer: Bloodhound.tokenizers.whitespace
     });
 
-
     if (emailTypeahead) {
         emailTypeahead.typeahead('destroy');
     }
-
 
     emailTypeahead = $('#emailFilter').typeahead({
         hint: true,
@@ -144,7 +298,6 @@ function initializeEmailTypeahead() {
             name: 'emails',
             source: emailEngine
         });
-
 
     emailTypeahead.on('typeahead:select', function (ev, suggestion) {
         filterData();
@@ -220,7 +373,7 @@ function clearAllFilters() {
     document.getElementById('yearFilter').value = '';
 
     expandedNodes.clear();
-    nodeToCenterOnLoad = null; // Clear centering target
+    nodeToCenterOnLoad = null;
 
     ['emailFilter', 'domainFilter', 'breachFilter', 'yearFilter'].forEach(id => {
         const element = document.getElementById(id);
@@ -229,6 +382,8 @@ function clearAllFilters() {
 
     filteredData = allData;
     updateSummaryTiles();
+    updateRecommendedActions();
+    updateTrendChart();
     updateVisualization();
     updateDataTable();
     updateTop10Lists();
@@ -317,6 +472,8 @@ function filterData() {
     };
 
     updateSummaryTiles();
+    updateRecommendedActions();
+    updateTrendChart();
     updateVisualization();
     updateDataTable();
     updateTop10Lists();
@@ -328,25 +485,148 @@ function updateSummaryTiles() {
     const uniqueBreaches = new Set(filteredData.Breaches_Details.map(item => item.breach)).size;
     const uniqueEmails = new Set(filteredData.Breaches_Details.map(item => item.email)).size;
     const riskScore = calculateRiskScore(filteredData.Breaches_Details);
+    const band = riskScore >= 70
+        ? { label: I18N.riskBandHigh, cls: 'high' }
+        : riskScore >= 40
+            ? { label: I18N.riskBandMedium, cls: 'medium' }
+            : { label: I18N.riskBandLow, cls: 'low' };
 
     document.getElementById('totalBreaches').innerHTML = `
         <div class="d-flex align-items-center">
-            <i class="fas fa-shield-alt fa-2x me-3 text-danger"></i>
+            <i class="fas fa-shield-alt fa-2x me-3" aria-hidden="true"></i>
             <span>${uniqueBreaches}</span>
         </div>
     `;
-    document.getElementById('riskScore').innerHTML = `
+
+    const riskEl = document.getElementById('riskScore');
+    riskEl.dataset.band = band.cls;
+    riskEl.innerHTML = `
         <div class="d-flex align-items-center">
-            <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
-            <span>${riskScore}</span>
+            <i class="fas fa-exclamation-triangle fa-2x me-3" aria-hidden="true"></i>
+            <span>${riskScore}<span class="stat-scale">/100</span></span>
+            <span class="risk-band risk-band-${band.cls}">${band.label}</span>
         </div>
     `;
+
     document.getElementById('uniqueEmails').innerHTML = `
         <div class="d-flex align-items-center">
-            <i class="fas fa-envelope fa-2x me-3 text-primary"></i>
+            <i class="fas fa-envelope fa-2x me-3" aria-hidden="true"></i>
             <span>${uniqueEmails}</span>
         </div>
     `;
+}
+
+
+function updateRecommendedActions() {
+    const list = document.getElementById('actionsList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    const addAction = (iconClass, colorClass, text) => {
+        const li = document.createElement('li');
+        const icon = document.createElement('i');
+        icon.className = `fas ${iconClass} ${colorClass}`;
+        icon.setAttribute('aria-hidden', 'true');
+        const span = document.createElement('span');
+        span.textContent = text;
+        li.append(icon, span);
+        list.appendChild(li);
+    };
+
+    const rows = filteredData.Breaches_Details;
+    if (!rows.length) {
+        addAction('fa-check-circle', 'action-ok', I18N.actionNoExposures);
+        return;
+    }
+
+    const plaintextRows = rows.filter(item =>
+        allData.Detailed_Breach_Info[item.breach]?.password_risk === 'plaintext');
+    const plaintextBreaches = new Set(plaintextRows.map(item => item.breach)).size;
+    const plaintextAccounts = new Set(plaintextRows.map(item => item.email)).size;
+    const uniqueEmails = new Set(rows.map(item => item.email)).size;
+
+    if (plaintextBreaches > 0) {
+        addAction('fa-key', 'action-critical',
+            fmt(I18N.actionResetPasswords, { accounts: plaintextAccounts, breaches: plaintextBreaches }));
+    }
+    addAction('fa-user-shield', 'action-warning', fmt(I18N.actionMfa, { emails: uniqueEmails }));
+    addAction('fa-file-export', 'action-info', I18N.actionExport);
+}
+
+
+function getTrendTheme() {
+    const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    return isDark
+        ? { bar: '#6ea8fe', ink: '#adb5bd', grid: 'rgba(233, 236, 239, 0.12)' }
+        : { bar: '#0d6efd', ink: '#495057', grid: 'rgba(33, 37, 41, 0.12)' };
+}
+
+
+function updateTrendChart() {
+    const canvas = document.getElementById('trendChart');
+    const emptyNote = document.getElementById('trendEmpty');
+    if (!canvas || !emptyNote || typeof Chart === 'undefined') return;
+
+    const counts = {};
+    filteredData.Breaches_Details.forEach(item => {
+        const breachDate = allData.Detailed_Breach_Info[item.breach]?.breached_date;
+        if (!breachDate) return;
+        const year = new Date(breachDate).getFullYear();
+        if (!isNaN(year)) {
+            counts[year] = (counts[year] || 0) + 1;
+        }
+    });
+
+    const years = Object.keys(counts).sort();
+
+    if (trendChart) {
+        trendChart.destroy();
+        trendChart = null;
+    }
+
+    if (!years.length) {
+        canvas.classList.add('d-none');
+        emptyNote.classList.remove('d-none');
+        return;
+    }
+    canvas.classList.remove('d-none');
+    emptyNote.classList.add('d-none');
+
+    const theme = getTrendTheme();
+    canvas.setAttribute('aria-label',
+        fmt(I18N.chartAria, { from: years[0], to: years[years.length - 1] }));
+
+    trendChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: years,
+            datasets: [{
+                label: I18N.chartSeries,
+                data: years.map(year => counts[year]),
+                backgroundColor: theme.bar,
+                borderRadius: 4,
+                maxBarThickness: 48
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: theme.ink }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: theme.grid },
+                    ticks: { color: theme.ink, precision: 0 }
+                }
+            }
+        }
+    });
 }
 
 
@@ -410,23 +690,37 @@ function updateVisualizationSize() {
     if (!container) return;
 
     const nodeCount = filteredData?.Breaches_Details?.length || 0;
-    const uniqueBreaches = new Set(filteredData?.Breaches_Details?.map(item => item.breach)).size || 0;
-
 
     const minWidth = Math.max(800, nodeCount * 10);
 
 
     const svg = d3.select('#visualization svg');
     if (svg.node()) {
+        const currentWidth = parseFloat(svg.attr('width')) || 0;
+        const currentHeight = parseFloat(svg.attr('height')) || 0;
         svg
-            .attr('width', Math.max(minWidth, container.clientWidth))
-            .attr('height', container.clientHeight);
+            .attr('width', Math.max(minWidth, container.clientWidth, currentWidth))
+            .attr('height', Math.max(container.clientHeight, currentHeight));
     }
 }
 
 
 function updateVisualization() {
     const container = document.getElementById('visualization');
+    const emptyNote = document.getElementById('vizEmpty');
+
+    if (!filteredData.Breaches_Details.length) {
+        d3.select('#visualization svg').remove();
+        currentSvg = null;
+        currentZoom = null;
+        if (emptyNote) {
+            emptyNote.classList.remove('d-none');
+        }
+        return;
+    }
+    if (emptyNote) {
+        emptyNote.classList.add('d-none');
+    }
 
     const nodes = [];
     const links = [];
@@ -456,14 +750,19 @@ function updateVisualization() {
         }
     });
 
+    let seededCount = 0;
+    nodes.forEach(node => {
+        const saved = nodePositions.get(node.id);
+        if (saved) {
+            node.x = saved.x;
+            node.y = saved.y;
+            seededCount++;
+        }
+    });
+
     const nodeCount = nodes.length;
     const isLargeDataset = nodeCount > 100;
     const isVeryLargeDataset = nodeCount > 500;
-
-    const breachAndDomainNodes = nodes.filter(n => n.type === 'breach' || n.type === 'domain');
-    const emailCounts = breachAndDomainNodes.map(n => n.emailCount || 1);
-    const minEmails = Math.min(...emailCounts);
-    const maxEmails = Math.max(...emailCounts);
 
     function getDynamicFontSize(emailCount, type) {
         if (!emailCount) return type === 'email' ? 9 : 11;
@@ -568,7 +867,7 @@ function updateVisualization() {
         const expandedNode = nodes.find(n => n.id === expandedNodeId);
         if (expandedNode && expandedNode.type === 'domain') {
             centerX = width / 2;
-            centerY = height / 3; // Slightly higher to show breaches below
+            centerY = height / 3;
         } else if (expandedNode && expandedNode.type === 'breach') {
             centerX = width / 2;
             centerY = height / 2;
@@ -579,7 +878,7 @@ function updateVisualization() {
         .force('link', d3.forceLink(links)
             .id(d => d.id)
             .distance(linkDistance)
-            .strength(0.5)) // Slightly weaker links = less oscillation
+            .strength(0.5))
         .force('charge', d3.forceManyBody().strength(chargeStrength))
         .force('center', d3.forceCenter(centerX, centerY))
         .force('collision', d3.forceCollide()
@@ -588,11 +887,15 @@ function updateVisualization() {
                 const textPadding = d.emailCount <= 5 ? 40 : 25;
                 return nodeRadius + textPadding;
             })
-            .strength(0.8)   // Stronger collision = less overlap
-            .iterations(2))  // More collision iterations = better stability
-        .alphaDecay(0.05)    // Faster decay = quicker settling (default: 0.0228)
-        .alphaMin(0.001)     // Stop simulation sooner (default: 0.001)
-        .velocityDecay(0.6); // More friction = less bouncing (default: 0.4)
+            .strength(0.8)
+            .iterations(2))
+        .alphaDecay(0.05)
+        .alphaMin(0.001)
+        .velocityDecay(0.6);
+
+    if (seededCount > nodes.length / 2) {
+        simulation.alpha(0.4);
+    }
 
     svg.append('defs').selectAll('marker')
         .data(['end'])
@@ -659,9 +962,9 @@ function updateVisualization() {
         .attr('r', d => getDynamicNodeRadius(d.emailCount, d.type))
         .attr('fill', d => {
             switch (d.type) {
-                case 'domain': return '#28a745';
-                case 'email': return '#0d6efd';
-                case 'breach': return '#dc3545';
+                case 'domain': return '#0d9488';
+                case 'email': return '#74849b';
+                case 'breach': return '#7477f3';
                 default: return '#999';
             }
         })
@@ -715,8 +1018,9 @@ function updateVisualization() {
 
     const zoom = d3.zoom()
         .scaleExtent([0.3, 3])
-        .filter(function(event) {
-            return event.type !== 'wheel' && (event.type === 'mousedown' || event.type === 'touchstart' || event.type === 'dblclick');
+        .filter(function (event) {
+            if (event.type === 'wheel') return event.ctrlKey;
+            return event.type === 'mousedown' || event.type === 'touchstart' || event.type === 'dblclick';
         })
         .on('zoom', (event) => {
             g.attr('transform', event.transform);
@@ -730,7 +1034,7 @@ function updateVisualization() {
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientHeight;
 
-        const scale = 1; // Keep current scale or set to 1 for no zoom
+        const scale = 1;
         const x = containerWidth / 2 - node.x * scale;
         const y = containerHeight / 2 - node.y * scale;
 
@@ -750,8 +1054,14 @@ function updateVisualization() {
             .attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
+    simulation.on('end', () => {
+        nodes.forEach(node => {
+            nodePositions.set(node.id, { x: node.x, y: node.y });
+        });
+    });
+
     if (nodeCount < 100) {
-        simulation.tick(50); // Pre-compute 50 iterations
+        simulation.tick(50);
         simulation.restart();
     }
 
@@ -760,8 +1070,8 @@ function updateVisualization() {
         if (nodeToCenter) {
             setTimeout(() => {
                 centerNode(nodeToCenter);
-                nodeToCenterOnLoad = null; // Clear after centering
-            }, 500); // Wait 500ms for initial positioning
+                nodeToCenterOnLoad = null;
+            }, 500);
         } else {
             nodeToCenterOnLoad = null;
         }
@@ -790,9 +1100,12 @@ function initializeDataTable() {
                 data: 'breachDate',
                 render: function (data) {
                     const date = new Date(data);
+                    if (isNaN(date)) {
+                        return I18N.dateUnknown;
+                    }
                     const month = date.toLocaleString('default', { month: 'short' });
                     const year = date.getFullYear();
-                    return `${month}-${year}`;
+                    return `${month} ${year}`;
                 }
             },
             {
@@ -802,13 +1115,13 @@ function initializeDataTable() {
                 }
             }
         ],
-        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+        dom: '<"row"<"col-sm-12 col-md-6 d-flex align-items-center gap-2 flex-wrap"lB><"col-sm-12 col-md-6"f>>' +
             '<"row"<"col-sm-12"tr>>' +
             '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         buttons: [
             {
                 extend: 'collection',
-                text: 'Export',
+                text: I18N.dtExport,
                 buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
             }
         ],
@@ -820,9 +1133,11 @@ function initializeDataTable() {
         scrollCollapse: true,
         autoWidth: false,
         language: {
-            search: 'Search results:',
-            lengthMenu: '_MENU_ entries per page',
-            info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+            search: I18N.dtSearch,
+            lengthMenu: I18N.dtLengthMenu,
+            info: I18N.dtInfo,
+            emptyTable: I18N.noBreachRows,
+            zeroRecords: I18N.noBreachRows,
             paginate: {
                 first: '«',
                 previous: '‹',
@@ -896,6 +1211,17 @@ function handleNodeClick(event, d) {
 }
 
 
+function appendEmptyRow(tbody, message) {
+    const row = document.createElement('tr');
+    const cell = document.createElement('td');
+    cell.colSpan = 3;
+    cell.className = 'text-center empty-note';
+    cell.textContent = message;
+    row.appendChild(cell);
+    tbody.appendChild(row);
+}
+
+
 function updateTop10Lists() {
 
     const breachCounts = {};
@@ -910,23 +1236,34 @@ function updateTop10Lists() {
     const topBreachesBody = document.querySelector('#topBreachesTable tbody');
     topBreachesBody.innerHTML = '';
 
+    if (!sortedBreaches.length) {
+        appendEmptyRow(topBreachesBody, I18N.noResults);
+    }
+
     sortedBreaches.forEach(([breach, count]) => {
         const breachInfo = allData.Detailed_Breach_Info[breach];
         const riskLevel = breachInfo?.password_risk || 'unknown';
+
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>
-                <a href="#" class="breach-link" data-breach="${breach}">
-                    ${breach}
-                </a>
-            </td>
-            <td>${count}</td>
-            <td>
-                <span class="badge ${getRiskBadgeClass(riskLevel)}">
-                    ${riskLevel}
-                </span>
-            </td>
-        `;
+
+        const nameCell = document.createElement('td');
+        const nameBtn = document.createElement('button');
+        nameBtn.type = 'button';
+        nameBtn.className = 'breach-link';
+        nameBtn.dataset.breach = breach;
+        nameBtn.textContent = breach;
+        nameCell.appendChild(nameBtn);
+
+        const countCell = document.createElement('td');
+        countCell.textContent = count;
+
+        const riskCell = document.createElement('td');
+        const badge = document.createElement('span');
+        badge.className = `badge ${getRiskBadgeClass(riskLevel)}`;
+        badge.textContent = getRiskLabel(riskLevel);
+        riskCell.appendChild(badge);
+
+        row.append(nameCell, countCell, riskCell);
         topBreachesBody.appendChild(row);
     });
 
@@ -947,22 +1284,35 @@ function updateTop10Lists() {
     const topEmailsBody = document.querySelector('#topEmailsTable tbody');
     topEmailsBody.innerHTML = '';
 
+    if (!sortedEmails.length) {
+        appendEmptyRow(topEmailsBody, I18N.noResults);
+    }
+
     sortedEmails.forEach(([email, count]) => {
         const domains = Array.from(emailDomains[email]);
+
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>
-                <a href="#" class="email-link" data-email="${email}">
-                    ${email}
-                </a>
-            </td>
-            <td>${count}</td>
-            <td>
-                <span class="badge bg-secondary" title="${domains.join(', ')}">
-                    ${domains.length} domain${domains.length !== 1 ? 's' : ''}
-                </span>
-            </td>
-        `;
+
+        const emailCell = document.createElement('td');
+        const emailBtn = document.createElement('button');
+        emailBtn.type = 'button';
+        emailBtn.className = 'email-link';
+        emailBtn.dataset.email = email;
+        emailBtn.textContent = email;
+        emailCell.appendChild(emailBtn);
+
+        const countCell = document.createElement('td');
+        countCell.textContent = count;
+
+        const domainsCell = document.createElement('td');
+        const badge = document.createElement('span');
+        badge.className = 'badge bg-secondary';
+        badge.setAttribute('title', domains.join(', '));
+        badge.textContent = fmt(domains.length === 1 ? I18N.domainsBadgeOne : I18N.domainsBadgeMany,
+            { n: domains.length });
+        domainsCell.appendChild(badge);
+
+        row.append(emailCell, countCell, domainsCell);
         topEmailsBody.appendChild(row);
     });
 
@@ -970,8 +1320,10 @@ function updateTop10Lists() {
     document.querySelectorAll('.breach-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            const breach = e.target.dataset.breach;
-            document.getElementById('breachFilter').value = breach;
+            const breach = e.currentTarget.dataset.breach;
+            const element = document.getElementById('breachFilter');
+            element.value = breach;
+            updateFilterActiveState(element);
             filterData();
         });
     });
@@ -979,8 +1331,10 @@ function updateTop10Lists() {
     document.querySelectorAll('.email-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            const email = e.target.dataset.email;
-            document.getElementById('emailFilter').value = email;
+            const email = e.currentTarget.dataset.email;
+            const element = document.getElementById('emailFilter');
+            element.value = email;
+            updateFilterActiveState(element);
             filterData();
         });
     });
@@ -994,26 +1348,6 @@ function getRiskBadgeClass(risk) {
         default: return 'bg-secondary';
     }
 }
-
-
-const style = document.createElement('style');
-style.textContent = `
-    .badge {
-        font-size: 0.8em;
-        padding: 0.4em 0.6em;
-    }
-    .breach-link, .email-link {
-        text-decoration: none;
-        color: inherit;
-    }
-    .breach-link:hover, .email-link:hover {
-        text-decoration: underline;
-    }
-    [data-bs-theme="dark"] .text-dark {
-        color: #000 !important;
-    }
-`;
-document.head.appendChild(style);
 
 
 document.addEventListener('DOMContentLoaded', () => {

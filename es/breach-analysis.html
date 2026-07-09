@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="dark">
+<html lang="es" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot - Panel de análisis de filtraciones de datos</title>
+    <title>XposedOrNot - Análisis de filtraciones de datos</title>
     <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
-    <!-- CSS Dependencies -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
@@ -66,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> Volver al panel
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Volver al panel
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -84,172 +86,269 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="Cargando datos de filtraciones">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Filtros</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> Borrar todos los filtros
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">Se produjo un error</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> Volver al panel
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">Correo electrónico</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="Escriba para buscar correos..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> Borrar
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>Análisis de filtraciones</h1>
+                        <p class="dashboard-purpose">Examine en detalle cada filtración que afecta a sus dominios
+                            supervisados, filtre por correo, dominio o año, y exporte los detalles para su equipo de
+                            seguridad.</p>
+                        <p id="headerContext">Cargando el resumen de exposición...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Filtraciones únicas</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Puntuación de riesgo
+                            <button type="button" class="info-tip"
+                                title="Puntuación de 0 a 100 basada en la exposición de contraseñas en las filtraciones únicas. Las filtraciones que expusieron contraseñas en texto plano pesan más, y las contraseñas con hash fuerte pesan menos."
+                                aria-label="Cómo se calcula la puntuación de riesgo: puntuación de 0 a 100 basada en la exposición de contraseñas en las filtraciones únicas. Las filtraciones que expusieron contraseñas en texto plano pesan más, y las contraseñas con hash fuerte pesan menos.">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Correos expuestos</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Acciones recomendadas</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Filtros</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> Borrar todos los filtros
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">Correo electrónico</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="Escriba para buscar correos..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="Borrar el filtro de correo">
+                                            <i class="bi bi-x" aria-hidden="true"></i> Borrar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">Dominio</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">Todos los dominios</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">Año de la filtración</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">Todos los años</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">Tipo de filtración</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">Todas las filtraciones</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">Dominio</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">Todos los dominios</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Exposición a lo largo del tiempo</h2>
+                            <small class="text-muted">Exposiciones de correos por año de la filtración</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="Gráfico de barras de exposiciones de correos por año de la filtración"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">Año de la filtración</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">Todos los años</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">Ninguna filtración coincide con
+                                los filtros actuales.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">10 filtraciones principales</h2>
+                            <small class="text-muted">Por número de correos expuestos</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Filtración</th>
+                                            <th>Correos expuestos</th>
+                                            <th>Riesgo de contraseñas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">Tipo de filtración</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">Todas las filtraciones</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">10 correos más expuestos</h2>
+                            <small class="text-muted">Por número de filtraciones</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Correo</th>
+                                            <th>Filtraciones</th>
+                                            <th>Dominios</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Total de filtraciones</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Puntuación de riesgo</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Correos únicos</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">10 filtraciones principales</h5>
-                        <small class="text-muted">Por número de correos expuestos</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre de la filtración</th>
-                                        <th>Número de correos</th>
-                                        <th>Nivel de riesgo</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Detalles de la filtración</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">10 correos más expuestos</h5>
-                        <small class="text-muted">Por número de filtraciones</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Correo</th>
-                                        <th>Número de filtraciones</th>
-                                        <th>Dominios</th>
+                                        <th>Dominio</th>
+                                        <th>Filtración</th>
+                                        <th>Fecha de la filtración</th>
+                                        <th>Datos expuestos</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Detalles de la filtración</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Correo</th>
-                                    <th>Dominio</th>
-                                    <th>Filtración</th>
-                                    <th>Fecha de la filtración</th>
-                                    <th>Datos expuestos</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">Visualización de filtraciones</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">Vista filtrada</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">Mapa de dominios y filtraciones</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">Vista
+                                    filtrada</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="Restablecer vista">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>Restablecer vista</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="Expandir visualización">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">Expandir</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> Restablecer vista
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">Contraer</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>Dominio</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>Filtración</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>Correo</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="Controles de zoom del mapa">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="Acercar">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="Alejar">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="Ajustar el mapa a la vista">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">Haga clic en un nodo de dominio o de filtración para ver sus cuentas de
+                                correo expuestas. Arrastre para desplazarse, use los botones de zoom o Ctrl y la rueda
+                                del ratón para hacer zoom.</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">No hay datos que visualizar para los
+                                filtros actuales.</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -284,10 +383,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Back to Dashboard Button -->
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>Volver al panel</span>
         </a>
     </div>
@@ -335,30 +433,67 @@
             <h6>Síguenos</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">Modo oscuro</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">Modo oscuro</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script>
+      window.BA_I18N = {
+        riskBandLow: 'Bajo',
+        riskBandMedium: 'Elevado',
+        riskBandHigh: 'Alto',
+        riskPlaintext: 'Contraseñas en texto plano',
+        riskWeakHash: 'Hash débil',
+        riskStrongHash: 'Hash fuerte',
+        riskUnknown: 'Desconocido',
+        headerContext: 'Dominios supervisados: {domains} ({list}). Cuentas de correo expuestas: {emails}. Filtraciones: {breaches}.',
+        headerContextMore: 'y {n} más',
+        actionNoExposures: 'Ninguna exposición coincide con los filtros actuales.',
+        actionResetPasswords: 'Fuerce el restablecimiento de contraseñas de las cuentas expuestas con contraseñas en texto plano (cuentas afectadas: {accounts}, filtraciones: {breaches}).',
+        actionMfa: 'Exija la autenticación multifactor en todas las cuentas de correo expuestas ({emails} en total).',
+        actionExport: 'Exporte los detalles de las filtraciones a continuación e informe a su equipo de seguridad.',
+        vizExpand: 'Expandir',
+        vizCollapse: 'Contraer',
+        vizExpandAria: 'Expandir visualización',
+        vizCollapseAria: 'Contraer visualización',
+        noResults: 'Ningún resultado coincide con los filtros actuales.',
+        noBreachRows: 'Ninguna filtración coincide con los filtros actuales.',
+        domainsBadgeOne: '{n} dominio',
+        domainsBadgeMany: '{n} dominios',
+        chartSeries: 'Exposiciones de correos',
+        chartAria: 'Gráfico de barras de exposiciones de correos por año de la filtración, de {from} a {to}',
+        dateUnknown: 'Desconocida',
+        errMissingTitle: 'Faltan datos de inicio de sesión',
+        errMissingMessage: 'Esta página necesita una sesión válida del panel CxO. Vuelva al panel y abra de nuevo el Análisis de filtraciones.',
+        errSessionTitle: 'Sesión expirada',
+        errSessionMessage: 'Su sesión del panel ya no es válida. Vuelva al panel e inicie sesión de nuevo.',
+        errLoadTitle: 'No se pudieron cargar los datos',
+        errLoadMessage: 'Se produjo un error al cargar los datos de filtraciones. Actualice la página para intentarlo de nuevo, o vuelva al panel.',
+        dtSearch: 'Buscar:',
+        dtLengthMenu: '_MENU_ registros por página',
+        dtInfo: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
+        dtExport: 'Exportar'
+      };
+    </script>
     <script src="/static/scripts/common.js"></script>
     <script src="/static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {

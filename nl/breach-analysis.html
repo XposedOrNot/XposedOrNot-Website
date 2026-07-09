@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="nl" data-bs-theme="dark">
+<html lang="nl" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XposedOrNot - Dashboard Datalekanalyse</title>
+    <title>XposedOrNot - Datalekanalyse</title>
+    <meta name="robots" content="noindex, follow">
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -64,8 +68,8 @@
                     <div class="header-right">
                         <ul>
                             <li>
-                                <a href="#" class="btn-header-back" id="backToDashboard">
-                                    <i class="fas fa-arrow-left"></i> Terug naar Dashboard
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Terug naar Dashboard
                                 </a>
                             </li>
                             <li><a href="api_doc">API</a></li>
@@ -82,172 +86,268 @@
     </header>
 
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="Datalekgegevens laden">
         <div class="loading-spinner"></div>
     </div>
 
     <div class="container-fluid">
 
-        <div class="row mb-4">
+        <div class="row mb-4 d-none" id="errorState">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Filters</h5>
-                        <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
-                            <i class="fas fa-redo"></i> Alle Filters Wissen
-                        </button>
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">Er is iets misgegaan</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> Terug naar Dashboard
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="filter-row">
-                            <div class="filter-col">
-                                <label for="emailFilter" class="form-label">E-mailadres</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="emailFilter"
-                                        placeholder="Typ om e-mails te zoeken..." autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter">
-                                        <i class="bi bi-x"></i> Wissen
-                                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>Datalekanalyse</h1>
+                        <p class="dashboard-purpose">Duik in elk datalek dat je gemonitorde domeinen raakt, filter op
+                            e-mail, domein of jaar en exporteer de details voor je beveiligingsteam.</p>
+                        <p id="headerContext">Blootstellingsoverzicht laden...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Unieke Datalekken</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Risicoscore
+                            <button type="button" class="info-tip"
+                                title="Score van 0 tot 100 op basis van wachtwoordblootstelling in unieke datalekken. Datalekken met wachtwoorden in platte tekst wegen het zwaarst, sterk gehashte wachtwoorden het lichtst."
+                                aria-label="Hoe de risicoscore wordt berekend: score van 0 tot 100 op basis van wachtwoordblootstelling in unieke datalekken. Datalekken met wachtwoorden in platte tekst wegen het zwaarst, sterk gehashte wachtwoorden het lichtst.">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Blootgestelde E-mails</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Aanbevolen Acties</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Filters</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> Alle Filters Wissen
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">E-mailadres</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="Typ om e-mails te zoeken..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="E-mailfilter wissen">
+                                            <i class="bi bi-x" aria-hidden="true"></i> Wissen
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">Domein</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">Alle Domeinen</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">Lekjaar</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">Alle Jaren</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">Lektype</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">Alle Lekken</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="filter-col">
-                                <label for="domainFilter" class="form-label">Domein</label>
-                                <select class="form-select" id="domainFilter">
-                                    <option value="">Alle Domeinen</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Blootstelling in de Tijd</h2>
+                            <small class="text-muted">E-mailblootstellingen per lekjaar</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="Staafdiagram van e-mailblootstellingen per lekjaar"></canvas>
                             </div>
-                            <div class="filter-col">
-                                <label for="yearFilter" class="form-label">Lekjaar</label>
-                                <select class="form-select" id="yearFilter">
-                                    <option value="">Alle Jaren</option>
-                                </select>
+                            <p id="trendEmpty" class="empty-note text-center d-none">Geen datalekken komen overeen met
+                                de huidige filters.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Top 10 Datalekken</h2>
+                            <small class="text-muted">Op aantal blootgestelde e-mails</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Datalek</th>
+                                            <th>Blootgestelde E-mails</th>
+                                            <th>Wachtwoordrisico</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                            <div class="filter-col">
-                                <label for="breachFilter" class="form-label">Lektype</label>
-                                <select class="form-select" id="breachFilter">
-                                    <option value="">Alle Lekken</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Top 10 Blootgestelde E-mails</h2>
+                            <small class="text-muted">Op aantal datalekken</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>E-mail</th>
+                                            <th>Datalekken</th>
+                                            <th>Domeinen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Totaal Datalekken</h5>
-                    <div class="breach-count" id="totalBreaches">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Risicoscore</h5>
-                    <div class="risk-score" id="riskScore">0</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="summary-tile">
-                    <h5>Unieke E-mails</h5>
-                    <div class="email-count" id="uniqueEmails">0</div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Top 10 Datalekken</h5>
-                        <small class="text-muted">Op aantal blootgestelde e-mails</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topBreachesTable">
-                                <thead>
-                                    <tr>
-                                        <th>Leknaum</th>
-                                        <th>Aantal E-mails</th>
-                                        <th>Risiconiveau</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Lekdetails</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Top 10 Blootgestelde E-mails</h5>
-                        <small class="text-muted">Op aantal datalekken</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="topEmailsTable">
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>E-mail</th>
-                                        <th>Aantal Lekken</th>
-                                        <th>Domeinen</th>
+                                        <th>Domein</th>
+                                        <th>Lek</th>
+                                        <th>Lekdatum</th>
+                                        <th>Blootgestelde Gegevens</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Lekdetails</h5>
-                    </div>
-                    <div class="card-body">
-                        <table id="breachTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>E-mail</th>
-                                    <th>Domein</th>
-                                    <th>Lek</th>
-                                    <th>Lekdatum</th>
-                                    <th>Blootgestelde Gegevens</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <h5 class="mb-0">Lekvisualisatie</h5>
-                            <span class="badge bg-info" id="filterBadge" style="display: none;">Gefilterde Weergave</span>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">Kaart van Domeinen en Lekken</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">Gefilterde
+                                    Weergave</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="Weergave herstellen">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>Weergave Herstellen</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="Visualisatie uitklappen">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">Uitklappen</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization" style="display: none;">
-                                <i class="fas fa-undo"></i> Weergave Herstellen
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="toggleVisualization">
-                                <i class="fas fa-chevron-up" id="vizToggleIcon"></i>
-                                <span id="vizToggleText">Inklappen</span>
-                            </button>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>Domein</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>Datalek</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>E-mail</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="Zoomknoppen voor kaart">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="Inzoomen">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="Uitzoomen">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="Kaart passend in beeld maken">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">Klik op een domein- of lekknooppunt om de blootgestelde e-mailaccounts
+                                te tonen. Sleep om te verschuiven, gebruik de zoomknoppen of Ctrl en scrollen om te
+                                zoomen.</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">Geen gegevens om te visualiseren
+                                voor de huidige filters.</p>
+                            <div id="visualization"></div>
                         </div>
-                    </div>
-                    <div class="card-body" id="visualizationCard">
-                        <div id="visualization"></div>
                     </div>
                 </div>
             </div>
@@ -283,8 +383,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <div class="back-btn-wrapper">
-        <a href="#" class="btn-back-dashboard" id="bottomBackToDashboard">
-            <i class="fas fa-arrow-left"></i>
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
             <span>Terug naar Dashboard</span>
         </a>
     </div>
@@ -332,30 +432,67 @@
             <h6>Volg Ons</h6>
             <div class="footer-links-wrapper">
               <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-twitter"></i> Twitter (X)
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
             </a>
             <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-facebook"></i> Facebook
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
             </a>
             <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-              <i class="fab fa-mastodon"></i> Mastodon
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
             </a>
             </div>
           </div>
         </div>
 
-        <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
-          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-          <label class="custom-control-label" for="darkSwitch">Donkere Modus</label>
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">Donkere Modus</label>
         </div>
       </div>
     </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script>
+      window.BA_I18N = {
+        riskBandLow: 'Laag',
+        riskBandMedium: 'Verhoogd',
+        riskBandHigh: 'Hoog',
+        riskPlaintext: 'Wachtwoorden in platte tekst',
+        riskWeakHash: 'Zwakke hashing',
+        riskStrongHash: 'Sterke hashing',
+        riskUnknown: 'Onbekend',
+        headerContext: 'Gemonitorde domeinen: {domains} ({list}). Blootgestelde e-mailaccounts: {emails}. Datalekken: {breaches}.',
+        headerContextMore: 'en nog {n}',
+        actionNoExposures: 'Geen blootstellingen komen overeen met de huidige filters.',
+        actionResetPasswords: 'Forceer wachtwoordresets voor accounts die met wachtwoorden in platte tekst zijn blootgesteld (getroffen accounts: {accounts}, datalekken: {breaches}).',
+        actionMfa: 'Verplicht multifactorauthenticatie voor alle blootgestelde e-mailaccounts ({emails} in totaal).',
+        actionExport: 'Exporteer de lekdetails hieronder en informeer je beveiligingsteam.',
+        vizExpand: 'Uitklappen',
+        vizCollapse: 'Inklappen',
+        vizExpandAria: 'Visualisatie uitklappen',
+        vizCollapseAria: 'Visualisatie inklappen',
+        noResults: 'Geen resultaten komen overeen met de huidige filters.',
+        noBreachRows: 'Geen datalekken komen overeen met de huidige filters.',
+        domainsBadgeOne: '{n} domein',
+        domainsBadgeMany: '{n} domeinen',
+        chartSeries: 'E-mailblootstellingen',
+        chartAria: 'Staafdiagram van e-mailblootstellingen per lekjaar, {from} tot {to}',
+        dateUnknown: 'Onbekend',
+        errMissingTitle: 'Aanmeldgegevens ontbreken',
+        errMissingMessage: 'Deze pagina heeft een geldige sessie van het CxO-dashboard nodig. Ga terug naar het dashboard en open Datalekanalyse opnieuw.',
+        errSessionTitle: 'Sessie verlopen',
+        errSessionMessage: 'Je dashboardsessie is niet meer geldig. Ga terug naar het dashboard en meld je opnieuw aan.',
+        errLoadTitle: 'Kan gegevens niet laden',
+        errLoadMessage: 'Er is iets misgegaan bij het laden van de datalekgegevens. Vernieuw de pagina om het opnieuw te proberen, of ga terug naar het dashboard.',
+        dtSearch: 'Zoeken:',
+        dtLengthMenu: '_MENU_ items per pagina',
+        dtInfo: '_START_ tot _END_ van _TOTAL_ items weergegeven',
+        dtExport: 'Exporteren'
+      };
+    </script>
     <script src="/static/scripts/common.js"></script>
     <script src="/static/scripts/breach-analysis.js"></script>
     <script>
-      // Footer accordion for mobile
       document.addEventListener('DOMContentLoaded', function() {
         var footerGroups = document.querySelectorAll('.footer-group h6');
         footerGroups.forEach(function(header) {
