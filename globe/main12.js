@@ -66,16 +66,13 @@ const fetchAssets = async () => {
     const lines = await linesResponse.json();
 
     initGlobe(countries, map, lines);
-  } catch (error) {
-    console.error("Error loading assets:", error);
-  }
+  } catch (error) {}
 };
 
 let scene, globe, camera, renderer;
 
 const initGlobe = (countries, map, lines) => {
   if (typeof THREE === 'undefined' || typeof ThreeGlobe === 'undefined') {
-    console.error("Globe libraries failed to load (THREE or ThreeGlobe missing). Stream text will still render.");
     return;
   }
   try {
@@ -110,16 +107,9 @@ const initGlobe = (countries, map, lines) => {
     });
 
   const textureLoader = new THREE.TextureLoader();
-  textureLoader.load(
-    './154750.jpg',
-    function (texture) {
-      scene.background = texture;
-    },
-    undefined,
-    function (error) {
-      console.error('Error loading background texture:', error);
-    }
-  );
+  textureLoader.load('./154750.jpg', function (texture) {
+    scene.background = texture;
+  });
 
   const globeMaterial = globe.globeMaterial();
   globeMaterial.color = new THREE.Color(colors.globe);
@@ -208,7 +198,6 @@ const initGlobe = (countries, map, lines) => {
     }
   }, 1000);
   } catch (error) {
-    console.error("Globe initialization failed; stream text will still render:", error);
     globe = undefined;
   }
 };
@@ -219,8 +208,6 @@ const connectToStream = () => {
 
   const establishConnection = () => {
     eventSource = new EventSource(streamUrl);
-
-    eventSource.onopen = () => console.log("Stream connection established.");
 
     eventSource.onmessage = (event) => {
       const raw = event.data;
@@ -234,8 +221,7 @@ const connectToStream = () => {
       updateGlobeWithStreamData(data);
     };
 
-    eventSource.onerror = (err) => {
-      console.error("EventSource error:", err);
+    eventSource.onerror = () => {
       if (eventSource.readyState === EventSource.CLOSED) {
         setTimeout(establishConnection, 5000);
       }
