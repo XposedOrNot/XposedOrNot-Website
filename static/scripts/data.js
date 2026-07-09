@@ -115,8 +115,7 @@ function loadConfetti() {
         }
         confettiLoading = true;
         var script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
-        script.crossOrigin = 'anonymous';
+        script.src = '/static/scripts/libs/confetti.browser.js';
         script.onload = resolve;
         script.onerror = reject;
         document.head.appendChild(script);

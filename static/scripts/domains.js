@@ -173,9 +173,7 @@ $(document).ready(function () {
             }
             confettiLoading = true;
             const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
-            script.integrity = 'sha512-GVZQ4XLMDgRy6Wb1kvhJkV9rkKwncP77Xou+v9merH3+/Lcj9AnsbU2UHDvhg6NzVFQP03gvAhVAE47BvO6w/A==';
-            script.crossOrigin = 'anonymous';
+            script.src = '/static/scripts/libs/confetti.browser.js';
             script.onload = resolve;
             script.onerror = reject;
             document.head.appendChild(script);
