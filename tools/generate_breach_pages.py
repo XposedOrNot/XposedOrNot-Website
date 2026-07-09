@@ -11,6 +11,13 @@ writes sitemap-breaches.xml. The template and all formatting mirror the
 client-rendered breach.html detail page (breach.js). BreachIDs are used
 as-is (case preserved). Never hand-edit files under breach/ - rerun this
 script instead.
+
+Every run also bakes the breach directory into xposed.html (EN + all
+locale copies): real breach/industry counts, last-updated date, Dataset
+JSON-LD dateModified/size, and on the EN page an ItemList schema plus a
+crawlable A-to-Z list of every breach linking its static page. The list
+is the no-JS/crawler fallback; xposed.js hides it once the live table
+renders. Never hand-edit those baked blocks - rerun this script.
 """
 import argparse
 import html
@@ -26,6 +33,9 @@ API = "https://api.xposedornot.com/v1/breaches"
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "tools" / "breach_page_template.html"
 OUT_DIR = ROOT / "breach"
+LOCALES = ["bn", "de", "es", "fr", "hi", "it", "ja", "nl", "pt", "ru", "ta", "zh"]
+ITEMLIST_ID = "directory-itemlist-schema"
+STATIC_SECTION_ID = "breach-directory-static"
 
 ID_SAFE = re.compile(r"[A-Za-z0-9._~-]+")
 
@@ -377,6 +387,124 @@ def render(template, breach, public, rank, total):
     return out
 
 
+def fmt_records_compact(n):
+    n = int(n)
+    for limit, suffix in ((1_000_000_000, "B"), (1_000_000, "M"), (1_000, "K")):
+        if n >= limit:
+            value = f"{n / limit:.1f}".rstrip("0").rstrip(".")
+            return f"{value}{suffix}"
+    return str(n)
+
+
+def bake_counts(text, total, industries, latest_added):
+    text = re.sub(r'(<span id="seo-breach-count">)[^<]*(</span>)',
+                  rf"\g<1>{total:,}\g<2>", text)
+    text = re.sub(r'(<span id="seo-industry-count">)[^<]*(</span>)',
+                  rf"\g<1>{industries}\g<2>", text)
+    text = re.sub(r'(<span id="total-count">)[^<]*(</span>)',
+                  rf"\g<1>{total:,}\g<2>", text)
+    d = datetime.fromisoformat(latest_added)
+    updated = ('<i class="far fa-calendar-alt" aria-hidden="true"></i> Last updated: '
+               f'<time datetime="{latest_added[:10]}">{d.strftime("%b %d, %Y")}</time>')
+    text = re.sub(r'(<span class="last-updated" id="seo-last-updated">).*?(</span>)',
+                  lambda m: m.group(1) + updated + m.group(2), text, flags=re.S)
+    return text
+
+
+def bake_dataset(text, total, today):
+    def repl(m):
+        block = m.group(0)
+        if '"@type": "Dataset"' not in block:
+            return block
+        block = re.sub(r',\s*"dateModified": "[^"]*"', "", block)
+        block = re.sub(r',\s*"size": "[^"]*"', "", block)
+        return block.replace(
+            '"isAccessibleForFree": true',
+            '"isAccessibleForFree": true,\n'
+            f'        "dateModified": "{today}",\n'
+            f'        "size": "{total} breaches"')
+    return re.sub(r'<script type="application/ld\+json"[^>]*>.*?</script>',
+                  repl, text, flags=re.S)
+
+
+def itemlist_block(public, total):
+    top = sorted(public, key=lambda r: int(r["exposedRecords"]), reverse=True)[:100]
+    data = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Data Breach Directory",
+        "url": f"{SITE}/xposed",
+        "numberOfItems": total,
+        "itemListOrder": "https://schema.org/ItemListOrderDescending",
+        "itemListElement": [
+            {"@type": "ListItem", "position": i + 1, "name": r["breachID"],
+             "url": f"{SITE}/breach/{r['breachID']}"}
+            for i, r in enumerate(top)],
+    }
+    return (f'<script type="application/ld+json" id="{ITEMLIST_ID}">'
+            + json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+            + "</script>")
+
+
+def static_section(public, total):
+    rows = sorted(public, key=lambda r: r["breachID"].lower())
+    items = "".join(
+        f'<li><a href="/breach/{r["breachID"]}">{esc(r["breachID"])}</a> '
+        f"({r['breachedDate'][:4]}, {fmt_records_compact(r['exposedRecords'])} records)</li>"
+        for r in rows)
+    return (f'<section class="seo-summary" id="{STATIC_SECTION_ID}">'
+            f"<h2>All {total:,} Breaches in the Directory (A to Z)</h2>"
+            "<p>Every entry links to a detail page showing what data was exposed, "
+            "how passwords were stored, and what to do about it. "
+            "Breach year and exposed records in parentheses.</p>"
+            f'<ul class="static-directory-list">{items}</ul></section>')
+
+
+def bake_directory(public):
+    total = len(public)
+    industries = len({str(r["industry"]).strip() for r in public})
+    latest_added = max(r["addedDate"] for r in public)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    pages = [ROOT / "xposed.html"]
+    pages += [ROOT / loc / "xposed.html" for loc in LOCALES]
+    baked = 0
+    for page in pages:
+        if not page.exists():
+            print(f"WARNING: {page} missing, skipped directory bake")
+            continue
+        text = page.read_text(encoding="utf-8")
+        text = bake_counts(text, total, industries, latest_added)
+        text = bake_dataset(text, total, today)
+        if page.parent == ROOT:
+            block = itemlist_block(public, total)
+            pattern = (r'<script type="application/ld\+json" '
+                       rf'id="{ITEMLIST_ID}">.*?</script>')
+            if re.search(pattern, text, flags=re.S):
+                text = re.sub(pattern, lambda m: block, text, flags=re.S)
+            else:
+                text = text.replace('<meta name="theme-color"',
+                                    block + '\n\n    <meta name="theme-color"', 1)
+            section = static_section(public, total)
+            pattern = rf'<section class="seo-summary" id="{STATIC_SECTION_ID}">.*?</section>'
+            if re.search(pattern, text, flags=re.S):
+                text = re.sub(pattern, lambda m: section, text, flags=re.S)
+            else:
+                anchor = re.search(
+                    r'<section class="seo-summary" id="seo-summary">.*?</section>',
+                    text, flags=re.S)
+                if anchor:
+                    text = (text[:anchor.end()] + "\n\n        " + section
+                            + text[anchor.end():])
+                else:
+                    print(f"WARNING: {page} has no seo-summary anchor, list not baked")
+        if '"dateModified"' not in text:
+            print(f"WARNING: {page} Dataset schema not baked (marker not found)")
+        page.write_text(text, encoding="utf-8", newline="")
+        baked += 1
+    return baked
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--id", action="append", dest="ids", metavar="BREACHID",
@@ -455,8 +583,10 @@ def main():
         f.write(sitemap)
 
     orphans = existing - {r["breachID"] for r in public}
+    baked = bake_directory(public)
     print(f"fetched: {len(all_ids)} | rendered now: {len(to_render)} | "
-          f"pages on disk: {len(existing)} | sitemap: {len(live)} URLs")
+          f"pages on disk: {len(existing)} | sitemap: {len(live)} URLs | "
+          f"directory pages baked: {baked}")
     if orphans:
         print(f"WARNING: {len(orphans)} orphan page dirs no longer in the public API "
               f"list: {sorted(orphans)[:10]} - delete and 301 them")

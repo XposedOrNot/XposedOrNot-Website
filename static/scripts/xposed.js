@@ -331,6 +331,8 @@ $(document).ready(function() {
                 $('#table-container').show();
 
                 initDataTable(allBreaches);
+
+                $('#breach-directory-static').hide();
             }
         },
         error: function(xhr, status, error) {
