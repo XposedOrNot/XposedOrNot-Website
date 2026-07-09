@@ -2,6 +2,7 @@
 
 <head>
    <meta charset="utf-8">
+   <script src="/static/scripts/session.js"></script>
    <title>XposedOrNot: API Key Management</title>
    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
    <link rel="dns-prefetch" href="https://static.hotjar.com">
@@ -397,43 +398,41 @@
    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY" rel="preconnect"></script>
    <script src="/static/scripts/common.js"></script>
    <script type="text/javascript">
-         $.urlParam = function (name) {
-            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-            return results[1] || 0;
-         }
-
          let token;
-         try {
-            email = decodeURIComponent($.urlParam('email'));
-            token = decodeURIComponent($.urlParam('token'));
-         } catch (error) {
+         var sessionActive = Boolean(window.XonSession && window.XonSession.token);
+         if (sessionActive) {
+            email = window.XonSession.email;
+            token = window.XonSession.token;
+         } else if (!(window.XonSession && window.XonSession.cookiesBlocked)) {
             window.location.replace("https://xposedornot.com");
          }
 
          $(document).ready(function () {
-            var dashboardUrl = 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
             $('#headerBackBtn, #bottomBackBtn').click(function (e) {
                e.preventDefault();
-               window.location.href = dashboardUrl;
+               window.location.href = 'breach-dashboard.html';
             });
          });
 
-         let api_url = "https://api.xposedornot.com/v1/get-api-key/" + token;
-
-         $.ajax({
-            url: api_url,
-            type: 'GET',
-            success: function (res) {
-               $('#api_key').val(res.api_key);
-               message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
-               document.getElementById('curl').innerText = message
-            },
-            error: function (error) {
-               if (error.responseJSON && error.responseJSON.error === 'invalid_token') {
-                  alert("Invalid token. Please try again.");
+         if (sessionActive) {
+            $.ajax({
+               url: "https://api.xposedornot.com/v1/get-api-key/" + token,
+               type: 'GET',
+               success: function (res) {
+                  $('#api_key').val(res.api_key);
+                  message = '💡 You may test using this : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                  document.getElementById('curl').innerText = message
+               },
+               error: function (error) {
+                  if (error.responseJSON && error.responseJSON.error === 'invalid_token') {
+                     if (window.XonSession) {
+                        window.XonSession.clear();
+                     }
+                     alert("Invalid token. Please try again.");
+                  }
                }
-            }
-         });
+            });
+         }
 
          document.getElementById('emailForm').addEventListener('submit', function (event) {
             event.preventDefault();

@@ -3,33 +3,27 @@
  * Handles API calls and data display for executive VIP exposure data
  */
 
-// Get email and token from URL parameters
-$.urlParam = function (name) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    return results ? results[1] : 0;
-};
-
 var email, token;
+var sessionActive = Boolean(window.XonSession && window.XonSession.token);
 
-try {
-    email = decodeURIComponent($.urlParam('email'));
-    token = decodeURIComponent($.urlParam('token'));
-} catch (e) {
-    window.location.replace("https://xposedornot.com");
+if (sessionActive) {
+    email = window.XonSession.email;
+    token = window.XonSession.token;
 }
 
-// Validate authentication
-if (!email || !token || email === '0' || token === '0') {
-    showAuthModal('Authentication required. Please access this page from the main dashboard.');
+if (!email || !token) {
+    showAuthModal(window.XonSession && window.XonSession.cookiesBlocked
+        ? 'Cookies are disabled in your browser. Enable cookies for this site, then open your dashboard link again.'
+        : 'Authentication required. Please access this page from the main dashboard.');
 }
 
-/**
- * Show authentication modal with countdown and redirect
- */
 function showAuthModal(message, redirectUrl) {
     redirectUrl = redirectUrl || 'dashboard.html';
 
-    // Wait for DOM to be ready
+    if (window.XonSession) {
+        window.XonSession.clear();
+    }
+
     $(function() {
         $('#auth-modal-message').text(message);
         $('#auth-modal').show();
@@ -81,8 +75,7 @@ $.fn.dataTable.ext.type.order['html-data-sort-pre'] = function(data) {
 };
 
 $(document).ready(function() {
-    // Set back to dashboard links with email and token
-    var dashboardUrl = 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
+    var dashboardUrl = 'breach-dashboard.html';
     $('#back-to-dashboard').attr('href', dashboardUrl);
     $('#headerBackBtn').attr('href', dashboardUrl).on('click', function(e) {
         e.preventDefault();

@@ -3,21 +3,39 @@ $.urlParam = function (name) {
     return results ? results[1] : 0;
 };
 
-try {
-    email = decodeURIComponent($.urlParam('email'));
-    token = decodeURIComponent($.urlParam('token'));
-} catch (e) {
-    window.location.replace("https://xposedornot.com");
+var sessionActive = Boolean(window.XonSession && window.XonSession.token);
+
+if (sessionActive) {
+    email = window.XonSession.email;
+    token = window.XonSession.token;
+} else {
+    try {
+        email = decodeURIComponent($.urlParam('email'));
+        token = decodeURIComponent($.urlParam('token'));
+    } catch (e) {
+        window.location.replace("https://xposedornot.com");
+    }
 }
 
-// Validate authentication - check if email and token are present
 var authValid = email && token && email !== '0' && token !== '0' && email !== 'undefined' && token !== 'undefined';
+
+function dashboardPageUrl(page, extraParams) {
+    var parts = [];
+    if (!sessionActive) {
+        parts.push('email=' + encodeURIComponent(email));
+        parts.push('token=' + encodeURIComponent(token));
+    }
+    if (extraParams) {
+        Object.keys(extraParams).forEach(function (key) {
+            parts.push(key + '=' + encodeURIComponent(extraParams[key]));
+        });
+    }
+    return parts.length ? page + '?' + parts.join('&') : page;
+}
 
 if (authValid) {
     $(function () {
-        $('.my-dashboard-link').attr('href',
-            'my-dashboard.html?email=' + encodeURIComponent(email) +
-            '&token=' + encodeURIComponent(token));
+        $('.my-dashboard-link').attr('href', dashboardPageUrl('my-dashboard.html'));
     });
 }
 
@@ -35,7 +53,10 @@ $.LoadingOverlay("show");
 function showAuthModal(message, redirectUrl) {
     redirectUrl = redirectUrl || 'dashboard.html';
 
-    // Hide loading overlay if visible
+    if (window.XonSession) {
+        window.XonSession.clear();
+    }
+
     $.LoadingOverlay("hide");
 
     // Wait for DOM to be ready
@@ -66,15 +87,15 @@ function showAuthModal(message, redirectUrl) {
     });
 }
 
-// Show auth modal if validation failed
 if (!authValid) {
-    showAuthModal('Authentication required. Please access this page from the main dashboard.');
+    showAuthModal(window.XonSession && window.XonSession.cookiesBlocked
+        ? 'Cookies are disabled in your browser. Enable cookies for this site, then open your dashboard link again.'
+        : 'Authentication required. Please access this page from the main dashboard.');
 }
 
 $(document).ready(function () {
     $('.btn-lg.btn-primary').not('#xonPlusModal .btn-primary').click(function () {
-        var newUrl = 'api_key_management.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
-        window.location.href = newUrl;
+        window.location.href = dashboardPageUrl('api_key_management.html');
     });
 
     // Initialize phishing button if it exists
@@ -84,8 +105,7 @@ $(document).ready(function () {
     }
 
     $('#breachAnalysisBtn').click(function () {
-        var analysisUrl = 'breach-analysis.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
-        window.location.href = analysisUrl;
+        window.location.href = dashboardPageUrl('breach-analysis.html');
     });
 
     const backToTop = $('.back-to-top');
@@ -114,8 +134,7 @@ $(document).ready(function () {
 
 
     $('.api-key-btn').click(function () {
-        var newUrl = 'api_key_management.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
-        window.location.href = newUrl;
+        window.location.href = dashboardPageUrl('api_key_management.html');
     });
 
     $('.domain-add-btn').click(function () {
@@ -123,14 +142,12 @@ $(document).ready(function () {
     });
 
     $('.analysis-btn').click(function () {
-        var analysisUrl = 'breach-analysis.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
-        window.location.href = analysisUrl;
+        window.location.href = dashboardPageUrl('breach-analysis.html');
     });
 
     // VIP Dashboard button handlers
     $('.vip-btn, .vip-btn-bottom').click(function () {
-        var vipUrl = 'vip-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
-        window.location.href = vipUrl;
+        window.location.href = dashboardPageUrl('vip-dashboard.html');
     });
 
 
@@ -1202,7 +1219,7 @@ function initializePhishingButton() {
         item.className = 'domain-dropdown-item';
         item.textContent = domains[0];
         item.addEventListener('click', () => {
-            window.open(`domains-phishing-detail.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domains[0])}`, '_blank');
+            window.open(dashboardPageUrl('domains-phishing-detail.html', { domain: domains[0] }), '_blank');
             domainDropdown.classList.remove('show');
             domainDropdown.style.display = 'none';
         });
@@ -1214,7 +1231,7 @@ function initializePhishingButton() {
             item.className = 'domain-dropdown-item';
             item.textContent = domain;
             item.addEventListener('click', () => {
-                window.open(`domains-phishing-detail.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`, '_blank');
+                window.open(dashboardPageUrl('domains-phishing-detail.html', { domain: domain }), '_blank');
                 domainDropdown.classList.remove('show');
                 domainDropdown.style.display = 'none';
             });

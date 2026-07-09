@@ -185,10 +185,18 @@ function showErrorState(title, message) {
 
 
 function getUrlParams() {
+    if (window.XonSession && window.XonSession.token) {
+        return {
+            email: window.XonSession.email,
+            token: window.XonSession.token,
+            fromSession: true
+        };
+    }
     const params = new URLSearchParams(window.location.search);
     return {
         email: params.get('email'),
-        token: params.get('token')
+        token: params.get('token'),
+        fromSession: false
     };
 }
 
@@ -201,7 +209,7 @@ async function init() {
 
     const params = getUrlParams();
     const hasParams = Boolean(params.email && params.token);
-    const dashboardUrl = hasParams
+    const dashboardUrl = hasParams && !params.fromSession
         ? `breach-dashboard.html?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`
         : 'breach-dashboard.html';
 
@@ -220,6 +228,9 @@ async function init() {
     try {
         const response = await fetch(`https://api.xposedornot.com/v1/send_domain_breaches?email=${encodeURIComponent(params.email)}&token=${encodeURIComponent(params.token)}`);
         if (response.status === 401 || response.status === 403) {
+            if (window.XonSession) {
+                window.XonSession.clear();
+            }
             showErrorState(I18N.errSessionTitle, I18N.errSessionMessage);
             return;
         }

@@ -37,14 +37,14 @@ function showVerificationError(domain, errorDetail) {
         chartDiv.innerHTML = '';
     }
 
-    // Get email and token from URL for links
-    const email = getUrlParameter('email');
-    const token = getUrlParameter('token');
+    const creds = getSessionCredentials();
     let verifyUrl = 'domain.html';
     let dashboardUrl = 'breach-dashboard.html';
-    if (email && token) {
-        verifyUrl = `domain.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&domain=${encodeURIComponent(domain)}`;
-        dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`;
+    if (creds.fromSession) {
+        verifyUrl = `domain.html?domain=${encodeURIComponent(domain)}`;
+    } else if (creds.email && creds.token) {
+        verifyUrl = `domain.html?email=${encodeURIComponent(creds.email)}&token=${encodeURIComponent(creds.token)}&domain=${encodeURIComponent(domain)}`;
+        dashboardUrl = `breach-dashboard.html?email=${encodeURIComponent(creds.email)}&token=${encodeURIComponent(creds.token)}`;
     }
 
     // Show note with error message
@@ -140,12 +140,28 @@ function getUrlParameter(name) {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
+function getSessionCredentials() {
+    if (window.XonSession && window.XonSession.token) {
+        return {
+            email: window.XonSession.email,
+            token: window.XonSession.token,
+            fromSession: true
+        };
+    }
+    return {
+        email: getUrlParameter('email'),
+        token: getUrlParameter('token'),
+        fromSession: false
+    };
+}
+
 async function checkDomain(domain) {
     const API_ENDPOINT = 'https://api.xposedornot.com/v1/domain-phishing/';
     try {
 
-        const email = getUrlParameter('email');
-        const token = getUrlParameter('token');
+        const creds = getSessionCredentials();
+        const email = creds.email;
+        const token = creds.token;
 
         let apiUrl = API_ENDPOINT + encodeURIComponent(domain);
         const params = [];

@@ -1,9 +1,12 @@
 (function () {
     var SVGNS = "http://www.w3.org/2000/svg";
     var API = "https://api.xposedornot.com/v1";
-    var params = new URLSearchParams(window.location.search);
-    var email = (params.get("email") || "").toLowerCase().trim();
-    var token = params.get("token") || "";
+    var email = "";
+    var token = "";
+    if (window.XonSession && window.XonSession.token) {
+        email = (window.XonSession.email || "").toLowerCase().trim();
+        token = window.XonSession.token;
+    }
     var liveMode = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     var domainData = null;
     var domainDataState = "idle";
@@ -65,6 +68,9 @@
         if (!isAuth) return false;
         if (authRedirecting) return true;
         authRedirecting = true;
+        if (window.XonSession) {
+            window.XonSession.clear();
+        }
         try {
             $.LoadingOverlay("hide");
         } catch (ex) { }
@@ -1035,6 +1041,9 @@
             if (link.dataset.busy) return;
             link.dataset.busy = "1";
             function done() {
+                if (window.XonSession) {
+                    window.XonSession.clear();
+                }
                 window.location.href = "login";
             }
             if (email && token) {
@@ -1061,8 +1070,7 @@
         document.querySelector(".pd-freshline").hidden = true;
         var cxo = document.getElementById("pd-open-cxo");
         if (cxo && token) {
-            cxo.href = "breach-dashboard.html?email=" + encodeURIComponent(email) +
-                "&token=" + encodeURIComponent(token);
+            cxo.href = "breach-dashboard.html";
         }
         document.querySelectorAll(".pd-live-only").forEach(function (el) { el.hidden = false; });
         if (!token) {
