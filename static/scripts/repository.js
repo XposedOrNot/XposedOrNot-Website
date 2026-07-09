@@ -57,37 +57,41 @@ function getTooltipBg() {
 }
 
 var dashboardData = null;
+var breachStats = null;
+var loadsPending = 2;
 
 $(document).ready(function() {
-  fetchDashboardData();
+  fetchWithRetry('https://api.xposedornot.com/v1/metrics/detailed', renderDashboard, 0);
+  fetchWithRetry('https://api.xposedornot.com/v1/breaches', handleBreachesResponse, 0);
 
   $('#darkSwitch').on('change', function() {
-    if (dashboardData) {
-      setTimeout(function() {
-        Chart.helpers.each(Chart.instances, function(instance) {
-          instance.chart.destroy();
-        });
-        renderPasswordRiskChart(dashboardData);
-        renderDataTypesChart(dashboardData);
+    setTimeout(function() {
+      Chart.helpers.each(Chart.instances, function(instance) {
+        instance.chart.destroy();
+      });
+      if (breachStats) {
+        renderPasswordRiskChart(breachStats);
+        renderDataTypesChart(breachStats);
+      }
+      if (dashboardData) {
         renderYearlyChart(dashboardData);
         renderIndustryChart(dashboardData);
-      }, 50);
-    }
+      }
+    }, 50);
   });
 });
 
-function fetchDashboardData(retryCount) {
-  retryCount = retryCount || 0;
+function fetchWithRetry(url, onData, retryCount) {
   var maxRetries = 3;
 
   $.ajax({
-    url: "https://api.xposedornot.com/v1/metrics/detailed",
+    url: url,
     method: "GET",
     timeout: 30000
   })
   .done(function(data) {
-    renderDashboard(data);
-    hideLoading();
+    onData(data);
+    settleLoad();
   })
   .fail(function(xhr) {
     var status = xhr.status;
@@ -98,10 +102,10 @@ function fetchDashboardData(retryCount) {
       setTimeout(function() {
         $('.error-banner').remove();
         if (retryCount < maxRetries) {
-          fetchDashboardData(retryCount + 1);
+          fetchWithRetry(url, onData, retryCount + 1);
         } else {
           showErrorMessage('Too many requests. Please try again later.', 'error');
-          hideLoading();
+          settleLoad();
         }
       }, retryAfter * 1000);
       return;
@@ -113,12 +117,12 @@ function fetchDashboardData(retryCount) {
         showErrorMessage('Server error. Retrying...', 'warning');
         setTimeout(function() {
           $('.error-banner').remove();
-          fetchDashboardData(retryCount + 1);
+          fetchWithRetry(url, onData, retryCount + 1);
         }, delay);
         return;
       }
       showErrorMessage('Server is temporarily unavailable. Please try again later.', 'error');
-      hideLoading();
+      settleLoad();
       return;
     }
 
@@ -129,8 +133,13 @@ function fetchDashboardData(retryCount) {
     } else {
       showErrorMessage('Unable to load breach data. Please try refreshing the page.', 'error');
     }
-    hideLoading();
+    settleLoad();
   });
+}
+
+function settleLoad() {
+  loadsPending--;
+  if (loadsPending <= 0) hideLoading();
 }
 
 function hideLoading() {
@@ -160,73 +169,212 @@ function updateTimestamp() {
   $('#dataTimestamp').text('Data as of: ' + formatted);
 }
 
-function calculatePareto(topBreaches, totalRecords) {
-  if (!topBreaches || !topBreaches.length || !totalRecords) {
-    return { count: 12, percent: 50 };
-  }
+var TYPE_LABELS = {
+  'email addresses': 'Email Addresses',
+  'passwords': 'Passwords',
+  'usernames': 'Usernames',
+  'names': 'Names',
+  'ip addresses': 'IP Addresses',
+  'phone numbers': 'Phone Numbers',
+  'dates of birth': 'Dates of Birth',
+  'physical addresses': 'Physical Addresses',
+  'genders': 'Genders',
+  'geographic locations': 'Geographic Locations',
+  'social media profiles': 'Social Media Profiles'
+};
 
-  var sorted = topBreaches.slice().sort(function(a, b) { return b.count - a.count; });
+function typeLabel(type) {
+  if (TYPE_LABELS[type]) return TYPE_LABELS[type];
+  return type.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+}
+
+function normalizeExposedTypes(exposedData) {
+  var seen = {};
+  var types = [];
+  (exposedData || []).forEach(function(raw) {
+    String(raw).split(',').forEach(function(part) {
+      var t = part.trim().toLowerCase();
+      if (!t) return;
+      if (t === 'email' || t === 'email addresse' || t === 'mail addresses') t = 'email addresses';
+      if (t === 'name') t = 'names';
+      if (t === 'username' || t === 'user names') t = 'usernames';
+      if (!seen[t]) {
+        seen[t] = true;
+        types.push(t);
+      }
+    });
+  });
+  return types;
+}
+
+function matchesAny(types, patterns) {
+  return types.some(function(t) {
+    return patterns.some(function(p) { return t.indexOf(p) !== -1; });
+  });
+}
+
+function computeBreachStats(breaches) {
+  var total = breaches.length;
+  var totalRecords = 0;
+  var typeCounts = {};
+  var risk = { plaintext: 0, easy: 0, hard: 0, unknown: 0 };
+  var verified = 0;
+  var searchable = 0;
+  var sizes = {
+    mega: { count: 0, records: 0 },
+    large: { count: 0, records: 0 },
+    medium: { count: 0, records: 0 },
+    small: { count: 0, records: 0 },
+    tiny: { count: 0, records: 0 }
+  };
+  var risks = {
+    full: { breaches: 0, records: 0 },
+    govid: { breaches: 0, records: 0 },
+    financial: { breaches: 0, records: 0 }
+  };
+  var govPatterns = ['government', 'national id', 'passport', 'social security'];
+  var finPatterns = ['credit card', 'bank account', 'financial', 'account balance'];
+  var recordCounts = [];
+
+  breaches.forEach(function(b) {
+    var records = b.exposedRecords || 0;
+    totalRecords += records;
+    recordCounts.push(records);
+
+    var types = normalizeExposedTypes(b.exposedData);
+    types.forEach(function(t) {
+      typeCounts[t] = (typeCounts[t] || 0) + 1;
+    });
+
+    var pr = String(b.passwordRisk || '').toLowerCase();
+    if (pr === 'plaintext') risk.plaintext++;
+    else if (pr === 'easytocrack') risk.easy++;
+    else if (pr === 'hardtocrack') risk.hard++;
+    else risk.unknown++;
+
+    if (b.verified) verified++;
+    if (b.searchable) searchable++;
+
+    var band = records >= 1e8 ? 'mega' : records >= 1e7 ? 'large' : records >= 1e6 ? 'medium' : records >= 1e5 ? 'small' : 'tiny';
+    sizes[band].count++;
+    sizes[band].records += records;
+
+    var hasEmail = types.indexOf('email addresses') !== -1;
+    if (types.indexOf('names') !== -1 && types.indexOf('dates of birth') !== -1 &&
+        types.indexOf('physical addresses') !== -1 && types.indexOf('phone numbers') !== -1) {
+      risks.full.breaches++;
+      risks.full.records += records;
+    }
+    if (hasEmail && matchesAny(types, govPatterns)) {
+      risks.govid.breaches++;
+      risks.govid.records += records;
+    }
+    if (hasEmail && matchesAny(types, finPatterns)) {
+      risks.financial.breaches++;
+      risks.financial.records += records;
+    }
+  });
+
+  var dataTypes = Object.keys(typeCounts)
+    .map(function(t) { return { type: t, count: typeCounts[t] }; })
+    .sort(function(a, b) { return b.count - a.count; })
+    .slice(0, 8)
+    .map(function(d) {
+      return { type: typeLabel(d.type), pct: Math.round((d.count / total) * 100) };
+    });
+
+  recordCounts.sort(function(a, b) { return b - a; });
   var halfTotal = totalRecords / 2;
   var cumulative = 0;
-  var count = 0;
-
-  for (var i = 0; i < sorted.length; i++) {
-    cumulative += sorted[i].count;
-    count++;
+  var paretoCount = 0;
+  for (var i = 0; i < recordCounts.length; i++) {
+    cumulative += recordCounts[i];
+    paretoCount++;
     if (cumulative >= halfTotal) break;
   }
 
-  var percent = Math.round((cumulative / totalRecords) * 100);
-  return { count: count, percent: percent };
+  return {
+    total: total,
+    totalRecords: totalRecords,
+    dataTypes: dataTypes,
+    risk: risk,
+    verified: verified,
+    searchable: searchable,
+    sizes: sizes,
+    risks: risks,
+    pareto: {
+      count: paretoCount,
+      percent: totalRecords ? Math.round((cumulative / totalRecords) * 100) : 0
+    }
+  };
+}
+
+function handleBreachesResponse(data) {
+  var breaches = (data && data.exposedBreaches) || [];
+  if (!breaches.length) {
+    showErrorMessage('Unable to load breach data. Please try refreshing the page.', 'error');
+    return;
+  }
+  breachStats = computeBreachStats(breaches);
+  renderBreachInsights(breachStats);
+  renderPasswordRiskChart(breachStats);
+  renderDataTypesChart(breachStats);
+}
+
+function renderBreachInsights(stats) {
+  var total = stats.total;
+
+  $('#verified-count').text(stats.verified.toLocaleString());
+  $('#verified-percent').text(((stats.verified / total) * 100).toFixed(1) + '%');
+  $('#searchable-count').text(stats.searchable.toLocaleString());
+
+  $('#pareto-breaches').text(stats.pareto.count);
+  $('#pareto-percent').text(stats.pareto.percent + '%');
+
+  Object.keys(stats.sizes).forEach(function(size) {
+    var band = stats.sizes[size];
+    var pct = stats.totalRecords ? (band.records / stats.totalRecords) * 100 : 0;
+    var pctText = pct >= 0.1 ? pct.toFixed(1) : pct.toFixed(2);
+    $('#size-' + size).text(band.count.toLocaleString());
+    $('#size-' + size + '-pct').text(pctText + '% of records');
+  });
+
+  $('#risk-full-breaches').text(stats.risks.full.breaches);
+  $('#risk-full-records').text(formatNumber(stats.risks.full.records));
+  $('#risk-govid-breaches').text(stats.risks.govid.breaches);
+  $('#risk-govid-records').text(formatNumber(stats.risks.govid.records));
+  $('#risk-financial-breaches').text(stats.risks.financial.breaches);
+  $('#risk-financial-records').text(formatNumber(stats.risks.financial.records));
 }
 
 function renderDashboard(data) {
   dashboardData = data;
   animateCounter($('#breaches-count'), data.Breaches_Count);
   animateCounter($('#records-count'), data.Breaches_Records);
-  animateCounter($('#emails-count'), parseInt(data.Pastes_Count.replace(/,/g, '')) || 0);
+  animateCounter($('#emails-count'), parseInt(String(data.Pastes_Count).replace(/,/g, '')) || 0);
   animateCounter($('#passwords-count'), data.Pastes_Records);
 
-  var totalBreaches = data.Breaches_Count;
   var industries = Object.keys(data.Industry_Breaches_Count || {});
-
   $('#industry-count').text(industries.length);
-  $('#verified-count').text(Math.round(totalBreaches * 0.954));
-  $('#verified-percent').text('95.4%');
-  $('#searchable-count').text(Math.round(totalBreaches * 0.928));
-
-  var pareto = calculatePareto(data.Top_Breaches, data.Breaches_Records);
-  $('#pareto-breaches').text(pareto.count);
-  $('#pareto-percent').text(pareto.percent + '%');
 
   updateTimestamp();
 
-  renderPasswordRiskChart(data);
-  renderDataTypesChart(data);
-  renderBreachSizeDistribution(data);
-  renderIdentityRisk(data);
   renderYearlyChart(data);
   renderIndustryChart(data);
   renderTopBreachesTable(data.Top_Breaches);
   renderRecentBreachesTable(data.Recent_Breaches);
 }
 
-function renderPasswordRiskChart(data) {
+function renderPasswordRiskChart(stats) {
   var ctx = document.getElementById('passwordRiskChart').getContext('2d');
-  var totalBreaches = data.Breaches_Count;
-  var passwordData = {
-    plaintext: Math.round(totalBreaches * 0.12),
-    easy: Math.round(totalBreaches * 0.30),
-    hard: Math.round(totalBreaches * 0.22),
-    unknown: Math.round(totalBreaches * 0.36)
-  };
+  var risk = stats.risk;
 
   new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels: ['Plaintext', 'Easy to Crack', 'Hard to Crack', 'Unknown'],
       datasets: [{
-        data: [passwordData.plaintext, passwordData.easy, passwordData.hard, passwordData.unknown],
+        data: [risk.plaintext, risk.easy, risk.hard, risk.unknown],
         backgroundColor: [
           'rgba(239, 68, 68, 0.8)',
           'rgba(245, 158, 11, 0.8)',
@@ -285,18 +433,9 @@ function renderPasswordRiskChart(data) {
   $('#passwordLegend').html(legendHtml);
 }
 
-function renderDataTypesChart(data) {
+function renderDataTypesChart(stats) {
   var ctx = document.getElementById('dataTypesChart').getContext('2d');
-  var dataTypes = [
-    { type: 'Email Addresses', pct: 99 },
-    { type: 'Passwords', pct: 73 },
-    { type: 'Usernames', pct: 52 },
-    { type: 'Names', pct: 47 },
-    { type: 'IP Addresses', pct: 38 },
-    { type: 'Phone Numbers', pct: 30 },
-    { type: 'Dates of Birth', pct: 25 },
-    { type: 'Physical Addresses', pct: 23 }
-  ];
+  var dataTypes = stats.dataTypes;
 
   new Chart(ctx, {
     type: 'horizontalBar',
@@ -348,36 +487,6 @@ function renderDataTypesChart(data) {
       }
     }
   });
-}
-
-function renderBreachSizeDistribution(data) {
-  var sizes = {
-    mega: { count: 21, pct: 62.9 },
-    large: { count: 93, pct: 28.1 },
-    medium: { count: 241, pct: 8.0 },
-    small: { count: 230, pct: 1.0 },
-    tiny: { count: 82, pct: 0.04 }
-  };
-
-  Object.keys(sizes).forEach(function(size) {
-    $('#size-' + size).text(sizes[size].count);
-    $('#size-' + size + '-pct').text(sizes[size].pct + '% of records');
-  });
-}
-
-function renderIdentityRisk(data) {
-  var risks = {
-    full: { breaches: 44, records: '1.06B' },
-    govid: { breaches: 11, records: '106M' },
-    financial: { breaches: 7, records: '39M' }
-  };
-
-  $('#risk-full-breaches').text(risks.full.breaches);
-  $('#risk-full-records').text(risks.full.records);
-  $('#risk-govid-breaches').text(risks.govid.breaches);
-  $('#risk-govid-records').text(risks.govid.records);
-  $('#risk-financial-breaches').text(risks.financial.breaches);
-  $('#risk-financial-records').text(risks.financial.records);
 }
 
 function renderYearlyChart(data) {
@@ -563,4 +672,3 @@ function toggleDesc(el) {
     el.textContent = 'more';
   }
 }
-
