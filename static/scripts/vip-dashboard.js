@@ -619,10 +619,14 @@ function handleApiError(xhr) {
     var errorMessage = 'An error occurred while fetching data.';
 
     switch (xhr.status) {
-        case 400:
         case 401:
-            showAuthModal('Your session has expired or is invalid. Please log in again to continue.');
+            showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
             return;
+        case 400:
+            errorMessage = 'Invalid request. Please refresh the page and try again.';
+            showEmptyState();
+            updateMetrics({ total: 0, c_suite: 0, vp: 0, director: 0 });
+            break;
         case 404:
             errorMessage = 'No data found for the selected filters.';
             showEmptyState();

@@ -240,13 +240,13 @@ $.ajax(emailVerificationUrl)
             document.getElementById("db-s").className = "visible alert alert-danger";
             $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
             $("#db-s").show();
-        } else if (n.status === 400) {
-            showAuthModal('Your session is invalid. Please log in again to continue.');
         } else if (n.status === 401) {
-            showAuthModal('Your session has expired. Please log in again to continue.');
+            showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
         } else {
-            // Catch-all for other errors that might be auth-related
-            showAuthModal('An error occurred. Please log in again to continue.');
+            $.LoadingOverlay("hide");
+            document.getElementById("db-s").className = "visible alert alert-danger";
+            $("#db-s").html("<b>Something went wrong.</b><br>We couldn't load your dashboard data. Please refresh the page or try again in a few minutes.");
+            $("#db-s").show();
         }
     });
 
@@ -1150,13 +1150,13 @@ function updateApiCall(timeFilter) {
                 document.getElementById("db-s").className = "visible alert alert-danger";
                 $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
                 $("#db-s").show();
-            } else if (n.status === 400) {
-                showAuthModal('Your session is invalid. Please log in again to continue.');
             } else if (n.status === 401) {
-                showAuthModal('Your session has expired. Please log in again to continue.');
+                showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
             } else {
-                // Catch-all for other errors
-                showAuthModal('An error occurred. Please log in again to continue.');
+                $.LoadingOverlay("hide");
+                document.getElementById("db-s").className = "visible alert alert-danger";
+                $("#db-s").html("<b>Something went wrong.</b><br>We couldn't load your dashboard data. Please refresh the page or try again in a few minutes.");
+                $("#db-s").show();
             }
         });
 }
@@ -1573,7 +1573,7 @@ $('#confirmAcknowledgeBtn').on('click', function() {
 
             // Handle auth errors with modal
             if (xhr.status === 401) {
-                showAuthModal('Your session has expired. Please log in again to continue.');
+                showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
                 return;
             }
 
@@ -1785,7 +1785,7 @@ $('#confirmUnacknowledgeBtn').on('click', function() {
 
             // Handle auth errors with modal
             if (xhr.status === 401) {
-                showAuthModal('Your session has expired. Please log in again to continue.');
+                showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
                 return;
             }
 
