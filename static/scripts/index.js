@@ -45,7 +45,7 @@ const validateEmail = (email) => {
 $('#alertMeModal').on('hidden.bs.modal', (e) => {
     $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
     $("#h2head").attr("class", "modal-header-primary");
-    $('#message-text').val("We'll notify you instantly if your email appears in any new data breach. You can unsubscribe anytime. This service is completely free.");
+    $('#message-text').text("We'll notify you instantly if your email appears in any new data breach. You can unsubscribe anytime. This service is completely free.");
     $("#alertMe").show();
     $("#alertMeClose, #a_succ").hide();
 });
@@ -129,7 +129,7 @@ $(document).ready(function () {
 
         // Validate email before proceeding
         if (!inputValue || !validateEmail(inputValue)) {
-            $('#message-text').val("Please enter a valid email address to receive alerts.");
+            $('#message-text').text("Please enter a valid email address to receive alerts.");
             $("#h2head").attr("class", "modal-header-danger");
             $("#recipient-name").css("border", "1px solid red").focus();
             return;
@@ -160,7 +160,7 @@ $(document).ready(function () {
             headers: headers
         })
             .done(() => {
-                $('#message-text').val(ALERT_MESSAGES.subscribeSuccess);
+                $('#message-text').text(ALERT_MESSAGES.subscribeSuccess);
                 $("#h2head").attr("class", "modal-header-success");
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
@@ -187,7 +187,7 @@ $(document).ready(function () {
                     }
                 }
 
-                $('#message-text').val(message);
+                $('#message-text').text(message);
                 $("#h2head").attr("class", headerClass);
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
