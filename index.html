@@ -307,6 +307,14 @@
               "@type": "Answer",
               "text": "Yes, and it's free. Data captured by infostealer malware, including browser-saved passwords, session cookies, autofill data, and crypto wallets, is indexed and appears in your regular email search and domain scans at no cost. Other services gate stealer-log access behind paid plans."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use XposedOrNot with my SIEM or threat-intel platform?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Connectors for Microsoft Sentinel, Splunk, Wazuh, and Maltego are live today, and integrations for MISP, TheHive/Cortex, and OpenCTI are on the way. You can also build your own with official SDKs in eight languages or connect AI assistants through our MCP server. See the integrations page for current status and setup guides."
+            }
           }
         ]
       }
@@ -391,6 +399,68 @@
         font-weight: normal;
         font-display: swap;
         src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+
+      .integrations-band {
+        background: #fff;
+        width: 100%;
+        overflow: hidden;
+        padding: 50px 0 60px 0;
+      }
+
+      [data-theme="dark"] .integrations-band {
+        background-color: #0e0f19;
+      }
+
+      .integration-chips {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin: 30px auto 25px auto;
+        max-width: 820px;
+      }
+
+      .integration-chip {
+        display: inline-block;
+        padding: 10px 22px;
+        border-radius: 30px;
+        border: 1px solid #cdd9f4;
+        background: #f5f8ff;
+        color: #2d5bd7;
+        font-weight: 600;
+        font-size: 0.95em;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+      }
+
+      .integration-chip:hover,
+      .integration-chip:focus {
+        background: #2d5bd7;
+        color: #ffffff;
+        text-decoration: none;
+      }
+
+      .integration-chip:focus-visible {
+        outline: 3px solid #2d5bd7;
+        outline-offset: 2px;
+      }
+
+      .integrations-more {
+        font-weight: 600;
+      }
+
+      [data-theme="dark"] .integration-chip {
+        background: #181b2d;
+        border-color: #2a2d40;
+        color: #7ea4f5;
+      }
+
+      [data-theme="dark"] .integration-chip:hover,
+      [data-theme="dark"] .integration-chip:focus {
+        background: #2d5bd7;
+        border-color: #2d5bd7;
+        color: #ffffff;
       }
     </style>
     </head>
@@ -848,6 +918,28 @@
         <hr />
       </section>
 
+      <!-- Integrations -->
+      <section class="integrations-band" aria-label="Security tool integrations">
+        <div class="container" align="center">
+          <h2 class="gradient-text">Works With Your Security Stack</h2>
+          <p class="faq-subtitle">Free breach intelligence inside the tools you already use.</p>
+          <div class="integration-chips">
+            <a href="integrations/misp" class="integration-chip">MISP</a>
+            <a href="integrations/thehive-cortex" class="integration-chip">TheHive / Cortex</a>
+            <a href="integrations/opencti" class="integration-chip">OpenCTI</a>
+            <a href="integrations/maltego" class="integration-chip">Maltego</a>
+            <a href="integrations/wazuh" class="integration-chip">Wazuh</a>
+            <a href="integrations" class="integration-chip">Microsoft Sentinel</a>
+            <a href="integrations" class="integration-chip">Splunk</a>
+            <a href="integrations" class="integration-chip">Official SDKs</a>
+            <a href="integrations" class="integration-chip">MCP Server</a>
+          </div>
+          <p class="integrations-more">
+            <a href="integrations">Explore all integrations <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+          </p>
+        </div>
+      </section>
+
       <!-- FAQ -->
       <section class="faq-section" aria-label="Frequently asked questions">
         <div class="container">
@@ -978,6 +1070,21 @@
                 <hr class="faq-divider" />
                 <div class="faq-card-body">
                   Yes, and it's free. Data captured by infostealer malware, including browser-saved passwords, session cookies, autofill data, and crypto wallets, is indexed and appears in your regular email search and domain scans at no cost. Other services gate stealer-log access behind paid plans. Read the <a href="https://blog.xposedornot.com/introducing-stealer-logs-alienstealer/" target="_blank" rel="noopener noreferrer">launch post</a> for details.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-card">
+              <div class="faq-card-header" id="faqHead9">
+                <button class="faq-toggle collapsed" type="button" data-toggle="collapse" data-target="#faqBody9" aria-expanded="false" aria-controls="faqBody9">
+                  Can I use XposedOrNot with my SIEM or threat-intel platform?
+                  <span class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></span>
+                </button>
+              </div>
+              <div id="faqBody9" class="collapse" aria-labelledby="faqHead9" data-parent="#faqAccordion">
+                <hr class="faq-divider" />
+                <div class="faq-card-body">
+                  Yes. Connectors for Microsoft Sentinel, Splunk, Wazuh, and Maltego are live today, and integrations for MISP, TheHive/Cortex, and OpenCTI are on the way. You can also build your own with official SDKs in eight languages or connect AI assistants through our MCP server. See the <a href="integrations">integrations page</a> for current status and setup guides.
                 </div>
               </div>
             </div>
@@ -1196,6 +1303,7 @@
               <a href="about" class="footer-link">About</a>
               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
               <a href="our-repository" class="footer-link">Our Repository</a>
+              <a href="integrations" class="footer-link">Integrations</a>
             </div>
           </div>
           <div class="footer-group">
