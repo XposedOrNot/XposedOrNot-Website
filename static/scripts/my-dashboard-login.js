@@ -12,10 +12,16 @@
 
     function showAlert(id) {
         $(".dashboard-alert").not(".dashboard-alert-info").hide().removeClass("show");
+        $("#loginIntro, #monitorNote").hide();
         $(id).show();
         $(id)[0].offsetHeight;
         $(id).addClass("show");
         $(id).attr("tabindex", "-1").trigger("focus");
+    }
+
+    function resetStatus() {
+        $(".dashboard-alert").not(".dashboard-alert-info").hide().removeClass("show");
+        $("#loginIntro, #monitorNote").show();
     }
 
     $(function () {
@@ -33,6 +39,10 @@
                 $email.removeAttr("aria-invalid");
             }
             $submit.prop("disabled", !valid);
+
+            if ($(".dashboard-alert").not(".dashboard-alert-info").filter(":visible").length) {
+                resetStatus();
+            }
         });
 
         var prefill = new URLSearchParams(window.location.search).get("email");

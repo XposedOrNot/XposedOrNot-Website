@@ -50,19 +50,55 @@
           justify-content: center;
         }
       }
+      .login-hint {
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+        margin: 16px 2px 0;
+        font-size: 0.85rem;
+        line-height: 1.55;
+        color: #4b5568;
+      }
+      .login-hint i {
+        color: #94a3b8;
+        margin-top: 3px;
+        flex: 0 0 auto;
+        font-size: 0.95rem;
+      }
+      .login-hint a {
+        color: #2f5fcf;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .login-benefits {
+        margin-top: 22px;
+        padding: 18px 20px;
+        background: #f8fafc;
+        border: 1px solid #eef2f7;
+        border-radius: 12px;
+      }
+      .login-benefits-title {
+        margin: 0 0 10px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
       .login-perks {
         list-style: none;
-        margin: 18px 0 0;
+        margin: 0;
         padding: 0;
       }
       .login-perks li {
         display: flex;
         gap: 11px;
         align-items: flex-start;
-        padding: 7px 0;
+        padding: 6px 0;
         font-size: 0.9rem;
-        color: #435268;
-        line-height: 1.55;
+        color: #384252;
+        line-height: 1.5;
       }
       .login-perks li i {
         color: #2e9e5b;
@@ -70,8 +106,49 @@
         flex: 0 0 18px;
         font-size: 1.05rem;
       }
+      .login-foot-note {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: 0;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: #4b5563;
+      }
+      .login-foot-note i {
+        color: #94a3b8;
+        flex: 0 0 auto;
+      }
+      .login-foot-note strong {
+        color: #334155;
+        font-weight: 600;
+      }
+      body[data-theme="dark"] .login-hint {
+        color: #a9bdd6;
+      }
+      body[data-theme="dark"] .login-hint i {
+        color: #6b7d99;
+      }
+      body[data-theme="dark"] .login-hint a {
+        color: #7aa5ff;
+      }
+      body[data-theme="dark"] .login-benefits {
+        background: #12141f;
+        border-color: #262a3d;
+      }
+      body[data-theme="dark"] .login-benefits-title {
+        color: #8ba0bd;
+      }
       body[data-theme="dark"] .login-perks li {
         color: #c3d3e8;
+      }
+      body[data-theme="dark"] .login-foot-note {
+        color: #9fb2cc;
+      }
+      body[data-theme="dark"] .login-foot-note strong {
+        color: #cdd9ea;
       }
     </style>
   </head>
@@ -203,19 +280,6 @@
           </form>
 
           <div
-            class="dashboard-alert dashboard-alert-info show"
-            role="status"
-          >
-            <i class="fas fa-info-circle" aria-hidden="true"></i>
-            <span>
-              You can sign in if your email has free breach alerts or a
-              verified domain. New here?
-              <a href="/">Run a free breach check</a> or
-              <a href="domain">verify your domain</a> first.
-            </span>
-          </div>
-
-          <div
             id="successMessage"
             class="dashboard-alert dashboard-alert-success"
             role="status"
@@ -223,11 +287,10 @@
           >
             <i class="fas fa-check-circle" aria-hidden="true"></i>
             <span
-              ><strong>Check your inbox.</strong> If this email has verified
-              domains or breach alerts, your sign-in link is on its way; it
-              signs you straight in, no password needed. Nothing arriving in a
-              few minutes? <a href="domain">Verify a domain</a> or
-              <a href="/">set up free alerts</a> first.</span
+              ><strong>Check your inbox.</strong> If your email qualifies, a
+              sign-in link is on its way, no password needed. Nothing in a few
+              minutes? <a href="domain">Verify a domain</a> or
+              <a href="/">set up free alerts</a>.</span
             >
           </div>
 
@@ -239,10 +302,10 @@
           >
             <i class="fas fa-times-circle" aria-hidden="true"></i>
             <span
-              ><strong>That didn't work.</strong> Check the email address and
-              try again. If you haven't used XposedOrNot before, run a
-              <a href="/">free breach check</a> or
-              <a href="domain">verify your domain</a> first.</span
+              ><strong>No sign-in access for that email.</strong> You'll need
+              free breach alerts or a verified domain first.
+              <a href="/">Run a free breach check</a> or
+              <a href="domain">verify your domain</a> to get set up.</span
             >
           </div>
 
@@ -259,35 +322,46 @@
             >
           </div>
 
-          <ul class="login-perks">
-            <li>
-              <i class="fas fa-check-circle" aria-hidden="true"></i>
-              <span>Every breach that exposes your email, with what to do
-                next</span>
-            </li>
-            <li>
-              <i class="fas fa-check-circle" aria-hidden="true"></i>
-              <span>Company-wide exposure, VIP and phishing analysis for your
-                verified domains</span>
-            </li>
-            <li>
-              <i class="fas fa-check-circle" aria-hidden="true"></i>
-              <span>Breach alerts, Privacy Shield, and your API key in one
-                place</span>
-            </li>
-          </ul>
+          <div id="loginIntro">
+            <p class="login-hint">
+              <i class="fas fa-info-circle" aria-hidden="true"></i>
+              <span
+                >Works for any email with free breach alerts or a verified
+                domain. New here? <a href="/">Run a free breach check</a>
+                first.</span
+              >
+            </p>
+
+            <div class="login-benefits">
+              <p class="login-benefits-title">What you'll get</p>
+              <ul class="login-perks">
+                <li>
+                  <i class="fas fa-check-circle" aria-hidden="true"></i>
+                  <span>Every breach exposing your email, with what to do
+                    next</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle" aria-hidden="true"></i>
+                  <span>Company-wide exposure and phishing analysis for
+                    verified domains</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle" aria-hidden="true"></i>
+                  <span>Breach alerts, Privacy Shield, and API key in one
+                    place</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <div
-          class="dashboard-alert dashboard-alert-info show"
-          role="status"
-        >
-          <i class="fas fa-info-circle" aria-hidden="true"></i>
-          <span>
-            Monitoring a company domain? The same sign-in link opens your
-            <strong>CxO Dashboard</strong> too.
-          </span>
-        </div>
+        <p id="monitorNote" class="login-foot-note">
+          <i class="fas fa-building" aria-hidden="true"></i>
+          <span
+            >Monitoring a company domain? The same link opens your
+            <strong>CxO Dashboard</strong>.</span
+          >
+        </p>
       </div>
     </main>
 
