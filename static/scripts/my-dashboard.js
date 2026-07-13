@@ -1034,7 +1034,8 @@
         showOverlay();
         document.querySelector(".pd-email").textContent = email;
         setText("pd-greeting", greeting());
-        setText("pd-greeting-sub", "Here is where " + email + " stands today, " + fmtDate(new Date()) + ".");
+        var greetSub = document.getElementById("pd-greeting-sub");
+        if (greetSub) greetSub.innerHTML = "Here is where <span class=\"pd-greeting-email\">" + esc(email) + "</span> stands today, " + esc(fmtDate(new Date())) + ".";
         document.getElementById("pd-signout").addEventListener("click", function (e) {
             e.preventDefault();
             var link = this;
