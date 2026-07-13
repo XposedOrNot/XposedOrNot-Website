@@ -1163,6 +1163,52 @@
         });
     }
 
+    function initAlertControl() {
+        var disableBtn = document.getElementById("pd-alert-disable");
+        var confirmBox = document.getElementById("pd-alert-confirm");
+        var yes = document.getElementById("pd-alert-confirm-yes");
+        var no = document.getElementById("pd-alert-confirm-no");
+        var title = document.getElementById("pd-alert-confirm-title");
+        var noteEl = document.getElementById("pd-alert-note");
+        if (!disableBtn || !confirmBox || !yes || !no) return;
+
+        disableBtn.addEventListener("click", function () {
+            confirmBox.hidden = false;
+            if (title) {
+                title.setAttribute("tabindex", "-1");
+                title.focus();
+            }
+        });
+        no.addEventListener("click", function () {
+            confirmBox.hidden = true;
+            disableBtn.focus();
+        });
+        yes.addEventListener("click", function () {
+            var original = yes.innerHTML;
+            yes.disabled = true;
+            no.disabled = true;
+            yes.innerHTML = '<i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i> Sending...';
+            $.ajax({ url: API + "/unsubscribe-on/" + encodeURIComponent(email), type: "GET" })
+                .done(function () {
+                    confirmBox.hidden = true;
+                    disableBtn.disabled = true;
+                    disableBtn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Confirmation sent';
+                    note(noteEl, "Confirmation email sent to <strong>" + esc(email) +
+                        "</strong>. Your alerts and dashboard access stay on until you click the link " +
+                        "in that email. Changed your mind? Just ignore that email and nothing changes.");
+                })
+                .fail(function (error) {
+                    yes.disabled = false;
+                    no.disabled = false;
+                    yes.innerHTML = original;
+                    if (authRedirect(error)) return;
+                    note(noteEl, error.status === 429
+                        ? "Too many requests right now. Wait a minute and try again."
+                        : "We couldn't start the disable request right now. Try again later.", "error");
+                });
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         if (!liveMode) {
             window.location.replace("login");
@@ -1171,6 +1217,7 @@
         initNav();
         initPhishing();
         initShield();
+        initAlertControl();
         loadLive();
     });
 })();
