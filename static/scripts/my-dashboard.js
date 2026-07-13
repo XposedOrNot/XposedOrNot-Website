@@ -354,11 +354,11 @@
                 var name = (m.Recent_Breaches && m.Recent_Breaches[0] &&
                     m.Recent_Breaches[0].breachid) || "";
                 var link = name
-                    ? ' &middot; <a href="breach.html#' + encodeURIComponent(name) +
+                    ? '<a href="breach.html#' + encodeURIComponent(name) +
                         '" target="_blank" rel="noopener">' + esc(name) +
-                        '<span class="sr-only"> (opens in new tab)</span></a>'
+                        '<span class="sr-only"> (opens in new tab)</span></a> &middot; added '
                     : "";
-                document.getElementById("pd-freshness-date").innerHTML = fmtDate(d) + link;
+                document.getElementById("pd-freshness-date").innerHTML = link + fmtDate(d);
                 document.querySelector(".pd-freshline").hidden = false;
             });
     }
