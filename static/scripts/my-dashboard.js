@@ -76,13 +76,10 @@
         } catch (ex) { }
         var box = document.createElement("div");
         box.setAttribute("role", "alert");
-        box.style.cssText = "position:fixed;inset:0;display:flex;align-items:center;" +
-            "justify-content:center;background:rgba(14,15,25,0.55);z-index:3000;padding:16px;";
-        box.innerHTML = '<div style="background:#fff;color:#1f2a3a;max-width:420px;width:100%;' +
-            'border-radius:12px;padding:24px;text-align:center;' +
-            'box-shadow:0 12px 40px rgba(0,0,0,0.35);font-size:15px;line-height:1.6;">' +
-            '<i class="fas fa-sign-out-alt" aria-hidden="true" style="font-size:1.6em;color:#3c5fec;"></i>' +
-            '<p style="margin:12px 0 0;"><strong>Your session has ended or this link is no longer valid.</strong>' +
+        box.className = "pd-authgate";
+        box.innerHTML = '<div class="pd-authgate-box">' +
+            '<i class="fas fa-sign-out-alt" aria-hidden="true"></i>' +
+            '<p><strong>Your session has ended or this link is no longer valid.</strong>' +
             '<br>Taking you to sign in&hellip;</p></div>';
         document.body.appendChild(box);
         setTimeout(function () {

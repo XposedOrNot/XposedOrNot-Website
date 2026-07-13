@@ -61,14 +61,21 @@
 
     if (cookiesBlocked) {
         document.addEventListener('DOMContentLoaded', function () {
+            var isDark = (document.body && document.body.getAttribute('data-theme') === 'dark');
+            if (!isDark) {
+                try { isDark = localStorage.getItem('darkSwitch') === 'dark'; } catch (e) {}
+            }
+            var pal = isDark
+                ? { bg: '#3a2e0a', fg: '#f5d689', border: '#8a6d1a' }
+                : { bg: '#fff3cd', fg: '#664d03', border: '#997404' };
             var banner = document.createElement('div');
             banner.setAttribute('role', 'alert');
-            banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;padding:12px 48px;background:#fff3cd;color:#664d03;border-bottom:2px solid #997404;font:15px/1.5 Arial,Helvetica,sans-serif;text-align:center;';
+            banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;padding:12px 48px;background:' + pal.bg + ';color:' + pal.fg + ';border-bottom:2px solid ' + pal.border + ';font:15px/1.5 Arial,Helvetica,sans-serif;text-align:center;';
             banner.appendChild(document.createTextNode('Your browser is blocking cookies, so this dashboard cannot keep you signed in and will not work. Enable cookies for this site, then open the link from your email again.'));
             var close = document.createElement('button');
             close.type = 'button';
             close.setAttribute('aria-label', 'Dismiss cookie warning');
-            close.style.cssText = 'position:absolute;top:8px;right:12px;background:none;border:0;color:#664d03;font-size:20px;line-height:1;cursor:pointer;padding:4px;';
+            close.style.cssText = 'position:absolute;top:8px;right:12px;background:none;border:0;color:' + pal.fg + ';font-size:20px;line-height:1;cursor:pointer;padding:4px;';
             close.appendChild(document.createTextNode('×'));
             close.addEventListener('click', function () {
                 banner.parentNode.removeChild(banner);
