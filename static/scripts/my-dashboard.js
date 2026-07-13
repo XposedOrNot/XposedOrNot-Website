@@ -403,7 +403,7 @@
         if (sensitive && sensitive.length) {
             html += '<div class="dashboard-card pd-card"><h2><i class="fas fa-user-secret" aria-hidden="true"></i> Sensitive breaches <span class="pd-count">' +
                 sensitive.length + "</span></h2>" +
-                '<p class="pd-panel-sub" style="margin-bottom:12px">Hidden from public search. Visible to you because you opened this page with your access token.</p>' +
+                '<p class="pd-panel-sub" style="margin-bottom:12px">Hidden from public search. Visible to you because you are signed in to this account.</p>' +
                 sensitive.map(function (b) { return breachCard(b, false, true); }).join("") + "</div>";
         }
         var LIMIT = 30;
