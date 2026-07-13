@@ -711,11 +711,24 @@
     var NO_DOMAIN_HTML = "No verified domains yet for this account. " +
         "<a href='domain'>Add and verify a domain</a> to unlock company-wide monitoring.";
 
+    var DOMAIN_PANELS = ["domain", "analysis", "vip", "phishing"];
+
+    function setNavLocked(locked) {
+        DOMAIN_PANELS.forEach(function (name) {
+            var link = document.querySelector('.pd-nav a[data-panel="' + name + '"]');
+            if (!link) return;
+            link.classList.toggle("pd-nav-locked", locked);
+            var lock = link.querySelector(".pd-nav-lock");
+            if (lock) lock.hidden = !locked;
+        });
+    }
+
     function showNoDomainState() {
         document.querySelectorAll(".pd-domain-only").forEach(function (el) { el.hidden = true; });
         document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
             note(el, NO_DOMAIN_HTML);
         });
+        setNavLocked(true);
     }
 
     function loadDomainData() {
@@ -739,6 +752,7 @@
                 if (channelRows) channelRows.hidden = false;
                 document.querySelectorAll(".pd-needs-domain").forEach(function (el) { el.hidden = true; });
                 document.querySelectorAll(".pd-domain-only").forEach(function (el) { el.hidden = false; });
+                setNavLocked(false);
                 populatePhishingDomains();
                 renderDomainsPanel();
                 renderAnalysisPanel();
