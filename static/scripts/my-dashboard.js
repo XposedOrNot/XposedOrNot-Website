@@ -711,6 +711,16 @@
         });
     }
 
+    var NO_DOMAIN_HTML = "No verified domains yet for this account. " +
+        "<a href='domain'>Add and verify a domain</a> to unlock company-wide monitoring.";
+
+    function showNoDomainState() {
+        document.querySelectorAll(".pd-domain-only").forEach(function (el) { el.hidden = true; });
+        document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
+            note(el, NO_DOMAIN_HTML);
+        });
+    }
+
     function loadDomainData() {
         if (domainDataState !== "idle") return;
         domainDataState = "loading";
@@ -720,12 +730,18 @@
             .done(function (response) {
                 domainDataState = "done";
                 domainData = response || {};
-                buildInfoMap(domainData.Detailed_Breach_Info);
+                document.querySelectorAll(".pd-domain-loading").forEach(function (el) { el.hidden = true; });
                 var domainCount = Object.keys(domainData.Domain_Summary || {}).length;
+                if (domainData.Error || domainCount === 0) {
+                    showNoDomainState();
+                    return;
+                }
+                buildInfoMap(domainData.Detailed_Breach_Info);
                 navPill("pd-nav-domains", String(domainCount));
                 var channelRows = document.getElementById("pd-channel-rows");
-                if (channelRows) channelRows.hidden = domainCount === 0;
-                document.querySelectorAll(".pd-needs-domain, .pd-domain-loading").forEach(function (el) { el.hidden = true; });
+                if (channelRows) channelRows.hidden = false;
+                document.querySelectorAll(".pd-needs-domain").forEach(function (el) { el.hidden = true; });
+                document.querySelectorAll(".pd-domain-only").forEach(function (el) { el.hidden = false; });
                 populatePhishingDomains();
                 renderDomainsPanel();
                 renderAnalysisPanel();
@@ -736,15 +752,13 @@
                 domainDataState = "idle";
                 document.querySelectorAll(".pd-domain-loading").forEach(function (el) { el.hidden = true; });
                 if (authRedirect(error)) return;
-                var html;
                 if (error.status === 404) {
-                    html = "No verified domains yet for this account. <a href='domain'>Add and verify a domain</a> to unlock company-wide monitoring.";
+                    showNoDomainState();
                 } else {
-                    html = authFailHtml(error.status);
+                    document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
+                        note(el, authFailHtml(error.status), "error");
+                    });
                 }
-                document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
-                    note(el, html, error.status === 404 ? "" : "error");
-                });
             });
     }
 
