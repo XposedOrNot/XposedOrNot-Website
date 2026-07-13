@@ -155,7 +155,7 @@
                 if (["domain", "analysis", "vip", "phishing", "alerts"].indexOf(name) >= 0) {
                     loadDomainData();
                 }
-                if (name === "apikeys") loadApiKey();
+                if (name === "apikeys" && hasDomains()) loadApiKey();
             }
             if (name === "analysis" && analysisTable) analysisTable.columns.adjust();
             if (name === "phishing" && phishingTable) phishingTable.columns.adjust();
@@ -708,10 +708,27 @@
         });
     }
 
-    var NO_DOMAIN_HTML = "No verified domains yet for this account. " +
-        "<a href='domain'>Add and verify a domain</a> to unlock company-wide monitoring.";
+    var EMPTYSTATE_HTML =
+        '<div class="pd-emptystate">' +
+        '<div class="pd-emptystate-icon" aria-hidden="true"><i class="fas fa-globe"></i></div>' +
+        '<h3 class="pd-emptystate-title">Verify a domain to unlock company-wide monitoring</h3>' +
+        '<p class="pd-emptystate-body">See every breach across your organization, spot exposed ' +
+        'employees and executives, scan for lookalike phishing domains, and query it all by API. ' +
+        'Free once your domain is verified.</p>' +
+        '<div class="pd-emptystate-actions">' +
+        '<a href="domain" class="pd-btn pd-btn-primary" target="_blank" rel="noopener">' +
+        '<i class="fas fa-plus-circle" aria-hidden="true"></i> Add &amp; verify a domain' +
+        '<span class="sr-only"> (opens in new tab)</span></a>' +
+        '<a href="faq" class="pd-btn pd-btn-quiet" target="_blank" rel="noopener">' +
+        'How verification works<span class="sr-only"> (opens in new tab)</span></a>' +
+        '</div></div>';
 
-    var DOMAIN_PANELS = ["domain", "analysis", "vip", "phishing"];
+    var DOMAIN_PANELS = ["domain", "analysis", "vip", "phishing", "apikeys"];
+
+    function hasDomains() {
+        return domainDataState === "done" &&
+            Object.keys((domainData && domainData.Domain_Summary) || {}).length > 0;
+    }
 
     function setNavLocked(locked) {
         DOMAIN_PANELS.forEach(function (name) {
@@ -726,7 +743,8 @@
     function showNoDomainState() {
         document.querySelectorAll(".pd-domain-only").forEach(function (el) { el.hidden = true; });
         document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
-            note(el, NO_DOMAIN_HTML);
+            el.innerHTML = EMPTYSTATE_HTML;
+            el.hidden = false;
         });
         setNavLocked(true);
     }
@@ -758,6 +776,8 @@
                 renderAnalysisPanel();
                 renderAlertsPanel();
                 loadVip();
+                var apk = document.getElementById("panel-apikeys");
+                if (apk && !apk.hidden) loadApiKey();
             })
             .fail(function (error) {
                 domainDataState = "idle";
@@ -767,7 +787,9 @@
                     showNoDomainState();
                 } else {
                     document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
-                        note(el, authFailHtml(error.status), "error");
+                        el.innerHTML = '<p class="pd-empty-note" style="border-left:4px solid #cf222e">' +
+                            authFailHtml(error.status) + "</p>";
+                        el.hidden = false;
                     });
                 }
             });
