@@ -1410,7 +1410,7 @@
                 '</span><span class="pd-mon-actions">' + rp + "</span></div></div>";
         }
         return '<div class="pd-mon-rowgroup"><div class="pd-mon-item"><span class="pd-mon-email">' + safe +
-            '</span><span class="pd-mon-actions"><span class="pd-muted">They declined</span></span></div></div>';
+            '</span><span class="pd-mon-actions"><span class="pd-mon-declined"><i class="fas fa-user-slash" aria-hidden="true"></i> Declined</span></span></div></div>';
     }
 
     function monRender(data) {
@@ -1435,9 +1435,9 @@
         }
 
         var groups = {
-            accepted: { title: "Monitoring", rows: [] },
-            pending: { title: "Pending", rows: [] },
-            rejected: { title: "Declined", rows: [] },
+            accepted: { title: "Monitoring", emoji: "🛡️", rows: [] },
+            pending: { title: "Pending", emoji: "⏳", rows: [] },
+            rejected: { title: "Declined", emoji: "🚫", rows: [] },
         };
         monitors.forEach(function (m, idx) {
             if (groups[m.status]) groups[m.status].rows.push(monRow(m, idx));
@@ -1446,7 +1446,8 @@
         host.innerHTML = ["accepted", "pending", "rejected"].map(function (k) {
             var g = groups[k];
             if (!g.rows.length) return "";
-            return '<h3 class="pd-mon-group-title">' + g.title + "</h3>" +
+            return '<h3 class="pd-mon-group-title"><span class="pd-mon-group-emoji" aria-hidden="true">' +
+                g.emoji + "</span>" + g.title + "</h3>" +
                 '<div class="dashboard-card pd-card">' + g.rows.join("") + "</div>";
         }).join("");
     }
