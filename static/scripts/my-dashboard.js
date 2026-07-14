@@ -1307,7 +1307,12 @@
         setText("pd-modal-title", opts.title || "Confirm");
         setText("pd-modal-body", opts.body || "");
         var cbtn = document.getElementById("pd-modal-confirm");
-        if (cbtn) cbtn.textContent = opts.confirmText || "Confirm";
+        if (cbtn) {
+            cbtn.textContent = opts.confirmText || "Confirm";
+            var danger = opts.danger !== false;
+            cbtn.classList.toggle("pd-btn-danger", danger);
+            cbtn.classList.toggle("pd-btn-primary", !danger);
+        }
         monConfirmCb = opts.onConfirm || null;
         monLastFocus = document.activeElement;
         modal.hidden = false;
@@ -1440,6 +1445,12 @@
             return '<div class="pd-mon-rowgroup"><div class="pd-mon-item"><span class="pd-mon-email">' + safe +
                 '</span><span class="pd-mon-actions">' + rp + "</span></div></div>";
         }
+        if (m.status === "withdrawn") {
+            var rw = '<span class="pd-mon-withdrawn"><i class="fas fa-door-open" aria-hidden="true"></i> Stopped sharing</span>' +
+                '<button type="button" class="pd-linkbtn pd-mon-reinvite" data-email="' + safe + '">Re-invite</button>';
+            return '<div class="pd-mon-rowgroup"><div class="pd-mon-item"><span class="pd-mon-email">' + safe +
+                '</span><span class="pd-mon-actions">' + rw + "</span></div></div>";
+        }
         return '<div class="pd-mon-rowgroup"><div class="pd-mon-item"><span class="pd-mon-email">' + safe +
             '</span><span class="pd-mon-actions"><span class="pd-mon-declined"><i class="fas fa-user-slash" aria-hidden="true"></i> Declined</span></span></div></div>';
     }
@@ -1451,6 +1462,7 @@
         setText("pd-mon-c-pending", String(s.pending_count || 0));
         setText("pd-mon-c-accepted", String(s.accepted_count || 0));
         setText("pd-mon-c-rejected", String(s.rejected_count || 0));
+        setText("pd-mon-c-withdrawn", String(s.withdrawn_count || 0));
         var summary = document.getElementById("pd-mon-summary");
         if (summary) summary.hidden = (s.total || 0) === 0;
 
@@ -1469,12 +1481,13 @@
             accepted: { title: "Monitoring", emoji: "🛡️", rows: [] },
             pending: { title: "Pending", emoji: "⏳", rows: [] },
             rejected: { title: "Declined", emoji: "🚫", rows: [] },
+            withdrawn: { title: "No longer sharing", emoji: "🚪", rows: [] },
         };
         monitors.forEach(function (m, idx) {
             if (groups[m.status]) groups[m.status].rows.push(monRow(m, idx));
         });
 
-        host.innerHTML = ["accepted", "pending", "rejected"].map(function (k) {
+        host.innerHTML = ["accepted", "pending", "rejected", "withdrawn"].map(function (k) {
             var g = groups[k];
             if (!g.rows.length) return "";
             return '<h3 class="pd-mon-group-title"><span class="pd-mon-group-emoji" aria-hidden="true">' +
@@ -1536,6 +1549,25 @@
                 confirmText: pending ? "Cancel request" : "Stop monitoring",
                 onConfirm: function () {
                     monRevoke(target).done(monLoad).fail(monHandleError);
+                },
+            });
+        });
+
+        $(document).on("click", ".pd-mon-reinvite", function () {
+            var target = $(this).data("email");
+            monOpenModal({
+                title: "Send a new request?",
+                body: "Send a fresh monitoring request to " + target + "? They'll get an email to accept or decline again.",
+                confirmText: "Send request",
+                danger: false,
+                onConfirm: function () {
+                    monNote("", false);
+                    monInvite(target)
+                        .done(function () {
+                            monNote("Request sent. They'll get an email to accept or decline.", false);
+                            monLoad();
+                        })
+                        .fail(monHandleError);
                 },
             });
         });
