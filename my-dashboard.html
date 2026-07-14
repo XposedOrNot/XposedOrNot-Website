@@ -199,6 +199,11 @@
               >
             </li>
             <li>
+              <a href="#monitor" data-panel="monitor" id="pd-nav-monitor"
+                ><i class="fas fa-users" aria-hidden="true"></i> My Circle</a
+              >
+            </li>
+            <li>
               <a href="#privacy" data-panel="privacy"
                 ><i class="fas fa-user-shield" aria-hidden="true"></i>
                 Privacy</a
@@ -509,6 +514,55 @@
             </div>
             <div class="pd-needs-domain" hidden></div>
             <div id="pd-alerts-live" class="pd-domain-only" hidden></div>
+          </section>
+
+          <section
+            class="pd-panel"
+            id="panel-monitor"
+            aria-label="My Circle"
+            hidden
+          >
+            <div class="pd-panel-head">
+              <div>
+                <h2 class="pd-panel-title">My Circle</h2>
+                <p class="pd-panel-sub">
+                  Help protect family and friends by keeping an eye on their
+                  breach exposure, with their consent.
+                </p>
+              </div>
+            </div>
+            <div class="dashboard-card pd-card">
+              <form id="pd-mon-add-form" class="pd-mon-add">
+                <label class="sr-only" for="pd-mon-email"
+                  >Email to monitor</label
+                >
+                <input
+                  type="email"
+                  id="pd-mon-email"
+                  placeholder="name@example.com"
+                  required
+                  autocomplete="off"
+                />
+                <button type="submit" class="cta-button" id="pd-mon-add-btn">
+                  <i class="fas fa-plus" aria-hidden="true"></i> Send request
+                </button>
+              </form>
+              <p id="pd-mon-add-note" class="pd-note" role="status"></p>
+            </div>
+
+            <div id="pd-mon-summary" class="pd-mon-summary" hidden>
+              <span class="pd-chip pd-chip-pending"
+                >Pending: <b id="pd-mon-c-pending">0</b></span
+              >
+              <span class="pd-chip pd-chip-accepted"
+                >Monitoring: <b id="pd-mon-c-accepted">0</b></span
+              >
+              <span class="pd-chip pd-chip-rejected"
+                >Declined: <b id="pd-mon-c-rejected">0</b></span
+              >
+            </div>
+
+            <div id="pd-mon-live"></div>
           </section>
 
           <section class="pd-panel" id="panel-privacy" aria-label="Privacy" hidden>

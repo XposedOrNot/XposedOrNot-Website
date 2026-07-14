@@ -1,6 +1,6 @@
 (function () {
     var SVGNS = "http://www.w3.org/2000/svg";
-    var API = "https://api.xposedornot.com/v1";
+    var API = "https://xon-api-test.xposedornot.com/v1";
     var email = "";
     var token = "";
     if (window.XonSession && window.XonSession.token) {
@@ -156,6 +156,7 @@
                     loadDomainData();
                 }
                 if (name === "apikeys" && hasDomains()) loadApiKey();
+                if (name === "monitor") monLoad();
             }
             if (name === "analysis" && analysisTable) analysisTable.columns.adjust();
             if (name === "phishing" && phishingTable) phishingTable.columns.adjust();
@@ -1256,6 +1257,138 @@
         });
     }
 
+    function monAuthQS() {
+        return "email=" + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
+    }
+
+    function monNote(text, isError) {
+        var el = document.getElementById("pd-mon-add-note");
+        if (!el) return;
+        el.textContent = text;
+        el.classList.toggle("pd-note-error", !!isError);
+    }
+
+    function monHandleError(xhr) {
+        var msg = (xhr.responseJSON && xhr.responseJSON.detail && xhr.responseJSON.detail.Error) || "";
+        if (xhr.status === 401) {
+            monNote("Your session expired. Please sign in again.", true);
+            return;
+        }
+        monNote(msg || "Something went wrong. Please try again.", true);
+    }
+
+    function monInvite(targetEmail) {
+        return $.ajax({
+            url: API + "/monitor?" + monAuthQS(),
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ target_email: targetEmail }),
+        });
+    }
+
+    function monRevoke(targetEmail) {
+        return $.ajax({
+            url: API + "/monitor-revoke?" + monAuthQS(),
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ target_email: targetEmail }),
+        });
+    }
+
+    function monRow(m) {
+        var safe = esc(m.target_email);
+        var right = "";
+        if (m.status === "accepted") {
+            var b = m.breaches || {};
+            var risk = (b.BreachMetrics && b.BreachMetrics.risk && b.BreachMetrics.risk.risk_label) || "";
+            var badge = b.breaches_count
+                ? '<span class="pd-badge pd-badge-warn">' + b.breaches_count + " breach" +
+                    (b.breaches_count > 1 ? "es" : "") + (risk ? " &middot; " + esc(risk) : "") + "</span>"
+                : '<span class="pd-badge pd-badge-ok">No breaches</span>';
+            var shield = m.shield_override
+                ? '<span class="pd-badge pd-badge-shield" title="Consented despite Privacy Shield"><i class="fas fa-shield-alt" aria-hidden="true"></i></span>'
+                : "";
+            right = shield + badge + '<button type="button" class="pd-linkbtn pd-mon-remove" data-email="' + safe + '">Remove</button>';
+        } else if (m.status === "pending") {
+            right = '<span class="pd-muted">Awaiting their consent</span><button type="button" class="pd-linkbtn pd-mon-remove" data-email="' + safe + '">Cancel</button>';
+        } else {
+            right = '<span class="pd-muted">They declined</span>';
+        }
+        return '<div class="pd-mon-item"><span class="pd-mon-email">' + safe +
+            '</span><span class="pd-mon-actions">' + right + "</span></div>";
+    }
+
+    function monRender(data) {
+        var mm = (data && data.Monitor_Management) || { summary: {}, monitors: [] };
+        var s = mm.summary || {};
+        var monitors = mm.monitors || [];
+        setText("pd-mon-c-pending", String(s.pending_count || 0));
+        setText("pd-mon-c-accepted", String(s.accepted_count || 0));
+        setText("pd-mon-c-rejected", String(s.rejected_count || 0));
+        var summary = document.getElementById("pd-mon-summary");
+        if (summary) summary.hidden = (s.total || 0) === 0;
+
+        var host = document.getElementById("pd-mon-live");
+        if (!host) return;
+        if (!monitors.length) {
+            host.innerHTML =
+                '<div class="dashboard-card pd-card"><div class="pd-emptystate">' +
+                '<h3 class="pd-emptystate-title">No one in your circle yet</h3>' +
+                "<p>Add a family member or friend above. They'll get an email to accept or decline.</p>" +
+                "</div></div>";
+            return;
+        }
+
+        var groups = {
+            accepted: { title: "Monitoring", rows: [] },
+            pending: { title: "Pending", rows: [] },
+            rejected: { title: "Declined", rows: [] },
+        };
+        monitors.forEach(function (m) {
+            if (groups[m.status]) groups[m.status].rows.push(monRow(m));
+        });
+
+        host.innerHTML = ["accepted", "pending", "rejected"].map(function (k) {
+            var g = groups[k];
+            if (!g.rows.length) return "";
+            return '<h3 class="pd-mon-group-title">' + g.title + "</h3>" +
+                '<div class="dashboard-card pd-card">' + g.rows.join("") + "</div>";
+        }).join("");
+    }
+
+    function monLoad() {
+        if (!liveMode || !token) return;
+        $("#pd-mon-live").LoadingOverlay("show");
+        $.ajax({ url: API + "/my-monitors?" + monAuthQS(), type: "GET" })
+            .done(monRender)
+            .fail(monHandleError)
+            .always(function () { $("#pd-mon-live").LoadingOverlay("hide"); });
+    }
+
+    function initMonitor() {
+        $(document).on("submit", "#pd-mon-add-form", function (e) {
+            e.preventDefault();
+            var target = $("#pd-mon-email").val().trim().toLowerCase();
+            if (!target) return;
+            monNote("", false);
+            $("#pd-mon-add-btn").prop("disabled", true);
+            monInvite(target)
+                .done(function () {
+                    monNote("Request sent. They'll get an email to accept or decline.", false);
+                    $("#pd-mon-email").val("");
+                    monLoad();
+                })
+                .fail(monHandleError)
+                .always(function () { $("#pd-mon-add-btn").prop("disabled", false); });
+        });
+
+        $(document).on("click", ".pd-mon-remove", function () {
+            var target = $(this).data("email");
+            if (!window.confirm("Stop monitoring " + target + "?")) return;
+            monRevoke(target).done(monLoad).fail(monHandleError);
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         if (!liveMode) {
             window.location.replace("login");
@@ -1265,6 +1398,7 @@
         initPhishing();
         initShield();
         initAlertControl();
+        initMonitor();
         loadLive();
     });
 })();
