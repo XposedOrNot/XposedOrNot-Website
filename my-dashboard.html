@@ -532,22 +532,40 @@
               </div>
             </div>
             <div class="dashboard-card pd-card">
-              <form id="pd-mon-add-form" class="pd-mon-add">
+              <form id="pd-mon-add-form" class="pd-mon-add" novalidate>
                 <label class="sr-only" for="pd-mon-email"
                   >Email to monitor</label
                 >
-                <input
-                  type="email"
-                  id="pd-mon-email"
-                  placeholder="name@example.com"
-                  required
-                  autocomplete="off"
-                />
-                <button type="submit" class="cta-button" id="pd-mon-add-btn">
+                <div class="pd-mon-field">
+                  <input
+                    type="email"
+                    id="pd-mon-email"
+                    placeholder="name@example.com"
+                    required
+                    autocomplete="off"
+                    aria-describedby="pd-mon-add-note"
+                  />
+                  <i
+                    class="pd-mon-valid-icon fas"
+                    id="pd-mon-valid-icon"
+                    aria-hidden="true"
+                  ></i>
+                </div>
+                <button
+                  type="submit"
+                  class="cta-button"
+                  id="pd-mon-add-btn"
+                  disabled
+                >
                   <i class="fas fa-plus" aria-hidden="true"></i> Send request
                 </button>
               </form>
-              <p id="pd-mon-add-note" class="pd-note" role="status"></p>
+              <p
+                id="pd-mon-add-note"
+                class="pd-note"
+                role="status"
+                aria-live="polite"
+              ></p>
             </div>
 
             <div id="pd-mon-summary" class="pd-mon-summary" hidden>
@@ -877,6 +895,33 @@
         </div>
       </div>
     </main>
+
+    <div class="pd-modal" id="pd-modal" hidden>
+      <div class="pd-modal-backdrop" data-modal-close></div>
+      <div
+        class="pd-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pd-modal-title"
+        aria-describedby="pd-modal-body"
+      >
+        <h3 class="pd-modal-title" id="pd-modal-title">Confirm</h3>
+        <p class="pd-modal-body" id="pd-modal-body"></p>
+        <div class="pd-modal-actions">
+          <button
+            type="button"
+            class="pd-btn pd-btn-quiet"
+            id="pd-modal-cancel"
+            data-modal-close
+          >
+            Keep
+          </button>
+          <button type="button" class="pd-btn pd-btn-danger" id="pd-modal-confirm">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
 
     <footer class="footer" aria-label="Site footer">
       <div class="container">

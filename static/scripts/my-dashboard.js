@@ -1257,15 +1257,71 @@
         });
     }
 
+    var monConfirmCb = null;
+    var monLastFocus = null;
+
     function monAuthQS() {
         return "email=" + encodeURIComponent(email) + "&token=" + encodeURIComponent(token);
     }
 
-    function monNote(text, isError) {
-        var el = document.getElementById("pd-mon-add-note");
-        if (!el) return;
-        el.textContent = text;
-        el.classList.toggle("pd-note-error", !!isError);
+    function monValidateEmail(v) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(v);
+    }
+
+    function monUpdateValidity() {
+        var input = document.getElementById("pd-mon-email");
+        var icon = document.getElementById("pd-mon-valid-icon");
+        var btn = document.getElementById("pd-mon-add-btn");
+        if (!input) return "";
+        var v = input.value.trim();
+        var state = v === "" ? "" : (monValidateEmail(v) ? "valid" : "invalid");
+        input.classList.toggle("pd-input-valid", state === "valid");
+        input.classList.toggle("pd-input-invalid", state === "invalid");
+        input.setAttribute("aria-invalid", state === "invalid" ? "true" : "false");
+        if (icon) {
+            icon.classList.remove("fa-check-circle", "fa-times-circle", "pd-valid", "pd-invalid");
+            if (state === "valid") icon.classList.add("fa-check-circle", "pd-valid");
+            else if (state === "invalid") icon.classList.add("fa-times-circle", "pd-invalid");
+        }
+        if (btn) btn.disabled = state !== "valid";
+        return state;
+    }
+
+    function monResetField() {
+        var input = document.getElementById("pd-mon-email");
+        if (input) {
+            input.value = "";
+            input.classList.remove("pd-input-valid", "pd-input-invalid");
+            input.setAttribute("aria-invalid", "false");
+        }
+        var icon = document.getElementById("pd-mon-valid-icon");
+        if (icon) icon.classList.remove("fa-check-circle", "fa-times-circle", "pd-valid", "pd-invalid");
+        var btn = document.getElementById("pd-mon-add-btn");
+        if (btn) btn.disabled = true;
+    }
+
+    function monOpenModal(opts) {
+        var modal = document.getElementById("pd-modal");
+        if (!modal) return;
+        setText("pd-modal-title", opts.title || "Confirm");
+        setText("pd-modal-body", opts.body || "");
+        var cbtn = document.getElementById("pd-modal-confirm");
+        if (cbtn) cbtn.textContent = opts.confirmText || "Confirm";
+        monConfirmCb = opts.onConfirm || null;
+        monLastFocus = document.activeElement;
+        modal.hidden = false;
+        document.body.classList.add("pd-modal-open");
+        if (cbtn) cbtn.focus();
+    }
+
+    function monCloseModal() {
+        var modal = document.getElementById("pd-modal");
+        if (!modal || modal.hidden) return;
+        modal.hidden = true;
+        document.body.classList.remove("pd-modal-open");
+        monConfirmCb = null;
+        if (monLastFocus && monLastFocus.focus) monLastFocus.focus();
     }
 
     function monHandleError(xhr) {
@@ -1274,7 +1330,18 @@
             monNote("Your session expired. Please sign in again.", true);
             return;
         }
+        if (xhr.status === 429) {
+            monNote("You're doing that too quickly. Please wait a minute, then try again.", true);
+            return;
+        }
         monNote(msg || "Something went wrong. Please try again.", true);
+    }
+
+    function monNote(text, isError) {
+        var el = document.getElementById("pd-mon-add-note");
+        if (!el) return;
+        el.textContent = text;
+        el.classList.toggle("pd-note-error", !!isError);
     }
 
     function monInvite(targetEmail) {
@@ -1295,27 +1362,55 @@
         });
     }
 
-    function monRow(m) {
+    function monRow(m, idx) {
         var safe = esc(m.target_email);
-        var right = "";
         if (m.status === "accepted") {
             var b = m.breaches || {};
-            var risk = (b.BreachMetrics && b.BreachMetrics.risk && b.BreachMetrics.risk.risk_label) || "";
-            var badge = b.breaches_count
-                ? '<span class="pd-badge pd-badge-warn">' + b.breaches_count + " breach" +
-                    (b.breaches_count > 1 ? "es" : "") + (risk ? " &middot; " + esc(risk) : "") + "</span>"
+            var riskLabel = (b.BreachMetrics && b.BreachMetrics.risk && b.BreachMetrics.risk.risk_label) || "";
+            var riskScore = b.BreachMetrics && b.BreachMetrics.risk && b.BreachMetrics.risk.risk_score;
+            var count = b.breaches_count || 0;
+            var badge = count
+                ? '<span class="pd-badge pd-badge-warn">' + count + " breach" +
+                    (count > 1 ? "es" : "") + (riskLabel ? " &middot; " + esc(riskLabel) : "") + "</span>"
                 : '<span class="pd-badge pd-badge-ok">No breaches</span>';
             var shield = m.shield_override
                 ? '<span class="pd-badge pd-badge-shield" title="Consented despite Privacy Shield"><i class="fas fa-shield-alt" aria-hidden="true"></i></span>'
                 : "";
-            right = shield + badge + '<button type="button" class="pd-linkbtn pd-mon-remove" data-email="' + safe + '">Remove</button>';
-        } else if (m.status === "pending") {
-            right = '<span class="pd-muted">Awaiting their consent</span><button type="button" class="pd-linkbtn pd-mon-remove" data-email="' + safe + '">Cancel</button>';
-        } else {
-            right = '<span class="pd-muted">They declined</span>';
+            var details = (m.breaches && m.breaches.breaches_details) || [];
+            var canExpand = count > 0 && details.length > 0;
+            var detailsId = "pd-mon-det-" + idx;
+            var toggle = canExpand
+                ? '<button type="button" class="pd-linkbtn pd-mon-expand" aria-expanded="false" aria-controls="' + detailsId +
+                    '"><span class="pd-mon-expand-txt">View</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></button>'
+                : "";
+            var right = shield + badge + toggle +
+                '<button type="button" class="pd-linkbtn pd-mon-remove" data-action="remove" data-email="' + safe + '">Remove</button>';
+            var item = '<div class="pd-mon-item"><span class="pd-mon-email">' + safe +
+                '</span><span class="pd-mon-actions">' + right + "</span></div>";
+            var panel = "";
+            if (canExpand) {
+                var meta = riskLabel
+                    ? '<div class="pd-mon-details-meta"><span class="pd-mon-risk pd-risk-' + esc(riskLabel.toLowerCase()) +
+                        '"><i class="fas fa-gauge-high" aria-hidden="true"></i> ' + esc(riskLabel) + " risk" +
+                        (typeof riskScore === "number" ? " &middot; " + riskScore + "/100" : "") + "</span></div>"
+                    : "";
+                var chips = details.map(function (d) {
+                    return '<span class="pd-mon-breach-chip">' + esc(d.breach || "") + "</span>";
+                }).join("");
+                panel = '<div class="pd-mon-details" id="' + detailsId + '" hidden>' + meta +
+                    '<div class="pd-mon-details-label">Appears in these breaches</div>' +
+                    '<div class="pd-mon-breach-list">' + chips + "</div></div>";
+            }
+            return '<div class="pd-mon-rowgroup">' + item + panel + "</div>";
         }
-        return '<div class="pd-mon-item"><span class="pd-mon-email">' + safe +
-            '</span><span class="pd-mon-actions">' + right + "</span></div>";
+        if (m.status === "pending") {
+            var rp = '<span class="pd-mon-await"><i class="fas fa-hourglass-half" aria-hidden="true"></i> Awaiting consent</span>' +
+                '<button type="button" class="pd-linkbtn pd-mon-remove" data-action="cancel" data-email="' + safe + '">Cancel</button>';
+            return '<div class="pd-mon-rowgroup"><div class="pd-mon-item"><span class="pd-mon-email">' + safe +
+                '</span><span class="pd-mon-actions">' + rp + "</span></div></div>";
+        }
+        return '<div class="pd-mon-rowgroup"><div class="pd-mon-item"><span class="pd-mon-email">' + safe +
+            '</span><span class="pd-mon-actions"><span class="pd-muted">They declined</span></span></div></div>';
     }
 
     function monRender(data) {
@@ -1344,8 +1439,8 @@
             pending: { title: "Pending", rows: [] },
             rejected: { title: "Declined", rows: [] },
         };
-        monitors.forEach(function (m) {
-            if (groups[m.status]) groups[m.status].rows.push(monRow(m));
+        monitors.forEach(function (m, idx) {
+            if (groups[m.status]) groups[m.status].rows.push(monRow(m, idx));
         });
 
         host.innerHTML = ["accepted", "pending", "rejected"].map(function (k) {
@@ -1366,26 +1461,76 @@
     }
 
     function initMonitor() {
+        $(document).on("input", "#pd-mon-email", monUpdateValidity);
+
         $(document).on("submit", "#pd-mon-add-form", function (e) {
             e.preventDefault();
-            var target = $("#pd-mon-email").val().trim().toLowerCase();
-            if (!target) return;
+            var target = ($("#pd-mon-email").val() || "").trim().toLowerCase();
+            if (!monValidateEmail(target)) {
+                monUpdateValidity();
+                monNote("Please enter a valid email address.", true);
+                return;
+            }
             monNote("", false);
             $("#pd-mon-add-btn").prop("disabled", true);
             monInvite(target)
                 .done(function () {
                     monNote("Request sent. They'll get an email to accept or decline.", false);
-                    $("#pd-mon-email").val("");
+                    monResetField();
                     monLoad();
                 })
                 .fail(monHandleError)
-                .always(function () { $("#pd-mon-add-btn").prop("disabled", false); });
+                .always(monUpdateValidity);
+        });
+
+        $(document).on("click", ".pd-mon-expand", function () {
+            var id = this.getAttribute("aria-controls");
+            var panel = id && document.getElementById(id);
+            if (!panel) return;
+            var open = panel.hidden;
+            panel.hidden = !open;
+            this.setAttribute("aria-expanded", open ? "true" : "false");
+            this.classList.toggle("pd-mon-expand-open", open);
+            var txt = this.querySelector(".pd-mon-expand-txt");
+            if (txt) txt.textContent = open ? "Hide" : "View";
         });
 
         $(document).on("click", ".pd-mon-remove", function () {
             var target = $(this).data("email");
-            if (!window.confirm("Stop monitoring " + target + "?")) return;
-            monRevoke(target).done(monLoad).fail(monHandleError);
+            var pending = $(this).data("action") === "cancel";
+            monOpenModal({
+                title: pending ? "Cancel this request?" : "Stop monitoring?",
+                body: pending
+                    ? "Cancel the monitoring request to " + target + "? They won't be able to accept it anymore."
+                    : "Stop monitoring " + target + "? You'll no longer see their breach exposure.",
+                confirmText: pending ? "Cancel request" : "Stop monitoring",
+                onConfirm: function () {
+                    monRevoke(target).done(monLoad).fail(monHandleError);
+                },
+            });
+        });
+
+        var confirmBtn = document.getElementById("pd-modal-confirm");
+        if (confirmBtn) {
+            confirmBtn.addEventListener("click", function () {
+                var cb = monConfirmCb;
+                monCloseModal();
+                if (cb) cb();
+            });
+        }
+        $(document).on("click", "#pd-modal [data-modal-close]", monCloseModal);
+        document.addEventListener("keydown", function (e) {
+            var modal = document.getElementById("pd-modal");
+            if (!modal || modal.hidden) return;
+            if (e.key === "Escape") { monCloseModal(); return; }
+            if (e.key === "Tab") {
+                var f = modal.querySelectorAll("button:not([disabled])");
+                if (!f.length) return;
+                var first = f[0];
+                var last = f[f.length - 1];
+                if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+                else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+            }
         });
     }
 

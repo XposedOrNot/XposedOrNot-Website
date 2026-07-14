@@ -1979,10 +1979,15 @@ body[data-theme="dark"] .pd-nav-lock {
   flex-wrap: wrap;
   align-items: center;
 }
-.pd-mon-add input[type="email"] {
+.pd-mon-field {
+  position: relative;
   flex: 1 1 240px;
   min-width: 0;
-  padding: 10px 14px;
+}
+.pd-mon-add input[type="email"] {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 40px 10px 14px;
   border: 1px solid #cfd8e3;
   border-radius: 10px;
   font-size: 0.92rem;
@@ -1993,6 +1998,30 @@ body[data-theme="dark"] .pd-nav-lock {
   outline: 2px solid #3f71f3;
   outline-offset: 1px;
   border-color: #3f71f3;
+}
+.pd-mon-add input.pd-input-valid {
+  border-color: #1e8a52;
+}
+.pd-mon-add input.pd-input-invalid {
+  border-color: #cc3344;
+}
+.pd-mon-valid-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.pd-mon-valid-icon.pd-valid {
+  color: #1e8a52;
+  opacity: 1;
+}
+.pd-mon-valid-icon.pd-invalid {
+  color: #cc3344;
+  opacity: 1;
 }
 .pd-note {
   margin: 10px 0 0;
@@ -2039,6 +2068,12 @@ body[data-theme="dark"] .pd-nav-lock {
   color: #5c6c82;
   margin: 20px 0 8px;
 }
+.pd-mon-rowgroup {
+  border-bottom: 1px solid #eef2f7;
+}
+.pd-mon-rowgroup:last-child {
+  border-bottom: none;
+}
 .pd-mon-item {
   display: flex;
   align-items: center;
@@ -2046,10 +2081,6 @@ body[data-theme="dark"] .pd-nav-lock {
   gap: 12px;
   flex-wrap: wrap;
   padding: 12px 0;
-  border-bottom: 1px solid #eef2f7;
-}
-.pd-mon-item:last-child {
-  border-bottom: none;
 }
 .pd-mon-email {
   font-size: 0.92rem;
@@ -2139,8 +2170,20 @@ body[data-theme="dark"] .pd-mon-group-title,
 body[data-theme="dark"] .pd-muted {
   color: #a9bfd9;
 }
-body[data-theme="dark"] .pd-mon-item {
+body[data-theme="dark"] .pd-mon-rowgroup {
   border-bottom-color: #2a2d40;
+}
+body[data-theme="dark"] .pd-mon-add input.pd-input-valid {
+  border-color: #4fbd82;
+}
+body[data-theme="dark"] .pd-mon-add input.pd-input-invalid {
+  border-color: #ff7a89;
+}
+body[data-theme="dark"] .pd-mon-valid-icon.pd-valid {
+  color: #7fdba4;
+}
+body[data-theme="dark"] .pd-mon-valid-icon.pd-invalid {
+  color: #ff9da6;
 }
 body[data-theme="dark"] .pd-mon-email {
   color: #e2e8f0;
@@ -2159,4 +2202,197 @@ body[data-theme="dark"] .pd-badge-shield {
 }
 body[data-theme="dark"] .pd-linkbtn {
   color: #9db8ff;
+}
+
+.pd-mon-await {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #8a5a00;
+  background: #fff4e0;
+  border-radius: 999px;
+  padding: 3px 12px;
+}
+.pd-mon-await i {
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+body[data-theme="dark"] .pd-mon-await {
+  color: #e6c07a;
+  background: #3a2e14;
+}
+
+.pd-mon-expand {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.pd-mon-expand i {
+  font-size: 0.72rem;
+  transition: transform 0.18s ease;
+}
+.pd-mon-expand.pd-mon-expand-open i {
+  transform: rotate(180deg);
+}
+.pd-mon-details {
+  padding: 0 0 14px;
+}
+.pd-mon-details-meta {
+  margin-bottom: 10px;
+}
+.pd-mon-risk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #435268;
+  background: #eef2f7;
+  border-radius: 999px;
+  padding: 3px 11px;
+}
+.pd-risk-high {
+  color: #9c1f2e;
+  background: #fdeaea;
+}
+.pd-risk-medium {
+  color: #8a5a00;
+  background: #fff4e0;
+}
+.pd-risk-low {
+  color: #14663b;
+  background: #e7f6ec;
+}
+.pd-mon-details-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5c6c82;
+  margin-bottom: 8px;
+}
+.pd-mon-breach-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pd-mon-breach-chip {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #2c3e50;
+  background: #eef2f7;
+  border: 1px solid #dde5ef;
+  border-radius: 8px;
+  padding: 3px 10px;
+}
+body[data-theme="dark"] .pd-mon-details-label {
+  color: #a9bfd9;
+}
+body[data-theme="dark"] .pd-mon-risk {
+  color: #c3d3e8;
+  background: #1e2233;
+}
+body[data-theme="dark"] .pd-risk-high {
+  color: #ff9da6;
+  background: #3a1a20;
+}
+body[data-theme="dark"] .pd-risk-medium {
+  color: #e6c07a;
+  background: #3a2e14;
+}
+body[data-theme="dark"] .pd-risk-low {
+  color: #7fdba4;
+  background: #12301f;
+}
+body[data-theme="dark"] .pd-mon-breach-chip {
+  color: #e2e8f0;
+  background: #1e2233;
+  border-color: #2a2d40;
+}
+
+.pd-modal[hidden] {
+  display: none;
+}
+.pd-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.pd-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.55);
+}
+.pd-modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(17, 24, 39, 0.35);
+}
+.pd-modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 10px;
+}
+.pd-modal-body {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #5c6c82;
+  margin: 0 0 20px;
+  word-break: break-word;
+}
+.pd-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pd-btn-danger {
+  background: #cc3344;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pd-btn-danger:hover,
+.pd-btn-danger:focus-visible {
+  background: #b02a3a;
+}
+.pd-btn-danger:focus-visible,
+#pd-modal-cancel:focus-visible {
+  outline: 2px solid #3f71f3;
+  outline-offset: 2px;
+}
+body.pd-modal-open {
+  overflow: hidden;
+}
+body[data-theme="dark"] .pd-modal-dialog {
+  background: #161826;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+body[data-theme="dark"] .pd-modal-title {
+  color: #e2e8f0;
+}
+body[data-theme="dark"] .pd-modal-body {
+  color: #a9bfd9;
+}
+body[data-theme="dark"] .pd-btn-danger {
+  background: #d24455;
+}
+body[data-theme="dark"] .pd-btn-danger:hover,
+body[data-theme="dark"] .pd-btn-danger:focus-visible {
+  background: #e0546a;
 }
