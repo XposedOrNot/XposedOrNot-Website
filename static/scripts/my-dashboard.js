@@ -1478,10 +1478,10 @@
         }
 
         var groups = {
-            accepted: { title: "Monitoring", emoji: "🛡️", rows: [] },
-            pending: { title: "Pending", emoji: "⏳", rows: [] },
-            rejected: { title: "Declined", emoji: "🚫", rows: [] },
-            withdrawn: { title: "No longer sharing", emoji: "🚪", rows: [] },
+            accepted: { title: "Monitoring", icon: "fa-shield-alt", rows: [] },
+            pending: { title: "Pending", icon: "fa-clock", rows: [] },
+            rejected: { title: "Declined", icon: "fa-ban", rows: [] },
+            withdrawn: { title: "No longer sharing", icon: "fa-door-open", rows: [] },
         };
         monitors.forEach(function (m, idx) {
             if (groups[m.status]) groups[m.status].rows.push(monRow(m, idx));
@@ -1490,8 +1490,8 @@
         host.innerHTML = ["accepted", "pending", "rejected", "withdrawn"].map(function (k) {
             var g = groups[k];
             if (!g.rows.length) return "";
-            return '<h3 class="pd-mon-group-title"><span class="pd-mon-group-emoji" aria-hidden="true">' +
-                g.emoji + "</span>" + g.title + "</h3>" +
+            return '<h3 class="pd-mon-group-title"><i class="fas ' + g.icon +
+                " pd-mon-gicon pd-mon-gicon-" + k + '" aria-hidden="true"></i>' + g.title + "</h3>" +
                 '<div class="dashboard-card pd-card">' + g.rows.join("") + "</div>";
         }).join("");
     }
