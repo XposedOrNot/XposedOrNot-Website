@@ -1369,21 +1369,21 @@
             var riskLabel = (b.BreachMetrics && b.BreachMetrics.risk && b.BreachMetrics.risk.risk_label) || "";
             var riskScore = b.BreachMetrics && b.BreachMetrics.risk && b.BreachMetrics.risk.risk_score;
             var count = b.breaches_count || 0;
+            var details = (b.breaches_details) || [];
+            var canExpand = count > 0 && details.length > 0;
+            var detailsId = "pd-mon-det-" + idx;
+            var badgeText = count + " breach" + (count > 1 ? "es" : "") +
+                (riskLabel ? " &middot; " + esc(riskLabel) : "");
             var badge = count
-                ? '<span class="pd-badge pd-badge-warn">' + count + " breach" +
-                    (count > 1 ? "es" : "") + (riskLabel ? " &middot; " + esc(riskLabel) : "") + "</span>"
+                ? (canExpand
+                    ? '<button type="button" class="pd-badge pd-badge-warn pd-mon-expand" aria-expanded="false" aria-controls="' +
+                        detailsId + '">' + badgeText + ' <i class="fas fa-chevron-down" aria-hidden="true"></i></button>'
+                    : '<span class="pd-badge pd-badge-warn">' + badgeText + "</span>")
                 : '<span class="pd-badge pd-badge-ok">No breaches</span>';
             var shield = m.shield_override
                 ? '<span class="pd-badge pd-badge-shield" title="Consented despite Privacy Shield"><i class="fas fa-shield-alt" aria-hidden="true"></i></span>'
                 : "";
-            var details = (m.breaches && m.breaches.breaches_details) || [];
-            var canExpand = count > 0 && details.length > 0;
-            var detailsId = "pd-mon-det-" + idx;
-            var toggle = canExpand
-                ? '<button type="button" class="pd-linkbtn pd-mon-expand" aria-expanded="false" aria-controls="' + detailsId +
-                    '"><span class="pd-mon-expand-txt">View</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></button>'
-                : "";
-            var right = shield + badge + toggle +
+            var right = shield + badge +
                 '<button type="button" class="pd-linkbtn pd-mon-remove" data-action="remove" data-email="' + safe + '">Remove</button>';
             var item = '<div class="pd-mon-item"><span class="pd-mon-email">' + safe +
                 '</span><span class="pd-mon-actions">' + right + "</span></div>";
@@ -1394,12 +1394,19 @@
                         '"><i class="fas fa-gauge-high" aria-hidden="true"></i> ' + esc(riskLabel) + " risk" +
                         (typeof riskScore === "number" ? " &middot; " + riskScore + "/100" : "") + "</span></div>"
                     : "";
-                var chips = details.map(function (d) {
-                    return '<span class="pd-mon-breach-chip">' + esc(d.breach || "") + "</span>";
+                var rows = details.map(function (d) {
+                    var xchips = (d.xposed_data || "").split(";").filter(Boolean).map(function (c) {
+                        return '<span class="pd-mon-xchip">' + esc(c.trim()) + "</span>";
+                    }).join("");
+                    return '<li class="pd-mon-breach">' +
+                        '<img class="pd-mon-logo" src="' + esc(d.logo || "/static/images/logos/logo.svg") +
+                        '" alt="" loading="lazy" onerror="this.src=\'/static/images/logos/logo.svg\'" />' +
+                        '<div class="pd-mon-breach-main"><span class="pd-mon-bname">' + esc(d.breach || "") + "</span>" +
+                        (xchips ? '<span class="pd-mon-xdata">' + xchips + "</span>" : "") +
+                        "</div></li>";
                 }).join("");
                 panel = '<div class="pd-mon-details" id="' + detailsId + '" hidden>' + meta +
-                    '<div class="pd-mon-details-label">Appears in these breaches</div>' +
-                    '<div class="pd-mon-breach-list">' + chips + "</div></div>";
+                    '<ul class="pd-mon-breaches">' + rows + "</ul></div>";
             }
             return '<div class="pd-mon-rowgroup">' + item + panel + "</div>";
         }
@@ -1492,8 +1499,6 @@
             panel.hidden = !open;
             this.setAttribute("aria-expanded", open ? "true" : "false");
             this.classList.toggle("pd-mon-expand-open", open);
-            var txt = this.querySelector(".pd-mon-expand-txt");
-            if (txt) txt.textContent = open ? "Hide" : "View";
         });
 
         $(document).on("click", ".pd-mon-remove", function () {

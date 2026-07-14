@@ -2254,10 +2254,20 @@ body[data-theme="dark"] .pd-mon-declined {
 .pd-mon-expand {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+.pd-mon-expand:hover {
+  filter: brightness(0.97);
+}
+.pd-mon-expand:focus-visible {
+  outline: 2px solid #3f71f3;
+  outline-offset: 2px;
 }
 .pd-mon-expand i {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   transition: transform 0.18s ease;
 }
 .pd-mon-expand.pd-mon-expand-open i {
@@ -2292,30 +2302,67 @@ body[data-theme="dark"] .pd-mon-declined {
   color: #14663b;
   background: #e7f6ec;
 }
-.pd-mon-details-label {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #5c6c82;
-  margin-bottom: 8px;
+.pd-mon-breaches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.pd-mon-breach-list {
+.pd-mon-breach {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+.pd-mon-breach:last-child {
+  border-bottom: 0;
+}
+.pd-mon-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  object-fit: contain;
+  flex: 0 0 26px;
+  background: #fff;
+  border: 1px solid #eef2f7;
+}
+.pd-mon-breach-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.pd-mon-bname {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2c3e50;
+  word-break: break-word;
+}
+.pd-mon-xdata {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
 }
-.pd-mon-breach-chip {
-  font-size: 0.76rem;
+.pd-mon-xchip {
+  font-size: 0.68rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #435268;
   background: #eef2f7;
-  border: 1px solid #dde5ef;
-  border-radius: 8px;
-  padding: 3px 10px;
+  border-radius: 6px;
+  padding: 1px 7px;
 }
-body[data-theme="dark"] .pd-mon-details-label {
-  color: #a9bfd9;
+body[data-theme="dark"] .pd-mon-breach {
+  border-bottom-color: #2a2d40;
+}
+body[data-theme="dark"] .pd-mon-logo {
+  border-color: #2a2d40;
+}
+body[data-theme="dark"] .pd-mon-bname {
+  color: #e2e8f0;
+}
+body[data-theme="dark"] .pd-mon-xchip {
+  color: #c3d3e8;
+  background: #1e2233;
 }
 body[data-theme="dark"] .pd-mon-risk {
   color: #c3d3e8;
@@ -2332,11 +2379,6 @@ body[data-theme="dark"] .pd-risk-medium {
 body[data-theme="dark"] .pd-risk-low {
   color: #7fdba4;
   background: #12301f;
-}
-body[data-theme="dark"] .pd-mon-breach-chip {
-  color: #e2e8f0;
-  background: #1e2233;
-  border-color: #2a2d40;
 }
 
 .pd-modal[hidden] {
