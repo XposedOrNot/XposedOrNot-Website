@@ -1362,6 +1362,21 @@
         });
     }
 
+    function monDataSeverity(name) {
+        var s = String(name).toLowerCase();
+        if (/(password|security question|secret|auth|session|cookie|two-factor|2fa|pin|credit|card|bank|financial|iban|payment|transaction|salar|income|tax|insurance|loan|crypto|wallet)/.test(s)) return "high";
+        if (/(email|username|user name|screen name|social|messenger|chat|ip address|device|browser|user agent|mac address|geolocation|website activity|gender|\bage\b|ethnic|nationalit|marital|education|occupation|\bjob\b|employer|language|religion|spoken)/.test(s)) return "low";
+        if (/(name|address|government|passport|id number|national id|licen|photo|biometric|health|medical|phone|mobile|date of birth|dob|birth)/.test(s)) return "medium";
+        return "low";
+    }
+
+    function monIsSensitive(d) {
+        var s = d.searchable;
+        if (s === false) return true;
+        if (typeof s === "string") return /^(false|no|0)$/i.test(s.trim());
+        return false;
+    }
+
     function monRow(m, idx) {
         var safe = esc(m.target_email);
         if (m.status === "accepted") {
@@ -1391,17 +1406,26 @@
             if (canExpand) {
                 var meta = riskLabel
                     ? '<div class="pd-mon-details-meta"><span class="pd-mon-risk pd-risk-' + esc(riskLabel.toLowerCase()) +
-                        '"><i class="fas fa-gauge-high" aria-hidden="true"></i> ' + esc(riskLabel) + " risk" +
+                        '"><i class="fas fa-tachometer-alt" aria-hidden="true"></i> ' + esc(riskLabel) + " risk" +
                         (typeof riskScore === "number" ? " &middot; " + riskScore + "/100" : "") + "</span></div>"
                     : "";
                 var rows = details.map(function (d) {
                     var xchips = (d.xposed_data || "").split(";").filter(Boolean).map(function (c) {
-                        return '<span class="pd-mon-xchip">' + esc(c.trim()) + "</span>";
+                        var t = c.trim();
+                        return '<span class="pd-mon-xchip pd-xsev-' + monDataSeverity(t) + '">' + esc(t) + "</span>";
                     }).join("");
+                    var bn = esc(d.breach || "");
+                    var link = '<a class="pd-mon-blink" href="breach.html#' + encodeURIComponent(d.breach || "") +
+                        '" target="_blank" rel="noopener">' + bn +
+                        ' <i class="fas fa-external-link-alt pd-mon-ext" aria-hidden="true"></i>' +
+                        '<span class="sr-only"> (opens in new tab)</span></a>';
+                    var fire = monIsSensitive(d)
+                        ? ' <span class="pd-mon-fire" tabindex="0" role="img" aria-label="Sensitive breach" title="Sensitive breach">🔥</span>'
+                        : "";
                     return '<li class="pd-mon-breach">' +
                         '<img class="pd-mon-logo" src="' + esc(d.logo || "/static/images/logos/logo.svg") +
                         '" alt="" loading="lazy" onerror="this.src=\'/static/images/logos/logo.svg\'" />' +
-                        '<div class="pd-mon-breach-main"><span class="pd-mon-bname">' + esc(d.breach || "") + "</span>" +
+                        '<div class="pd-mon-breach-main"><span class="pd-mon-bname">' + link + fire + "</span>" +
                         (xchips ? '<span class="pd-mon-xdata">' + xchips + "</span>" : "") +
                         "</div></li>";
                 }).join("");
