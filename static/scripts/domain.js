@@ -2,6 +2,8 @@
    Core domain verification logic (restored from pre-v2)
    ============================================================ */
 
+var DOMAIN_API = 'https://api.xposedornot.com/v1/domain_verification';
+
 function escapeHtml(unsafe) {
     if (typeof unsafe !== 'string') return unsafe;
     return unsafe
@@ -79,7 +81,7 @@ $("#strat").change(function () {
         $('#succ').hide();
         $('#div_t2').show();
         var options = $('#sel1');
-        var edutu2 = 'https://api.xposedornot.com/v1/domain_verification?z=c&d=' + $('#eventName').val();
+        var edutu2 = DOMAIN_API + '?z=c&d=' + $('#eventName').val();
 
         var myjson2;
         var j = $.ajax(edutu2)
@@ -87,9 +89,9 @@ $("#strat").change(function () {
                 myjson2 = n2;
                 var site1 = myjson2.domainVerification;
                 $('#sel1').html('');
-                if (site1 == null) {
+                if (!site1 || site1.length === 0) {
                     $('#dang').show();
-                    $('#dang').html('Selected domain did not return any valid email contacts. Please re-check the domain and try again !');
+                    $('#dang').html('Please enter a valid domain and try again !');
                     $('#div_email').hide();
                 } else {
                     var options = $('#sel1');
@@ -199,19 +201,25 @@ $(document).ready(function () {
 $("#searchMe_e").click(function (func_alert6) {
     func_alert6.preventDefault();
     var str = document.getElementById("txt_email_e").value.toLowerCase();
-    if ($('#sel1 option:selected').text() === "No email found. Try DNS/HTML Verifications") {
-        $('#dang').html('⛔ Domain verification through the email channel could not be completed as there are no public records for this domain. Please use alternate methods of verification: DNS or HTML.');
-        $("#dang").show();
-        $('#strat').focus();
+    var roleEmail = $('#sel1').val();
+    var domainName = $('#eventName').val().toLowerCase();
+    if (!roleEmail || roleEmail.indexOf('@') === -1) {
+        $('#sel1').focus();
         return false;
     }
     if ((str == '') || (val_e(str) == false)) {
         $("#txt_email_e").focus();
         return false;
     }
+    if (str.split('@').pop() !== domainName) {
+        $("#dang").show();
+        $('#dang').html('⛔ The monitoring email must be on the same domain (for example, soc@' + escapeHtml(domainName) + '). Please enter an address on this domain.');
+        $("#txt_email_e").focus();
+        return false;
+    }
     $("#searchMe_e_i1").removeClass("glyphicon glyphicon-ok");
     $("#searchMe_e_i1").addClass("fa fa-spinner fa-spin");
-    var edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=d&d=' + $('#eventName').val() + '&a=' + $('#txt_email_e').val() + '&ae=' + $('#sel1').val();
+    var edutu4 = DOMAIN_API + '?z=d&d=' + $('#eventName').val() + '&a=' + roleEmail + '&r=' + str;
 
     var myjson4;
     var j4 = $.ajax(edutu4)
@@ -235,7 +243,7 @@ $("#searchMe_e").click(function (func_alert6) {
                 $("#div_t2").hide();
                 $("#div_html").hide();
                 $('#div_email').hide();
-                $("#succ").html('🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 10 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button class="btn btn-primary btn-lg" onClick="window.location.href=\'dashboard.html\'">CXO Dashboard</button> <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Verify Another Domain</button><br></div><br>');
+                $("#succ").html('📩 <strong>Almost there! Check the inbox for ' + escapeHtml(roleEmail) + '.</strong><br><br> We\'ve emailed a one-time verification link to that address. Open it within 30 minutes to finish verifying <span class="domain-label">' + escapeHtml(domainName) + '</span>. Once confirmed, breach alerts and dashboard access will go to <strong>' + escapeHtml(str) + '</strong>.<br><br><div align="center"> <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Verify Another Domain</button><br></div><br>');
             }
             if (n4.status === 429) {
                 $("#info").html("You are currently being throttled. Please slow down and try again !");
@@ -267,7 +275,7 @@ $("#searchMe_d").click(function (func_alert) {
     }
     $("#searchMe_d_i1").removeClass("glyphicon glyphicon-ok");
     $("#searchMe_d_i1").addClass("fa fa-spinner fa-spin");
-    var edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val();
+    var edutu4 = DOMAIN_API + '?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val();
 
     var myjson4;
     var j4 = $.ajax(edutu4)
@@ -326,7 +334,7 @@ $("#searchMe_m").click(function (func_alert3) {
     }
     $("#searchMe_m_i1").removeClass("glyphicon glyphicon-ok");
     $("#searchMe_m_i1").addClass("fa fa-spinner fa-spin");
-    var edutu3 = 'https://api.xposedornot.com/v1/domain_verification?z=v&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_m').val();
+    var edutu3 = DOMAIN_API + '?z=v&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_m').val();
 
     var myjson3;
     var j3 = $.ajax(edutu3)
@@ -383,7 +391,7 @@ $("#searchMe_h").click(function (func_alert4) {
     }
     $("#searchMe_h_i1").removeClass("glyphicon glyphicon-ok");
     $("#searchMe_h_i1").addClass("fa fa-spinner fa-spin");
-    var edutu4 = 'https://api.xposedornot.com/v1/domain_verification?z=a&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_h').val();
+    var edutu4 = DOMAIN_API + '?z=a&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_h').val();
 
     var myjson4;
     var j4 = $.ajax(edutu4)
@@ -545,6 +553,13 @@ document.addEventListener("DOMContentLoaded", function () {
     setupEmailValidation("txt_email_e", "searchMe_e");
     setupEmailValidation("txt_email_m", "searchMe_m");
     setupEmailValidation("txt_dns", "searchMe_d");
+
+    var recipientInput = document.getElementById("txt_email_e");
+    if (recipientInput) {
+        recipientInput.addEventListener("input", function () {
+            $("#dang").hide().html('');
+        });
+    }
 
     var footerGroups = document.querySelectorAll(".footer-group h3");
     footerGroups.forEach(function (header) {

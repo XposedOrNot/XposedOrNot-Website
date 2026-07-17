@@ -301,6 +301,11 @@
                   Choose your preferred verification method:
                   <ul>
                     <li>
+                      <i class="fas fa-envelope" aria-hidden="true"></i>
+                      <strong>Email Verification</strong> - Easiest method (2
+                      mins)
+                    </li>
+                    <li>
                       <i class="fas fa-shield-alt" aria-hidden="true"></i>
                       <strong>DNS Verification</strong> - Most secure method (10
                       mins)
@@ -403,6 +408,7 @@
               <option value="ver" selected>
                 Select one of the available methods ...
               </option>
+              <option value="email">Email based validation</option>
               <option value="dns_txt">DNS Text based validation</option>
               <option value="html">HTML Page based validation</option>
             </select>
@@ -684,38 +690,37 @@
               <h5 class="mb-0">Email Verification</h5>
               <span class="badge badge-success ml-2">Easiest Method</span>
             </div>
-            <div class="alert alert-info mt-2">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <strong>Important:</strong> Verification emails will only be sent to
-              email addresses listed in your domain's DNS records (like
-              <!--email_off-->admin@example.com<!--/email_off-->). Choose this method only if you have access to
-              these email accounts.
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>How it works:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  We email a one-time link to <strong>one of these 5 addresses</strong>
+                  on your domain:
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ or hostmaster@example.com<!--/email_off-->.
+                </li>
+                <li>Pick the address you can access to receive the link.</li>
+                <li>
+                  Enter a monitoring email <strong>on the same domain</strong> to get
+                  the breach alerts.
+                </li>
+                <li>Open the link within <strong>30 minutes</strong> to finish.</li>
+              </ul>
             </div>
           </div>
-          <strong>Email </strong> based validation is easy to validate a domain
-          provided, you can receive emails in the authoritative email contacts.
-          Please select the email and then click <strong>Verify</strong>. <br />
-          <br />
           <form id="email_form" method="post">
-            <div class="input-group" id="div1">
-              <span class="input-group-addon">
-                <em class="fa fa-envelope" aria-hidden="true"></em>
-              </span>
-              <select class="form-control input-group input-lg" id="sel1" aria-label="Select verification email">
-                <option>
-                  Please select the appropriate email to receive the verification
-                  email :
-                </option>
-              </select>
-            </div>
+            <select class="form-control input-lg" id="sel1" aria-label="Select which of the 5 allowed addresses receives the one-time link">
+              <option>
+                Choose one of the 5 addresses to get the link
+              </option>
+            </select>
             <br />
             <div style="text-align: left" class="input-group">
               <input
                 class="form-control input-lg"
                 type="text"
                 id="txt_email_e"
-                placeholder="Email address to receive the exposed data"
-                aria-label="Email address for email verification"
+                placeholder="Monitoring email on this domain (e.g. soc@yourdomain.com)"
+                aria-label="Monitoring email address to receive breach alerts"
               />
               <span class="input-group-btn">
                 <button
