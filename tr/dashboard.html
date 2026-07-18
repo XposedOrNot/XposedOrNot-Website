@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      XposedOrNot CxO Kontrol Paneli - Alan Adlarınızdaki Veri İhlallerini İzleyin
+    </title>
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="description"
+      content="XposedOrNot CxO Kontrol Paneli - Kuruluşunuzun alan adlarındaki veri ihlallerini izlemek ve yönetmek için güvenli, şifresiz erişim. Gerçek zamanlı uyarılar ve kapsamlı ihlal raporları alın."
+    />
+    <meta
+      name="keywords"
+      content="veri ihlali izleme, alan adı güvenliği, CxO kontrol paneli, siber güvenlik, ihlal uyarıları"
+    />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta
+      property="og:title"
+      content="XposedOrNot CxO Kontrol Paneli - Veri İhlali İzleme"
+    />
+    <meta
+      property="og:description"
+      content="Kuruluşunuzun alan adlarındaki veri ihlallerini izlemek için güvenli kontrol paneli. Gerçek zamanlı uyarılar ve kapsamlı ihlal raporları alın."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/tr/dashboard" />
+    <meta name="theme-color" content="#3f71f3" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+      crossorigin="anonymous"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8"
+        crossorigin="anonymous"
+      />
+    </noscript>
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      />
+    </noscript>
+    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/dashboard.css" type="text/css" rel="stylesheet" />
+    <link rel="preload" href="/static/css/dashboard.css" as="style" />
+    <link rel="preload" href="/static/scripts/dashboard.js" as="script" />
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+  <body class="dashboard-page">
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+    <a class="skip-link" href="#main-content">Ana içeriğe atla</a>
+
+    <div class="banner dashboard-banner">
+      <div class="grid">
+        <nav
+          class="navbar navbar-expand-md navbar-dark justify-content-center"
+          aria-label="Ana gezinme"
+        >
+          <a
+            class="navbar-brand abs"
+            href="/tr/"
+            style="text-decoration: none"
+          >
+            <span
+              style="
+                font-size: 1.5em;
+                font-weight: bold;
+                display: block;
+                color: white;
+              "
+              >XposedOrNot</span
+            >
+            <span
+              style="
+                font-size: 0.8em;
+                display: block;
+                color: rgba(255, 255, 255, 0.95);
+                margin-top: -10px;
+              "
+              >Community Edition</span
+            >
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsingNavbar"
+            aria-controls="collapsingNavbar"
+            aria-expanded="false"
+            aria-label="Gezinme menüsünü aç veya kapat"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="password">Şifre</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="faq">SSS</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a
+                  class="nav-link xon-nav-tip"
+                  href="https://plus.xposedornot.com"
+                  target="_blank"
+                  rel="noopener"
+                   data-tip="İşletmeler için xonPlus: ekipler ve şirketler için ihlal izleme" aria-label="İşletmeler için xonPlus: ekipler ve şirketler için ihlal izleme">xonPlus<span class="sr-only"> (yeni sekmede açılır)</span></a
+                >
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="api_doc">API</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="container" style="text-align: center; position: relative;">
+        <h1 class="dashboard-hero-title">CxO Kontrol Paneli</h1>
+        <p class="hero-subtitle">
+          Doğrulanmış tüm alan adlarınızdaki veri ihlali maruziyetini izleyin.
+          Gerçek zamanlı görünürlüğe ihtiyaç duyan güvenlik ekipleri için tasarlandı.
+        </p>
+      </div>
+    </div>
+
+    <main id="main-content">
+
+      <div class="dashboard-content">
+        <div class="dashboard-card" role="region" aria-label="Kontrol paneli erişim formu">
+          <h2><i class="fas fa-sign-in-alt" aria-hidden="true"></i> Kontrol Panelinize Erişin</h2>
+          <p class="card-desc">
+            Doğrulanmış alan adınızla ilişkili e-posta adresini girin.
+            İhlal izleme kontrol panelinize erişmeniz için güvenli, şifresiz bir bağlantı göndereceğiz.
+          </p>
+
+          <form id="emailForm" class="dashboard-form" novalidate>
+            <div class="form-group">
+              <label for="email" class="sr-only">E-posta adresi</label>
+              <div class="dashboard-input-row">
+                <input
+                  type="email"
+                  class="dashboard-input"
+                  id="email"
+                  name="email"
+                  placeholder="security@example.com"
+                  autocomplete="email"
+                  autofocus
+                  required
+                  aria-required="true"
+                  aria-describedby="emailHelp"
+                />
+                <button
+                  type="submit"
+                  class="dashboard-submit"
+                  id="submitButton"
+                  disabled
+                >
+                  <span id="submitText">Erişim Bağlantısı Al</span>
+                  <span
+                    id="submitSpinner"
+                    class="spinner-border spinner-border-sm d-none"
+                    role="status"
+                    aria-label="Yükleniyor"
+                  ></span>
+                </button>
+              </div>
+              <span id="emailHelp" class="sr-only">Güvenli bir kontrol paneli erişim bağlantısı almak için doğrulanmış alan adınızla ilişkili e-posta adresini girin.</span>
+            </div>
+          </form>
+
+          <div
+            id="infoMessage"
+            class="dashboard-alert dashboard-alert-info show"
+            role="status"
+          >
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <span>
+              Bu hizmette yeni misiniz? Kontrol paneli erişiminin kilidini açmak için
+              <a href="/domain">alan adı sahipliğinizi doğrulayarak</a>
+              başlayın.
+            </span>
+          </div>
+
+          <div
+            id="successMessage"
+            class="dashboard-alert dashboard-alert-success"
+            role="status"
+            style="display: none"
+          >
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span><strong>Gelen kutunuzu kontrol edin.</strong> Bu e-posta adresinin doğrulanmış alan adları veya ihlal uyarıları varsa, güvenli kontrol paneli bağlantınız yolda. Birkaç dakika içinde bir şey gelmedi mi? Önce <a href="domain">bir alan adı doğrulayın</a>.</span>
+          </div>
+
+          <div
+            id="errorMessage"
+            class="dashboard-alert dashboard-alert-error"
+            role="alert"
+            style="display: none"
+          >
+            <i class="fas fa-times-circle" aria-hidden="true"></i>
+            <span><strong>Hata:</strong> İstek işlenemedi. Lütfen e-posta adresinizi kontrol edip tekrar deneyin.</span>
+          </div>
+
+          <div
+            id="rateLimitMessage"
+            class="dashboard-alert dashboard-alert-warning"
+            role="alert"
+            style="display: none"
+          >
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            <span><strong>Lütfen bekleyin:</strong> Çok fazla deneme yapıldı. Birkaç dakika sonra tekrar deneyin.</span>
+          </div>
+        </div>
+
+        <h2 class="gradient-text" style="text-align: center; margin-bottom: 24px; font-size: 24px; font-weight: 600;">Nasıl Çalışır</h2>
+        <div class="dashboard-steps" role="list" aria-label="CxO Kontrol Paneline erişim adımları">
+          <div class="dashboard-step" role="listitem">
+            <div class="step-icon" aria-hidden="true">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <span class="step-number">Adım 1</span>
+            <h3>Alan Adınızı Doğrulayın</h3>
+            <p>DNS, e-posta veya HTML doğrulaması ile sahipliğinizi kanıtlayın.</p>
+          </div>
+          <div class="dashboard-step" role="listitem">
+            <div class="step-icon" aria-hidden="true">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <span class="step-number">Adım 2</span>
+            <h3>Erişim Talep Edin</h3>
+            <p>Güvenli bir bağlantı almak için alan adı e-postanızı yukarıya girin.</p>
+          </div>
+          <div class="dashboard-step" role="listitem">
+            <div class="step-icon" aria-hidden="true">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <span class="step-number">Adım 3</span>
+            <h3>İhlalleri İzleyin</h3>
+            <p>İhlal maruziyetini, etkilenen hesapları ve zaman çizelgesi verilerini görüntüleyin.</p>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 32px;">
+          <nav class="dashboard-links" aria-label="İlgili güvenlik araçları">
+            <a href="/domain" class="dashboard-link">
+              <i class="fas fa-check-circle" aria-hidden="true"></i>
+              Alan Adı Doğrulayın
+            </a>
+            <a href="/domains" class="dashboard-link">
+              <i class="fas fa-building" aria-hidden="true"></i>
+              Alan Adı İçgörüleri
+            </a>
+            <a href="/tr/" class="dashboard-link">
+              <i class="fas fa-search" aria-hidden="true"></i>
+              E-posta Kontrol Edin
+            </a>
+          </nav>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer" aria-label="Site alt bilgisi">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Topluluk tarafından, topluluk için geliştirildi. Tamamen açık kaynak:
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub<span class="sr-only"> (yeni sekmede açılır)</span></a
+            >.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h3>Yasal</h3>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Gizlilik Politikası</a>
+              <a href="terms" class="footer-link">Koşullar</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Topluluk</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" target="_blank" rel="noopener" class="footer-link"
+                >Blog<span class="sr-only"> (yeni sekmede açılır)</span></a
+              >
+              <a href="/about" class="footer-link">Hakkında</a>
+              <a href="our-repository" class="footer-link">Depomuz</a>
+              <a href="/integrations" class="footer-link">Entegrasyonlar</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Güven</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://stats.uptimerobot.com/3zjQkZ2Caa"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+                >Durum<span class="sr-only"> (yeni sekmede açılır)</span></a
+              >
+              <a href="transparency" class="footer-link">Şeffaflık</a>
+              <a href="responsible-disclosure" class="footer-link"
+                >Sorumlu Açıklama</a
+              >
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>İşletmeler İçin</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+              <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+              <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+              <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Fiyatlandırma</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Bizi Takip Edin</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://twitter.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)<span class="sr-only"> (yeni sekmede açılır)</span>
+              </a>
+              <a
+                href="https://facebook.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook<span class="sr-only"> (yeni sekmede açılır)</span>
+              </a>
+              <a
+                href="https://infosec.exchange/@XposedOrNot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 448 512"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon<span class="sr-only"> (yeni sekmede açılır)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Karanlık Mod</label>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      defer
+    ></script>
+    <script src="/static/scripts/common.js" defer></script>
+    <script src="/static/scripts/dashboard.js" defer></script>
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+  </body>
+</html>

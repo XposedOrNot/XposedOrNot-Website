@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#3f71f3">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta name="description" content="XposedOrNot: Sorumlu Açıklama" />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta property="og:title" content="Sorumlu Açıklama" />
+    <meta
+      property="og:description"
+      content="XposedOrNot'un güvenlik açıklarının sorumlu şekilde açıklanmasına ilişkin yönergeleri."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta
+      property="og:url"
+      content="https://xposedornot.com/tr/responsible-disclosure"
+    />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta name="twitter:title" content="Sorumlu Açıklama" />
+    <meta
+      name="twitter:description"
+      content="XposedOrNot'un güvenlik açıklarının sorumlu şekilde açıklanmasına ilişkin yönergeleri."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <title>XposedOrNot: Sorumlu Açıklama</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+       integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    <style>
+      #banner {
+        min-height: 150px !important;
+        padding-bottom: 30px;
+        overflow: visible !important;
+      }
+
+      .grid {
+        margin: 0 auto;
+        max-width: 1645px;
+        padding: 0 15px;
+        overflow: visible !important;
+      }
+
+      .banner {
+        margin: 0;
+        padding: 50px 0 120px 0;
+        background: linear-gradient(-220deg, #3c5fec, #376fdd);
+        overflow: hidden;
+        width: 100%;
+        border-bottom: 2px solid whitesmoke;
+      }
+
+      .banner .navbar {
+        overflow: visible !important;
+      }
+
+      .banner .dropdown-menu {
+        position: absolute !important;
+        z-index: 1050 !important;
+        max-height: none !important;
+      }
+
+      .banner .navbar-dark .navbar-nav .nav-link {
+        font-size: 20px;
+        color: #fff;
+      }
+
+      .banner .navbar-nav .nav-link:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.9);
+        outline-offset: 2px;
+      }
+
+      .nav-link.xon-nav-tip {
+        position: relative;
+      }
+
+      .nav-link.xon-nav-tip::before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        right: 28px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 8px solid #23272f;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip::after {
+        content: attr(data-tip);
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        display: block;
+        width: 260px;
+        box-sizing: border-box;
+        background: #23272f;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.5;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 10px 24px rgba(20, 24, 60, 0.35);
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: break-word;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip:hover::before,
+      .nav-link.xon-nav-tip:focus::before,
+      .nav-link.xon-nav-tip:hover::after,
+      .nav-link.xon-nav-tip:focus::after {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      @media (max-width: 767px) {
+        .nav-link.xon-nav-tip::before,
+        .nav-link.xon-nav-tip::after {
+          display: none;
+        }
+      }
+    </style>
+    </head>
+
+  <body>
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+    <div class="searchMe">
+         <div class="banner" id="banner">
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/tr/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
+                        Edition</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password">Şifre</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq">SSS</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link xon-nav-tip" href="https://plus.xposedornot.com" target="_blank" data-tip="İşletmeler için xonPlus: ekipler ve şirketler için ihlal izleme" aria-label="İşletmeler için xonPlus: ekipler ve şirketler için ihlal izleme">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc">API</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> Dil <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+    <div class="container">
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse"
+                data-parent="#accordion"
+                href="#collapse1"
+              >
+                <h1>
+                  <strong
+                    >Hataların ve Güvenlik Açıklarının Sorumlu Açıklaması</strong
+                  >
+                </h1>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse">
+            <div class="panel-body">
+              <strong>Son Güncelleme: 26 Ağustos 2025</strong>
+              <br />
+              <br />Merhaba hata avcıları! XposedOrNot'u (XON) güvende
+              tutmamıza yardımcı olmak için burada olmanıza çok sevindik. Bu
+              Sorumlu Açıklama Politikasını; herkesin kurallara uygun
+              davranmasını ve hizmetlerimizi, web sitemizi ve ağımızı can
+              sıkıcı hatalardan veya güvenlik açıklarından korumamıza yardımcı
+              olmasını sağlamak için hazırladım. <br /><br />
+              Dikkatimi gerektiren bir şey bulursanız, daha hızlı
+              düzeltebilmem için sorumlu bir şekilde araştırıp bildirme
+              konusundaki iş birliğinize teşekkür ederim. Güvenlik açıklarını
+              açıklamadaki yardımınız, tüm kullanıcılarımızı güvende tutmamıza
+              katkı sağlar. <br /><br />
+              <h2>
+                <strong>Bildirim Yönergeleri:</strong>
+              </h2>
+              <br />
+              Bir hata veya güvenlik açığı bildirirken lütfen aşağıdakileri
+              eklediğinizden emin olun:
+              <ol>
+                <li>
+                  Ekran görüntüleri veya çıktı verileri gibi kanıtlarla
+                  birlikte hatanın veya güvenlik açığının net bir açıklaması.
+                  Çekinmeyin, bulduklarınızı görmeyi çok seviyoruz!
+                </li>
+                <li>
+                  Neyle karşı karşıya olduğumuzu bilmemiz için güvenlik
+                  açığının olası etkisinin bir açıklaması.
+                </li>
+                <li>
+                  XON Güvenlik Araştırmacıları Onur Listesinde (Hall of Fame)
+                  hak ettiğiniz takdiri verebilmemiz için tercih ettiğiniz isim
+                  veya kullanıcı adınız.
+                </li>
+                <li>
+                  Sorunu kendi tarafımızda yeniden oluşturabilmemiz için tam
+                  yeniden üretme adımları.
+                </li>
+                <li>
+                  Varsa bir video kavram kanıtı (proof of concept) her zaman
+                  memnuniyetle karşılanır.
+                </li>
+                <li>
+                  Platformlar, işletim sistemleri, sürümler, IP adresleri veya
+                  URL'ler hakkındaki ilgili tüm bilgiler.
+                </li>
+                <li>
+                  Günlük (log) veya izleme verileri gibi destekleyici kanıtlar
+                  her zaman yardımcı olur.
+                </li>
+                <li>
+                  Sorunun ne kadar istismar edilebilir olduğuna dair
+                  değerlendirmeniz. İstismar edilebilirlik ölçeğinde 10
+                  üzerinden 10 olsa bile sizi yargılamayız.
+                </li>
+              </ol>
+              Harika bir hata avcısı olduğunuz 🙌 ve XposedOrNot'u (XON)
+              güvende tutmamıza yardımcı olduğunuz için teşekkürler!
+              <br /><br />
+              <h2>
+                <strong>Geçerli Bildirimler </strong>
+              </h2>
+              <br />
+              <ol>
+                <li>Yerel veya Uzaktan Dosya Dahil Etme (LFI/RFI)</li>
+                <li>Kimlik Doğrulama Atlatma</li>
+                <li>Dizin Aşımı (Directory Traversal)</li>
+                <li>Yetkisiz veya istenmeyen veri sızıntısı</li>
+                <li>Uzaktan kod yürütme (RCE)</li>
+                <li>SQL/XXE Enjeksiyonu ve komut enjeksiyonu</li>
+                <li>Siteler Arası Betik Çalıştırma (XSS)</li>
+                <li>Sunucu Taraflı İstek Sahteciliği (SSRF)</li>
+                <li>Sunucularda veya API'de yapılandırma hataları</li>
+                <li>Kimlik doğrulama ve yetkilendirmeyle ilgili sorunlar</li>
+                <li>Siteler Arası İstek Sahteciliği (CSRF)</li>
+              </ol>
+              <br />
+              <h2>
+                <strong> Kapsamdaki Alan Adları</strong>
+              </h2>
+              <br />
+              <p><strong>Birincil Alan Adı:</strong> xposedornot.com</p>
+              <p>
+                <strong>Alt Alan Adları:</strong> xposedornot.com'un tüm alt
+                alan adları (*.xposedornot.com)
+              </p>
+              <br />
+              <p>
+                <em
+                  >Bunlara api.xposedornot.com, passwords.xposedornot.com,
+                  plus.xposedornot.com ve gelecekteki tüm alt alan adları
+                  dahildir ancak kapsam bunlarla sınırlı değildir.</em
+                >
+              </p>
+              <br />
+              <h2>
+                <strong> Bilgilerin Kullanımı</strong>
+              </h2>
+              <br />
+              Sizinle ve hizmetlerimizle ilgili tüm bilgileri gizli
+              tutacağımıza söz veriyoruz. Lütfen siz de ekibimiz dışında
+              kimseyle paylaşmayın!<br />
+              <br />
+              Amacımız interneti daha güvenli bir yer haline getirmek ve bu
+              hedefe ulaşmamıza yardımcı olan güvenlik araştırmacılarına değer
+              veriyoruz. Bu çabanın bir parçası olduğunuz için size kocaman
+              teşekkürler 🙏! Bulduğunuz hataları veya güvenlik açıklarını
+              sorumlu bir şekilde açıklayarak kullanıcılarımızı ve verilerini
+              korumamıza yardımcı oluyorsunuz.<br />
+              <br />
+              <h2>
+                <strong> Kabul Edilebilir Kullanım Politikası </strong>
+              </h2>
+              <br />
+              Küçük bir hatırlatma: bu, güvenlik açığı bildirimleri için nakit
+              ödül sunduğumuz tipik bir hata ödül programı değildir. (Henüz) o
+              kadar zengin değiliz. Ancak bize önemli bir şey bildirirseniz,
+              karşılığında size sevgimizi ve takdirimizi gösterebiliriz!<br />
+              <br />
+              Yalnızca etik kurallara bağlı kaldığınızdan emin olun, olur mu?
+              İnternetin iyi bir vatandaşı gibi davranmanızı ve Kabul
+              Edilebilir Kullanım Politikamızda belirlediğimiz kurallara
+              uymanızı bekliyoruz. Bunu yaparsanız, Onur Listesi (Hall of Fame)
+              sayfamızda sizi memnuniyetle takdir ederiz; bu sayfa bir bakıma
+              bizim Hollywood Şöhret Kaldırımımız, ama güvenlik araştırmacıları
+              için. Haydi, becerilerinizi gösterin ve XposedOrNot'u herkes için
+              daha güvenli bir yer yapmamıza yardımcı olun!<br />
+              <br />
+              <h2>
+                <strong> Hata Bildirenler: Beklentiler </strong>
+              </h2>
+              <br />
+              Hata avcıları, XposedOrNot'u herkes için daha güvenli bir yer
+              haline getirmemize yardımcı olmanızdan heyecan duyuyoruz!
+              Başlamadan önce sizden beklediğimiz birkaç şey var: <br /><br />
+              <ol>
+                <li>
+                  Lütfen XposedOrNot'a veya kullanıcılarımıza zarar verecek ya
+                  da hizmeti aksatacak hiçbir şey yapmayın.
+                </li>
+                <li>
+                  Raporunuzu aldıktan sonra 1-3 gün içinde size bir alındı
+                  bildirimi göndeririz.
+                </li>
+                <li>
+                  Kullanıcılarımızın gizliliğine saygı gösterin ve hesaplarını
+                  karıştırmaya çalışmayın.
+                </li>
+                <li>Yalnızca kendi hesaplarınız ve e-posta adresleriniz üzerinde test yapın.</li>
+                <li>
+                  Web sunucumuza veya API'mize erişim sağlayan kritik bir
+                  güvenlik açığı bulursanız, lütfen orada durun ve devamını
+                  bize bırakın.
+                </li>
+                <li>
+                  Sorunu biz çözene kadar konuyla ilgili hiçbir ayrıntıyı
+                  paylaşmayın.
+                </li>
+                <li>
+                  Güvenlik açığını kişisel çıkar için istismar etmeye
+                  çalışırsanız raporunuzu diskalifiye etmek zorunda kalırız.
+                </li>
+              </ol>
+              <br />
+              Platformumuzu güvende tutmamıza yardımcı olduğunuz için iş
+              birliğinize teşekkür ederiz. XposedOrNot'u olabileceğinin en
+              iyisi yapmak için birlikte çalışalım!
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a
+                data-toggle="collapse in panel-collapse"
+                data-parent="#accordion"
+                href="#collapse25"
+              >
+                <strong>Bildirim Kuralları</strong>
+              </a>
+            </h4>
+          </div>
+          <div class="panel-body">
+            Bizi kolladığınız için teşekkürler! XposedOrNot'ta bir hata veya
+            güvenlik açığı keşfettiyseniz bunu duymayı çok isteriz.
+            <strong>deva @ xposedornot.com</strong> adresine e-posta göndererek
+            veya <strong>@DevaOnBreaches</strong> hesabına tweet atarak
+            bildirebilirsiniz. <br />
+            <br />
+            E-posta : deva @ xposedornot.com <br />
+            Twitter :
+            <a href="https://twitter.com/devaonbreaches">DevaOnBreaches </a>
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Tamamen açık kaynaklı bu siteyi şekillendirmemize katılın!
+            Katkılarınızı ❤️
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            > sayfamızda bekliyoruz.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Yasal</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Gizlilik Politikası</a>
+              <a href="terms" class="footer-link">Kullanım Koşulları</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Topluluk</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">Hakkında</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Kod Depomuz</a>
+              <a href="/integrations" class="footer-link">Entegrasyonlar</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Güven</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Durum</a>
+              <a href="transparency" class="footer-link">Şeffaflık</a>
+              <a href="responsible-disclosure" class="footer-link">Sorumlu Açıklama</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>İşletmeler İçin</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+              <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+              <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+              <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Fiyatlandırma</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Bizi Takip Edin</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Karanlık Mod</label>
+        </div>
+      </div>
+    </div>
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+    <script src="/static/scripts/common.js"></script>
+      <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

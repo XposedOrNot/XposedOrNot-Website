@@ -1,0 +1,3669 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#3f71f3">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta
+      name="description"
+      content="XposedOrNot'un ücretsiz veri ihlali arama motoru hakkında sıkça sorulan sorular. E-postanızın ifşa olup olmadığını nasıl kontrol edeceğinizi, veri sızıntısı denetleyicimizin nasıl çalıştığını, şifre güvenliğini, ihlal uyarılarını ve daha fazlasını öğrenin."
+    />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta
+      name="keywords"
+      content="veri ihlali arama motoru, veri ihlali denetleyicisi, e-posta ihlal sorgulama, veri sızıntısı denetleyicisi, şifre güvenliği denetleyicisi, ihlal uyarıları, ücretsiz veri ihlali arama, e-posta ihlal kontrolü, veri ihlali kontrolü"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta
+      property="og:title"
+      content="XposedOrNot SSS - Veri İhlali Arama Motoru ve Güvenlik Rehberi"
+    />
+    <meta
+      property="og:description"
+      content="XposedOrNot'un ücretsiz veri ihlali arama motoru hakkında yanıtlar alın. E-posta ihlal sorgulama, veri sızıntısı kontrolü, şifre güvenliği ve veri ihlallerinden korunma yolları hakkında bilgi edinin."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon.png"
+    />
+    <meta property="og:url" content="https://xposedornot.com/tr/faq" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@XposedOrNot" />
+    <meta
+      name="twitter:title"
+      content="XposedOrNot SSS - Veri İhlali Arama Motoru ve Güvenlik Rehberi"
+    />
+    <meta
+      name="twitter:description"
+      content="XposedOrNot'un ücretsiz veri ihlali arama motoru hakkında yanıtlar alın. E-posta ihlal sorgulama, veri sızıntısı kontrolü, şifre güvenliği ve veri ihlallerinden korunma yolları hakkında bilgi edinin."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xposedornot.com/static/images/faq_preview.png"
+    />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <title>XposedOrNot SSS | Veri İhlali Arama Motoru ve Güvenlik Rehberi</title>
+    <link rel="canonical" href="https://xposedornot.com/tr/faq" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/faq" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/faq" />
+    <style>
+      #banner {
+        min-height: 150px !important;
+        padding-bottom: 30px;
+        overflow: visible !important;
+      }
+      .grid {
+        overflow: visible !important;
+      }
+      .navbar {
+        overflow: visible !important;
+      }
+      .dropdown-menu {
+        position: absolute !important;
+        z-index: 1050 !important;
+        max-height: none !important;
+      }
+      .banner {
+        margin: 0;
+        padding: 50px 0 120px 0;
+        background: linear-gradient(-220deg, #3c5fec, #376fdd);
+        overflow: hidden;
+        width: 100%;
+        border-bottom: 2px solid whitesmoke;
+      }
+
+      .grid {
+        margin: 0 auto;
+        max-width: 1645px;
+        padding: 0 15px;
+      }
+
+      .navbar-dark .navbar-nav .nav-link {
+        font-size: 20px;
+        color: #fff;
+      }
+
+      .navbar-nav .nav-link:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.9);
+        outline-offset: 2px;
+      }
+
+      .nav-link.xon-nav-tip {
+        position: relative;
+      }
+
+      .nav-link.xon-nav-tip::before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        right: 28px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 8px solid #23272f;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip::after {
+        content: attr(data-tip);
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        display: block;
+        width: 260px;
+        box-sizing: border-box;
+        background: #23272f;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.5;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 10px 24px rgba(20, 24, 60, 0.35);
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: break-word;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip:hover::before,
+      .nav-link.xon-nav-tip:focus::before,
+      .nav-link.xon-nav-tip:hover::after,
+      .nav-link.xon-nav-tip:focus::after {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      @media (max-width: 767px) {
+        .nav-link.xon-nav-tip::before,
+        .nav-link.xon-nav-tip::after {
+          display: none;
+        }
+      }
+
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+      integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"
+      integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+      crossorigin="anonymous"
+    ></script>
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" defer />
+
+    <style>
+      /* Skip Links - Accessibility */
+      .skip-links {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        z-index: 9999;
+      }
+
+      .skip-links a {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #3c5fec;
+        color: #ffffff;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: top 0.2s ease;
+      }
+
+      .skip-links a:focus {
+        position: fixed;
+        top: 0;
+        left: 20px;
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+      }
+
+      [data-theme="dark"] .skip-links a {
+        background-color: #2a2d40;
+      }
+
+      /* Navbar Dropdown Fix */
+      .kbanner {
+        overflow: visible;
+      }
+
+      .kbanner .navbar {
+        overflow: visible;
+      }
+
+      .dropdown-menu {
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 8px 0;
+      }
+
+      .dropdown-item {
+        padding: 10px 20px;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f0f4ff;
+        color: #3c5fec;
+      }
+
+      [data-theme="dark"] .dropdown-menu {
+        background-color: #1e2235;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      [data-theme="dark"] .dropdown-item {
+        color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .dropdown-item:hover {
+        background-color: #2a2f4a;
+        color: #ffffff;
+      }
+
+      /* Mobile Navbar Menu */
+      @media (max-width: 991px) {
+        .navbar-collapse {
+          background: linear-gradient(135deg, #4a7ce8 0%, #3c5fec 100%);
+          border-radius: 0 0 12px 12px;
+          margin-top: 10px;
+          padding: 10px 0;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-nav {
+          padding: 0 10px;
+        }
+
+        .navbar-nav .nav-item {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .navbar-nav .nav-item:last-child {
+          border-bottom: none;
+        }
+
+        .navbar-nav .nav-link {
+          padding: 14px 16px !important;
+          font-size: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .navbar-nav .dropdown-menu {
+          background: transparent;
+          border: none;
+          box-shadow: none;
+          padding: 0 0 10px 20px;
+          margin: 0;
+        }
+
+        .navbar-nav .dropdown-item {
+          color: rgba(255, 255, 255, 0.9);
+          padding: 10px 16px;
+          border-radius: 6px;
+          font-size: 14px;
+        }
+
+        .navbar-nav .dropdown-item:hover,
+        .navbar-nav .dropdown-item:focus {
+          background-color: rgba(255, 255, 255, 0.15);
+          color: #ffffff;
+        }
+
+        /* Dark mode mobile navbar */
+        [data-theme="dark"] .navbar-collapse {
+          background: linear-gradient(135deg, #2a2d40 0%, #1e2235 100%);
+        }
+
+        [data-theme="dark"] .navbar-nav .nav-item {
+          border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+
+      /* Screen Reader Only - Visually Hidden */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Accordion Card Styling - Light Mode */
+      .faq-accordion {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .faq-accordion .card {
+        border: none;
+        margin-bottom: 0;
+        border-radius: 0;
+        overflow: hidden;
+        box-shadow: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .faq-accordion .card:last-child {
+        border-bottom: none;
+      }
+
+      .faq-accordion .card-header {
+        background: linear-gradient(135deg, #4a7ce8 0%, #3c5fec 100%);
+        border: none;
+        padding: 18px 24px;
+        border-radius: 0;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .faq-accordion .card-header:hover {
+        background: linear-gradient(135deg, #5a8cf0 0%, #4c6ffc 100%);
+      }
+
+      .faq-accordion .card-header h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+
+      .faq-accordion .card-header a {
+        color: #ffffff;
+        text-decoration: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .faq-accordion .card-header a::after {
+        content: '\f078';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        font-size: 14px;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .faq-accordion .card-header a[aria-expanded="true"]::after {
+        transform: rotate(180deg);
+      }
+
+      .faq-accordion .card-header a:hover {
+        color: #f0f4ff;
+      }
+
+      .faq-accordion .card-header a:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+        border-radius: 4px;
+      }
+
+      .faq-accordion .card-header a:focus-visible {
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+
+      .faq-accordion .card-body {
+        padding: 24px;
+        background-color: #ffffff;
+        font-size: 15px;
+        line-height: 1.7;
+        color: #444;
+      }
+
+      /* Typography improvements for card content */
+      .faq-accordion .card-body p {
+        margin-bottom: 1em;
+      }
+
+      .faq-accordion .card-body p:last-child {
+        margin-bottom: 0;
+      }
+
+      .faq-accordion .card-body strong {
+        color: #333;
+      }
+
+      .faq-accordion .card-body a {
+        color: #3c5fec;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .faq-accordion .card-body a:hover {
+        text-decoration: underline;
+      }
+
+      .faq-accordion .card-body ol,
+      .faq-accordion .card-body ul {
+        margin: 1em 0;
+        padding-left: 1.5em;
+      }
+
+      .faq-accordion .card-body li {
+        margin-bottom: 0.5em;
+      }
+
+      /* Dark mode - Accordion Cards */
+      [data-theme="dark"] .faq-accordion {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      }
+
+      [data-theme="dark"] .faq-accordion .card {
+        background-color: transparent;
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header {
+        background: linear-gradient(135deg, #2a2d40 0%, #1e2235 100%);
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header:hover {
+        background: linear-gradient(135deg, #2a2f4a 0%, #242842 100%);
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header a {
+        color: #e2e8f0;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header a:hover {
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header a:focus {
+        box-shadow: 0 0 0 3px rgba(91, 154, 255, 0.5);
+      }
+
+      [data-theme="dark"] .faq-accordion .card-header a:focus-visible {
+        outline-color: #5b9aff;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-body {
+        background-color: var(--dark-bg-color, #181b2d);
+        color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-body strong {
+        color: #e2e8f0;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-body a {
+        color: #5b9aff;
+      }
+
+      [data-theme="dark"] .faq-accordion .card-body a:hover {
+        color: #93b4ff;
+      }
+
+      [data-theme="dark"] .faq-accordion .collapse.show {
+        background-color: var(--dark-bg-color, #181b2d);
+      }
+
+      /* Main Content Area - Desktop alignment with TOC */
+      @media (min-width: 1201px) {
+        main.container {
+          padding-top: 30px;
+        }
+      }
+
+      /* Page Header */
+      .faq-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .faq-header h1 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      .last-updated {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #6c757d;
+        background-color: #f1f3f4;
+        padding: 6px 12px;
+        border-radius: 20px;
+        white-space: nowrap;
+      }
+
+      .last-updated i {
+        font-size: 12px;
+      }
+
+      [data-theme="dark"] .last-updated {
+        background-color: #2a2f4a;
+        color: #9fc0e0;
+      }
+
+      @media (max-width: 576px) {
+        .faq-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .faq-header h1 {
+          font-size: 22px;
+        }
+
+        .last-updated {
+          font-size: 12px;
+          padding: 5px 10px;
+        }
+      }
+
+      /* Mobile Responsiveness - FAQ Content */
+      @media (max-width: 768px) {
+        /* Accordion mobile optimizations */
+        .faq-accordion {
+          border-radius: 8px;
+          margin: 0 -15px;
+          width: calc(100% + 30px);
+        }
+
+        .faq-accordion .card-header {
+          padding: 14px 16px;
+        }
+
+        .faq-accordion .card-header h2 {
+          font-size: 15px;
+          line-height: 1.5;
+        }
+
+        .faq-accordion .card-header a::after {
+          font-size: 12px;
+        }
+
+        .faq-accordion .card-body {
+          padding: 16px;
+          font-size: 14px;
+          line-height: 1.65;
+        }
+
+        /* Search box mobile */
+        .faq-search-container {
+          margin-bottom: 20px;
+        }
+
+        .faq-search-container::before {
+          left: 14px;
+          font-size: 14px;
+        }
+
+        .faq-search-container input {
+          padding: 12px 16px 12px 42px;
+          font-size: 14px;
+          border-radius: 10px;
+        }
+
+        /* Breadcrumb mobile */
+        .breadcrumb {
+          padding: 10px 14px;
+          font-size: 13px;
+        }
+
+        /* Back to top button mobile */
+        .back-to-top {
+          width: 44px;
+          height: 44px;
+          right: 16px;
+          bottom: 16px;
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .faq-accordion .card-header h2 {
+          font-size: 14px;
+        }
+
+        .faq-accordion .card-body {
+          padding: 14px;
+          font-size: 13px;
+        }
+
+        .faq-header h1 {
+          font-size: 20px;
+        }
+      }
+
+      /* Breadcrumb - Light Mode */
+      .breadcrumb {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px 16px;
+      }
+
+      .breadcrumb-item a {
+        color: #3c5fec;
+        font-weight: 500;
+      }
+
+      .breadcrumb-item a:hover {
+        color: #2a4bd6;
+        text-decoration: underline;
+      }
+
+      .breadcrumb-item.active {
+        color: #495057;
+        font-weight: 600;
+      }
+
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #6c757d;
+      }
+
+      /* Breadcrumb - Dark Mode */
+      [data-theme="dark"] .breadcrumb {
+        background-color: var(--dark-bg-color, #181b2d);
+        border: 1px solid var(--dark-border-color, #2a2f4a);
+      }
+
+      [data-theme="dark"] .breadcrumb-item a {
+        color: #5b9aff;
+      }
+
+      [data-theme="dark"] .breadcrumb-item a:hover {
+        color: #93b4ff;
+      }
+
+      [data-theme="dark"] .breadcrumb-item {
+        color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .breadcrumb-item.active {
+        color: #c3d3e8;
+        font-weight: 600;
+      }
+
+      [data-theme="dark"] .breadcrumb-item + .breadcrumb-item::before {
+        color: #9fc0e0;
+      }
+
+      /* FAQ Table Styling */
+      .faq-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid #e0e6ed;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 15px 0;
+      }
+
+      .faq-table thead tr {
+        background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+      }
+
+      .faq-table th {
+        padding: 14px 16px;
+        font-weight: 600;
+        color: #2d3748;
+        text-align: left;
+        border-bottom: 2px solid #e0e6ed;
+      }
+
+      .faq-table td {
+        padding: 12px 16px;
+        color: #4a5568;
+        border-bottom: 1px solid #edf2f7;
+      }
+
+      .faq-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .faq-table tbody tr:hover {
+        background-color: #f7fafc;
+      }
+
+      /* FAQ Table - Dark Mode */
+      [data-theme="dark"] .faq-table {
+        border-color: #2a2f4a;
+      }
+
+      [data-theme="dark"] .faq-table thead tr {
+        background: linear-gradient(135deg, #242842 0%, #1e2235 100%);
+      }
+
+      [data-theme="dark"] .faq-table th {
+        color: #e2e8f0;
+        border-bottom-color: #2a2f4a;
+      }
+
+      [data-theme="dark"] .faq-table td {
+        color: #c3d3e8;
+        border-bottom-color: #242842;
+        background-color: transparent;
+      }
+
+      [data-theme="dark"] .faq-table tbody tr:hover {
+        background-color: #242842;
+      }
+
+      /* Table Responsive Wrapper */
+      .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 15px 0;
+      }
+
+      .table-responsive .faq-table {
+        margin: 0;
+        min-width: 500px;
+      }
+
+      /* Table Mobile Styles */
+      @media (max-width: 768px) {
+        .faq-table {
+          font-size: 13px;
+        }
+
+        .faq-table th,
+        .faq-table td {
+          padding: 10px 12px;
+        }
+
+        .faq-table td:first-child {
+          white-space: nowrap;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .faq-table {
+          font-size: 12px;
+        }
+
+        .faq-table th,
+        .faq-table td {
+          padding: 8px 10px;
+        }
+      }
+
+      /* FAQ Search Box */
+      .faq-search-container {
+        margin-bottom: 24px;
+        position: relative;
+      }
+
+      .faq-search-container::before {
+        content: '\f002';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 16px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .faq-search-container input {
+        width: 100%;
+        padding: 14px 20px 14px 48px;
+        font-size: 15px;
+        border: 2px solid #e0e4e8;
+        border-radius: 12px;
+        outline: none;
+        transition: all 0.2s ease;
+        background-color: #f8f9fa;
+      }
+
+      .faq-search-container input::placeholder {
+        color: #999;
+      }
+
+      .faq-search-container input:hover {
+        border-color: #c0c8d0;
+        background-color: #ffffff;
+      }
+
+      .faq-search-container input:focus {
+        border-color: #3c5fec;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(60, 95, 236, 0.1);
+      }
+
+      [data-theme="dark"] .faq-search-container::before {
+        color: #8a93a6;
+      }
+
+      [data-theme="dark"] .faq-search-container input {
+        background-color: #1e2235;
+        border-color: #2a2f4a;
+        color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .faq-search-container input::placeholder {
+        color: #8a93a6;
+      }
+
+      [data-theme="dark"] .faq-search-container input:hover {
+        border-color: #2a2f4a;
+        background-color: #242842;
+      }
+
+      [data-theme="dark"] .faq-search-container input:focus {
+        border-color: #3f71f3;
+        background-color: #242842;
+        box-shadow: 0 0 0 4px rgba(63, 113, 243, 0.2);
+      }
+
+      .faq-no-results {
+        display: none;
+        padding: 20px;
+        text-align: center;
+        color: #525252;
+      }
+
+      [data-theme="dark"] .faq-no-results {
+        color: #9fc0e0;
+      }
+
+      /* Floating TOC */
+      .faq-toc {
+        position: fixed;
+        left: 30px;
+        top: 110px;
+        width: 260px;
+        max-height: calc(100vh - 140px);
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #e0e4e8;
+        border-radius: 12px;
+        padding: 18px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        font-size: 13px;
+      }
+
+      .faq-toc h4 {
+        margin: 0 0 12px 0;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #3c5fec;
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.2;
+      }
+
+      .faq-toc ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .faq-toc li {
+        margin-bottom: 6px;
+      }
+
+      .faq-toc a {
+        color: #333;
+        text-decoration: none;
+        display: block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+        line-height: 1.3;
+      }
+
+      .faq-toc a:hover {
+        background-color: #f0f0f0;
+        color: #3c5fec;
+      }
+
+      .faq-toc a.active {
+        background-color: #3c5fec;
+        color: #fff;
+      }
+
+      [data-theme="dark"] .faq-toc {
+        background-color: var(--dark-bg-color, #181b2d);
+        border-color: var(--dark-border-color, #2a2f4a);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      [data-theme="dark"] .faq-toc h4 {
+        color: #e1e1e1;
+        border-bottom-color: #3f71f3;
+      }
+
+      [data-theme="dark"] .faq-toc a {
+        color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .faq-toc a:hover {
+        background-color: #2a2f4a;
+        color: #fff;
+      }
+
+      /* TOC stops at footer */
+      .faq-toc.toc-stopped {
+        position: absolute;
+        top: auto;
+        bottom: 0;
+      }
+
+      /* Hide TOC on smaller screens */
+
+      @media (max-width: 1200px) {
+        .faq-toc {
+          display: none;
+        }
+      }
+
+      /* Scrollbar styling for TOC */
+      .faq-toc::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .faq-toc::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      .faq-toc::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;
+      }
+
+      .faq-toc::-webkit-scrollbar-thumb:hover {
+        background: #999;
+      }
+
+      [data-theme="dark"] .faq-toc::-webkit-scrollbar-track {
+        background: #1e2235;
+      }
+
+      [data-theme="dark"] .faq-toc::-webkit-scrollbar-thumb {
+        background: #2a2f4a;
+      }
+
+      /* Back to Top Button */
+      .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background-color: #3c5fec;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 4px 12px rgba(60, 95, 236, 0.4);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .back-to-top:hover {
+        background-color: #2a4bd6;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(60, 95, 236, 0.5);
+      }
+
+      .back-to-top.visible {
+        display: flex;
+      }
+
+      [data-theme="dark"] .back-to-top {
+        background-color: #4284fb;
+        box-shadow: 0 4px 12px rgba(66, 132, 251, 0.4);
+      }
+
+      [data-theme="dark"] .back-to-top:hover {
+        background-color: #3f71f3;
+      }
+
+      /* Footer Styles */
+      .footer {
+        background-color: #f8f9fa;
+        padding: 40px 0 20px;
+        margin-top: 40px;
+      }
+
+      .footer-columns {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-bottom: 20px;
+      }
+
+      .footer-group {
+        flex: 1;
+        min-width: 150px;
+      }
+
+      .footer-group h6 {
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .footer-group a.footer-link {
+        display: block;
+        color: #666;
+        text-decoration: none;
+        margin-bottom: 8px;
+        font-size: 14px;
+        transition: color 0.2s;
+      }
+
+      .footer-group a.footer-link:hover {
+        color: #3c5fec;
+      }
+
+      .footer-group a.footer-link i {
+        margin-right: 6px;
+        width: 16px;
+      }
+
+      [data-theme="dark"] .footer {
+        background-color: var(--dark-bg-color, #181b2d);
+      }
+
+      [data-theme="dark"] .footer-group h6 {
+        color: #e1e1e1;
+      }
+
+      [data-theme="dark"] .footer-group a.footer-link {
+        color: #9fc0e0;
+      }
+
+      [data-theme="dark"] .footer-group a.footer-link:hover {
+        color: #fff;
+      }
+
+      @media (max-width: 768px) {
+        .footer-columns {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .footer-group {
+          border-bottom: 1px solid #e0e4e8;
+          text-align: left;
+        }
+
+        .footer-group:last-child {
+          border-bottom: none;
+        }
+
+        .footer-group h6 {
+          cursor: pointer;
+          padding: 16px 20px;
+          margin: 0 !important;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 15px;
+        }
+
+        .footer-group h6::after {
+          content: '+';
+          font-size: 18px;
+          font-weight: 400;
+          color: #666;
+          transition: transform 0.3s ease;
+        }
+
+        .footer-group.active h6::after {
+          content: '−';
+        }
+
+        .footer-group .footer-links-wrapper {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+          padding: 0 20px;
+        }
+
+        .footer-group.active .footer-links-wrapper {
+          max-height: 300px;
+          padding: 0 20px 15px 20px;
+        }
+
+        /* Dark mode footer mobile */
+        [data-theme="dark"] .footer-group {
+          border-bottom-color: #2a2f4a;
+        }
+
+        [data-theme="dark"] .footer-group h6::after {
+          color: #9fc0e0;
+        }
+      }
+    </style>
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    <style>
+      .faq-layout {
+        display: flex;
+        align-items: flex-start;
+        gap: 24px;
+        max-width: 1720px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      .faq-layout .faq-toc {
+        position: sticky;
+        top: 20px;
+        left: auto;
+        flex: 0 0 260px;
+        max-height: calc(100vh - 40px);
+      }
+
+      .faq-layout main.container {
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+        margin: 0;
+      }
+
+      .faq-toc.toc-stopped {
+        position: sticky;
+        top: 20px;
+        bottom: auto;
+      }
+
+      @media (max-width: 1200px) {
+        .faq-layout {
+          display: block;
+          padding: 0;
+        }
+
+        .faq-layout main.container {
+          max-width: 100%;
+          margin: 0 auto;
+          padding: 0 15px;
+        }
+      }
+    </style>
+    </head>
+
+  <body>
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+    <nav class="skip-links" aria-label="Skip links">
+      <a href="#main-content">Ana içeriğe geç</a>
+      <a href="#faq-list">SSS listesine geç</a>
+    </nav>
+
+
+    <button class="back-to-top" id="backToTop" aria-label="Başa dön">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <div class="searchMe">
+         <div class="banner" id="banner">
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/tr/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
+                        Edition</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password">Şifre</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq">SSS</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link xon-nav-tip" href="https://plus.xposedornot.com" target="_blank" data-tip="İşletmeler için xonPlus: ekipler ve şirketler için ihlal izleme" aria-label="İşletmeler için xonPlus: ekipler ve şirketler için ihlal izleme">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc">API</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> Dil <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+    <div class="faq-layout">
+    <nav class="faq-toc" id="faqToc">
+      <h4>Hızlı Gezinme</h4>
+      <ul>
+        <li><a href="#collapse0">Ben kimim?</a></li>
+        <li><a href="#collapse1">XposedOrNot nedir?</a></li>
+        <li><a href="#collapse2">İhlal verilerini nereden buluyorum?</a></li>
+        <li><a href="#collapse3">XON'da neler saklanıyor?</a></li>
+        <li><a href="#collapse44">İfşa olan veri türleri</a></li>
+        <li><a href="#collapse4">Doğrulama için kaynak paylaşımı?</a></li>
+        <li><a href="#collapse5">İhlal bildirimleri</a></li>
+        <li><a href="#collapse6">Arama ücreti var mı?</a></li>
+        <li><a href="#collapse7">İhlaller nasıl doğrulanır</a></li>
+        <li><a href="#collapse71">İhlal sınıflandırması</a></li>
+        <li><a href="#collapse301">Risk puanı hesaplama</a></li>
+        <li><a href="#collapse81">Emniyet ve güvenlik</a></li>
+        <li><a href="#collapse89">Hata ödül programı</a></li>
+        <li><a href="#collapse8">Alert Me hizmeti</a></li>
+        <li><a href="#collapse9">Kabul edilebilir kullanım politikası</a></li>
+        <li><a href="#collapse94">İhlallerden saklanan veriler</a></li>
+        <li><a href="#collapse95">Yasal/kaldırma talepleri</a></li>
+        <li><a href="#collapse101">Privacy Shield ve GDPR silme</a></li>
+        <li><a href="#collapse103">DPA sağlıyor musunuz?</a></li>
+        <li><a href="#collapse96">API ticari kullanımı</a></li>
+        <li><a href="#collapse100">Resmi SDK'lar</a></li>
+        <li><a href="#collapse102">API anahtarı ve alan adı erişimi</a></li>
+        <li><a href="#collapse97">Arama sorgusu kaydı</a></li>
+        <li><a href="#collapse98">İhlal kapsamı sınırları</a></li>
+        <li><a href="#collapse99">Açık kaynak katkıları</a></li>
+        <li><a href="#collapse91">XON e-posta bildirimleri</a></li>
+        <li><a href="#collapse92">Nasıl katkıda bulunulur</a></li>
+        <li><a href="#collapse93">Aramalar için veri kaydı</a></li>
+        <li><a href="#collapse11">TOR desteği</a></li>
+        <li><a href="#collapse12">İhlal Karşılaştırma Aracı</a></li>
+        <li><a href="#collapse10">İletişim bilgileri</a></li>
+      </ul>
+    </nav>
+    <main class="container" id="main-content">
+      <div class="faq-header">
+        <h1>Sıkça Sorulan Sorular. Veri İhlali Arama ve Güvenlik</h1>
+        <span class="last-updated">
+          <i class="far fa-calendar-alt"></i>
+          Güncelleme: 03-Nis-2026
+        </span>
+      </div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/tr/">Ana Sayfa</a></li>
+          <li class="breadcrumb-item active" aria-current="page">SSS</li>
+        </ol>
+      </nav>
+
+      <div class="faq-search-container">
+        <input
+          type="text"
+          id="faqSearch"
+          placeholder="SSS içinde arayın... (örn. şifre, API, ihlal)"
+          aria-label="SSS içinde arama"
+        />
+      </div>
+      <div class="faq-no-results" id="noResults">
+        Aramanızla eşleşen SSS bulunamadı. Farklı anahtar kelimeler deneyin.
+      </div>
+
+      <section
+        class="accordion-section clearfix mt-3"
+        aria-label="Soru Akordeonları"
+      >
+        <div
+          class="faq-accordion"
+          id="faq-list"
+          role="tablist"
+          aria-multiselectable="true"
+        >
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading0">
+                    <h2>
+                      <a
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse0"
+                        aria-expanded="true"
+                        aria-controls="collapse0"
+                      >
+                        S. Ben kimim?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse0"
+                    class="collapse show"
+                    role="tabpanel"
+                    aria-labelledby="heading0"
+                  >
+                    <div class="card-body">
+                      Merhaba, ben Devanand Premkumar, BT ve bilgi güvenliği
+                      alanında yirmi yılı aşkın deneyime sahip bir güvenlik
+                      uzmanıyım. 2017 yılında XposedOrNot'u, ifşa olan şifreleri
+                      ücretsiz olarak toplayıp paylaşmak amacıyla bir yan proje
+                      olarak başlattım; bugün ise tam kapsamlı bir ihlal bildirim
+                      hizmetidir. Hikayenin tamamını
+                      <a href="/about">Hakkında sayfasında</a> okuyabilirsiniz.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading1">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse1"
+                        aria-expanded="false"
+                        aria-controls="collapse1"
+                      >
+                        S. XposedOrNot (XON) nedir?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse1"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading1"
+                  >
+                    <div class="card-body">
+                      <strong>XposedOrNot (XON)</strong>, kişisel verilerinizin
+                      bir veri ihlaline karışıp karışmadığını doğrulamanızı 🔍
+                      sağlamak için tasarlanmış pratik ve kullanışlı bir
+                      araçtır. Bu girişim aslında adli bilişime ve veri
+                      ihlallerinin analizine duyduğum derin ilgiden doğdu. İfşa
+                      olan hassas bilgilerin muazzam hacmini ve yol açabileceği
+                      olası zararı fark etmem, bu ilgiyi kısa sürede bir kamu
+                      hizmetine dönüştürmeme yol açtı. Bu hizmeti herkese
+                      ücretsiz sunma, kişisel verilerini ve gizliliğini korumak
+                      isteyen herkes için erişilebilir kılma motivasyonuyla
+                      hareket ettim.<br /><br />
+                      <strong>XposedOrNot</strong> platformu, insanların
+                      e-postalarının veya kişisel bilgilerinin bir veri
+                      ihlalinde ele geçirilip geçirilmediğini keşfetmelerine
+                      yardımcı olur. Bu bilgi, kullanıcıları şifre değişiklikleri
+                      ve dikkatli hesap izleme gibi önlemlerle hesaplarını
+                      korumaya yönlendirebilir.<br /><br />
+                      Web sitesi, yalnızca e-posta ve şifre kontrolünün yanı
+                      sıra, kullanıcıların veri ihlali bilgilerini
+                      <a
+                        href="domain"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>alan adı veya alt alan adı düzeyinde</strong></a
+                      >
+                      incelemesine de olanak tanır. Alan adı sahipliğini
+                      doğrulayabilenler, kullanıcılarını etkileyen veri
+                      ihlallerinin ayrıntılı analizine erişim kazanır.<br /><br />
+                      Araç setimize heyecan verici bir ekleme de
+                      <a
+                        href="dashboard"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>CXO Kontrol Paneli</strong></a
+                      >. Bu özellik, özellikle birden fazla alan adı yöneten
+                      şirketler ve kurumlar için faydalıdır. CXO Kontrol Paneli,
+                      veri ihlallerinin ve ilgili tüm analizlerin birleşik bir
+                      görünümünü sunar. Bu bütünleşik bakış açısı, çeşitli alan
+                      adlarında ihlal izlemenin karmaşık görevini önemli ölçüde
+                      basitleştirebilir ve kuruluşların güvenlik olaylarını daha
+                      verimli ve etkili biçimde anlayıp yanıtlamasını
+                      sağlar.<br /><br />
+                      <a
+                        href="xposed"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>Xposed (tek sayfalık depo)</strong></a
+                      >, XposedOrNot'a yüklenen tüm veri ihlallerine ilişkin
+                      ayrıntıları içerir. Bu depo, her ihlalin kendine özgü
+                      yönlerinin anlaşılmasını kolaylaştıracak şekilde görsel
+                      olarak ilgi çekici tasarlanmıştır. Tabloda basit satır
+                      listesini tercih edenler için
+                      <a
+                        href="xposed"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>ihlaller sayfasına</strong></a
+                      >
+                      bakabilirsiniz.<br /><br />
+                      Ayrıca, e-postalarının platformumuzda herkese açık şekilde
+                      aranmasını istemeyen kişiler için faydalı bir araç olan
+                      <a
+                        href="shield"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>Privacy Shield özelliğini</strong></a
+                      >
+                      oluşturduk. Bu, gizliliğine değer veren ve verilerini
+                      korumak isteyenler için özellikle faydalıdır.<br /><br />
+                      Diğer ihlal izleme hizmetleri yerine neden
+                      <strong>XposedOrNot</strong>'u seçmeniz gerektiğini merak
+                      edebilirsiniz. Yanıt, veri ihlalleri konusunda
+                      farkındalık yaratma ve bu ihlallerin etkilerini azaltmaya
+                      destek sağlama hedefimizde yatıyor. Her küçük yardım
+                      karanlıkta bir ışıktır ve biz bu aydınlığa katkıda
+                      bulunmayı amaçlıyoruz.<br /><br />
+                      Size yalnızca ifşa durumunuzu ve sızan kayıtların hacmini
+                      bildiren geleneksel izleme hizmetlerinin aksine,
+                      XposedOrNot bir adım daha atar. Her e-postaya bir risk
+                      puanı veririz, şifrenin düz metin olarak ifşa olup
+                      olmadığını bildiririz ve diğer ayrıntıların yanı sıra
+                      e-postanın ele geçirildiği başlıca ihlaller hakkında bilgi
+                      sağlarız.<br /><br />
+                      Platformumuzda veri ihlalleri sektöre göre sınıflandırılır
+                      ve en çok etkilenen sektörlere dair aydınlatıcı bir bakış
+                      sunulur. Amacımız şeffaflığı teşvik etmek ve bireylerin
+                      veri ihlallerine karşı etkili biçimde korunmasını
+                      sağlamaktır.
+                      <br /><br />
+                      Ayrıca, tekil web siteleri ve alan adları veri
+                      ihlallerinde göründüğünde etkinleştirilebilen bir uyarı
+                      özelliği ekledim. Bu hizmet tamamen ücretsizdir ve bireysel
+                      e-posta kullanıcılarından, kullanıcılarının veri
+                      ihlallerine karşı savunmasızlığını daha iyi anlamak
+                      isteyen şirketlere kadar herkes için faydalıdır.<br /><br />
+                      Dahası,
+                      <a
+                        href="xposed"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>veri setimizin tamamı</strong></a
+                      >,
+                      <a
+                        href="api_doc"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>XposedOrNot API</strong></a
+                      >
+                      aracılığıyla sorgulanabilir ve özel uygulamalarınıza
+                      entegre edilebilir. XposedOrNot API'sini projelerinizde
+                      kullanmaya ilişkin ayrıntılı talimatlar API deneme
+                      alanımızda bulunabilir. Verilere ücretsiz ve açık erişim
+                      ilkemize uygun olarak API'miz
+                      <strong>tamamen ücretsiz</strong> kalmaya devam
+                      edecektir. <br /><br />
+                      Son olarak, uygulamamızın, API'mizin ve ilgili dosyaların
+                      tamamının
+                      <a
+                        href="https://github.com/XposedOrNot"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>açık kaynak olduğunu ve GitHub'da barındırıldığını</strong></a
+                      >
+                      vurgulamak isterim. Bu açık kaynak yaklaşımı, platformun
+                      güvenlik duruşunu iyileştirmeye yardımcı olur ve halkın
+                      katkılarına kapı açar. Kolektif bilgeliğin gücüne
+                      inanıyorum ve güvenlik meraklılarını, web
+                      geliştiricilerini, tasarımcıları ve veri ihlali
+                      araştırmacılarını fikirlerini paylaşmaya ve
+                      <strong>XposedOrNot</strong>'u daha da sağlam, güvenli ve
+                      etkili kılmak için iş birliği yapmaya davet ediyorum.
+                      <a
+                        href="hof"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>Katkılarınız</strong></a
+                      >
+                      bu ücretsiz kamu hizmetinin daha da güçlenmesine yardımcı
+                      olabilir. XposedOrNot'u birlikte daha iyi hale getirelim!
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading2">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse2"
+                        aria-expanded="false"
+                        aria-controls="collapse2"
+                      >
+                        S. Bu ihlal verilerini nereden buluyorum?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse2"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading2"
+                  >
+                    <div class="card-body">
+                      XposedOrNot'ta ifşa olan verilerin çoğunu internette
+                      erişilebilir durumda olan ihlallerden temin ediyorum. Bu
+                      ihlaller genellikle çeşitli web sitelerinde bulunur ve
+                      doğru arama teknikleriyle bir kişinin erişmesi görece
+                      kolay olabilir. Ayrıca bazı veri ihlallerini torrent gibi
+                      teknolojiler aracılığıyla da temin ediyorum.<br /><br />
+                      XON yalnızca kamuya açık hale getirilmiş veri ihlallerini
+                      kullanır. Amacımız, bireylerin ve kuruluşların kişisel
+                      bilgilerinin bilinen herhangi bir veri ihlalinde ifşa
+                      olup olmadığını kolayca kontrol etmelerini ve olası
+                      zararlara karşı kendilerini korumak için adımlar
+                      atmalarını sağlamaktır.
+                      <br />
+                      <br />
+                      XposedOrNot tarafından dizine eklenen veri ihlallerinin
+                      tam listesi, kolay başvuru için
+                      <a href="xposed">
+                        <strong>Xposed sayfasında</strong> </a
+                      >
+                      ayrıntılı olarak belgelenmiştir.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading3">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse3"
+                        aria-expanded="false"
+                        aria-controls="collapse3"
+                      >
+                        S. XON'da neler saklanır, neler saklanmaz?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse3"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading3"
+                  >
+                    <div class="card-body">
+                      XposedOrNot, kullanıcıların kişisel bilgilerinin bilinen
+                      herhangi bir veri ihlalinde ifşa olup olmadığını kontrol
+                      etmelerini sağlayan bir veri ihlali izleme hizmetidir.
+                      Hizmetimizde nelerin saklanıp nelerin saklanmadığı
+                      konusunda kullanıcılarımıza karşı şeffaf olmak
+                      istiyorum.<br /><br />
+                      Bu soruyu yanıtlamak gerekirse, XON'da hiçbir kullanıcı
+                      şifresi veya kişisel tanımlayıcı bilgi (PII) saklamayız.
+                      Bir kullanıcı arama motorumuza e-posta adresini veya alan
+                      adını girdiğinde, o e-postanın veya alan adının geçmişteki
+                      herhangi bir ihlale karışıp karışmadığını görmek için
+                      bilinen veri ihlalleri veritabanımızı kontrol ederiz.
+                      Eşleşme varsa, kullanıcıya e-postasının veya alan adının
+                      karıştığı ihlal(ler) hakkında bilgi ve olayla ilgili
+                      elimizdeki ek ayrıntıları sunarız.<br /><br />
+                      Aranan e-posta veya alan adı ve arama tarihi gibi
+                      kullanıcı aramalarına ilişkin bilgileri saklamayız ve
+                      kullanıcılarımızın verilerinin gizliliğini ve güvenliğini
+                      sağlamak için önlemler alırız.<br /><br />
+                      Özetle, XON hiçbir kullanıcı şifresi veya PII saklamaz;
+                      arama sorguları bellekte işlenir ve hiçbir zaman
+                      tanımlanabilir bir biçimde kaydedilmez. Hizmeti
+                      iyileştirmek için yalnızca toplu ve anonim kullanım
+                      verileri toplarız.
+                      <br /><br />XON ayrıca
+                      <a href="https://xposedornot.com/password"
+                        ><strong>ifşa olan şifreleri</strong>
+                      </a>
+                      kontrol etme yeteneğine sahiptir. Bu hizmet, toplanan
+                      şifreleri depolamada tek yönlü karmalara dönüştürmek için
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://en.wikipedia.org/wiki/SHA-3"
+                      >
+                        <strong>SHA3-Keccak 512 karma algoritmasını</strong>
+                      </a>
+                      kullanır. Mevcut teknolojilerle bu SHA-3 Keccak
+                      karmalarının kolayca geri çevrilmesi son derece olasılık
+                      dışıdır. Bu, saklanan karmalar için en üst düzeyde
+                      güvenlik sağlar. <br />
+                      <br />
+                      Lütfen XON Şifre API'sini kullanan
+                      <a
+                        href="/samples/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <strong>örnek giriş sayfasına</strong> </a
+                      >bakın. Bu, birçok kullanıcıya yardımcı olarak
+                      <a
+                        href="https://pages.nist.gov/800-63-3/sp800-63b.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>NIST yönergeleri</strong></a
+                      >
+                      doğrultusunda eski ve ifşa olmuş şifreleri yeniden
+                      kullanmalarını önler.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading44">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse44"
+                        aria-expanded="false"
+                        aria-controls="collapse4"
+                      >
+                        S. İhlal bilgilerinin bir parçası olarak ne tür ifşa
+                        olmuş veriler sunulur?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse44"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading44"
+                  >
+                    <div class="card-body">
+                      <p>
+                        Veri ihlallerini raporlarken,
+                        <a href="xposed"><strong>ifşa</strong></a
+                        > olan veri türlerine dair kapsamlı bir genel bakış
+                        sunmayı amaçlıyoruz. Bu, kullanıcıların belirli bir
+                        ihlalle ilişkili olası etkiyi ve riskleri anlamalarına
+                        yardımcı olur.
+                        <br /><br />Okuyucularımız için kolaylaştırmak amacıyla
+                        ifşa olan verileri mantıksal olarak kategorilere
+                        ayırdım. Aşağıda bu kategorilerin ve kapsadıkları veri
+                        türlerinin dökümü yer alıyor:
+                      </p>
+                      <div class="table-responsive">
+                      <table class="faq-table">
+                        <caption class="sr-only">İhlallerde ifşa olan veri kategorileri ve her kategorinin içerdiği bilgi türleri</caption>
+                        <thead>
+                          <tr>
+                            <th scope="col">Kategori</th>
+                            <th scope="col">İfşa Olan Veri Türleri</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>👤 <strong>Kişisel Kimlik</strong></td>
+                            <td>Adlar, Doğum tarihleri, Cinsiyetler, Uyruklar, Fotoğraflar, Profil fotoğrafları, Hitap şekilleri, Takma adlar, Araç plakaları, Sosyal medya profilleri, Özel mesajlar, Avatarlar</td>
+                          </tr>
+                          <tr>
+                            <td>💳 <strong>Finansal Bilgiler</strong></td>
+                            <td>Hesap bakiyesi, Banka hesap numaraları, Kredi kartları</td>
+                          </tr>
+                          <tr>
+                            <td>🍔 <strong>Kişisel Alışkanlıklar ve Yaşam Tarzı</strong></td>
+                            <td>Madde kullanım alışkanlıkları, Konuşulan diller, Araç bilgileri, Araç kimlik numaraları</td>
+                          </tr>
+                          <tr>
+                            <td>🔒 <strong>Güvenlik Uygulamaları</strong></td>
+                            <td>Şifreler, Geçmiş şifreler, Güvenlik soruları ve yanıtları</td>
+                          </tr>
+                          <tr>
+                            <td>🎓 <strong>İstihdam ve Eğitim</strong></td>
+                            <td>İş başvuruları, İşverenler, Meslekler, Eğitim düzeyleri</td>
+                          </tr>
+                          <tr>
+                            <td>📞 <strong>İletişim ve Sosyal Etkileşimler</strong></td>
+                            <td>E-posta adresleri, Anlık mesajlaşma kimlikleri, Telefon numaraları, Özel mesajlar, Sosyal bağlantılar, Sosyal medya profilleri</td>
+                          </tr>
+                          <tr>
+                            <td>🖥️ <strong>Cihaz ve Ağ Bilgileri</strong></td>
+                            <td>IP adresleri, Cihaz bilgileri, Tarayıcı kullanıcı aracısı ayrıntıları, Web sitesi etkinliği</td>
+                          </tr>
+                          <tr>
+                            <td>🩺 <strong>Sağlık Bilgileri</strong></td>
+                            <td>Kişisel sağlık verileri, Sağlık sigortası bilgileri, Kondisyon düzeyleri, Sigara kullanım alışkanlıkları</td>
+                          </tr>
+                          <tr>
+                            <td>👥 <strong>Demografik Bilgiler</strong></td>
+                            <td>Yaş grubu, Yaş, Etnik kökenler, Medeni durumlar, Konuşulan diller, Cinsel tercihler</td>
+                          </tr>
+                          <tr>
+                            <td>🗳️ <strong>Siyasi ve Sosyal Görüşler</strong></td>
+                            <td>Sosyal bağlantılar, Özel mesajlar</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </div>
+                      <br />
+                      <p>
+                        Not: Sunulan veriler yalnızca önemli ifşa olmuş
+                        ayrıntıları yansıtır; ihlallerdeki tüm veri türleri
+                        dahil edilmemiştir. Elle derleme nedeniyle hatalar
+                        olabilir. Düzeltmeler için lütfen benimle iletişime
+                        geçin.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading4">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse4"
+                        aria-expanded="false"
+                        aria-controls="collapse4"
+                      >
+                        S. Doğrulamam için kaynakları benimle paylaşabilir misiniz?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse4"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading4"
+                  >
+                    <div class="card-body">
+                      Söz konusu hassas bilgilerin miktarı nedeniyle veri
+                      ihlallerinin nereden geldiğini açıklamak genellikle iyi
+                      bir fikir değildir. Ancak XON'da toplanan tüm veriler
+                      yüklenir ve girdiğiniz herhangi bir e-posta için web
+                      sitesi veya API üzerinden kolayca aranabilir.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading5">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse5"
+                        aria-expanded="false"
+                        aria-controls="collapse5"
+                      >
+                        S. Verilerim bir veri ihlalinde ifşa olursa
+                        bilgilendirilebilir miyim?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse5"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading5"
+                  >
+                    <div class="card-body">
+                      Kesinlikle! İfşa olan verilerden haberdar olmak için
+                      kullanabileceğiniz bir
+                      <strong>AlertMe Hizmeti</strong> sunuyoruz. AlertMe
+                      hizmetini web sitemizde e-posta ararken veya şifre
+                      doğrularken kullanabilirsiniz. Hizmeti etkinleştirmeniz
+                      yeterlidir; e-posta adresinizi içeren bir ihlal tespit
+                      edersek size uyarılar göndeririz. Bu, olası güvenlik
+                      tehditlerini takip etmenin ve hassas bilgilerinizi
+                      korumanın harika bir yoludur. <br /><br />
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading6">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse6"
+                        aria-expanded="false"
+                        aria-controls="collapse6"
+                      >
+                        S. Birden fazla e-postamı/şifremi aramak için ücret var
+                        mı?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse6"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading6"
+                  >
+                    <div class="card-body">
+                      Bu topluluk sürümünü ücretli hale getirme niyetim yok. Bu
+                      hizmeti özgürce kullanabilirsiniz ve faydalı bulursanız
+                      lütfen paylaşın ve XposedOrNot (XON) kullanımını yayın.
+                      Her paylaşım ve tavsiye, genel nüfusa giderek daha fazla
+                      fayda sağlayacağından, bir araştırmacı olarak benim için
+                      her zaman memnuniyet vericidir.
+                      <br /><br />Kendi e-postalarınızı/şifrelerinizi olduğu
+                      gibi ailenizin, arkadaşlarınızın veya yakın çevrenizin
+                      olanlarını da kontrol sayısı sınırı olmadan kontrol
+                      edebilirsiniz.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading7">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse7"
+                        aria-expanded="false"
+                        aria-controls="collapse7"
+                      >
+                        S. XON'da ihlaller nasıl doğrulanır?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse7"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading7"
+                  >
+                    <div class="card-body">
+                      Burada yayımlanan tüm ihlaller, web sitesi sahipleri veya
+                      çevrimiçi medya tarafından kabul edilmiştir ve
+                      <a
+                        href="xposed"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <strong>referanslar</strong> </a
+                      >
+                      olarak erişilebilir durumdadır. XposedOrNot olarak, web
+                      sitemize yüklenen tüm
+                      <a
+                        href="xposed"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <strong>ifşa</strong></a
+                      >
+                      olmuş ihlallerin ilgili web sitesi sahipleri veya
+                      çevrimiçi medya tarafından kabul edildiğinden emin olur ve
+                      her biri için referans sağlarız. Bir ihlalin web sitesi
+                      sahibi tarafından kabul edilmediği nadir durumlarda, bunu
+                      belirtir ve tanımlı süreçler aracılığıyla kendilerini
+                      bilgilendirmek için adımlar atarız. Şeffaflığa inanırız ve
+                      bu tür tüm iletişimleri hem XposedOrNot Twitter
+                      hesabımızda hem de referanslarda yayımlarız. <br /><br />
+                      Bir web sitesini ve kullanıcılarını etkileyen tekil veri
+                      ihlallerinin doğrulanmasının şu anda elle yürütülen bir
+                      süreç olduğunu ve doğruluğu sağlamak için azami özen
+                      gösterdiğimizi lütfen unutmayın.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading71">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse71"
+                        aria-expanded="false"
+                        aria-controls="collapse71"
+                      >
+                        S. Veri ihlallerini nasıl sınıflandırıyorum?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse71"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading71"
+                  >
+                    <div class="card-body">
+                      Veri ihlalleri şu anda aşağıdaki gibi sınıflandırılmaktadır: <br />
+                      <br />
+                      <strong>Veri İhlali</strong>:
+                      <a href="https://en.wikipedia.org/wiki/Data_breach">
+                        <strong>Veri ihlali</strong>
+                      </a>
+                      , güvenli veya özel/gizli bilgilerin kasıtlı veya
+                      kasıtsız olarak güvenilmeyen bir ortama sızmasıdır.
+                      Verileri dış veya iç kaynaklar tarafından ihlal edilen ve
+                      yetkisiz erişim için web üzerinde ifşa edilen/ihlal
+                      edilen web siteleri veya çevrimiçi uygulamalardır.
+                      <br />
+                      <br />
+                      <strong>ComboList</strong>:
+                      <a href="https://combolist.org/">
+                        <strong>Combo list</strong>
+                      </a>
+                      , tutarlı bir biçimde kullanıcı adları ve şifrelerin
+                      listesini içeren bir metin dosyasıdır. Combolist'ler
+                      makine tarafından okunabilir olacak şekilde hazırlanır;
+                      böylece bir web sitesine veya API'ye yönelik kimlik
+                      doğrulama isteklerini otomatikleştiren araçlara girdi
+                      olarak kullanılabilirler. <br />
+                      <br />
+                      <a href="xposed">
+                        <strong>İfşa olan ihlallerde</strong> </a
+                      >
+                      kullanılan etiketler: <br />
+                      <strong>Verified (Doğrulanmış)</strong>: Tek tek
+                      doğrulanan ve gerçek veri ihlali olduğu teyit edilen
+                      ihlaller.
+                      <br />
+                      <strong>Untrustworthy (Güvenilmez)</strong>: Doğrulanmamış
+                      ve teyit edilmemiş ihlaller. <br />
+                      <strong>Searchable (Aranabilir)</strong>: Bir e-posta
+                      adresiyle herkese açık olarak aranabilen ihlaller veya
+                      ComboList'ler. <br />
+                      <strong>Sensitive-Site (Hassas Site)</strong>: İfşa olan
+                      verilerin hassasiyeti göz önüne alınarak herkese açık
+                      şekilde aranamayan ihlaller. <br />
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    role="tab"
+                    id="heading301"
+                  >
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse301"
+                        aria-expanded="false"
+                        aria-controls="collapse71"
+                      >
+                        S. Bir e-postanın veri ihlali risk puanını nasıl
+                        hesaplıyorum?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse301"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading301"
+                  >
+                    <div class="card-body">
+                      <strong>Risk puanı formülü nedir? </strong><br />
+                      <br />
+                      <strong>Risk puanı formülü</strong>, ihlallerinizde ifşa
+                      olan veri türlerine dayalı ağırlıklı bir ifşa risk puanı
+                      (0-100) hesaplar; bu puan, ihlalin yakınlığına ve şifre
+                      ifşasının ciddiyetine göre çarpanlarla ayarlanır.<br /><br />
+
+                      Formül üç adımda çalışır:<br /><br />
+
+                      <strong>Adım 1: İfşa Olan Veri Türlerinden Ham Puan</strong><br />
+                      İfşa olan her veri türü bir risk katmanına atanır ve tüm
+                      ifşa olan veri türlerinin puanları toplanır:<br />
+                      &nbsp;&nbsp;• <strong>Kritik (her biri 10 puan):</strong>
+                      Şifreler, Kredi Kartları, Banka Hesap Numaraları, Sosyal
+                      Güvenlik Numaraları, Resmi Kimlikler, Pasaport Numaraları,
+                      Kimlik Doğrulama Belirteçleri, Güvenlik Soruları ve
+                      Yanıtları, Anımsatıcı İfadeler<br />
+                      &nbsp;&nbsp;• <strong>Yüksek (her biri 7 puan):</strong>
+                      Telefon Numaraları, Fiziksel Adresler, Doğum Tarihleri,
+                      Sağlık Verileri, Özel Mesajlar, Sohbet Kayıtları, GPS
+                      Koordinatları, Şifrelenmiş Anahtarlar, Şifre İpuçları,
+                      Cinsel Yönelim verileri<br />
+                      &nbsp;&nbsp;• <strong>Orta (her biri 4 puan):</strong>
+                      Adlar, Kullanıcı Adları, E-posta Adresleri, IP Adresleri,
+                      İşverenler, Meslekler, Eğitim Düzeyleri, Araç Bilgileri,
+                      MAC Adresleri<br />
+                      &nbsp;&nbsp;• <strong>Düşük (her biri 1 puan):</strong>
+                      Tanınan diğer tüm veri türleri<br /><br />
+
+                      <strong>Adım 2: Çarpanlar</strong><br />
+                      Ham puan daha sonra aşağıdaki çarpanlarla çarpılarak
+                      ayarlanır:<br />
+                      &nbsp;&nbsp;• <strong>İhlal sıklığı:</strong> İlkinden
+                      sonra düz metin veya kolay kırılabilir şifreler içeren
+                      her ihlal için +%1 (en fazla +%15)<br />
+                      &nbsp;&nbsp;• <strong>Yakınlık:</strong> En son ihlal son
+                      12 ay içindeyse +%15, son 24 ay içindeyse +%8<br />
+                      &nbsp;&nbsp;• <strong>Düz metin şifre cezası:</strong>
+                      Herhangi bir ihlal düz metin şifre ifşa ettiyse +%10<br /><br />
+
+                      <strong>Adım 3: Nihai Puan</strong><br />
+                      Nihai puan şu şekilde hesaplanır:<br />
+                      <code>min(100, round(raw_score &times; modifier))</code><br /><br />
+
+                      Risk düzeyleri dört bölgeye ayrılır:<br />
+                      • Kritik: 76-100 puan<br />
+                      • Yüksek: 51-75 puan<br />
+                      • Orta: 26-50 puan<br />
+                      • Düşük: 0-25 puan<br /><br />
+                      Bu katman tabanlı puanlama sistemi, risk değerlendirmesini
+                      ifşa olan verilerin ciddiyetinin yönlendirmesini sağlar;
+                      yakın tarihli ihlallere ve düz metin şifre ifşasına ek
+                      ağırlık verilir.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading81">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse81"
+                        aria-expanded="false"
+                        aria-controls="collapse8"
+                      >
+                        S. XposedOrNot ne kadar emniyetli ve güvenli?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse81"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading81"
+                  >
+                    <div class="card-body">
+                      Bu uygulamayı ve web sitesini oluştururken, güvenli
+                      olmayan ortamların veri ihlalleri ve ilgili ifşalar
+                      üzerindeki etkisini göz önünde bulundurdum. Bu nedenle
+                      <strong>API'yi ve ilgili tüm dosyaları açık kaynak yapma</strong>
+                      kararını aldım ve
+                      <a
+                        href="https://github.com/XposedOrNot"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>Github</strong></a
+                      >'da yayımladım. Uzun süredir bir kullanıcı olarak, açık
+                      kaynak araçların çevremiz üzerinde fark edebileceğimizden
+                      çok daha büyük bir etkisi olduğuna kesinlikle
+                      inanıyorum.<br /><br />
+                      Uygulamanın ve web sitesinin tamamı, işletim sistemi
+                      (Linux), API betiği (Python) ve web dosyaları
+                      (HTML/CSS/JavaScript) dahil olmak üzere açık kaynak
+                      teknolojisi üzerine kuruludur. İş birliği yaparak ve
+                      birlikte çalışarak her hizmeti iyileştirebiliriz ve açık
+                      kaynak ileriye giden yoldur.<br /><br />
+                      Değişiklik, iyileştirme veya hata düzeltmeye yönelik her
+                      türlü pull request ve katkıyı memnuniyetle karşılıyorum.
+                      Herkes için daha iyi ve daha güvenli bir çevrimiçi ortam
+                      yaratmak üzere birlikte çalışalım ❤️
+                      .<br />
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading89">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse89"
+                        aria-expanded="false"
+                        aria-controls="collapse8"
+                      >
+                        S. Hata ödül programınız var mı?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse89"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading89"
+                  >
+                    <div class="card-body">
+                      Bir hata veya güvenlik açığı keşfederseniz 🔍 sizden
+                      haber almayı çok isterim 😍! XposedOrNot'u desteklemek
+                      için bunu
+                      <a
+                        href="responsible-disclosure"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>sorumlu açıklama</strong></a
+                      >
+                      yönergelerini kullanarak bildirmenizi öneririm.<br /><br />
+                      Bunun bir hata ödül programı olmadığını ve gönderimler
+                      için parasal ödül sunmadığımızı açıkça belirtmek isterim.
+                      Ancak
+                      <a
+                        href="responsible-disclosure"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>geçerli gönderimlerinizi</strong></a
+                      >, tercihinize bağlı olarak
+                      <a href="hof" target="_blank" rel="noopener noreferrer"
+                        ><strong>Onur Listesi</strong></a
+                      >
+                      sayfamızda yayımlamaktan memnuniyet duyarım. Programımıza
+                      yüksek düzeyde bağlılık gösteren bildirimcilerin olumlu
+                      katkılarının takdir edilmesi gerektiğine inanıyorum.<br />
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading8">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse8"
+                        aria-expanded="false"
+                        aria-controls="collapse8"
+                      >
+                        S. Alert Me hizmeti nedir?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse8"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading8"
+                  >
+                    <div class="card-body">
+                      AlertMe, XposedOrNot'a yeni bir ihlal eklendiğinde size
+                      e-posta gönderen 💡 kullanışlı bir bildirim hizmetidir.
+                      Olası ifşaları takip etmenin ve kendinizi korumak için
+                      gerekli adımları atmanın harika bir yoludur. AlertMe
+                      kurulumu kolaydır; tek yapmanız gereken e-postanızı girip
+                      onaylamaktır. Bundan sonra, abone olduğunuz e-posta
+                      adresini etkileyen yeni ihlaller için e-posta uyarısı
+                      alırsınız. AlertMe'yi ana sayfadan veya ifşa olan veri
+                      ihlalleri için arama yaparak etkinleştirebilirsiniz. Her
+                      aramada abonelikler konusunda yönlendirme sağlarız ve
+                      hatta şifre arama özelliği üzerinden bile
+                      etkinleştirebilirsiniz.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading9">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse9"
+                        aria-expanded="false"
+                        aria-controls="collapse9"
+                      >
+                        S. Kabul edilebilir kullanım politikası var mı?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse9"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading9"
+                  >
+                    <div class="card-body">
+                      Evet! Lütfen kapsamlı belgelerimize başvurun:
+                      <br /><br />
+                      •
+                      <a href="terms"><strong>Kullanım Koşulları</strong></a>
+                      - Kabul edilebilir kullanım, API kullanımı ve kullanıcı
+                      sorumlulukları dahil eksiksiz hizmet sözleşmesi<br />
+                      •
+                      <a href="transparency"
+                        ><strong>Şeffaflık Raporu</strong></a
+                      >
+                      - İhlal verilerini ve yasal talepleri nasıl ele
+                      aldığımız ve gizliliğinizi nasıl koruduğumuz<br />
+                      •
+                      <a href="privacy"><strong>Gizlilik Politikası</strong></a>
+                      - Ayrıntılı gizlilik uygulamaları ve veri işleme<br />
+                      <br />Gizlilik ve ilgili konularda sorularınız varsa
+                      <!--email_off--><a href="mailto:deva@xposedornot.com"><strong>deva@xposedornot.com</strong></a><!--/email_off--> adresinden bana
+                      ulaşmaktan çekinmeyin.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading94">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse94"
+                        aria-expanded="false"
+                        aria-controls="collapse94"
+                      >
+                        S. XposedOrNot ihlallerden gerçekte hangi verileri
+                        saklıyor?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse94"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading94"
+                  >
+                    <div class="card-body">
+                      İhlal verilerini işlerken gizlilik öncelikli bir
+                      yaklaşım benimsiyoruz. İşte tam olarak neleri saklayıp
+                      neleri saklamadığımız:<br /><br />
+                      <strong>SAKLADIKLARIMIZ:</strong><br />
+                      • İhlal veri setlerindeki e-posta adresleri<br />
+                      • İhlal üstverileri (ad, tarih, etkilenen kuruluş, ifşa
+                      olan veri türleri)<br />
+                      • Şifre kontrol hizmetimiz için şifre karmaları
+                      (SHA3-Keccak 512)<br /><br />
+                      <strong>SAKLAMADIKLARIMIZ:</strong><br />
+                      • Düz metin şifreler<br />
+                      • Kredi kartı numaraları<br />
+                      • Sosyal güvenlik numaraları<br />
+                      • Kişisel kimlik belgeleri<br />
+                      • İhlallerden gelen diğer tüm hassas kişisel veriler<br /><br />
+                      Bu seçici yaklaşım, diğer hassas bilgilerin
+                      altyapımızın tamamen dışında kalmasını sağlarken,
+                      e-postanızın bilinen ihlallerde görünüp görünmediğini
+                      kontrol etmenize olanak tanır. Tüm ayrıntılar için
+                      <a href="transparency"
+                        ><strong>Şeffaflık Raporumuza</strong></a
+                      >
+                      bakın.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading95">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse95"
+                        aria-expanded="false"
+                        aria-controls="collapse95"
+                      >
+                        S. XposedOrNot yasal talepleri ve kaldırma taleplerini
+                        nasıl ele alıyor?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse95"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading95"
+                  >
+                    <div class="card-body">
+                      Yasal yükümlülüklerimizi ciddiye alır ve tam şeffaflıkla
+                      çalışırız:<br /><br />
+                      • Geçerli yasal emirlere, kolluk kuvveti taleplerine ve
+                      düzenleyici yönergelere hızla yanıt veririz<br />
+                      • Her talep, işlem yapılmadan önce yasal standartları
+                      karşıladığından emin olmak için incelenir<br />
+                      • Bir ihlal veri seti mahkeme kararına veya geçerli bir
+                      kaldırma talebine konu olduğunda, o bilgiyi
+                      gizleyebilir veya coğrafi konuma göre erişimi
+                      sınırlayabiliriz<br />
+                      • Tüm kaldırma ve yasal taleplere ilişkin istatistikleri
+                      <a href="transparency"
+                        ><strong>Şeffaflık Raporumuzda</strong></a
+                      >
+                      yayımlarız<br /><br />
+                      <strong>Kaldırma talebinde mi bulunmanız gerekiyor?</strong><br />
+                      Hak sahipleri ve kuruluşlar, Yasal Operasyonlar ekibimize
+                      <!--email_off--><a href="mailto:deva@xposedornot.com"><strong>deva@xposedornot.com</strong></a><!--/email_off--> adresinden ulaşabilir
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading101">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse101"
+                        aria-expanded="false"
+                        aria-controls="collapse101"
+                      >
+                        S. Privacy Shield bir GDPR silme talebini karşılar mı?
+                        Alttaki ihlal kaydını da siler misiniz?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse101"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading101"
+                  >
+                    <div class="card-body">
+                      Bunu gündeme getirdiğiniz için teşekkürler. Bu önemli
+                      bir ayrım ve bu konuda şeffaf olmak istiyoruz.<br /><br />
+                      <strong>Privacy Shield sizin için ne yapar</strong><br />
+                      <a href="shield"><strong>Privacy Shield</strong></a>
+                      etkinleştirildiğinde, e-posta adresiniz XposedOrNot
+                      üzerindeki <em>tüm kamu erişiminden</em> kalıcı olarak
+                      maskelenir. Koruma etkinleştirildikten sonra:<br />
+                      • Adresiniz artık hiçbir herkese açık aramada,
+                      sorguda veya API yanıtında döndürülmez.<br />
+                      • Artık arama için dizine eklenmez.<br />
+                      • Hiçbir üçüncü tarafla paylaşılmaz.<br />
+                      • Maskeleme kalıcıdır ve siz bizden korumayı
+                      kaldırmamızı istemediğiniz sürece kaldırılmaz.<br /><br />
+                      GDPR açısından bu, verilerinizin kamuya sunulma
+                      biçimiyle ilgili olarak daha fazla işlemeye itiraz etme
+                      hakkınıza (Md. 21) ve işlemenin kısıtlanması hakkınıza
+                      (Md. 18) tam etki kazandırır.<br /><br />
+                      <strong>Yapamadıklarımız ve nedeni</strong><br />
+                      XposedOrNot, kamuya açık olarak bilinen veri ihlali
+                      veri setlerinin bir arşividir. Bireylerden doğrudan
+                      kişisel veri toplamayız; elimizdeki her kayıt, zaten
+                      kamuya mal olmuş üçüncü taraf bir ihlalden gelir. Bu
+                      nedenle bir ihlal veri setinin içindeki tekil
+                      kayıtları seçerek silme konumunda değiliz: bunu yapmak
+                      arşivin bütünlüğünü ve kanıt değerini zedeler ve
+                      verilerinizi (bizden bağımsız olarak var olan) orijinal
+                      sızıntıdan kaldırmaz.<br /><br />
+                      Dolayısıyla e-posta adresinizle ilgili ihlal kaydı,
+                      Privacy Shield etkinleştirildikten sonra arşivimizde
+                      kalır, ancak kamu erişimi yukarıda açıklandığı gibi
+                      kalıcı olarak maskelenir.<br /><br />
+                      <strong>Saklamanın yasal dayanağı</strong><br />
+                      Alttaki ihlal kaydını saklamak için GDPR kapsamında
+                      aşağıdaki dayanaklara başvururuz:<br />
+                      • <strong>Md. 6(1)(f), meşru menfaatler:</strong>
+                      etkilenen bireylerin, güvenlik araştırmacılarının,
+                      kuruluşların ve yetkili makamların halihazırda
+                      gerçekleşmiş ihlallerden haberdar olabilmesi ve
+                      bunlara yanıt verebilmesi için kamu yararına bir veri
+                      ihlali arşivi işletmek.<br />
+                      • <strong>Md. 17(3)(d) ve Md. 89(1), kamu yararına
+                      arşivleme ve bilimsel araştırma:</strong> bir ihlalin
+                      tarihsel kaydı zamanla kamu yararı değerini kaybetmez
+                      ve Md. 17(3), uygun güvenceler saklı kalmak kaydıyla,
+                      işlemenin bu amaçlar için gerekli olduğu durumlarda
+                      silme hakkını açıkça devre dışı bırakır.<br />
+                      • <strong>Md. 17(3)(e), yasal talepler:</strong>
+                      kayda, yasal taleplerin ileri sürülmesi, kullanılması
+                      veya savunulması sırasında ya da düzenleyicilerden ve
+                      kolluk kuvvetlerinden gelen yasal talepleri
+                      desteklemek için başvurulması gerekebilir.<br /><br />
+                      <strong>Saklama süresi</strong><br />
+                      Süresiz. Bir ihlalin gerçekleştiğine dair tarihsel
+                      gerçeğin geçerliliği sona ermediğinden, ihlal
+                      kayıtları arşivin kendisi işletildiği sürece saklanır.
+                      Adresinize uygulanan Privacy Shield maskelemesi de aynı
+                      süresiz dönem boyunca korunur; böylece kamu erişimi
+                      kalıcı olarak maskelenmiş kalır.<br /><br />
+                      <strong>Koruma etkinleştirildikten sonra verileriniz nasıl işlenir</strong><br />
+                      • <strong>Aranabilir mi?</strong> Hayır, adres tüm
+                      herkese açık arama dizinlerinden kaldırılır.<br />
+                      • <strong>Erişilebilir mi?</strong> Kamu erişimi yok.
+                      İç erişim, korumanın sürdürülmesi için gereken asgari
+                      düzeyle sınırlıdır.<br />
+                      • <strong>Paylaşılır mı?</strong> Hayır; üçüncü
+                      taraflarla, API üzerinden veya herhangi bir dışa
+                      aktarma yoluyla paylaşılmaz.<br />
+                      • <strong>Başka şekilde işlenir mi?</strong> Yalnızca
+                      korumayı sürdürmek ve düzenleyicilerden veya kolluk
+                      kuvvetlerinden gelen yasal taleplere yanıt vermek
+                      için gerektiği kadar.<br /><br />
+                      <strong>Zaten hiç elimizde olmayanlar</strong><br />
+                      Arama sorgularını, sorgulara bağlı IP adreslerini veya
+                      arama geçmişini kaydetmeyiz; bkz.
+                      <a href="#collapse97"
+                        ><strong>Arama sorgusu kaydı</strong></a
+                      >
+                      ve
+                      <a href="#collapse93"
+                        ><strong>Aramalar için veri kaydı</strong></a
+                      >. Silebileceğimiz, size ait bir arama günlüğü veya
+                      gezinme üstverisi yoktur.<br /><br />
+                      <strong>Haklarınız</strong><br />
+                      İşlememizin hukuka aykırı olduğunu düşünüyorsanız
+                      denetim makamınıza şikayette bulunma hakkı dahil,
+                      GDPR kapsamında size tanınan tüm haklarınız saklıdır.
+                      Böyle bir makamla memnuniyetle iletişim kurar ve
+                      gereken tüm bilgileri sağlarız. Verilerinizle ilgili
+                      diğer sorularınız için lütfen
+                      <!--email_off--><a href="mailto:deva@xposedornot.com"><strong>deva@xposedornot.com</strong></a><!--/email_off-->
+                      adresine yazın; size yazılı olarak yanıt vereceğiz.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading103">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse103"
+                        aria-expanded="false"
+                        aria-controls="collapse103"
+                      >
+                        S. Veri İşleme Sözleşmesi (DPA) sağlıyor musunuz?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse103"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading103"
+                  >
+                    <div class="card-body">
+                      Hayır; ve bunun bir eksiklik değil, doğru yanıt
+                      olmasının nedeni şudur.<br /><br />
+                      Veri İşleme Sözleşmesi (GDPR Md. 28), kişisel verileri
+                      ayrı bir <em>veri sorumlusu</em> adına ve onun
+                      talimatları doğrultusunda işleyen bir
+                      <em>veri işleyeni</em> düzenler. XposedOrNot Community
+                      Edition bu rolde faaliyet göstermez. Zaten kamuya açık
+                      veri ihlali veri setlerinden oluşan kamu yararına bir
+                      arşiv için, Md. 6(1)(f) meşru menfaatlere ve Md. 89(1)
+                      kamu yararına arşivlemeye dayanarak
+                      <strong>bağımsız bir veri sorumlusu</strong> olarak
+                      hareket ederiz; bkz.
+                      <a href="#collapse101"
+                        ><strong>Privacy Shield ve GDPR silme</strong></a
+                      >.<br /><br />
+                      Hiçbir üçüncü taraf adına kişisel veri işlemeyiz.
+                      Aramalar, ücretsiz topluluk API'si ile Alert&nbsp;Me ve
+                      Alan Adı İzleme özelliklerinin tümü, sizin arşivimizle
+                      doğrudan etkileşiminizi içerir; verilerinizi sözleşmesel
+                      talimatlarınız doğrultusunda bizim işlememizi değil.
+                      Veri sorumlusu-veri işleyen ilişkisi kurulmadığından,
+                      DPA uygulanmaz.<br /><br />
+                      Gerekli olduğu durumlarda ticari işleme düzenlemeleri,
+                      kendi koşullarına sahip ayrı bir proje olan
+                      <a
+                        href="https://plus.xposedornot.com"
+                        target="_blank"
+                        rel="noopener"
+                        ><strong>xonPlus</strong></a
+                      >
+                      tarafından ayrıca yürütülür. Kuruluşunuzun ücretli bir
+                      iş ilişkisi için DPA'ya, alt işleyen listesine veya
+                      Standart Sözleşme Maddelerine ihtiyacı varsa, bunlar
+                      Community Edition'a değil,
+                      <a
+                        href="https://plus.xposedornot.com"
+                        target="_blank"
+                        rel="noopener"
+                        >xonPlus</a
+                      >'a
+                      aittir.<br /><br />
+                      Sorularınız mı var?
+                      <!--email_off--><a href="mailto:deva@xposedornot.com"><strong>deva@xposedornot.com</strong></a><!--/email_off--> adresine yazın;
+                      size yazılı olarak yanıt vereceğiz.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading96">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse96"
+                        aria-expanded="false"
+                        aria-controls="collapse96"
+                      >
+                        S. XposedOrNot API'sini ticari amaçlarla kullanabilir
+                        miyim?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse96"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading96"
+                  >
+                    <div class="card-body">
+                      Evet, ancak belirli gerekliliklerle:<br /><br />
+                      • API belgelerimizde belirtilen istek sınırlarına
+                      kesinlikle uymalısınız<br />
+                      • İhlal verilerimizi görüntülerken XposedOrNot'a açık
+                      atıf sağlayın<br />
+                      • Kullanım kısıtlamalarını veya istek sınırlarını aşmaya
+                      çalışmayın<br />
+                      • İhlal verilerimizin ticari olarak yeniden dağıtımı
+                      veya satışı, açık yazılı izin gerektirir<br />
+                      • Daha yüksek istek sınırlarına sahip premium API
+                      özellikleri, ücretli abonelikler aracılığıyla
+                      sunulmaktadır<br /><br />
+                      API kullanım koşullarının ve kısıtlamalarının tamamı
+                      için lütfen
+                      <a href="terms"><strong>Kullanım Koşullarımıza</strong></a>
+                      ve
+                      <a href="api_doc"
+                        ><strong>API Belgelerimize</strong></a
+                      >
+                      başvurun.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div
+                    class="card-header"
+                    role="tab"
+                    id="heading100"
+                  >
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse100"
+                        aria-expanded="false"
+                        aria-controls="collapse100"
+                      >
+                        S. XposedOrNot'u uygulamama nasıl entegre ederim?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse100"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading100"
+                  >
+                    <div class="card-body">
+                      Kolay entegrasyon için resmi SDK'lar sağlıyoruz:<br /><br />
+                      <strong>Node.js / JavaScript:</strong><br />
+                      <code>npm install xposedornot</code><br /><br />
+                      <strong>Python:</strong><br />
+                      <code>pip install xposedornot</code><br /><br />
+                      Bu kütüphaneler, e-postaları ihlallere karşı kontrol
+                      etmek, şifre ifşasını doğrulamak ve ihlal analizlerine
+                      erişmek için basit bir arayüz sağlar. Ayrıntılı belgeler,
+                      kod örnekleri ve API uç noktaları için
+                      <a href="api_doc"
+                        ><strong>API Belgelerimizi</strong></a
+                      >
+                      ziyaret edin.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading302">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse302"
+                        aria-expanded="false"
+                        aria-controls="collapse302"
+                      >
+                        S. XposedOrNot; MISP, TheHive veya Wazuh gibi SIEM ve
+                        tehdit istihbaratı platformlarıyla entegre olur mu?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse302"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading302"
+                  >
+                    <div class="card-body">
+                      Evet. Microsoft Sentinel, Splunk, Wazuh ve Maltego
+                      bağlayıcıları bugün yayında; MISP, TheHive/Cortex ve
+                      OpenCTI entegrasyonları ise yolda. Hepsi XposedOrNot API
+                      üzerine kuruludur. Güncel durum, kurulum kılavuzları ve
+                      her projenin bağlantıları için
+                      <a href="/integrations"
+                        ><strong>Entegrasyonlar</strong></a
+                      >
+                      sayfasını ziyaret edin.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading102">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse102"
+                        aria-expanded="false"
+                        aria-controls="collapse102"
+                      >
+                        S. Alan adı ihlal verileri için API anahtarını nasıl alırım?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse102"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading102"
+                  >
+                    <div class="card-body">
+                      API anahtarı yalnızca alan adı ihlal uç noktası
+                      (<code>POST /v1/domain-breaches/</code>) için gereklidir.
+                      E-posta, ihlal analizi, ihlaller ve şifre uç noktaları
+                      herkese açıktır ve anahtar gerektirmez. Anahtar almak
+                      için alan adının size ait olduğunu doğrulayın ve
+                      ardından anahtarı kontrol panelinizden alın:<br /><br />
+                      <ol>
+                        <li>
+                          DNS&nbsp;TXT veya HTML sayfası yöntemlerinden birini
+                          kullanarak
+                          <a
+                            href="domain"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            ><strong>Alan Adı Doğrulama</strong></a
+                          >
+                          sayfasında alan adı sahipliğinizi doğrulayın.
+                        </li>
+                        <li>
+                          Doğrulanmış alan adı adresinize e-posta ile
+                          gönderilen güvenli, şifresiz bağlantıyı kullanarak
+                          <a
+                            href="dashboard"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            ><strong>CXO Kontrol Panelini</strong></a
+                          >
+                          açın.
+                        </li>
+                        <li>API anahtarınızı kontrol panelinden kopyalayın.</li>
+                        <li>
+                          Her istekte
+                          <code>x-api-key</code> başlığı olarak gönderin. Alan
+                          adı anahtardan türetildiği için isteğin gövdeye
+                          ihtiyacı yoktur.
+                        </li>
+                      </ol>
+                      İstek ve yanıt biçiminin tamamı için API belgelerindeki
+                      <a href="api_doc#endpoint-5"
+                        ><strong>alan adı ihlalleri uç noktasına</strong></a
+                      >
+                      bakın.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading97">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse97"
+                        aria-expanded="false"
+                        aria-controls="collapse97"
+                      >
+                        S. Arama sorgularım kaydediliyor veya izleniyor mu?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse97"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading97"
+                  >
+                    <div class="card-body">
+                      Hayır, arama yaparken gizliliğiniz korunur:<br /><br />
+                      • Arama sorguları bellekte işlenir ve tanımlanabilir
+                      hiçbir biçimde kaydedilmez<br />
+                      • Aradığınız e-posta adreslerini saklamayız<br />
+                      • Sorguları, otomatik olarak temizlenen geçici güvenlik
+                      günlükleri dışında IP adresleriyle
+                      ilişkilendirmeyiz<br />
+                      • Arama verilerini asla üçüncü taraflara satmayız veya
+                      pazarlama amaçlarıyla kullanmayız<br /><br />
+                      <strong>İstisna:</strong> "Alert Me" hizmetimize gönüllü
+                      olarak kaydolursanız, size ihlal bildirimleri göndermek
+                      için e-posta adresinizi saklarız. Aboneliğinizi istediğiniz
+                      zaman iptal edebilirsiniz.<br /><br />
+                      Gizlilik uygulamalarımızın tüm ayrıntıları için
+                      <a href="transparency"
+                        ><strong>Şeffaflık Raporumuza</strong></a
+                      >
+                      bakın.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading98">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse98"
+                        aria-expanded="false"
+                        aria-controls="collapse98"
+                      >
+                        S. XposedOrNot'un ihlal kapsamının sınırları
+                        nelerdir?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse98"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading98"
+                  >
+                    <div class="card-body">
+                      Kapsamlı bir ihlal kapsamı sunmak için çok çalışsak da,
+                      sınırlamaları anlamak önemlidir:<br /><br />
+                      • Yalnızca kamuya açıklanmış veya kaynaklarımız
+                      aracılığıyla bize ulaşmış ihlalleri raporlayabiliriz<br />
+                      • Birçok ihlal raporlanmamış, keşfedilmemiş kalır veya
+                      yasal anlaşmalar kapsamında gizli tutulur<br />
+                      • İhlal verileri eksik olabilir veya orijinal kaynaktan
+                      gelen yanlışlıklar içerebilir<br />
+                      • Büyük ölçüde güvenlik araştırma topluluğuna ve kamuya
+                      yapılan açıklamalara güveniriz<br />
+                      • Hiçbir ihlal göstermeyen bir arama, bilgilerinizin
+                      hiç ele geçirilmediğini garanti ETMEZ<br /><br />
+                      <strong>Önemli:</strong> XposedOrNot, eksiksiz bir
+                      güvenlik çözümü olarak değil, genel güvenlik
+                      stratejinizdeki araçlardan biri olarak tasarlanmıştır.
+                      Ayrıca her hesap için güçlü ve benzersiz şifreler
+                      kullanmalı, iki faktörlü kimlik doğrulamayı
+                      etkinleştirmeli ve saygın bir şifre yöneticisi
+                      kullanmalısınız.<br /><br />
+                      Hizmet sınırlamalarımızın tüm ayrıntıları için
+                      <a href="terms"><strong>Kullanım Koşullarımıza</strong></a
+                      >
+                      bakın.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading99">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse99"
+                        aria-expanded="false"
+                        aria-controls="collapse99"
+                      >
+                        S. XposedOrNot gerçekten açık kaynak mı? Katkıda
+                        bulunabilir miyim?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse99"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading99"
+                  >
+                    <div class="card-body">
+                      Evet! XposedOrNot tamamen açık kaynaktır ve katkıları
+                      etkin biçimde memnuniyetle karşılarız:<br /><br />
+                      • Kaynak kodumuz
+                      <a
+                        href="https://github.com/XposedOrNot"
+                        target="_blank"
+                        rel="noopener"
+                        ><strong>GitHub</strong></a
+                      >'da herkese açıktır<br />
+                      • Kodu incelemekte, değiştirmekte ve koda katkıda
+                      bulunmakta özgürsünüz<br />
+                      • Katkıda bulunanlar, katkılarının sahipliğini korur<br />
+                      • Katkıda bulunarak, katkınızın açık kaynak lisansımız
+                      kapsamında kullanılması için XposedOrNot'a lisans vermiş
+                      olursunuz<br />
+                      • Katkıda bulunanları sürüm notlarında ve belgelerde
+                      herkese açık olarak anabiliriz<br /><br />
+                      <strong>Korunanlar:</strong><br />
+                      Kodumuz açık kaynak olsa da, XposedOrNot adı, logosu ve
+                      markası fikri mülkiyetimizdir ve izinsiz olarak rakip
+                      hizmetler oluşturmak için kullanılamaz.<br /><br />
+                      Katkı yönergelerinin ve fikri mülkiyet ayrıntılarının
+                      tamamı için
+                      <a href="terms"><strong>Kullanım Koşullarımıza</strong></a>
+                      ve <a href="hof"><strong>Onur Listemize</strong></a
+                      >
+                      bakın.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading91">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse91"
+                        aria-expanded="false"
+                        aria-controls="collapse91"
+                      >
+                        S. Neden
+                        <!--email_off-->notifications@xposedornot.com<!--/email_off--> adresinden e-posta alıyorum?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse91"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading91"
+                  >
+                    <div class="card-body">
+                      Alınabilecek e-postalar şunlardır: <br />
+                      <ol type="1">
+                        <li>Alert me bildirim onayı <br /></li>
+                        <li>İhlallere ilişkin Alert me bildirimleri <br /></li>
+                        <li>
+                          Privacy Shield bildirimi ve onayları <br />
+                        </li>
+                        <li>
+                          Alan adı doğrulama bildirimleri ve onayları
+                          <br />
+                          <br />
+                        </li>
+                      </ol>
+                      Şu anda XON'dan gelen tüm e-postalar yalnızca
+                      <!--email_off-->notifications@xposedornot.com<!--/email_off--> adresinden gelir ve tamamen
+                      otomatiktir. <br />
+                      <br />
+                      Bu e-posta yalnızca yukarıda belirtilen otomatik
+                      bildirimler için kullanıldığından, gelen e-postalar için
+                      takip edilmeyecektir. Yanıt ve iletişim için lütfen "
+                      <a href="#collapse10">
+                        <strong>Bana nasıl ulaşılır</strong> </a
+                      >" bölümünde verilen e-posta adresini kullanın.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading92">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse92"
+                        aria-expanded="false"
+                        aria-controls="collapse92"
+                      >
+                        S. XposedOrNot'a nasıl katkıda bulunabilirim? Bir veri
+                        ihlalini nasıl gönderebilirim?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse92"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading92"
+                  >
+                    <div class="card-body">
+                      Herkesin, XON'u genel kamu için daha faydalı hale
+                      getirmeye katkıda bulunmasını çok isterim. Hesap ele
+                      geçirmeleri ve şifre saldırıları gerçek bir sorundur ve
+                      bu yönde alabileceğimiz her yardım büyük takdirle
+                      karşılanır. Veri ihlallerine karşı mücadelede her küçük
+                      çabanın önemli olduğuna kesinlikle inanıyorum ve yardım
+                      etmek isteyen herkesi memnuniyetle karşılıyorum.<br /><br />
+                      XON'da listelenmeyen ve herhangi bir ücret veya karşılık
+                      beklentisi olmadan kamuya açık erişilebilir bir veri
+                      ihlaliyle karşılaşırsanız, lütfen benimle iletişime
+                      geçmekten ve haber vermekten çekinmeyin. İhlali doğrular
+                      ve herkesin faydalanması için XON'a eklerim. Hatta bu
+                      girişimde bize yardımcı olan kişileri takdir etmeye ve
+                      onlara teşekkür etmeye adanmış özel bir
+                      <strong>Onur Listesi</strong> sayfamız bile var.<br />
+                      <br />
+                      Desteğiniz ve ilginiz için şimdiden teşekkürler. Gerçekten
+                      çok değerli! 🙏
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading93">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse93"
+                        aria-expanded="false"
+                        aria-controls="collapse93"
+                      >
+                        S. Herkese açık aramalar için burada ne tür veri kaydı
+                        etkin?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse93"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading93"
+                  >
+                    <div class="card-body">
+                      Web sitemizde veya API'mizde aranan verilerin hiçbirini
+                      saklamayız. Yalnızca Google Analytics aracılığıyla
+                      demografik veriler toplarız ve bundan istediğiniz zaman
+                      çıkabilirsiniz. Gizlilik ve kabul edilebilir kullanım
+                      politikamız hakkında daha fazla bilgiyi web sitemizde
+                      bulabilirsiniz.<br /><br />
+                      Arama sorguları bellekte işlenir ve hiçbir zaman
+                      tanımlanabilir bir biçimde kaydedilmez. Hizmetimizi
+                      iyileştirmek için,
+                      <a href="privacy">
+                        <strong>gizlilik politikası </strong></a
+                      >
+                      doğrultusunda yalnızca Google Analytics aracılığıyla
+                      toplu ve anonim kullanım verileri toplarız<br /><br />
+                      Bunun tek istisnası, "Alert Me" hizmetimize kaydolan
+                      kullanıcılardır. Bu hizmeti, dizinimize eklenen gelecek
+                      ihlalleri e-posta adresi ve alan adı sahiplerine
+                      bildirmek için kullanırız. Bildirimlerimizin
+                      doğruluğunu sağlamak için, kullanıcıların uyarı almadan
+                      önce e-posta adreslerini onaylamaları gereken çift onay
+                      süreci kullanırız.<br /><br />
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading11">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse11"
+                        aria-expanded="false"
+                        aria-controls="collapse11"
+                      >
+                        S. TOR'u destekliyor musunuz?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse11"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading11"
+                  >
+                    <div class="card-body">
+                      Ekstra temkinliyseniz ve çevrimiçi varlığınızı gizli
+                      tutmak istiyorsanız 🕵️, sizi anlıyoruz. XposedOrNot'ta
+                      veri ihlallerini ve ifşa olan verileri kontrol etmek için
+                      Tor Tarayıcısını rahatlıkla kullanabilirsiniz. Sessiz bir
+                      ninja gibi gölgelerde gezinirken bile herkesin kendini
+                      emniyette ve güvende hissetmesini istiyoruz.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading12">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse12"
+                        aria-expanded="false"
+                        aria-controls="collapse12"
+                      >
+                        S. İhlal Karşılaştırma Aracı nedir ve bana nasıl yardımcı olur?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse12"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading12"
+                  >
+                    <div class="card-body">
+                      <a href="compare"><strong>İhlal Karşılaştırma Aracı</strong></a>, iki e-posta adresini yan yana kontrol ederek ihlal ifşalarının nasıl örtüştüğünü görmenizi sağlar. Bu özellikle şunlar için faydalıdır:
+                      <br /><br />
+                      <strong>🔍 Şifre Tekrar Kullanım Risklerini Bulma</strong><br />
+                      Her iki e-posta da aynı ihlalde görünüyorsa, aynı şifreyi hesaplar arasında yeniden kullanmış olabilirsiniz. Bu, saldırganların birden fazla hesaba erişim kazanmasının en yaygın yollarından biridir.
+                      <br /><br />
+                      <strong>📧 Kişisel ve İş E-postalarını Karşılaştırma</strong><br />
+                      Kişisel alışkanlıklarınızın iş hesabınızı riske atıp atmadığını, ya da tersini görün. Birçok kişi farkında olmadan her ikisinde de aynı kimlik bilgilerini kullanır.
+                      <br /><br />
+                      <strong>📊 Nasıl Çalışır</strong><br />
+                      İki e-posta adresi girdiğinizde, bilinen veri ihlalleri veritabanımızda her ikisini de ararız. Araç ardından:
+                      <ul style="margin-top: 10px;">
+                        <li>Her e-postayı etkileyen toplam ihlalleri gösterir</li>
+                        <li>Her ikisinde de görünen <strong>ortak ihlalleri</strong> vurgular</li>
+                        <li>Örtüşmenin görsel bir Venn diyagramını görüntüler</li>
+                        <li>Bireysel ve birleşik risk puanlarını hesaplar</li>
+                        <li>İfşa olan tüm veri türlerini (şifreler, telefon numaraları, adresler vb.) listeler</li>
+                        <li>Uygulanabilir güvenlik önerileri sunar</li>
+                      </ul>
+                      <br />
+                      <strong>🔒 Önce Gizlilik</strong><br />
+                      E-posta adreslerinizi veya arama geçmişinizi saklamayız. Her karşılaştırma gerçek zamanlı yapılır ve hiçbir şey kaydedilmez. Ayrıca herhangi bir aramada görünmemek için <a href="shield">Privacy Shield</a> aracımızı kullanabilirsiniz.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading13">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse13"
+                        aria-expanded="false"
+                        aria-controls="collapse13"
+                      >
+                        S. XposedOrNot, stealer kayıtlarını (bilgi hırsızı
+                        kötü amaçlı yazılım verilerini) kapsıyor mu?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse13"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading13"
+                  >
+                    <div class="card-body">
+                      Evet, üstelik ücretsiz. Bilgi hırsızı kötü amaçlı
+                      yazılımlar, virüslü cihazlardan tarayıcıda kayıtlı
+                      şifreleri, oturum çerezlerini, otomatik doldurma
+                      verilerini ve kripto cüzdanlarını ele geçirir.
+                      XposedOrNot bu stealer kaydı verilerini dizine ekler ve
+                      normal e-posta aramanıza, alan adı taramalarınıza ve
+                      kontrol panellerinize ücretsiz olarak dahil eder; diğer
+                      ihlal izleme hizmetleri ise stealer kaydı erişimini ayda
+                      yüzlerce dolara varan ücretli planların arkasına koyar.
+                      Lansman yazısını okuyun:
+                      <a
+                        href="https://blog.xposedornot.com/introducing-stealer-logs-alienstealer/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>Introducing Stealer Logs - AlienStealer</strong></a
+                      >.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="heading" aria-level="2" id="heading10">
+                    <h2>
+                      <a
+                        class="collapsed"
+                        role="button"
+                        title=""
+                        data-toggle="collapse"
+                        data-parent="#faq-list"
+                        href="#collapse10"
+                        aria-expanded="false"
+                        aria-controls="collapse10"
+                      >
+                        S. Bana nasıl ulaşılır?</a
+                      >
+                    </h2>
+                  </div>
+                  <div
+                    id="collapse10"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="heading10"
+                  >
+                    <div class="card-body">
+                      Henüz yakalayamadığımız, kamuya ifşa olmuş bir veri
+                      ihlaline rastlarsanız, bundan haberdar olmayı çok
+                      isteriz!
+                      <!--email_off--><a href="mailto:deva@xposedornot.com"><strong>deva@xposedornot.com</strong></a><!--/email_off--> adresine bir e-posta
+                      gönderin veya bana şu kanallardan mesaj atın:<br />
+                      <a
+                        href="https://twitter.com/DevaOnBreaches"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="margin-left: 10px"
+                        >Twitter -
+                        <i class="fab fa-twitter">
+                          https://twitter.com/DevaOnBreaches
+                        </i></a
+                      ><br />
+                      <a
+                        href="https://www.linkedin.com/in/devasecurity/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="margin-left: 10px"
+                        >LinkedIn -
+                        <i class="fab fa-linkedin">
+                          https://www.linkedin.com/in/devasecurity/
+                        </i></a
+                      >
+                      <br />
+                      <a
+                        href="https://infosec.exchange/@DevaOnBreaches"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="margin-left: 10px"
+                        >Mastodon -
+                        <i class="fab fa-mastodon">
+                          https://infosec.exchange/@DevaOnBreaches
+                        </i></a
+                      ><br />
+                      XON'u daha faydalı ve bilgilendirici kılmanın yollarını
+                      her zaman arıyorum 👀 ve katkınız çıtamızı bir üst
+                      seviyeye taşımamıza yardımcı olabilir. Ayrıca, kim bilir,
+                      belki kahramanca çabalarınız sayesinde özel
+                      <strong>"Breaches Super Sleuths 🦸 "</strong> listemize
+                      girersiniz! <br /><br />
+                      İnterneti herkes için daha güvenli bir yer haline
+                      getirelim.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+    </main>
+    </div>
+
+    <div class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Tamamen açık kaynak olan bu siteyi şekillendirmemize katılın!
+            Katkılarınızı ❤️
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub</a
+            >
+            üzerinden bekliyoruz.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Yasal</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Gizlilik Politikası</a>
+              <a href="terms" class="footer-link">Kullanım Koşulları</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Topluluk</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">Hakkında</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Depomuz</a>
+              <a href="/integrations" class="footer-link">Entegrasyonlar</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Güven</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Durum</a>
+              <a href="speed" class="footer-link">Performans</a>
+              <a href="transparency" class="footer-link">Şeffaflık</a>
+              <a href="responsible-disclosure" class="footer-link">Sorumlu Açıklama</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>İşletmeler İçin</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+              <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+              <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+              <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Fiyatlandırma</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Bizi Takip Edin</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-twitter"></i> Twitter (X)
+              </a>
+              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-facebook"></i> Facebook
+              </a>
+              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                <i class="fab fa-mastodon"></i> Mastodon
+              </a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Yapay Zeka Özeti</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                ChatGPT
+              </a>
+              <a href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Perplexity
+              </a>
+              <a href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Gemini
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Karanlık Mod</label>
+        </div>
+      </div>
+    </div>
+      <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+  <script
+    async
+    defer
+    src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+  ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+     integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/static/scripts/common.js"></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "XposedOrNot (XON) nedir?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "XposedOrNot (XON), e-postanızın, şifrenizin veya alan adınızın bir veri ihlalinde ifşa olup olmadığını kontrol etmenizi sağlayan ücretsiz bir veri ihlali arama motorudur. Milyarlarca sızmış kaydı arayın, gerçek zamanlı ihlal uyarıları alın ve hesaplarınızı korumak için CXO Kontrol Paneli, Privacy Shield ve İhlal Karşılaştırma gibi araçları kullanın. Platform tamamen açık kaynaktır ve GitHub'da mevcuttur."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "XposedOrNot ne kadar emniyetli ve güvenli?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Uygulamanın ve web sitesinin tamamı açık kaynak teknolojisi üzerine kuruludur. XposedOrNot hiçbir kullanıcı şifresi veya kişisel tanımlayıcı bilgi saklamaz. Şifre kontrolleri güvenli Keccak-512 karma algoritmasını kullanır ve yalnızca kısmi bir karma iletilir. Kaynak kodu, tam şeffaflık için GitHub'da herkese açıktır."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Verilerim bir veri ihlalinde ifşa olursa bilgilendirilebilir miyim?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Evet. XposedOrNot, e-postanızı izleyen ve yeni keşfedilen bir veri ihlalinde göründüğünde size uyarı gönderen ücretsiz bir AlertMe hizmeti sunar. Ücretsiz ihlal uyarılarını etkinleştirmek için e-posta adresinizi girip onaylamanız yeterlidir. Aboneliğinizi istediğiniz zaman iptal edebilirsiniz."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Birden fazla e-posta veya şifre aramak için ücret var mı?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hayır. XposedOrNot, arama sayısında sınır olmayan tamamen ücretsiz bir veri ihlali arama motorudur. Kendiniz, aileniz ve iş arkadaşlarınız için e-postaları ve şifreleri hiçbir ücret ödemeden kontrol edebilirsiniz. Topluluk sürümü her zaman ücretsiz kalacaktır."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "XON'da neler saklanır, neler saklanmaz?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "XposedOrNot hiçbir kullanıcı şifresi veya kişisel tanımlayıcı bilgi saklamaz. Veri ihlali sorgulamasını kullandığınızda sistem, aramanızı kaydetmeden e-postanızı bilinen ihlaller veritabanıyla karşılaştırır. Şifre kontrolleri SHA3-Keccak 512 tek yönlü karma kullanır ve bu, saklanan karmaların geri çevrilmesini imkansız hale getirir."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "İhlal bilgilerinin bir parçası olarak ne tür ifşa olmuş veriler sunulur?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "XposedOrNot; ihlal adı, tarihi, ifşa olan kayıt sayısı, ifşa olan veri türleri (e-postalar, şifreler, telefon numaraları, adresler vb.), şifrelerin düz metin olup olmadığı, her e-posta için bir risk puanı ve ihlale uğrayan kuruluşun sektör sınıflandırması dahil ayrıntılı e-posta ihlal sorgulama sonuçları sunar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Alert Me hizmeti nedir?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AlertMe, ücretsiz bir e-posta ihlal kontrolü bildirim hizmetidir. E-posta adresinizi izler ve e-postanızı içeren yeni bir veri ihlali XposedOrNot'a eklendiğinde size uyarı gönderir. AlertMe'yi ana sayfadan, herhangi bir arama sonucundan veya şifre denetleyicisi sayfasından etkinleştirebilirsiniz."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "XposedOrNot'u uygulamama nasıl entegre ederim?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "XposedOrNot; ücretsiz bir REST API ile Node.js ve Python için resmi SDK'lar sağlar. E-postaları ihlallere karşı kontrol edebilir, şifre ifşasını doğrulayabilir ve ihlal analizlerine programatik olarak erişebilirsiniz. Ayrıntılı uç noktalar, kod örnekleri ve entegrasyon kılavuzları için API Belgeleri sayfasını ziyaret edin."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "İhlal Karşılaştırma Aracı nedir ve bana nasıl yardımcı olur?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "İhlal Karşılaştırma Aracı, örtüşen veri ihlallerini bulmak için iki e-posta adresini yan yana kontrol etmenizi sağlar. Bu e-posta ihlal sorgulama özelliği; kişisel ve iş hesapları arasındaki şifre tekrar kullanım risklerini belirlemeye yardımcı olur, ortak ihlalleri görsel bir Venn diyagramıyla gösterir, birleşik risk puanlarını hesaplar ve uygulanabilir güvenlik önerileri sunar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "XON'da ihlaller nasıl doğrulanır?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "XposedOrNot arama motorundaki tüm veri ihlalleri, etkilenen web sitesi sahiplerinin kabulü veya çevrimiçi medyanın haberleri aracılığıyla doğrulanır. Her ihlal için referanslar sağlanır. Bir ihlalin kamuya açık olarak kabul edilmediği nadir durumlarda, ihlal buna göre işaretlenir ve etkilenen kuruluş tanımlı süreçler aracılığıyla bilgilendirilir."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "XposedOrNot, stealer kayıtlarını (bilgi hırsızı kötü amaçlı yazılım verilerini) kapsıyor mu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Evet, üstelik ücretsiz. Bilgi hırsızı kötü amaçlı yazılımlar, virüslü cihazlardan tarayıcıda kayıtlı şifreleri, oturum çerezlerini, otomatik doldurma verilerini ve kripto cüzdanlarını ele geçirir. XposedOrNot bu stealer kaydı verilerini dizine ekler ve normal e-posta aramanıza, alan adı taramalarınıza ve kontrol panellerinize ücretsiz olarak dahil eder; diğer ihlal izleme hizmetleri ise stealer kaydı erişimini ayda yüzlerce dolara varan ücretli planların arkasına koyar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "XposedOrNot; MISP, TheHive veya Wazuh gibi SIEM ve tehdit istihbaratı platformlarıyla entegre olur mu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Evet. Microsoft Sentinel, Splunk, Wazuh ve Maltego bağlayıcıları bugün yayında; MISP, TheHive/Cortex ve OpenCTI entegrasyonları ise yolda. Hepsi XposedOrNot API üzerine kuruludur. Güncel durum, kurulum kılavuzları ve her projenin bağlantıları için xposedornot.com/integrations adresindeki Entegrasyonlar sayfasını ziyaret edin."
+          }
+        }
+      ]
+    }
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Ana Sayfa",
+          "item": "https://xposedornot.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "SSS",
+          "item": "https://xposedornot.com/faq"
+        }
+      ]
+    }
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      // FAQ Search functionality
+      $("#faqSearch").on("keyup", function () {
+        var searchTerm = $(this).val().toLowerCase().trim();
+        var visibleCount = 0;
+
+        // If search is empty, show all cards
+        if (searchTerm === "") {
+          $(".faq-accordion .card").show();
+          $("#noResults").hide();
+          $(".faq-toc li").show();
+          return;
+        }
+
+        $(".faq-accordion .card").each(function () {
+          var questionText = $(this)
+            .find(".card-header h2 a")
+            .text()
+            .toLowerCase();
+          var answerText = $(this).find(".card-body").text().toLowerCase();
+
+          // Also get the TOC label for this card's collapse ID
+          var collapseId = $(this)
+            .find(".collapse")
+            .attr("id");
+          var tocText = $('.faq-toc a[href="#' + collapseId + '"]')
+            .text()
+            .toLowerCase();
+
+          if (
+            questionText.includes(searchTerm) ||
+            answerText.includes(searchTerm) ||
+            tocText.includes(searchTerm)
+          ) {
+            $(this).show();
+            visibleCount++;
+          } else {
+            $(this).hide();
+          }
+        });
+
+        // Show/hide no results message
+        if (visibleCount === 0 && searchTerm.length > 0) {
+          $("#noResults").show();
+        } else {
+          $("#noResults").hide();
+        }
+
+        // Update TOC visibility based on search
+        $(".faq-toc li").each(function () {
+          var targetId = $(this).find("a").attr("href");
+          var targetCard = $(targetId).closest(".faq-accordion .card");
+          if (targetCard.is(":visible")) {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+        });
+      });
+
+      // TOC smooth scroll and active state
+      $(".faq-toc a").on("click", function (e) {
+        e.preventDefault();
+        var targetId = $(this).attr("href");
+        var targetCard = $(targetId).closest(".faq-accordion .card");
+
+        // Expand the target accordion
+        $(targetId).collapse("show");
+
+        // Scroll to the card
+        $("html, body").animate(
+          {
+            scrollTop: targetCard.offset().top - 100,
+          },
+          300,
+        );
+
+        // Update active state
+        $(".faq-toc a").removeClass("active");
+        $(this).addClass("active");
+      });
+
+      // Update TOC active state on scroll and show/hide back-to-top button
+      $(window).on("scroll", function () {
+        var scrollPos = $(window).scrollTop() + 150;
+
+        $(".faq-accordion .card:visible").each(function () {
+          var cardTop = $(this).offset().top;
+          var cardBottom = cardTop + $(this).outerHeight();
+
+          if (scrollPos >= cardTop && scrollPos < cardBottom) {
+            var collapseId = $(this)
+              .find(".collapse")
+              .attr("id");
+            $(".faq-toc a").removeClass("active");
+            $('.faq-toc a[href="#' + collapseId + '"]').addClass("active");
+          }
+        });
+
+        // Show/hide back-to-top button
+        if ($(window).scrollTop() > 300) {
+          $("#backToTop").addClass("visible");
+        } else {
+          $("#backToTop").removeClass("visible");
+        }
+
+      });
+
+      // Back to top button click handler
+      $("#backToTop").on("click", function () {
+        $("html, body").animate({ scrollTop: 0 }, 400);
+      });
+    });
+  </script>
+</html>

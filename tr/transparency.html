@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+   <meta charset="utf-8">
+   <title>XposedOrNot Şeffaflık Raporu | Verilerinizi Nasıl İşliyoruz</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="description"
+      content="XposedOrNot'un gizliliğinizi nasıl koruduğunu, ihlal verilerini nasıl işlediğini ve operasyonlarında şeffaflığı nasıl sürdürdüğünü öğrenin. Yasal uyumluluk ve kaldırma taleplerine ilişkin istatistiklerimizi görüntüleyin.">
+   <meta name="keywords"
+      content="veri gizliliği, şeffaflık raporu, veri ihlali işleme, gizlilik politikası, güvenlik uyumluluğu">
+   <meta name="author" content="Devanand Premkumar">
+   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+   <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+   <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+   <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+   <link rel="dns-prefetch" href="https://static.hotjar.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com">
+
+   <meta property="og:title" content="XposedOrNot Şeffaflık Raporu | Verilerinizi Nasıl İşliyoruz" />
+   <meta property="og:description"
+      content="XposedOrNot'un gizliliğinizi nasıl koruduğunu ve ihlal verilerini tam şeffaflıkla nasıl işlediğini öğrenin." />
+   <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+   <meta property="og:image:alt" content="XposedOrNot Logosu" />
+   <meta property="og:url" content="https://xposedornot.com/tr/transparency" />
+   <meta property="og:type" content="website" />
+   <meta property="og:site_name" content="XposedOrNot" />
+
+   <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:site" content="@XposedOrNot">
+   <meta name="twitter:creator" content="@DevaOnBreaches">
+   <meta name="twitter:title" content="XposedOrNot Şeffaflık Raporu">
+   <meta name="twitter:description"
+      content="XposedOrNot'un gizliliğinizi nasıl koruduğunu ve ihlal verilerini tam şeffaflıkla nasıl işlediğini öğrenin.">
+   <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+   <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous" />
+   <link rel="stylesheet"
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap' type="text/css"
+      media="all">
+   <link rel="author" href="/humans.txt" />
+
+
+   <style>
+      #banner {
+         min-height: 150px !important;
+         padding-bottom: 30px;
+         overflow: visible !important;
+      }
+
+      .grid {
+         overflow: visible !important;
+      }
+
+      .navbar {
+         overflow: visible !important;
+      }
+
+      .dropdown-menu {
+         position: absolute !important;
+         z-index: 1050 !important;
+         max-height: none !important;
+      }
+
+      .transparency-content {
+         background-color: white;
+         padding: 60px 0;
+      }
+
+      .transparency-section {
+         max-width: 900px;
+         margin: 0 auto;
+         padding: 0 15px;
+      }
+
+      .transparency-section h2 {
+         color: #3f71f3;
+         margin-bottom: 20px;
+         font-size: 1.8em;
+         font-weight: 600;
+      }
+
+      .transparency-section h3 {
+         color: #3f71f3;
+         margin-top: 40px;
+         margin-bottom: 15px;
+         font-size: 1.4em;
+         font-weight: 600;
+      }
+
+      .transparency-section p {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         text-align: justify;
+         font-size: 1.05em;
+      }
+
+      .transparency-section ul {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         padding-left: 25px;
+      }
+
+      .transparency-section ul li {
+         margin-bottom: 10px;
+      }
+
+      .table-responsive {
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         margin-top: 30px;
+         margin-bottom: 40px;
+      }
+
+      .metrics-table {
+         width: 100%;
+         border-collapse: collapse;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+         background-color: white;
+         min-width: 600px;
+      }
+
+      .metrics-table th {
+         background-color: #3567e8;
+         color: white;
+         padding: 15px;
+         text-align: left;
+         font-weight: 600;
+         white-space: nowrap;
+      }
+
+      .metrics-table td {
+         padding: 12px 15px;
+         border-bottom: 1px solid #e0e0e0;
+         background-color: white;
+      }
+
+      .metrics-table td:nth-child(2),
+      .metrics-table td:nth-child(3),
+      .metrics-table td:nth-child(4) {
+         text-align: center;
+      }
+
+      .metrics-table tr:hover td {
+         background-color: #f5f5f5;
+      }
+
+      .contact-box {
+         background: linear-gradient(135deg, #3c5fec 0%, #4284fb 100%);
+         color: white;
+         padding: 30px;
+         border-radius: 10px;
+         margin: 40px 0;
+         text-align: center;
+      }
+
+      .contact-box a {
+         color: white;
+         text-decoration: underline;
+         font-weight: bold;
+      }
+
+      .highlight-box {
+         background-color: #f0f4ff;
+         border-left: 4px solid #3f71f3;
+         padding: 20px;
+         margin: 25px 0;
+         border-radius: 5px;
+      }
+
+      /* Dark mode styles */
+      [data-theme="dark"] .transparency-content {
+         background-color: #0e0f19;
+      }
+
+      [data-theme="dark"] .transparency-section h2,
+      [data-theme="dark"] .transparency-section h3 {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .transparency-section p,
+      [data-theme="dark"] .transparency-section li {
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .metrics-table {
+         background-color: #181b2d;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      }
+
+      [data-theme="dark"] .metrics-table td {
+         background-color: #181b2d;
+         border-bottom: 1px solid #2a2d40;
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .metrics-table tr:hover td {
+         background-color: #1e2235;
+      }
+
+      .last-updated {
+         color: #666;
+         font-style: italic;
+         font-size: 0.9em;
+         margin-bottom: 30px;
+      }
+
+      [data-theme="dark"] .last-updated {
+         color: #6daae0;
+      }
+
+      .transparency-section .page-subtitle {
+         font-size: 1.1em;
+         color: #666;
+         margin-bottom: 10px;
+         text-align: center;
+      }
+
+      [data-theme="dark"] .transparency-section .page-subtitle {
+         color: #6daae0;
+      }
+
+      [data-theme="dark"] .highlight-box {
+         background-color: #242842;
+         border-left-color: #5b9aff;
+         color: #c3d3e8;
+      }
+
+      @media (max-width: 768px) {
+         .transparency-section h2 {
+            font-size: 1.5em;
+         }
+
+         .transparency-section h3 {
+            font-size: 1.2em;
+         }
+
+         .transparency-section p {
+            font-size: 1em;
+         }
+      }
+   </style>
+
+   <meta name="robots" content="index, follow">
+   <meta name="theme-color" content="#3f71f3">
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+<body data-spy="scroll" data-target=".menu" data-offset="50">
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+   <div class="xon">
+      <div class="searchMe">
+         <div class="banner" id="banner">
+            <canvas id="canvas"></canvas>
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/tr/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
+                        Edition</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password">Şifre</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq">SSS</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link xon-nav-tip" href="https://plus.xposedornot.com" target="_blank" data-tip="İşletmeler için xonPlus: ekipler ve şirketler için ihlal izleme" aria-label="İşletmeler için xonPlus: ekipler ve şirketler için ihlal izleme">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc">API</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> Dil <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+
+      <div class="transparency-content">
+         <div class="container transparency-section">
+            <h2 align="center">Şeffaflık Raporu</h2>
+         <p align="center" class="page-subtitle">
+            Gizliliğinizi nasıl koruyor ve veri ihlallerini nasıl sorumlulukla ele alıyoruz
+         </p>
+         <p align="center" class="last-updated">Son Güncelleme: Haziran 2026</p>
+
+         <h3>Misyonumuz</h3>
+         <p>
+            XposedOrNot, kişisel bilgilerinin bir veri ihlalinde ne zaman ifşa edildiğini anlamaları için insanlara yardımcı olmak amacıyla var. Yaklaşımımız sorumluluk temellidir: bu hizmeti, etkilenen kişilere daha fazla zarar verebilecek çalıntı verileri yeniden yayımlamadan veya yaymadan sunuyoruz.
+         </p>
+         <p>
+            Amacımız, şeffaflık ile sorumluluk arasında özenli bir denge kurmaktır. Hedeflerimiz:
+         </p>
+         <ul>
+            <li>Gizliliğinize saygı gösterip gereksiz kişisel bilgileri asla saklamadan, kendinizi korumanıza yardımcı olacak uygulanabilir güvenlik içgörüleri sunmak</li>
+            <li>Hem kuruluşların hem de ihlallerden etkilenen kişilerin meşru haklarına saygı göstererek, geçerli yasa ve düzenlemelere tam uyum içinde faaliyet göstermek</li>
+            <li>Uygulamalarımız, politikalarımız ve hizmetimizin sınırlamaları konusunda tam şeffaflık sağlamak</li>
+         </ul>
+         <p>
+            Hizmetimizi nasıl kullanabileceğiniz ve kullanıcılardan neler beklediğimizle ilgili tüm ayrıntılar için lütfen <a href="terms" style="color: #3f71f3;">Kullanım Koşulları</a> sayfamıza bakın.
+         </p>
+
+         <h3>İhlal Verilerini Nasıl İşliyoruz</h3>
+         <div class="highlight-box">
+            <strong>Eksiksiz ihlal dökümlerini veya çalıntı verileri asla yeniden yayımlamaz veya dağıtmayız.</strong>
+         </div>
+         <p>Gerçekte neleri sakladığımız ve ihlal verilerini nasıl işlediğimiz aşağıda açıklanmıştır:</p>
+         <ul>
+            <li>İhlal veri kümelerinden yalnızca e-posta adreslerini çıkarır ve veritabanımızda saklarız. Bu, ele geçirilen bilgilerin tamamını tutmadan arama işlevi sunmamızı sağlar.</li>
+            <li>İhlal adı, gerçekleşme tarihi, etkilenen kuruluş ve ifşa edilen verilerin genel kategorileri dahil olmak üzere herkese açık ihlal üst verilerini tutarız. Bu bağlamsal bilgiler, her olayın ciddiyetini ve kapsamını anlamanıza yardımcı olur.</li>
+            <li>Düz metin şifreleri (şifre kontrol aracımız yalnızca tek yönlü Keccak-512 karmaları kullanır), kredi kartı numaralarını, sosyal güvenlik numaralarını, kimlik belgelerini veya orijinal ihlalin parçası olmuş olabilecek diğer hassas kişisel verileri saklamayız. Bu veri türleri sistemlerimizin bilinçli olarak dışında tutulur.</li>
+            <li>Bu seçici yaklaşım, e-postanızın bilinen ihlallerde yer alıp almadığını kontrol etmenizi sağlarken, diğer hassas bilgilerin altyapımızın tamamen dışında kalmasını ve hizmetimiz üzerinden hiç kimse tarafından erişilememesini güvence altına alır.</li>
+         </ul>
+
+         <h3>Veri Minimizasyonu ve Güvenlik</h3>
+         <p>Veri güvenliği ve minimizasyonu konusunda sektörün en iyi uygulamalarını izliyoruz:</p>
+         <ul>
+            <li>Yalnızca ihlal sorgularını gerçekleştirmek ve temel hizmetimizi sunmak için kesinlikle gerekli olan asgari bilgileri tutarız. Kullanıcılarımız için doğrudan bir amaca hizmet etmeyen hiçbir veri toplanmaz veya saklanmaz.</li>
+            <li>Tüm işlemler, hem beklemede (veriler saklanırken) hem de aktarımda (veriler sistemler arasında taşınırken) şifreleme kullanan yalıtılmış bulut ortamlarında yürütülür. Bu, bilgileri her aşamada yetkisiz erişime karşı korur.</li>
+            <li>Ham kişisel verileri pazarlama, analiz veya araştırma dahil hiçbir amaçla üçüncü taraflarla asla paylaşmaz, satmaz veya sağlamayız. Gizliliğiniz ticaretini yaptığımız bir meta değildir.</li>
+         </ul>
+
+         <h3>Yasal Talepler ve Kaldırma Talepleri</h3>
+         <p>Yasal yükümlülüklerimizi ciddiye alıyor ve şeffaflığı yasal uyumlulukla dengelemeye çalışıyoruz:</p>
+         <ul>
+            <li>Geçerli yasal emirlere, kolluk kuvvetlerinin taleplerine ve düzenleyici kurumların yönergelerine hızlı ve uygun şekilde yanıt veririz. Her talep, işlem yapılmadan önce yasal standartları karşıladığından emin olmak için incelenir.</li>
+            <li>Bir ihlal veri kümesi mahkeme kararına, yasal kısıtlamaya veya geçerli bir kaldırma talebine konu olduğunda, bölgesel yasa ve düzenlemelere uymak için bu bilgileri tamamen gizleyebilir veya erişimi coğrafi konuma göre sınırlayabiliriz.</li>
+            <li>Bu talepler konusunda şeffaflığa inanıyoruz. Kaldırma ve yasal taleplere ilişkin istatistikler aşağıdaki metrik tablosunda yayımlanır ve aldığımız yasal talepler hakkında topluluğu bilgilendirmek için düzenli olarak güncellenir.</li>
+         </ul>
+         <div class="contact-box">
+            <p style="margin-bottom: 10px;"><strong>Kaldırma veya kısıtlama talebinde mi bulunmanız gerekiyor?</strong></p>
+            <p style="margin-bottom: 0;">Hak sahipleri ve kuruluşlar bize şu adresten ulaşabilir:<br>
+               <!--email_off--><a href="mailto:deva@xposedornot.com">deva@xposedornot.com</a><!--/email_off-->
+            </p>
+         </div>
+
+         <h3>Kamu Yararı Standardı</h3>
+         <p>Bir ihlali dahil edip etmeyeceğimize şunlara göre karar veririz:</p>
+         <ul>
+            <li><strong>Güvenilir kaynak doğrulaması:</strong> İhlal gerçek ve doğrulanmış mı?</li>
+            <li><strong>Bireyler üzerinde önemli etki:</strong> Kayda değer sayıda kişiyi etkiliyor mu?</li>
+            <li><strong>Devam eden risk olmaması:</strong> Açıklama zarara yol açar mı veya güvenlik sorunları yaratır mı?</li>
+         </ul>
+         <p>
+            Bir ihlalin açıklanması zarara yol açabilecekse veya yasal bir kısıtlamayı ihlal ediyorsa, o veri kümesini hariç tutar veya sınırlarız.
+         </p>
+
+         <h3>Kullanıcı Sorgu Gizliliği</h3>
+         <p>Arama özelliklerimizi kullanırken gizliliğiniz en önemli önceliğimizdir. Sistemimizi anonimliğinizi koruyacak şekilde tasarladık:</p>
+         <ul>
+            <li>Arama sorguları bellekte işlenir ve kimliği belirlenebilir hiçbir biçimde kaydedilmez. Aramanız tamamlandıktan sonra sorgu bilgileri sizinle ilişkilendirilebilecek bir şekilde saklanmaz.</li>
+            <li>Aradığınız e-posta adreslerini saklamayız; bu bilgileri üçüncü taraflara satmaz veya pazarlama amacıyla kullanmayız. Aramalarınız gizli kalır.</li>
+            <li>Sorguları, yalnızca sistem koruması için tutulan ve düzenli aralıklarla otomatik olarak silinen geçici güvenlik günlükleri dışında IP adresleriyle ilişkilendirmeyiz.</li>
+         </ul>
+
+         <h3>Şeffaflık Metrikleri</h3>
+         <p>
+            Aldığımız kaldırma ve yasal taleplere ilişkin istatistikler aşağıdadır:
+         </p>
+
+         <div class="table-responsive">
+            <table class="metrics-table">
+               <thead>
+                  <tr>
+                     <th>Dönem</th>
+                     <th>Kaldırma Talepleri</th>
+                     <th>Yerine Getirilen</th>
+                     <th>Reddedilen</th>
+                     <th>Notlar</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>2026 Q2</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Talep alınmadı</td>
+                  </tr>
+                  <tr>
+                     <td>2026 Q1</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Talep alınmadı</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q4</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Talep alınmadı</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q3</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Talep alınmadı</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q2</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Talep alınmadı</td>
+                  </tr>
+                  <tr>
+                     <td>2025 Q1</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>0</td>
+                     <td>Talep alınmadı</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+         <div class="highlight-box">
+            <p style="margin: 0;">
+               <strong>Şeffaflık uygulamalarımız hakkında sorularınız mı var?</strong><br>
+               <a href="faq" style="color: #3f71f3;">SSS sayfamızı</a> ziyaret edin, <a href="terms" style="color: #3f71f3;">Kullanım Koşulları</a> belgemizi okuyun veya bize şu adresten ulaşın:
+               <!--email_off--><a href="mailto:deva@xposedornot.com" style="color: #3f71f3;">deva@xposedornot.com</a><!--/email_off-->
+            </p>
+         </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="footer">
+      <div class="container">
+         <div style="text-align:center;margin-bottom:30px;">
+            <p>Tamamen açık kaynak olan bu siteyi birlikte şekillendirelim! Katkılarınızı ❤️ ile <a
+                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> üzerinden bekliyoruz.</p>
+         </div>
+
+         <div class="footer-columns">
+            <div class="footer-group">
+               <h6>Yasal</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Gizlilik Politikası</a>
+               <a href="terms" class="footer-link">Kullanım Koşulları</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Topluluk</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">Hakkımızda</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+               <a href="our-repository" class="footer-link">Veri Havuzumuz</a>
+               <a href="/integrations" class="footer-link">Entegrasyonlar</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Güven</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Durum</a>
+              <a href="transparency" class="footer-link">Şeffaflık</a>
+              <a href="responsible-disclosure" class="footer-link">Sorumlu Açıklama</a>
+            </div>
+          </div>
+            <div class="footer-group">
+              <h6>İşletmeler İçin</h6>
+              <div class="footer-links-wrapper">
+                <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+                <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+                <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+                <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Fiyatlandırma</a>
+              </div>
+            </div>
+            <div class="footer-group">
+               <h6>Bizi Takip Edin</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" name="twitter" class="footer-link">
+                  <i class="fab fa-twitter"></i> Twitter (X)
+               </a>
+               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" name="fb" class="footer-link">
+                  <i class="fab fa-facebook"></i> Facebook
+               </a>
+               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" name="mastodon" class="footer-link">
+                  <i class="fab fa-mastodon"></i> Mastodon
+               </a>
+            </div>
+          </div>
+         </div>
+
+         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+            <label class="custom-control-label" for="darkSwitch">Karanlık Mod</label>
+         </div>
+      </div>
+   </div>
+
+   <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"></script>
+   <script src="/static/scripts/common.js"></script>
+   <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

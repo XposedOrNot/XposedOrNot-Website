@@ -1,0 +1,600 @@
+<html lang="tr">
+
+<head>
+   <meta charset="utf-8">
+   <script src="/static/scripts/session.js"></script>
+   <title>XposedOrNot: API Anahtarı Yönetimi</title>
+   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+   <link rel="dns-prefetch" href="https://static.hotjar.com">
+   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+   <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+   <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+   <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+   <link rel=stylesheet
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset&display=swap'
+      type=text/css media=all>
+   <link href="/static/css/style.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8=" crossorigin="anonymous" />
+   <script src="/static/scripts/utils.js"></script>
+   <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
+   <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="theme-color" content="#3f71f3">
+   <meta name="description" content="XposedOrNot: Veri ihlali maruziyetinizin ayrıntılı raporunu alın">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="author" content="Devanand Premkumar">
+   <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
+      integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy-bundle.umd.min.js"
+      integrity="sha512-gbruucq/Opx9jlHfqqZeAg2LNK3Y4BbpXHKDhRC88/tARL/izPOE4Zt2w6X9Sn1UeWaGbL38zW7nkL2jdn5JIw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <style>
+      body {
+         background-color: #f5f5f5;
+      }
+
+      .navbar {
+         margin-bottom: 20px;
+      }
+
+      .card {
+         box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.2);
+      }
+
+      h3 {
+         color: #007bff;
+      }
+
+      .benefit-card {
+         border: none;
+         border-radius: 10px;
+         box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+         transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .benefit-card:hover {
+         transform: translateY(-4px);
+         box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.15);
+      }
+
+      .benefit-card:nth-child(even) {
+         background: #007bff;
+         color: #fff;
+      }
+
+      .benefit-card:nth-child(odd) {
+         background: #fff;
+         color: #007bff;
+      }
+
+      .benefit-card .card-title {
+         font-weight: 700;
+         font-size: 1.2em;
+      }
+
+      .benefit-card .card-text {
+         font-size: 1em;
+      }
+
+      /* Dark mode for benefit cards */
+      [data-theme="dark"] .benefit-card {
+         border: 1px solid #2a3f5a;
+         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      }
+
+      [data-theme="dark"] .benefit-card:hover {
+         box-shadow: 0 8px 24px rgba(52, 152, 219, 0.25);
+         border-color: #3a6a94;
+      }
+
+      [data-theme="dark"] .benefit-card:nth-child(odd) {
+         background: linear-gradient(145deg, #15233a, #0f1a2d);
+         color: #b8d8f5;
+      }
+
+      [data-theme="dark"] .benefit-card:nth-child(even) {
+         background: linear-gradient(145deg, #1e4d7a, #16395c);
+         color: #ffffff;
+      }
+
+      [data-theme="dark"] .benefit-card .card-title {
+         color: #cfe1f5;
+      }
+
+      [data-theme="dark"] .benefit-card:nth-child(even) .card-title {
+         color: #ffffff;
+      }
+
+      /* Back to Dashboard Button - Modern Style */
+      .back-btn-wrapper {
+         text-align: center;
+         padding: 30px 0;
+      }
+
+      .btn-back-dashboard {
+         position: relative;
+         display: inline-flex;
+         align-items: center;
+         gap: 12px;
+         padding: 14px 32px;
+         font-size: 1rem;
+         font-weight: 600;
+         color: #2c3e50;
+         background: #ffffff;
+         border: 2px solid #3498db;
+         border-radius: 50px;
+         text-decoration: none !important;
+         overflow: hidden;
+         transition: all 0.3s ease;
+         z-index: 1;
+         box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+      }
+
+      .btn-back-dashboard::before {
+         content: '';
+         position: absolute;
+         top: 100%;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+         transition: all 0.3s ease;
+         z-index: -1;
+      }
+
+      .btn-back-dashboard:hover::before {
+         top: 0;
+      }
+
+      .btn-back-dashboard:hover {
+         color: #ffffff !important;
+         transform: translateY(-3px);
+         box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+         border-color: #2980b9;
+      }
+
+      .btn-back-dashboard i {
+         font-size: 1.1em;
+         transition: transform 0.3s ease;
+      }
+
+      .btn-back-dashboard:hover i {
+         transform: translateX(-4px);
+      }
+
+      .btn-header-back {
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+         padding: 8px 20px;
+         font-size: 0.9rem;
+         font-weight: 500;
+         color: #3498db;
+         background: transparent;
+         border: 2px solid #3498db;
+         border-radius: 25px;
+         text-decoration: none !important;
+         transition: all 0.3s ease;
+      }
+
+      .btn-header-back:hover {
+         background: #3498db;
+         color: #ffffff !important;
+         transform: translateY(-2px);
+         box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+      }
+
+      [data-theme="dark"] h3 {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .btn-back-dashboard {
+         color: #e2e8f0;
+         background: #1e2235;
+      }
+   </style>
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+<body data-gr-c-s-loaded="true" class="" style="" data-new-gr-c-s-check-loaded="8.884.0" data-gr-ext-installed="">
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+   <div class="mobileheader-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12">
+               <nav class="navbar navbar-expand-lg navbar-light">
+                  <a class="navbar-brand" href="./">
+                     <p>XposedorNot</p>
+                  </a>
+                  <button class="hamburger hamburger--squeeze navbar-toggler" type="button" data-toggle="collapse"
+                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                     aria-label="Gezinme menüsünü aç veya kapat">
+                     <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                     </span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="navbar-nav mr-auto"></ul>
+                     <div class="main-menu-part">
+                        <ul>
+                           <li>
+                              <a href="password">Şifre</a>
+                           </li>
+                           <li>
+                              <a href="faq">SSS</a>
+                           </li>
+                           <li>
+                              <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                           </li>
+                           <li>
+                              <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/XposedOrNot">
+                                 <em class="fab fa-twitter"></em>
+                              </a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+   </div>
+   <header class="header-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-3 col-md-3">
+               <div class="header-left">
+                  <a href="https://XposedOrNot.com">
+                     <p>XposedorNot</p>
+                  </a>
+               </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+               <div class="header-right">
+                  <ul>
+                     <li>
+                        <a href="#" class="btn-header-back" id="headerBackBtn">
+                           <i class="fas fa-arrow-left"></i> Kontrol Paneline Dön
+                        </a>
+                     </li>
+                     <li>
+                        <a href="faq">SSS</a>
+                     </li>
+                     <li>
+                        <a target="_blank" rel="noopener noreferrer" href="https://blog.xposedornot.com/">Blog</a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </header>
+   <div class="container">
+      <br>
+      <div class="row justify-content-center align-items-center" style="height:80vh">
+         <div class="col-12">
+            <div class="card" align="center">
+               <div class="card-body">
+                  <h3 class="text-center mb-5"> XposedOrNot API Anahtarı Yönetimi</h3>
+                  <p align="center">Bu, doğrulanmış alan adlarıyla ilgili ihlalleri sorgulamak için kullanabileceğiniz
+                     mevcut API anahtarınızdır.
+                  <form id="emailForm">
+                     <div class="form-group">
+                        <div class="input-group">
+                           <input type="text" style="text-align:center; font-weight: bold; font-size:16px;"
+                              class="form-control w-75 form-control" id="api_key" name="api_key"
+                              placeholder="ImRldmEuc2VjdXJpdHlAZ21haWwuY29tIg.ZJpu5g.MrhgMQk60I5TJyYHke6YNqrsabk"
+                              readonly>
+                           <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary" id="submitButton">
+                                 <span id="submitText">API Anahtarını Sıfırla</span>
+                                 <span id="submitSpinner" class="spinner-border spinner-border-sm d-none" role="status"
+                                    aria-hidden="true"></span>
+                              </button>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+                  <div id="rateLimitMessage" class="alert alert-warning mt-3" style="display: none;">
+                     <i class="fas fa-exclamation-triangle"></i> Çok fazla istek yapıldı. Lütfen yavaşlayın ve daha sonra
+                     tekrar deneyin.
+                  </div>
+                  <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+                     <i class="fas fa-check-circle"></i> API sıfırlama başarıyla tamamlandı. Yeni API anahtarını kullanabilirsiniz.
+                  </div>
+                  <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
+                     <i class="fas fa-times-circle"></i> İsteğiniz işlenirken bir hata oluştu. Lütfen daha sonra tekrar
+                     deneyin.
+                  </div>
+                  <div id="curl" name="curl" class="alert alert-primary mt-3">
+                     <blockquote>
+                        curl -L -X POST -H "x-api-key: [KEY]" -H "Content-Length: 0"
+                        https://api.xposedornot.com/v1/domain-breaches/
+                     </blockquote>
+                  </div>
+                  <div class="container my-5">
+                     <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-4">
+                           <div class="card benefit-card">
+                              <div class="card-body">
+                                 <h5 class="card-title">İhlal Kontrolleri</h5>
+                                 <p class="card-text">API'miz veri ihlali kontrollerine olanak tanır ve doğrulanmış tüm
+                                    alan adlarında olası kullanıcı verisi ifşasına ilişkin güncel içgörüler sağlar.</p>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                           <div class="card benefit-card">
+                              <div class="card-body">
+                                 <h5 class="card-title">Sorunsuz Entegrasyon</h5>
+                                 <p class="card-text">API'miz SIEM, SOAR ve diğer güvenlik sistemleriyle sorunsuz bir
+                                    şekilde entegre olacak biçimde tasarlanmıştır ve siber güvenlik duruşunuzu güçlendirir.</p>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                           <div class="card benefit-card">
+                              <div class="card-body">
+                                 <h5 class="card-title">Gerçek Zamanlı Güncellemeler</h5>
+                                 <p class="card-text">API'miz gerçek zamanlı güncellemeler sunarak doğrulanmış alan
+                                    adlarınızı etkileyebilecek yeni veya ortaya çıkan veri ihlallerine hızla yanıt vermenizi sağlar.</p>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                           <div class="card benefit-card">
+                              <div class="card-body">
+                                 <h5 class="card-title">Güçlü Güvenlik</h5>
+                                 <p class="card-text">API, güçlü güvenlik önlemleriyle tasarlanmıştır; hassas verilerin
+                                    korunmasını sağlarken ihlal yönetimi için sağlam bir araç sunar.
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <br><br>
+         <div align="center">Daha fazla ayrıntı için lütfen <a href="api_doc">API Dokümantasyonu</a> ve <a
+               href="https://xposedornot.docs.apiary.io">API Playground</a> sayfalarımızı inceleyin.</div>
+      </div>
+   </div>
+
+   <div class="back-btn-wrapper">
+      <a href="#" class="btn-back-dashboard" id="bottomBackBtn">
+         <i class="fas fa-arrow-left"></i>
+         <span>Kontrol Paneline Dön</span>
+      </a>
+   </div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY" rel="preconnect"></script>
+   <script src="/static/scripts/common.js"></script>
+   <script type="text/javascript">
+         let token;
+         var sessionActive = Boolean(window.XonSession && window.XonSession.token);
+         if (sessionActive) {
+            email = window.XonSession.email;
+            token = window.XonSession.token;
+         } else if (!(window.XonSession && window.XonSession.cookiesBlocked)) {
+            window.location.replace("https://xposedornot.com");
+         }
+
+         $(document).ready(function () {
+            $('#headerBackBtn, #bottomBackBtn').click(function (e) {
+               e.preventDefault();
+               window.location.href = 'breach-dashboard.html';
+            });
+         });
+
+         if (sessionActive) {
+            $.ajax({
+               url: "https://api.xposedornot.com/v1/get-api-key/" + token,
+               type: 'GET',
+               success: function (res) {
+                  $('#api_key').val(res.api_key);
+                  message = '💡 Şunu kullanarak test edebilirsiniz : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                  document.getElementById('curl').innerText = message
+               },
+               error: function (error) {
+                  if (error.responseJSON && error.responseJSON.error === 'invalid_token') {
+                     if (window.XonSession) {
+                        window.XonSession.clear();
+                     }
+                     alert("Geçersiz belirteç. Lütfen tekrar deneyin.");
+                  }
+               }
+            });
+         }
+
+         document.getElementById('emailForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            hideAllMessages();
+            resetApiKey();
+         });
+
+         function showRateLimitMessage() {
+            document.getElementById('rateLimitMessage').style.display = "block";
+         }
+
+         function showSuccessMessage() {
+            document.getElementById('successMessage').style.display = "block";
+
+         }
+
+         function showErrorMessage(message) {
+            document.getElementById('errorMessage').innerText = message;
+            document.getElementById('errorMessage').style.display = "block";
+         }
+
+         function resetApiKey() {
+            document.getElementById('submitText').style.display = "none";
+            document.getElementById('submitSpinner').style.display = "inline-block";
+            document.getElementById('submitButton').disabled = true;
+
+            hideAllMessages();
+
+            fetch(`https://api.xposedornot.com/v1/create-api-key/${token}`)
+               .then(response => {
+                  if (!response.ok) {
+                     if (response.status === 429) {
+                        showRateLimitMessage();
+                     } else {
+                        showErrorMessage('Ağ yanıtı başarılı olmadı');
+                     }
+                     throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+               })
+               .then(data => {
+                  if (data.status === "success") {
+                     document.getElementById('api_key').value = data.api_key;
+                     showSuccessMessage();
+                     message = '💡 Şunu kullanarak test edebilirsiniz : curl -L -X POST -H "x-api-key:  ' + data.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                     document.getElementById('curl').innerText = message
+
+                  } else {
+                     showErrorMessage('API anahtarı sıfırlanamadı');
+                  }
+               })
+               .catch(() => {
+                  showErrorMessage('API anahtarınız sıfırlanırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+               })
+               .finally(() => {
+
+                  document.getElementById('submitText').style.display = "inline-block";
+                  document.getElementById('submitSpinner').style.display = "none";
+                  document.getElementById('submitButton').disabled = false;
+               });
+
+         }
+         function hideAllMessages() {
+            document.getElementById('rateLimitMessage').style.display = "none";
+            document.getElementById('successMessage').style.display = "none";
+            document.getElementById('errorMessage').style.display = "none";
+         }
+      </script>
+   </div>
+
+   <div class="footer">
+         <div class="container">
+            <div style="text-align:center;margin-bottom:30px;">
+               <p>Tamamen açık kaynaklı bu siteyi birlikte şekillendirelim! Katkılarınızı ❤️ ile bekliyoruz: <a
+                     href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+            </div>
+
+            <div class="footer-columns">
+               <div class="footer-group">
+                  <h6>Yasal</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Gizlilik Politikası</a>
+                  <a href="terms" class="footer-link">Koşullar</a>
+            </div>
+          </div>
+               <div class="footer-group">
+                  <h6>Topluluk</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">Hakkında</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+                  <a href="our-repository" class="footer-link">Depomuz</a>
+                  <a href="/integrations" class="footer-link">Entegrasyonlar</a>
+            </div>
+          </div>
+               <div class="footer-group">
+                  <h6>Güven</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Durum</a>
+              <a href="transparency" class="footer-link">Şeffaflık</a>
+              <a href="responsible-disclosure" class="footer-link">Sorumlu Açıklama</a>
+            </div>
+          </div>
+               <div class="footer-group">
+                 <h6>İşletmeler İçin</h6>
+                 <div class="footer-links-wrapper">
+                   <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+                   <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+                   <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+                   <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Fiyatlandırma</a>
+                 </div>
+               </div>
+               <div class="footer-group">
+                  <h6>Bizi Takip Edin</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                     <i class="fab fa-twitter"></i> Twitter (X)
+                  </a>
+                  <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                     <i class="fab fa-facebook"></i> Facebook
+                  </a>
+                  <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+                     <i class="fab fa-mastodon"></i> Mastodon
+                  </a>
+            </div>
+          </div>
+            </div>
+
+         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+            <label class="custom-control-label" for="darkSwitch">Karanlık Mod</label>
+         </div>
+         </div>
+      </div>
+    <script>
+      // Footer accordion for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>
