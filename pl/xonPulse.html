@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3f71f3">
+
+
+    <title>Kanał wiadomości i alerty o wyciekach danych | xonPulse od XposedOrNot</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <meta name="description"
+        content="Bądź na bieżąco z najnowszymi wyciekami danych, incydentami cyberbezpieczeństwa i naruszeniami prywatności. Aktualizacje w czasie rzeczywistym o wyciekach w firmach, włamaniach i wyciekach danych.">
+    <meta name="keywords"
+        content="wiadomości o wyciekach danych, alerty cyberbezpieczeństwa, naruszenia prywatności, incydenty bezpieczeństwa, raporty o włamaniach, wycieki danych">
+    <meta name="author" content="XposedOrNot">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://xposedornot.com/pl/xonPulse" />
+
+
+    <meta property="og:title" content="Kanał wiadomości i alerty o wyciekach danych | xonPulse">
+    <meta property="og:description"
+        content="Bądź na bieżąco z najnowszymi wyciekami danych, incydentami cyberbezpieczeństwa i naruszeniami prywatności. Aktualizacje w czasie rzeczywistym o wyciekach w firmach, włamaniach i wyciekach danych.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xposedornot.com/pl/xonPulse">
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+    <meta property="og:site_name" content="XposedOrNot">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@XposedOrNot">
+    <meta name="twitter:creator" content="@DevaOnBreaches">
+    <meta name="twitter:title" content="Kanał wiadomości i alerty o wyciekach danych | xonPulse">
+    <meta name="twitter:description"
+        content="Bądź na bieżąco z najnowszymi wyciekami danych, incydentami cyberbezpieczeństwa i naruszeniami prywatności.">
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+        integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="/static/css/xon-pulse.css" rel="stylesheet">
+
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Kanał wiadomości i alerty o wyciekach danych | xonPulse",
+        "description": "Bądź na bieżąco z najnowszymi wyciekami danych, incydentami cyberbezpieczeństwa i naruszeniami prywatności.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "XposedOrNot",
+            "logo": "https://xposedornot.com/static/images/xon.png"
+        }
+    }
+    </script>
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    <style>
+      #banner {
+        min-height: 150px !important;
+        padding-bottom: 30px;
+        overflow: visible !important;
+      }
+
+      .grid {
+        margin: 0 auto;
+        max-width: 1645px;
+        padding: 0 15px;
+        overflow: visible !important;
+      }
+
+      .banner {
+        margin: 0;
+        padding: 50px 0 120px 0;
+        background: linear-gradient(-220deg, #3c5fec, #376fdd);
+        overflow: hidden;
+        width: 100%;
+        border-bottom: 2px solid whitesmoke;
+      }
+
+      .banner .navbar {
+        overflow: visible !important;
+      }
+
+      .banner .dropdown-menu {
+        position: absolute !important;
+        z-index: 1050 !important;
+        max-height: none !important;
+      }
+
+      .banner .navbar-dark .navbar-nav .nav-link {
+        font-size: 20px;
+        color: #fff;
+      }
+
+      .banner .navbar-nav .nav-link:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.9);
+        outline-offset: 2px;
+      }
+
+      .nav-link.xon-nav-tip {
+        position: relative;
+      }
+
+      .nav-link.xon-nav-tip::before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        right: 28px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 8px solid #23272f;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip::after {
+        content: attr(data-tip);
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        display: block;
+        width: 260px;
+        box-sizing: border-box;
+        background: #23272f;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.5;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 10px 24px rgba(20, 24, 60, 0.35);
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: break-word;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 2100;
+      }
+
+      .nav-link.xon-nav-tip:hover::before,
+      .nav-link.xon-nav-tip:focus::before,
+      .nav-link.xon-nav-tip:hover::after,
+      .nav-link.xon-nav-tip:focus::after {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      @media (max-width: 767px) {
+        .nav-link.xon-nav-tip::before,
+        .nav-link.xon-nav-tip::after {
+          display: none;
+        }
+      }
+    </style>
+    </head>
+
+<body>
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+    <a href="#main-content" class="skip-link">Przejdź do głównej treści</a>
+    <div class="searchMe">
+         <div class="banner" id="banner">
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/pl/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
+                        Edition</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="password">Hasło</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="faq">FAQ</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link xon-nav-tip" href="https://plus.xposedornot.com" target="_blank" data-tip="xonPlus dla firm: monitorowanie wycieków dla zespołów i firm" aria-label="xonPlus dla firm: monitorowanie wycieków dla zespołów i firm">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="api_doc">API</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> Język <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+
+
+    <main id="main-content" class="container my-5" tabindex="-1">
+        <div class="search-section">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">xonPulse</h1>
+                    <p class="page-subtitle">Twój kanał informacji o wyciekach danych w czasie rzeczywistym</p>
+                </div>
+            </div>
+            <div class="search-container" role="search">
+                <label for="search-input" class="sr-only">Szukaj wiadomości o wyciekach</label>
+                <input type="text" id="search-input" class="form-control"
+                    placeholder="Szukaj wycieków, firm lub incydentów...">
+                <label for="timeline-dropdown" class="sr-only">Filtruj według zakresu czasu</label>
+                <select id="timeline-dropdown" class="form-control">
+                    <option value="all">Cały okres</option>
+                    <option value="day">Ostatnie 24 godziny</option>
+                    <option value="week">Ostatni tydzień</option>
+                    <option value="month">Ostatni miesiąc</option>
+                    <option value="quarter">Ostatnie 3 miesiące</option>
+                    <option value="year">Ostatni rok</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="results-strip" id="results-strip" hidden>
+            <div class="results-meta" id="results-meta"></div>
+            <button type="button" class="btn-refresh" id="refresh-btn" aria-label="Odśwież kanał wiadomości">
+                <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                <span>Odśwież</span>
+            </button>
+        </div>
+
+        <div class="loading-spinner" role="status" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <span class="sr-only">Ładowanie wiadomości o wyciekach…</span>
+        </div>
+
+        <section aria-labelledby="news-feed-heading">
+            <h2 id="news-feed-heading" class="sr-only">Najnowsze wiadomości o wyciekach danych</h2>
+            <div id="news-container"></div>
+        </section>
+        <nav class="pagination-controls" aria-label="Paginacja wiadomości">
+            <button id="prev-page" class="btn" type="button" aria-label="Poprzednia strona">
+                <span aria-hidden="true">&larr;</span>
+                <span class="pag-text">Poprzednia</span>
+            </button>
+            <span id="page-info" aria-live="polite" aria-atomic="true"></span>
+            <button id="next-page" class="btn" type="button" aria-label="Następna strona">
+                <span class="pag-text">Następna</span>
+                <span aria-hidden="true">&rarr;</span>
+            </button>
+        </nav>
+    </main>
+
+
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+
+    <script src="/static/scripts/xon-pulse.js" defer></script>
+    <div class="footer">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:30px;">
+          <p>xonPulse dostarcza powiadomienia o wyciekach danych w czasie rzeczywistym oraz aktualności ze świata cyberbezpieczeństwa.</p>
+          <p>Dołącz do nas i współtwórz tę w pełni otwartą stronę! Wkład mile widziany ❤️ na naszym <a
+                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Informacje prawne</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Polityka prywatności</a>
+            <a href="terms" class="footer-link">Warunki</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Społeczność</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">O nas</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+            <a href="our-repository" class="footer-link">Nasze repozytorium</a>
+            <a href="/integrations" class="footer-link">Integracje</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Zaufanie</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Przejrzystość</a>
+              <a href="responsible-disclosure" class="footer-link">Odpowiedzialne ujawnianie</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Dla firm</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+              <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+              <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+              <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Cennik</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Obserwuj nas</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-twitter"></i> Twitter (X)
+            </a>
+            <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-mastodon"></i> Mastodon
+            </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+          <input type="checkbox" class="custom-control-input" id="darkSwitch">
+          <label class="custom-control-label" for="darkSwitch">Tryb Ciemny</label>
+        </div>
+      </div>
+    </div>
+
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script src="/static/scripts/common.js"></script>
+  </body>
+
+</html>

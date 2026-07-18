@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wizualizacja wycieków danych na osi czasu | XposedOrNot</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="https://xposedornot.com/pl/breaches-visualisations" />
+    <meta name="theme-color" content="#3f71f3" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description"
+        content="Interaktywna oś czasu największych wycieków danych. Każdy bąbelek to wyciek, jego rozmiar zależy od liczby ujawnionych rekordów, a kolor od branży. Wyszukuj, filtruj i poznawaj szczegóły wycieków." />
+    <meta property="og:title" content="XposedOrNot: Wizualizacja wycieków danych na osi czasu" />
+    <meta property="og:description"
+        content="Interaktywna oś czasu największych wycieków danych, z rozmiarem według ujawnionych rekordów i kolorem według branży." />
+    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+    <meta property="og:url" content="https://xposedornot.com/pl/breaches-visualisations" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@XposedOrNot">
+    <meta name="twitter:title" content="XposedOrNot: Wizualizacja wycieków danych na osi czasu">
+    <meta name="twitter:description"
+        content="Interaktywna oś czasu największych wycieków danych, z rozmiarem według ujawnionych rekordów i kolorem według branży.">
+    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+    <script>
+        (function () {
+            var mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+            if (mobileUA && !window.location.href.includes('breaches-visualisations-mobile.html')) {
+                window.location.href = 'breaches-visualisations-mobile.html';
+            }
+        })();
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        html:has(body[data-theme="dark"]) {
+            color-scheme: dark;
+        }
+
+        body {
+            --bg: #f5f7fa;
+            --panel: #ffffff;
+            --panel-border: #dde3ec;
+            --ink: #1f2937;
+            --ink-2: #46586a;
+            --link: #1d4ed8;
+            --focus: #1d4ed8;
+            --grid: #dde3ec;
+            --halo: #f5f7fa;
+            --ring: rgba(15, 23, 42, 0.22);
+            --wash: rgba(29, 78, 216, 0.08);
+            --tip-bg: #ffffff;
+            --tip-border: rgba(15, 23, 42, 0.14);
+            --shadow: rgba(15, 23, 42, 0.12);
+            --s0: #2a78d6;
+            --s1: #1baf7a;
+            --s2: #eda100;
+            --s3: #008300;
+            --s4: #4a3aa7;
+            --s5: #e34948;
+            --s6: #e87ba4;
+            --s7: #eb6834;
+            --s-other: #898781;
+        }
+
+        body[data-theme="dark"] {
+            --bg: #0e0f19;
+            --panel: #181b2d;
+            --panel-border: #2a2d40;
+            --ink: #e2e8f0;
+            --ink-2: #9fc0e0;
+            --link: #5b9aff;
+            --focus: #5b9aff;
+            --grid: #262a3a;
+            --halo: #0e0f19;
+            --ring: rgba(255, 255, 255, 0.14);
+            --wash: rgba(139, 180, 255, 0.14);
+            --tip-bg: #181b2d;
+            --tip-border: rgba(255, 255, 255, 0.12);
+            --shadow: rgba(0, 0, 0, 0.5);
+            --s0: #3987e5;
+            --s1: #199e70;
+            --s2: #c98500;
+            --s3: #008300;
+            --s4: #9085e9;
+            --s5: #e66767;
+            --s6: #d55181;
+            --s7: #d95926;
+            --s-other: #898781;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar-custom {
+            background: linear-gradient(-220deg, #3c5fec, #4284fb);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px !important;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .page-head {
+            text-align: center;
+            margin: 2.2rem auto 1.2rem;
+            padding: 0 20px;
+            max-width: 900px;
+        }
+
+        .page-title {
+            color: var(--ink);
+            margin: 0 0 8px;
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            color: var(--ink-2);
+            font-size: 1rem;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .page-subtitle span {
+            color: var(--link);
+            font-weight: 600;
+        }
+
+        .viz-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 20px;
+            margin: 0 auto 12px;
+            max-width: 1100px;
+        }
+
+        .viz-controls input[type="search"],
+        .viz-controls select {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            color: var(--ink);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .viz-controls input[type="search"] {
+            width: 230px;
+        }
+
+        .viz-controls select {
+            max-width: 220px;
+        }
+
+        .viz-controls input::placeholder {
+            color: var(--ink-2);
+        }
+
+        .viz-controls input:focus,
+        .viz-controls select:focus,
+        .viz-controls button:focus-visible,
+        .legend-chip:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        .group-toggle {
+            display: inline-flex;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--panel);
+        }
+
+        .group-toggle button {
+            background: transparent;
+            border: none;
+            color: var(--ink-2);
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .group-toggle button[aria-pressed="true"] {
+            background: var(--wash);
+            color: var(--link);
+            font-weight: 600;
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            color: var(--ink-2);
+            font-size: 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            color: var(--link);
+            border-color: var(--link);
+        }
+
+        .viz-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 20px;
+            margin: 0 auto 6px;
+            max-width: 1200px;
+        }
+
+        .legend-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            color: var(--ink-2);
+            font-size: 12.5px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .legend-chip:hover {
+            border-color: var(--link);
+        }
+
+        .legend-chip[aria-pressed="true"] {
+            background: var(--wash);
+            border-color: var(--link);
+            color: var(--ink);
+        }
+
+        .legend-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: inset 0 0 0 1px var(--ring);
+        }
+
+        .legend-note {
+            width: 100%;
+            text-align: center;
+            color: var(--ink-2);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        #chart {
+            width: 100%;
+            padding: 10px 20px 20px;
+            margin: 0 auto;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        #chart svg {
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .band-sep {
+            stroke: var(--grid);
+            stroke-width: 1px;
+        }
+
+        .band-label {
+            fill: var(--ink);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .band-sublabel {
+            fill: var(--ink-2);
+            font-size: 11.5px;
+            font-weight: 500;
+        }
+
+        .breach {
+            cursor: pointer;
+            outline: none;
+        }
+
+        .bubble {
+            stroke: var(--ring);
+            stroke-width: 1px;
+            transition: opacity 0.25s ease;
+        }
+
+        .breach:hover .bubble {
+            stroke-width: 2px;
+        }
+
+        .breach:focus-visible .bubble {
+            stroke: var(--focus);
+            stroke-width: 3px;
+        }
+
+        .breach-name {
+            font-size: 12px;
+            text-anchor: middle;
+            fill: var(--ink);
+            font-weight: 600;
+            paint-order: stroke;
+            stroke: var(--halo);
+            stroke-width: 3px;
+            stroke-linejoin: round;
+            pointer-events: none;
+        }
+
+        .breach-recs {
+            font-size: 10.5px;
+            text-anchor: middle;
+            fill: var(--ink-2);
+            font-weight: 500;
+            paint-order: stroke;
+            stroke: var(--halo);
+            stroke-width: 3px;
+            stroke-linejoin: round;
+            pointer-events: none;
+        }
+
+        image.breach-logo {
+            pointer-events: none;
+        }
+
+        .breach.dim {
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .breach.hit-match .bubble {
+            stroke: var(--focus);
+            stroke-width: 2.5px;
+        }
+
+        .viz-tooltip {
+            position: absolute;
+            background-color: var(--tip-bg);
+            padding: 18px;
+            border-radius: 12px;
+            pointer-events: none;
+            opacity: 0;
+            display: none;
+            box-shadow: 0 8px 32px var(--shadow);
+            max-width: 340px;
+            color: var(--ink);
+            font-size: 14px;
+            line-height: 1.6;
+            z-index: 1050;
+            border: 1px solid var(--tip-border);
+            border-left: 4px solid var(--tip-accent, var(--link));
+            transition: opacity 0.2s ease;
+        }
+
+        .viz-tooltip.show {
+            opacity: 1;
+        }
+
+        .viz-tooltip .tip-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--ink);
+        }
+
+        .viz-tooltip .tip-year {
+            color: var(--ink-2);
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .viz-tooltip img {
+            max-width: 100%;
+            max-height: 90px;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .viz-tooltip .tip-desc {
+            color: var(--ink-2);
+            margin: 0 0 10px;
+            font-size: 13.5px;
+        }
+
+        .viz-tooltip .tip-stats {
+            font-weight: 600;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            background: var(--wash);
+            color: var(--ink);
+        }
+
+        .viz-tooltip .tip-hint {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--link);
+            font-weight: 500;
+        }
+
+        .overlay-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(8, 10, 20, 0.75);
+            z-index: 1100;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .overlay-content {
+            max-width: 620px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--panel);
+            border-radius: 20px;
+            padding: 36px 34px;
+            box-shadow: 0 24px 64px var(--shadow);
+            border: 1px solid var(--panel-border);
+        }
+
+        .overlay-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #3c5fec, #4284fb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 26px;
+            color: #fff;
+        }
+
+        .overlay-container h2 {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .overlay-container .overlay-desc {
+            color: var(--ink-2);
+            margin-bottom: 22px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .overlay-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .overlay-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--wash);
+            border-radius: 10px;
+            border: 1px solid var(--panel-border);
+        }
+
+        .overlay-feature i {
+            color: var(--link);
+            font-size: 15px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .overlay-feature span {
+            font-size: 0.85rem;
+            color: var(--ink);
+            line-height: 1.4;
+        }
+
+        .size-key {
+            margin: 0 auto 22px;
+        }
+
+        .size-key circle {
+            fill: none;
+            stroke: var(--ink-2);
+            stroke-width: 1.5px;
+        }
+
+        .size-key line {
+            stroke: var(--grid);
+            stroke-dasharray: 3, 3;
+        }
+
+        .size-key text {
+            fill: var(--ink-2);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .size-key-caption {
+            color: var(--ink-2);
+            font-size: 12px;
+            margin: -14px 0 20px;
+        }
+
+        .overlay-container .primary-btn {
+            background: linear-gradient(135deg, #3c5fec, #4284fb);
+            color: white;
+            border: none;
+            padding: 13px 32px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .overlay-container .primary-btn:hover {
+            background: linear-gradient(135deg, #4a6ff5, #5a8eff);
+        }
+
+        .overlay-container .primary-btn:focus-visible {
+            outline: 3px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .overlay-content {
+                width: 92%;
+                padding: 26px 20px;
+            }
+
+            .overlay-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 16px;
+            background: #2563eb;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 0 0 8px 8px;
+            z-index: 1200;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+            outline: 3px solid var(--focus);
+            outline-offset: 2px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1090;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid var(--wash);
+            border-top-color: var(--link);
+            margin: 0 auto 16px;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .loading-spinner {
+                animation: spin 0.8s linear infinite;
+            }
+        }
+
+        .loading-text {
+            color: var(--ink-2);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .retry-btn {
+            margin-top: 14px;
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            color: var(--link);
+            padding: 9px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .retry-btn:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .footer {
+            padding: 40px 0 30px;
+            background: var(--panel);
+            border-top: 1px solid var(--panel-border);
+            margin-top: 40px;
+        }
+
+        .footer p {
+            color: var(--ink-2);
+        }
+
+        .footer p a {
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        .footer p a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 60px;
+            text-align: left;
+            padding: 0 40px;
+        }
+
+        .footer-group {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .footer-group h6 {
+            color: var(--ink) !important;
+            font-size: 0.85em !important;
+            margin-bottom: 15px !important;
+            font-weight: 600 !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-group a.footer-link {
+            display: block;
+            margin-bottom: 6px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            color: var(--ink-2);
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .footer-group a.footer-link:hover {
+            background-color: var(--wash);
+            padding-left: 14px;
+            color: var(--link) !important;
+        }
+
+        .footer .custom-control-label {
+            color: var(--ink-2);
+        }
+
+        @media (max-width: 768px) {
+            .footer-columns {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+                padding: 0 20px;
+            }
+
+            .footer-group {
+                border-bottom: 1px solid var(--panel-border);
+            }
+
+            .footer-group h6 {
+                cursor: pointer;
+                padding: 15px 20px;
+                margin: 0 !important;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .footer-group h6:focus {
+                outline: 2px solid var(--focus);
+                outline-offset: -2px;
+            }
+
+            .footer-group h6::after {
+                content: '+';
+                font-size: 20px;
+                font-weight: 300;
+                color: var(--ink-2);
+                transition: transform 0.3s ease;
+            }
+
+            .footer-group.active h6::after {
+                content: '−';
+            }
+
+            .footer-group .footer-links-wrapper {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                padding: 0 20px;
+            }
+
+            .footer-group.active .footer-links-wrapper {
+                max-height: 300px;
+                padding: 0 20px 15px 20px;
+            }
+        }
+    </style>
+    <style>
+        @font-face {
+            font-family: "Font Awesome 5 Free";
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-regular-400.woff2") format("woff2");
+        }
+
+        @font-face {
+            font-family: "Font Awesome 5 Free";
+            font-style: normal;
+            font-weight: 900;
+            font-display: swap;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-solid-900.woff2") format("woff2");
+        }
+
+        @font-face {
+            font-family: "Font Awesome 5 Brands";
+            font-style: normal;
+            font-weight: normal;
+            font-display: swap;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-brands-400.woff2") format("woff2");
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        if (localStorage.getItem("darkSwitch") === "dark") {
+            document.body.setAttribute("data-theme", "dark");
+        }
+    </script>
+
+    <div id="loadingOverlay" role="status" aria-live="polite">
+        <div style="text-align: center;">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Wczytywanie wizualizacji</p>
+        </div>
+    </div>
+
+    <a href="#chart" class="skip-link">Przejdź do wizualizacji</a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <a class="navbar-brand" href="/pl/">XposedOrNot</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Przełącz nawigację">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="https://blog.xposedornot.com">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="api_doc">API</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <div class="page-head">
+            <h1 class="page-title">Wizualizacja wycieków danych na osi czasu</h1>
+            <p class="page-subtitle" id="pageSubtitle" aria-live="polite">Przeglądaj dane o wyciekach według branż i lat</p>
+        </div>
+
+        <div class="viz-controls">
+            <input type="search" id="searchInput" placeholder="Szukaj wycieków lub domen"
+                aria-label="Wyszukuj wycieki po nazwie lub domenie" autocomplete="off">
+            <label for="industrySelect" class="sr-only">Filtruj według branży</label>
+            <select id="industrySelect">
+                <option value="all">Wszystkie branże</option>
+            </select>
+            <div class="group-toggle" role="group" aria-label="Grupuj wycieki według">
+                <button type="button" id="groupYear" aria-pressed="true">Według roku</button>
+                <button type="button" id="groupIndustry" aria-pressed="false">Według branży</button>
+            </div>
+            <button type="button" class="icon-btn" id="infoButton" aria-label="Jak czytać tę wizualizację"
+                title="Jak czytać tę wizualizację"><i class="fas fa-info" aria-hidden="true"></i></button>
+        </div>
+
+        <div class="viz-legend" id="vizLegend" aria-label="Legenda kolorów branż"></div>
+
+        <p class="sr-only" id="vizSummary"></p>
+
+        <div id="chart" role="region"
+            aria-label="Interaktywny wykres bąbelkowy wycieków danych. Każdy bąbelek to wyciek, jego rozmiar zależy od liczby ujawnionych rekordów, a kolor od branży. Użyj klawiszy strzałek, aby przechodzić między wyciekami, i Enter, aby otworzyć szczegóły wycieku.">
+        </div>
+    </main>
+
+    <div class="overlay-container" id="infoOverlay" role="dialog" aria-modal="true" aria-label="Przewodnik po wizualizacji">
+        <div class="overlay-content">
+            <div class="overlay-icon"><i class="fas fa-shield-alt" aria-hidden="true"></i></div>
+            <h2>Jak czytać ten wykres</h2>
+            <p class="overlay-desc">Każdy bąbelek to wyciek danych. Najedź kursorem lub ustaw fokus na bąbelku, aby
+                zobaczyć szczegóły. Kliknij go, aby otworzyć pełny raport o wycieku.</p>
+
+            <div class="overlay-features">
+                <div class="overlay-feature">
+                    <i class="fas fa-circle" aria-hidden="true"></i>
+                    <span><strong>Rozmiar</strong> odpowiada liczbie ujawnionych rekordów, w skompresowanej skali, dzięki
+                        której małe wycieki pozostają widoczne</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-palette" aria-hidden="true"></i>
+                    <span><strong>Kolor</strong> oznacza branżę organizacji dotkniętej wyciekiem</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <span><strong>Wyszukiwanie</strong> po nazwie wycieku lub domenie, filtrowanie według branży</span>
+                </div>
+                <div class="overlay-feature">
+                    <i class="fas fa-arrows-alt" aria-hidden="true"></i>
+                    <span><strong>Klawiatura</strong>: klawisze strzałek przenoszą między bąbelkami, Enter otwiera szczegóły</span>
+                </div>
+            </div>
+
+            <svg class="size-key" width="300" height="190" role="img"
+                aria-label="Klucz rozmiaru: zagnieżdżone okręgi pokazujące rozmiary bąbelków dla miliona, stu milionów i miliarda rekordów">
+                <circle cx="70" cy="125" r="55"></circle>
+                <circle cx="70" cy="147" r="33"></circle>
+                <circle cx="70" cy="165" r="15"></circle>
+                <line x1="70" y1="70" x2="185" y2="70"></line>
+                <line x1="70" y1="114" x2="185" y2="114"></line>
+                <line x1="70" y1="150" x2="185" y2="150"></line>
+                <text x="192" y="74">1 mld rekordów</text>
+                <text x="192" y="118">100 mln</text>
+                <text x="192" y="154">1 mln</text>
+            </svg>
+            <p class="size-key-caption">Skala rozmiaru bąbelków</p>
+
+            <button id="closeOverlay" class="primary-btn">Przeglądaj wycieki</button>
+        </div>
+    </div>
+
+    <footer class="footer" aria-label="Stopka strony">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:30px;">
+                <p>Dołącz do nas i współtwórz tę w pełni otwartoźródłową stronę! Twój wkład jest mile widziany ❤️ w naszym repozytorium <a
+                        href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub<span
+                            class="sr-only"> (otwiera się w nowej karcie)</span></a>.</p>
+            </div>
+
+            <div class="footer-columns">
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">Informacje prawne</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="privacy" class="footer-link">Polityka prywatności</a>
+                        <a href="terms" class="footer-link">Warunki korzystania</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">Społeczność</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="/about" class="footer-link">O nas</a>
+                        <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+                        <a href="our-repository" class="footer-link">Nasze repozytorium</a>
+                        <a href="/integrations" class="footer-link">Integracje</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">Zaufanie</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener"
+                            class="footer-link">Status<span class="sr-only"> (otwiera się w nowej karcie)</span></a>
+                        <a href="transparency" class="footer-link">Przejrzystość</a>
+                        <a href="responsible-disclosure" class="footer-link">Odpowiedzialne ujawnianie</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6>Dla firm</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener"
+                            class="footer-link">xonAPI+</a>
+                        <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener"
+                            class="footer-link">xonEnterprise+</a>
+                        <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener"
+                            class="footer-link">xonThreatIntel+</a>
+                        <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener"
+                            class="footer-link">Cennik</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">Obserwuj nas</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                            <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)<span class="sr-only"> (otwiera
+                                się w nowej karcie)</span>
+                        </a>
+                        <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                            <i class="fab fa-facebook" aria-hidden="true"></i> Facebook<span class="sr-only"> (otwiera się
+                                w nowej karcie)</span>
+                        </a>
+                        <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener"
+                            class="footer-link">
+                            <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon<span class="sr-only"> (otwiera się
+                                w nowej karcie)</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px">
+                <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+                <label class="custom-control-label" for="darkSwitch">Tryb Ciemny</label>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/breach/ids.js"></script>
+    <script>
+        (function () {
+            const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const SLOTS = 8;
+            const FOLDED = new Set(['Miscellaneous', 'Uncategorized']);
+            const OTHER_LABEL = 'Inne';
+
+            let allData = [];
+            let slotByIndustry = new Map();
+            let slotIndustries = [];
+            let recMin = 0;
+            let recMax = 1;
+            let groupMode = 'year';
+            let filter = { kind: 'all' };
+            let searchTerm = '';
+            let bandsIndex = [];
+            let nodeSel = null;
+            let renderedWidth = 0;
+            let floatId = null;
+            let chartVisible = true;
+
+            const chartEl = document.getElementById('chart');
+            const subtitleEl = document.getElementById('pageSubtitle');
+            const summaryEl = document.getElementById('vizSummary');
+            const searchEl = document.getElementById('searchInput');
+            const selectEl = document.getElementById('industrySelect');
+            const legendEl = document.getElementById('vizLegend');
+            const loadingEl = document.getElementById('loadingOverlay');
+
+            function mulberry32(seed) {
+                let a = seed >>> 0;
+                return function () {
+                    a |= 0;
+                    a = (a + 0x6D2B79F5) | 0;
+                    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+                    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+                    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+                };
+            }
+
+            function fmtNum(n) {
+                return d3.format('.3~s')(Math.max(0, n)).replace('G', 'B').replace('k', 'K');
+            }
+
+            function fmtFull(n) {
+                return d3.format(',')(n);
+            }
+
+            function radius(count) {
+                const q = Math.pow(Math.max(count, 1), 0.25);
+                const lo = Math.pow(recMin, 0.25);
+                const hi = Math.pow(recMax, 0.25);
+                const t = hi > lo ? (q - lo) / (hi - lo) : 0.5;
+                return 10 + Math.min(1, Math.max(0, t)) * 54;
+            }
+
+            function displayIndustry(d) {
+                return slotByIndustry.has(d.industry) ? d.industry : OTHER_LABEL;
+            }
+
+            function slotClass(d) {
+                const slot = slotByIndustry.get(d.industry);
+                return slot === undefined ? 's-other' : 's' + slot;
+            }
+
+            function slotVar(d) {
+                const slot = slotByIndustry.get(d.industry);
+                return slot === undefined ? 'var(--s-other)' : 'var(--s' + slot + ')';
+            }
+
+            function breachHref(id) {
+                const hasStatic = window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(id) !== -1;
+                return hasStatic ? '/breach/' + encodeURIComponent(id) : '/breach-detail#' + encodeURIComponent(id);
+            }
+
+            function processData(breaches) {
+                return breaches.map(b => ({
+                    year: new Date(b.breachedDate).getFullYear(),
+                    name: b.breachID,
+                    domain: b.domain || '',
+                    logo: /^https:\/\//.test(b.logo || '') ? b.logo : '',
+                    description: b.exposureDescription || '',
+                    count: b.exposedRecords || 0,
+                    industry: (b.industry || '').trim() || 'Uncategorized'
+                }));
+            }
+
+            function assignSlots(data) {
+                const counts = new Map();
+                data.forEach(d => {
+                    if (FOLDED.has(d.industry)) return;
+                    counts.set(d.industry, (counts.get(d.industry) || 0) + 1);
+                });
+                slotIndustries = Array.from(counts.entries())
+                    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+                    .slice(0, SLOTS)
+                    .map(e => e[0]);
+                slotByIndustry = new Map(slotIndustries.map((name, i) => [name, i]));
+            }
+
+            function buildLegend() {
+                legendEl.textContent = '';
+                const entries = slotIndustries.concat([OTHER_LABEL]);
+                entries.forEach(name => {
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'legend-chip';
+                    chip.setAttribute('aria-pressed', 'false');
+                    chip.dataset.industry = name;
+                    const dot = document.createElement('span');
+                    dot.className = 'legend-dot';
+                    dot.setAttribute('aria-hidden', 'true');
+                    const slot = slotByIndustry.get(name);
+                    dot.style.background = slot === undefined ? 'var(--s-other)' : 'var(--s' + slot + ')';
+                    chip.appendChild(dot);
+                    chip.appendChild(document.createTextNode(name));
+                    chip.addEventListener('click', () => toggleChipFilter(name));
+                    legendEl.appendChild(chip);
+                });
+                const note = document.createElement('span');
+                note.className = 'legend-note';
+                note.textContent = 'Rozmiar bąbelka odpowiada liczbie ujawnionych rekordów. Kliknij etykietę, aby filtrować, kliknij bąbelek, aby zobaczyć pełny raport o wycieku.';
+                legendEl.appendChild(note);
+            }
+
+            function populateIndustrySelect(data) {
+                const names = Array.from(new Set(data.map(d => d.industry))).sort((a, b) => a.localeCompare(b));
+                names.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    selectEl.appendChild(opt);
+                });
+            }
+
+            function bandDefs(data, width, narrow) {
+                const groups = new Map();
+                data.forEach(d => {
+                    const key = groupMode === 'year' ? d.year : displayIndustry(d);
+                    if (!groups.has(key)) groups.set(key, []);
+                    groups.get(key).push(d);
+                });
+                let keys;
+                if (groupMode === 'year') {
+                    keys = Array.from(groups.keys()).sort((a, b) => b - a);
+                } else {
+                    keys = slotIndustries.filter(k => groups.has(k));
+                    if (groups.has(OTHER_LABEL)) keys.push(OTHER_LABEL);
+                }
+                const labelSpace = narrow ? 30 : 0;
+                let cursor = 0;
+                return keys.map((key, bi) => {
+                    const items = groups.get(key);
+                    let maxR = 0;
+                    let area = 0;
+                    items.forEach(d => {
+                        d.r = radius(d.count);
+                        d.labeled = d.r >= 20;
+                        maxR = Math.max(maxR, d.r);
+                        const cr = d.r + (d.labeled ? 10 : 4);
+                        area += Math.PI * cr * cr;
+                    });
+                    const packed = (area * 2.2) / Math.max(width, 300);
+                    const h = Math.min(960, Math.max(150, packed, 2 * maxR + 44)) + labelSpace;
+                    const band = {
+                        key: key,
+                        index: bi,
+                        items: items,
+                        start: cursor,
+                        height: h,
+                        top: cursor + labelSpace,
+                        center: cursor + labelSpace + (h - labelSpace) / 2,
+                        end: cursor + h,
+                        records: items.reduce((s, d) => s + d.count, 0)
+                    };
+                    cursor += h + 8;
+                    return band;
+                });
+            }
+
+            function runLayout(bands, width) {
+                bands.forEach(band => {
+                    const rand = mulberry32(band.index * 7919 + band.items.length);
+                    band.items.forEach((d, i) => {
+                        d.x = width * (0.03 + 0.94 * ((i * 0.618034) % 1));
+                        d.y = band.top + (band.end - band.top) * (0.15 + 0.7 * ((i * 0.381966) % 1));
+                    });
+                    const sim = d3.forceSimulation(band.items);
+                    if (sim.randomSource) sim.randomSource(rand);
+                    sim.force('x', d3.forceX(width / 2).strength(0.028))
+                        .force('y', d3.forceY(band.center).strength(0.16))
+                        .force('collide', d3.forceCollide(d => d.r + (d.labeled ? 10 : 4)).strength(1).iterations(3))
+                        .stop();
+                    const ticks = Math.min(280, 130 + band.items.length * 2);
+                    for (let t = 0; t < ticks; t++) {
+                        sim.tick();
+                        band.items.forEach(d => {
+                            d.x = Math.max(d.r + 2, Math.min(width - d.r - 2, d.x));
+                            const pad = d.labeled ? 18 : 5;
+                            d.y = Math.max(band.top + d.r + 5, Math.min(band.end - d.r - pad, d.y));
+                        });
+                    }
+                    sim.force('x', null).force('y', null).force('collide', null);
+                    band.items.sort((a, b) => a.x - b.x);
+                    band.items.forEach(d => {
+                        d.baseX = d.x;
+                        d.baseY = d.y;
+                        d.band = band.index;
+                    });
+                });
+            }
+
+            function bandLabelLines(band) {
+                const main = String(band.key);
+                const n = band.items.length;
+                const word = n === 1 ? ' wyciek · ' : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? ' wycieki · ' : ' wycieków · ');
+                const sub = n + word + fmtNum(band.records) + ' rekordów';
+                return [main, sub];
+            }
+
+            function render(animate) {
+                stopFloating();
+                d3.select('#chart').selectAll('svg').remove();
+
+                const container = Math.min(1960, chartEl.clientWidth - 40);
+                const narrow = container < 760;
+                const margin = {
+                    top: 16,
+                    right: 20,
+                    bottom: 16,
+                    left: narrow ? 16 : (groupMode === 'year' ? 210 : 225)
+                };
+                const width = Math.max(300, container - margin.left - margin.right);
+                renderedWidth = chartEl.clientWidth;
+
+                bandsIndex = bandDefs(allData, width, narrow);
+                runLayout(bandsIndex, width);
+                const height = bandsIndex.length ? bandsIndex[bandsIndex.length - 1].end : 0;
+
+                const svg = d3.select('#chart').append('svg')
+                    .attr('width', width + margin.left + margin.right)
+                    .attr('height', height + margin.top + margin.bottom);
+
+                const root = svg.append('g')
+                    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+                const bandG = root.append('g');
+                bandsIndex.forEach(band => {
+                    if (band.index > 0) {
+                        bandG.append('line')
+                            .attr('class', 'band-sep')
+                            .attr('x1', narrow ? 0 : -margin.left + 16)
+                            .attr('x2', width)
+                            .attr('y1', band.start - 4)
+                            .attr('y2', band.start - 4);
+                    }
+                    const lines = bandLabelLines(band);
+                    if (narrow) {
+                        const lbl = bandG.append('text')
+                            .attr('x', 2)
+                            .attr('y', band.start + 18);
+                        lbl.append('tspan').attr('class', 'band-label').style('font-size', '14px').text(lines[0]);
+                        lbl.append('tspan').attr('class', 'band-sublabel').attr('dx', 8).text(lines[1]);
+                    } else {
+                        const lbl = bandG.append('text')
+                            .attr('x', -18)
+                            .attr('y', band.center - 2)
+                            .attr('text-anchor', 'end');
+                        lbl.append('tspan').attr('class', 'band-label').attr('x', -18)
+                            .style('font-size', groupMode === 'year' ? null : '14px').text(lines[0]);
+                        lbl.append('tspan').attr('class', 'band-sublabel').attr('x', -18).attr('dy', 16).text(lines[1]);
+                    }
+                });
+
+                const flat = bandsIndex.reduce((acc, b) => acc.concat(b.items), []);
+
+                nodeSel = root.append('g').selectAll('a')
+                    .data(flat)
+                    .enter().append('a')
+                    .attr('class', 'breach')
+                    .attr('href', d => breachHref(d.name))
+                    .attr('target', '_blank')
+                    .attr('rel', 'noopener')
+                    .attr('tabindex', -1)
+                    .attr('aria-label', d => d.name + ', ' + d.year + ', ' + displayIndustry(d) + ', ' + fmtFull(d.count) + ' ujawnionych rekordów (otwiera szczegóły wycieku w nowej karcie)')
+                    .attr('transform', d => 'translate(' + d.baseX + ',' + d.baseY + ')');
+
+                nodeSel.append('circle')
+                    .attr('class', 'hit')
+                    .attr('r', d => Math.max(d.r + 4, 14))
+                    .attr('fill', 'transparent');
+
+                const bubbles = nodeSel.append('circle')
+                    .attr('class', d => 'bubble ' + slotClass(d))
+                    .style('fill', d => slotVar(d))
+                    .style('fill-opacity', 0.92);
+
+                nodeSel.filter(d => d.r >= 13 && d.logo)
+                    .append('image')
+                    .attr('class', 'breach-logo')
+                    .attr('href', d => d.logo)
+                    .attr('x', d => -d.r * 0.55)
+                    .attr('y', d => -d.r * 0.55)
+                    .attr('width', d => d.r * 1.1)
+                    .attr('height', d => d.r * 1.1)
+                    .attr('preserveAspectRatio', 'xMidYMid meet')
+                    .each(function () {
+                        this.addEventListener('error', () => this.remove());
+                    });
+
+                nodeSel.filter(d => d.labeled)
+                    .append('text')
+                    .attr('class', 'breach-name')
+                    .attr('y', d => d.r + 13)
+                    .text(d => d.name.length > 18 ? d.name.slice(0, 17) + '…' : d.name);
+
+                nodeSel.filter(d => d.r >= 30)
+                    .append('text')
+                    .attr('class', 'breach-recs')
+                    .attr('y', d => d.r + 26)
+                    .text(d => fmtNum(d.count) + ' rekordów');
+
+                if (animate && !REDUCED) {
+                    bubbles.attr('r', 0)
+                        .transition()
+                        .delay(d => Math.min(d.band * 60 + 5 * bandsIndex[d.band].items.indexOf(d), 850))
+                        .duration(450)
+                        .ease(d3.easeCubicOut)
+                        .attr('r', d => d.r);
+                    nodeSel.selectAll('image, text')
+                        .style('opacity', 0)
+                        .transition()
+                        .delay(d => Math.min(d.band * 60, 850) + 250)
+                        .duration(400)
+                        .style('opacity', 1);
+                    setTimeout(startFloating, 1600);
+                } else {
+                    bubbles.attr('r', d => d.r);
+                    startFloating();
+                }
+
+                nodeSel
+                    .on('mouseenter', function (event, d) { hoverIn(this, d, event); })
+                    .on('mouseleave', function (event, d) { hoverOut(this, d); })
+                    .on('focus', function (event, d) { hoverIn(this, d, null); })
+                    .on('blur', function (event, d) { hoverOut(this, d); })
+                    .on('keydown', navKeydown);
+
+                observeChart(svg.node());
+                applyFilters(false);
+            }
+
+            const tooltip = d3.select('body').append('div')
+                .attr('class', 'viz-tooltip')
+                .attr('role', 'tooltip');
+
+            function buildTooltip(d) {
+                tooltip.node().style.setProperty('--tip-accent', slotVar(d));
+                tooltip.selectAll('*').remove();
+                const title = tooltip.append('div').attr('class', 'tip-title');
+                title.append('span').text(d.name + ' ');
+                title.append('span').attr('class', 'tip-year').text('(' + d.year + ' · ' + displayIndustry(d) + ')');
+                if (d.logo) {
+                    tooltip.append('img')
+                        .attr('src', d.logo)
+                        .attr('alt', '')
+                        .attr('loading', 'lazy')
+                        .each(function () {
+                            this.addEventListener('error', () => this.remove());
+                        });
+                }
+                if (d.description) {
+                    tooltip.append('p').attr('class', 'tip-desc').text(d.description);
+                }
+                tooltip.append('span').attr('class', 'tip-stats').text('Ujawnione rekordy: ' + fmtFull(d.count));
+                tooltip.append('span').attr('class', 'tip-hint').text('Kliknij, aby zobaczyć pełny raport o wycieku');
+            }
+
+            function placeTooltip(anchorX, anchorY) {
+                const node = tooltip.node();
+                node.style.display = 'block';
+                const rect = node.getBoundingClientRect();
+                const scrollX = window.pageXOffset;
+                const scrollY = window.pageYOffset;
+                let left = anchorX + scrollX - rect.width / 2;
+                left = Math.max(scrollX + 16, Math.min(left, scrollX + window.innerWidth - rect.width - 16));
+                let top;
+                if (anchorY + 24 + rect.height < window.innerHeight - 16) {
+                    top = anchorY + scrollY + 24;
+                } else if (anchorY - 24 - rect.height > 16) {
+                    top = anchorY + scrollY - rect.height - 24;
+                } else {
+                    top = scrollY + Math.max(16, (window.innerHeight - rect.height) / 2);
+                }
+                node.style.left = Math.round(left) + 'px';
+                node.style.top = Math.round(top) + 'px';
+                requestAnimationFrame(() => node.classList.add('show'));
+            }
+
+            function hideTooltip() {
+                const node = tooltip.node();
+                node.classList.remove('show');
+                setTimeout(() => {
+                    if (!node.classList.contains('show')) node.style.display = 'none';
+                }, 200);
+            }
+
+            function hoverIn(el, d, event) {
+                d3.select(el).raise().select('.bubble')
+                    .transition().duration(REDUCED ? 0 : 200)
+                    .attr('r', d.r + 5)
+                    .style('fill-opacity', 1);
+                buildTooltip(d);
+                if (event) {
+                    placeTooltip(event.clientX, event.clientY);
+                } else {
+                    const box = el.getBoundingClientRect();
+                    placeTooltip(box.left + box.width / 2, box.top + box.height / 2);
+                }
+            }
+
+            function hoverOut(el, d) {
+                d3.select(el).select('.bubble')
+                    .transition().duration(REDUCED ? 0 : 200)
+                    .attr('r', d.r)
+                    .style('fill-opacity', 0.92);
+                hideTooltip();
+            }
+
+            function matchesFilter(d) {
+                if (filter.kind === 'industry') return d.industry === filter.name;
+                if (filter.kind === 'other') return !slotByIndustry.has(d.industry);
+                return true;
+            }
+
+            function matchesSearch(d) {
+                if (!searchTerm) return true;
+                return d.name.toLowerCase().includes(searchTerm) || d.domain.toLowerCase().includes(searchTerm);
+            }
+
+            function isVisible(d) {
+                return matchesFilter(d) && matchesSearch(d);
+            }
+
+            function applyFilters(scroll) {
+                if (!nodeSel) return;
+                let visibleCount = 0;
+                let firstEl = null;
+                nodeSel.each(function (d) {
+                    const vis = isVisible(d);
+                    d.visible = vis;
+                    this.classList.toggle('dim', !vis);
+                    this.classList.toggle('hit-match', vis && !!searchTerm);
+                    this.setAttribute('tabindex', -1);
+                    if (vis) {
+                        visibleCount++;
+                        if (!firstEl) firstEl = this;
+                    }
+                });
+                if (firstEl) firstEl.setAttribute('tabindex', 0);
+
+                const totalTxt = fmtFull(allData.length);
+                let desc;
+                if (filter.kind === 'all' && !searchTerm) {
+                    const industries = new Set(allData.map(d => d.industry));
+                    subtitleEl.innerHTML = '';
+                    subtitleEl.appendChild(document.createTextNode('Przeglądasz '));
+                    appendStrong(subtitleEl, totalTxt + ' wycieków');
+                    subtitleEl.appendChild(document.createTextNode(' w '));
+                    appendStrong(subtitleEl, industries.size + ' branżach');
+                    desc = 'Wyświetlono ' + totalTxt + ' wycieków.';
+                } else {
+                    const what = filter.kind === 'industry' ? filter.name : (filter.kind === 'other' ? 'inne branże' : 'wszystkie branże');
+                    subtitleEl.innerHTML = '';
+                    subtitleEl.appendChild(document.createTextNode('Wyświetlono '));
+                    appendStrong(subtitleEl, fmtFull(visibleCount) + ' z ' + totalTxt);
+                    subtitleEl.appendChild(document.createTextNode(' wycieków, ' + what + (searchTerm ? ', pasujących do "' + searchTerm + '"' : '')));
+                    desc = 'Wyświetlono ' + visibleCount + ' z ' + totalTxt + ' wycieków.';
+                }
+                summaryEl.textContent = 'Wykres bąbelkowy wycieków danych pogrupowany według ' + (groupMode === 'year' ? 'roku' : 'branży') + '. ' + desc + ' Rozmiar bąbelków zależy od liczby ujawnionych rekordów, a kolor od branży. Użyj pola wyszukiwania, filtra branż lub etykiet legendy, aby zawęzić widok.';
+
+                legendEl.querySelectorAll('.legend-chip').forEach(chip => {
+                    const name = chip.dataset.industry;
+                    const pressed = (filter.kind === 'industry' && filter.name === name) || (filter.kind === 'other' && name === OTHER_LABEL);
+                    chip.setAttribute('aria-pressed', String(pressed));
+                });
+
+                if (scroll && firstEl && (searchTerm || filter.kind !== 'all')) {
+                    firstEl.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+                }
+            }
+
+            function appendStrong(parent, text) {
+                const s = document.createElement('span');
+                s.textContent = text;
+                parent.appendChild(s);
+            }
+
+            function toggleChipFilter(name) {
+                const isOther = name === OTHER_LABEL;
+                const active = (filter.kind === 'industry' && filter.name === name) || (filter.kind === 'other' && isOther);
+                if (active) {
+                    filter = { kind: 'all' };
+                    selectEl.value = 'all';
+                } else if (isOther) {
+                    filter = { kind: 'other' };
+                    selectEl.value = 'all';
+                } else {
+                    filter = { kind: 'industry', name: name };
+                    selectEl.value = name;
+                }
+                applyFilters(true);
+            }
+
+            function visibleInBand(bandIdx) {
+                return bandsIndex[bandIdx] ? bandsIndex[bandIdx].items.filter(d => d.visible) : [];
+            }
+
+            function focusNode(d) {
+                if (!d) return;
+                nodeSel.each(function (n) {
+                    this.setAttribute('tabindex', n === d ? 0 : -1);
+                    if (n === d) this.focus();
+                });
+            }
+
+            function navKeydown(event, d) {
+                const key = event.key;
+                if (key === ' ') {
+                    event.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href) window.open(href, '_blank', 'noopener');
+                    return;
+                }
+                if (key === 'Escape') {
+                    hideTooltip();
+                    return;
+                }
+                if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(key)) return;
+                event.preventDefault();
+                const row = visibleInBand(d.band);
+                const idx = row.indexOf(d);
+                if (key === 'ArrowLeft') return focusNode(row[Math.max(0, idx - 1)]);
+                if (key === 'ArrowRight') return focusNode(row[Math.min(row.length - 1, idx + 1)]);
+                if (key === 'Home') return focusNode(row[0]);
+                if (key === 'End') return focusNode(row[row.length - 1]);
+                const dir = key === 'ArrowUp' ? -1 : 1;
+                let b = d.band + dir;
+                while (b >= 0 && b < bandsIndex.length) {
+                    const next = visibleInBand(b);
+                    if (next.length) {
+                        const nearest = next.reduce((best, n) => Math.abs(n.baseX - d.baseX) < Math.abs(best.baseX - d.baseX) ? n : best, next[0]);
+                        return focusNode(nearest);
+                    }
+                    b += dir;
+                }
+            }
+
+            function startFloating() {
+                if (REDUCED || floatId) return;
+                nodeSel.each(function (d) {
+                    if (d.phX === undefined) {
+                        d.phX = (d.band * 13 + d.baseX) % 6.28;
+                        d.phY = (d.band * 7 + d.baseY) % 6.28;
+                        d.ampX = 2 + ((d.baseX * 7) % 10) / 5;
+                        d.ampY = 1.5 + ((d.baseY * 11) % 10) / 6;
+                        d.spX = 0.00045 + ((d.baseX * 13) % 10) * 0.00003;
+                        d.spY = 0.00035 + ((d.baseY * 17) % 10) * 0.00003;
+                    }
+                });
+                function tick(now) {
+                    floatId = null;
+                    if (!chartVisible || document.hidden) return;
+                    nodeSel.attr('transform', d => {
+                        const dx = Math.sin(now * d.spX + d.phX) * d.ampX + Math.cos(now * d.spY * 0.6 + d.phY) * 0.7;
+                        const dy = Math.cos(now * d.spY + d.phY) * d.ampY + Math.sin(now * d.spX * 0.7 + d.phX) * 0.5;
+                        return 'translate(' + (d.baseX + dx) + ',' + (d.baseY + dy) + ')';
+                    });
+                    floatId = requestAnimationFrame(tick);
+                }
+                floatId = requestAnimationFrame(tick);
+            }
+
+            function stopFloating() {
+                if (floatId) {
+                    cancelAnimationFrame(floatId);
+                    floatId = null;
+                }
+            }
+
+            let observer = null;
+
+            function observeChart(svgNode) {
+                if (observer) observer.disconnect();
+                if (!('IntersectionObserver' in window)) return;
+                observer = new IntersectionObserver(entries => {
+                    chartVisible = entries[0].isIntersecting;
+                    if (chartVisible) startFloating();
+                }, { rootMargin: '100px' });
+                observer.observe(svgNode);
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) startFloating();
+            });
+
+            let resizeTimer = null;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (Math.abs(chartEl.clientWidth - renderedWidth) > 40 && allData.length) {
+                        render(false);
+                    }
+                }, 300);
+            });
+
+            selectEl.addEventListener('change', function () {
+                filter = this.value === 'all' ? { kind: 'all' } : { kind: 'industry', name: this.value };
+                applyFilters(true);
+            });
+
+            let searchTimer = null;
+            searchEl.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+                const value = this.value.trim().toLowerCase();
+                searchTimer = setTimeout(() => {
+                    searchTerm = value;
+                    applyFilters(false);
+                }, 200);
+            });
+            searchEl.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    searchTerm = this.value.trim().toLowerCase();
+                    applyFilters(true);
+                }
+            });
+
+            const yearBtn = document.getElementById('groupYear');
+            const industryBtn = document.getElementById('groupIndustry');
+
+            function setMode(mode) {
+                if (mode === groupMode || !allData.length) return;
+                groupMode = mode;
+                yearBtn.setAttribute('aria-pressed', String(mode === 'year'));
+                industryBtn.setAttribute('aria-pressed', String(mode === 'industry'));
+                render(false);
+            }
+
+            yearBtn.addEventListener('click', () => setMode('year'));
+            industryBtn.addEventListener('click', () => setMode('industry'));
+
+            const overlay = document.getElementById('infoOverlay');
+            const closeBtn = document.getElementById('closeOverlay');
+            const infoBtn = document.getElementById('infoButton');
+            let lastFocused = null;
+
+            function openOverlay() {
+                lastFocused = document.activeElement;
+                overlay.style.display = 'flex';
+                closeBtn.focus();
+            }
+
+            function closeOverlay() {
+                overlay.style.display = 'none';
+                if (lastFocused) lastFocused.focus();
+            }
+
+            infoBtn.addEventListener('click', openOverlay);
+            closeBtn.addEventListener('click', closeOverlay);
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) closeOverlay();
+            });
+
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    if (overlay.style.display === 'flex') {
+                        closeOverlay();
+                    } else {
+                        hideTooltip();
+                    }
+                    return;
+                }
+                if (overlay.style.display === 'flex' && e.key === 'Tab') {
+                    const focusables = overlay.querySelectorAll('button, [href], input, select');
+                    if (!focusables.length) return;
+                    const first = focusables[0];
+                    const last = focusables[focusables.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            });
+
+            function showLoadError() {
+                loadingEl.innerHTML = '';
+                const wrap = document.createElement('div');
+                wrap.style.textAlign = 'center';
+                const msg = document.createElement('p');
+                msg.className = 'loading-text';
+                msg.textContent = 'Nie udało się wczytać danych o wyciekach. Sprawdź połączenie i spróbuj ponownie.';
+                const btn = document.createElement('button');
+                btn.className = 'retry-btn';
+                btn.type = 'button';
+                btn.textContent = 'Spróbuj ponownie';
+                btn.addEventListener('click', () => window.location.reload());
+                wrap.appendChild(msg);
+                wrap.appendChild(btn);
+                loadingEl.appendChild(wrap);
+                btn.focus();
+            }
+
+            fetch('https://api.xposedornot.com/v1/breaches')
+                .then(r => {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                })
+                .then(apiData => {
+                    allData = processData(apiData.exposedBreaches || []);
+                    if (!allData.length) throw new Error('empty');
+                    const recs = allData.map(d => d.count);
+                    recMin = Math.max(1, Math.min.apply(null, recs));
+                    recMax = Math.max.apply(null, recs);
+                    assignSlots(allData);
+                    buildLegend();
+                    populateIndustrySelect(allData);
+                    render(true);
+                    loadingEl.style.display = 'none';
+                })
+                .catch(() => {
+                    showLoadError();
+                });
+        })();
+    </script>
+
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var footerGroups = document.querySelectorAll('.footer-group h6');
+            footerGroups.forEach(function (header) {
+                function toggle() {
+                    if (window.innerWidth <= 768) {
+                        var group = header.parentElement;
+                        var isActive = group.classList.toggle('active');
+                        header.setAttribute('aria-expanded', isActive);
+                    }
+                }
+                header.addEventListener('click', toggle);
+                header.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pl" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3f71f3">
+    <script src="/static/scripts/session.js"></script>
+    <title>XposedOrNot: Analiza wycieków</title>
+    <meta name="robots" content="noindex, follow">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("darkSwitch") === "dark" ? "dark" : "light");
+    </script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet"
+        integrity="sha256-4W/j2Pv3N5VfbVDhzI8SKzHFHBfaOdZ2CZ1lXfxNofU=" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" rel="stylesheet"
+        integrity="sha256-0uOj/+KTrDONT9qYX1Ce4YkE80nz40ekZmD8bexUj5A=" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet"
+        integrity="sha256-1rL+uuZR+1enoucMBRgnVeoInbOLnMlfvcepxRcO/Q8=" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet"
+        integrity="sha512-XGV/5wp80o12Hi4G56UU4rHw02xfL+vOqNWa7FokGx3kT7nS+iSd1aXWBa2xO3IfQ+3bLn5JGBgmHXeByoiJ2g==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900&display=swap" rel="stylesheet">
+    <link href="/static/css/breach-analysis.css" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+<body>
+
+    <header class="header-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header-left">
+                        <a href="https://XposedOrNot.com" style="text-decoration: none;">
+                            <p>XposedOrNot</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <div class="header-right">
+                        <ul>
+                            <li>
+                                <a href="breach-dashboard.html" class="btn-header-back" id="backToDashboard">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Powrót do panelu
+                                </a>
+                            </li>
+                            <li><a href="api_doc">API</a></li>
+                            <li><a href="faq">FAQ</a></li>
+                            <li>
+                                <a href="https://blog.xposedornot.com/" target="_blank"
+                                    rel="noopener noreferrer">Blog</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="Ładowanie danych o wyciekach">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row mb-4 d-none" id="errorState">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center error-card-body">
+                        <i class="fas fa-exclamation-circle error-icon" aria-hidden="true"></i>
+                        <h1 class="h4" id="errorTitle">Coś poszło nie tak</h1>
+                        <p id="errorMessage"></p>
+                        <a href="breach-dashboard.html" class="btn btn-primary" id="errorBackLink">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> Powrót do panelu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardContent">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="dashboard-header">
+                        <h1>Analiza wycieków</h1>
+                        <p class="dashboard-purpose">Zgłęb każdy wyciek dotyczący Twoich monitorowanych domen, filtruj
+                            według e-maila, domeny lub roku i eksportuj szczegóły dla swojego zespołu bezpieczeństwa.</p>
+                        <p id="headerContext">Ładowanie podsumowania narażenia...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Unikalne wycieki</h2>
+                        <div class="breach-count" id="totalBreaches">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Wskaźnik ryzyka
+                            <button type="button" class="info-tip"
+                                title="Wynik od 0 do 100 oparty na ujawnieniu haseł w unikalnych wyciekach. Wycieki, które ujawniły hasła w postaci jawnej, ważą najwięcej, a hasła silnie haszowane najmniej."
+                                aria-label="Jak obliczany jest wskaźnik ryzyka: wynik od 0 do 100 oparty na ujawnieniu haseł w unikalnych wyciekach. Wycieki, które ujawniły hasła w postaci jawnej, ważą najwięcej, a hasła silnie haszowane najmniej.">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                        </h2>
+                        <div class="risk-score" id="riskScore">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-tile">
+                        <h2>Ujawnione e-maile</h2>
+                        <div class="email-count" id="uniqueEmails">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Zalecane działania</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="actions-list" id="actionsList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Filtry</h2>
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="clearAllFilters">
+                                <i class="fas fa-times" aria-hidden="true"></i> Wyczyść wszystkie filtry
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-row">
+                                <div class="filter-col">
+                                    <label for="emailFilter" class="form-label">Adres e-mail</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="emailFilter"
+                                            placeholder="Wpisz, aby wyszukać e-maile..." autocomplete="off">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearEmailFilter"
+                                            aria-label="Wyczyść filtr e-maili">
+                                            <i class="bi bi-x" aria-hidden="true"></i> Wyczyść
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="domainFilter" class="form-label">Domena</label>
+                                    <select class="form-select" id="domainFilter">
+                                        <option value="">Wszystkie domeny</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="yearFilter" class="form-label">Rok wycieku</label>
+                                    <select class="form-select" id="yearFilter">
+                                        <option value="">Wszystkie lata</option>
+                                    </select>
+                                </div>
+                                <div class="filter-col">
+                                    <label for="breachFilter" class="form-label">Typ wycieku</label>
+                                    <select class="form-select" id="breachFilter">
+                                        <option value="">Wszystkie wycieki</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">Narażenie w czasie</h2>
+                            <small class="text-muted">Ujawnienia e-maili według roku wycieku</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-chart-wrap">
+                                <canvas id="trendChart" role="img"
+                                    aria-label="Wykres słupkowy ujawnień e-maili według roku wycieku"></canvas>
+                            </div>
+                            <p id="trendEmpty" class="empty-note text-center d-none">Żadne wycieki nie pasują do bieżących
+                                filtrów.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">10 największych wycieków</h2>
+                            <small class="text-muted">Według liczby ujawnionych e-maili</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topBreachesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Wyciek</th>
+                                            <th>Ujawnione e-maile</th>
+                                            <th>Ryzyko haseł</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-0">10 najbardziej ujawnionych e-maili</h2>
+                            <small class="text-muted">Według liczby wycieków</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="topEmailsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>E-mail</th>
+                                            <th>Wycieki</th>
+                                            <th>Domeny</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">Szczegóły wycieków</h2>
+                        </div>
+                        <div class="card-body">
+                            <table id="breachTable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>E-mail</th>
+                                        <th>Domena</th>
+                                        <th>Wyciek</th>
+                                        <th>Data wycieku</th>
+                                        <th>Ujawnione dane</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <h2 class="h5 mb-0">Mapa domen i wycieków</h2>
+                                <span class="badge bg-info text-dark" id="filterBadge" style="display: none;">Widok
+                                    filtrowany</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary" type="button" id="resetVisualization"
+                                    style="display: none;" aria-label="Zresetuj widok">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    <span>Zresetuj widok</span>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary collapsed" type="button"
+                                    id="toggleVisualization" aria-expanded="false" aria-controls="visualizationCard"
+                                    aria-label="Rozwiń wizualizację">
+                                    <i class="fas fa-chevron-down" id="vizToggleIcon" aria-hidden="true"></i>
+                                    <span id="vizToggleText">Rozwiń</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body collapsed" id="visualizationCard">
+                            <div class="viz-legend">
+                                <span class="legend-item"><span class="legend-dot legend-domain"
+                                        aria-hidden="true"></span>Domena</span>
+                                <span class="legend-item"><span class="legend-dot legend-breach"
+                                        aria-hidden="true"></span>Wyciek</span>
+                                <span class="legend-item"><span class="legend-dot legend-email"
+                                        aria-hidden="true"></span>E-mail</span>
+                                <div class="viz-zoom-controls btn-group" role="group" aria-label="Sterowanie powiększeniem mapy">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomIn"
+                                        aria-label="Powiększ">
+                                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomOut"
+                                        aria-label="Pomniejsz">
+                                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="zoomFit"
+                                        aria-label="Dopasuj mapę do widoku">
+                                        <i class="fas fa-expand" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="viz-hint">Kliknij węzeł domeny lub wycieku, aby odsłonić ujawnione konta e-mail.
+                                Przeciągnij, aby przesunąć, użyj przycisków powiększenia lub Ctrl i przewijania, aby powiększyć.</p>
+                            <p id="vizEmpty" class="empty-note text-center d-none">Brak danych do wizualizacji dla bieżących
+                                filtrów.</p>
+                            <div id="visualization"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"
+        integrity="sha512-6UofPqm0QupIL0kzS/UIzekR73/luZdC6i/kXDbWnLOJoqwklBK6519iUnShaYceJ0y4FaiPtX/hRnV/X/xlUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
+        integrity="sha512-VK2zcvntEufaimc+efOYi622VN5ZacdnufnmX7zIhCPmjhKnOi9ZDMtg1/ug5l183f19gG1/cBstPO4D8N/Img==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"
+        integrity="sha256-JDYsFFqB4eL9lRhcQwDSWVr7LK3Z8VgMLdzpW8GbIIQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"
+        integrity="sha256-3iXHrfSd4xzI1YyrooF0jG4OVwGiSAoU1+WdYwEwYZk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"
+        integrity="sha256-2UuioIj7ONSCZ/oWLTybD72Ngiql1ZOll4z5zjqIRDo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"
+        integrity="sha256-nroMpWKYJcftREE92iVGOgvIyBB5T3K3sOuTseQx7HQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"
+        integrity="sha256-h3KvT6d6XdpSb29/dF6DxtCul3gDqOQ2MJAnQb+RA30=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"
+        integrity="sha256-fxJmiDt8K09elieA/J28vsEvSsmFgGUvoLsEgH/uUx4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"
+        integrity="sha256-Kd8QDM9jqFmpd0R+KkPsGIWl+NBtG7iKlSNXmVRGPss=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"
+        integrity="sha256-8qpfNjLKRiQaMsj2vqPFBZ/jbtoTLNWUmB0ohw32BEE=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <div class="back-btn-wrapper">
+        <a href="breach-dashboard.html" class="btn-back-dashboard" id="bottomBackToDashboard">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            <span>Powrót do panelu</span>
+        </a>
+    </div>
+
+    <div class="footer">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:30px;">
+          <p>Dołącz do nas i współtwórz tę w pełni otwartą stronę! Wkład mile widziany ❤️ na naszym <a
+                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h6>Informacje prawne</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Polityka prywatności</a>
+            <a href="terms" class="footer-link">Warunki</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Społeczność</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">O nas</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+            <a href="our-repository" class="footer-link">Nasze repozytorium</a>
+            <a href="/integrations" class="footer-link">Integracje</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Zaufanie</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Przejrzystość</a>
+              <a href="responsible-disclosure" class="footer-link">Odpowiedzialne ujawnianie</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Dla firm</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+              <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+              <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+              <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Cennik</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h6>Obserwuj nas</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
+            </a>
+            <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
+            </a>
+            <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+              <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
+            </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-check form-switch footer-theme-toggle">
+          <input class="form-check-input" type="checkbox" role="switch" id="darkSwitch" />
+          <label class="form-check-label" for="darkSwitch">Tryb Ciemny</label>
+        </div>
+      </div>
+    </div>
+
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script src="/static/scripts/common.js"></script>
+    <script src="/static/scripts/breach-analysis.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#3f71f3">
+  <title>XposedOrNot: Sprawdź domeny phishingowe wymierzone w Twoją markę</title>
+  <meta name="description"
+    content="Sprawdź z XposedOrNot, czy Twoja domena ma phishingowe podróbki. Otrzymaj szczegółowy raport o potencjalnych domenach phishingowych wymierzonych w Twoją markę." />
+  <meta name="author" content="Devanand Premkumar">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+  <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+  <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+  <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+  <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+  <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://static.hotjar.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta content="XposedOrNot: Sprawdź domeny phishingowe wymierzone w Twoją markę" property="og:title">
+  <meta property="og:image" content="https://xposedornot.com/static/images/xon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@XposedOrNot">
+  <meta name="twitter:creator" content="@DevaOnBreaches">
+  <meta name="twitter:title" content="Sprawdź domeny phishingowe wymierzone w Twoją markę">
+  <meta name="twitter:description"
+    content="Sprawdź z XposedOrNot, czy Twoja domena ma phishingowe podróbki. Otrzymaj szczegółowy raport o potencjalnych domenach phishingowych wymierzonych w Twoją markę.">
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+  <script src="https://kit.fontawesome.com/00d920835c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset&display=swap"
+    type="text/css" media="all">
+  <link rel="Devanand Premkumar" href="/humans.txt">
+  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/static/scripts/libs/confetti.browser.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <link href="/static/css/style-domain.css" type="text/css" rel="stylesheet">
+  <link href="/static/css/responsive.css" type="text/css" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+<body>
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+  <div class="overlay"></div>
+  <div id="content" class="blurred">
+    <div>
+      <div class="header">
+        <div class="grid">
+          <div class="header-row">
+            <a href="./">XposedOrNot</a>
+            <div class="header-right">
+              <ul>
+                <li><a href="password">Hasło</a></li>
+                <li><a href="faq">FAQ</a></li>
+                <li><a href="xonPulse">Aktualności</a></li>
+                <li><a href="api_doc">API</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu">
+        <nav class="navbar">
+          <a class="navbar-brand" href="./">XposedOrNot</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Przełącz nawigację">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon icon-last"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link active" href="#">Hasło<span class="sr-only">(bieżąca)</span></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Aktualności</a></li>
+              <li class="nav-item  last lang"><a class="nav-link" href="#">API</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="banner">
+        <div class="grid">
+          <div class="banner-row">
+            <h1>Nasze skanowanie wykryło <span>potencjalne domeny phishingowe</span><br> wymierzone w Twoją markę</h1>
+          </div>
+        </div>
+      </div>
+      <div class="sec3">
+        <div class="grid">
+          <div class="sec3-row">
+            <h4>Raport domen phishingowych dla : <b id="domain-display"></b>
+              </b><img id="logo" src="" alt="Logo" width="120"></h4>
+            <div class="updt">
+              <p>Ostatnie skanowanie: <span id="last-exposure"></span></p>
+            </div>
+          </div>
+          <div class="sec3-flex">
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="/static/images/close-circle.png" alt="">
+                </div>
+                <h4 id="breach-count">--</h4>
+                <h5>Łącznie przeskanowano</h5>
+              </div>
+            </div>
+            <div class="web-bx1" id="live-domains-box">
+              <span id="fire-emoji" class="fire-indicator">🔥</span>
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="/static/images/document-text.png" alt="">
+                </div>
+                <h4 id="record-count">--</h4>
+                <h5>Aktywne domeny</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="/static/images/sms.png" alt="">
+                </div>
+                <h4 id="email-count">-</h4>
+                <h5>Unikalne fuzzery</h5>
+              </div>
+            </div>
+            <div class="web-bx1 web-bx4">
+              <div id="chart_div" style="width: 150px; height: 150px;"></div>
+            </div>
+          </div>
+          <div id="note" class="text-center mt-3" style="display: none; color: white; text-align: left !important;">
+            <small>* Raport pokazuje potencjalne domeny phishingowe, które są obecnie aktywne. Zweryfikuj własność domeny,
+              aby zobaczyć szczegółowe informacje DNS i WHOIS.</small>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sec4">
+        <div class="grid">
+          <div class="sec4-row">
+            <div class="sec4-text">
+              <img src="/static/images/lock.png" class="img-responsive lock" alt="">
+              <h4>Ta zawartość jest zablokowana, zweryfikuj własność domeny, aby ją zobaczyć.</h4>
+              <a href="domain" target="_blank" class="verify-btn">Zweryfikuj teraz</a>
+            </div>
+          </div>
+        </div>
+        <div align="center"><button type="button" class="btn-modern mt-4" id="checkAnotherDomainBtn"><i class="fas fa-search"></i>Sprawdź inną domenę</button></div>
+      </div>
+      <div align="center"><a href="https://logo.dev" alt="Logo API">Loga dostarcza Logo.dev</a></div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="Zamknij i wróć do strony głównej">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="modal-body domain-modal-body">
+          <form id="domainForm" autocomplete="off">
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">Sprawdź domeny phishingowe</h5>
+              <p class="domain-modal-desc">Skanuj w poszukiwaniu podobnych domen, które mogą podszywać się pod Twoją markę.</p>
+              <label for="domainInput" class="sr-only">Nazwa domeny</label>
+              <input type="text" class="domain-modal-input" id="domainInput" placeholder="example.com" required>
+              <div class="invalid-feedback">
+                Podaj prawidłową nazwę domeny.
+              </div>
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
+                Skanuj domenę
+              </button>
+              <div id="scanProgress" style="display:none; margin-top: 20px;">
+                <div class="scan-status">
+                  <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span id="scanMessage" class="scan-message">Inicjowanie skanowania...</span>
+                </div>
+                <div class="progress-container">
+                  <div class="progress-bar-wrapper">
+                    <div id="progressBar" class="progress-bar-fill"></div>
+                  </div>
+                </div>
+              </div>
+              <div id="errorMessage" class="error-message" style="display:none;"></div>
+            </div>
+          </form>
+          <div id="noBreachMessage" style="display: none;">
+            <div class="domain-modal-inner">
+              <i class="fas fa-shield-alt fa-3x text-success"></i>
+              <h4 class="text-success mt-3">Nie znaleziono domen phishingowych dla <span id="searchedDomain"
+                  class="font-weight-bold"></span>!</h4>
+              <p>Twoja domena wygląda na bezpieczną od phishingowych podróbek.</p>
+              <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>Sprawdź inną domenę</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:30px;">
+        <p>Dołącz do nas i współtwórz tę w pełni otwartą stronę! Wkład mile widziany ❤️ na naszym <a
+              href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-group">
+          <h6>Prawne</h6>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Polityka prywatności</a>
+          <a href="terms" class="footer-link">Regulamin</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>Społeczność</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">O nas</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+          <a href="our-repository" class="footer-link">Nasze repozytorium</a>
+          <a href="/integrations" class="footer-link">Integracje</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>Zaufanie</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="transparency" class="footer-link">Przejrzystość</a>
+              <a href="responsible-disclosure" class="footer-link">Odpowiedzialne ujawnianie</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>Dla firm</h6>
+          <div class="footer-links-wrapper">
+            <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+            <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+            <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+            <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Cennik</a>
+          </div>
+        </div>
+        <div class="footer-group">
+          <h6>Obserwuj nas</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-twitter"></i> Twitter (X)
+          </a>
+          <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-facebook"></i> Facebook
+          </a>
+          <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-mastodon"></i> Mastodon
+          </a>
+            </div>
+          </div>
+      </div>
+
+      <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
+        <input type="checkbox" class="custom-control-input" id="darkSwitch">
+        <label class="custom-control-label" for="darkSwitch">Tryb Ciemny</label>
+      </div>
+    </div>
+  </div>
+
+  <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+  <script src="/static/scripts/domains-phishing.js"></script>
+  <script src="/static/scripts/common.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>

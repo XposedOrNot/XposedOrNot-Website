@@ -1,0 +1,1164 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>XposedOrNot - Weryfikacja domeny | Monitorowanie wycieków danych</title>
+    <meta name="theme-color" content="#3f71f3">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+    <meta
+      name="description"
+      content="Zweryfikuj własność swojej domeny, aby uzyskać dostęp do kompleksowego monitorowania wycieków danych. Dostępnych jest wiele metod weryfikacji, w tym weryfikacja DNS i pliku HTML."
+    />
+    <meta
+      name="keywords"
+      content="weryfikacja domeny, monitorowanie wycieków danych, cyberbezpieczeństwo, weryfikacja DNS, weryfikacja HTML, bezpieczeństwo strony"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xposedornot.com/pl/domain" />
+    <meta property="og:title" content="XposedOrNot - Weryfikacja domeny" />
+    <meta
+      property="og:description"
+      content="Bezpieczny proces weryfikacji domeny dla usługi monitorowania wycieków danych XposedOrNot. Chroń swoją domenę dzięki alertom o wyciekach w czasie rzeczywistym."
+    />
+    <meta
+      property="og:image"
+      content="https://xposedornot.com/static/images/xon-og.png"
+    />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://xposedornot.com/domain"
+    />
+    <meta
+      property="twitter:title"
+      content="XposedOrNot - Weryfikacja domeny"
+    />
+    <meta
+      property="twitter:description"
+      content="Zabezpiecz swoją domenę dzięki kompleksowemu monitorowaniu wycieków danych XposedOrNot. Prosty proces weryfikacji z wieloma metodami."
+    />
+    <meta
+      property="twitter:image"
+      content="https://xposedornot.com/static/images/xon-og.png"
+    />
+
+    <link rel="canonical" href="https://xposedornot.com/pl/domain" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/domain" />
+    <link rel="alternate" hreflang="ta" href="https://xposedornot.com/ta/domain" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/domain" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "XposedOrNot - Weryfikacja domeny",
+        "description": "Bezpieczny proces weryfikacji domeny dla usługi monitorowania wycieków danych. Wiele metod weryfikacji, w tym weryfikacja DNS i pliku HTML.",
+        "publisher": {
+          "@type": "Organization",
+          "name": "XposedOrNot",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://xposedornot.com/static/images/logo.png"
+          }
+        },
+        "mainEntity": {
+          "@type": "HowTo",
+          "name": "Proces weryfikacji domeny",
+          "description": "Kroki weryfikacji własności domeny na potrzeby monitorowania wycieków danych",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "name": "Podaj domenę",
+              "text": "Podaj nazwę swojej domeny do weryfikacji"
+            },
+            {
+              "@type": "HowToStep",
+              "name": "Wybierz metodę",
+              "text": "Wybierz metodę weryfikacji: DNS lub plik HTML"
+            },
+            {
+              "@type": "HowToStep",
+              "name": "Zakończ weryfikację",
+              "text": "Wykonaj kroki właściwe dla wybranej metody weryfikacji"
+            }
+          ]
+        }
+      }
+    </script>
+
+    <meta name="author" content="Devanand Premkumar" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+    <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+    <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap"
+      type="text/css"
+      media="all"
+    />
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.css"
+      integrity="sha512-asx/ybAODdXFwxJdEHxddlVX1jXadezKmKu89YvodVg3VQWEKAi30yd4f3r8V3pljdyACyE7IJCy6mrKuDOXjQ=="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"
+      integrity="sha512-mRgivjjOpF/Ist1xO+QU11jjbBqp0VPxQQKQgKU0kaNX4Nwa+Zooyyw39TBJWwEbF0uDaZSs3DukSErXMuRboQ=="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/domain.css" type="text/css" rel="stylesheet" />
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+  <body class="domain-page">
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+    <a class="skip-link" href="#main-content">Przejdź do głównej treści</a>
+
+    <div class="banner domain-banner">
+      <div class="grid">
+        <nav
+          class="navbar navbar-expand-md navbar-dark justify-content-center"
+          aria-label="Nawigacja główna"
+        >
+          <a
+            class="navbar-brand abs"
+            href="/pl/"
+            style="text-decoration: none"
+          >
+            <span
+              style="
+                font-size: 1.5em;
+                font-weight: bold;
+                display: block;
+                color: white;
+              "
+              >XposedOrNot</span
+            >
+            <span
+              style="
+                font-size: 0.9em;
+                display: block;
+                color: rgba(255, 255, 255, 0.95);
+                margin-top: -8px;
+              "
+              >Community Edition</span
+            >
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsingNavbar"
+            aria-controls="collapsingNavbar"
+            aria-expanded="false"
+            aria-label="Przełącz menu nawigacji"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="collapsingNavbar">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="password">Hasło</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="api_doc">API</a>
+              </li>
+              <li class="nav-item active px-4">
+                <a class="nav-link" href="https://blog.xposedornot.com/"
+                  >Blog</a
+                >
+              </li>
+              <li class="nav-item dropdown active px-4">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Więcej narzędzi <i class="fas fa-caret-down" aria-hidden="true"></i>
+                </a>
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="navbarDropdownMenuLink"
+                >
+                  <a class="dropdown-item" href="xposed"><i class="fas fa-database" aria-hidden="true"></i> Ujawnione wycieki</a>
+                  <a class="dropdown-item" href="shield"><i class="fas fa-shield-alt" aria-hidden="true"></i> Tarcza prywatności</a>
+                  <a class="dropdown-item" href="domain"><i class="fas fa-check-circle" aria-hidden="true"></i> Weryfikacja domeny</a>
+                  <a class="dropdown-item" href="domains"><i class="fas fa-search" aria-hidden="true"></i> Wyszukiwanie na poziomie domeny</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="container" style="text-align: center; position: relative">
+        <h1 class="domain-hero-title">Weryfikacja i walidacja domeny</h1>
+        <p class="hero-subtitle">
+          Zweryfikuj własność swojej domeny i uzyskaj dostęp do monitorowania wycieków w <strong>trzech prostych krokach</strong>.
+        </p>
+      </div>
+    </div>
+
+    <main id="main-content">
+      <div class="domain-content">
+
+        <div id="div_input">
+          <div
+            class="alert alert-primary"
+            style="border-radius: 8px; border: 2px solid #6daae0"
+          >
+            <h4 class="mb-3">Weryfikacja domeny</h4>
+            <p>
+              Aby zweryfikować własność domeny i uzyskać dostęp do monitorowania
+              wycieków, wykonaj te proste kroki:
+            </p>
+            <div class="verification-steps">
+              <ol>
+                <li>Wpisz poniżej nazwę swojej domeny</li>
+                <li>
+                  Wybierz preferowaną metodę weryfikacji:
+                  <ul>
+                    <li>
+                      <i class="fas fa-envelope" aria-hidden="true"></i>
+                      <strong>Weryfikacja e-mail</strong> - Najłatwiejsza metoda (2
+                      min)
+                    </li>
+                    <li>
+                      <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                      <strong>Weryfikacja DNS</strong> - Najbezpieczniejsza metoda (10
+                      min)
+                      <a
+                        href="https://blog.xposedornot.com/data-breach-monitoring-simplified-dns-verification/"
+                        target="_blank"
+                        rel="noopener"
+                        class="guide-link"
+                        title="Zobacz przewodnik weryfikacji DNS"
+                      >
+                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        <span class="sr-only">Przewodnik weryfikacji DNS (otwiera się w nowej karcie)</span>
+                      </a>
+                    </li>
+                    <li>
+                      <i class="fas fa-file-code" aria-hidden="true"></i>
+                      <strong>Weryfikacja HTML</strong> - Metoda alternatywna (15
+                      min)
+                      <a
+                        href="https://blog.xposedornot.com/html-verification/"
+                        target="_blank"
+                        rel="noopener"
+                        class="guide-link"
+                        title="Zobacz przewodnik weryfikacji HTML"
+                      >
+                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        <span class="sr-only">Przewodnik weryfikacji HTML (otwiera się w nowej karcie)</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>Postępuj zgodnie z instrukcjami dla wybranej metody</li>
+              </ol>
+            </div>
+          </div>
+          <form id="defaultForm" method="post" role="form" onload="choices()">
+            <div class="form-group domain-input-container">
+              <input
+                type="text"
+                class="form-control input-nl2 name domain-input"
+                id="eventName"
+                name="name"
+                autocapitalize="off"
+                autocorrect="off"
+                data-val="true"
+                data-val-maxlength="Maksimum to tylko 255 ! "
+                data-val-minlength-min="4"
+                maxlength="255"
+                placeholder="Wpisz nazwę swojej domeny (np. example.com)"
+                spellcheck="false"
+                autofocus="true"
+                aria-label="Nazwa domeny"
+              />
+            </div>
+            <br />
+            <div style="text-align: center">
+              <button id="alertMe" type="submit" class="btn btn-primary btn-lg">
+                Rozpocznij proces weryfikacji
+                <span id="alertMe_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
+            </div>
+            <div id="status" style="text-align: center" hidden="false">
+              <button class="btn btn-primary btn-lg">
+                Inicjowanie weryfikacji ...
+                <em class="fa fa-spinner fa-spin" aria-hidden="true"></em>
+              </button>
+            </div>
+            <input type="hidden" name="hid1" id="hid1" readonly />
+          </form>
+        </div>
+
+        <div id="div_s1">
+          <div style="text-align: center" id="lbl_1">
+            <div id="d1"></div>
+          </div>
+          <div
+            class="selectContainer"
+            id="s1"
+          >
+            <label
+              id="label_srategy"
+              for="strat"
+            >
+              <i class="fas fa-check-circle" aria-hidden="true"></i>
+              Zweryfikuj
+              <span
+                class="domain-label"
+                id="domain-display"
+                >example.com</span
+              >
+            </label>
+            <p class="verification-method-hint">Wybierz poniżej preferowaną metodę weryfikacji</p>
+            <select
+              name="strat"
+              id="strat"
+              class="form-control input-nl2 verification-select"
+              data-style="btn-primary"
+              aria-label="Wybierz metodę weryfikacji"
+            >
+              <option value="ver" selected>
+                Wybierz jedną z dostępnych metod ...
+              </option>
+              <option value="email">Walidacja przez e-mail</option>
+              <option value="dns_txt">Walidacja przez rekord TXT DNS</option>
+              <option value="html">Walidacja przez stronę HTML</option>
+            </select>
+            <br />
+          </div>
+        </div>
+
+        <div
+          class="v2-verify-card"
+          role="alert"
+          id="div_dns"
+        >
+          <div class="v2-verify-header">
+            <i class="fas fa-shield-alt fa-2x" aria-hidden="true"></i>
+            <div>
+              <h5 class="mb-0">Weryfikacja DNS TXT</h5>
+              <span class="v2-verify-badge v2-badge-warning">Zaawansowana</span>
+            </div>
+          </div>
+          <p class="v2-verify-desc">
+            Utwórz tymczasowy rekord TXT w swoim DNS, jak pokazano poniżej.
+            <a
+              href="https://blog.xposedornot.com/data-breach-monitoring-simplified-dns-verification/"
+              target="_blank"
+              rel="noopener"
+              >Zobacz przewodnik <i class="fas fa-external-link-alt" aria-hidden="true"></i><span class="sr-only"> (otwiera się w nowej karcie)</span></a
+            >
+          </p>
+          <div class="v2-verify-notice v2-notice-warning">
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            <div>
+              <strong>Ważne uwagi:</strong>
+              <ul>
+                <li>Pozostaw tę stronę otwartą podczas całego procesu weryfikacji</li>
+                <li>Klucze weryfikacyjne zmieniają się przy każdej próbie - zawsze używaj najnowszego wyświetlonego klucza</li>
+                <li>Poczekaj na propagację DNS (może potrwać 10-30 minut)</li>
+                <li>Użyj <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (otwiera się w nowej karcie)</span></a>, aby potwierdzić, że Twój rekord TXT jest widoczny, zanim klikniesz weryfikuj</li>
+              </ul>
+            </div>
+          </div>
+          <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="edhu_dns" class="v2-field-label">Rekord DNS TXT</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  autocapitalize="off"
+                  data-val="true"
+                  data-val-maxlength="Maksimum to tylko 255 ! "
+                  data-val-maxlength-max="255"
+                  data-val-minlength="Minimum to &#39;3&#39;!"
+                  data-val-minlength-min="3"
+                  id="edhu_dns"
+                  maxlength="255"
+                  name="edhu_dns"
+                  autofocus="true"
+                  readonly
+                />
+                <button
+                  class="btn btn-outline-primary copy-btn"
+                  type="button"
+                  data-clipboard-target="#edhu_dns"
+                  aria-label="Skopiuj rekord DNS TXT"
+                >
+                  <i class="fas fa-copy" aria-hidden="true"></i> Kopiuj
+                </button>
+              </div>
+            </div>
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">Twój adres e-mail</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="Adres e-mail do otrzymania ujawnionych danych"
+                  aria-label="Adres e-mail do weryfikacji DNS"
+                />
+                <button
+                  type="submit"
+                  id="searchMe_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                >
+                  Zweryfikuj
+                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+
+        <div
+          class="alert alert-primary"
+          role="alert"
+          id="div_meta"
+          style="text-align: center; border-radius: 8px; border: 2px solid #6daae0"
+        >
+          <strong>Walidacja przez tag META.!</strong> Utwórz tymczasowy
+          tag META na swojej stronie głównej, jak pokazano poniżej. <br />
+          <br />
+          <form id="meta_form" method="post">
+            <div class="input-group" id="div2">
+              <span class="input-group-addon">
+                <em class="fa fa-bullseye" aria-hidden="true"></em>
+              </span>
+              <input
+                class="form-control input-lg"
+                autocapitalize="off"
+                data-val="true"
+                data-val-maxlength="Maksimum to tylko 255 ! "
+                data-val-maxlength-max="255"
+                data-val-minlength="Minimum to &#39;3&#39;!"
+                data-val-minlength-min="3"
+                id="edhu_meta"
+                maxlength="255"
+                name="edhu_meta"
+                autofocus="true"
+                readonly
+              />
+            </div>
+            <br />
+            <div style="text-align: left" class="input-group">
+              <input
+                class="form-control input-lg"
+                type="text"
+                id="txt_email_m"
+                placeholder="Adres e-mail do otrzymania ujawnionych danych"
+                aria-label="Adres e-mail do weryfikacji meta"
+              />
+              <span class="input-group-btn">
+                <button
+                  type="submit"
+                  id="searchMe_m"
+                  class="btn btn-lg btn-primary"
+                >
+                  Zweryfikuj &nbsp;
+                  <span id="searchMe_m_i1" class="glyphicon glyphicon-ok"></span>
+                </button>
+              </span>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+
+        <div
+          class="v2-verify-card"
+          role="alert"
+          id="div_html"
+        >
+          <div class="v2-verify-header">
+            <i class="fas fa-file-code fa-2x" aria-hidden="true"></i>
+            <div>
+              <h5 class="mb-0">Weryfikacja pliku HTML</h5>
+              <span class="v2-verify-badge v2-badge-info">Proste przesłanie</span>
+            </div>
+          </div>
+          <p class="v2-verify-desc">
+            Prześlij plik weryfikacyjny do katalogu głównego swojej strony.
+            <a
+              href="https://blog.xposedornot.com/html-verification/"
+              target="_blank"
+              rel="noopener"
+              >Zobacz przewodnik <i class="fas fa-external-link-alt" aria-hidden="true"></i><span class="sr-only"> (otwiera się w nowej karcie)</span></a
+            >
+          </p>
+          <div class="v2-verify-notice v2-notice-info">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <div>
+              <strong>Proste kroki:</strong>
+              <ul>
+                <li>Utwórz nowy plik o dokładnie takiej nazwie, jak pokazano poniżej</li>
+                <li>Skopiuj kod weryfikacyjny dokładnie tak, jak pokazano</li>
+                <li>Prześlij ten plik do katalogu głównego swojej strony</li>
+                <li>Plik powinien być dostępny pod adresem: <code>https://yourdomain.com/[filename-below]</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="v2-verify-url-box">
+            <i class="fas fa-link" aria-hidden="true"></i>
+            <strong>Twój adres URL weryfikacji:</strong>
+            <span id="html_text"></span>
+            <a
+              href="#"
+              id="verify_link"
+              target="_blank"
+              rel="noopener"
+              class="verify-arrow"
+              title="Otwórz adres URL weryfikacji w nowym oknie"
+            >
+              <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+              <span class="sr-only">Otwórz adres URL weryfikacji (otwiera się w nowej karcie)</span>
+            </a>
+          </div>
+
+          <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="edhu_html_filename" class="v2-field-label">Nazwa pliku</label>
+              <div class="v2-field-row">
+                <input
+                  type="text"
+                  class="form-control input-lg v2-field-input"
+                  data-val="true"
+                  id="edhu_html_filename"
+                  name="edhu_html_filename"
+                  readonly
+                />
+                <button
+                  class="btn btn-outline-primary copy-btn"
+                  type="button"
+                  data-clipboard-target="#edhu_html_filename"
+                  aria-label="Skopiuj nazwę pliku"
+                >
+                  <i class="fas fa-copy" aria-hidden="true"></i> Kopiuj
+                </button>
+              </div>
+            </div>
+            <div class="v2-field-group">
+              <label for="edhu_html_filecontent" class="v2-field-label">Zawartość pliku</label>
+              <div class="v2-field-row">
+                <input
+                  type="text"
+                  class="form-control input-lg v2-field-input"
+                  data-val="true"
+                  id="edhu_html_filecontent"
+                  name="edhu_html_filecontent"
+                  readonly
+                />
+                <button
+                  class="btn btn-outline-primary copy-btn"
+                  type="button"
+                  data-clipboard-target="#edhu_html_filecontent"
+                  aria-label="Skopiuj zawartość pliku"
+                >
+                  <i class="fas fa-copy" aria-hidden="true"></i> Kopiuj
+                </button>
+              </div>
+            </div>
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">Twój adres e-mail</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="Adres e-mail do otrzymania ujawnionych danych"
+                  aria-label="Adres e-mail do weryfikacji HTML"
+                />
+                <button
+                  type="submit"
+                  id="searchMe_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Zweryfikuj <i class="fas fa-check" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+
+        <div
+          class="alert alert-danger"
+          role="alert"
+          id="dang"
+          style="text-align: center"
+        ></div>
+
+        <div
+          class="alert alert-primary"
+          role="alert"
+          id="div_email"
+          style="text-align: center; border-radius: 8px; border: 2px solid #6daae0"
+        >
+          <div class="verification-info">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-envelope fa-2x text-primary mr-2" aria-hidden="true"></i>
+              <h5 class="mb-0">Weryfikacja e-mail</h5>
+              <span class="badge badge-success ml-2">Najłatwiejsza metoda</span>
+            </div>
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>Jak to działa:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  Wysyłamy jednorazowy link na <strong>jeden z tych 5 adresów</strong>
+                  w Twojej domenie:
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ or hostmaster@example.com<!--/email_off-->.
+                </li>
+                <li>Wybierz adres, do którego masz dostęp, aby otrzymać link.</li>
+                <li>
+                  Podaj e-mail do monitorowania <strong>w tej samej domenie</strong>, aby
+                  otrzymywać alerty o wyciekach.
+                </li>
+                <li>Otwórz link w ciągu <strong>30 minut</strong>, aby zakończyć.</li>
+              </ul>
+            </div>
+          </div>
+          <form id="email_form" method="post">
+            <select class="form-control input-lg" id="sel1" aria-label="Wybierz, który z 5 dozwolonych adresów otrzyma jednorazowy link">
+              <option>
+                Wybierz jeden z 5 adresów, aby otrzymać link
+              </option>
+            </select>
+            <br />
+            <div style="text-align: left" class="input-group">
+              <input
+                class="form-control input-lg"
+                type="text"
+                id="txt_email_e"
+                placeholder="E-mail do monitorowania w tej domenie (np. soc@twojadomena.com)"
+                aria-label="Adres e-mail do monitorowania, na który przyjdą alerty o wyciekach"
+              />
+              <span class="input-group-btn">
+                <button
+                  type="submit"
+                  id="searchMe_e"
+                  class="btn btn-lg btn-primary"
+                  disabled
+                >
+                  Zweryfikuj &nbsp; <i class="fas fa-check" aria-hidden="true"></i>
+                </button>
+              </span>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+
+        <div id="div_t1">
+          <div style="border-radius: 8px; border: 2px solid #6daae0">
+            <div class="sp1">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">Kroki</th>
+                    <th scope="col">Działanie</th>
+                    <th scope="col">Wyjaśnienie</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td># 1</td>
+                    <td>Nazwa domeny</td>
+                    <td>Wpisz prawidłową nazwę domeny</td>
+                    <td>
+                      <span class="label label-success">Ukończono</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td># 2</td>
+                    <td>Opcje weryfikacji</td>
+                    <td>Wybierz opcję weryfikacji opartą na DNS, HTML itp.</td>
+                    <div id="div_suc1">
+                      <td>
+                        <span class="label label-warning">Oczekuje</span>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td># 3</td>
+                    <td>Zakończ weryfikację</td>
+                    <td>
+                      Pomyślnie zakończ proces weryfikacji zgodnie z wybraną
+                      opcją
+                    </td>
+                    <td>
+                      <span class="label label-warning">Oczekuje</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="progress">
+                <div
+                  id="pr1"
+                  class="progress-bar progress-bar-success progress-bar-striped active progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="20"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 20%"
+                >
+                  20% ukończono (sukces)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="div_t3">
+          <div style="border-radius: 8px; border: 2px solid #6daae0">
+            <div class="sp1">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">Kroki</th>
+                    <th scope="col">Działanie</th>
+                    <th scope="col">Wyjaśnienie</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td># 1</td>
+                    <td>Nazwa domeny</td>
+                    <td>Wpisz prawidłową nazwę domeny</td>
+                    <td>
+                      <span class="label label-success">Ukończono</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td># 2</td>
+                    <td>Metoda weryfikacji</td>
+                    <td>Wybierz opcję weryfikacji opartą na DNS, HTML itp.</td>
+                    <div id="div_suc2">
+                      <td>
+                        <span class="label label-success">Ukończono</span>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td># 3</td>
+                    <td>Zakończ weryfikację</td>
+                    <td>
+                      Pomyślnie zakończ proces weryfikacji zgodnie z wybraną
+                      metodą
+                    </td>
+                    <td>
+                      <span class="label label-danger">Niepowodzenie</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="progress">
+                <div
+                  class="progress-bar progress-bar-danger progress-bar-striped active progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 100%"
+                >
+                  100% ukończono (niepowodzenie)
+                </div>
+              </div>
+            </div>
+            <div style="text-align: center; padding: 15px 0">
+              <button
+                class="btn btn-primary btn-lg"
+                onClick="window.location.reload();"
+              >
+                Spróbuj ponownie
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="div_t4">
+          <div style="border-radius: 8px; border: 2px solid #6daae0">
+            <div class="sp1">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">Kroki</th>
+                    <th scope="col">Działanie</th>
+                    <th scope="col">Wyjaśnienie</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td># 1</td>
+                    <td>Nazwa domeny</td>
+                    <td>Wpisz prawidłową nazwę domeny</td>
+                    <td>
+                      <span class="label label-success">Ukończono</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td># 2</td>
+                    <td>Metoda weryfikacji</td>
+                    <td>Wybierz opcję weryfikacji opartą na DNS, HTML itp.</td>
+                    <div id="div_suc2">
+                      <td>
+                        <span class="label label-success">Ukończono</span>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td># 3</td>
+                    <td>Zakończ weryfikację</td>
+                    <td>
+                      Pomyślnie zakończ proces weryfikacji zgodnie z wybraną
+                      metodą
+                    </td>
+                    <td>
+                      <span class="label label-success">Sukces </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="progress">
+                <div
+                  class="progress-bar progress-bar-success progress-bar-striped active progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 100%"
+                >
+                  100% ukończono ( sukces )
+                </div>
+              </div>
+              <div
+                class="alert alert-success"
+                role="alert"
+                id="succ"
+                style="text-align: center"
+              >
+                <em
+                  class="fa fa-check-circle"
+                  style="color: #28a745; font-size: 78px"
+                  aria-hidden="true"
+                ></em>
+                <br />
+                <strong>Świetnie !</strong> Pomyślnie przeprowadziliśmy walidację i
+                wysłaliśmy e-mail z danymi o wyciekach. !
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="div_t2">
+          <div style="border-radius: 8px; border: 2px solid #6daae0">
+            <div class="sp1">
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">Kroki</th>
+                    <th scope="col">Działanie</th>
+                    <th scope="col">Wyjaśnienie</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td># 1</td>
+                    <td>Nazwa domeny</td>
+                    <td>Wpisz prawidłową nazwę domeny</td>
+                    <td>
+                      <span class="label label-success">Ukończono</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td># 2</td>
+                    <td>Metoda weryfikacji</td>
+                    <td>Wybierz opcję weryfikacji opartą na DNS, HTML itp.</td>
+                    <div id="div_suc2">
+                      <td>
+                        <span class="label label-success">Ukończono</span>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td># 3</td>
+                    <td>Zakończ weryfikację</td>
+                    <td>
+                      Pomyślnie zakończ proces weryfikacji zgodnie z wybraną
+                      metodą
+                    </td>
+                    <td>
+                      <span class="label label-warning">Oczekuje</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="progress">
+                <div
+                  class="progress-bar progress-bar-success progress-bar-striped active progress-bar-animated"
+                  role="progressbar"
+                  aria-valuenow="60"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: 60%"
+                >
+                  60% ukończono (sukces)
+                </div>
+              </div>
+            </div>
+            <br />
+            <div
+              hidden="false"
+              class="alert alert-success"
+              role="alert"
+              id="succ"
+              style="text-align: center"
+            >
+              <em
+                class="fa fa-check-circle"
+                style="color: #28a745; font-size: 78px"
+                aria-hidden="true"
+              ></em>
+              <br />
+              <strong>Świetnie !</strong> Pomyślnie przeprowadziliśmy walidację i
+              wysłaliśmy e-mail z danymi o wyciekach. !
+            </div>
+            <div
+              hidden="false"
+              class="alert alert-info"
+              role="alert"
+              id="info"
+              style="text-align: center"
+            >
+              <strong>Ups !</strong> Spróbuj ponownie za jakiś czas.
+            </div>
+            <div
+              hidden="false"
+              class="alert alert-danger"
+              role="alert"
+              id="dang"
+              style="text-align: center"
+            >
+              <strong>Ups !</strong> Walidacja domeny nie powiodła się. !
+            </div>
+            <div
+              class="alert alert-danger"
+              role="alert"
+              id="f1"
+              hidden="false"
+              style="text-align: center"
+            >
+              <h3>
+                Ukończ <strong>wyzwanie</strong>, a następnie spróbuj
+                ponownie !
+              </h3>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <script
+      defer
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+
+    <script src="/static/scripts/domain.js"></script>
+
+    <footer class="footer">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Weryfikujesz domeny dla swojej firmy? <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener">xonEnterprise+</a> dodaje dostęp dla zespołu i alerty przez e-mail, Slack, Teams i webhooki.
+          </p>
+          <p>
+            Tworzone przez społeczność, dla społeczności. W pełni open source na
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub<span class="sr-only"> (otwiera się w nowej karcie)</span></a
+            >.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h3>Prawne</h3>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Polityka prywatności</a>
+              <a href="terms" class="footer-link">Regulamin</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Społeczność</h3>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">O nas</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+              <a href="our-repository" class="footer-link">Nasze repozytorium</a>
+              <a href="/integrations" class="footer-link">Integracje</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Zaufanie</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://stats.uptimerobot.com/3zjQkZ2Caa"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+                >Status<span class="sr-only"> (otwiera się w nowej karcie)</span></a
+              >
+              <a href="transparency" class="footer-link">Przejrzystość</a>
+              <a href="responsible-disclosure" class="footer-link"
+                >Odpowiedzialne ujawnianie</a
+              >
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Dla firm</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+              <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+              <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+              <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Cennik</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Obserwuj nas</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://twitter.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+              <a
+                href="https://facebook.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+              <a
+                href="https://infosec.exchange/@XposedOrNot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 448 512"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Tryb Ciemny</label>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/scripts/common.js"></script>
+  </body>
+</html>

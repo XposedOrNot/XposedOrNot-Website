@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#3f71f3">
+    <meta
+      name="description"
+      content="Zobacz swoją spersonalizowaną ocenę ryzyka wycieku danych i analizę ujawnień. Sprawdź, które wycieki Cię dotknęły, poznaj ryzyka związane z hasłami i otrzymaj konkretne zalecenia bezpieczeństwa."
+    />
+    <meta name="author" content="Devanand Premkumar" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>XposedOrNot: Ocena ryzyka wycieku danych i raport ujawnień</title>
+
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://xposedornot.com/pl/data-breaches-risks" />
+
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://static.hotjar.com" />
+
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+        <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+        <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+
+        <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+
+        <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+
+        <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+
+        <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+        <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;900&display=swap"
+      type="text/css"
+      media="all"
+    />
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8="
+      crossorigin="anonymous"
+    />
+    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" />
+    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/scripts/libs/clippy/src/clippy.css"
+      media="all"
+    />
+    <link rel="stylesheet" href="/static/css/jquery.hortree.min.css" />
+    <link rel="preload" href="/static/scripts/libs/jquery-3.7.1.min.js" as="script" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" as="script" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" as="script" />
+    <link rel="preload" href="/static/scripts/data.js" as="script" />
+    <script src="/static/scripts/utils.js" defer></script>
+    <script src="/static/scripts/libs/clippy/build/clippy.js" defer></script>
+    <script async="" src="/static/scripts/analytics.js"></script>
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" defer></script>
+    <script
+      src="/static/scripts/jquery.line.js"
+      type="text/javascript"
+     defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
+      integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+     defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy-bundle.umd.min.js"
+      integrity="sha512-gbruucq/Opx9jlHfqqZeAg2LNK3Y4BbpXHKDhRC88/tARL/izPOE4Zt2w6X9Sn1UeWaGbL38zW7nkL2jdn5JIw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+     defer></script>
+    <style>
+      @media (max-width: 768px) {
+        .text {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+        }
+
+        .see-more {
+          display: block;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .see-more {
+          display: none;
+        }
+      }
+
+    </style>
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    </head>
+
+  <body
+    data-gr-c-s-loaded="true"
+    class="v2"
+    data-new-gr-c-s-check-loaded="8.884.0"
+    data-gr-ext-installed=""
+  >
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+    <a href="#main-content" class="skip-link">Przejdź do głównej treści</a>
+
+    <div class="mobileheader-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a
+                class="navbar-brand abs"
+                href="https://XposedOrNot.com"
+                style="text-decoration: none"
+              >
+                <span
+                  style="
+                    font-size: 1.5em;
+                    font-weight: bold;
+                    display: block;
+                    color: white;
+                  "
+                  >XposedOrNot</span
+                >
+                <span
+                  style="
+                    font-size: 0.8em;
+                    display: block;
+                    color: rgba(255, 255, 255, 0.95);
+                    margin-top: -10px;
+                  "
+                  >Community Edition</span
+                >
+              </a>
+              <button
+                class="hamburger hamburger--squeeze navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Przełącz nawigację"
+              >
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="main-menu-part">
+                  <ul>
+                    <li>
+                      <a href="password">Hasło</a>
+                    </li>
+                    <li>
+                      <a href="faq">FAQ</a>
+                    </li>
+                    <li>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://plus.xposedornot.com"
+                        >xonPlus<span class="sr-only"> (otwiera się w nowej karcie)</span></a
+                      >
+                    </li>
+                    <li>
+                      <a href="api_doc">API</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header-left">
+              <a href="https://XposedOrNot.com" style="text-decoration: none">
+                <span
+                  style="
+                    font-size: 1.5em;
+                    font-weight: bold;
+                    display: block;
+                    color: #417ff9;
+                  "
+                  >XposedOrNot</span
+                >
+                <span
+                  style="
+                    font-size: 0.8em;
+                    display: block;
+                    color: #417ff9;
+                    margin-top: -10px;
+                  "
+                  >Community Edition</span
+                >
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-9 col-md-9">
+            <div class="header-right">
+              <ul>
+                <li>
+                  <a href="password">Hasło</a>
+                </li>
+                <li>
+                  <a href="faq">FAQ</a>
+                </li>
+                <li>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://plus.xposedornot.com"
+                    >xonPlus<span class="sr-only"> (otwiera się w nowej karcie)</span></a
+                  >
+                </li>
+                <li>
+                  <a href="api_doc">API</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="floating-button" class="btn-group btn-group-lg">
+      <button
+        type="button"
+        class="btn-lg btn-primary"
+        style="background-color: #fc9e11; color: #1a1a1a"
+        data-toggle="modal"
+        data-target="#alertMeModal"
+        aria-label="Otrzymuj alerty o wyciekach"
+      >
+        <i class="fa fa-bell ring" aria-hidden="true"></i><span class="floating-btn-text">&nbsp;Otrzymuj alerty o wyciekach</span>
+      </button>
+    </div>
+
+    <main id="main-content" tabindex="-1">
+
+            <section class="xon-row2-area" aria-label="Przegląd oceny ryzyka">
+        <div class="container">
+          <h1 class="report-h1">Twój raport wycieków danych</h1>
+          <div class="row">
+            <div class="col-lg-4 col-md-12">
+              <div class="xon-row2-right">
+                <div id="risk" aria-live="polite"><div style="text-align: center" class="alert alert-primary"><strong>Twoja ocena ryzyka</strong></div></div>
+                <div
+                  id="chart_div"
+                  role="img"
+                  aria-label="Wykres wskaźnikowy oceny ryzyka"
+                  style="
+                    width: 100%;
+                    height: auto;
+                    margin: 0 auto;
+                    text-align: center;
+                  "
+                ></div>
+              </div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+              <div class="xon-row2-left">
+                <h2 class="section-heading">Kiedy doszło do Twoich wycieków?</h2>
+                <canvas
+                  id="bc"
+                  role="img"
+                  aria-label="Roczny wykres trendu Twoich wycieków danych"
+                  style="height: 341px; width: 682px"
+                  class="chartjs-render-monitor"
+                  width="750"
+                  height="375"
+                ></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            <section class="xon-row-area" aria-label="Analiza ryzyka i zalecenia">
+        <div class="container">
+          <div class="row">
+            <h2 class="section-heading" style="width: 100%">Co to dla Ciebie oznacza</h2>
+            <div id="risk-analysis" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row-area" id="dash-nudge" aria-label="Zaloguj się do My Dashboard" hidden>
+        <div class="container">
+          <div class="xr-dash-nudge">
+            <i class="fas fa-user-shield" aria-hidden="true"></i>
+            <div class="xr-dash-nudge-text">
+              <strong>Wolisz mieć wszystko w jednym miejscu?</strong>
+              <p>Zaloguj się do My Dashboard, aby mieć pełny raport, alerty o wyciekach i Privacy Shield. Bez hasła.</p>
+            </div>
+            <a id="dash-nudge-link" class="xr-dash-nudge-btn" href="/login">Zaloguj się do My Dashboard</a>
+            <button type="button" id="dash-nudge-dismiss" class="xr-dash-nudge-dismiss" aria-label="Odrzuć tę sugestię logowania">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+            <section class="xon-row-area" aria-label="Podsumowanie wycieków">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div
+                class="xon-row-left table-responsive"
+                style="height: auto; width: 100%"
+              >
+                <div id="email">
+                  <h2 class="section-heading">
+                    Podsumowanie wycieków dla: E-mail
+                  </h2>
+                </div>
+                <table class="table table-hover table-striped table-bordered">
+                  <caption class="sr-only">Wycieki danych powiązane z Twoim adresem e-mail</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 20%; text-align: center">Nazwa wycieku</th>
+                      <th scope="col" style="width: 60%">Szczegóły wycieku</th>
+                      <th scope="col" style="width: 20%">Ujawnione rekordy</th>
+                    </tr>
+                  </thead>
+                  <tbody id="data_breach"></tbody>
+                </table>
+                <div
+                  class="alert alert-success"
+                  role="alert"
+                  id="db-s"
+                  style="display: none; text-align: center"
+                >
+                  <i class="fas fa-check-circle" aria-hidden="true"></i>
+                  <strong>
+                    Twój e-mail nie występuje w żadnym wycieku danych wczytanym do
+                    XposedOrNot</strong
+                  >
+                  <p><strong>Dobre wiadomości!</strong></p>
+                  <p>Jeśli to widzisz, Twój e-mail nie został ujawniony w
+                  żadnym z zindeksowanych przez nas wycieków danych.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            <section class="xon-row-area" aria-label="Wycieki danych wrażliwych">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div class="xon-row-left" style="height: auto; width: 100%">
+                <div id="email_sensitive">
+                  <h2 class="section-heading">
+                    Wycieki danych wrażliwych dla: E-mail
+                  </h2>
+                </div>
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  id="db-sensitive"
+                  style="text-align: center"
+                >
+                  <i class="fas fa-times-circle" aria-hidden="true"></i>
+                  <strong>
+                    Twoje wycieki danych wrażliwych nie są wyświetlane w publicznych
+                    wyszukiwaniach w XposedOrNot</strong
+                  >
+                  <p style="margin-top: 10px">Aby zobaczyć wycieki danych wrażliwych dla e-maila,
+                  zweryfikuj ten e-mail, a odblokujesz do nich dostęp.</p>
+                  <button
+                    type="button"
+                    class="btn-lg btn-primary"
+                    data-toggle="modal"
+                    data-target="#alertMeModal"
+                  >
+                    Zweryfikuj teraz
+                  </button>
+                </div>
+                <div
+                  class="table-responsive"
+                  id="sensitive-data-table"
+                  style="display: none"
+                >
+                  <table class="table table-hover table-striped table-bordered">
+                    <caption class="sr-only">Wycieki danych wrażliwych dla Twojego adresu e-mail</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 20%; text-align: center">
+                          Nazwa wycieku
+                        </th>
+                        <th scope="col" style="width: 60%">Szczegóły wycieku</th>
+                        <th scope="col" style="width: 20%">Ujawnione rekordy</th>
+                      </tr>
+                    </thead>
+                    <tbody id="data_breach_sensitive"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            <section class="xon-row2-area" aria-label="Ryzyko haseł i największe wycieki">
+        <div class="container">
+          <div class="row">
+            <div class="col-6">
+              <div class="xon-row2-right">
+                <h2 class="section-heading">Czy Twoje hasła są bezpieczne?</h2>
+                <div>
+                  <canvas id="passwords" role="img" aria-label="Wykres rozkładu ryzyka haseł"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="xon-row2-right">
+                <h2 class="section-heading">Twoje największe wycieki</h2>
+                <div>
+                  <canvas id="top5breaches" role="img" aria-label="5 największych wycieków danych według ujawnionych rekordów"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row2-area" aria-label="Mapa cieplna ujawnionych danych">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div class="xon-row-left" style="height: auto; width: 100%">
+                <div id="data">
+                  <h2 class="section-heading">
+                    Jakie dane zostały ujawnione dla: E-mail
+                  </h2>
+                </div>
+                <p class="heatmap-description">Większe kafelki oznaczają, że dany typ danych był ujawniany częściej. Kolor od razu pokazuje powagę.</p>
+                <div id="heatmap-container" role="img" aria-label="Mapa drzewa pokazująca proporcjonalne ujawnienie każdego typu danych we wszystkich wyciekach"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row-area" id="attack-paths-section" aria-label="Wizualizacja ścieżek ataku" style="display:none">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div class="xon-row-left" style="height: auto; width: 100%">
+                <h2 class="section-heading">Jak atakujący mogą wykorzystać Twoje dane</h2>
+                <p class="attack-path-description">Na podstawie Twoich ujawnionych danych przedstawiamy realistyczne scenariusze ataków pokazujące, jak atakujący może połączyć informacje z Twoich wycieków.</p>
+                <div id="attack-paths-tabs" aria-label="Scenariusze ścieżek ataku"></div>
+                <div id="attack-paths-content" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            <section class="xon-row3-area" aria-label="Ujawnienia według branż">
+        <div class="container">
+          <div class="row">
+            <div class="col-6">
+              <div class="xon-row2-right">
+                <div class="xon-row2-right_a1">
+                  <h2 class="section-heading">Które branże ujawniły Twoje dane?</h2>
+                  <div
+                    class="xon-row2-right_a2"
+                    id="industry"
+                    aria-live="polite"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="xon-row2-right">
+                <div class="text-center" id="github-section">
+                  <br />
+                  <p>
+                    Masz pomysł na nową funkcję lub chcesz ulepszyć
+                    istniejącą? <br /><br />
+                    Chętnie <strong>poznam Twoją opinię</strong>!
+                    Uczyńmy to razem jeszcze lepszym! <br />
+                    Okaż wsparcie i sympatię na GitHub <br />
+                  </p>
+                  <br />
+                  <a
+                    href="https://github.com/xposedornot"
+                    class="btn btn-primary"
+                    target="_blank"
+                    rel="noopener"
+                    >Odwiedź nasz GitHub<span class="sr-only"> (otwiera się w nowej karcie)</span></a
+                  >
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            <section class="xon-row3-area" aria-label="Szczegółowy podział wycieków">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div class="xon-row3-right">
+                <h2 class="section-heading">Szczegółowy podział wycieków</h2>
+                <div id="details" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            <section class="xon-row-area breach-timeline-section" aria-label="Wizualizacja osi czasu wycieków">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%; text-align: center">
+              <h2 class="section-heading">Twoja oś czasu wycieków</h2>
+              <div id="scrollable-container">
+                <div
+                  id="tree-container"
+                  class="xon-row-left"
+                  style="width: 100%"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+            <section class="xon-row-area" aria-label="Chroń swoje konta">
+        <div class="container">
+          <div class="xon">
+            <div class="share-section">
+              <div class="alert-section">
+                <button
+                  type="button"
+                  class="btn-lg btn-alert"
+                  data-toggle="modal"
+                  data-target="#alertMeModal"
+                >
+                  <i class="fa fa-bell" aria-hidden="true"></i>
+                  <span>Otrzymuj alerty o przyszłych wyciekach</span>
+                </button>
+                <a
+                  href="compare"
+                  class="btn-lg btn-compare-link"
+                >
+                  <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                  <span>Porównaj z innym e-mailem</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+        <div
+      class="modal fade"
+      id="alertMeModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="alertMeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div
+            id="h2head"
+            class="modal-header modal-header-primary"
+          >
+            <h2 class="modal-title" id="alertMeModalLabel">
+              Otrzymuj alerty o wyciekach
+            </h2>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Zamknij"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="text-align: left">
+            <form aria-labelledby="alertMeModalLabel">
+              <div class="form-group">
+                <label
+                  for="recipient-name"
+                  class="form-control-label"
+                  ><strong>E-mail do monitorowania:</strong></label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="recipient-name"
+                  autocomplete="email"
+                  required
+                  aria-required="true"
+                />
+              </div>
+              <div class="form-group">
+                <label
+                  for="message-text"
+                  class="form-control-label"
+                  ><strong>Następne kroki:</strong></label
+                >
+                <p style="font-size: 0.85em; margin: 0 0 8px">Otrzymasz teraz jeden e-mail weryfikacyjny, a potem tylko prawdziwe alerty o wyciekach z adresu <!--email_off-->notifications@xposedornot.com<!--/email_off-->.</p>
+                <textarea
+                  disabled
+                  class="form-control"
+                  id="message-text"
+                  rows="2"
+                >
+Powiadomimy Cię natychmiast, jeśli Twój e-mail pojawi się w nowym wycieku danych. Zweryfikuj swój e-mail i aktywuj DARMOWĄ subskrypcję, klikając 'Rozpocznij monitorowanie'.</textarea
+                >
+              </div>
+              <div id="turns"></div>
+              <br />
+              <div
+                class="alert alert-danger"
+                role="alert"
+                id="a_succ"
+                style="display: none; text-align: center"
+              >
+                <strong>Ups!</strong> Ukończ weryfikację
+                i spróbuj ponownie.
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              id="alertMe"
+              type="button"
+              class="btn btn-primary"
+            >
+              Rozpocznij monitorowanie
+            </button>
+            <button
+              style="display: none"
+              data-dismiss="modal"
+              id="alertMeClose"
+              type="button"
+              class="btn btn-success"
+            >
+              Zamknij
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="tooltip"
+      role="tooltip"
+      aria-hidden="true"
+      class="chart-tooltip"
+    ></div>
+
+    <button
+      type="button"
+      id="clippy-button"
+      aria-label="Otwórz asystenta bezpieczeństwa XON"
+      style="
+        position: fixed;
+        bottom: 75px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        text-align: center;
+        line-height: 44px;
+        cursor: pointer;
+        z-index: 9999;
+        background: none;
+        border: none;
+        font-size: 1.2em;
+      "
+    >
+      <i class="fas fa-robot" aria-hidden="true"></i>
+    </button>
+
+    <a href="#main-content" id="back-to-top" class="back-to-top" aria-label="Wróć na górę"><i class="fas fa-arrow-up" aria-hidden="true"></i></a>
+
+    <footer class="footer">
+      <div class="container">
+
+        <div class="footer-final-cta">
+          <h2>Bądź o krok przed wyciekami danych</h2>
+          <a
+            href="#alertMeModal"
+            class="cta-button"
+            data-toggle="modal"
+            data-target="#alertMeModal"
+          >
+            <i class="fa fa-bell" aria-hidden="true"></i> Powiadamiaj mnie o wyciekach danych
+          </a>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 30px">
+          <p>
+            Stworzone przez społeczność, dla społeczności. W pełni open source na
+            <a
+              href="https://github.com/XposedOrNot"
+              target="_blank"
+              rel="noopener"
+              >GitHub<span class="sr-only"> (otwiera się w nowej karcie)</span></a
+            >.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-group">
+            <h3>Informacje prawne</h3>
+            <div class="footer-links-wrapper">
+              <a href="privacy" class="footer-link">Polityka Prywatności</a>
+              <a href="terms" class="footer-link">Warunki Korzystania</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Społeczność</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://blog.xposedornot.com" class="footer-link" target="_blank" rel="noopener">Blog<span class="sr-only"> (otwiera się w nowej karcie)</span></a>
+              <a href="/about" class="footer-link">O nas</a>
+              <a href="our-repository" class="footer-link">Nasze Repozytorium</a>
+              <a href="/integrations" class="footer-link">Integracje</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Zaufanie</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status<span class="sr-only"> (otwiera się w nowej karcie)</span></a>
+              <a href="transparency" class="footer-link">Przejrzystość</a>
+              <a href="responsible-disclosure" class="footer-link">Odpowiedzialne Ujawnianie</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Dla firm</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+              <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+              <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+              <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Cennik</a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Obserwuj nas</h3>
+            <div class="footer-links-wrapper">
+              <a
+                href="https://twitter.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg> Twitter (X)<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+              <a
+                href="https://facebook.com/xposedornot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 512 512"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256z"/></svg> Facebook<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+              <a
+                href="https://infosec.exchange/@XposedOrNot"
+                target="_blank"
+                rel="noopener"
+                class="footer-link"
+              >
+                <svg class="social-icon" aria-hidden="true" viewBox="0 0 448 512"><path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l23.6 39.5 23.6-39.5c24-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/></svg> Mastodon<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+            </div>
+          </div>
+          <div class="footer-group">
+            <h3>Podsumowanie AI</h3>
+            <div class="footer-links-wrapper">
+              <a href="https://chatgpt.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/chatgpt-icon.svg" alt="ChatGPT" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                ChatGPT<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+              <a href="https://www.perplexity.ai/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/perplexity-icon.svg" alt="Perplexity" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Perplexity<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+              <a href="https://gemini.google.com/?q=what%20is%20xposedornot%2C%20who%20should%20use%20it%20and%20how%20can%20it%20help%20me" target="_blank" rel="noopener" class="footer-link">
+                <img src="/static/logos/gemini-icon.svg" alt="Gemini" width="20" height="20" style="vertical-align: -3px; margin-right: 6px;">
+                Gemini<span class="sr-only"> (otwiera się w nowej karcie)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="custom-control custom-switch"
+          style="text-align: center; margin-top: 20px"
+        >
+          <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+          <label class="custom-control-label" for="darkSwitch">Tryb Ciemny</label>
+        </div>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+     defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.js"
+      integrity="sha256-60fkxjbpN7HY1TFkhKT8nEn8o62CBx2AdmaTjoF7LNc="
+      crossorigin="anonymous"
+     defer></script>
+    <script src="/static/scripts/data.js" defer></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"
+    ></script>
+
+    <script src="/static/scripts/common.js" defer></script>
+  </body>
+</html>
