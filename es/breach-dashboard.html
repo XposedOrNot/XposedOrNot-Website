@@ -2,6 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
+    <script src="/static/scripts/session.js"></script>
     <title>XposedOrNot: Panel CxO</title>
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
     <link rel="dns-prefetch" href="https://static.hotjar.com" />
@@ -46,6 +47,7 @@
       name="viewport"
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
     />
+    <meta name="theme-color" content="#3f71f3">
     <meta
       name="description"
       content="XposedOrNot: obtenga un informe detallado de su exposición en filtraciones de datos"
@@ -256,8 +258,8 @@
       }
 
       [data-theme="dark"] .btn-utility {
-        background: #2c3e50;
-        color: #ecf0f1 !important;
+        background: #181b2d;
+        color: #e2e8f0 !important;
         border-width: 2px;
       }
 
@@ -291,16 +293,16 @@
       }
 
       [data-theme="dark"] .domain-dropdown {
-        background: #2c3e50;
-        border-color: #34495e;
+        background: #181b2d;
+        border-color: #2a2f4a;
       }
 
       [data-theme="dark"] .domain-dropdown-item {
-        color: #ecf0f1;
+        color: #c3d3e8;
       }
 
       [data-theme="dark"] .domain-dropdown-item:hover {
-        background-color: #34495e;
+        background-color: #1e2235;
         color: #fff;
       }
 
@@ -662,17 +664,17 @@
       }
 
       [data-theme="dark"] #dynamic_breach_alerts_table tbody tr {
-        border-top: 1px solid #4a5568 !important;
-        border-bottom: 1px solid #4a5568 !important;
+        border-top: 1px solid #2a2f4a !important;
+        border-bottom: 1px solid #2a2f4a !important;
       }
 
       [data-theme="dark"] #dynamic_breach_alerts_table tbody tr td {
-        border: 1px solid #4a5568 !important;
-        color: #ecf0f1 !important;
+        border: 1px solid #2a2f4a !important;
+        color: #c3d3e8 !important;
       }
 
       [data-theme="dark"] #dynamic_breach_alerts_table {
-        border-color: #4a5568 !important;
+        border-color: #2a2f4a !important;
       }
     </style>
     <script
@@ -767,7 +769,7 @@
       [data-theme="dark"] div.dt-buttons a.btn:hover,
       [data-theme="dark"] div.dt-buttons a.btn:focus {
         background-color: #232742 !important;
-        color: #ecf0f1 !important;
+        color: #e2e8f0 !important;
       }
 
       .pwd-risk {
@@ -842,149 +844,286 @@
       [data-theme="dark"] div.dt-button-collection .btn:hover,
       [data-theme="dark"] div.dt-button-collection .dt-button:hover {
         background-color: #232742 !important;
-        color: #ecf0f1 !important;
+        color: #e2e8f0 !important;
       }
 
       /* xonPlus Modal Styling */
       .xonplus-modal {
-        border-radius: 15px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        --svc-accent: #2980b9;
+        --svc-ink: #1f6391;
+        --svc-cta: #1f6391;
+        --svc-tint: rgba(41, 137, 185, 0.12);
+        --xp-surface: #ffffff;
+        --xp-text: #1f2933;
+        --xp-muted: #5b6470;
+        --xp-border: #e7ebef;
+        --xp-card: #f6f8fa;
         border: none;
+        border-radius: 18px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
         overflow: hidden;
+        background: var(--xp-surface);
+        color: var(--xp-text);
+      }
+
+      .xonplus-modal.svc-teams {
+        --svc-accent: #6264a7;
+        --svc-ink: #444791;
+        --svc-cta: #444791;
+        --svc-tint: rgba(98, 100, 167, 0.13);
+      }
+
+      .xonplus-modal.svc-slack {
+        --svc-accent: #611f69;
+        --svc-ink: #4a154b;
+        --svc-cta: #4a154b;
+        --svc-tint: rgba(97, 31, 105, 0.12);
+      }
+
+      .xonplus-modal.svc-webhook {
+        --svc-accent: #0e7490;
+        --svc-ink: #0b5566;
+        --svc-cta: #0b5566;
+        --svc-tint: rgba(14, 116, 144, 0.12);
       }
 
       .xonplus-header {
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-        border-bottom: none;
-        color: white;
-        padding: 1.5rem;
+        background: var(--xp-surface);
+        border-bottom: 1px solid var(--xp-border);
+        color: var(--xp-text);
+        padding: 1.5rem 1.75rem;
+        align-items: flex-start;
+      }
+
+      .xonplus-app-tile {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--svc-tint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .xonplus-app-tile i {
+        color: var(--svc-accent);
+        font-size: 1.75rem;
+      }
+
+      .xonplus-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--svc-ink);
+        background: var(--svc-tint);
+        padding: 0.22rem 0.6rem;
+        border-radius: 999px;
+        margin-bottom: 0.5rem;
       }
 
       .xonplus-header .modal-title {
-        color: white;
-        font-weight: 600;
+        color: var(--xp-text);
+        font-weight: 700;
+        font-size: 1.3rem;
+        line-height: 1.25;
+        margin: 0;
       }
 
-      .xonplus-header .text-muted {
-        color: rgba(255, 255, 255, 0.8) !important;
+      .xonplus-header .xonplus-sub {
+        color: var(--xp-muted);
+        font-size: 0.92rem;
+        margin: 0.25rem 0 0;
       }
 
       .xonplus-header .close {
-        color: white;
-        opacity: 0.8;
+        color: var(--xp-muted);
+        opacity: 0.7;
         text-shadow: none;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin: -0.25rem -0.25rem 0 0;
       }
 
       .xonplus-header .close:hover {
         opacity: 1;
-        color: white;
+        color: var(--xp-text);
       }
 
       .xonplus-body {
-        padding: 2rem;
-        background: #f8f9fa;
+        padding: 1.5rem 1.75rem 0.75rem;
+        background: var(--xp-surface);
       }
 
       .xonplus-body .lead {
-        color: #2c3e50;
+        color: var(--xp-text);
         font-weight: 500;
+        font-size: 1.02rem;
+        line-height: 1.55;
+        margin-bottom: 1.25rem;
       }
 
-      .feature-item {
-        padding: 1rem;
-        background: white;
+      .xonplus-preview {
+        border: 1px solid var(--xp-border);
+        border-radius: 14px;
+        background: var(--xp-card);
+        padding: 0.9rem 1rem;
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+      }
+
+      .xonplus-preview-avatar {
+        width: 38px;
+        height: 38px;
         border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
-        height: 100%;
+        background: var(--svc-tint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
 
-      .feature-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      .xonplus-preview-avatar i {
+        color: var(--svc-accent);
+        font-size: 1.1rem;
       }
 
-      .feature-item h6 {
-        color: #2c3e50;
+      .xonplus-preview-meta {
+        font-size: 0.8rem;
+        color: var(--xp-muted);
+        margin-bottom: 0.15rem;
+      }
+
+      .xonplus-preview-meta strong {
+        color: var(--xp-text);
+        font-weight: 700;
+      }
+
+      .xonplus-preview-body {
+        color: var(--xp-text);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      .xonplus-preview-tag {
+        color: var(--svc-ink);
         font-weight: 600;
-        margin-bottom: 0.5rem;
+      }
+
+      .xonplus-feature {
+        display: flex;
+        gap: 0.7rem;
+        align-items: flex-start;
+        padding: 0.55rem 0.25rem;
+      }
+
+      .xonplus-feature-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        background: var(--svc-tint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .xonplus-feature-icon i {
+        color: var(--svc-accent);
+        font-size: 1rem;
+      }
+
+      .xonplus-feature h6 {
+        color: var(--xp-text);
+        font-weight: 700;
+        font-size: 0.92rem;
+        margin: 0 0 0.12rem;
+      }
+
+      .xonplus-feature small {
+        color: var(--xp-muted);
+        font-size: 0.82rem;
+        line-height: 1.35;
       }
 
       .xonplus-footer {
-        background: white;
-        border-top: 1px solid #e9ecef;
-        padding: 1.5rem 2rem;
+        background: var(--xp-surface);
+        border-top: 1px solid var(--xp-border);
+        padding: 1.25rem 1.75rem;
+        gap: 0.75rem;
       }
 
       .xonplus-footer .btn {
-        border-radius: 25px;
-        padding: 0.75rem 2rem;
+        border-radius: 12px;
+        padding: 0.7rem 1.5rem;
         font-weight: 600;
-        transition: all 0.3s ease;
-        border-width: 2px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        border-width: 1.5px;
       }
 
       .xonplus-footer .btn-outline-primary {
-        border-color: #3498db;
-        color: #3498db;
+        border-color: var(--xp-border);
+        color: var(--xp-text);
+        background: transparent;
       }
 
       .xonplus-footer .btn-outline-primary:hover {
-        background: #3498db;
-        border-color: #3498db;
-        color: #ffffff !important;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        border-color: var(--svc-accent);
+        color: var(--svc-ink);
+        background: var(--svc-tint);
       }
 
       .xonplus-footer .btn-primary {
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-        border-color: #3498db;
-        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        background: var(--svc-cta);
+        border-color: var(--svc-cta);
+        color: #ffffff;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
       }
 
       .xonplus-footer .btn-primary:hover {
-        background: linear-gradient(135deg, #2980b9 0%, #1c5d8b 100%);
-        border-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        background: var(--svc-accent);
+        border-color: var(--svc-accent);
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.22);
       }
 
       /* Dark theme support for xonPlus modal */
       [data-theme="dark"] .xonplus-modal {
-        background: #2c3e50;
-        color: #ecf0f1;
+        --svc-accent: #5dade2;
+        --svc-ink: #93c9ec;
+        --svc-tint: rgba(93, 173, 226, 0.16);
+        --xp-surface: #181b2d;
+        --xp-text: #e2e8f0;
+        --xp-muted: #6daae0;
+        --xp-border: #2a2f4a;
+        --xp-card: #1e2235;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
       }
 
-      [data-theme="dark"] .xonplus-header {
-        background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+      [data-theme="dark"] .xonplus-modal.svc-teams {
+        --svc-accent: #a6a8e0;
+        --svc-ink: #c4c6f0;
+        --svc-tint: rgba(166, 168, 224, 0.16);
       }
 
-      [data-theme="dark"] .xonplus-body {
-        background: #34495e;
-        color: #ecf0f1;
+      [data-theme="dark"] .xonplus-modal.svc-slack {
+        --svc-accent: #cd8fd4;
+        --svc-ink: #e0b3e6;
+        --svc-tint: rgba(205, 143, 212, 0.16);
       }
 
-      [data-theme="dark"] .xonplus-body .lead {
-        color: #ecf0f1;
-      }
-
-      [data-theme="dark"] .feature-item {
-        background: #2c3e50;
-        color: #ecf0f1;
-        border: 1px solid #34495e;
-      }
-
-      [data-theme="dark"] .feature-item h6 {
-        color: #ecf0f1;
-      }
-
-      [data-theme="dark"] .xonplus-footer {
-        background: #2c3e50;
-        border-top-color: #34495e;
+      [data-theme="dark"] .xonplus-modal.svc-webhook {
+        --svc-accent: #5fc5dd;
+        --svc-ink: #93d8e8;
+        --svc-tint: rgba(95, 197, 221, 0.16);
       }
 
       /* Responsive adjustments */
@@ -992,20 +1131,17 @@
         .xonplus-header,
         .xonplus-body,
         .xonplus-footer {
-          padding: 1rem;
+          padding-left: 1.1rem;
+          padding-right: 1.1rem;
         }
 
-        .feature-item {
-          margin-bottom: 1rem;
+        .xonplus-footer {
+          flex-direction: column-reverse;
         }
 
         .xonplus-footer .btn {
           width: 100%;
-          margin-bottom: 0.5rem;
-        }
-
-        .xonplus-footer .btn.mr-3 {
-          margin-right: 0 !important;
+          margin: 0;
         }
       }
 
@@ -1148,15 +1284,15 @@
       }
 
       [data-theme="dark"] .auth-modal-title {
-        color: #ecf0f1;
+        color: #e2e8f0;
       }
 
       [data-theme="dark"] .auth-modal-message {
-        color: #95a5a6;
+        color: #6daae0;
       }
 
       [data-theme="dark"] .auth-modal-progress {
-        background: #2c3e50;
+        background: #2a2d40;
       }
     </style>
     <style>
@@ -2234,6 +2370,7 @@
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
               <a href="our-repository" class="footer-link">Nuestro repositorio</a>
+              <a href="/integrations" class="footer-link">Integraciones</a>
             </div>
           </div>
           <div class="footer-group">

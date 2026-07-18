@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
     />
+    <meta name="theme-color" content="#3f71f3">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>XposedOrNot - Verificación de dominio | Monitoreo de filtraciones de datos</title>
@@ -677,39 +678,37 @@
               <h5 class="mb-0">Verificación por correo electrónico</h5>
               <span class="badge badge-success ml-2">Método más sencillo</span>
             </div>
-            <div class="alert alert-info mt-2">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <strong>Importante:</strong> los correos de verificación solo se
-              enviarán a las direcciones de correo que figuren en los registros DNS
-              de su dominio (como <!--email_off-->admin@example.com<!--/email_off-->). Elija este método solo si
-              tiene acceso a esas cuentas de correo.
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>Cómo funciona:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  Enviamos un enlace de un solo uso a <strong>una de estas 5 direcciones</strong>
+                  de su dominio:
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ or hostmaster@example.com<!--/email_off-->.
+                </li>
+                <li>Elija la dirección a la que tenga acceso para recibir el enlace.</li>
+                <li>
+                  Ingrese un correo de monitoreo <strong>en el mismo dominio</strong> para
+                  recibir las alertas de filtraciones.
+                </li>
+                <li>Abra el enlace en un plazo de <strong>30 minutos</strong> para finalizar.</li>
+              </ul>
             </div>
           </div>
-          La validación basada en <strong>correo electrónico</strong> es una forma
-          fácil de validar un dominio, siempre que pueda recibir correos en los
-          contactos de correo autorizados. Seleccione el correo y, a continuación,
-          haga clic en <strong>Verificar</strong>. <br />
-          <br />
           <form id="email_form" method="post">
-            <div class="input-group" id="div1">
-              <span class="input-group-addon">
-                <em class="fa fa-envelope" aria-hidden="true"></em>
-              </span>
-              <select class="form-control input-group input-lg" id="sel1" aria-label="Seleccionar el correo de verificación">
-                <option>
-                  Seleccione el correo adecuado para recibir el correo de
-                  verificación:
-                </option>
-              </select>
-            </div>
+            <select class="form-control input-lg" id="sel1" aria-label="Seleccione cuál de las 5 direcciones permitidas recibirá el enlace de un solo uso">
+              <option>
+                Elija una de las 5 direcciones para recibir el enlace
+              </option>
+            </select>
             <br />
             <div style="text-align: left" class="input-group">
               <input
                 class="form-control input-lg"
                 type="text"
                 id="txt_email_e"
-                placeholder="Correo electrónico para recibir los datos expuestos"
-                aria-label="Correo electrónico para la verificación por correo"
+                placeholder="Correo de monitoreo en este dominio (p. ej. soc@sudominio.com)"
+                aria-label="Dirección de correo de monitoreo para recibir alertas de filtraciones"
               />
               <span class="input-group-btn">
                 <button
@@ -1078,6 +1077,7 @@
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
               <a href="our-repository" class="footer-link">Nuestro repositorio</a>
+              <a href="/integrations" class="footer-link">Integraciones</a>
             </div>
           </div>
           <div class="footer-group">

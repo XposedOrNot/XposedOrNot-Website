@@ -7,6 +7,7 @@
       <link rel="dns-prefetch" href="https://static.hotjar.com">
       <meta http-equiv="refresh" content="30; URL=https://XposedOrNot.com/ta/" />
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="theme-color" content="#3f71f3">
       <meta name="description" content="XposedOrNot - பக்கம் கிடைக்கவில்லை">
       <meta name="author" content="Devanand Premkumar">
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
@@ -173,7 +174,7 @@
 
          /* Dark mode styles */
          [data-theme="dark"] .error-container {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+            background: linear-gradient(135deg, #0e0f19 0%, #181b2d 100%) !important;
          }
          [data-theme="dark"] .ascii-art {
             color: #6daae0;
@@ -197,7 +198,7 @@
          }
          [data-theme="dark"] .btn-blog:hover {
             background: #6daae0;
-            color: #1a1a2e;
+            color: #0e0f19;
          }
 
          /* Footer styles */
@@ -245,6 +246,41 @@
                gap: 30px;
                padding: 0 20px;
             }
+	.footer-group {
+		border-bottom: 1px solid #ebedef;
+	}
+
+	.footer-group h6 {
+		cursor: pointer;
+		padding: 15px 20px;
+		margin: 0 !important;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.footer-group h6::after {
+		content: '+';
+		font-size: 20px;
+		font-weight: 300;
+		transition: transform 0.3s ease;
+	}
+
+	.footer-group.active h6::after {
+		content: '−';
+	}
+
+	.footer-group .footer-links-wrapper {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease;
+		padding: 0 20px;
+	}
+
+	.footer-group.active .footer-links-wrapper {
+		max-height: 300px;
+		padding: 0 20px 15px 20px;
+	}
             .error-code { font-size: 100px; }
             .error-icon { font-size: 60px; }
             .error-title { font-size: 22px; }
@@ -252,8 +288,8 @@
 
          /* Dark mode footer */
          [data-theme="dark"] .footer {
-            background: #1a1a2e;
-            border-top-color: #2d2d44;
+            background: #0e0f19;
+            border-top-color: #2a2d40;
          }
          [data-theme="dark"] .footer p { color: #9fc0e0; }
          [data-theme="dark"] .footer-group h6 { color: #ffffff !important; }
@@ -264,8 +300,6 @@
          }
       </style>
     <style>
-      /* Override Font Awesome font-display: auto/block with swap to clear
-         Lighthouse FOIT warning and ensure icons don't blank during load */
       @font-face {
         font-family: "Font Awesome 5 Free";
         font-style: normal;
@@ -511,6 +545,7 @@
                   <h6>சமூகம்</h6>
                   <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
                   <a href="/our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+                  <a href="/integrations" class="footer-link">ஒருங்கிணைப்புகள்</a>
                </div>
                <div class="footer-group">
                   <h6>நம்பகத்தன்மை</h6>

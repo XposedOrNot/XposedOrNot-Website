@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
     />
+    <meta name="theme-color" content="#3f71f3">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>XposedOrNot - டொமைன் சரிபார்ப்பு | தரவு மீறல் கண்காணிப்பு</title>
@@ -677,38 +678,37 @@
               <h5 class="mb-0">மின்னஞ்சல் சரிபார்ப்பு</h5>
               <span class="badge badge-success ml-2">எளிதான முறை</span>
             </div>
-            <div class="alert alert-info mt-2">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <strong>முக்கியம்:</strong> சரிபார்ப்பு மின்னஞ்சல்கள் உங்கள் டொமைனின் DNS பதிவுகளில்
-              பட்டியலிடப்பட்டுள்ள மின்னஞ்சல் முகவரிகளுக்கு மட்டுமே அனுப்பப்படும்
-              (<!--email_off-->admin@example.com<!--/email_off--> போன்றவை). இந்த மின்னஞ்சல் கணக்குகளுக்கு உங்களுக்கு அணுகல்
-              இருந்தால் மட்டுமே இந்த முறையைத் தேர்வுசெய்யவும்.
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>இது எப்படி செயல்படுகிறது:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  உங்கள் டொமைனில் உள்ள <strong>இந்த 5 முகவரிகளில் ஒன்றுக்கு</strong>
+                  ஒருமுறை பயன்படுத்தக்கூடிய இணைப்பை மின்னஞ்சல் செய்வோம்:
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ or hostmaster@example.com<!--/email_off-->.
+                </li>
+                <li>இணைப்பைப் பெற நீங்கள் அணுகக்கூடிய முகவரியைத் தேர்ந்தெடுக்கவும்.</li>
+                <li>
+                  மீறல் எச்சரிக்கைகளைப் பெற <strong>அதே டொமைனில் உள்ள</strong>
+                  கண்காணிப்பு மின்னஞ்சலை உள்ளிடவும்.
+                </li>
+                <li>முடிக்க <strong>30 நிமிடங்களுக்குள்</strong> இணைப்பைத் திறக்கவும்.</li>
+              </ul>
             </div>
           </div>
-          <strong>மின்னஞ்சல் </strong> அடிப்படையிலான உறுதிப்படுத்தல் ஒரு டொமைனை உறுதிப்படுத்த எளிதானது,
-          அதிகாரப்பூர்வ மின்னஞ்சல் தொடர்புகளில் நீங்கள் மின்னஞ்சல்களைப் பெற முடிந்தால்.
-          மின்னஞ்சலைத் தேர்ந்தெடுத்து, பிறகு <strong>சரிபார்</strong> என்பதைக் கிளிக் செய்யவும். <br />
-          <br />
           <form id="email_form" method="post">
-            <div class="input-group" id="div1">
-              <span class="input-group-addon">
-                <em class="fa fa-envelope" aria-hidden="true"></em>
-              </span>
-              <select class="form-control input-group input-lg" id="sel1" aria-label="சரிபார்ப்பு மின்னஞ்சலைத் தேர்ந்தெடுக்கவும்">
-                <option>
-                  சரிபார்ப்பு மின்னஞ்சலைப் பெற பொருத்தமான மின்னஞ்சலைத்
-                  தேர்ந்தெடுக்கவும் :
-                </option>
-              </select>
-            </div>
+            <select class="form-control input-lg" id="sel1" aria-label="ஒருமுறை இணைப்பைப் பெற அனுமதிக்கப்பட்ட 5 முகவரிகளில் ஒன்றைத் தேர்ந்தெடுக்கவும்">
+              <option>
+                இணைப்பைப் பெற 5 முகவரிகளில் ஒன்றைத் தேர்ந்தெடுக்கவும்
+              </option>
+            </select>
             <br />
             <div style="text-align: left" class="input-group">
               <input
                 class="form-control input-lg"
                 type="text"
                 id="txt_email_e"
-                placeholder="வெளிப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
-                aria-label="மின்னஞ்சல் சரிபார்ப்புக்கான மின்னஞ்சல் முகவரி"
+                placeholder="இந்த டொமைனில் உள்ள கண்காணிப்பு மின்னஞ்சல் (எ.கா. soc@yourdomain.com)"
+                aria-label="மீறல் எச்சரிக்கைகளைப் பெற கண்காணிப்பு மின்னஞ்சல் முகவரி"
               />
               <span class="input-group-btn">
                 <button
@@ -1077,6 +1077,7 @@
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">வலைப்பதிவு</a>
               <a href="our-repository" class="footer-link">எங்கள் களஞ்சியம்</a>
+              <a href="/integrations" class="footer-link">ஒருங்கிணைப்புகள்</a>
             </div>
           </div>
           <div class="footer-group">

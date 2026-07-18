@@ -2,6 +2,7 @@
 
 <head>
    <meta charset="utf-8">
+   <script src="/static/scripts/session.js"></script>
    <title>XposedOrNot: Gestión de claves API</title>
    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
    <link rel="dns-prefetch" href="https://static.hotjar.com">
@@ -25,6 +26,7 @@
    <link href="/static/css/style2.css" type="text/css" rel="stylesheet" defer>
    <link href="/static/css/xon-report.css" type="text/css" rel="stylesheet" defer>
    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="theme-color" content="#3f71f3">
    <meta name="description" content="XposedOrNot: Obtenga un informe detallado de su exposición a filtraciones de datos">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="author" content="Devanand Premkumar">
@@ -51,7 +53,6 @@
 
       h3 {
          color: #007bff;
-         //text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
       }
 
       .benefit-card {
@@ -191,6 +192,15 @@
          color: #ffffff !important;
          transform: translateY(-2px);
          box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+      }
+
+      [data-theme="dark"] h3 {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .btn-back-dashboard {
+         color: #e2e8f0;
+         background: #1e2235;
       }
    </style>
     <style>
@@ -397,43 +407,41 @@
    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY" rel="preconnect"></script>
    <script src="/static/scripts/common.js"></script>
    <script type="text/javascript">
-         $.urlParam = function (name) {
-            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-            return results[1] || 0;
-         }
-
          let token;
-         try {
-            email = decodeURIComponent($.urlParam('email'));
-            token = decodeURIComponent($.urlParam('token'));
-         } catch (error) {
+         var sessionActive = Boolean(window.XonSession && window.XonSession.token);
+         if (sessionActive) {
+            email = window.XonSession.email;
+            token = window.XonSession.token;
+         } else if (!(window.XonSession && window.XonSession.cookiesBlocked)) {
             window.location.replace("https://xposedornot.com");
          }
 
          $(document).ready(function () {
-            var dashboardUrl = 'breach-dashboard.html?email=' + encodeURIComponent(email) + '&token=' + encodeURIComponent(token);
             $('#headerBackBtn, #bottomBackBtn').click(function (e) {
                e.preventDefault();
-               window.location.href = dashboardUrl;
+               window.location.href = 'breach-dashboard.html';
             });
          });
 
-         let api_url = "https://api.xposedornot.com/v1/get-api-key/" + token;
-
-         $.ajax({
-            url: api_url,
-            type: 'GET',
-            success: function (res) {
-               $('#api_key').val(res.api_key);
-               message = '💡 Puede probar con esto : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
-               document.getElementById('curl').innerText = message
-            },
-            error: function (error) {
-               if (error.responseJSON && error.responseJSON.error === 'invalid_token') {
-                  alert("Token no válido. Inténtelo de nuevo.");
+         if (sessionActive) {
+            $.ajax({
+               url: "https://api.xposedornot.com/v1/get-api-key/" + token,
+               type: 'GET',
+               success: function (res) {
+                  $('#api_key').val(res.api_key);
+                  message = '💡 Puede probarlo con esto : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                  document.getElementById('curl').innerText = message
+               },
+               error: function (error) {
+                  if (error.responseJSON && error.responseJSON.error === 'invalid_token') {
+                     if (window.XonSession) {
+                        window.XonSession.clear();
+                     }
+                     alert("Token no válido. Inténtelo de nuevo.");
+                  }
                }
-            }
-         });
+            });
+         }
 
          document.getElementById('emailForm').addEventListener('submit', function (event) {
             event.preventDefault();
@@ -478,7 +486,7 @@
                   if (data.status === "success") {
                      document.getElementById('api_key').value = data.api_key;
                      showSuccessMessage();
-                     message = '💡 Puede probar con esto : curl -L -X POST -H "x-api-key:  ' + data.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                     message = '💡 Puede probarlo con esto : curl -L -X POST -H "x-api-key:  ' + data.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
                      document.getElementById('curl').innerText = message
 
                   } else {
@@ -486,7 +494,7 @@
                   }
                })
                .catch(() => {
-                  showErrorMessage('Se produjo un error al restablecer su clave API. Inténtelo de nuevo más tarde.');
+                  showErrorMessage('Ocurrió un error al restablecer su clave API. Inténtelo de nuevo más tarde.');
                })
                .finally(() => {
 
@@ -524,6 +532,7 @@
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
                   <a href="our-repository" class="footer-link">Nuestro repositorio</a>
+                  <a href="/integrations" class="footer-link">Integraciones</a>
             </div>
           </div>
                <div class="footer-group">

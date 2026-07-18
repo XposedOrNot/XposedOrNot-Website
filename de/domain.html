@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
     />
+    <meta name="theme-color" content="#3f71f3">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>XposedOrNot - Domain-Verifizierung | Überwachung von Datenlecks</title>
@@ -677,38 +678,37 @@
               <h5 class="mb-0">E-Mail-Verifizierung</h5>
               <span class="badge badge-success ml-2">Einfachste Methode</span>
             </div>
-            <div class="alert alert-info mt-2">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <strong>Wichtig:</strong> Verifizierungs-E-Mails werden nur an
-              E-Mail-Adressen gesendet, die in den DNS-Einträgen Ihrer Domain aufgeführt sind (wie
-              <!--email_off-->admin@example.com<!--/email_off-->). Wählen Sie diese Methode nur, wenn Sie Zugriff auf
-              diese E-Mail-Konten haben.
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>So funktioniert es:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  Wir senden einen Einmal-Link an <strong>eine dieser 5 Adressen</strong>
+                  Ihrer Domain:
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ oder hostmaster@example.com<!--/email_off-->.
+                </li>
+                <li>Wählen Sie die Adresse, auf die Sie Zugriff haben, um den Link zu erhalten.</li>
+                <li>
+                  Geben Sie eine Überwachungs-E-Mail <strong>auf derselben Domain</strong> ein,
+                  um die Leck-Benachrichtigungen zu erhalten.
+                </li>
+                <li>Öffnen Sie den Link innerhalb von <strong>30 Minuten</strong>, um abzuschließen.</li>
+              </ul>
             </div>
           </div>
-          Die Validierung per <strong>E-Mail</strong> ist eine einfache Möglichkeit, eine Domain zu validieren,
-          sofern Sie E-Mails an den autoritativen E-Mail-Kontakten empfangen können.
-          Bitte wählen Sie die E-Mail aus und klicken Sie dann auf <strong>Verifizieren</strong>. <br />
-          <br />
           <form id="email_form" method="post">
-            <div class="input-group" id="div1">
-              <span class="input-group-addon">
-                <em class="fa fa-envelope" aria-hidden="true"></em>
-              </span>
-              <select class="form-control input-group input-lg" id="sel1" aria-label="Verifizierungs-E-Mail auswählen">
-                <option>
-                  Bitte wählen Sie die passende E-Mail-Adresse für den Empfang der
-                  Verifizierungs-E-Mail :
-                </option>
-              </select>
-            </div>
+            <select class="form-control input-lg" id="sel1" aria-label="Wählen Sie, welche der 5 zulässigen Adressen den Einmal-Link erhält">
+              <option>
+                Wählen Sie eine der 5 Adressen für den Link
+              </option>
+            </select>
             <br />
             <div style="text-align: left" class="input-group">
               <input
                 class="form-control input-lg"
                 type="text"
                 id="txt_email_e"
-                placeholder="E-Mail-Adresse zum Empfang der offengelegten Daten"
-                aria-label="E-Mail-Adresse für die E-Mail-Verifizierung"
+                placeholder="Überwachungs-E-Mail auf dieser Domain (z. B. soc@ihredomain.com)"
+                aria-label="Überwachungs-E-Mail-Adresse für Leck-Benachrichtigungen"
               />
               <span class="input-group-btn">
                 <button
@@ -1077,6 +1077,7 @@ Erneut versuchen
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
               <a href="our-repository" class="footer-link">Unser Repository</a>
+              <a href="/integrations" class="footer-link">Integrationen</a>
             </div>
           </div>
           <div class="footer-group">

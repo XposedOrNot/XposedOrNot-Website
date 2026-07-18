@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
     />
+    <meta name="theme-color" content="#3f71f3">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>XposedOrNot - 域名验证 | 数据泄露监控</title>
@@ -673,37 +674,38 @@
           <div class="verification-info">
             <div class="d-flex align-items-center mb-2">
               <i class="fas fa-envelope fa-2x text-primary mr-2" aria-hidden="true"></i>
-              <h5 class="mb-0">电子邮件验证</h5>
-              <span class="badge badge-success ml-2">最简便的方法</span>
+              <h5 class="mb-0">邮箱验证</h5>
+              <span class="badge badge-success ml-2">最简单的方法</span>
             </div>
-            <div class="alert alert-info mt-2">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <strong>重要提示：</strong> 验证邮件只会发送到您域名 DNS 记录中列出的电子邮件地址（例如
-              <!--email_off-->admin@example.com<!--/email_off-->）。请仅在您能访问这些邮箱账户时选择此方法。
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>工作原理：</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  我们会向您域名下<strong>以下 5 个地址之一</strong>发送一次性链接：
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ or hostmaster@example.com<!--/email_off-->。
+                </li>
+                <li>选择您可以访问的地址来接收链接。</li>
+                <li>
+                  输入一个<strong>同一域名下</strong>的监测邮箱以接收泄露提醒。
+                </li>
+                <li>在 <strong>30 分钟</strong>内打开链接完成验证。</li>
+              </ul>
             </div>
           </div>
-          只要您能在权威电子邮件联系人处收到邮件，基于<strong>电子邮件</strong>的验证就能轻松验证域名。
-          请选择电子邮件，然后点击<strong>验证</strong>。 <br />
-          <br />
           <form id="email_form" method="post">
-            <div class="input-group" id="div1">
-              <span class="input-group-addon">
-                <em class="fa fa-envelope" aria-hidden="true"></em>
-              </span>
-              <select class="form-control input-group input-lg" id="sel1" aria-label="选择验证电子邮件">
-                <option>
-                  请选择用于接收验证邮件的合适电子邮件：
-                </option>
-              </select>
-            </div>
+            <select class="form-control input-lg" id="sel1" aria-label="选择由 5 个允许的地址中的哪一个接收一次性链接">
+              <option>
+                从 5 个地址中选择一个来接收链接
+              </option>
+            </select>
             <br />
             <div style="text-align: left" class="input-group">
               <input
                 class="form-control input-lg"
                 type="text"
                 id="txt_email_e"
-                placeholder="接收泄露数据的电子邮件地址"
-                aria-label="用于电子邮件验证的电子邮件地址"
+                placeholder="此域名下的监测邮箱（例如 soc@yourdomain.com）"
+                aria-label="用于接收泄露提醒的监测邮箱地址"
               />
               <span class="input-group-btn">
                 <button
@@ -1065,6 +1067,7 @@
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">博客</a>
               <a href="our-repository" class="footer-link">我们的代码库</a>
+              <a href="/integrations" class="footer-link">集成</a>
             </div>
           </div>
           <div class="footer-group">

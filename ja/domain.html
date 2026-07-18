@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
     />
+    <meta name="theme-color" content="#3f71f3">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>XposedOrNot - ドメイン認証 | データ侵害監視</title>
@@ -673,32 +674,35 @@
               <h5 class="mb-0">メール認証</h5>
               <span class="badge badge-success ml-2">最も簡単な方法</span>
             </div>
-            <div class="alert alert-info mt-2">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <strong>重要：</strong> 認証メールは、ドメインのDNSレコードに記載されているメールアドレス（<!--email_off-->admin@example.com<!--/email_off--> など）にのみ送信されます。これらのメールアカウントにアクセスできる場合にのみ、この方法を選択してください。
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>仕組み:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  お客様のドメインの<strong>次の5つのアドレスのいずれか</strong>にワンタイムリンクをお送りします:
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ or hostmaster@example.com<!--/email_off-->。
+                </li>
+                <li>リンクを受け取れるアドレスを選択してください。</li>
+                <li>
+                  データ侵害アラートを受け取るため、<strong>同じドメインの</strong>監視用メールアドレスを入力してください。
+                </li>
+                <li><strong>30分以内</strong>にリンクを開いて認証を完了してください。</li>
+              </ul>
             </div>
           </div>
-          <strong>メール</strong>による認証は、ドメインの正式なメール連絡先でメールを受信できる場合、ドメインを簡単に認証できる方法です。メールアドレスを選択し、<strong>認証</strong>をクリックしてください。<br />
-          <br />
           <form id="email_form" method="post">
-            <div class="input-group" id="div1">
-              <span class="input-group-addon">
-                <em class="fa fa-envelope" aria-hidden="true"></em>
-              </span>
-              <select class="form-control input-group input-lg" id="sel1" aria-label="認証メールを選択">
-                <option>
-                  認証メールを受け取る適切なメールアドレスを選択してください：
-                </option>
-              </select>
-            </div>
+            <select class="form-control input-lg" id="sel1" aria-label="ワンタイムリンクを受け取るアドレスを5つの中から選択">
+              <option>
+                リンクを受け取るアドレスを5つの中から選択してください
+              </option>
+            </select>
             <br />
             <div style="text-align: left" class="input-group">
               <input
                 class="form-control input-lg"
                 type="text"
                 id="txt_email_e"
-                placeholder="漏洩データを受け取るメールアドレス"
-                aria-label="メール認証用のメールアドレス"
+                placeholder="このドメインの監視用メール（例: soc@yourdomain.com）"
+                aria-label="データ侵害アラートを受け取る監視用メールアドレス"
               />
               <span class="input-group-btn">
                 <button
@@ -707,7 +711,7 @@
                   class="btn btn-lg btn-primary"
                   disabled
                 >
-                  認証 &nbsp; <i class="fas fa-check" aria-hidden="true"></i>
+                  認証する &nbsp; <i class="fas fa-check" aria-hidden="true"></i>
                 </button>
               </span>
               <div class="validation-message" aria-live="polite"></div>
@@ -1059,6 +1063,7 @@
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">ブログ</a>
               <a href="our-repository" class="footer-link">リポジトリ</a>
+              <a href="/integrations" class="footer-link">インテグレーション</a>
             </div>
           </div>
           <div class="footer-group">

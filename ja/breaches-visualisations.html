@@ -4,70 +4,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>データ侵害の可視化</title>
+    <title>データ侵害可視化タイムライン | XposedOrNot</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="https://xposedornot.com/ja/breaches-visualisations" />
+    <meta name="theme-color" content="#3f71f3" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <meta property="og:title" content="XposedOrNot: データ侵害リポジトリ" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta name="description"
-        content="XposedOrNot でデータ侵害を可視化しましょう。インタラクティブなチャートとグラフを通じて、侵害の傾向と影響をより深く理解するためのインサイトを得られます。" />
+        content="主要なデータ侵害のインタラクティブなタイムライン。各バブルは1件の侵害を表し、流出件数に応じた大きさ、業界に応じた色で表示されます。検索、フィルタリング、侵害の詳細確認が可能です。" />
+    <meta property="og:title" content="XposedOrNot: データ侵害可視化タイムライン" />
+    <meta property="og:description"
+        content="主要なデータ侵害のインタラクティブなタイムライン。流出件数に応じた大きさ、業界に応じた色で表示されます。" />
     <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
-    <meta property="og:url" content="https://xposedornot.com/ja/data_breaches" />
+    <meta property="og:url" content="https://xposedornot.com/ja/breaches-visualisations" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@XposedOrNot">
-    <meta name="twitter:title" content="XposedOrNot: データ侵害リポジトリ">
+    <meta name="twitter:title" content="XposedOrNot: データ侵害可視化タイムライン">
     <meta name="twitter:description"
-        content="XposedOrNot でデータ侵害を可視化しましょう。インタラクティブなチャートとグラフを通じて、侵害の傾向と影響をより深く理解するためのインサイトを得られます。">
+        content="主要なデータ侵害のインタラクティブなタイムライン。流出件数に応じた大きさ、業界に応じた色で表示されます。">
     <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
     <script>
         (function () {
-            function isMobileDevice() {
-                return (window.innerWidth <= 768) ||
-                    (navigator.userAgent.match(/Android/i) ||
-                        navigator.userAgent.match(/webOS/i) ||
-                        navigator.userAgent.match(/iPhone/i) ||
-                        navigator.userAgent.match(/iPad/i) ||
-                        navigator.userAgent.match(/iPod/i) ||
-                        navigator.userAgent.match(/BlackBerry/i) ||
-                        navigator.userAgent.match(/Windows Phone/i));
-            }
-
-            if (isMobileDevice()) {
-                if (!window.location.href.includes('breaches-visualisations-mobile.html')) {
-                    window.location.href = 'breaches-visualisations-mobile.html';
-                }
+            var mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+            if (mobileUA && !window.location.href.includes('breaches-visualisations-mobile.html')) {
+                window.location.href = 'breaches-visualisations-mobile.html';
             }
         })();
     </script>
 
     <style>
+        :root {
+            color-scheme: light;
+        }
+
+        html:has(body[data-theme="dark"]) {
+            color-scheme: dark;
+        }
+
+        body {
+            --bg: #f5f7fa;
+            --panel: #ffffff;
+            --panel-border: #dde3ec;
+            --ink: #1f2937;
+            --ink-2: #46586a;
+            --link: #1d4ed8;
+            --focus: #1d4ed8;
+            --grid: #dde3ec;
+            --halo: #f5f7fa;
+            --ring: rgba(15, 23, 42, 0.22);
+            --wash: rgba(29, 78, 216, 0.08);
+            --tip-bg: #ffffff;
+            --tip-border: rgba(15, 23, 42, 0.14);
+            --shadow: rgba(15, 23, 42, 0.12);
+            --s0: #2a78d6;
+            --s1: #1baf7a;
+            --s2: #eda100;
+            --s3: #008300;
+            --s4: #4a3aa7;
+            --s5: #e34948;
+            --s6: #e87ba4;
+            --s7: #eb6834;
+            --s-other: #898781;
+        }
+
+        body[data-theme="dark"] {
+            --bg: #0e0f19;
+            --panel: #181b2d;
+            --panel-border: #2a2d40;
+            --ink: #e2e8f0;
+            --ink-2: #9fc0e0;
+            --link: #5b9aff;
+            --focus: #5b9aff;
+            --grid: #262a3a;
+            --halo: #0e0f19;
+            --ring: rgba(255, 255, 255, 0.14);
+            --wash: rgba(139, 180, 255, 0.14);
+            --tip-bg: #181b2d;
+            --tip-border: rgba(255, 255, 255, 0.12);
+            --shadow: rgba(0, 0, 0, 0.5);
+            --s0: #3987e5;
+            --s1: #199e70;
+            --s2: #c98500;
+            --s3: #008300;
+            --s4: #9085e9;
+            --s5: #e66767;
+            --s6: #d55181;
+            --s7: #d95926;
+            --s-other: #898781;
+        }
+
         body,
         html {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', Arial, sans-serif;
-            background-color: #1a1a1a;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--ink);
             min-height: 100vh;
             overflow-x: hidden;
-        }
-
-        #chart {
-            width: 100%;
-            padding: 20px;
-            margin: 0 auto;
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        #chart svg {
-            max-width: 100%;
-            display: block;
-            background: radial-gradient(ellipse at 50% 0%, rgba(60, 95, 236, 0.04) 0%, transparent 60%);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .navbar-custom {
@@ -97,209 +141,328 @@
             background: rgba(255, 255, 255, 0.12);
         }
 
-        .tooltip {
-            position: absolute;
-            background-color: rgba(22, 24, 32, 0.97);
-            border: none;
-            padding: 20px;
-            border-radius: 14px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2);
-            max-width: 340px;
-            color: #f8f9fa;
-            font-size: 14px;
-            line-height: 1.6;
-            z-index: 1000;
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .page-head {
+            text-align: center;
+            margin: 2.2rem auto 1.2rem;
+            padding: 0 20px;
+            max-width: 900px;
         }
 
-        .tooltip-title {
-            font-size: 18px;
+        .page-title {
+            color: var(--ink);
+            margin: 0 0 8px;
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            color: var(--ink-2);
+            font-size: 1rem;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .page-subtitle span {
+            color: var(--link);
             font-weight: 600;
-            margin-bottom: 12px;
-            color: #f8f9fa;
-            border-bottom: 2px solid;
-            padding-bottom: 8px;
         }
 
-        .tooltip-logo {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 12px;
+        .viz-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 20px;
+            margin: 0 auto 12px;
+            max-width: 1100px;
+        }
+
+        .viz-controls input[type="search"],
+        .viz-controls select {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            color: var(--ink);
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .tooltip-description {
-            color: #e2e8f0;
-            margin: 12px 0;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .tooltip-stats {
-            font-weight: 500;
             padding: 8px 12px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-top: 8px;
+            font-size: 14px;
+            font-family: inherit;
         }
 
-        .axis text.year-label {
+        .viz-controls input[type="search"] {
+            width: 230px;
+        }
+
+        .viz-controls select {
+            max-width: 220px;
+        }
+
+        .viz-controls input::placeholder {
+            color: var(--ink-2);
+        }
+
+        .viz-controls input:focus,
+        .viz-controls select:focus,
+        .viz-controls button:focus-visible,
+        .legend-chip:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        .group-toggle {
+            display: inline-flex;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--panel);
+        }
+
+        .group-toggle button {
+            background: transparent;
+            border: none;
+            color: var(--ink-2);
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .group-toggle button[aria-pressed="true"] {
+            background: var(--wash);
+            color: var(--link);
+            font-weight: 600;
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            color: var(--ink-2);
+            font-size: 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            color: var(--link);
+            border-color: var(--link);
+        }
+
+        .viz-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 20px;
+            margin: 0 auto 6px;
+            max-width: 1200px;
+        }
+
+        .legend-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            color: var(--ink-2);
+            font-size: 12.5px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .legend-chip:hover {
+            border-color: var(--link);
+        }
+
+        .legend-chip[aria-pressed="true"] {
+            background: var(--wash);
+            border-color: var(--link);
+            color: var(--ink);
+        }
+
+        .legend-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: inset 0 0 0 1px var(--ring);
+        }
+
+        .legend-note {
+            width: 100%;
+            text-align: center;
+            color: var(--ink-2);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        #chart {
+            width: 100%;
+            padding: 10px 20px 20px;
+            margin: 0 auto;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        #chart svg {
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .band-sep {
+            stroke: var(--grid);
+            stroke-width: 1px;
+        }
+
+        .band-label {
+            fill: var(--ink);
             font-size: 16px;
             font-weight: 700;
-            fill: currentColor;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-            padding: 5px 10px;
-            letter-spacing: 0.3px;
         }
 
-        .year-badge-bg {
-            fill: rgba(255, 255, 255, 0.05);
-            stroke: currentColor;
-            stroke-width: 1.5px;
-            stroke-opacity: 0.35;
-            rx: 8px;
-            ry: 8px;
-            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
-            transition: all 0.3s ease;
-        }
-
-        @keyframes pulse-badge {
-            0% {
-                stroke-opacity: 0.3;
-            }
-
-            50% {
-                stroke-opacity: 0.6;
-            }
-
-            100% {
-                stroke-opacity: 0.3;
-            }
-        }
-
-        .year-badge-bg:hover {
-            animation: pulse-badge 2s infinite ease-in-out;
-            fill: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-        }
-
-        .axis line.year-grid {
-            stroke: currentColor;
-            stroke-opacity: 0.15;
-            stroke-width: 1px;
-            stroke-dasharray: 4, 6;
-        }
-
-        .circle {
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            filter: drop-shadow(0 4px 12px rgb(0 0 0 / 0.4));
-        }
-
-        .breach:hover .circle {
-            filter: drop-shadow(0 6px 20px rgb(0 0 0 / 0.5)) brightness(1.15);
-        }
-
-        .breach:hover .breach-title {
-            opacity: 1 !important;
-            font-weight: 700;
-        }
-
-        .axis path {
-            stroke: #4b5563;
-        }
-
-        .axis line {
-            stroke: #374151;
-            stroke-dasharray: 2, 2;
-        }
-
-        .axis text {
-            font-size: 14px;
-            fill: #e5e7eb;
+        .band-sublabel {
+            fill: var(--ink-2);
+            font-size: 11.5px;
             font-weight: 500;
         }
 
-        text.breach-title {
-            font-size: 13px;
+        .breach {
+            cursor: pointer;
+            outline: none;
+        }
+
+        .bubble {
+            stroke: var(--ring);
+            stroke-width: 1px;
+            transition: opacity 0.25s ease;
+        }
+
+        .breach:hover .bubble {
+            stroke-width: 2px;
+        }
+
+        .breach:focus-visible .bubble {
+            stroke: var(--focus);
+            stroke-width: 3px;
+        }
+
+        .breach-name {
+            font-size: 12px;
             text-anchor: middle;
-            fill: white;
+            fill: var(--ink);
             font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            paint-order: stroke;
+            stroke: var(--halo);
+            stroke-width: 3px;
+            stroke-linejoin: round;
             pointer-events: none;
         }
 
-        img.logo {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 10px;
-            border-radius: 4px;
+        .breach-recs {
+            font-size: 10.5px;
+            text-anchor: middle;
+            fill: var(--ink-2);
+            font-weight: 500;
+            paint-order: stroke;
+            stroke: var(--halo);
+            stroke-width: 3px;
+            stroke-linejoin: round;
+            pointer-events: none;
         }
 
         image.breach-logo {
             pointer-events: none;
         }
 
-        .breach {
-            transition: transform 0.3s ease-out;
+        .breach.dim {
+            opacity: 0.1;
+            pointer-events: none;
         }
 
-        .breach:focus {
-            outline: 2px solid #60a5fa;
-            outline-offset: 4px;
-            border-radius: 50%;
+        .breach.hit-match .bubble {
+            stroke: var(--focus);
+            stroke-width: 2.5px;
         }
 
-        .breach:focus:not(:focus-visible) {
-            outline: none;
+        .viz-tooltip {
+            position: absolute;
+            background-color: var(--tip-bg);
+            padding: 18px;
+            border-radius: 12px;
+            pointer-events: none;
+            opacity: 0;
+            display: none;
+            box-shadow: 0 8px 32px var(--shadow);
+            max-width: 340px;
+            color: var(--ink);
+            font-size: 14px;
+            line-height: 1.6;
+            z-index: 1050;
+            border: 1px solid var(--tip-border);
+            border-left: 4px solid var(--tip-accent, var(--link));
+            transition: opacity 0.2s ease;
         }
 
-        .breach:focus-visible {
-            outline: 2px solid #60a5fa;
-            outline-offset: 4px;
+        .viz-tooltip.show {
+            opacity: 1;
         }
 
-        .breach:focus > circle {
-            stroke: #60a5fa;
-            stroke-width: 3px;
-        }
-
-        .page-title-wrapper {
-            text-align: center;
-            margin: 2.5rem 0 1.5rem;
-        }
-
-        .page-title {
-            color: #f0f4ff;
-            text-align: center;
-            margin: 0 0 8px;
-            font-weight: 700;
-            font-size: 2.2rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #f0f4ff 0%, #8bb4ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .page-subtitle {
-            color: #8b9dc3;
-            font-size: 1rem;
-            font-weight: 400;
-            margin: 0;
-            letter-spacing: 0.2px;
-        }
-
-        .page-subtitle span {
-            color: #60a5fa;
+        .viz-tooltip .tip-title {
+            font-size: 17px;
             font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--ink);
+        }
+
+        .viz-tooltip .tip-year {
+            color: var(--ink-2);
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .viz-tooltip img {
+            max-width: 100%;
+            max-height: 90px;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .viz-tooltip .tip-desc {
+            color: var(--ink-2);
+            margin: 0 0 10px;
+            font-size: 13.5px;
+        }
+
+        .viz-tooltip .tip-stats {
+            font-weight: 600;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            background: var(--wash);
+            color: var(--ink);
+        }
+
+        .viz-tooltip .tip-hint {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--link);
+            font-weight: 500;
         }
 
         .overlay-container {
@@ -308,52 +471,51 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 9999;
+            background-color: rgba(8, 10, 20, 0.75);
+            z-index: 1100;
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: white;
             text-align: center;
             padding: 20px;
             backdrop-filter: blur(8px);
         }
 
         .overlay-content {
-            max-width: 560px;
-            background: linear-gradient(160deg, #1e2235 0%, #161927 100%);
+            max-width: 620px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--panel);
             border-radius: 20px;
-            padding: 40px 36px;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(96, 165, 250, 0.15);
+            padding: 36px 34px;
+            box-shadow: 0 24px 64px var(--shadow);
+            border: 1px solid var(--panel-border);
         }
 
         .overlay-icon {
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
             border-radius: 16px;
             background: linear-gradient(135deg, #3c5fec, #4284fb);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 28px;
-            box-shadow: 0 8px 24px rgba(60, 95, 236, 0.3);
+            margin: 0 auto 18px;
+            font-size: 26px;
+            color: #fff;
         }
 
         .overlay-container h2 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-            color: #f0f4ff;
-            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            color: var(--ink);
             font-weight: 700;
         }
 
         .overlay-container .overlay-desc {
-            color: #8b9dc3;
-            text-align: center;
-            margin-bottom: 24px;
+            color: var(--ink-2);
+            margin-bottom: 22px;
             font-size: 0.95rem;
             line-height: 1.6;
         }
@@ -362,7 +524,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 28px;
+            margin-bottom: 22px;
+            text-align: left;
         }
 
         .overlay-feature {
@@ -370,256 +533,82 @@
             align-items: flex-start;
             gap: 10px;
             padding: 12px 14px;
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--wash);
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--panel-border);
         }
 
         .overlay-feature i {
-            color: #60a5fa;
-            font-size: 16px;
-            margin-top: 2px;
+            color: var(--link);
+            font-size: 15px;
+            margin-top: 3px;
             flex-shrink: 0;
         }
 
         .overlay-feature span {
             font-size: 0.85rem;
-            color: #c8d6e5;
+            color: var(--ink);
             line-height: 1.4;
         }
 
-        .overlay-container button {
+        .size-key {
+            margin: 0 auto 22px;
+        }
+
+        .size-key circle {
+            fill: none;
+            stroke: var(--ink-2);
+            stroke-width: 1.5px;
+        }
+
+        .size-key line {
+            stroke: var(--grid);
+            stroke-dasharray: 3, 3;
+        }
+
+        .size-key text {
+            fill: var(--ink-2);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .size-key-caption {
+            color: var(--ink-2);
+            font-size: 12px;
+            margin: -14px 0 20px;
+        }
+
+        .overlay-container .primary-btn {
             background: linear-gradient(135deg, #3c5fec, #4284fb);
             color: white;
             border: none;
-            padding: 14px 32px;
+            padding: 13px 32px;
             border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
             font-size: 1rem;
-            margin-top: 4px;
-            box-shadow: 0 4px 16px rgba(60, 95, 236, 0.3);
+            font-family: inherit;
             width: 100%;
         }
 
-        .overlay-container button:hover,
-        .overlay-container button:focus {
+        .overlay-container .primary-btn:hover {
             background: linear-gradient(135deg, #4a6ff5, #5a8eff);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(60, 95, 236, 0.4);
         }
 
-        .overlay-container button:focus {
-            outline: 3px solid #60a5fa;
+        .overlay-container .primary-btn:focus-visible {
+            outline: 3px solid var(--focus);
             outline-offset: 2px;
         }
 
         @media (max-width: 768px) {
             .overlay-content {
                 width: 92%;
-                padding: 28px 20px;
-            }
-
-            .overlay-container h2 {
-                font-size: 1.3rem;
+                padding: 26px 20px;
             }
 
             .overlay-features {
                 grid-template-columns: 1fr;
             }
-        }
-
-        .bottom-buttons {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            display: flex;
-            gap: 10px;
-            z-index: 101;
-        }
-
-        .bottom-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(22, 25, 39, 0.8);
-            backdrop-filter: blur(12px);
-            color: #8b9dc3;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 16px;
-            font-weight: 600;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(96, 165, 250, 0.12);
-        }
-
-        .bottom-btn:hover {
-            color: #60a5fa;
-            background: rgba(22, 25, 39, 0.95);
-            border-color: rgba(96, 165, 250, 0.3);
-        }
-
-        .bottom-btn:focus {
-            outline: 2px solid #60a5fa;
-            outline-offset: 2px;
-        }
-
-        .bottom-btn.active {
-            color: #60a5fa;
-            border-color: rgba(96, 165, 250, 0.4);
-            background: rgba(30, 40, 70, 0.9);
-        }
-
-        .industry-filter {
-            position: fixed;
-            bottom: 80px;
-            right: 24px;
-            background: rgba(22, 25, 39, 0.92);
-            padding: 20px;
-            border-radius: 14px;
-            color: white;
-            font-weight: 500;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(10px) scale(0.95);
-            width: 240px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(96, 165, 250, 0.12);
-        }
-
-        .industry-filter.visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0) scale(1);
-        }
-
-        .industry-filter h4 {
-            margin: 0 0 16px 0;
-            font-size: 15px;
-            color: #c8d6e5;
-            text-align: left;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .active-industry {
-            display: block;
-            background: rgba(96, 165, 250, 0.1);
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin-top: 12px;
-            font-size: 12px;
-            text-align: center;
-            color: #60a5fa;
-            font-weight: 500;
-            border: 1px solid rgba(96, 165, 250, 0.15);
-        }
-
-        .industry-filter label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 12px;
-            color: #8b9dc3;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        .industry-filter select {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.06);
-            color: #e2e8f0;
-            font-size: 13px;
-            margin-bottom: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-            transition: border-color 0.2s ease;
-        }
-
-        .industry-filter select option {
-            background-color: #1e2235;
-            color: #e2e8f0;
-            padding: 8px;
-            font-size: 13px;
-        }
-
-        .industry-filter select:focus {
-            outline: 2px solid #60a5fa;
-            outline-offset: 1px;
-            border-color: transparent;
-        }
-
-        .industry-filter button {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #c8d6e5;
-            padding: 9px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s ease;
-            width: 100%;
-            margin-top: 6px;
-            font-weight: 500;
-        }
-
-        .industry-filter button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        .industry-filter button:focus {
-            outline: 2px solid #60a5fa;
-            outline-offset: 1px;
-        }
-
-        @keyframes pulse-circle {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.08);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .industry-highlight {
-            animation: pulse-circle 2.5s infinite ease-in-out;
-            z-index: 10;
-        }
-
-        .industry-highlight circle {
-            stroke: rgba(255, 255, 255, 0.5);
-            stroke-width: 2px;
-        }
-
-        .filtered-out {
-            pointer-events: none;
-        }
-
-        .filtered-in {
-            z-index: 5;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .skip-link {
@@ -630,7 +619,7 @@
             color: #fff;
             padding: 10px 18px;
             border-radius: 0 0 8px 8px;
-            z-index: 10000;
+            z-index: 1200;
             font-weight: 600;
             font-size: 14px;
             text-decoration: none;
@@ -639,1099 +628,1164 @@
 
         .skip-link:focus {
             top: 0;
-            outline: 3px solid #60a5fa;
+            outline: 3px solid var(--focus);
             outline-offset: 2px;
             color: #fff;
             text-decoration: none;
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1090;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .loading-spinner {
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            border: 3px solid rgba(96, 165, 250, 0.15);
-            border-top-color: #60a5fa;
-            animation: spin 0.8s linear infinite;
+            border: 3px solid var(--wash);
+            border-top-color: var(--link);
             margin: 0 auto 16px;
         }
 
+        @media (prefers-reduced-motion: no-preference) {
+            .loading-spinner {
+                animation: spin 0.8s linear infinite;
+            }
+        }
+
         .loading-text {
-            color: #8b9dc3;
+            color: var(--ink-2);
             font-size: 0.9rem;
             font-weight: 500;
-            letter-spacing: 0.3px;
+        }
+
+        .retry-btn {
+            margin-top: 14px;
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            color: var(--link);
+            padding: 9px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .retry-btn:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .footer {
+            padding: 40px 0 30px;
+            background: var(--panel);
+            border-top: 1px solid var(--panel-border);
+            margin-top: 40px;
+        }
+
+        .footer p {
+            color: var(--ink-2);
+        }
+
+        .footer p a {
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        .footer p a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 60px;
+            text-align: left;
+            padding: 0 40px;
+        }
+
+        .footer-group {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .footer-group h6 {
+            color: var(--ink) !important;
+            font-size: 0.85em !important;
+            margin-bottom: 15px !important;
+            font-weight: 600 !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-group a.footer-link {
+            display: block;
+            margin-bottom: 6px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            color: var(--ink-2);
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .footer-group a.footer-link:hover {
+            background-color: var(--wash);
+            padding-left: 14px;
+            color: var(--link) !important;
+        }
+
+        .footer .custom-control-label {
+            color: var(--ink-2);
+        }
+
+        @media (max-width: 768px) {
+            .footer-columns {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+                padding: 0 20px;
+            }
+
+            .footer-group {
+                border-bottom: 1px solid var(--panel-border);
+            }
+
+            .footer-group h6 {
+                cursor: pointer;
+                padding: 15px 20px;
+                margin: 0 !important;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .footer-group h6:focus {
+                outline: 2px solid var(--focus);
+                outline-offset: -2px;
+            }
+
+            .footer-group h6::after {
+                content: '+';
+                font-size: 20px;
+                font-weight: 300;
+                color: var(--ink-2);
+                transition: transform 0.3s ease;
+            }
+
+            .footer-group.active h6::after {
+                content: '−';
+            }
+
+            .footer-group .footer-links-wrapper {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                padding: 0 20px;
+            }
+
+            .footer-group.active .footer-links-wrapper {
+                max-height: 300px;
+                padding: 0 20px 15px 20px;
+            }
         }
     </style>
-    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-      @font-face {
-        font-family: "Font Awesome 5 Free";
-        font-style: normal;
-        font-weight: 400;
-        font-display: swap;
-        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-regular-400.woff2") format("woff2");
-      }
-      @font-face {
-        font-family: "Font Awesome 5 Free";
-        font-style: normal;
-        font-weight: 900;
-        font-display: swap;
-        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-solid-900.woff2") format("woff2");
-      }
-      @font-face {
-        font-family: "Font Awesome 5 Brands";
-        font-style: normal;
-        font-weight: normal;
-        font-display: swap;
-        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-brands-400.woff2") format("woff2");
-      }
-    </style>
+        @font-face {
+            font-family: "Font Awesome 5 Free";
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-regular-400.woff2") format("woff2");
+        }
 
-    </head>
+        @font-face {
+            font-family: "Font Awesome 5 Free";
+            font-style: normal;
+            font-weight: 900;
+            font-display: swap;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-solid-900.woff2") format("woff2");
+        }
+
+        @font-face {
+            font-family: "Font Awesome 5 Brands";
+            font-style: normal;
+            font-weight: normal;
+            font-display: swap;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-brands-400.woff2") format("woff2");
+        }
+    </style>
+</head>
 
 <body>
-    <div id="loadingOverlay"
-        role="status" aria-live="polite"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(14, 15, 25, 0.97); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+    <script>
+        if (localStorage.getItem("darkSwitch") === "dark") {
+            document.body.setAttribute("data-theme", "dark");
+        }
+    </script>
+
+    <div id="loadingOverlay" role="status" aria-live="polite">
         <div style="text-align: center;">
             <div class="loading-spinner"></div>
-            <p class="loading-text">可視化を読み込んでいます</p>
+            <p class="loading-text">可視化を読み込み中</p>
         </div>
     </div>
 
     <a href="#chart" class="skip-link">可視化へスキップ</a>
 
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-        <a class="navbar-brand" href="/ja/">XposedOrNot</a>
+        <a class="navbar-brand" href="/">XposedOrNot</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarNav" aria-expanded="false" aria-label="ナビゲーションの切り替え">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="https://blog.xposedornot.com">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://blog.xposedornot.com">ブログ</a></li>
                 <li class="nav-item"><a class="nav-link" href="api_doc">API</a></li>
             </ul>
         </div>
     </nav>
 
     <main id="main-content">
-    <div class="page-title-wrapper">
-        <h1 class="page-title">データ侵害の可視化</h1>
-        <p class="page-subtitle" id="pageSubtitle">業種別・年別に侵害データを探索</p>
-    </div>
+        <div class="page-head">
+            <h1 class="page-title">データ侵害可視化タイムライン</h1>
+            <p class="page-subtitle" id="pageSubtitle" aria-live="polite">業界と年をまたいでデータ侵害を探索</p>
+        </div>
 
-    <div id="chart" role="region" aria-label="年別に整理されたデータ侵害を示すインタラクティブなバブルチャートです。各バブルは1件の侵害を表し、漏洩したレコード数に応じて大きさが変わります。"></div>
+        <div class="viz-controls">
+            <input type="search" id="searchInput" placeholder="侵害名またはドメインを検索"
+                aria-label="侵害名またはドメインで検索" autocomplete="off">
+            <label for="industrySelect" class="sr-only">業界で絞り込み</label>
+            <select id="industrySelect">
+                <option value="all">すべての業界</option>
+            </select>
+            <div class="group-toggle" role="group" aria-label="侵害のグループ化方法">
+                <button type="button" id="groupYear" aria-pressed="true">年別</button>
+                <button type="button" id="groupIndustry" aria-pressed="false">業界別</button>
+            </div>
+            <button type="button" class="icon-btn" id="infoButton" aria-label="この可視化の読み方"
+                title="この可視化の読み方"><i class="fas fa-info" aria-hidden="true"></i></button>
+        </div>
+
+        <div class="viz-legend" id="vizLegend" aria-label="業界の色の凡例"></div>
+
+        <p class="sr-only" id="vizSummary"></p>
+
+        <div id="chart" role="region"
+            aria-label="データ侵害のインタラクティブなバブルチャート。各バブルは1件の侵害を表し、流出件数に応じた大きさ、業界に応じた色で表示されます。矢印キーで侵害間を移動し、Enterキーで侵害の詳細を開きます。">
+        </div>
     </main>
-
-    <div class="bottom-buttons">
-        <button class="bottom-btn" id="filterButton" aria-label="業種フィルターの切り替え" aria-expanded="false" title="業種で絞り込む"><i class="fas fa-filter" aria-hidden="true"></i></button>
-        <button class="bottom-btn" id="infoButton" aria-label="可視化に関する情報を表示" title="情報">i</button>
-    </div>
-
-    <div class="industry-filter" id="industryFilter">
-        <h4><i class="fas fa-filter" style="margin-right: 6px; font-size: 12px;" aria-hidden="true"></i> 業種で絞り込む</h4>
-        <label for="industrySelect">業種</label>
-        <select id="industrySelect">
-            <option value="all">すべての業種</option>
-        </select>
-        <button id="resetFilter" aria-label="業種フィルターをリセット"><i class="fas fa-undo" style="margin-right: 4px; font-size: 11px;" aria-hidden="true"></i> リセット</button>
-        <div class="active-industry" id="activeIndustry" aria-live="polite">表示中：すべての業種</div>
-    </div>
 
     <div class="overlay-container" id="infoOverlay" role="dialog" aria-modal="true" aria-label="可視化ガイド">
         <div class="overlay-content">
             <div class="overlay-icon"><i class="fas fa-shield-alt" aria-hidden="true"></i></div>
-            <h2>データ侵害の可視化</h2>
-            <p class="overlay-desc">主要なデータ侵害を年別に整理したインタラクティブなマップです。いずれかのバブルにカーソルを合わせると、侵害の詳細を確認できます。</p>
+            <h2>このチャートの読み方</h2>
+            <p class="overlay-desc">各バブルは1件のデータ侵害を表します。バブルにカーソルを合わせるかフォーカスすると詳細が表示され、クリックすると完全な侵害レポートが開きます。</p>
 
             <div class="overlay-features">
                 <div class="overlay-feature">
                     <i class="fas fa-circle" aria-hidden="true"></i>
-                    <span><strong>大きさ</strong> ＝ 漏洩したレコード数</span>
+                    <span><strong>大きさ</strong>は流出件数に対応します。小規模な侵害も見えるよう圧縮スケールを使用しています</span>
                 </div>
                 <div class="overlay-feature">
                     <i class="fas fa-palette" aria-hidden="true"></i>
-                    <span><strong>色</strong> ＝ 侵害が発生した年</span>
+                    <span><strong>色</strong>は侵害を受けた組織の業界を表します</span>
                 </div>
                 <div class="overlay-feature">
-                    <i class="fas fa-image" aria-hidden="true"></i>
-                    <span><strong>ロゴ</strong> ＝ 影響を受けた組織</span>
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <span><strong>検索</strong>は侵害名またはドメインで行い、業界での絞り込みもできます</span>
                 </div>
                 <div class="overlay-feature">
-                    <i class="fas fa-filter" aria-hidden="true"></i>
-                    <span>業種で<strong>絞り込む</strong></span>
+                    <i class="fas fa-arrows-alt" aria-hidden="true"></i>
+                    <span><strong>キーボード</strong>: 矢印キーでバブル間を移動し、Enterキーで詳細を開きます</span>
                 </div>
             </div>
 
-            <button id="closeOverlay" tabindex="0" aria-label="可視化に進む">侵害を探索する</button>
+            <svg class="size-key" width="300" height="190" role="img"
+                aria-label="サイズの目安: 100万件、1億件、10億件のレコードに対応するバブルの大きさを示す入れ子の円">
+                <circle cx="70" cy="125" r="55"></circle>
+                <circle cx="70" cy="147" r="33"></circle>
+                <circle cx="70" cy="165" r="15"></circle>
+                <line x1="70" y1="70" x2="185" y2="70"></line>
+                <line x1="70" y1="114" x2="185" y2="114"></line>
+                <line x1="70" y1="150" x2="185" y2="150"></line>
+                <text x="192" y="74">10億件</text>
+                <text x="192" y="118">1億件</text>
+                <text x="192" y="154">100万件</text>
+            </svg>
+            <p class="size-key-caption">バブルの大きさの目安</p>
+
+            <button id="closeOverlay" class="primary-btn">侵害を探索する</button>
         </div>
     </div>
 
+    <footer class="footer" aria-label="サイトフッター">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:30px;">
+                <p>完全オープンソースのこのサイトづくりにぜひご参加ください。<a
+                        href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub<span
+                            class="sr-only"> (新しいタブで開きます)</span></a>でのコントリビューションを歓迎します ❤️。</p>
+            </div>
+
+            <div class="footer-columns">
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">法的情報</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="privacy" class="footer-link">プライバシーポリシー</a>
+                        <a href="terms" class="footer-link">利用規約</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">コミュニティ</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="/about" class="footer-link">私たちについて</a>
+                        <a href="https://blog.xposedornot.com" class="footer-link">ブログ</a>
+                        <a href="our-repository" class="footer-link">リポジトリ</a>
+                        <a href="/integrations" class="footer-link">インテグレーション</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">信頼性</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener"
+                            class="footer-link">ステータス<span class="sr-only"> (新しいタブで開きます)</span></a>
+                        <a href="transparency" class="footer-link">透明性</a>
+                        <a href="responsible-disclosure" class="footer-link">責任ある開示</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6>法人向け</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener"
+                            class="footer-link">xonAPI+</a>
+                        <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener"
+                            class="footer-link">xonEnterprise+</a>
+                        <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener"
+                            class="footer-link">xonThreatIntel+</a>
+                        <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener"
+                            class="footer-link">料金</a>
+                    </div>
+                </div>
+                <div class="footer-group">
+                    <h6 role="button" tabindex="0" aria-expanded="false">フォロー</h6>
+                    <div class="footer-links-wrapper">
+                        <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                            <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)<span class="sr-only"> (新しいタブで開きます)</span>
+                        </a>
+                        <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+                            <i class="fab fa-facebook" aria-hidden="true"></i> Facebook<span class="sr-only"> (新しいタブで開きます)</span>
+                        </a>
+                        <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener"
+                            class="footer-link">
+                            <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon<span class="sr-only"> (新しいタブで開きます)</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px">
+                <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+                <label class="custom-control-label" for="darkSwitch">ダークモード</label>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/breach/ids.js"></script>
     <script>
-        let allBreachData = [];
-        let floatAnimId = null;
+        (function () {
+            const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const SLOTS = 8;
+            const FOLDED = new Set(['Miscellaneous', 'Uncategorized']);
+            const OTHER_LABEL = 'その他';
 
-        document.getElementById('loadingOverlay').style.display = 'flex';
+            let allData = [];
+            let slotByIndustry = new Map();
+            let slotIndustries = [];
+            let recMin = 0;
+            let recMax = 1;
+            let groupMode = 'year';
+            let filter = { kind: 'all' };
+            let searchTerm = '';
+            let bandsIndex = [];
+            let nodeSel = null;
+            let renderedWidth = 0;
+            let floatId = null;
+            let chartVisible = true;
 
-        fetch('https://api.xposedornot.com/v1/breaches')
-            .then(response => response.json())
-            .then(apiData => {
-                allBreachData = processData(apiData['exposedBreaches']);
+            const chartEl = document.getElementById('chart');
+            const subtitleEl = document.getElementById('pageSubtitle');
+            const summaryEl = document.getElementById('vizSummary');
+            const searchEl = document.getElementById('searchInput');
+            const selectEl = document.getElementById('industrySelect');
+            const legendEl = document.getElementById('vizLegend');
+            const loadingEl = document.getElementById('loadingOverlay');
 
-                populateIndustryFilter(apiData['exposedBreaches']);
-                createGraph(allBreachData);
-                document.getElementById('loadingOverlay').style.display = 'none';
+            function mulberry32(seed) {
+                let a = seed >>> 0;
+                return function () {
+                    a |= 0;
+                    a = (a + 0x6D2B79F5) | 0;
+                    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+                    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+                    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+                };
+            }
 
-                const industries = new Set(apiData['exposedBreaches'].map(b => b.industry).filter(Boolean));
-                document.getElementById('pageSubtitle').innerHTML =
-                    '<span>' + industries.size + '業種</span>にわたる<span>' + allBreachData.length + '件以上の侵害</span>を探索';
+            function fmtNum(n) {
+                return d3.format('.3~s')(Math.max(0, n)).replace('G', 'B').replace('k', 'K');
+            }
 
+            function fmtFull(n) {
+                return d3.format(',')(n);
+            }
 
+            function radius(count) {
+                const q = Math.pow(Math.max(count, 1), 0.25);
+                const lo = Math.pow(recMin, 0.25);
+                const hi = Math.pow(recMax, 0.25);
+                const t = hi > lo ? (q - lo) / (hi - lo) : 0.5;
+                return 10 + Math.min(1, Math.max(0, t)) * 54;
+            }
 
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                document.getElementById('loadingOverlay').innerHTML =
-                    '<div style="text-align:center;"><p class="loading-text" style="color:#fca5a5;">侵害データを読み込めませんでした。ページを再読み込みしてください。</p></div>';
-            });
+            function displayIndustry(d) {
+                return slotByIndustry.has(d.industry) ? d.industry : OTHER_LABEL;
+            }
 
-        function populateIndustryFilter(breaches) {
-            const industrySelect = document.getElementById('industrySelect');
+            function slotClass(d) {
+                const slot = slotByIndustry.get(d.industry);
+                return slot === undefined ? 's-other' : 's' + slot;
+            }
 
-            const industries = new Set();
-            breaches.forEach(breach => {
-                if (breach.industry && breach.industry.trim() !== '') {
-                    industries.add(breach.industry);
+            function slotVar(d) {
+                const slot = slotByIndustry.get(d.industry);
+                return slot === undefined ? 'var(--s-other)' : 'var(--s' + slot + ')';
+            }
+
+            function breachHref(id) {
+                const hasStatic = window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(id) !== -1;
+                return hasStatic ? '/breach/' + encodeURIComponent(id) : '/breach-detail#' + encodeURIComponent(id);
+            }
+
+            function processData(breaches) {
+                return breaches.map(b => ({
+                    year: new Date(b.breachedDate).getFullYear(),
+                    name: b.breachID,
+                    domain: b.domain || '',
+                    logo: /^https:\/\//.test(b.logo || '') ? b.logo : '',
+                    description: b.exposureDescription || '',
+                    count: b.exposedRecords || 0,
+                    industry: (b.industry || '').trim() || 'Uncategorized'
+                }));
+            }
+
+            function assignSlots(data) {
+                const counts = new Map();
+                data.forEach(d => {
+                    if (FOLDED.has(d.industry)) return;
+                    counts.set(d.industry, (counts.get(d.industry) || 0) + 1);
+                });
+                slotIndustries = Array.from(counts.entries())
+                    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+                    .slice(0, SLOTS)
+                    .map(e => e[0]);
+                slotByIndustry = new Map(slotIndustries.map((name, i) => [name, i]));
+            }
+
+            function buildLegend() {
+                legendEl.textContent = '';
+                const entries = slotIndustries.concat([OTHER_LABEL]);
+                entries.forEach(name => {
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'legend-chip';
+                    chip.setAttribute('aria-pressed', 'false');
+                    chip.dataset.industry = name;
+                    const dot = document.createElement('span');
+                    dot.className = 'legend-dot';
+                    dot.setAttribute('aria-hidden', 'true');
+                    const slot = slotByIndustry.get(name);
+                    dot.style.background = slot === undefined ? 'var(--s-other)' : 'var(--s' + slot + ')';
+                    chip.appendChild(dot);
+                    chip.appendChild(document.createTextNode(name));
+                    chip.addEventListener('click', () => toggleChipFilter(name));
+                    legendEl.appendChild(chip);
+                });
+                const note = document.createElement('span');
+                note.className = 'legend-note';
+                note.textContent = 'バブルの大きさは流出件数に対応します。チップをクリックすると絞り込み、バブルをクリックすると完全な侵害レポートが表示されます。';
+                legendEl.appendChild(note);
+            }
+
+            function populateIndustrySelect(data) {
+                const names = Array.from(new Set(data.map(d => d.industry))).sort((a, b) => a.localeCompare(b));
+                names.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    selectEl.appendChild(opt);
+                });
+            }
+
+            function bandDefs(data, width, narrow) {
+                const groups = new Map();
+                data.forEach(d => {
+                    const key = groupMode === 'year' ? d.year : displayIndustry(d);
+                    if (!groups.has(key)) groups.set(key, []);
+                    groups.get(key).push(d);
+                });
+                let keys;
+                if (groupMode === 'year') {
+                    keys = Array.from(groups.keys()).sort((a, b) => b - a);
                 } else {
-                    industries.add('Uncategorized');
+                    keys = slotIndustries.filter(k => groups.has(k));
+                    if (groups.has(OTHER_LABEL)) keys.push(OTHER_LABEL);
                 }
-            });
-
-            const sortedIndustries = Array.from(industries).sort();
-
-            while (industrySelect.options.length > 1) {
-                industrySelect.remove(1);
-            }
-
-            sortedIndustries.forEach(industry => {
-                const option = document.createElement('option');
-                option.value = industry.toLowerCase().replace(/\s+/g, '-');
-                option.textContent = industry;
-                industrySelect.appendChild(option);
-            });
-
-            console.log(`Populated filter with ${sortedIndustries.length} unique industries`);
-        }
-
-        function processData(breaches) {
-            return breaches.map(breach => {
-                return {
-                    year: new Date(breach['breachedDate']).getFullYear(),
-                    name: breach['breachID'],
-                    logo: breach['logo'],
-                    description: breach['exposureDescription'],
-                    count: breach['exposedRecords'],
-                    industry: breach['industry'] || 'Uncategorized'
-                };
-            });
-        }
-
-        function circleSize(count) {
-            if (count >= 50000000) return 70;
-            else if (count >= 10000000) return 58;
-            else if (count >= 5000000) return 50;
-            else if (count >= 1000000) return 42;
-            else return 28;
-        }
-
-        function logoSize(count) {
-            if (count >= 50000000) return 45;
-            else if (count >= 10000000) return 40;
-            else if (count >= 5000000) return 36;
-            else if (count >= 1000000) return 32;
-            else return 26;
-        }
-
-        function createGraph(data) {
-            const dataByYear = d3.group(data, d => d.year);
-            const years = Array.from(dataByYear.keys()).sort(d3.descending);
-
-            const breachesPerYear = Array.from(dataByYear.entries()).map(([year, breaches]) => ({
-                year: year,
-                count: breaches.length
-            }));
-
-            const maxBreaches = Math.max(...breachesPerYear.map(d => d.count));
-            const margin = { top: 40, right: 60, bottom: 40, left: 195 };
-            const chartPadding = 40;
-            const width = Math.min(2000, window.innerWidth - chartPadding) - margin.left - margin.right;
-
-            function getOptimalHeight(count) {
-                if (count <= 3) return 100;
-                if (count <= 10) return 120;
-
-                const avgCircleSize = 45;
-                const rowMultiplier = count > 45 ? 2.2 :
-                    count > 30 ? 1.8 :
-                        count > 20 ? 1.5 : 1.2;
-                const rows = Math.ceil(Math.sqrt(count * rowMultiplier));
-                return rows * (avgCircleSize + 10);
-            }
-
-            const linesPerYear = breachesPerYear.map(d => {
-                if (d.year === 2020) return 4.2;
-                if (d.year === 2019) return 3.8;
-
-                const baseHeight = getOptimalHeight(d.count);
-                if (d.count <= 3) return 0.8;
-                if (d.count <= 10) return 1.0;
-                if (d.count > 45) return 3.5;
-                if (d.count > 30) return 2.5;
-                return Math.max(1.2, Math.min(2, baseHeight / 100));
-            });
-
-            const baseHeight = 150;
-            const height = years.reduce((acc, year, i) => {
-                return acc + (baseHeight * linesPerYear[i]);
-            }, 0);
-
-            const tooltip = d3.select("body").selectAll(".tooltip").data([0])
-                .enter()
-                .append("div")
-                .attr("class", "tooltip")
-                .attr("role", "tooltip")
-                .attr("aria-hidden", "true");
-
-            const svg = d3.select("#chart").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            const yearRanges = new Map();
-            let currentHeight = 0;
-            years.forEach((year, idx) => {
-                const yearHeight = baseHeight * linesPerYear[years.indexOf(year)];
-                const verticalOffset = idx === 0 ? 0 : 10;
-
-                yearRanges.set(year, {
-                    start: currentHeight + verticalOffset,
-                    end: currentHeight + yearHeight,
-                    height: yearHeight,
-                    center: currentHeight + yearHeight / 2
-                });
-                currentHeight += yearHeight + verticalOffset;
-            });
-
-            const yScale = d3.scalePoint()
-                .domain(years)
-                .range([0, height])
-                .padding(0.1);
-
-            const colorPalettes = {
-                2027: ['#F0A500', '#E09400', '#D08400', '#C07400', '#B06400'].reverse(),
-                2026: ['#4CC9F0', '#4895EF', '#4361EE', '#3F37C9', '#3A0CA3'].reverse(),
-                2025: ['#FF6B6B', '#FA5252', '#F03E3E', '#E03131', '#C92A2A'].reverse(),
-                2024: ['#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#237032'].reverse(),
-                2023: ['#845EF7', '#7950F2', '#7048E8', '#6741D9', '#5F3DC4'].reverse(),
-                2022: ['#FFD43B', '#FCC419', '#FAB005', '#F59F00', '#F08C00'].reverse(),
-                2021: ['#20C997', '#12B886', '#0CA678', '#099268', '#087F5B'].reverse(),
-                2020: ['#FF922B', '#FD7E14', '#F76707', '#E8590C', '#D9480F'].reverse(),
-                2019: ['#339AF0', '#228BE6', '#1C7ED6', '#1971C2', '#1864AB'].reverse(),
-                2018: ['#E64980', '#D6336C', '#C2255C', '#A61E4D', '#9C1453'].reverse(),
-                2017: ['#66D9E8', '#3BC9DB', '#22B8CF', '#15AABF', '#1098AD'].reverse(),
-                2016: ['#9775FA', '#845EF7', '#7950F2', '#7048E8', '#6741D9'].reverse(),
-                2015: ['#F783AC', '#F06595', '#E64980', '#D6336C', '#C2255C'].reverse(),
-                2014: ['#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20'].reverse(),
-                2013: ['#FF5722', '#F4511E', '#E64A19', '#D84315', '#BF360C'].reverse(),
-                2012: ['#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064'].reverse(),
-                2011: ['#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C'].reverse(),
-                2010: ['#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00'].reverse(),
-                2009: ['#06D6A0', '#05C793', '#04B886', '#03A879', '#029A6C'].reverse(),
-                2008: ['#F72585', '#E71D7C', '#D71573', '#C70D6A', '#B70561'].reverse(),
-                2007: ['#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F'].reverse()
-            };
-
-            const defaultPalette = ['#748FFC', '#4C6EF5', '#4263EB', '#3B5BDB', '#364FC7'].reverse();
-
-            const yAxis = d3.axisLeft(yScale)
-                .tickFormat(year => {
-                    const count = dataByYear.get(year).length;
-                    return `${year}`;
-                })
-                .tickSize(-width);
-
-            const gAxis = svg.append("g")
-                .attr("class", "axis")
-                .call(yAxis)
-                .call(g => g.select(".domain").remove());
-
-            const labelColorOverrides = { 2011: '#BA68C8' };
-
-            gAxis.selectAll(".tick")
-                .each(function (year) {
-                    const yearRange = yearRanges.get(year);
-                    const palette = colorPalettes[year] || defaultPalette;
-                    const labelColor = labelColorOverrides[year] || palette[palette.length - 1];
-                    const gridColor = palette[Math.floor(palette.length / 2)];
-                    const count = dataByYear.get(year).length;
-
-                    d3.select(this)
-                        .attr("transform", `translate(0,${yearRange.center})`)
-                        .select("text")
-                        .attr("class", "year-label")
-                        .attr("dx", "-8")
-                        .text(`${year}年（${count}件）`)
-                        .style("fill", labelColor)
-                        .style("font-weight", "700");
-
-                    const textNode = d3.select(this).select("text").node();
-                    if (textNode) {
-                        const textBox = textNode.getBBox();
-                        d3.select(this).insert("rect", "text")
-                            .attr("class", "year-badge-bg")
-                            .attr("x", textBox.x - 10)
-                            .attr("y", textBox.y - 5)
-                            .attr("width", textBox.width + 20)
-                            .attr("height", textBox.height + 10)
-                            .style("stroke", labelColor)
-                            .style("stroke-opacity", "0.4");
-                    }
-
-                    d3.select(this)
-                        .select("line")
-                        .attr("class", "year-grid")
-                        .style("stroke", gridColor);
-                });
-
-            data.forEach((d, i) => {
-                const yearRange = yearRanges.get(d.year);
-                d.index = i;
-                d.fy = yearRange.start + (yearRange.height * (i % 4 + 0.5)) / 5;
-                d.x = (Math.random() * 0.8 + 0.1) * width;
-            });
-
-            function calculateForceParameters(yearData) {
-                const count = yearData.length;
-
-                const baseCollisionPadding = count > 60 ? 3 :
-                    count > 45 ? 2.8 :
-                        count > 20 ? 2.5 : 3;
-
-                const chargeStrength = count > 60 ? -120 :
-                    count > 45 ? -110 :
-                        count > 20 ? -90 : -70;
-
-                const xStrength = count > 60 ? 0.06 :
-                    count > 45 ? 0.07 :
-                        count > 20 ? 0.1 : 0.15;
-
-                const yStrength = count > 60 ? 0.12 :
-                    count > 45 ? 0.15 :
-                        count > 20 ? 0.18 : 0.25;
-
-                return {
-                    collisionPadding: baseCollisionPadding,
-                    charge: chargeStrength,
-                    xStrength: xStrength,
-                    yStrength: yStrength
-                };
-            }
-
-            const simulations = [];
-            years.forEach(year => {
-                const yearData = data.filter(d => d.year === year);
-                const forceParams = calculateForceParameters(yearData);
-                const yearRange = yearRanges.get(year);
-
-                const is2020 = year === 2020;
-                const is2019 = year === 2019;
-                const isSpecialYear = is2020 || is2019;
-
-                const isVeryFewBreaches = yearData.length <= 3;
-                const isHighDensity = !isSpecialYear && yearData.length > 30;
-                const isVeryHighDensity = !isSpecialYear && yearData.length > 45;
-
-                const centers2020 = [width * 0.2, width * 0.4, width * 0.6, width * 0.8];
-                const centers2019 = [width * 0.25, width * 0.5, width * 0.75];
-                const centersDefault = [width * 0.25, width * 0.5, width * 0.75];
-
-                yearData.forEach((d, idx) => {
-                    if (is2020) {
-                        d.targetCenter = centers2020[idx % centers2020.length];
-                    } else if (is2019) {
-                        d.targetCenter = centers2019[idx % centers2019.length];
-                    } else if (isVeryFewBreaches) {
-                        d.targetCenter = width / 2;
-                    } else {
-                        d.targetCenter = centersDefault[idx % centersDefault.length];
-                    }
-                });
-
-                yearData.forEach((d) => {
-                    if (is2020) {
-                        const padding = circleSize(d.count);
-                        const randomX = padding + Math.random() * (width - 2 * padding);
-                        const verticalPadding = yearRange.height * 0.05;
-                        const randomY = yearRange.start + verticalPadding +
-                            Math.random() * (yearRange.height - 2 * verticalPadding);
-                        d.x = randomX;
-                        d.y = randomY;
-                    } else if (is2019) {
-                        const padding = circleSize(d.count) * 1.1;
-                        const randomX = padding + Math.random() * (width - 2 * padding);
-                        const verticalPadding = yearRange.height * 0.06;
-                        const randomY = yearRange.start + verticalPadding +
-                            Math.random() * (yearRange.height - 2 * verticalPadding);
-                        d.x = randomX;
-                        d.y = randomY;
-                    } else if (isVeryFewBreaches) {
-                        const totalBreaches = yearData.length;
-                        const index = yearData.indexOf(d);
-                        const startX = width * 0.33;
-                        const availableWidth = width * 0.34;
-                        d.x = startX + (availableWidth / (totalBreaches + 1)) * (index + 1);
-                        d.y = yearRange.center;
-                    } else {
-                        const padding = circleSize(d.count) * (isHighDensity ? 1.2 : 1.3);
-                        const randomX = padding + Math.random() * (width - 2 * padding);
-                        const verticalPadding = yearRange.height * (
-                            isHighDensity ? 0.1 : 0.15
-                        );
-                        const randomY = yearRange.start + verticalPadding +
-                            Math.random() * (yearRange.height - 2 * verticalPadding);
-                        d.x = randomX;
-                        d.y = randomY;
-                    }
-                });
-
-                const yearSimulation = d3.forceSimulation(yearData)
-                    .force("x", d3.forceX(d => d.targetCenter).strength(
-                        is2020 ? 0.005 :
-                            is2019 ? 0.007 :
-                                isVeryFewBreaches ? 0.2 :
-                                    isHighDensity ? 0.01 : 0.015
-                    ))
-                    .force("y", d3.forceY(yearRange.center).strength(
-                        is2020 ? 0.02 :
-                            is2019 ? 0.025 :
-                                isVeryFewBreaches ? 0.2 :
-                                    isHighDensity ? 0.05 : 0.08
-                    ))
-                    .force("collide", d3.forceCollide(d => {
-                        const baseSize = circleSize(d.count);
-                        if (is2020) return baseSize * 1.02;
-                        if (is2019) return baseSize * 1.05;
-                        if (isVeryFewBreaches) return baseSize * 1.1;
-                        return isHighDensity ? baseSize * 1.15 : baseSize * 1.2;
-                    })
-                        .strength(
-                            is2020 ? 0.99 :
-                                is2019 ? 0.95 :
-                                    isHighDensity ? 0.9 : 0.85
-                        )
-                        .iterations(
-                            is2020 ? 20 :
-                                is2019 ? 15 :
-                                    isHighDensity ? 12 : 8
-                        ))
-                    .force("charge", d3.forceManyBody()
-                        .strength(d => {
-                            const baseCharge = -Math.pow(circleSize(d.count), 1.4);
-                            if (is2020) return baseCharge * 2.5;
-                            if (is2019) return baseCharge * 2.0;
-                            if (isVeryFewBreaches) return baseCharge * 0.5;
-                            return isHighDensity ? baseCharge * 1.5 : baseCharge;
-                        })
-                        .distanceMax(width * (
-                            is2020 ? 0.8 :
-                                is2019 ? 0.7 :
-                                    isHighDensity ? 0.5 : 0.4
-                        )))
-                    .alpha(0.95)
-                    .alphaDecay(
-                        is2020 ? 0.003 :
-                            is2019 ? 0.004 :
-                                isHighDensity ? 0.006 : 0.01
-                    )
-                    .on("tick", () => {
-                        breaches
-                            .filter(d => d.year === year)
-                            .attr("transform", d => {
-                                const padding = circleSize(d.count) *
-                                    (is2020 ? 1.15 : (is2019 ? 1.25 : 1.1));
-                                d.x = Math.max(padding, Math.min(width - padding, d.x));
-                                const verticalPadding = is2020 ?
-                                    yearRange.height * 0.06 :
-                                    (is2019 ? yearRange.height * 0.08 : yearRange.height * 0.1);
-                                const minY = yearRange.start + verticalPadding;
-                                const maxY = yearRange.end - verticalPadding;
-                                d.y = Math.max(minY, Math.min(maxY, d.y));
-                                return `translate(${d.x},${d.y})`;
-                            });
+                const labelSpace = narrow ? 30 : 0;
+                let cursor = 0;
+                return keys.map((key, bi) => {
+                    const items = groups.get(key);
+                    let maxR = 0;
+                    let area = 0;
+                    items.forEach(d => {
+                        d.r = radius(d.count);
+                        d.labeled = d.r >= 20;
+                        maxR = Math.max(maxR, d.r);
+                        const cr = d.r + (d.labeled ? 10 : 4);
+                        area += Math.PI * cr * cr;
                     });
-
-                simulations.push(yearSimulation);
-            });
-
-            const breaches = svg.selectAll(".breach")
-                .data(data)
-                .enter().append("g")
-                .attr("class", "breach")
-                .attr("tabindex", "0")
-                .attr("role", "button")
-                .attr("aria-label", d => `${d.name}（${d.year}年）：${d3.format(",")(d.count)}件のレコードが漏洩`)
-                .attr("data-industry", d => d.industry)
-                .attr("transform", d => {
-                    const yearRange = yearRanges.get(d.year);
-                    const y = d.targetY || (yearRange.center + (Math.random() - 0.5) * yearRange.height * 0.8);
-                    const yearDataLength = dataByYear.get(d.year).length;
-                    const positionInYear = dataByYear.get(d.year).indexOf(d);
-                    const horizontalPosition = width * (0.1 + (0.8 * positionInYear / yearDataLength));
-                    return `translate(${horizontalPosition},${y})`;
+                    const packed = (area * 2.2) / Math.max(width, 300);
+                    const h = Math.min(960, Math.max(150, packed, 2 * maxR + 44)) + labelSpace;
+                    const band = {
+                        key: key,
+                        index: bi,
+                        items: items,
+                        start: cursor,
+                        height: h,
+                        top: cursor + labelSpace,
+                        center: cursor + labelSpace + (h - labelSpace) / 2,
+                        end: cursor + h,
+                        records: items.reduce((s, d) => s + d.count, 0)
+                    };
+                    cursor += h + 8;
+                    return band;
                 });
+            }
 
-            const defs = svg.append("defs");
-
-            breaches.each(function (d, i) {
-                const gradientId = `gradient-${d.year}-${i}`;
-                const palette = colorPalettes[d.year] || defaultPalette;
-                const gradient = defs.append("radialGradient")
-                    .attr("id", gradientId)
-                    .attr("gradientUnits", "userSpaceOnUse")
-                    .attr("cx", "0")
-                    .attr("cy", "0")
-                    .attr("r", circleSize(d.count));
-
-                gradient.append("stop")
-                    .attr("offset", "0%")
-                    .attr("stop-color", palette[0]);
-
-                gradient.append("stop")
-                    .attr("offset", "100%")
-                    .attr("stop-color", palette[palette.length - 1]);
-
-                gradient.append("animate")
-                    .attr("attributeName", "r")
-                    .attr("values", `${circleSize(d.count)};${circleSize(d.count) * 1.1};${circleSize(d.count)}`)
-                    .attr("dur", "3s")
-                    .attr("repeatCount", "indefinite");
-            });
-
-            breaches.append("circle")
-                .attr("class", "circle")
-                .attr("r", 0)
-                .style("fill", (d, i) => `url(#gradient-${d.year}-${i})`)
-                .style("opacity", 0)
-                .transition()
-                .delay((d, i) => i * 15)
-                .duration(800)
-                .ease(d3.easeBackOut.overshoot(0.8))
-                .attr("r", d => circleSize(d.count))
-                .style("opacity", 0.9);
-
-            breaches.append("image")
-                .attr("class", "breach-logo")
-                .attr("xlink:href", d => d.logo)
-                .attr("x", d => -logoSize(d.count) / 2)
-                .attr("y", d => -logoSize(d.count) / 2)
-                .attr("width", d => logoSize(d.count))
-                .attr("height", d => logoSize(d.count))
-                .style("opacity", 0)
-                .transition()
-                .delay((d, i) => 400 + i * 15)
-                .duration(500)
-                .style("opacity", 1);
-
-            breaches.append("text")
-                .attr("class", "breach-title")
-                .attr("y", d => circleSize(d.count) / 2 + logoSize(d.count) / 2 - 8)
-                .text(d => d.name)
-                .style("opacity", 0)
-                .transition()
-                .delay((d, i) => 800 + i * 15)
-                .duration(500)
-                .style("opacity", 0.85);
-
-            let previousSize = null;
-            let activeElement = null;
-
-            breaches.on("mouseover", function (event, d) {
-                const element = d3.select(this);
-                activeElement = element;
-                previousSize = circleSize(d.count);
-                const palette = colorPalettes[d.year] || defaultPalette;
-
-                element.select("circle")
-                    .transition()
-                    .duration(300)
-                    .attr("r", previousSize + 10)
-                    .style("opacity", 1);
-
-                element.raise();
-
-                const tooltipContent = `
-                    <div class="tooltip-title" style="border-color: ${palette[0]}">
-                        ${d.name} <span style="color: #c8d6e5; font-size: 0.9em;">(${d.year})</span>
-                    </div>
-                    <img src="${d.logo}" alt="${d.name} のロゴ" class="tooltip-logo">
-                    <div class="tooltip-description">
-                        ${d.description}
-                    </div>
-                    <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[palette.length - 1]}; border: 1px solid ${palette[0]}40">
-                        漏洩したレコード数：${d3.format(",")(d.count)}
-                    </div>
-                `;
-
-                tooltip.html(tooltipContent)
-                    .attr("aria-hidden", "false")
-                    .style("opacity", 0)
-                    .style("display", "block")
-                    .style("border-left", `4px solid ${palette[0]}`);
-
-                const tooltipNode = tooltip.node();
-                const tooltipRect = tooltipNode.getBoundingClientRect();
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-
-                const cursorX = event.clientX;
-                const cursorY = event.clientY;
-                const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-
-                let left, top;
-
-                left = cursorX + scrollX - (tooltipRect.width / 2);
-
-                if (left < scrollX + 20) {
-                    left = scrollX + 20;
-                }
-                if (left + tooltipRect.width > scrollX + viewportWidth - 20) {
-                    left = scrollX + viewportWidth - tooltipRect.width - 20;
-                }
-
-                const spaceAbove = cursorY - scrollY;
-                const spaceBelow = viewportHeight - cursorY;
-
-                if (tooltipRect.height < spaceBelow - 20) {
-                    top = cursorY + scrollY + 20;
-                } else if (tooltipRect.height < spaceAbove - 20) {
-                    top = cursorY + scrollY - tooltipRect.height - 20;
-                } else {
-                    const availableHeight = Math.max(spaceAbove, spaceBelow);
-                    if (tooltipRect.height < availableHeight) {
-                        if (spaceBelow > spaceAbove) {
-                            top = cursorY + scrollY + 20;
-                        } else {
-                            top = cursorY + scrollY - tooltipRect.height - 20;
-                        }
-                    } else {
-                        top = scrollY + 20;
-                    }
-                }
-
-                tooltip
-                    .style("left", `${Math.round(left)}px`)
-                    .style("top", `${Math.round(top)}px`)
-                    .transition()
-                    .duration(200)
-                    .style("opacity", 1);
-            })
-                .on("mouseout", function (event, d) {
-                    if (activeElement) {
-                        activeElement.select("circle")
-                            .transition()
-                            .duration(300)
-                            .attr("r", previousSize)
-                            .style("opacity", 0.9);
-                    }
-
-                    tooltip.transition()
-                        .duration(500)
-                        .style("opacity", 0)
-                        .on("end", function () {
-                            tooltip.style("display", "none").attr("aria-hidden", "true");
+            function runLayout(bands, width) {
+                bands.forEach(band => {
+                    const rand = mulberry32(band.index * 7919 + band.items.length);
+                    band.items.forEach((d, i) => {
+                        d.x = width * (0.03 + 0.94 * ((i * 0.618034) % 1));
+                        d.y = band.top + (band.end - band.top) * (0.15 + 0.7 * ((i * 0.381966) % 1));
+                    });
+                    const sim = d3.forceSimulation(band.items);
+                    if (sim.randomSource) sim.randomSource(rand);
+                    sim.force('x', d3.forceX(width / 2).strength(0.028))
+                        .force('y', d3.forceY(band.center).strength(0.16))
+                        .force('collide', d3.forceCollide(d => d.r + (d.labeled ? 10 : 4)).strength(1).iterations(3))
+                        .stop();
+                    const ticks = Math.min(280, 130 + band.items.length * 2);
+                    for (let t = 0; t < ticks; t++) {
+                        sim.tick();
+                        band.items.forEach(d => {
+                            d.x = Math.max(d.r + 2, Math.min(width - d.r - 2, d.x));
+                            const pad = d.labeled ? 18 : 5;
+                            d.y = Math.max(band.top + d.r + 5, Math.min(band.end - d.r - pad, d.y));
                         });
-
-                    activeElement = null;
-                })
-                .on("focus", function (event, d) {
-                    const element = d3.select(this);
-                    activeElement = element;
-                    previousSize = circleSize(d.count);
-                    const palette = colorPalettes[d.year] || defaultPalette;
-
-                    element.select("circle")
-                        .transition()
-                        .duration(300)
-                        .attr("r", previousSize + 10)
-                        .style("opacity", 1);
-
-                    element.raise();
-
-                    const tooltipContent = `
-                        <div class="tooltip-title" style="border-color: ${palette[0]}">
-                            ${d.name} <span style="color: #c8d6e5; font-size: 0.9em;">(${d.year})</span>
-                        </div>
-                        <img src="${d.logo}" alt="${d.name} のロゴ" class="tooltip-logo">
-                        <div class="tooltip-description">
-                            ${d.description}
-                        </div>
-                        <div class="tooltip-stats" style="background: ${palette[0]}20; color: ${palette[palette.length - 1]}; border: 1px solid ${palette[0]}40">
-                            漏洩したレコード数：${d3.format(",")(d.count)}
-                        </div>
-                    `;
-
-                    tooltip.html(tooltipContent)
-                        .attr("aria-hidden", "false")
-                        .style("opacity", 0)
-                        .style("display", "block")
-                        .style("border-left", `4px solid ${palette[0]}`);
-
-                    const svgRect = svg.node().closest('svg').getBoundingClientRect();
-                    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-                    const tooltipRect = tooltip.node().getBoundingClientRect();
-                    let left = svgRect.left + scrollX + margin.left + d.x - (tooltipRect.width / 2);
-                    let top = svgRect.top + scrollY + margin.top + d.y + previousSize + 20;
-
-                    if (left < scrollX + 20) left = scrollX + 20;
-                    if (left + tooltipRect.width > scrollX + window.innerWidth - 20)
-                        left = scrollX + window.innerWidth - tooltipRect.width - 20;
-                    if (top + tooltipRect.height > scrollY + window.innerHeight - 20)
-                        top = svgRect.top + scrollY + margin.top + d.y - tooltipRect.height - 20;
-
-                    tooltip
-                        .style("left", `${Math.round(left)}px`)
-                        .style("top", `${Math.round(top)}px`)
-                        .transition()
-                        .duration(200)
-                        .style("opacity", 1);
-                })
-                .on("blur", function (event, d) {
-                    if (activeElement) {
-                        activeElement.select("circle")
-                            .transition()
-                            .duration(300)
-                            .attr("r", previousSize)
-                            .style("opacity", 0.9);
                     }
-
-                    tooltip.transition()
-                        .duration(500)
-                        .style("opacity", 0)
-                        .on("end", function () {
-                            tooltip.style("display", "none").attr("aria-hidden", "true");
-                        });
-
-                    activeElement = null;
-                })
-                .on("keydown", function (event, d) {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        this.focus();
-                    }
-                });
-
-            if (floatAnimId) cancelAnimationFrame(floatAnimId);
-
-            breaches.each(function(d) {
-                d.floatPhaseX = Math.random() * Math.PI * 2;
-                d.floatPhaseY = Math.random() * Math.PI * 2;
-                d.floatAmpX = 0.6 + Math.random() * 1.0;
-                d.floatAmpY = 0.4 + Math.random() * 0.8;
-                d.floatSpeedX = 0.00015 + Math.random() * 0.00025;
-                d.floatSpeedY = 0.0001 + Math.random() * 0.0002;
-                d.driftX = 0;
-                d.driftY = 0;
-                d.driftTargetX = 0;
-                d.driftTargetY = 0;
-                d.driftLerp = 0.003 + Math.random() * 0.004;
-                d.nextNudge = performance.now() + 2000 + Math.random() * 6000;
-                d.baseX = d.x;
-                d.baseY = d.y;
-            });
-
-            function waitForSettled() {
-                const allSettled = simulations.every(sim => sim.alpha() < 0.02);
-                if (allSettled) {
-                    breaches.each(function(d) {
+                    sim.force('x', null).force('y', null).force('collide', null);
+                    band.items.sort((a, b) => a.x - b.x);
+                    band.items.forEach(d => {
                         d.baseX = d.x;
                         d.baseY = d.y;
+                        d.band = band.index;
                     });
-                    startFloating();
+                });
+            }
+
+            function bandLabelLines(band) {
+                const main = String(band.key);
+                const sub = band.items.length + (band.items.length === 1 ? ' 件の侵害 · ' : ' 件の侵害 · ') + fmtNum(band.records) + ' レコード';
+                return [main, sub];
+            }
+
+            function render(animate) {
+                stopFloating();
+                d3.select('#chart').selectAll('svg').remove();
+
+                const container = Math.min(1960, chartEl.clientWidth - 40);
+                const narrow = container < 760;
+                const margin = {
+                    top: 16,
+                    right: 20,
+                    bottom: 16,
+                    left: narrow ? 16 : (groupMode === 'year' ? 210 : 225)
+                };
+                const width = Math.max(300, container - margin.left - margin.right);
+                renderedWidth = chartEl.clientWidth;
+
+                bandsIndex = bandDefs(allData, width, narrow);
+                runLayout(bandsIndex, width);
+                const height = bandsIndex.length ? bandsIndex[bandsIndex.length - 1].end : 0;
+
+                const svg = d3.select('#chart').append('svg')
+                    .attr('width', width + margin.left + margin.right)
+                    .attr('height', height + margin.top + margin.bottom);
+
+                const root = svg.append('g')
+                    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+                const bandG = root.append('g');
+                bandsIndex.forEach(band => {
+                    if (band.index > 0) {
+                        bandG.append('line')
+                            .attr('class', 'band-sep')
+                            .attr('x1', narrow ? 0 : -margin.left + 16)
+                            .attr('x2', width)
+                            .attr('y1', band.start - 4)
+                            .attr('y2', band.start - 4);
+                    }
+                    const lines = bandLabelLines(band);
+                    if (narrow) {
+                        const lbl = bandG.append('text')
+                            .attr('x', 2)
+                            .attr('y', band.start + 18);
+                        lbl.append('tspan').attr('class', 'band-label').style('font-size', '14px').text(lines[0]);
+                        lbl.append('tspan').attr('class', 'band-sublabel').attr('dx', 8).text(lines[1]);
+                    } else {
+                        const lbl = bandG.append('text')
+                            .attr('x', -18)
+                            .attr('y', band.center - 2)
+                            .attr('text-anchor', 'end');
+                        lbl.append('tspan').attr('class', 'band-label').attr('x', -18)
+                            .style('font-size', groupMode === 'year' ? null : '14px').text(lines[0]);
+                        lbl.append('tspan').attr('class', 'band-sublabel').attr('x', -18).attr('dy', 16).text(lines[1]);
+                    }
+                });
+
+                const flat = bandsIndex.reduce((acc, b) => acc.concat(b.items), []);
+
+                nodeSel = root.append('g').selectAll('a')
+                    .data(flat)
+                    .enter().append('a')
+                    .attr('class', 'breach')
+                    .attr('href', d => breachHref(d.name))
+                    .attr('target', '_blank')
+                    .attr('rel', 'noopener')
+                    .attr('tabindex', -1)
+                    .attr('aria-label', d => d.name + '、' + d.year + '年、' + displayIndustry(d) + '、流出レコード ' + fmtFull(d.count) + ' 件 (新しいタブで侵害の詳細を開きます)')
+                    .attr('transform', d => 'translate(' + d.baseX + ',' + d.baseY + ')');
+
+                nodeSel.append('circle')
+                    .attr('class', 'hit')
+                    .attr('r', d => Math.max(d.r + 4, 14))
+                    .attr('fill', 'transparent');
+
+                const bubbles = nodeSel.append('circle')
+                    .attr('class', d => 'bubble ' + slotClass(d))
+                    .style('fill', d => slotVar(d))
+                    .style('fill-opacity', 0.92);
+
+                nodeSel.filter(d => d.r >= 13 && d.logo)
+                    .append('image')
+                    .attr('class', 'breach-logo')
+                    .attr('href', d => d.logo)
+                    .attr('x', d => -d.r * 0.55)
+                    .attr('y', d => -d.r * 0.55)
+                    .attr('width', d => d.r * 1.1)
+                    .attr('height', d => d.r * 1.1)
+                    .attr('preserveAspectRatio', 'xMidYMid meet')
+                    .each(function () {
+                        this.addEventListener('error', () => this.remove());
+                    });
+
+                nodeSel.filter(d => d.labeled)
+                    .append('text')
+                    .attr('class', 'breach-name')
+                    .attr('y', d => d.r + 13)
+                    .text(d => d.name.length > 18 ? d.name.slice(0, 17) + '…' : d.name);
+
+                nodeSel.filter(d => d.r >= 30)
+                    .append('text')
+                    .attr('class', 'breach-recs')
+                    .attr('y', d => d.r + 26)
+                    .text(d => fmtNum(d.count) + ' レコード');
+
+                if (animate && !REDUCED) {
+                    bubbles.attr('r', 0)
+                        .transition()
+                        .delay(d => Math.min(d.band * 60 + 5 * bandsIndex[d.band].items.indexOf(d), 850))
+                        .duration(450)
+                        .ease(d3.easeCubicOut)
+                        .attr('r', d => d.r);
+                    nodeSel.selectAll('image, text')
+                        .style('opacity', 0)
+                        .transition()
+                        .delay(d => Math.min(d.band * 60, 850) + 250)
+                        .duration(400)
+                        .style('opacity', 1);
+                    setTimeout(startFloating, 1600);
                 } else {
-                    setTimeout(waitForSettled, 500);
+                    bubbles.attr('r', d => d.r);
+                    startFloating();
+                }
+
+                nodeSel
+                    .on('mouseenter', function (event, d) { hoverIn(this, d, event); })
+                    .on('mouseleave', function (event, d) { hoverOut(this, d); })
+                    .on('focus', function (event, d) { hoverIn(this, d, null); })
+                    .on('blur', function (event, d) { hoverOut(this, d); })
+                    .on('keydown', navKeydown);
+
+                observeChart(svg.node());
+                applyFilters(false);
+            }
+
+            const tooltip = d3.select('body').append('div')
+                .attr('class', 'viz-tooltip')
+                .attr('role', 'tooltip');
+
+            function buildTooltip(d) {
+                tooltip.node().style.setProperty('--tip-accent', slotVar(d));
+                tooltip.selectAll('*').remove();
+                const title = tooltip.append('div').attr('class', 'tip-title');
+                title.append('span').text(d.name + ' ');
+                title.append('span').attr('class', 'tip-year').text('(' + d.year + ' · ' + displayIndustry(d) + ')');
+                if (d.logo) {
+                    tooltip.append('img')
+                        .attr('src', d.logo)
+                        .attr('alt', '')
+                        .attr('loading', 'lazy')
+                        .each(function () {
+                            this.addEventListener('error', () => this.remove());
+                        });
+                }
+                if (d.description) {
+                    tooltip.append('p').attr('class', 'tip-desc').text(d.description);
+                }
+                tooltip.append('span').attr('class', 'tip-stats').text('流出レコード数: ' + fmtFull(d.count));
+                tooltip.append('span').attr('class', 'tip-hint').text('クリックして完全な侵害レポートを表示');
+            }
+
+            function placeTooltip(anchorX, anchorY) {
+                const node = tooltip.node();
+                node.style.display = 'block';
+                const rect = node.getBoundingClientRect();
+                const scrollX = window.pageXOffset;
+                const scrollY = window.pageYOffset;
+                let left = anchorX + scrollX - rect.width / 2;
+                left = Math.max(scrollX + 16, Math.min(left, scrollX + window.innerWidth - rect.width - 16));
+                let top;
+                if (anchorY + 24 + rect.height < window.innerHeight - 16) {
+                    top = anchorY + scrollY + 24;
+                } else if (anchorY - 24 - rect.height > 16) {
+                    top = anchorY + scrollY - rect.height - 24;
+                } else {
+                    top = scrollY + Math.max(16, (window.innerHeight - rect.height) / 2);
+                }
+                node.style.left = Math.round(left) + 'px';
+                node.style.top = Math.round(top) + 'px';
+                requestAnimationFrame(() => node.classList.add('show'));
+            }
+
+            function hideTooltip() {
+                const node = tooltip.node();
+                node.classList.remove('show');
+                setTimeout(() => {
+                    if (!node.classList.contains('show')) node.style.display = 'none';
+                }, 200);
+            }
+
+            function hoverIn(el, d, event) {
+                d3.select(el).raise().select('.bubble')
+                    .transition().duration(REDUCED ? 0 : 200)
+                    .attr('r', d.r + 5)
+                    .style('fill-opacity', 1);
+                buildTooltip(d);
+                if (event) {
+                    placeTooltip(event.clientX, event.clientY);
+                } else {
+                    const box = el.getBoundingClientRect();
+                    placeTooltip(box.left + box.width / 2, box.top + box.height / 2);
+                }
+            }
+
+            function hoverOut(el, d) {
+                d3.select(el).select('.bubble')
+                    .transition().duration(REDUCED ? 0 : 200)
+                    .attr('r', d.r)
+                    .style('fill-opacity', 0.92);
+                hideTooltip();
+            }
+
+            function matchesFilter(d) {
+                if (filter.kind === 'industry') return d.industry === filter.name;
+                if (filter.kind === 'other') return !slotByIndustry.has(d.industry);
+                return true;
+            }
+
+            function matchesSearch(d) {
+                if (!searchTerm) return true;
+                return d.name.toLowerCase().includes(searchTerm) || d.domain.toLowerCase().includes(searchTerm);
+            }
+
+            function isVisible(d) {
+                return matchesFilter(d) && matchesSearch(d);
+            }
+
+            function applyFilters(scroll) {
+                if (!nodeSel) return;
+                let visibleCount = 0;
+                let firstEl = null;
+                nodeSel.each(function (d) {
+                    const vis = isVisible(d);
+                    d.visible = vis;
+                    this.classList.toggle('dim', !vis);
+                    this.classList.toggle('hit-match', vis && !!searchTerm);
+                    this.setAttribute('tabindex', -1);
+                    if (vis) {
+                        visibleCount++;
+                        if (!firstEl) firstEl = this;
+                    }
+                });
+                if (firstEl) firstEl.setAttribute('tabindex', 0);
+
+                const totalTxt = fmtFull(allData.length);
+                let desc;
+                if (filter.kind === 'all' && !searchTerm) {
+                    const industries = new Set(allData.map(d => d.industry));
+                    subtitleEl.innerHTML = '';
+                    appendStrong(subtitleEl, industries.size + ' 業界');
+                    subtitleEl.appendChild(document.createTextNode('にわたる'));
+                    appendStrong(subtitleEl, totalTxt + ' 件の侵害');
+                    subtitleEl.appendChild(document.createTextNode('を探索中'));
+                    desc = totalTxt + ' 件の侵害を表示中。';
+                } else {
+                    const what = filter.kind === 'industry' ? filter.name : (filter.kind === 'other' ? 'その他の業界' : 'すべての業界');
+                    subtitleEl.innerHTML = '';
+                    subtitleEl.appendChild(document.createTextNode('表示中: '));
+                    appendStrong(subtitleEl, fmtFull(visibleCount) + ' / ' + totalTxt);
+                    subtitleEl.appendChild(document.createTextNode(' 件の侵害、' + what + (searchTerm ? '、「' + searchTerm + '」に一致' : '')));
+                    desc = visibleCount + ' / ' + totalTxt + ' 件の侵害を表示中。';
+                }
+                summaryEl.textContent = (groupMode === 'year' ? '年' : '業界') + '別にグループ化されたデータ侵害のバブルチャート。' + desc + ' バブルは流出件数に応じた大きさ、業界に応じた色で表示されます。検索ボックス、業界フィルター、凡例チップで表示を絞り込めます。';
+
+                legendEl.querySelectorAll('.legend-chip').forEach(chip => {
+                    const name = chip.dataset.industry;
+                    const pressed = (filter.kind === 'industry' && filter.name === name) || (filter.kind === 'other' && name === OTHER_LABEL);
+                    chip.setAttribute('aria-pressed', String(pressed));
+                });
+
+                if (scroll && firstEl && (searchTerm || filter.kind !== 'all')) {
+                    firstEl.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+                }
+            }
+
+            function appendStrong(parent, text) {
+                const s = document.createElement('span');
+                s.textContent = text;
+                parent.appendChild(s);
+            }
+
+            function toggleChipFilter(name) {
+                const isOther = name === OTHER_LABEL;
+                const active = (filter.kind === 'industry' && filter.name === name) || (filter.kind === 'other' && isOther);
+                if (active) {
+                    filter = { kind: 'all' };
+                    selectEl.value = 'all';
+                } else if (isOther) {
+                    filter = { kind: 'other' };
+                    selectEl.value = 'all';
+                } else {
+                    filter = { kind: 'industry', name: name };
+                    selectEl.value = name;
+                }
+                applyFilters(true);
+            }
+
+            function visibleInBand(bandIdx) {
+                return bandsIndex[bandIdx] ? bandsIndex[bandIdx].items.filter(d => d.visible) : [];
+            }
+
+            function focusNode(d) {
+                if (!d) return;
+                nodeSel.each(function (n) {
+                    this.setAttribute('tabindex', n === d ? 0 : -1);
+                    if (n === d) this.focus();
+                });
+            }
+
+            function navKeydown(event, d) {
+                const key = event.key;
+                if (key === ' ') {
+                    event.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href) window.open(href, '_blank', 'noopener');
+                    return;
+                }
+                if (key === 'Escape') {
+                    hideTooltip();
+                    return;
+                }
+                if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(key)) return;
+                event.preventDefault();
+                const row = visibleInBand(d.band);
+                const idx = row.indexOf(d);
+                if (key === 'ArrowLeft') return focusNode(row[Math.max(0, idx - 1)]);
+                if (key === 'ArrowRight') return focusNode(row[Math.min(row.length - 1, idx + 1)]);
+                if (key === 'Home') return focusNode(row[0]);
+                if (key === 'End') return focusNode(row[row.length - 1]);
+                const dir = key === 'ArrowUp' ? -1 : 1;
+                let b = d.band + dir;
+                while (b >= 0 && b < bandsIndex.length) {
+                    const next = visibleInBand(b);
+                    if (next.length) {
+                        const nearest = next.reduce((best, n) => Math.abs(n.baseX - d.baseX) < Math.abs(best.baseX - d.baseX) ? n : best, next[0]);
+                        return focusNode(nearest);
+                    }
+                    b += dir;
                 }
             }
 
             function startFloating() {
-                function animate(now) {
-                    breaches.each(function(d) {
-                        if (now > d.nextNudge) {
-                            d.driftTargetX = (Math.random() - 0.5) * 4;
-                            d.driftTargetY = (Math.random() - 0.5) * 3;
-                            d.nextNudge = now + 3000 + Math.random() * 8000;
-                        }
-                        d.driftX += (d.driftTargetX - d.driftX) * d.driftLerp;
-                        d.driftY += (d.driftTargetY - d.driftY) * d.driftLerp;
-
-                        const dx = Math.sin(now * d.floatSpeedX + d.floatPhaseX) * d.floatAmpX + d.driftX;
-                        const dy = Math.cos(now * d.floatSpeedY + d.floatPhaseY) * d.floatAmpY + d.driftY;
-                        d.x = d.baseX + dx;
-                        d.y = d.baseY + dy;
+                if (REDUCED || floatId) return;
+                nodeSel.each(function (d) {
+                    if (d.phX === undefined) {
+                        d.phX = (d.band * 13 + d.baseX) % 6.28;
+                        d.phY = (d.band * 7 + d.baseY) % 6.28;
+                        d.ampX = 2 + ((d.baseX * 7) % 10) / 5;
+                        d.ampY = 1.5 + ((d.baseY * 11) % 10) / 6;
+                        d.spX = 0.00045 + ((d.baseX * 13) % 10) * 0.00003;
+                        d.spY = 0.00035 + ((d.baseY * 17) % 10) * 0.00003;
+                    }
+                });
+                function tick(now) {
+                    floatId = null;
+                    if (!chartVisible || document.hidden) return;
+                    nodeSel.attr('transform', d => {
+                        const dx = Math.sin(now * d.spX + d.phX) * d.ampX + Math.cos(now * d.spY * 0.6 + d.phY) * 0.7;
+                        const dy = Math.cos(now * d.spY + d.phY) * d.ampY + Math.sin(now * d.spX * 0.7 + d.phX) * 0.5;
+                        return 'translate(' + (d.baseX + dx) + ',' + (d.baseY + dy) + ')';
                     });
-
-                    breaches.attr("transform", d => `translate(${d.x},${d.y})`);
-                    floatAnimId = requestAnimationFrame(animate);
+                    floatId = requestAnimationFrame(tick);
                 }
-
-                floatAnimId = requestAnimationFrame(animate);
+                floatId = requestAnimationFrame(tick);
             }
 
-            setTimeout(waitForSettled, 2000);
-        }
+            function stopFloating() {
+                if (floatId) {
+                    cancelAnimationFrame(floatId);
+                    floatId = null;
+                }
+            }
 
-        document.addEventListener('DOMContentLoaded', function () {
+            let observer = null;
+
+            function observeChart(svgNode) {
+                if (observer) observer.disconnect();
+                if (!('IntersectionObserver' in window)) return;
+                observer = new IntersectionObserver(entries => {
+                    chartVisible = entries[0].isIntersecting;
+                    if (chartVisible) startFloating();
+                }, { rootMargin: '100px' });
+                observer.observe(svgNode);
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) startFloating();
+            });
+
+            let resizeTimer = null;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (Math.abs(chartEl.clientWidth - renderedWidth) > 40 && allData.length) {
+                        render(false);
+                    }
+                }, 300);
+            });
+
+            selectEl.addEventListener('change', function () {
+                filter = this.value === 'all' ? { kind: 'all' } : { kind: 'industry', name: this.value };
+                applyFilters(true);
+            });
+
+            let searchTimer = null;
+            searchEl.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+                const value = this.value.trim().toLowerCase();
+                searchTimer = setTimeout(() => {
+                    searchTerm = value;
+                    applyFilters(false);
+                }, 200);
+            });
+            searchEl.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    searchTerm = this.value.trim().toLowerCase();
+                    applyFilters(true);
+                }
+            });
+
+            const yearBtn = document.getElementById('groupYear');
+            const industryBtn = document.getElementById('groupIndustry');
+
+            function setMode(mode) {
+                if (mode === groupMode || !allData.length) return;
+                groupMode = mode;
+                yearBtn.setAttribute('aria-pressed', String(mode === 'year'));
+                industryBtn.setAttribute('aria-pressed', String(mode === 'industry'));
+                render(false);
+            }
+
+            yearBtn.addEventListener('click', () => setMode('year'));
+            industryBtn.addEventListener('click', () => setMode('industry'));
+
             const overlay = document.getElementById('infoOverlay');
             const closeBtn = document.getElementById('closeOverlay');
             const infoBtn = document.getElementById('infoButton');
-            const filterBtn = document.getElementById('filterButton');
-            const filterPanel = document.getElementById('industryFilter');
-            const industryFilter = document.getElementById('industrySelect');
-            const resetBtn = document.getElementById('resetFilter');
-
-            industryFilter.addEventListener('change', function () {
-                filterByIndustry(this.value);
-            });
-
-            resetBtn.addEventListener('click', function () {
-                industryFilter.value = 'all';
-                filterByIndustry('all');
-            });
-
-            function showFilter() {
-                filterPanel.classList.add('visible');
-                filterBtn.classList.add('active');
-                filterBtn.setAttribute('aria-expanded', 'true');
-                industryFilter.focus();
-            }
-
-            function hideFilter() {
-                filterPanel.classList.remove('visible');
-                filterBtn.classList.remove('active');
-                filterBtn.setAttribute('aria-expanded', 'false');
-            }
-
-            filterBtn.addEventListener('click', function () {
-                if (filterPanel.classList.contains('visible')) {
-                    hideFilter();
-                } else {
-                    showFilter();
-                }
-            });
-
-            document.addEventListener('click', function (e) {
-                if (!filterPanel.contains(e.target) && !filterBtn.contains(e.target) && filterPanel.classList.contains('visible')) {
-                    hideFilter();
-                }
-            });
+            let lastFocused = null;
 
             function openOverlay() {
+                lastFocused = document.activeElement;
                 overlay.style.display = 'flex';
                 closeBtn.focus();
             }
 
             function closeOverlay() {
                 overlay.style.display = 'none';
-                infoBtn.focus();
+                if (lastFocused) lastFocused.focus();
             }
 
             infoBtn.addEventListener('click', openOverlay);
             closeBtn.addEventListener('click', closeOverlay);
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) closeOverlay();
+            });
 
-            document.addEventListener('keydown', function (e) {
+            document.addEventListener('keydown', e => {
                 if (e.key === 'Escape') {
                     if (overlay.style.display === 'flex') {
                         closeOverlay();
-                    } else if (filterPanel.classList.contains('visible')) {
-                        hideFilter();
-                        filterBtn.focus();
+                    } else {
+                        hideTooltip();
+                    }
+                    return;
+                }
+                if (overlay.style.display === 'flex' && e.key === 'Tab') {
+                    const focusables = overlay.querySelectorAll('button, [href], input, select');
+                    if (!focusables.length) return;
+                    const first = focusables[0];
+                    const last = focusables[focusables.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
                     }
                 }
-
-                if (overlay.style.display === 'flex' && e.key === 'Tab') {
-                    e.preventDefault();
-                    closeBtn.focus();
-                }
             });
-        });
 
-        function filterByIndustry(industry) {
-            document.getElementById('loadingOverlay').style.display = 'flex';
-
-            let displayName = 'すべての業種';
-            if (industry !== 'all') {
-                const selectedOption = document.querySelector(`#industrySelect option[value="${industry}"]`);
-                if (selectedOption) {
-                    displayName = selectedOption.textContent;
-                }
+            function showLoadError() {
+                loadingEl.innerHTML = '';
+                const wrap = document.createElement('div');
+                wrap.style.textAlign = 'center';
+                const msg = document.createElement('p');
+                msg.className = 'loading-text';
+                msg.textContent = '侵害データを読み込めませんでした。接続を確認して、もう一度お試しください。';
+                const btn = document.createElement('button');
+                btn.className = 'retry-btn';
+                btn.type = 'button';
+                btn.textContent = '再試行';
+                btn.addEventListener('click', () => window.location.reload());
+                wrap.appendChild(msg);
+                wrap.appendChild(btn);
+                loadingEl.appendChild(wrap);
+                btn.focus();
             }
 
-            document.getElementById('activeIndustry').textContent = `表示中：${displayName}`;
-
-            let filteredData;
-            if (industry === 'all') {
-                filteredData = allBreachData;
-            } else {
-                const industryName = document.querySelector(`#industrySelect option[value="${industry}"]`)?.textContent;
-                filteredData = allBreachData.filter(d => d.industry === industryName);
-            }
-
-            d3.select("#chart").selectAll("svg").remove();
-
-            setTimeout(() => {
-                createGraph(filteredData);
-                document.getElementById('loadingOverlay').style.display = 'none';
-            }, 300);
-        }
+            fetch('https://api.xposedornot.com/v1/breaches')
+                .then(r => {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                })
+                .then(apiData => {
+                    allData = processData(apiData.exposedBreaches || []);
+                    if (!allData.length) throw new Error('empty');
+                    const recs = allData.map(d => d.count);
+                    recMin = Math.max(1, Math.min.apply(null, recs));
+                    recMax = Math.max.apply(null, recs);
+                    assignSlots(allData);
+                    buildLegend();
+                    populateIndustrySelect(allData);
+                    render(true);
+                    loadingEl.style.display = 'none';
+                })
+                .catch(() => {
+                    showLoadError();
+                });
+        })();
     </script>
-    <style>
-      .footer { padding: 40px 0 30px; background: #111320; border-top: 1px solid rgba(96, 165, 250, 0.08); margin-top: 40px; }
-      .footer p { color: #8b9dc3; }
-      .footer p a { color: #60a5fa; text-decoration: none; }
-      .footer p a:hover { color: #93b4ff; text-decoration: underline; }
-      .footer-columns { display: flex; justify-content: space-between; gap: 60px; text-align: left; padding: 0 40px; }
-      .footer-group { flex: 1; min-width: 0; }
-      .footer-group h6 { color: #c8d6e5 !important; font-size: 0.85em !important; margin-bottom: 15px !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 1px; }
-      .footer-group a.footer-link { display: block; margin-bottom: 6px; padding: 6px 10px; border-radius: 6px; transition: all 0.2s ease; color: #8b9dc3; text-decoration: none; font-size: 0.9em; }
-      .footer-group a.footer-link:hover { background-color: rgba(96, 165, 250, 0.1); padding-left: 14px; color: #60a5fa !important; }
-      @media (max-width: 768px) { .footer-columns { flex-direction: column; text-align: center; gap: 30px; padding: 0 20px; }
-	.footer-group {
-		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-	}
-
-	.footer-group h6 {
-		cursor: pointer;
-		padding: 15px 20px;
-		margin: 0 !important;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.footer-group h6:focus {
-		outline: 2px solid #60a5fa;
-		outline-offset: -2px;
-	}
-
-	.footer-group h6::after {
-		content: '+';
-		font-size: 20px;
-		font-weight: 300;
-		color: #8b9dc3;
-		transition: transform 0.3s ease;
-	}
-
-	.footer-group.active h6::after {
-		content: '−';
-	}
-
-	.footer-group .footer-links-wrapper {
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height 0.3s ease;
-		padding: 0 20px;
-	}
-
-	.footer-group.active .footer-links-wrapper {
-		max-height: 300px;
-		padding: 0 20px 15px 20px;
-	} }
-    </style>
-    <div class="footer">
-      <div class="container">
-        <div style="text-align:center;margin-bottom:30px;">
-          <p>完全オープンソースのこのサイトづくりに、ぜひご参加ください。<a
-                href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> でのコントリビューションを ❤️ お待ちしています。</p>
-        </div>
-
-        <div class="footer-columns">
-          <div class="footer-group">
-            <h6 role="button" tabindex="0" aria-expanded="false">法的情報</h6>
-            <div class="footer-links-wrapper">
-              <a href="privacy" class="footer-link">プライバシーポリシー</a>
-              <a href="terms" class="footer-link">利用規約</a>
-            </div>
-          </div>
-          <div class="footer-group">
-            <h6 role="button" tabindex="0" aria-expanded="false">コミュニティ</h6>
-            <div class="footer-links-wrapper">
-              <a href="https://blog.xposedornot.com" class="footer-link">ブログ</a>
-              <a href="our-repository" class="footer-link">リポジトリ</a>
-            </div>
-          </div>
-          <div class="footer-group">
-            <h6 role="button" tabindex="0" aria-expanded="false">信頼性</h6>
-            <div class="footer-links-wrapper">
-              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">稼働状況</a>
-              <a href="transparency" class="footer-link">透明性</a>
-              <a href="responsible-disclosure" class="footer-link">責任ある開示</a>
-            </div>
-          </div>
-          <div class="footer-group">
-            <h6>法人向け</h6>
-            <div class="footer-links-wrapper">
-              <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
-              <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
-              <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
-              <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">料金</a>
-            </div>
-          </div>
-          <div class="footer-group">
-            <h6 role="button" tabindex="0" aria-expanded="false">フォロー</h6>
-            <div class="footer-links-wrapper">
-              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                <i class="fab fa-twitter" aria-hidden="true"></i> Twitter (X)
-              </a>
-              <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
-                <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
-              </a>
-              <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
-                <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
     <script src="/static/scripts/common.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var footerGroups = document.querySelectorAll('.footer-group h6');
-        footerGroups.forEach(function(header) {
-          function toggle() {
-            if (window.innerWidth <= 768) {
-              var group = header.parentElement;
-              var isActive = group.classList.toggle('active');
-              header.setAttribute('aria-expanded', isActive);
-            }
-          }
-          header.addEventListener('click', toggle);
-          header.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              toggle();
-            }
-          });
+        document.addEventListener('DOMContentLoaded', function () {
+            var footerGroups = document.querySelectorAll('.footer-group h6');
+            footerGroups.forEach(function (header) {
+                function toggle() {
+                    if (window.innerWidth <= 768) {
+                        var group = header.parentElement;
+                        var isActive = group.classList.toggle('active');
+                        header.setAttribute('aria-expanded', isActive);
+                    }
+                }
+                header.addEventListener('click', toggle);
+                header.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+            });
         });
-      });
     </script>
-  </body>
+</body>
 
 </html>

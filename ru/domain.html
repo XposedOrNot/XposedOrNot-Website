@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
     />
+    <meta name="theme-color" content="#3f71f3">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>XposedOrNot — Подтверждение домена | Мониторинг утечек данных</title>
@@ -674,41 +675,40 @@
           <div class="verification-info">
             <div class="d-flex align-items-center mb-2">
               <i class="fas fa-envelope fa-2x text-primary mr-2" aria-hidden="true"></i>
-              <h5 class="mb-0">Подтверждение через email</h5>
+              <h5 class="mb-0">Подтверждение по email</h5>
               <span class="badge badge-success ml-2">Самый простой способ</span>
             </div>
-            <div class="alert alert-info mt-2">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <strong>Важно:</strong> Письма для подтверждения отправляются только
-              на адреса email, указанные в DNS-записях вашего домена (например,
-              <!--email_off-->admin@example.com<!--/email_off-->). Выбирайте этот способ, только если у вас есть
-              доступ к этим почтовым ящикам.
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>Как это работает:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  Мы отправим одноразовую ссылку на <strong>один из этих 5 адресов</strong>
+                  вашего домена:
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ or hostmaster@example.com<!--/email_off-->.
+                </li>
+                <li>Выберите адрес, к которому у вас есть доступ, чтобы получить ссылку.</li>
+                <li>
+                  Укажите email для мониторинга <strong>на том же домене</strong>, чтобы
+                  получать оповещения об утечках.
+                </li>
+                <li>Откройте ссылку в течение <strong>30 минут</strong>, чтобы завершить процесс.</li>
+              </ul>
             </div>
           </div>
-          Проверка через <strong>email</strong> — это простой способ подтвердить
-          домен при условии, что вы можете получать письма на авторитетные почтовые
-          контакты. Выберите адрес email, затем нажмите <strong>Подтвердить</strong>. <br />
-          <br />
           <form id="email_form" method="post">
-            <div class="input-group" id="div1">
-              <span class="input-group-addon">
-                <em class="fa fa-envelope" aria-hidden="true"></em>
-              </span>
-              <select class="form-control input-group input-lg" id="sel1" aria-label="Выбрать email для подтверждения">
-                <option>
-                  Выберите подходящий адрес email для получения письма с
-                  подтверждением :
-                </option>
-              </select>
-            </div>
+            <select class="form-control input-lg" id="sel1" aria-label="Выберите, какой из 5 разрешённых адресов получит одноразовую ссылку">
+              <option>
+                Выберите один из 5 адресов для получения ссылки
+              </option>
+            </select>
             <br />
             <div style="text-align: left" class="input-group">
               <input
                 class="form-control input-lg"
                 type="text"
                 id="txt_email_e"
-                placeholder="Адрес email для получения раскрытых данных"
-                aria-label="Адрес email для подтверждения через email"
+                placeholder="Email для мониторинга на этом домене (например, soc@yourdomain.com)"
+                aria-label="Email адрес для мониторинга и получения оповещений об утечках"
               />
               <span class="input-group-btn">
                 <button
@@ -1077,6 +1077,7 @@
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">Блог</a>
               <a href="our-repository" class="footer-link">Наш репозиторий</a>
+              <a href="/integrations" class="footer-link">Интеграции</a>
             </div>
           </div>
           <div class="footer-group">

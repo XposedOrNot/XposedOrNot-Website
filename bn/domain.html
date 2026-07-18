@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, maximum-scale=5.0, initial-scale=1.0"
     />
+    <meta name="theme-color" content="#3f71f3">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>XposedOrNot - ডোমেন যাচাইকরণ | ডেটা লঙ্ঘন পর্যবেক্ষণ</title>
@@ -677,38 +678,37 @@
               <h5 class="mb-0">ইমেল যাচাইকরণ</h5>
               <span class="badge badge-success ml-2">সবচেয়ে সহজ পদ্ধতি</span>
             </div>
-            <div class="alert alert-info mt-2">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              <strong>গুরুত্বপূর্ণ:</strong> যাচাইকরণ ইমেল শুধুমাত্র আপনার ডোমেনের
-              DNS রেকর্ডে তালিকাভুক্ত ইমেল ঠিকানাগুলোতে (যেমন
-              <!--email_off-->admin@example.com<!--/email_off-->) পাঠানো হবে। এই ইমেল অ্যাকাউন্টগুলোতে আপনার
-              অ্যাক্সেস থাকলেই কেবল এই পদ্ধতিটি বেছে নিন।
+            <div class="alert alert-info mt-2" style="text-align: left">
+              <strong>এটি কীভাবে কাজ করে:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 20px">
+                <li>
+                  আমরা আপনার ডোমেনের <strong>এই ৫টি ঠিকানার একটিতে</strong>
+                  একটি এককালীন লিঙ্ক ইমেল করি:
+                  <!--email_off-->security@, admin@, webmaster@, postmaster@ or hostmaster@example.com<!--/email_off-->।
+                </li>
+                <li>লিঙ্ক পেতে যে ঠিকানায় আপনার অ্যাক্সেস আছে সেটি বেছে নিন।</li>
+                <li>
+                  লঙ্ঘন সতর্কতা পেতে <strong>একই ডোমেনের</strong> একটি নজরদারি
+                  ইমেল লিখুন।
+                </li>
+                <li>সম্পূর্ণ করতে <strong>৩০ মিনিটের</strong> মধ্যে লিঙ্কটি খুলুন।</li>
+              </ul>
             </div>
           </div>
-          <strong>ইমেল </strong> ভিত্তিক বৈধতা যাচাই একটি ডোমেন যাচাই করার সহজ উপায়,
-          শর্ত হলো আপনি অনুমোদিত ইমেল যোগাযোগ ঠিকানাগুলোতে ইমেল পেতে পারেন।
-          অনুগ্রহ করে ইমেলটি নির্বাচন করুন এবং তারপর <strong>যাচাই করুন</strong>-এ ক্লিক করুন। <br />
-          <br />
           <form id="email_form" method="post">
-            <div class="input-group" id="div1">
-              <span class="input-group-addon">
-                <em class="fa fa-envelope" aria-hidden="true"></em>
-              </span>
-              <select class="form-control input-group input-lg" id="sel1" aria-label="যাচাইকরণ ইমেল নির্বাচন করুন">
-                <option>
-                  যাচাইকরণ ইমেল গ্রহণের জন্য অনুগ্রহ করে উপযুক্ত ইমেলটি
-                  নির্বাচন করুন :
-                </option>
-              </select>
-            </div>
+            <select class="form-control input-lg" id="sel1" aria-label="অনুমোদিত ৫টি ঠিকানার মধ্যে কোনটি এককালীন লিঙ্ক পাবে তা নির্বাচন করুন">
+              <option>
+                লিঙ্ক পেতে ৫টি ঠিকানার একটি বেছে নিন
+              </option>
+            </select>
             <br />
             <div style="text-align: left" class="input-group">
               <input
                 class="form-control input-lg"
                 type="text"
                 id="txt_email_e"
-                placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
-                aria-label="ইমেল যাচাইকরণের জন্য ইমেল ঠিকানা"
+                placeholder="এই ডোমেনের নজরদারি ইমেল (যেমন soc@yourdomain.com)"
+                aria-label="লঙ্ঘন সতর্কতা পাওয়ার জন্য নজরদারি ইমেল ঠিকানা"
               />
               <span class="input-group-btn">
                 <button
@@ -1077,6 +1077,7 @@
             <div class="footer-links-wrapper">
               <a href="https://blog.xposedornot.com" class="footer-link">ব্লগ</a>
               <a href="our-repository" class="footer-link">আমাদের রিপোজিটরি</a>
+              <a href="/integrations" class="footer-link">ইন্টিগ্রেশন</a>
             </div>
           </div>
           <div class="footer-group">
