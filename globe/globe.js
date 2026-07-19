@@ -13,7 +13,13 @@ const colors = {
 let dataBuffer = [];
 const dataRetentionTime = 5 * 60 * 1000;
 const maxArcSpokes = 6;
+const maxLiveArcs = 12;
+const arcFlightTime = 2000;
 let arcsArray = [];
+let lastEventCoords = null;
+
+const hotspots = new Map();
+const maxLabels = 8;
 
 let ringsArray = [];
 const ringLifetime = 2400;
@@ -44,6 +50,49 @@ const heatColor = (age) => {
   const b = Math.round(lerp(pointNewRgb[2], pointOldRgb[2], t) * dim);
   return `rgb(${r}, ${g}, ${b})`;
 };
+
+const utf8Decoder = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf-8', { fatal: true });
+
+const fixEncoding = (s) => {
+  if (!s || !utf8Decoder) return s;
+  let hasLead = false;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    if (c > 0xFF) return s;
+    if (c >= 0xC2 && c <= 0xF4) hasLead = true;
+  }
+  if (!hasLead) return s;
+  const bytes = new Uint8Array(s.length);
+  for (let i = 0; i < s.length; i++) bytes[i] = s.charCodeAt(i);
+  try {
+    return utf8Decoder.decode(bytes);
+  } catch (err) {
+    return s;
+  }
+};
+
+const translitMap = {
+  '\u00df': 'ss', '\u00f8': 'o', '\u00d8': 'O', '\u0111': 'd', '\u0110': 'D', '\u00f0': 'd', '\u00d0': 'D',
+  '\u00fe': 'th', '\u00de': 'Th', '\u0142': 'l', '\u0141': 'L', '\u00e6': 'ae', '\u00c6': 'Ae',
+  '\u0153': 'oe', '\u0152': 'Oe', '\u0131': 'i', '\u0127': 'h', '\u0126': 'H', '\u0167': 't', '\u0166': 'T'
+};
+
+const asciiLabel = (name) => {
+  const t = (name || '').trim()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\x00-\x7F]/g, ch => translitMap[ch] || ch);
+  if (!t || t.toLowerCase() === 'unknown') return '';
+  return /^[\x20-\x7E]+$/.test(t) ? t : '';
+};
+
+const hotspotKey = (city, lat, lon) => {
+  const c = (city || '').trim().toLowerCase();
+  if (c && c !== 'unknown') return `c:${c}`;
+  return `g:${lat.toFixed(1)},${lon.toFixed(1)}`;
+};
+
+const ringRadiusFor = (count) => Math.min(8, 3 + (count || 1) * 0.5);
 
 const arcAltFor = (aLat, aLng, bLat, bLng) => {
   const toR = Math.PI / 180;
@@ -105,12 +154,23 @@ const initGlobe = (countries) => {
     .arcColor(() => [colors.arcStart, colors.arcEnd])
     .arcAltitude('arcAlt')
     .arcStroke(0.5)
-    .arcDashLength(1)
-    .arcDashGap(6)
+    .arcDashLength(0.4)
+    .arcDashGap(2)
     .arcDashInitialGap(1)
-    .arcDashAnimateTime(2000)
+    .arcDashAnimateTime(arcFlightTime)
+    .arcsTransitionDuration(0)
+    .pointColor('color')
+    .pointRadius('radius')
+    .pointAltitude('alt')
+    .pointsTransitionDuration(prefersReducedMotion ? 0 : 700)
+    .labelText('labelText')
+    .labelLat(d => d.lat + 0.5)
+    .labelSize(d => Math.min(2.6, 1.7 + 0.25 * Math.sqrt(d.count || 1)))
+    .labelColor(() => colors.label)
+    .labelAltitude('alt')
+    .labelsTransitionDuration(0)
     .ringColor(() => (t) => `rgba(${ringRgb}, ${1 - t})`)
-    .ringMaxRadius(4)
+    .ringMaxRadius('maxR')
     .ringPropagationSpeed(4)
     .ringRepeatPeriod(600)
     .onGlobeReady(() => {
@@ -221,10 +281,6 @@ const initGlobe = (countries) => {
     if (dataBuffer.length) {
       dataBuffer = dataBuffer.filter(item => now - item.timestamp < dataRetentionTime);
       renderHeatLayers();
-      if (!dataBuffer.length && arcsArray.length) {
-        arcsArray = [];
-        globe.arcsData(arcsArray);
-      }
     }
   }, 1000);
   } catch (error) {
@@ -233,11 +289,45 @@ const initGlobe = (countries) => {
   }
 };
 
+const emitArc = (startLat, startLng, endLat, endLng) => {
+  if (!globe || prefersReducedMotion) return;
+  if (startLat === endLat && startLng === endLng) return;
+  const arc = {
+    startLat,
+    startLng,
+    endLat,
+    endLng,
+    arcAlt: arcAltFor(startLat, startLng, endLat, endLng)
+  };
+  arcsArray.push(arc);
+  if (arcsArray.length > maxLiveArcs) {
+    arcsArray.splice(0, arcsArray.length - maxLiveArcs);
+  }
+  globe.arcsData([...arcsArray]);
+  setTimeout(() => {
+    const i = arcsArray.indexOf(arc);
+    if (i !== -1) {
+      arcsArray.splice(i, 1);
+      if (globe) globe.arcsData([...arcsArray]);
+    }
+  }, arcFlightTime * 2);
+};
+
+const emitSpokes = (lat, lng) => {
+  [...hotspots.values()]
+    .filter(h => h.lat !== lat || h.lng !== lng)
+    .sort((a, b) => b.lastTs - a.lastTs)
+    .slice(0, maxArcSpokes)
+    .forEach(h => emitArc(h.lat, h.lng, lat, lng));
+};
+
 const pulseAt = (lat, lng) => {
   if (!globe || prefersReducedMotion) return;
-  ringsArray.push({ lat, lng, ts: Date.now() });
+  const hot = [...hotspots.values()].find(h =>
+    Math.abs(h.lat - lat) < 0.05 && Math.abs(h.lng - lng) < 0.05);
+  ringsArray.push({ lat, lng, ts: Date.now(), maxR: ringRadiusFor(hot && hot.count) });
   globe.ringsData(ringsArray);
-  rebuildArcs(lat, lng);
+  emitSpokes(lat, lng);
 };
 
 const focusLocation = (lat, lng) => {
@@ -404,58 +494,69 @@ const startFeedTicker = () => {
   }, 1000);
 };
 
-const hasCity = (item) => {
-  const c = (item.city || '').trim().toLowerCase();
-  return c && c !== 'unknown';
-};
-
 const renderHeatLayers = () => {
   if (!globe) return;
   const now = Date.now();
 
-  globe.pointsData(dataBuffer.map(item => {
-    const age = Math.min(1, Math.max(0, (now - item.timestamp) / dataRetentionTime));
-    return {
-      lat: item.lat,
-      lng: item.lon,
-      radius: lerp(0.55, 0.18, age),
-      alt: lerp(0.1, 0.005, age),
-      color: heatColor(age)
-    };
-  }))
-    .pointColor('color')
-    .pointRadius('radius')
-    .pointAltitude('alt');
+  const stats = new Map();
+  dataBuffer.forEach(item => {
+    const s = stats.get(item.key);
+    if (s) {
+      s.count += 1;
+      if (item.timestamp > s.lastTs) s.lastTs = item.timestamp;
+    } else {
+      stats.set(item.key, { count: 1, lastTs: item.timestamp, item });
+    }
+  });
 
-  globe.labelsData(dataBuffer.filter(hasCity).map(item => ({
-    lat: item.lat + 0.5,
-    lng: item.lon,
-    text: item.city
-  })))
-    .labelText('text')
-    .labelSize(2)
-    .labelColor(() => colors.label)
-    .labelAltitude(0.2)
-    .labelsTransitionDuration(0);
-};
+  hotspots.forEach((h, key) => {
+    if (!stats.has(key)) hotspots.delete(key);
+  });
 
-const rebuildArcs = (focusLat, focusLng) => {
-  if (!globe || prefersReducedMotion) return;
-  const spokes = dataBuffer
-    .filter(item => item.lat !== focusLat || item.lon !== focusLng)
-    .slice(-maxArcSpokes);
-  arcsArray = spokes.map(src => ({
-    startLat: src.lat,
-    startLng: src.lon,
-    endLat: focusLat,
-    endLng: focusLng,
-    arcAlt: arcAltFor(src.lat, src.lon, focusLat, focusLng)
-  }));
-  globe.arcsData(arcsArray);
+  stats.forEach((s, key) => {
+    let h = hotspots.get(key);
+    if (!h) {
+      h = {
+        lat: s.item.lat,
+        lng: s.item.lon,
+        labelObj: s.item.labelText
+          ? { lat: s.item.lat, lng: s.item.lon, labelText: s.item.labelText, count: 1, alt: 0.2 }
+          : null
+      };
+      hotspots.set(key, h);
+    }
+    const age = Math.min(1, Math.max(0, (now - s.lastTs) / dataRetentionTime));
+    const decay = age * age;
+    const boost = Math.min(3, Math.sqrt(s.count));
+    h.count = s.count;
+    h.lastTs = s.lastTs;
+    h.radius = Math.min(1.4, (0.3 + 0.25 * boost) * lerp(1, 0.55, decay));
+    h.alt = Math.min(0.35, (0.05 + 0.06 * boost) * lerp(1, 0.15, decay));
+    h.color = heatColor(decay);
+    if (h.labelObj) {
+      h.labelObj.count = s.count;
+      h.labelObj.alt = Math.max(0.2, h.alt + 0.06);
+    }
+  });
+
+  const points = [...hotspots.values()];
+  globe.pointsData(points);
+
+  const labeled = points.filter(h => h.labelObj);
+  const top = labeled
+    .slice()
+    .sort((a, b) => b.count - a.count)
+    .slice(0, maxLabels);
+  const newest = labeled.reduce((m, h) => (!m || h.lastTs > m.lastTs ? h : m), null);
+  if (newest && !top.includes(newest)) top.push(newest);
+  globe.labelsData(top.map(h => h.labelObj));
 };
 
 const updateGlobeWithStreamData = (data) => {
   if (!data || typeof data !== 'object') return;
+
+  if (typeof data.city === 'string') data.city = fixEncoding(data.city);
+  if (typeof data.country === 'string') data.country = fixEncoding(data.country);
 
   const lat = parseFloat(data.lat);
   const lon = parseFloat(data.lon);
@@ -467,13 +568,16 @@ const updateGlobeWithStreamData = (data) => {
   if (!valid) return;
 
   const timestamp = Date.now();
-  dataBuffer.push({ ...data, lat, lon, timestamp });
+  const key = hotspotKey(data.city, lat, lon);
+  const labelText = asciiLabel(data.city) || asciiLabel(data.country);
+  dataBuffer.push({ lat, lon, timestamp, key, labelText });
   dataBuffer = dataBuffer.filter(item => timestamp - item.timestamp < dataRetentionTime);
 
   if (!globe) return;
 
   if (!prefersReducedMotion) {
-    ringsArray.push({ lat, lng: lon, ts: timestamp });
+    const hot = hotspots.get(key);
+    ringsArray.push({ lat, lng: lon, ts: timestamp, maxR: ringRadiusFor(hot ? hot.count + 1 : 1) });
     ringsArray = ringsArray.filter(r => timestamp - r.ts < ringLifetime);
     globe.ringsData(ringsArray);
   }
@@ -483,7 +587,10 @@ const updateGlobeWithStreamData = (data) => {
     lastUpdateTime = timestamp;
   }
 
-  rebuildArcs(lat, lon);
+  if (lastEventCoords) {
+    emitArc(lastEventCoords.lat, lastEventCoords.lng, lat, lon);
+  }
+  lastEventCoords = { lat, lng: lon };
 };
 
 fetchAssets();
