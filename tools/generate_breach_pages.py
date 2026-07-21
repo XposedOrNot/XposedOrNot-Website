@@ -25,7 +25,10 @@ values into our-repository.html (stat tiles, insights, size and risk
 cards, top-10/recent tables, sr-only chart data tables, Key Statistics
 summary, FAQ schema, dateModified) from /v1/metrics/detailed plus the
 breaches list, mirroring repository.js; locale copies get the numeric
-values only. Never hand-edit those baked blocks - rerun this script.
+values only. It also refreshes llms.txt (Last updated line, Notable
+Breaches section) and regenerates llms-full.txt (llms.txt content plus
+key statistics, the FAQ from the FAQPage schemas, and the complete
+breach index). Never hand-edit those baked blocks - rerun this script.
 """
 import argparse
 import html
@@ -830,16 +833,21 @@ def repo_faq_block(s, metrics, date_text):
     return json.dumps(data, ensure_ascii=False, separators=(",", ":"))
 
 
-def bake_repository_stats(public):
+def fetch_metrics():
     try:
         req = urllib.request.Request(
             METRICS_API,
             headers={"User-Agent": "XposedOrNot-page-generator/1.0"})
         with urllib.request.urlopen(req, timeout=30) as resp:
-            metrics = json.load(resp)
+            return json.load(resp)
     except Exception as e:
-        print(f"WARNING: metrics fetch failed ({e}), "
-              "repository stats not baked")
+        print(f"WARNING: metrics fetch failed ({e})")
+        return None
+
+
+def bake_repository_stats(public, metrics):
+    if metrics is None:
+        print("WARNING: no metrics data, repository stats not baked")
         return 0
 
     s = repo_compute_stats(public)
@@ -916,6 +924,110 @@ def bake_repository_stats(public):
             lp.write_text(lt, encoding="utf-8", newline="")
             baked += 1
     return baked
+
+
+def collect_faq_pairs():
+    pairs, seen = [], set()
+    for name in ("faq.html", "index.html", "password.html"):
+        path = ROOT / name
+        if not path.exists():
+            continue
+        src = path.read_text(encoding="utf-8")
+        for m in re.finditer(
+                r'<script type="application/ld\+json"[^>]*>(.*?)</script>',
+                src, re.S):
+            try:
+                d = json.loads(m.group(1))
+            except ValueError:
+                continue
+
+            for it in (d if isinstance(d, list) else [d]):
+                if it.get("@type") != "FAQPage":
+                    continue
+                for q in it.get("mainEntity", []):
+                    question = str(q.get("name", "")).strip()
+                    answer = str(
+                        q.get("acceptedAnswer", {}).get("text", "")).strip()
+                    if question and answer and question.lower() not in seen:
+                        seen.add(question.lower())
+                        pairs.append((question, answer))
+    return pairs
+
+
+def notable_breaches_section(public):
+    top = sorted(public, key=lambda r: int(r["exposedRecords"]),
+                 reverse=True)[:10]
+    lines = "\n".join(
+        f"- [{r['breachID']}]({SITE}/breach/{r['breachID']}): "
+        f"{int(r['exposedRecords']):,} records ({r['breachedDate'][:4]})"
+        for r in top)
+    return ("## Notable Breaches\n\n"
+            "The 10 largest breaches indexed, by exposed records:\n\n"
+            f"{lines}\n")
+
+
+def bake_llms(public):
+    latest = max(r["addedDate"] for r in public)
+    date_en = fmt_freshness_date("en", datetime.fromisoformat(latest))
+    path = ROOT / "llms.txt"
+    text = path.read_text(encoding="utf-8")
+    new, n = re.subn(r"(?m)^Last updated: [^.]*\.",
+                     f"Last updated: {date_en}.", text)
+    if not n:
+        print("WARNING: llms.txt Last updated line not found, not stamped")
+    text = new
+    section = notable_breaches_section(public)
+    new, n = re.subn(r"## Notable Breaches\n.*?(?=\n## )",
+                     section, text, flags=re.S)
+    if not n:
+        print("WARNING: llms.txt Notable Breaches section not found")
+    path.write_text(new, encoding="utf-8", newline="")
+
+
+def bake_llms_full(public, metrics):
+    base = (ROOT / "llms.txt").read_text(encoding="utf-8")
+    latest = max(r["addedDate"] for r in public)
+    date_en = fmt_freshness_date("en", datetime.fromisoformat(latest))
+    s = repo_compute_stats(public)
+    parts = [base.rstrip() + "\n"]
+    if metrics:
+        inds = sorted(metrics["Industry_Breaches_Count"].items(),
+                      key=lambda kv: -kv[1])
+        yearly = {int(k): int(v)
+                  for k, v in metrics["Yearly_Breaches_Count"].items()}
+        emails = int(str(metrics.get("Pastes_Count", 0)).replace(",", "")
+                     or 0)
+        newest = max(public, key=lambda r: r["addedDate"])
+        parts.append(
+            "\n## Key Statistics\n\n"
+            f"- Total breaches indexed: {s['total']:,}\n"
+            f"- Total exposed records: {s['total_records']:,}\n"
+            f"- Unique email addresses: {emails:,}\n"
+            f"- Exposed passwords: {int(metrics['Pastes_Records']):,}\n"
+            f"- Verified breaches: {s['verified']:,} ({s['verified_pct']})\n"
+            "- Most affected industries: "
+            + ", ".join(f"{k} ({v:,})" for k, v in inds[:3]) + "\n"
+            f"- Latest breach added: {newest['breachID']} on {date_en}\n"
+            "- Breaches by year: "
+            + ", ".join(f"{y}: {yearly[y]:,}" for y in sorted(yearly)) + "\n")
+    faq = collect_faq_pairs()
+    if faq:
+        parts.append("\n## Frequently Asked Questions\n")
+        for q, a in faq:
+            parts.append(f"\n### {q}\n\n{a}\n")
+    rows = sorted(public, key=lambda r: int(r["exposedRecords"]),
+                  reverse=True)
+    parts.append(
+        f"\n## Complete Breach Index ({len(rows):,} breaches)\n\n"
+        "One line per breach: name, breach year, exposed records, "
+        "industry.\n\n")
+    for r in rows:
+        parts.append(
+            f"- [{r['breachID']}]({SITE}/breach/{r['breachID']}): "
+            f"{r['breachedDate'][:4]}, {int(r['exposedRecords']):,} records, "
+            f"{str(r.get('industry', '')).strip()}\n")
+    (ROOT / "llms-full.txt").write_text("".join(parts), encoding="utf-8",
+                                        newline="")
 
 
 def main():
@@ -998,11 +1110,14 @@ def main():
     orphans = existing - {r["breachID"] for r in public}
     baked = bake_directory(public)
     stamped = bake_index_freshness(public)
-    repo = bake_repository_stats(public)
+    metrics = fetch_metrics()
+    repo = bake_repository_stats(public, metrics)
+    bake_llms(public)
+    bake_llms_full(public, metrics)
     print(f"fetched: {len(all_ids)} | rendered now: {len(to_render)} | "
           f"pages on disk: {len(existing)} | sitemap: {len(live)} URLs | "
           f"directory pages baked: {baked} | index pages stamped: {stamped} | "
-          f"repository pages baked: {repo}")
+          f"repository pages baked: {repo} | llms files updated")
     if orphans:
         print(f"WARNING: {len(orphans)} orphan page dirs no longer in the public API "
               f"list: {sorted(orphans)[:10]} - delete and 301 them")

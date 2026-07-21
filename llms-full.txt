@@ -1,0 +1,1017 @@
+# XposedOrNot
+
+> XposedOrNot is a free, open-source data breach monitoring platform that helps individuals and organizations check if their emails, passwords, or domains have been exposed in known data breaches. It provides real-time breach insights across billions of exposed records and 835+ million compromised passwords.
+
+XposedOrNot offers a comprehensive suite of cybersecurity tools designed to protect digital identities. The platform is community-driven, fully transparent, and accessible to everyone, from individual users checking personal security to enterprises monitoring domain-level exposure.
+
+Last updated: July 21, 2026. See [llms-full.txt](https://xposedornot.com/llms-full.txt) for the expanded reference with key statistics, the full FAQ, and the complete breach index.
+
+## Core Features
+
+- **Email Breach Check**: Search billions of exposed records to find if an email appears in any known data breach
+- **Password Security**: Verify passwords against 835+ million exposed passwords using SHA-3 (Keccak-512) hashing
+- **Domain Monitoring**: Track and verify domain ownership, monitor corporate email exposure
+- **Stealer-Log Exposure**: Free checks against infostealer malware data (browser-saved passwords, session cookies, autofill data, crypto wallets), included in email search and domain scans at no cost
+- **Privacy Shield**: Opt out of public searches to protect email addresses
+- **Breach Repository**: Browse comprehensive database of all indexed data breaches
+
+## Tools
+
+- [Email Breach Search](https://xposedornot.com/): Check if your email has been exposed in data breaches
+- [Password Check](https://xposedornot.com/password): Verify if a password has been compromised
+- [Xposed Breaches](https://xposedornot.com/xposed): View detailed breach exposure for an email
+- [Privacy Shield](https://xposedornot.com/shield): Protect your email from public searches
+- [Domain Verification](https://xposedornot.com/domain): Verify domain ownership for monitoring
+- [Domain Search](https://xposedornot.com/domains): Search breaches affecting a domain
+- [Breach Visualisations](https://xposedornot.com/breaches-visualisations): Visualize data breaches over time
+- [Breach Repository](https://xposedornot.com/xposed): Browse all indexed data breaches
+- [Breach Statistics](https://xposedornot.com/our-repository): Live repository statistics: totals, yearly trends, industries, largest breaches
+- [FAQ](https://xposedornot.com/faq): Frequently asked questions about XposedOrNot
+
+## Notable Breaches
+
+The 10 largest breaches indexed, by exposed records:
+
+- [1.4BillionRecords](https://xposedornot.com/breach/1.4BillionRecords): 1,114,303,554 records (2017)
+- [Collection-1](https://xposedornot.com/breach/Collection-1): 790,803,860 records (2019)
+- [Verifications](https://xposedornot.com/breach/Verifications): 762,579,945 records (2019)
+- [ExploitIN](https://xposedornot.com/breach/ExploitIN): 592,919,058 records (2016)
+- [AntiPublicCombo](https://xposedornot.com/breach/AntiPublicCombo): 457,399,902 records (2016)
+- [AlienStealerLogs](https://xposedornot.com/breach/AlienStealerLogs): 299,646,818 records (2025)
+- [Alleged-SOCRadar](https://xposedornot.com/breach/Alleged-SOCRadar): 282,977,267 records (2024)
+- [Wattpad](https://xposedornot.com/breach/Wattpad): 268,113,400 records (2020)
+- [Deezer](https://xposedornot.com/breach/Deezer): 244,007,616 records (2019)
+- [NetEase](https://xposedornot.com/breach/NetEase): 232,857,074 records (2015)
+
+## API Documentation
+
+XposedOrNot provides a RESTful API with JSON responses for developers to integrate breach checking into applications.
+
+- [API Documentation](https://xposedornot.com/api_doc): Complete API reference with endpoints and examples
+
+### Public API Endpoints (No Authentication Required)
+
+- `GET https://api.xposedornot.com/v1/check-email/{email}` - Check if an email appears in any breach
+- `GET https://api.xposedornot.com/v1/breach-analytics?email={email}` - Get detailed breach analytics for an email
+- `GET https://passwords.xposedornot.com/api/v1/pass/anon/{first10_keccak512_hash}` - Check if a password is exposed (returns 200 if exposed, 404 if safe)
+- `GET https://api.xposedornot.com/v1/breaches` - Retrieve list of all indexed data breaches
+
+### Domain API Endpoints (API Key Required)
+
+- `POST https://api.xposedornot.com/v1/domain-breaches/` - Check breaches affecting a verified domain (send the API key in the `x-api-key` header)
+- API keys are available in the domain dashboard after verification
+
+### Higher Rate Limits
+
+The free API is rate-limited per IP. For production workloads, paid API plans start at $5/month (50 requests/min) and scale to 25,000 requests/min: see [xonAPI+](https://plus.xposedornot.com/products/api).
+
+## Integrations
+
+XposedOrNot breach intelligence plugs into common security tooling, all built on the XposedOrNot API.
+
+- [Integrations Hub](https://xposedornot.com/integrations): Overview and status of all integrations
+- [MISP](https://xposedornot.com/integrations/misp): Expansion and hover module for enriching email attributes with breach exposure
+- [TheHive / Cortex](https://xposedornot.com/integrations/thehive-cortex): Cortex analyzer for email observables with breach taxonomies and reports
+- [OpenCTI](https://xposedornot.com/integrations/opencti): Internal-enrichment connector for Email-Addr observables
+- [Maltego](https://github.com/XposedOrNot/XposedOrNot-Maltego): Official Maltego transforms, live: investigate email breach exposure on the graph, no API key required
+- [Wazuh](https://github.com/XposedOrNot/XposedOrNot-Wazuh): Official Wazuh integration, live: detect breached credentials in authentication and user-creation alerts, no API key required
+- [Microsoft Sentinel](https://github.com/XposedOrNot/XposedOrNot-Sentinel): Official connector for domain exposure alerts and incident response
+- [Splunk](https://splunkbase.splunk.com/app/7631): Official Splunk app, live: breached and exposed email insights for verified domains
+- [Official SDKs](https://github.com/XposedOrNot): Client libraries for Python, JavaScript/TypeScript, Go, Ruby, PHP, Rust, .NET and Java
+- MCP Server: Connect AI assistants via the Model Context Protocol at `api.xposedornot.com/mcp`
+
+## Commercial Edition (xonPlus)
+
+xonPlus is the commercial edition of XposedOrNot, built on the same breach data and open-source detection engine. It serves businesses: developer APIs at higher rate limits, domain monitoring for security teams, and white-label multi-tenant breach intelligence for MSSPs and platforms. All pricing is public and self-serve.
+
+- [xonAPI+](https://plus.xposedornot.com/products/api): Breach-check API for developers: real-time email and domain lookups, from $5/month
+- [xonEnterprise+](https://plus.xposedornot.com/products/enterprise): Domain breach monitoring for security teams: alerts within 15 minutes, dashboards, CSV/PDF reports, from $25/month
+- [xonThreatIntel+](https://plus.xposedornot.com/products/threat-intel): Breach intelligence feeds for MSSPs and platforms: white-label, multi-tenant, STIX/JSON/CSV with webhooks, from $99/month
+- [Pricing](https://plus.xposedornot.com/pricing): Full public price list for all products
+- [xonPlus llms.txt](https://plus.xposedornot.com/llms.txt): Complete commercial-edition reference
+
+## Technical Details
+
+- **Password Hashing**: Uses SHA-3 (Keccak-512) for secure client-side password checking
+- **Privacy**: Passwords are never stored; only the first 10 characters of the hash are transmitted
+- **Response Format**: JSON for all API endpoints
+- **Authentication**: Most endpoints are public; domain endpoints require API key
+
+## Resources
+
+- [Blog](https://blog.xposedornot.com/): Security insights and breach news
+- [GitHub](https://github.com/XposedOrNot): Open-source repository
+- [llms-full.txt](https://xposedornot.com/llms-full.txt): Expanded reference: key statistics, full FAQ, complete breach index
+- [Sitemap](https://xposedornot.com/sitemap.xml): All site pages
+- [Breach Sitemap](https://xposedornot.com/sitemap-breaches.xml): All breach detail pages
+- [Privacy Policy](https://xposedornot.com/privacy): Data handling practices
+- [Terms of Service](https://xposedornot.com/terms): Usage terms
+- [Status Page](https://stats.uptimerobot.com/3zjQkZ2Caa): Service uptime monitoring
+- [Responsible Disclosure](https://xposedornot.com/responsible-disclosure): Security vulnerability reporting
+
+## Optional
+
+### Supported Languages for Password Check Implementation
+
+Code examples are available for client-side password checking in:
+- jQuery/JavaScript
+- PHP
+- Python
+- Ruby
+- Java
+- Go
+- Rust
+
+### Trust and Security
+
+- Open-source and community-driven
+- WCAG AA accessible
+- No password storage in plain text
+- SHA-3 encryption for sensitive operations
+- Transparent data practices
+- Multi-language support (12+ languages)
+
+## Key Statistics
+
+- Total breaches indexed: 767
+- Total exposed records: 11,542,221,848
+- Unique email addresses: 5,134,275,604
+- Exposed passwords: 835,955,029
+- Verified breaches: 733 (95.6%)
+- Most affected industries: Entertainment (220), Information Technology (128), Retail (107)
+- Latest breach added: Paytm on July 21, 2026
+- Breaches by year: 2007: 1, 2008: 2, 2009: 2, 2010: 3, 2011: 15, 2012: 14, 2013: 27, 2014: 41, 2015: 57, 2016: 77, 2017: 36, 2018: 52, 2019: 70, 2020: 78, 2021: 59, 2022: 51, 2023: 32, 2024: 53, 2025: 35, 2026: 62
+
+## Frequently Asked Questions
+
+### What is XposedOrNot (XON)?
+
+XposedOrNot (XON) is a free data breach search engine that lets you check if your email, password, or domain has been exposed in a data breach. Search billions of leaked records, get real-time breach alerts, and use tools like the CXO Dashboard, Privacy Shield, and Breach Comparison to protect your accounts. The platform is fully open-source and available on GitHub.
+
+### How safe and secure is XposedOrNot?
+
+XposedOrNot's entire application and website are built on open source technology. XposedOrNot does not store any user passwords or personally identifiable information. Password checks use secure Keccak-512 hashing, and only a partial hash is ever transmitted. The source code is publicly available on GitHub for full transparency.
+
+### Can I get notified if my data is exposed in a data breach?
+
+Yes, XposedOrNot offers a free AlertMe service that monitors your email and sends you alerts whenever it appears in a newly discovered data breach. Simply enter your email address and confirm it to activate free breach alerts. You can unsubscribe at any time.
+
+### Is there any fee for searching more than one email or password?
+
+No, XposedOrNot is a completely free data breach search engine with no limits on the number of searches. You can check emails and passwords for yourself, your family, and your colleagues without any cost. The community edition will always remain free.
+
+### What is stored and what is not stored in XON?
+
+XposedOrNot does not store any user passwords or personally identifiable information. When you use the data breach lookup, the system checks your email against a database of known breaches without logging your search. Password checks use SHA3-Keccak 512 one-way hashing, making it impossible to reverse the stored hashes.
+
+### What kind of exposed data is presented as part of the breach information?
+
+XposedOrNot provides detailed email breach lookup results including the breach name, date, number of exposed records, types of data exposed (emails, passwords, phone numbers, addresses, etc.), whether passwords were in plaintext, a risk score for each email, and industry classification of the breached organization.
+
+### What is the Alert Me service?
+
+AlertMe is XposedOrNot's free email breach notification service. It monitors your email address and sends you an alert whenever a new data breach is added to XposedOrNot that includes your email. You can activate AlertMe from the homepage, from any search result, or from the password checker page.
+
+### How do I integrate XposedOrNot into my application?
+
+XposedOrNot provides a free REST API and official SDKs for Node.js and Python. You can check emails for breaches, verify password exposure, and access breach analytics programmatically. Visit the API Documentation page for detailed endpoints, code examples, and integration guides.
+
+### What is the Breach Comparison Tool and how does it help me?
+
+XposedOrNot's Breach Comparison Tool lets you check two email addresses side-by-side to find overlapping data breaches. This email breach lookup feature helps identify password reuse risks between personal and work accounts, shows shared breaches with a visual Venn diagram, calculates combined risk scores, and provides actionable security recommendations.
+
+### How are breaches verified in XON?
+
+All data breaches in the XposedOrNot search engine are verified through acknowledgment by the affected website owners or coverage by online media. References are provided for each breach. In rare cases where a breach is not publicly acknowledged, it is marked accordingly and the affected organization is notified through defined processes.
+
+### Does XposedOrNot cover stealer logs (infostealer malware data)?
+
+Yes, XposedOrNot covers stealer logs free of charge in every email search and domain scan. Infostealer malware captures browser-saved passwords, session cookies, autofill data, and crypto wallets from infected devices. XposedOrNot indexes this stealer-log data and includes it in your dashboards too, while other breach-monitoring services gate stealer-log access behind paid plans running hundreds of dollars per month.
+
+### Does XposedOrNot integrate with SIEM and threat-intel platforms like MISP, TheHive, or Wazuh?
+
+Yes, XposedOrNot integrates with SIEM and threat-intel platforms. Connectors for Microsoft Sentinel, Splunk, Wazuh, and Maltego are live today, and integrations for MISP, TheHive/Cortex, and OpenCTI are on the way. All of them are built on the XposedOrNot API. Visit the Integrations page at xposedornot.com/integrations for current status, setup guides, and links to each project.
+
+### How do I check if my email was in a data breach?
+
+Type your email into XposedOrNot's free breach search and hit 'Check My Email.' We'll scan billions of exposed records and show you every breach your email appeared in, what data was leaked, and a risk score so you know where you stand. No signup needed.
+
+### Can I check if my company's domain has been breached?
+
+Yes, XposedOrNot's domain breach checker shows you exactly how exposed your company is, including the number of breaches, total records leaked, and a breakdown of what types of data were compromised. It's a quick way for security teams to assess their organization's breach footprint.
+
+### Is this really free? What's the catch?
+
+No catch, every tool on XposedOrNot is free, including email breach checking, password leak checks, domain monitoring, breach alerts, and the CXO dashboard. The entire project is open source on GitHub. We believe breach awareness shouldn't cost anything.
+
+### Is my search private? Do you store what I type?
+
+XposedOrNot doesn't store the emails you search or your results. Queries are processed in memory and never logged in any identifiable form. You can read the full details in our privacy policy.
+
+### What should I do if my email was found in a breach?
+
+If your email was found in a data breach, change the password for that account immediately. If you reused that password anywhere else, change those too. Turn on two-factor authentication wherever you can. Then set up XposedOrNot's free breach alerts so you'll know the moment your email shows up in a future breach.
+
+### Can I check if my password has been leaked?
+
+Yes, XposedOrNot's password leak checker searches over 835 million exposed passwords. It uses SHA-3 Keccak-512 hashing, which means your actual password is never sent or stored. We only compare a one-way hash. If your password shows up, change it everywhere you've used it.
+
+### How does the data breach lookup work?
+
+XposedOrNot's data breach lookup scans billions of exposed records and instantly shows every breach your email appeared in, what data was leaked, and a risk score. Enter your address in the search box above to run a free check. No signup, no cost.
+
+### Do you check stealer logs (infostealer malware data)?
+
+Yes, XposedOrNot checks stealer logs free of charge. Data captured by infostealer malware, including browser-saved passwords, session cookies, autofill data, and crypto wallets, is indexed and appears in your regular email search and domain scans at no cost. Other services gate stealer-log access behind paid plans.
+
+### Can I use XposedOrNot with my SIEM or threat-intel platform?
+
+Yes, XposedOrNot connects to SIEM and threat-intel platforms. Connectors for Microsoft Sentinel, Splunk, Wazuh, and Maltego are live today, and integrations for MISP, TheHive/Cortex, and OpenCTI are on the way. You can also build your own with official SDKs in eight languages or connect AI assistants through our MCP server. See the integrations page for current status and setup guides.
+
+### How does the password security checker work?
+
+XposedOrNot's password security checker uses Keccak-512 hashing to securely check your password against a database of over 835 million passwords leaked in data breaches. Your actual password is never stored or transmitted. Only a partial hash is sent to the API, ensuring your password remains private.
+
+### Is this password leak check really free?
+
+Yes, XposedOrNot's password leak check is completely free with no limits. You can check as many passwords as you want. The tool is open-source and available on GitHub.
+
+### What should I do if my password is exposed?
+
+If XposedOrNot's password security checker finds your password in a data breach, change it immediately on all accounts where you used it. Enable two-factor authentication, use a password manager to generate unique passwords, and sign up for XposedOrNot's free breach alerts to get notified of future exposures.
+
+### Can you see my password when I check it?
+
+No, XposedOrNot never sees your password. Your password is hashed locally in your browser using Keccak-512 encryption. Only the first 10 characters of the hash are sent to the server for checking. Your actual password never leaves your device.
+
+## Complete Breach Index (767 breaches)
+
+One line per breach: name, breach year, exposed records, industry.
+
+- [1.4BillionRecords](https://xposedornot.com/breach/1.4BillionRecords): 2017, 1,114,303,554 records, Entertainment
+- [Collection-1](https://xposedornot.com/breach/Collection-1): 2019, 790,803,860 records, Information Technology
+- [Verifications](https://xposedornot.com/breach/Verifications): 2019, 762,579,945 records, Information Technology
+- [ExploitIN](https://xposedornot.com/breach/ExploitIN): 2016, 592,919,058 records, Information Technology
+- [AntiPublicCombo](https://xposedornot.com/breach/AntiPublicCombo): 2016, 457,399,902 records, Education
+- [AlienStealerLogs](https://xposedornot.com/breach/AlienStealerLogs): 2025, 299,646,818 records, Miscellaneous
+- [Alleged-SOCRadar](https://xposedornot.com/breach/Alleged-SOCRadar): 2024, 282,977,267 records, Information Technology
+- [Wattpad](https://xposedornot.com/breach/Wattpad): 2020, 268,113,400 records, Entertainment
+- [Deezer](https://xposedornot.com/breach/Deezer): 2019, 244,007,616 records, Music
+- [NetEase](https://xposedornot.com/breach/NetEase): 2015, 232,857,074 records, Information Technology
+- [Cit0day](https://xposedornot.com/breach/Cit0day): 2020, 226,803,683 records, Information Technology
+- [Twitter-Scraped](https://xposedornot.com/breach/Twitter-Scraped): 2021, 208,918,735 records, Information Technology
+- [PeopleDataLabs](https://xposedornot.com/breach/PeopleDataLabs): 2019, 179,117,119 records, Information Technology
+- [Zynga](https://xposedornot.com/breach/Zynga): 2019, 172,817,913 records, Entertainment
+- [AdultFriendFinder](https://xposedornot.com/breach/AdultFriendFinder): 2016, 169,745,941 records, Entertainment
+- [Dubsmash](https://xposedornot.com/breach/Dubsmash): 2018, 161,835,382 records, Entertainment
+- [LinkedIn](https://xposedornot.com/breach/LinkedIn): 2012, 160,042,644 records, Information Technology
+- [Adobe](https://xposedornot.com/breach/Adobe): 2013, 152,403,035 records, Information Technology
+- [MyFitnessPal](https://xposedornot.com/breach/MyFitnessPal): 2018, 143,570,814 records, Health Care
+- [Canva](https://xposedornot.com/breach/Canva): 2019, 137,504,762 records, Information Technology
+- [LinkedInScrape-2021](https://xposedornot.com/breach/LinkedInScrape-2021): 2021, 125,724,601 records, Information Technology
+- [DemandScience](https://xposedornot.com/breach/DemandScience): 2024, 121,865,345 records, Information Technology
+- [Pemiblanc](https://xposedornot.com/breach/Pemiblanc): 2018, 114,015,423 records, Miscellaneous
+- [Badoo](https://xposedornot.com/breach/Badoo): 2013, 112,083,678 records, Entertainment
+- [1Win](https://xposedornot.com/breach/1Win): 2024, 96,394,096 records, Entertainment
+- [MyHeritage](https://xposedornot.com/breach/MyHeritage): 2017, 91,997,033 records, Miscellaneous
+- [Youku](https://xposedornot.com/breach/Youku): 2016, 91,891,665 records, Entertainment
+- [VK](https://xposedornot.com/breach/VK): 2012, 90,679,566 records, Entertainment
+- [Dailymotion](https://xposedornot.com/breach/Dailymotion): 2016, 85,277,547 records, Entertainment
+- [JD](https://xposedornot.com/breach/JD): 2013, 78,171,293 records, Retail
+- [Nitro](https://xposedornot.com/breach/Nitro): 2020, 77,165,608 records, Information Technology
+- [Luxottica](https://xposedornot.com/breach/Luxottica): 2021, 74,411,022 records, Retail
+- [Tumblr](https://xposedornot.com/breach/Tumblr): 2013, 73,524,878 records, Entertainment
+- [UnderArmour](https://xposedornot.com/breach/UnderArmour): 2025, 73,065,604 records, Retail
+- [Tokopedia](https://xposedornot.com/breach/Tokopedia): 2020, 71,443,767 records, Retail
+- [Naz.API](https://xposedornot.com/breach/Naz.API): 2023, 71,064,705 records, Miscellaneous
+- [Dropbox](https://xposedornot.com/breach/Dropbox): 2012, 68,760,320 records, Information Technology
+- [ModernBusinessSolutions](https://xposedornot.com/breach/ModernBusinessSolutions): 2016, 58,843,480 records, Information Technology
+- [Evite](https://xposedornot.com/breach/Evite): 2019, 58,773,935 records, Miscellaneous
+- [Apollo](https://xposedornot.com/breach/Apollo): 2018, 56,478,358 records, Information Technology
+- [Acxiom](https://xposedornot.com/breach/Acxiom): 2020, 51,681,368 records, Miscellaneous
+- [Imesh](https://xposedornot.com/breach/Imesh): 2013, 49,594,661 records, Music
+- [Charter](https://xposedornot.com/breach/Charter): 2026, 49,295,990 records, Telecommunication
+- [ATT-Speculated](https://xposedornot.com/breach/ATT-Speculated): 2021, 49,102,843 records, Telecommunication
+- [Netlog](https://xposedornot.com/breach/Netlog): 2012, 49,026,690 records, Entertainment
+- [Houzz](https://xposedornot.com/breach/Houzz): 2018, 48,851,647 records, Retail
+- [SpecialKDataFeedSpamList](https://xposedornot.com/breach/SpecialKDataFeedSpamList): 2015, 45,084,900 records, Miscellaneous
+- [Edmodo](https://xposedornot.com/breach/Edmodo): 2017, 43,415,654 records, Music
+- [PiZap](https://xposedornot.com/breach/PiZap): 2017, 41,779,112 records, Entertainment
+- [ShareThis](https://xposedornot.com/breach/ShareThis): 2018, 40,952,354 records, Information Technology
+- [Fling](https://xposedornot.com/breach/Fling): 2011, 40,743,414 records, Miscellaneous
+- [Chegg](https://xposedornot.com/breach/Chegg): 2018, 39,736,948 records, Education
+- [Last.fm](https://xposedornot.com/breach/Last.fm): 2012, 37,240,736 records, Music
+- [Poshmark](https://xposedornot.com/breach/Poshmark): 2018, 36,758,793 records, Retail
+- [NeimanMarcus](https://xposedornot.com/breach/NeimanMarcus): 2024, 30,409,093 records, Retail
+- [SoundCloud](https://xposedornot.com/breach/SoundCloud): 2025, 29,968,497 records, Music
+- [Tianya](https://xposedornot.com/breach/Tianya): 2011, 28,936,872 records, News Media
+- [HauteLook](https://xposedornot.com/breach/HauteLook): 2018, 28,509,466 records, Retail
+- [MindJolt](https://xposedornot.com/breach/MindJolt): 2019, 28,364,844 records, Entertainment
+- [Taringa](https://xposedornot.com/breach/Taringa): 2017, 28,001,047 records, Non-Profit/Charities
+- [BureauvanDijk](https://xposedornot.com/breach/BureauvanDijk): 2021, 27,916,711 records, Retail
+- [Shein](https://xposedornot.com/breach/Shein): 2018, 27,718,171 records, Retail
+- [Mate1](https://xposedornot.com/breach/Mate1): 2016, 27,391,395 records, Entertainment
+- [PostMillennial](https://xposedornot.com/breach/PostMillennial): 2024, 26,929,396 records, News Media
+- [Neopets](https://xposedornot.com/breach/Neopets): 2013, 26,893,291 records, Entertainment
+- [Livejournal](https://xposedornot.com/breach/Livejournal): 2017, 26,368,201 records, Entertainment
+- [Addi](https://xposedornot.com/breach/Addi): 2026, 25,934,104 records, Finance
+- [Mathway](https://xposedornot.com/breach/Mathway): 2020, 25,694,866 records, Education
+- [Gravatar](https://xposedornot.com/breach/Gravatar): 2020, 25,104,710 records, Information Technology
+- [VNG](https://xposedornot.com/breach/VNG): 2015, 24,848,112 records, Entertainment
+- [RailYatri](https://xposedornot.com/breach/RailYatri): 2022, 24,549,032 records, Transport
+- [BigBasket](https://xposedornot.com/breach/BigBasket): 2020, 24,498,022 records, Retail
+- [Justdate](https://xposedornot.com/breach/Justdate): 2016, 24,455,121 records, Entertainment
+- [ApexSMS](https://xposedornot.com/breach/ApexSMS): 2019, 23,246,400 records, Miscellaneous
+- [Cafepress](https://xposedornot.com/breach/Cafepress): 2019, 23,212,395 records, Retail
+- [Wanelo](https://xposedornot.com/breach/Wanelo): 2018, 23,165,483 records, Retail
+- [GFAN](https://xposedornot.com/breach/GFAN): 2016, 22,456,012 records, Electronics
+- [Animoto](https://xposedornot.com/breach/Animoto): 2018, 22,453,559 records, Information Technology
+- [ReadNovel](https://xposedornot.com/breach/ReadNovel): 2019, 22,412,132 records, Entertainment
+- [R2games](https://xposedornot.com/breach/R2games): 2015, 21,830,941 records, Entertainment
+- [Parkmobile](https://xposedornot.com/breach/Parkmobile): 2021, 20,971,517 records, Transport
+- [Hurb](https://xposedornot.com/breach/Hurb): 2019, 20,726,194 records, Hospitality
+- [Shopback](https://xposedornot.com/breach/Shopback): 2020, 20,653,700 records, Retail
+- [Indiamart](https://xposedornot.com/breach/Indiamart): 2021, 20,159,951 records, Retail
+- [CutoutPro](https://xposedornot.com/breach/CutoutPro): 2024, 20,021,813 records, Information Technology
+- [Aptoide](https://xposedornot.com/breach/Aptoide): 2020, 20,011,680 records, Information Technology
+- [CDEK](https://xposedornot.com/breach/CDEK): 2022, 19,216,659 records, Transport
+- [YouNow](https://xposedornot.com/breach/YouNow): 2019, 18,240,691 records, Retail
+- [8tracks](https://xposedornot.com/breach/8tracks): 2017, 17,978,503 records, Finance
+- [EyeEm](https://xposedornot.com/breach/EyeEm): 2018, 17,723,930 records, Entertainment
+- [Ticketek](https://xposedornot.com/breach/Ticketek): 2024, 17,666,971 records, Entertainment
+- [Disqus](https://xposedornot.com/breach/Disqus): 2012, 17,557,543 records, Entertainment
+- [Ixigo](https://xposedornot.com/breach/Ixigo): 2019, 17,198,751 records, Transport
+- [Fotolog](https://xposedornot.com/breach/Fotolog): 2018, 16,720,492 records, Entertainment
+- [Zomato](https://xposedornot.com/breach/Zomato): 2017, 16,475,717 records, Education
+- [Eye4fraud](https://xposedornot.com/breach/Eye4fraud): 2023, 16,032,780 records, Electronics
+- [LuminPDF](https://xposedornot.com/breach/LuminPDF): 2019, 15,453,070 records, Information Technology
+- [Epik](https://xposedornot.com/breach/Epik): 2021, 15,389,296 records, Information Technology
+- [Trello](https://xposedornot.com/breach/Trello): 2024, 15,115,458 records, Information Technology
+- [ClearvoiceSurveys](https://xposedornot.com/breach/ClearvoiceSurveys): 2015, 15,074,190 records, Retail
+- [8fit](https://xposedornot.com/breach/8fit): 2018, 15,026,800 records, Health Care
+- [000webhost](https://xposedornot.com/breach/000webhost): 2015, 14,936,538 records, Information Technology
+- [500px](https://xposedornot.com/breach/500px): 2018, 14,875,273 records, Entertainment
+- [Promo](https://xposedornot.com/breach/Promo): 2020, 14,610,177 records, Information Technology
+- [McGrawHill](https://xposedornot.com/breach/McGrawHill): 2026, 14,430,356 records, Education
+- [Evony](https://xposedornot.com/breach/Evony): 2016, 14,325,896 records, Entertainment
+- [Free](https://xposedornot.com/breach/Free): 2024, 14,247,989 records, Information Technology
+- [Hiapk](https://xposedornot.com/breach/Hiapk): 2014, 13,843,251 records, Information Technology
+- [Yam](https://xposedornot.com/breach/Yam): 2013, 13,259,767 records, News Media
+- [Hjedd](https://xposedornot.com/breach/Hjedd): 2022, 13,188,743 records, Miscellaneous
+- [Bukalapak](https://xposedornot.com/breach/Bukalapak): 2017, 12,950,140 records, Retail
+- [CrossFire](https://xposedornot.com/breach/CrossFire): 2016, 12,868,341 records, Entertainment
+- [IndiHome](https://xposedornot.com/breach/IndiHome): 2022, 12,629,297 records, Telecommunication
+- [CarGurus](https://xposedornot.com/breach/CarGurus): 2026, 12,510,981 records, Retail
+- [Zacks-2024](https://xposedornot.com/breach/Zacks-2024): 2024, 12,031,659 records, Finance
+- [InstantCheckmate](https://xposedornot.com/breach/InstantCheckmate): 2019, 11,945,811 records, Miscellaneous
+- [ZenBusiness](https://xposedornot.com/breach/ZenBusiness): 2026, 11,854,655 records, Finance
+- [Dodonew](https://xposedornot.com/breach/Dodonew): 2011, 11,761,143 records, Entertainment
+- [Whitepages](https://xposedornot.com/breach/Whitepages): 2016, 11,657,240 records, Miscellaneous
+- [Proptiger](https://xposedornot.com/breach/Proptiger): 2018, 11,619,266 records, Retail
+- [CouponMom](https://xposedornot.com/breach/CouponMom): 2014, 11,008,505 records, Miscellaneous
+- [JobandTalent](https://xposedornot.com/breach/JobandTalent): 2018, 10,972,796 records, Miscellaneous
+- [ArmorGames](https://xposedornot.com/breach/ArmorGames): 2019, 10,604,258 records, Entertainment
+- [BTSec](https://xposedornot.com/breach/BTSec): 2014, 10,404,037 records, Information Technology
+- [TGBUS](https://xposedornot.com/breach/TGBUS): 2017, 10,351,750 records, Entertainment
+- [Raaga](https://xposedornot.com/breach/Raaga): 2025, 10,250,072 records, Music
+- [ACTMobile](https://xposedornot.com/breach/ACTMobile): 2021, 10,113,780 records, Information Technology
+- [Stripchat](https://xposedornot.com/breach/Stripchat): 2021, 10,001,495 records, Entertainment
+- [MadisonSquareGardenSports](https://xposedornot.com/breach/MadisonSquareGardenSports): 2026, 9,812,566 records, Sports
+- [Wishbone](https://xposedornot.com/breach/Wishbone): 2016, 9,698,253 records, Information Technology
+- [Adapt](https://xposedornot.com/breach/Adapt): 2018, 9,363,751 records, Information Technology
+- [Bitly](https://xposedornot.com/breach/Bitly): 2014, 9,313,175 records, Information Technology
+- [Jefit](https://xposedornot.com/breach/Jefit): 2020, 9,045,605 records, Sports
+- [Zacks](https://xposedornot.com/breach/Zacks): 2020, 8,927,975 records, Finance
+- [HomeChef](https://xposedornot.com/breach/HomeChef): 2020, 8,815,973 records, Food
+- [123RF](https://xposedornot.com/breach/123RF): 2020, 8,668,646 records, Information Technology
+- [WeHeartIt](https://xposedornot.com/breach/WeHeartIt): 2013, 8,600,747 records, Entertainment
+- [PitneyBowes](https://xposedornot.com/breach/PitneyBowes): 2026, 8,315,403 records, Information Technology
+- [Teespring](https://xposedornot.com/breach/Teespring): 2020, 8,237,050 records, Retail
+- [Gamigo](https://xposedornot.com/breach/Gamigo): 2012, 8,210,802 records, Entertainment
+- [Tunngle](https://xposedornot.com/breach/Tunngle): 2016, 8,192,618 records, Information Technology
+- [Truthfinder](https://xposedornot.com/breach/Truthfinder): 2019, 8,160,808 records, Miscellaneous
+- [HeroesofNewerth](https://xposedornot.com/breach/HeroesofNewerth): 2012, 8,086,047 records, Entertainment
+- [DailyQuiz](https://xposedornot.com/breach/DailyQuiz): 2021, 8,031,582 records, Entertainment
+- [CivilOnline](https://xposedornot.com/breach/CivilOnline): 2011, 7,804,631 records, Miscellaneous
+- [Digimon](https://xposedornot.com/breach/Digimon): 2016, 7,687,596 records, Entertainment
+- [DatPiff](https://xposedornot.com/breach/DatPiff): 2021, 7,623,353 records, Music
+- [BlankMediaGames](https://xposedornot.com/breach/BlankMediaGames): 2018, 7,564,715 records, Entertainment
+- [CarnivalCorporation](https://xposedornot.com/breach/CarnivalCorporation): 2026, 7,549,706 records, Hospitality
+- [boAt](https://xposedornot.com/breach/boAt): 2024, 7,537,308 records, Electronics
+- [7k7k](https://xposedornot.com/breach/7k7k): 2011, 7,489,411 records, Entertainment
+- [Uuu9](https://xposedornot.com/breach/Uuu9): 2016, 7,482,441 records, Entertainment
+- [17173](https://xposedornot.com/breach/17173): 2011, 7,482,441 records, Energy
+- [VietnamAirlines](https://xposedornot.com/breach/VietnamAirlines): 2025, 7,359,567 records, Transport
+- [Tailieu](https://xposedornot.com/breach/Tailieu): 2019, 7,326,684 records, Education
+- [Experian](https://xposedornot.com/breach/Experian): 2015, 7,196,894 records, Finance
+- [AnimalJam](https://xposedornot.com/breach/AnimalJam): 2020, 7,105,266 records, Entertainment
+- [OMGPOP](https://xposedornot.com/breach/OMGPOP): 2019, 7,072,177 records, Entertainment
+- [Lifeboat](https://xposedornot.com/breach/Lifeboat): 2016, 7,028,594 records, Entertainment
+- [Odido](https://xposedornot.com/breach/Odido): 2026, 6,852,322 records, Telecommunication
+- [CashCrate](https://xposedornot.com/breach/CashCrate): 2016, 6,845,283 records, Finance
+- [StockX](https://xposedornot.com/breach/StockX): 2019, 6,840,177 records, Retail
+- [Wakanim](https://xposedornot.com/breach/Wakanim): 2022, 6,706,773 records, Entertainment
+- [AndroidLista](https://xposedornot.com/breach/AndroidLista): 2021, 6,645,504 records, Electronics
+- [ReverbNation](https://xposedornot.com/breach/ReverbNation): 2014, 6,570,729 records, Music
+- [DuelingNetwork](https://xposedornot.com/breach/DuelingNetwork): 2017, 6,488,767 records, Entertainment
+- [Aipai](https://xposedornot.com/breach/Aipai): 2016, 6,446,716 records, Entertainment
+- [CSDN](https://xposedornot.com/breach/CSDN): 2011, 6,427,771 records, Information Technology
+- [PassSport](https://xposedornot.com/breach/PassSport): 2025, 6,368,946 records, Government
+- [Gemotest](https://xposedornot.com/breach/Gemotest): 2022, 6,360,145 records, Health Care
+- [EatStreet](https://xposedornot.com/breach/EatStreet): 2019, 6,353,580 records, Food
+- [Instagram](https://xposedornot.com/breach/Instagram): 2026, 6,237,543 records, Entertainment
+- [GameSprite](https://xposedornot.com/breach/GameSprite): 2019, 6,161,749 records, Entertainment
+- [SubaGames](https://xposedornot.com/breach/SubaGames): 2016, 6,131,624 records, Entertainment
+- [MovieBoxPro](https://xposedornot.com/breach/MovieBoxPro): 2024, 6,044,969 records, Entertainment
+- [ToonDoo](https://xposedornot.com/breach/ToonDoo): 2019, 6,004,609 records, Entertainment
+- [MyPertamina](https://xposedornot.com/breach/MyPertamina): 2022, 5,991,050 records, Energy
+- [Xat](https://xposedornot.com/breach/Xat): 2015, 5,967,236 records, Entertainment
+- [NexusMods](https://xposedornot.com/breach/NexusMods): 2013, 5,917,780 records, Entertainment
+- [RedDoorz](https://xposedornot.com/breach/RedDoorz): 2020, 5,890,138 records, Hospitality
+- [Appen](https://xposedornot.com/breach/Appen): 2020, 5,888,383 records, Information Technology
+- [Scentbird](https://xposedornot.com/breach/Scentbird): 2020, 5,815,109 records, Retail
+- [TAPAirPortugal](https://xposedornot.com/breach/TAPAirPortugal): 2022, 5,809,236 records, Miscellaneous
+- [BouyguesTelecom](https://xposedornot.com/breach/BouyguesTelecom): 2025, 5,690,064 records, Telecommunication
+- [ADT](https://xposedornot.com/breach/ADT): 2026, 5,501,080 records, Information Technology
+- [EstanteVirtual](https://xposedornot.com/breach/EstanteVirtual): 2019, 5,417,066 records, Retail
+- [Yatra](https://xposedornot.com/breach/Yatra): 2013, 5,392,053 records, Transport
+- [Gemini](https://xposedornot.com/breach/Gemini): 2022, 5,378,311 records, Finance
+- [ExploreTalent](https://xposedornot.com/breach/ExploreTalent): 2024, 5,378,235 records, Entertainment
+- [Turknet](https://xposedornot.com/breach/Turknet): 2025, 5,345,459 records, Telecommunication
+- [Twitter](https://xposedornot.com/breach/Twitter): 2022, 5,308,134 records, Information Technology
+- [PhoneHouse](https://xposedornot.com/breach/PhoneHouse): 2021, 5,224,702 records, Electronics
+- [Ticketfly](https://xposedornot.com/breach/Ticketfly): 2018, 5,195,061 records, Entertainment
+- [R2GamesForum](https://xposedornot.com/breach/R2GamesForum): 2017, 5,189,891 records, Entertainment
+- [StrongholdKingdoms](https://xposedornot.com/breach/StrongholdKingdoms): 2018, 5,185,330 records, Entertainment
+- [Kickstarter](https://xposedornot.com/breach/Kickstarter): 2014, 5,177,453 records, Non-Profit/Charities
+- [PaneraBread](https://xposedornot.com/breach/PaneraBread): 2026, 5,119,983 records, Food
+- [Leet](https://xposedornot.com/breach/Leet): 2016, 5,077,846 records, Information Technology
+- [Zhenai](https://xposedornot.com/breach/Zhenai): 2011, 5,032,170 records, Miscellaneous
+- [Robinhood](https://xposedornot.com/breach/Robinhood): 2021, 5,003,949 records, Finance
+- [GoNinja](https://xposedornot.com/breach/GoNinja): 2019, 4,999,753 records, Entertainment
+- [Wongnai](https://xposedornot.com/breach/Wongnai): 2020, 4,944,715 records, Food
+- [Parapa](https://xposedornot.com/breach/Parapa): 2016, 4,941,171 records, Entertainment
+- [Dangdang](https://xposedornot.com/breach/Dangdang): 2011, 4,848,590 records, Retail
+- [Descomplica](https://xposedornot.com/breach/Descomplica): 2021, 4,841,240 records, Education
+- [Vakinha](https://xposedornot.com/breach/Vakinha): 2020, 4,837,383 records, Miscellaneous
+- [SoarGames](https://xposedornot.com/breach/SoarGames): 2019, 4,780,546 records, Entertainment
+- [Gemplex](https://xposedornot.com/breach/Gemplex): 2021, 4,572,027 records, Entertainment
+- [MemeChat](https://xposedornot.com/breach/MemeChat): 2022, 4,512,118 records, Entertainment
+- [JoyGames](https://xposedornot.com/breach/JoyGames): 2019, 4,489,823 records, Entertainment
+- [MoneyBookers](https://xposedornot.com/breach/MoneyBookers): 2009, 4,483,444 records, Finance
+- [Adecco](https://xposedornot.com/breach/Adecco): 2021, 4,473,947 records, Retail
+- [Mail.ru](https://xposedornot.com/breach/Mail.ru): 2014, 4,427,616 records, Information Technology
+- [Minted](https://xposedornot.com/breach/Minted): 2020, 4,419,782 records, Retail
+- [MalindoAir](https://xposedornot.com/breach/MalindoAir): 2019, 4,327,245 records, Transport
+- [MyVidster-2025](https://xposedornot.com/breach/MyVidster-2025): 2025, 4,300,888 records, Entertainment
+- [Gaadi](https://xposedornot.com/breach/Gaadi): 2015, 4,260,548 records, Transport
+- [Peatix](https://xposedornot.com/breach/Peatix): 2019, 4,223,639 records, Entertainment
+- [IIMjobs](https://xposedornot.com/breach/IIMjobs): 2018, 4,214,032 records, Information Technology
+- [Swvl](https://xposedornot.com/breach/Swvl): 2020, 4,195,359 records, Transport
+- [Avvo](https://xposedornot.com/breach/Avvo): 2019, 4,102,507 records, Miscellaneous
+- [AdityaBirlaFashionandRetail](https://xposedornot.com/breach/AdityaBirlaFashionandRetail): 2021, 4,010,866 records, Retail
+- [Roll20](https://xposedornot.com/breach/Roll20): 2018, 3,994,418 records, Entertainment
+- [Hathway](https://xposedornot.com/breach/Hathway): 2023, 3,985,550 records, Telecommunication
+- [IDCGames](https://xposedornot.com/breach/IDCGames): 2021, 3,970,783 records, Entertainment
+- [Kaneva](https://xposedornot.com/breach/Kaneva): 2016, 3,908,298 records, Entertainment
+- [JobStreet](https://xposedornot.com/breach/JobStreet): 2012, 3,884,111 records, Miscellaneous
+- [Legendas](https://xposedornot.com/breach/Legendas): 2017, 3,870,506 records, Entertainment
+- [Lifebear](https://xposedornot.com/breach/Lifebear): 2019, 3,862,676 records, Entertainment
+- [Bookmate](https://xposedornot.com/breach/Bookmate): 2018, 3,830,574 records, Entertainment
+- [Quidd](https://xposedornot.com/breach/Quidd): 2019, 3,806,570 records, Retail
+- [Onlinetrade](https://xposedornot.com/breach/Onlinetrade): 2022, 3,805,221 records, Retail
+- [FlexBooker](https://xposedornot.com/breach/FlexBooker): 2021, 3,756,950 records, Miscellaneous
+- [DriveSure](https://xposedornot.com/breach/DriveSure): 2020, 3,667,992 records, Miscellaneous
+- [Neteller](https://xposedornot.com/breach/Neteller): 2010, 3,621,871 records, Finance
+- [Zoomcar](https://xposedornot.com/breach/Zoomcar): 2018, 3,589,270 records, Transport
+- [Habibs](https://xposedornot.com/breach/Habibs): 2021, 3,519,666 records, Food
+- [Mobifriends](https://xposedornot.com/breach/Mobifriends): 2020, 3,514,699 records, Information Technology
+- [SprashivaiRu](https://xposedornot.com/breach/SprashivaiRu): 2015, 3,474,588 records, Entertainment
+- [Dunzo](https://xposedornot.com/breach/Dunzo): 2020, 3,459,983 records, Retail
+- [InterPals](https://xposedornot.com/breach/InterPals): 2015, 3,443,505 records, Entertainment
+- [GoGames](https://xposedornot.com/breach/GoGames): 2015, 3,428,571 records, Entertainment
+- [Paytm](https://xposedornot.com/breach/Paytm): 2020, 3,394,807 records, Finance
+- [LiveAuctioneers](https://xposedornot.com/breach/LiveAuctioneers): 2020, 3,386,597 records, Retail
+- [ClickASnap](https://xposedornot.com/breach/ClickASnap): 2022, 3,310,312 records, Entertainment
+- [PlutoTV](https://xposedornot.com/breach/PlutoTV): 2018, 3,225,216 records, Entertainment
+- [DLH](https://xposedornot.com/breach/DLH): 2016, 3,223,668 records, Information Technology
+- [Sport2000](https://xposedornot.com/breach/Sport2000): 2024, 3,217,061 records, Sports
+- [BloomsToday](https://xposedornot.com/breach/BloomsToday): 2023, 3,196,097 records, Retail
+- [VimeWorld](https://xposedornot.com/breach/VimeWorld): 2018, 3,148,075 records, Entertainment
+- [ThermomixRecipeWorldForum](https://xposedornot.com/breach/ThermomixRecipeWorldForum): 2025, 3,124,587 records, Food
+- [Mpgh](https://xposedornot.com/breach/Mpgh): 2015, 3,121,510 records, Information Technology
+- [Coinmarketcap](https://xposedornot.com/breach/Coinmarketcap): 2021, 3,121,180 records, Finance
+- [MGMResorts](https://xposedornot.com/breach/MGMResorts): 2019, 3,081,826 records, Hospitality
+- [Xsplit](https://xposedornot.com/breach/Xsplit): 2013, 2,983,078 records, Information Technology
+- [Dave](https://xposedornot.com/breach/Dave): 2020, 2,964,182 records, Finance
+- [Ge.tt](https://xposedornot.com/breach/Ge.tt): 2017, 2,873,547 records, Information Technology
+- [GiantTiger](https://xposedornot.com/breach/GiantTiger): 2024, 2,853,715 records, Retail
+- [CalAI](https://xposedornot.com/breach/CalAI): 2026, 2,830,009 records, Information Technology
+- [Bonobos](https://xposedornot.com/breach/Bonobos): 2020, 2,811,557 records, Retail
+- [HuntStand](https://xposedornot.com/breach/HuntStand): 2024, 2,810,239 records, Miscellaneous
+- [Eatigo](https://xposedornot.com/breach/Eatigo): 2018, 2,789,572 records, Retail
+- [Tigo](https://xposedornot.com/breach/Tigo): 2023, 2,787,240 records, Information Technology
+- [Promofarma](https://xposedornot.com/breach/Promofarma): 2019, 2,764,170 records, Retail
+- [Audi](https://xposedornot.com/breach/Audi): 2019, 2,743,570 records, Manufacturing
+- [SwordFantasy](https://xposedornot.com/breach/SwordFantasy): 2017, 2,702,241 records, Entertainment
+- [Sysco](https://xposedornot.com/breach/Sysco): 2026, 2,699,339 records, Food
+- [Uiggy](https://xposedornot.com/breach/Uiggy): 2016, 2,680,427 records, Miscellaneous
+- [Duolingo](https://xposedornot.com/breach/Duolingo): 2023, 2,676,686 records, Education
+- [MMGFusion](https://xposedornot.com/breach/MMGFusion): 2020, 2,659,936 records, Information Technology
+- [Duowan](https://xposedornot.com/breach/Duowan): 2011, 2,639,502 records, Information Technology
+- [CafeMom](https://xposedornot.com/breach/CafeMom): 2014, 2,628,399 records, Entertainment
+- [Intersport](https://xposedornot.com/breach/Intersport): 2025, 2,625,398 records, Retail
+- [DentaQuest](https://xposedornot.com/breach/DentaQuest): 2026, 2,620,850 records, Health Care
+- [Ticketcounter](https://xposedornot.com/breach/Ticketcounter): 2021, 2,616,561 records, Entertainment
+- [GSMHosting](https://xposedornot.com/breach/GSMHosting): 2016, 2,613,043 records, Information Technology
+- [CraftRise](https://xposedornot.com/breach/CraftRise): 2023, 2,532,647 records, Information Technology
+- [Chatbooks](https://xposedornot.com/breach/Chatbooks): 2020, 2,520,342 records, Retail
+- [Funimation](https://xposedornot.com/breach/Funimation): 2016, 2,491,411 records, Entertainment
+- [Drizly](https://xposedornot.com/breach/Drizly): 2020, 2,479,417 records, Retail
+- [Morele.net](https://xposedornot.com/breach/Morele.net): 2018, 2,468,612 records, Retail
+- [Factual](https://xposedornot.com/breach/Factual): 2017, 2,462,141 records, Information Technology
+- [APK.TW](https://xposedornot.com/breach/APK.TW): 2022, 2,457,094 records, Information Technology
+- [ClixSense](https://xposedornot.com/breach/ClixSense): 2016, 2,424,346 records, Finance
+- [GGCorp](https://xposedornot.com/breach/GGCorp): 2022, 2,371,494 records, Entertainment
+- [WIRED](https://xposedornot.com/breach/WIRED): 2025, 2,370,369 records, News Media
+- [Moody](https://xposedornot.com/breach/Moody): 2026, 2,350,105 records, Education
+- [FashionFantasyGame](https://xposedornot.com/breach/FashionFantasyGame): 2016, 2,344,919 records, Entertainment
+- [Patreon](https://xposedornot.com/breach/Patreon): 2015, 2,331,055 records, Non-Profit/Charities
+- [Glofox](https://xposedornot.com/breach/Glofox): 2020, 2,329,673 records, Sports
+- [Elanic](https://xposedornot.com/breach/Elanic): 2018, 2,326,802 records, Retail
+- [GameTuts](https://xposedornot.com/breach/GameTuts): 2015, 2,246,029 records, Entertainment
+- [Bell](https://xposedornot.com/breach/Bell): 2017, 2,230,727 records, Food
+- [RentoMojo](https://xposedornot.com/breach/RentoMojo): 2023, 2,213,129 records, Retail
+- [Amtrak](https://xposedornot.com/breach/Amtrak): 2026, 2,206,972 records, Transport
+- [StarTribune](https://xposedornot.com/breach/StarTribune): 2019, 2,193,233 records, News Media
+- [i-Dressup](https://xposedornot.com/breach/i-Dressup): 2016, 2,193,138 records, Entertainment
+- [gPotato](https://xposedornot.com/breach/gPotato): 2007, 2,137,660 records, Entertainment
+- [mSpy](https://xposedornot.com/breach/mSpy): 2024, 2,132,222 records, Information Technology
+- [ExVagos](https://xposedornot.com/breach/ExVagos): 2022, 2,124,043 records, Entertainment
+- [PipingRock](https://xposedornot.com/breach/PipingRock): 2024, 2,109,721 records, Health Care
+- [Banorte](https://xposedornot.com/breach/Banorte): 2014, 2,086,909 records, Finance
+- [Boulanger](https://xposedornot.com/breach/Boulanger): 2024, 2,077,703 records, Retail
+- [Shadi](https://xposedornot.com/breach/Shadi): 2016, 2,020,911 records, Entertainment
+- [V-TightGel](https://xposedornot.com/breach/V-TightGel): 2016, 2,013,376 records, Retail
+- [Dota2](https://xposedornot.com/breach/Dota2): 2016, 1,968,543 records, Entertainment
+- [DungeonsAndDragonsOnline](https://xposedornot.com/breach/DungeonsAndDragonsOnline): 2013, 1,928,782 records, Entertainment
+- [Pixlr](https://xposedornot.com/breach/Pixlr): 2020, 1,906,837 records, Information Technology
+- [OxfamAustralia](https://xposedornot.com/breach/OxfamAustralia): 2021, 1,896,665 records, Non-Profit/Charities
+- [MarcusMillichap](https://xposedornot.com/breach/MarcusMillichap): 2026, 1,878,051 records, Finance
+- [Cdprojektred](https://xposedornot.com/breach/Cdprojektred): 2016, 1,872,566 records, Entertainment
+- [ADDA](https://xposedornot.com/breach/ADDA): 2025, 1,858,238 records, Information Technology
+- [FlashFlashRevolution](https://xposedornot.com/breach/FlashFlashRevolution): 2019, 1,858,000 records, Entertainment
+- [Hallmark](https://xposedornot.com/breach/Hallmark): 2026, 1,796,130 records, Retail
+- [StreamCraft](https://xposedornot.com/breach/StreamCraft): 2020, 1,791,822 records, Entertainment
+- [Imgur](https://xposedornot.com/breach/Imgur): 2013, 1,749,107 records, Entertainment
+- [Storenvy](https://xposedornot.com/breach/Storenvy): 2019, 1,736,814 records, Retail
+- [Nihonomaru](https://xposedornot.com/breach/Nihonomaru): 2015, 1,697,967 records, Entertainment
+- [ClubPenguinRewritten-2018](https://xposedornot.com/breach/ClubPenguinRewritten-2018): 2018, 1,688,044 records, Entertainment
+- [HDBFS](https://xposedornot.com/breach/HDBFS): 2023, 1,658,762 records, Finance
+- [ClashofKings](https://xposedornot.com/breach/ClashofKings): 2016, 1,604,096 records, Information Technology
+- [WashingtonStateFoodWorkerCard](https://xposedornot.com/breach/WashingtonStateFoodWorkerCard): 2022, 1,595,213 records, Government
+- [Payhere](https://xposedornot.com/breach/Payhere): 2022, 1,578,545 records, Finance
+- [Bookcrossing](https://xposedornot.com/breach/Bookcrossing): 2022, 1,577,022 records, Energy
+- [Cointracker](https://xposedornot.com/breach/Cointracker): 2022, 1,557,155 records, Finance
+- [JamesDelivery](https://xposedornot.com/breach/JamesDelivery): 2020, 1,541,843 records, Retail
+- [Nival](https://xposedornot.com/breach/Nival): 2016, 1,534,022 records, Entertainment
+- [Locally](https://xposedornot.com/breach/Locally): 2022, 1,517,529 records, Retail
+- [GameSalad](https://xposedornot.com/breach/GameSalad): 2019, 1,507,603 records, Miscellaneous
+- [LeSlipFrancais](https://xposedornot.com/breach/LeSlipFrancais): 2024, 1,507,163 records, Retail
+- [DateHotBrunettes](https://xposedornot.com/breach/DateHotBrunettes): 2021, 1,499,453 records, Entertainment
+- [HTCMania](https://xposedornot.com/breach/HTCMania): 2020, 1,488,647 records, Electronics
+- [Condo](https://xposedornot.com/breach/Condo): 2019, 1,488,629 records, Retail
+- [AbuseWith.us](https://xposedornot.com/breach/AbuseWith.us): 2016, 1,486,074 records, Information Technology
+- [KM.RU](https://xposedornot.com/breach/KM.RU): 2016, 1,476,859 records, News Media
+- [HongFire](https://xposedornot.com/breach/HongFire): 2015, 1,468,970 records, Entertainment
+- [LDLC](https://xposedornot.com/breach/LDLC): 2024, 1,467,393 records, Retail
+- [SlideTeam](https://xposedornot.com/breach/SlideTeam): 2021, 1,464,409 records, Information Technology
+- [BoursedesVols](https://xposedornot.com/breach/BoursedesVols): 2021, 1,461,403 records, Environment
+- [GamesBox](https://xposedornot.com/breach/GamesBox): 2020, 1,448,908 records, Entertainment
+- [Yotepresto](https://xposedornot.com/breach/Yotepresto): 2020, 1,445,098 records, Finance
+- [AnimeGame](https://xposedornot.com/breach/AnimeGame): 2020, 1,431,096 records, Entertainment
+- [Famm](https://xposedornot.com/breach/Famm): 2020, 1,427,835 records, Miscellaneous
+- [MeetMindful](https://xposedornot.com/breach/MeetMindful): 2020, 1,422,584 records, Information Technology
+- [Diet](https://xposedornot.com/breach/Diet): 2014, 1,418,750 records, Health Care
+- [Mashable](https://xposedornot.com/breach/Mashable): 2020, 1,414,599 records, News Media
+- [Betterment](https://xposedornot.com/breach/Betterment): 2026, 1,411,891 records, Finance
+- [Snail](https://xposedornot.com/breach/Snail): 2015, 1,410,899 records, Miscellaneous
+- [PaySystem](https://xposedornot.com/breach/PaySystem): 2022, 1,410,314 records, Finance
+- [GateHub](https://xposedornot.com/breach/GateHub): 2019, 1,408,022 records, Finance
+- [Udemy](https://xposedornot.com/breach/Udemy): 2026, 1,402,639 records, Education
+- [Stalkeronline](https://xposedornot.com/breach/Stalkeronline): 2020, 1,388,066 records, Entertainment
+- [GlendaleCommunityCollege](https://xposedornot.com/breach/GlendaleCommunityCollege): 2026, 1,384,676 records, Education
+- [TNAFlix](https://xposedornot.com/breach/TNAFlix): 2022, 1,374,805 records, Entertainment
+- [Gamevn](https://xposedornot.com/breach/Gamevn): 2016, 1,372,345 records, Entertainment
+- [Havenly](https://xposedornot.com/breach/Havenly): 2020, 1,369,300 records, Retail
+- [Eroticy](https://xposedornot.com/breach/Eroticy): 2015, 1,368,389 records, Entertainment
+- [ArmyForceOnline](https://xposedornot.com/breach/ArmyForceOnline): 2016, 1,350,731 records, Entertainment
+- [Pandabuy](https://xposedornot.com/breach/Pandabuy): 2024, 1,347,731 records, Retail
+- [Youporn](https://xposedornot.com/breach/Youporn): 2012, 1,338,070 records, Entertainment
+- [NaughtyAmerica](https://xposedornot.com/breach/NaughtyAmerica): 2016, 1,326,927 records, Entertainment
+- [DucksUnlimited](https://xposedornot.com/breach/DucksUnlimited): 2021, 1,323,626 records, Environment
+- [MangaFox.me](https://xposedornot.com/breach/MangaFox.me): 2016, 1,319,533 records, Entertainment
+- [Wedmegood](https://xposedornot.com/breach/Wedmegood): 2021, 1,306,220 records, Retail
+- [OrderSnapp](https://xposedornot.com/breach/OrderSnapp): 2020, 1,304,461 records, Retail
+- [GeniusU](https://xposedornot.com/breach/GeniusU): 2020, 1,301,852 records, Education
+- [Xbox360iso](https://xposedornot.com/breach/Xbox360iso): 2015, 1,297,204 records, Entertainment
+- [DecoratingTheHouse](https://xposedornot.com/breach/DecoratingTheHouse): 2020, 1,297,093 records, Retail
+- [Elance](https://xposedornot.com/breach/Elance): 2009, 1,291,016 records, Information Technology
+- [Altenen](https://xposedornot.com/breach/Altenen): 2022, 1,275,966 records, Miscellaneous
+- [WifeLovers](https://xposedornot.com/breach/WifeLovers): 2018, 1,273,998 records, Miscellaneous
+- [PSPISO](https://xposedornot.com/breach/PSPISO): 2015, 1,273,394 records, Entertainment
+- [Bhinneka](https://xposedornot.com/breach/Bhinneka): 2020, 1,270,972 records, Retail
+- [Baydoner](https://xposedornot.com/breach/Baydoner): 2026, 1,257,021 records, Food
+- [Aternos](https://xposedornot.com/breach/Aternos): 2015, 1,231,715 records, Information Technology
+- [TLDRtech](https://xposedornot.com/breach/TLDRtech): 2026, 1,230,792 records, News Media
+- [Cultura](https://xposedornot.com/breach/Cultura): 2024, 1,220,286 records, Retail
+- [Gamerzplanet](https://xposedornot.com/breach/Gamerzplanet): 2015, 1,217,347 records, Entertainment
+- [Warmane](https://xposedornot.com/breach/Warmane): 2016, 1,215,952 records, Entertainment
+- [SevenRooms](https://xposedornot.com/breach/SevenRooms): 2022, 1,205,386 records, Hospitality
+- [Eskimi](https://xposedornot.com/breach/Eskimi): 2020, 1,197,614 records, Entertainment
+- [Nextgenupdate](https://xposedornot.com/breach/Nextgenupdate): 2014, 1,194,265 records, Information Technology
+- [Catho](https://xposedornot.com/breach/Catho): 2020, 1,173,827 records, Information Technology
+- [LOTRO](https://xposedornot.com/breach/LOTRO): 2013, 1,140,901 records, Entertainment
+- [DennisKirk](https://xposedornot.com/breach/DennisKirk): 2021, 1,138,821 records, Retail
+- [DaniWeb](https://xposedornot.com/breach/DaniWeb): 2015, 1,131,627 records, Information Technology
+- [Emuparadise](https://xposedornot.com/breach/Emuparadise): 2018, 1,130,887 records, Entertainment
+- [Weee](https://xposedornot.com/breach/Weee): 2022, 1,117,409 records, Retail
+- [LazadaRedmart](https://xposedornot.com/breach/LazadaRedmart): 2020, 1,111,789 records, Retail
+- [CushmanWakefield](https://xposedornot.com/breach/CushmanWakefield): 2026, 1,098,755 records, Finance
+- [Artsy](https://xposedornot.com/breach/Artsy): 2018, 1,080,470 records, Entertainment
+- [Ledger](https://xposedornot.com/breach/Ledger): 2020, 1,075,731 records, Finance
+- [Lookbook](https://xposedornot.com/breach/Lookbook): 2012, 1,075,093 records, Retail
+- [KomikoAI](https://xposedornot.com/breach/KomikoAI): 2026, 1,069,679 records, Entertainment
+- [Forbes](https://xposedornot.com/breach/Forbes): 2014, 1,057,818 records, News Media
+- [OnRPG](https://xposedornot.com/breach/OnRPG): 2016, 1,055,499 records, Entertainment
+- [Shotbow](https://xposedornot.com/breach/Shotbow): 2016, 1,053,480 records, Entertainment
+- [Storybird](https://xposedornot.com/breach/Storybird): 2015, 1,047,220 records, Education
+- [XiaomiForum](https://xposedornot.com/breach/XiaomiForum): 2012, 1,033,361 records, Electronics
+- [BeckettCollectibles](https://xposedornot.com/breach/BeckettCollectibles): 2025, 1,032,519 records, Retail
+- [Giglio](https://xposedornot.com/breach/Giglio): 2025, 1,031,854 records, Retail
+- [Sitepoint](https://xposedornot.com/breach/Sitepoint): 2020, 1,021,625 records, Information Technology
+- [FigureTechnology](https://xposedornot.com/breach/FigureTechnology): 2026, 995,712 records, Finance
+- [Bolt](https://xposedornot.com/breach/Bolt): 2017, 995,431 records, Entertainment
+- [Petflow](https://xposedornot.com/breach/Petflow): 2017, 990,994 records, Retail
+- [StreetEasy](https://xposedornot.com/breach/StreetEasy): 2016, 988,550 records, Retail
+- [Alpinereplay](https://xposedornot.com/breach/Alpinereplay): 2019, 987,604 records, Sports
+- [Qraved](https://xposedornot.com/breach/Qraved): 2021, 986,309 records, Information Technology
+- [TunedGlobal](https://xposedornot.com/breach/TunedGlobal): 2022, 982,461 records, Information Technology
+- [SalvadoranCitizens](https://xposedornot.com/breach/SalvadoranCitizens): 2024, 955,161 records, Miscellaneous
+- [FreeOnes](https://xposedornot.com/breach/FreeOnes): 2017, 954,468 records, Entertainment
+- [YouthManual](https://xposedornot.com/breach/YouthManual): 2019, 942,049 records, Education
+- [VivaAir](https://xposedornot.com/breach/VivaAir): 2022, 932,200 records, Retail
+- [WiredBucks](https://xposedornot.com/breach/WiredBucks): 2022, 926,795 records, Finance
+- [Aura](https://xposedornot.com/breach/Aura): 2026, 922,685 records, Information Technology
+- [Abandonia-2022](https://xposedornot.com/breach/Abandonia-2022): 2022, 919,975 records, Entertainment
+- [XPGame](https://xposedornot.com/breach/XPGame): 2016, 890,599 records, Entertainment
+- [OwnedCore](https://xposedornot.com/breach/OwnedCore): 2013, 880,359 records, Entertainment
+- [MoDaCo](https://xposedornot.com/breach/MoDaCo): 2016, 879,763 records, Information Technology
+- [Imavex](https://xposedornot.com/breach/Imavex): 2021, 879,393 records, Information Technology
+- [JCPenney](https://xposedornot.com/breach/JCPenney): 2026, 879,390 records, Retail
+- [Miljodata](https://xposedornot.com/breach/Miljodata): 2025, 868,925 records, Environment
+- [Stratfor](https://xposedornot.com/breach/Stratfor): 2011, 864,627 records, Miscellaneous
+- [Fluke](https://xposedornot.com/breach/Fluke): 2026, 862,530 records, Manufacturing
+- [Mangatraders](https://xposedornot.com/breach/Mangatraders): 2014, 855,497 records, Entertainment
+- [Unigame](https://xposedornot.com/breach/Unigame): 2019, 849,909 records, Entertainment
+- [BabyNames](https://xposedornot.com/breach/BabyNames): 2008, 842,564 records, Health Care
+- [Dymocks](https://xposedornot.com/breach/Dymocks): 2023, 836,138 records, Retail
+- [Sphero](https://xposedornot.com/breach/Sphero): 2023, 833,517 records, Electronics
+- [PokemonNegro](https://xposedornot.com/breach/PokemonNegro): 2016, 830,142 records, Entertainment
+- [KinoKong](https://xposedornot.com/breach/KinoKong): 2021, 829,337 records, Entertainment
+- [Chess](https://xposedornot.com/breach/Chess): 2023, 827,615 records, Entertainment
+- [Warframe](https://xposedornot.com/breach/Warframe): 2014, 819,482 records, Entertainment
+- [EpicBot](https://xposedornot.com/breach/EpicBot): 2019, 816,150 records, Entertainment
+- [Tracelo](https://xposedornot.com/breach/Tracelo): 2024, 812,055 records, Information Technology
+- [Animeify](https://xposedornot.com/breach/Animeify): 2021, 808,873 records, Entertainment
+- [Knuddels](https://xposedornot.com/breach/Knuddels): 2018, 808,346 records, Entertainment
+- [Onverse](https://xposedornot.com/breach/Onverse): 2016, 799,826 records, Entertainment
+- [Brazzers](https://xposedornot.com/breach/Brazzers): 2013, 790,589 records, Entertainment
+- [DivxSubtitles](https://xposedornot.com/breach/DivxSubtitles): 2010, 783,062 records, Entertainment
+- [Abrigo](https://xposedornot.com/breach/Abrigo): 2026, 779,342 records, Finance
+- [Ulmon](https://xposedornot.com/breach/Ulmon): 2020, 778,488 records, Information Technology
+- [ForumCommunity](https://xposedornot.com/breach/ForumCommunity): 2016, 777,361 records, Entertainment
+- [BlackHatWorld](https://xposedornot.com/breach/BlackHatWorld): 2014, 776,691 records, Information Technology
+- [Abandonia-2015](https://xposedornot.com/breach/Abandonia-2015): 2015, 776,064 records, Entertainment
+- [DiskUnion](https://xposedornot.com/breach/DiskUnion): 2022, 775,380 records, Finance
+- [KreditPlus](https://xposedornot.com/breach/KreditPlus): 2020, 768,927 records, Finance
+- [FunnyGames](https://xposedornot.com/breach/FunnyGames): 2018, 764,140 records, Entertainment
+- [Moneycontrol](https://xposedornot.com/breach/Moneycontrol): 2017, 762,699 records, Entertainment
+- [DataCamp](https://xposedornot.com/breach/DataCamp): 2017, 760,536 records, Education
+- [Sonicbids](https://xposedornot.com/breach/Sonicbids): 2019, 751,445 records, Music
+- [Cracked.to](https://xposedornot.com/breach/Cracked.to): 2019, 749,130 records, Miscellaneous
+- [AndroidForums](https://xposedornot.com/breach/AndroidForums): 2011, 745,467 records, Information Technology
+- [WildStar](https://xposedornot.com/breach/WildStar): 2015, 738,872 records, Entertainment
+- [CentralTickets](https://xposedornot.com/breach/CentralTickets): 2024, 710,437 records, Entertainment
+- [PoliceOne](https://xposedornot.com/breach/PoliceOne): 2014, 710,205 records, Government
+- [ProgrammingForums](https://xposedornot.com/breach/ProgrammingForums): 2015, 707,577 records, Information Technology
+- [Tout](https://xposedornot.com/breach/Tout): 2014, 702,900 records, Entertainment
+- [uBook](https://xposedornot.com/breach/uBook): 2024, 701,054 records, Retail
+- [Vedantu](https://xposedornot.com/breach/Vedantu): 2019, 686,793 records, Education
+- [Lexipol](https://xposedornot.com/breach/Lexipol): 2025, 673,268 records, Government
+- [DaFont](https://xposedornot.com/breach/DaFont): 2017, 672,466 records, Miscellaneous
+- [WoFlow](https://xposedornot.com/breach/WoFlow): 2026, 669,711 records, Information Technology
+- [GPSUnderground](https://xposedornot.com/breach/GPSUnderground): 2016, 669,484 records, Information Technology
+- [Substack](https://xposedornot.com/breach/Substack): 2025, 665,183 records, News Media
+- [CrackingForum](https://xposedornot.com/breach/CrackingForum): 2016, 660,175 records, Information Technology
+- [BinWeevils](https://xposedornot.com/breach/BinWeevils): 2017, 658,753 records, Entertainment
+- [Pokebip](https://xposedornot.com/breach/Pokebip): 2015, 656,162 records, Entertainment
+- [GamingMonk](https://xposedornot.com/breach/GamingMonk): 2020, 654,457 records, Entertainment
+- [HeatGames](https://xposedornot.com/breach/HeatGames): 2021, 650,151 records, Entertainment
+- [Dominos](https://xposedornot.com/breach/Dominos): 2014, 649,031 records, Food
+- [Filmai.in](https://xposedornot.com/breach/Filmai.in): 2020, 645,798 records, Energy
+- [Liker](https://xposedornot.com/breach/Liker): 2021, 643,579 records, Miscellaneous
+- [TravelOklahoma](https://xposedornot.com/breach/TravelOklahoma): 2020, 637,014 records, Hospitality
+- [UniversityofPennsylvania](https://xposedornot.com/breach/UniversityofPennsylvania): 2025, 624,001 records, Education
+- [FinalFantasyShrine](https://xposedornot.com/breach/FinalFantasyShrine): 2015, 620,589 records, Entertainment
+- [Comcast](https://xposedornot.com/breach/Comcast): 2015, 616,883 records, Telecommunication
+- [Reincubate](https://xposedornot.com/breach/Reincubate): 2017, 616,361 records, Telecommunication
+- [HLTV](https://xposedornot.com/breach/HLTV): 2016, 611,727 records, Sports
+- [ThisHabbo](https://xposedornot.com/breach/ThisHabbo): 2014, 600,472 records, Entertainment
+- [TrueFire](https://xposedornot.com/breach/TrueFire): 2020, 599,739 records, Music
+- [Coachella](https://xposedornot.com/breach/Coachella): 2017, 595,581 records, Entertainment
+- [PaddyPower](https://xposedornot.com/breach/PaddyPower): 2010, 590,854 records, Energy
+- [BCDTravel](https://xposedornot.com/breach/BCDTravel): 2026, 590,182 records, Transport
+- [Zadig-Voltaire](https://xposedornot.com/breach/Zadig-Voltaire): 2023, 589,755 records, Retail
+- [Foodora](https://xposedornot.com/breach/Foodora): 2016, 583,640 records, Food
+- [CanadaGoose](https://xposedornot.com/breach/CanadaGoose): 2025, 583,267 records, Retail
+- [Atmeltomo](https://xposedornot.com/breach/Atmeltomo): 2021, 580,340 records, Electronics
+- [BTC-E](https://xposedornot.com/breach/BTC-E): 2014, 568,617 records, Finance
+- [Orange](https://xposedornot.com/breach/Orange): 2025, 568,604 records, Telecommunication
+- [D3Scene](https://xposedornot.com/breach/D3Scene): 2016, 568,578 records, Entertainment
+- [Universarium](https://xposedornot.com/breach/Universarium): 2019, 565,772 records, Education
+- [XKCD](https://xposedornot.com/breach/XKCD): 2019, 562,026 records, Entertainment
+- [Flipkart](https://xposedornot.com/breach/Flipkart): 2022, 552,105 records, Retail
+- [Shadow](https://xposedornot.com/breach/Shadow): 2023, 551,960 records, Information Technology
+- [ECCIE](https://xposedornot.com/breach/ECCIE): 2021, 536,680 records, Miscellaneous
+- [LaPoste](https://xposedornot.com/breach/LaPoste): 2022, 533,878 records, Telecommunication
+- [UnrealEngine](https://xposedornot.com/breach/UnrealEngine): 2016, 530,140 records, Information Technology
+- [OGUsers-2022](https://xposedornot.com/breach/OGUsers-2022): 2022, 528,606 records, Miscellaneous
+- [WebHostingTalk](https://xposedornot.com/breach/WebHostingTalk): 2016, 515,711 records, Information Technology
+- [DragonNest](https://xposedornot.com/breach/DragonNest): 2013, 511,386 records, Entertainment
+- [vBulletin](https://xposedornot.com/breach/vBulletin): 2015, 508,997 records, Information Technology
+- [Shortedition](https://xposedornot.com/breach/Shortedition): 2021, 505,609 records, Entertainment
+- [Bookchor](https://xposedornot.com/breach/Bookchor): 2021, 505,409 records, Retail
+- [Multiplayer.it](https://xposedornot.com/breach/Multiplayer.it): 2018, 504,556 records, Entertainment
+- [Powerbot](https://xposedornot.com/breach/Powerbot): 2014, 503,658 records, Information Technology
+- [UniversityofCalifornia](https://xposedornot.com/breach/UniversityofCalifornia): 2020, 503,270 records, Education
+- [BitcoinTalk](https://xposedornot.com/breach/BitcoinTalk): 2015, 501,589 records, Finance
+- [Tamodo](https://xposedornot.com/breach/Tamodo): 2020, 494,957 records, Retail
+- [PPCGeeks](https://xposedornot.com/breach/PPCGeeks): 2016, 492,399 records, Information Technology
+- [AUTOSUR](https://xposedornot.com/breach/AUTOSUR): 2025, 489,319 records, Transport
+- [Coinmama](https://xposedornot.com/breach/Coinmama): 2017, 478,960 records, Entertainment
+- [RaidForums](https://xposedornot.com/breach/RaidForums): 2020, 478,604 records, Miscellaneous
+- [Travelio](https://xposedornot.com/breach/Travelio): 2021, 471,362 records, Hospitality
+- [BulgarianNationalRevenueAgency](https://xposedornot.com/breach/BulgarianNationalRevenueAgency): 2019, 470,899 records, Miscellaneous
+- [JDGroup](https://xposedornot.com/breach/JDGroup): 2013, 464,203 records, Miscellaneous
+- [Ameriprise](https://xposedornot.com/breach/Ameriprise): 2026, 459,362 records, Finance
+- [WiiUISO](https://xposedornot.com/breach/WiiUISO): 2015, 457,921 records, Entertainment
+- [Xbox-Scene](https://xposedornot.com/breach/Xbox-Scene): 2015, 455,520 records, Entertainment
+- [Yahoo](https://xposedornot.com/breach/Yahoo): 2012, 453,513 records, News Media
+- [APOIA](https://xposedornot.com/breach/APOIA): 2026, 452,037 records, Finance
+- [ProctorU](https://xposedornot.com/breach/ProctorU): 2020, 444,872 records, Education
+- [Solomid](https://xposedornot.com/breach/Solomid): 2014, 442,587 records, Sports
+- [Life360](https://xposedornot.com/breach/Life360): 2024, 442,520 records, Information Technology
+- [PS3Hax](https://xposedornot.com/breach/PS3Hax): 2015, 441,012 records, Entertainment
+- [Mecho](https://xposedornot.com/breach/Mecho): 2013, 437,945 records, Information Technology
+- [JamTangan](https://xposedornot.com/breach/JamTangan): 2021, 434,791 records, Retail
+- [UniversityOfNottingham](https://xposedornot.com/breach/UniversityOfNottingham): 2026, 434,039 records, Education
+- [Evermotion](https://xposedornot.com/breach/Evermotion): 2015, 434,023 records, Entertainment
+- [Acne](https://xposedornot.com/breach/Acne): 2014, 433,009 records, Health Care
+- [CarMax](https://xposedornot.com/breach/CarMax): 2026, 431,646 records, Retail
+- [UnderworldEmpire](https://xposedornot.com/breach/UnderworldEmpire): 2017, 428,580 records, Information Technology
+- [Avast](https://xposedornot.com/breach/Avast): 2014, 423,497 records, Information Technology
+- [RoyalEnfield](https://xposedornot.com/breach/RoyalEnfield): 2019, 420,932 records, Manufacturing
+- [IDTech](https://xposedornot.com/breach/IDTech): 2023, 416,472 records, Education
+- [EpicNPC](https://xposedornot.com/breach/EpicNPC): 2016, 408,740 records, Entertainment
+- [Mappery](https://xposedornot.com/breach/Mappery): 2018, 407,099 records, Miscellaneous
+- [Utair](https://xposedornot.com/breach/Utair): 2019, 402,298 records, Transport
+- [Lolzteam](https://xposedornot.com/breach/Lolzteam): 2018, 398,040 records, Information Technology
+- [Minehut](https://xposedornot.com/breach/Minehut): 2019, 396,591 records, Entertainment
+- [Utorrent](https://xposedornot.com/breach/Utorrent): 2016, 395,023 records, Information Technology
+- [Smogon](https://xposedornot.com/breach/Smogon): 2017, 386,603 records, Entertainment
+- [CheapAssGamer](https://xposedornot.com/breach/CheapAssGamer): 2015, 385,510 records, Entertainment
+- [Pampling](https://xposedornot.com/breach/Pampling): 2020, 383,428 records, Retail
+- [FreedomHosting](https://xposedornot.com/breach/FreedomHosting): 2017, 380,823 records, Miscellaneous
+- [Doxbin](https://xposedornot.com/breach/Doxbin): 2022, 380,343 records, Miscellaneous
+- [MediaWorks](https://xposedornot.com/breach/MediaWorks): 2024, 380,251 records, News Media
+- [Xhamster](https://xposedornot.com/breach/Xhamster): 2016, 377,260 records, Entertainment
+- [Guns.com](https://xposedornot.com/breach/Guns.com): 2021, 375,714 records, Retail
+- [HthStudios](https://xposedornot.com/breach/HthStudios): 2018, 373,117 records, Entertainment
+- [Traderie](https://xposedornot.com/breach/Traderie): 2022, 365,364 records, Retail
+- [dBforums](https://xposedornot.com/breach/dBforums): 2016, 363,305 records, Information Technology
+- [BTC-Alpha](https://xposedornot.com/breach/BTC-Alpha): 2021, 362,693 records, Finance
+- [PSX-Scene](https://xposedornot.com/breach/PSX-Scene): 2015, 361,560 records, Entertainment
+- [PeoplesEnergy](https://xposedornot.com/breach/PeoplesEnergy): 2020, 358,832 records, Energy
+- [Anime-Planet](https://xposedornot.com/breach/Anime-Planet): 2016, 358,460 records, Entertainment
+- [TorrentInvites](https://xposedornot.com/breach/TorrentInvites): 2013, 352,101 records, Information Technology
+- [BrandNewTube](https://xposedornot.com/breach/BrandNewTube): 2022, 349,640 records, Energy
+- [OGUsers-2021](https://xposedornot.com/breach/OGUsers-2021): 2021, 348,217 records, Miscellaneous
+- [Facepunch](https://xposedornot.com/breach/Facepunch): 2016, 342,770 records, Entertainment
+- [JukinMedia](https://xposedornot.com/breach/JukinMedia): 2021, 340,728 records, Entertainment
+- [Breachforums.V5](https://xposedornot.com/breach/Breachforums.V5): 2026, 340,218 records, Miscellaneous
+- [Plex](https://xposedornot.com/breach/Plex): 2015, 328,019 records, Information Technology
+- [BreachForums2025](https://xposedornot.com/breach/BreachForums2025): 2025, 324,816 records, Miscellaneous
+- [Mercer](https://xposedornot.com/breach/Mercer): 2026, 320,684 records, Finance
+- [InstitutoNacionalDeDeportesDeChile](https://xposedornot.com/breach/InstitutoNacionalDeDeportesDeChile): 2024, 320,367 records, Miscellaneous
+- [MrExcel](https://xposedornot.com/breach/MrExcel): 2016, 314,098 records, Education
+- [Berkadia](https://xposedornot.com/breach/Berkadia): 2026, 310,078 records, Finance
+- [digiDirect](https://xposedornot.com/breach/digiDirect): 2024, 306,290 records, Retail
+- [Aimware](https://xposedornot.com/breach/Aimware): 2019, 305,487 records, Miscellaneous
+- [PayAsuGym](https://xposedornot.com/breach/PayAsuGym): 2016, 300,174 records, Health Care
+- [Ancestry](https://xposedornot.com/breach/Ancestry): 2015, 297,916 records, Miscellaneous
+- [CardingMafia](https://xposedornot.com/breach/CardingMafia): 2021, 297,686 records, Miscellaneous
+- [SongTrivia2](https://xposedornot.com/breach/SongTrivia2): 2026, 291,815 records, Entertainment
+- [Hookers.nl](https://xposedornot.com/breach/Hookers.nl): 2019, 290,972 records, Miscellaneous
+- [NapsGear](https://xposedornot.com/breach/NapsGear): 2015, 287,050 records, Retail
+- [FederationFrancaisedeRugby](https://xposedornot.com/breach/FederationFrancaisedeRugby): 2023, 282,093 records, Sports
+- [7-Eleven](https://xposedornot.com/breach/7-Eleven): 2026, 281,260 records, Retail
+- [LinuxForums](https://xposedornot.com/breach/LinuxForums): 2018, 275,846 records, Information Technology
+- [Livpure](https://xposedornot.com/breach/Livpure): 2020, 269,561 records, Retail
+- [Ajarn](https://xposedornot.com/breach/Ajarn): 2018, 269,240 records, Education
+- [Majorgeeks](https://xposedornot.com/breach/Majorgeeks): 2015, 269,169 records, Information Technology
+- [Maxance](https://xposedornot.com/breach/Maxance): 2024, 268,806 records, Finance
+- [CapitalEconomics](https://xposedornot.com/breach/CapitalEconomics): 2020, 263,842 records, Finance
+- [OGusers-2020](https://xposedornot.com/breach/OGusers-2020): 2020, 263,138 records, Information Technology
+- [AmanResorts](https://xposedornot.com/breach/AmanResorts): 2026, 262,340 records, Hospitality
+- [AtlasQuantum](https://xposedornot.com/breach/AtlasQuantum): 2018, 261,469 records, Finance
+- [Zara](https://xposedornot.com/breach/Zara): 2026, 256,847 records, Retail
+- [Kemper](https://xposedornot.com/breach/Kemper): 2026, 255,390 records, Finance
+- [SweClockers](https://xposedornot.com/breach/SweClockers): 2015, 254,967 records, Electronics
+- [MyRepoSpace](https://xposedornot.com/breach/MyRepoSpace): 2015, 252,878 records, Information Technology
+- [FoxyBingo](https://xposedornot.com/breach/FoxyBingo): 2008, 252,213 records, Entertainment
+- [CFGI](https://xposedornot.com/breach/CFGI): 2026, 250,514 records, Finance
+- [MSI](https://xposedornot.com/breach/MSI): 2024, 250,103 records, Electronics
+- [SumoTorrent](https://xposedornot.com/breach/SumoTorrent): 2014, 248,715 records, Entertainment
+- [Tangerine](https://xposedornot.com/breach/Tangerine): 2024, 244,495 records, Telecommunication
+- [GoldSilver](https://xposedornot.com/breach/GoldSilver): 2018, 242,576 records, Retail
+- [Technic](https://xposedornot.com/breach/Technic): 2018, 238,664 records, Entertainment
+- [BotofLegends](https://xposedornot.com/breach/BotofLegends): 2014, 238,422 records, Entertainment
+- [CanadaLife](https://xposedornot.com/breach/CanadaLife): 2026, 238,262 records, Finance
+- [SchenkYou](https://xposedornot.com/breach/SchenkYou): 2024, 237,393 records, Retail
+- [Preen.ME](https://xposedornot.com/breach/Preen.ME): 2020, 236,630 records, Retail
+- [UtahGunExchange](https://xposedornot.com/breach/UtahGunExchange): 2020, 235,246 records, Retail
+- [CannabisForum](https://xposedornot.com/breach/CannabisForum): 2014, 233,999 records, Retail
+- [Europa.jobs](https://xposedornot.com/breach/Europa.jobs): 2019, 225,904 records, Miscellaneous
+- [RuneScapeBoards](https://xposedornot.com/breach/RuneScapeBoards): 2013, 224,516 records, Entertainment
+- [ColorDating](https://xposedornot.com/breach/ColorDating): 2018, 221,687 records, Entertainment
+- [IllinoisCentralCollege](https://xposedornot.com/breach/IllinoisCentralCollege): 2026, 220,233 records, Education
+- [SamsungGermany](https://xposedornot.com/breach/SamsungGermany): 2025, 217,847 records, Electronics
+- [BreachForum](https://xposedornot.com/breach/BreachForum): 2022, 212,611 records, Miscellaneous
+- [COMELEC](https://xposedornot.com/breach/COMELEC): 2016, 210,794 records, Government
+- [Win7VistaForum](https://xposedornot.com/breach/Win7VistaForum): 2013, 203,807 records, Entertainment
+- [TISZA](https://xposedornot.com/breach/TISZA): 2025, 198,526 records, Government
+- [GTAGaming](https://xposedornot.com/breach/GTAGaming): 2016, 197,232 records, Entertainment
+- [Hackforums](https://xposedornot.com/breach/Hackforums): 2011, 194,368 records, Information Technology
+- [AnimeLeague](https://xposedornot.com/breach/AnimeLeague): 2024, 192,990 records, Entertainment
+- [Edmunds](https://xposedornot.com/breach/Edmunds): 2026, 191,474 records, Transport
+- [HomeRefill](https://xposedornot.com/breach/HomeRefill): 2020, 190,723 records, Retail
+- [Lulu](https://xposedornot.com/breach/Lulu): 2024, 190,518 records, Retail
+- [ILikeCheats](https://xposedornot.com/breach/ILikeCheats): 2014, 188,866 records, Entertainment
+- [Minefield](https://xposedornot.com/breach/Minefield): 2015, 188,353 records, Entertainment
+- [ParagonCheats](https://xposedornot.com/breach/ParagonCheats): 2021, 188,102 records, Entertainment
+- [TheTVDB](https://xposedornot.com/breach/TheTVDB): 2017, 181,895 records, Entertainment
+- [AhaShare](https://xposedornot.com/breach/AhaShare): 2013, 180,496 records, Entertainment
+- [HeroesofGaia](https://xposedornot.com/breach/HeroesofGaia): 2013, 179,949 records, Entertainment
+- [TheFappening](https://xposedornot.com/breach/TheFappening): 2015, 179,117 records, Entertainment
+- [Cityjerks](https://xposedornot.com/breach/Cityjerks): 2023, 178,019 records, Miscellaneous
+- [RussianAmerica](https://xposedornot.com/breach/RussianAmerica): 2017, 175,068 records, News Media
+- [PHPFreaks](https://xposedornot.com/breach/PHPFreaks): 2015, 171,593 records, Information Technology
+- [UnicoCampania](https://xposedornot.com/breach/UnicoCampania): 2020, 166,143 records, Transport
+- [GermanDonerKebab](https://xposedornot.com/breach/GermanDonerKebab): 2025, 162,373 records, Food
+- [OGUsers-2019](https://xposedornot.com/breach/OGUsers-2019): 2018, 160,952 records, Information Technology
+- [CreamsCafe](https://xposedornot.com/breach/CreamsCafe): 2025, 160,380 records, Food
+- [Boxee](https://xposedornot.com/breach/Boxee): 2014, 158,690 records, Electronics
+- [CutiesAI](https://xposedornot.com/breach/CutiesAI): 2026, 153,765 records, Entertainment
+- [Albertsons](https://xposedornot.com/breach/Albertsons): 2025, 151,753 records, Retail
+- [AmericanTower](https://xposedornot.com/breach/AmericanTower): 2026, 151,714 records, Telecommunication
+- [Rbx.Rocks](https://xposedornot.com/breach/Rbx.Rocks): 2018, 149,971 records, Entertainment
+- [Convex](https://xposedornot.com/breach/Convex): 2023, 149,588 records, Miscellaneous
+- [Muslimmatch](https://xposedornot.com/breach/Muslimmatch): 2016, 148,794 records, Entertainment
+- [WPTAmateurPokerLeague](https://xposedornot.com/breach/WPTAmateurPokerLeague): 2014, 148,267 records, Sports
+- [LinuxMint](https://xposedornot.com/breach/LinuxMint): 2016, 144,663 records, Information Technology
+- [GunsandRobots](https://xposedornot.com/breach/GunsandRobots): 2016, 143,734 records, Entertainment
+- [Success](https://xposedornot.com/breach/Success): 2026, 142,282 records, News Media
+- [RalphLauren](https://xposedornot.com/breach/RalphLauren): 2026, 142,039 records, Retail
+- [BlackSpigotMC](https://xposedornot.com/breach/BlackSpigotMC): 2019, 140,027 records, Miscellaneous
+- [KomplettFritid](https://xposedornot.com/breach/KomplettFritid): 2021, 139,516 records, Retail
+- [StarNet](https://xposedornot.com/breach/StarNet): 2015, 139,358 records, Telecommunication
+- [MagicDuelAdventure](https://xposedornot.com/breach/MagicDuelAdventure): 2023, 138,424 records, Entertainment
+- [InfiniteCampus](https://xposedornot.com/breach/InfiniteCampus): 2026, 137,977 records, Education
+- [Doxbin-2025](https://xposedornot.com/breach/Doxbin-2025): 2025, 136,897 records, Information Technology
+- [WHMCS](https://xposedornot.com/breach/WHMCS): 2012, 134,845 records, Information Technology
+- [ScufGaming](https://xposedornot.com/breach/ScufGaming): 2015, 129,083 records, Electronics
+- [Vimeo](https://xposedornot.com/breach/Vimeo): 2026, 121,476 records, Entertainment
+- [MCBans](https://xposedornot.com/breach/MCBans): 2016, 120,485 records, Entertainment
+- [LatestPilotJobs](https://xposedornot.com/breach/LatestPilotJobs): 2022, 119,089 records, Miscellaneous
+- [pcTattletale](https://xposedornot.com/breach/pcTattletale): 2024, 118,880 records, Miscellaneous
+- [SkTorrent](https://xposedornot.com/breach/SkTorrent): 2016, 117,005 records, Information Technology
+- [InfinityLearn](https://xposedornot.com/breach/InfinityLearn): 2024, 116,943 records, Education
+- [BakerDistributing](https://xposedornot.com/breach/BakerDistributing): 2026, 116,353 records, Manufacturing
+- [PokemonCreed](https://xposedornot.com/breach/PokemonCreed): 2014, 116,043 records, Entertainment
+- [LeakedReality](https://xposedornot.com/breach/LeakedReality): 2022, 114,571 records, News Media
+- [Guntrader](https://xposedornot.com/breach/Guntrader): 2021, 112,001 records, Retail
+- [MalwareBytes](https://xposedornot.com/breach/MalwareBytes): 2014, 111,647 records, Information Technology
+- [Upstox](https://xposedornot.com/breach/Upstox): 2021, 111,033 records, Finance
+- [Citybee](https://xposedornot.com/breach/Citybee): 2021, 110,192 records, Transport
+- [9Lives](https://xposedornot.com/breach/9Lives): 2014, 109,590 records, Entertainment
+- [LyricsMania](https://xposedornot.com/breach/LyricsMania): 2017, 109,198 records, Music
+- [AmartFurniture](https://xposedornot.com/breach/AmartFurniture): 2022, 109,028 records, Retail
+- [E-Pal](https://xposedornot.com/breach/E-Pal): 2022, 108,888 records, Entertainment
+- [TheSquare](https://xposedornot.com/breach/TheSquare): 2025, 107,405 records, Hospitality
+- [Welhof](https://xposedornot.com/breach/Welhof): 2023, 107,383 records, Retail
+- [BleachAnime](https://xposedornot.com/breach/BleachAnime): 2023, 107,238 records, Entertainment
+- [MyLovelyAI](https://xposedornot.com/breach/MyLovelyAI): 2026, 106,544 records, Entertainment
+- [Insanelyi](https://xposedornot.com/breach/Insanelyi): 2014, 104,090 records, Information Technology
+- [CodeStepByStep](https://xposedornot.com/breach/CodeStepByStep): 2025, 103,502 records, Education
+- [RealDudesInc](https://xposedornot.com/breach/RealDudesInc): 2022, 101,555 records, Retail
+- [KitchenPal](https://xposedornot.com/breach/KitchenPal): 2023, 98,747 records, Food
+- [ArtistsNClients](https://xposedornot.com/breach/ArtistsNClients): 2025, 95,494 records, Entertainment
+- [VoidTO](https://xposedornot.com/breach/VoidTO): 2019, 95,429 records, Information Technology
+- [ParesAI](https://xposedornot.com/breach/ParesAI): 2026, 95,190 records, Information Technology
+- [Vianet](https://xposedornot.com/breach/Vianet): 2020, 94,351 records, Telecommunication
+- [Benchmark](https://xposedornot.com/breach/Benchmark): 2019, 93,319 records, Electronics
+- [Mac-Torrents](https://xposedornot.com/breach/Mac-Torrents): 2015, 93,214 records, Information Technology
+- [Tappware](https://xposedornot.com/breach/Tappware): 2024, 92,833 records, Information Technology
+- [AgusiQ-Torrents](https://xposedornot.com/breach/AgusiQ-Torrents): 2019, 90,453 records, Entertainment
+- [GiveSendGo](https://xposedornot.com/breach/GiveSendGo): 2022, 89,981 records, Non-Profit/Charities
+- [SirHurt](https://xposedornot.com/breach/SirHurt): 2021, 89,511 records, Miscellaneous
+- [SocialEngineered](https://xposedornot.com/breach/SocialEngineered): 2019, 89,409 records, Miscellaneous
+- [MastercardPricelessSpecials](https://xposedornot.com/breach/MastercardPricelessSpecials): 2019, 89,290 records, Finance
+- [NVIDIA](https://xposedornot.com/breach/NVIDIA): 2022, 89,161 records, Electronics
+- [PoinCampus](https://xposedornot.com/breach/PoinCampus): 2024, 89,149 records, Education
+- [T2Tea](https://xposedornot.com/breach/T2Tea): 2024, 88,684 records, Food
+- [AdoptMeTradingValues](https://xposedornot.com/breach/AdoptMeTradingValues): 2022, 86,787 records, Entertainment
+- [Mytheresa](https://xposedornot.com/breach/Mytheresa): 2026, 84,370 records, Retail
+- [QatarNationalBank](https://xposedornot.com/breach/QatarNationalBank): 2015, 83,959 records, Finance
+- [Battlefy](https://xposedornot.com/breach/Battlefy): 2016, 83,606 records, Sports
+- [LeCoqSportif](https://xposedornot.com/breach/LeCoqSportif): 2023, 80,088 records, Retail
+- [Getrevengeonyourex](https://xposedornot.com/breach/Getrevengeonyourex): 2022, 79,318 records, Miscellaneous
+- [Facebook-Marketplace](https://xposedornot.com/breach/Facebook-Marketplace): 2023, 77,569 records, Information Technology
+- [Toumei](https://xposedornot.com/breach/Toumei): 2023, 76,906 records, Electronics
+- [MaReads](https://xposedornot.com/breach/MaReads): 2025, 74,859 records, Education
+- [ShockGore](https://xposedornot.com/breach/ShockGore): 2020, 73,985 records, Miscellaneous
+- [HeritageFoundation](https://xposedornot.com/breach/HeritageFoundation): 2024, 72,520 records, Miscellaneous
+- [ZooVille](https://xposedornot.com/breach/ZooVille): 2019, 72,473 records, Miscellaneous
+- [Demonforums](https://xposedornot.com/breach/Demonforums): 2019, 72,235 records, Entertainment
+- [CTARS](https://xposedornot.com/breach/CTARS): 2022, 67,568 records, Miscellaneous
+- [Rightbiz](https://xposedornot.com/breach/Rightbiz): 2023, 65,848 records, Information Technology
+- [HumanizerPro](https://xposedornot.com/breach/HumanizerPro): 2026, 65,113 records, Information Technology
+- [AerServ](https://xposedornot.com/breach/AerServ): 2014, 64,768 records, Information Technology
+- [AtlasMenu](https://xposedornot.com/breach/AtlasMenu): 2026, 64,085 records, Entertainment
+- [BitView](https://xposedornot.com/breach/BitView): 2024, 63,760 records, Entertainment
+- [Deviltorrents](https://xposedornot.com/breach/Deviltorrents): 2021, 63,420 records, Entertainment
+- [PlanetCalypso](https://xposedornot.com/breach/PlanetCalypso): 2019, 62,256 records, Entertainment
+- [KasperskyFanClub](https://xposedornot.com/breach/KasperskyFanClub): 2024, 56,091 records, Information Technology
+- [Xpressbees](https://xposedornot.com/breach/Xpressbees): 2024, 53,422 records, Transport
+- [Wendys](https://xposedornot.com/breach/Wendys): 2018, 52,500 records, Food
+- [Vodafone](https://xposedornot.com/breach/Vodafone): 2013, 52,459 records, Telecommunication
+- [Tibber](https://xposedornot.com/breach/Tibber): 2024, 50,087 records, Energy
+- [Roblox](https://xposedornot.com/breach/Roblox): 2016, 49,778 records, Entertainment
+- [Protemps](https://xposedornot.com/breach/Protemps): 2021, 49,555 records, Miscellaneous
+- [QuantumBooter](https://xposedornot.com/breach/QuantumBooter): 2014, 48,583 records, Information Technology
+- [DCHealth](https://xposedornot.com/breach/DCHealth): 2023, 48,184 records, Health Care
+- [Hemmakvall](https://xposedornot.com/breach/Hemmakvall): 2015, 47,432 records, Retail
+- [Nulled.ch](https://xposedornot.com/breach/Nulled.ch): 2020, 43,504 records, Information Technology
+- [EnglandandWalesCricketBoard](https://xposedornot.com/breach/EnglandandWalesCricketBoard): 2023, 43,398 records, Sports
+- [HoundDawgs](https://xposedornot.com/breach/HoundDawgs): 2017, 43,007 records, Entertainment
+- [Flashback](https://xposedornot.com/breach/Flashback): 2015, 41,055 records, News Media
+- [OrdineAvvocatidiRoma](https://xposedornot.com/breach/OrdineAvvocatidiRoma): 2019, 38,316 records, Government
+- [MovieForums](https://xposedornot.com/breach/MovieForums): 2022, 38,257 records, Entertainment
+- [Sony](https://xposedornot.com/breach/Sony): 2011, 37,098 records, Electronics
+- [Hub4Tech](https://xposedornot.com/breach/Hub4Tech): 2017, 36,916 records, News Media
+- [BigMoneyJobs](https://xposedornot.com/breach/BigMoneyJobs): 2014, 36,781 records, Finance
+- [SvenskaMagic](https://xposedornot.com/breach/SvenskaMagic): 2015, 36,636 records, Entertainment
+- [Yonema](https://xposedornot.com/breach/Yonema): 2024, 36,205 records, Finance
+- [Doomworld](https://xposedornot.com/breach/Doomworld): 2022, 34,481 records, Entertainment
+- [BitTorrent](https://xposedornot.com/breach/BitTorrent): 2016, 34,233 records, Information Technology
+- [LightsHope](https://xposedornot.com/breach/LightsHope): 2018, 30,483 records, Entertainment
+- [MarketMoveIs](https://xposedornot.com/breach/MarketMoveIs): 2023, 27,944 records, Retail
+- [HaveFunTeaching](https://xposedornot.com/breach/HaveFunTeaching): 2021, 27,213 records, Education
+- [GreenGaming](https://xposedornot.com/breach/GreenGaming): 2024, 27,142 records, Entertainment
+- [ChrisLeong](https://xposedornot.com/breach/ChrisLeong): 2024, 27,115 records, Miscellaneous
+- [Hemmelig](https://xposedornot.com/breach/Hemmelig): 2011, 25,967 records, Miscellaneous
+- [CrackCommunity](https://xposedornot.com/breach/CrackCommunity): 2013, 25,937 records, Information Technology
+- [ShitExpress](https://xposedornot.com/breach/ShitExpress): 2022, 23,821 records, Miscellaneous
+- [LimeVPN](https://xposedornot.com/breach/LimeVPN): 2021, 23,638 records, Information Technology
+- [HelloCake](https://xposedornot.com/breach/HelloCake): 2025, 23,001 records, Retail
+- [WoTLabs](https://xposedornot.com/breach/WoTLabs): 2024, 22,026 records, Entertainment
+- [Autotrader](https://xposedornot.com/breach/Autotrader): 2023, 20,034 records, Retail
+- [2fast4u](https://xposedornot.com/breach/2fast4u): 2017, 17,699 records, Entertainment
+- [LizardSquad](https://xposedornot.com/breach/LizardSquad): 2015, 17,021 records, Information Technology
+- [Verified](https://xposedornot.com/breach/Verified): 2014, 16,993 records, Miscellaneous
+- [HuskeyOwnersForum](https://xposedornot.com/breach/HuskeyOwnersForum): 2024, 16,670 records, Miscellaneous
+- [MinecraftPocketEditionForum](https://xposedornot.com/breach/MinecraftPocketEditionForum): 2015, 16,042 records, Entertainment
+- [FrameOptic](https://xposedornot.com/breach/FrameOptic): 2025, 15,682 records, Retail
+- [InflateVids](https://xposedornot.com/breach/InflateVids): 2023, 13,382 records, Entertainment
+- [Bell-2014](https://xposedornot.com/breach/Bell-2014): 2014, 12,542 records, Telecommunication
+- [Astropid](https://xposedornot.com/breach/Astropid): 2013, 11,841 records, Miscellaneous
+- [WeLeakInfo](https://xposedornot.com/breach/WeLeakInfo): 2021, 11,788 records, Information Technology
+- [RobloxDeveloperConference](https://xposedornot.com/breach/RobloxDeveloperConference): 2024, 10,448 records, Entertainment
+- [Vermillion](https://xposedornot.com/breach/Vermillion): 2014, 8,108 records, Information Technology
+- [ANPS](https://xposedornot.com/breach/ANPS): 2026, 5,600 records, Non-Profit/Charities
+- [KiwiFarms](https://xposedornot.com/breach/KiwiFarms): 2019, 4,607 records, Miscellaneous
+- [BreachForumClone](https://xposedornot.com/breach/BreachForumClone): 2023, 4,198 records, Miscellaneous
+- [Bestialitysextaboo](https://xposedornot.com/breach/Bestialitysextaboo): 2018, 3,198 records, Miscellaneous
+- [Tesco](https://xposedornot.com/breach/Tesco): 2014, 2,240 records, Miscellaneous
+- [DevkitPro](https://xposedornot.com/breach/DevkitPro): 2019, 1,508 records, Miscellaneous
