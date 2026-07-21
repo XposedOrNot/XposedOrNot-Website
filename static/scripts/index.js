@@ -31,7 +31,7 @@ const validateEmail = (email) => {
                 duration: opt.duration,
                 easing: 'linear',
                 step: function () {
-                    $this.text(Math.floor(this.counter));
+                    $this.text(Math.floor(this.counter).toLocaleString());
                 },
                 complete: function () {
                     $this.text(opt.end.toLocaleString());
@@ -808,7 +808,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function populateHeroMetrics() {
     var heroBreachCount = document.getElementById('hero-breach-count');
     var heroRecordCount = document.getElementById('hero-record-count');
-    if (!heroBreachCount && !heroRecordCount) return;
+    var benefitBreachCount = document.getElementById('benefit-breach-count');
+    var heroDirectoryCount = document.getElementById('hero-directory-count');
+    var toolsBreachCount = document.getElementById('tools-breach-count');
+    if (!heroBreachCount && !heroRecordCount && !benefitBreachCount && !heroDirectoryCount && !toolsBreachCount) return;
 
     $.ajax(apiUrl)
         .done(function (response) {
@@ -818,22 +821,26 @@ function populateHeroMetrics() {
             renderLastBreachAdded();
 
             var breachCount = parseInt(response.Breaches_Count, 10);
-            if (heroBreachCount) {
-                heroBreachCount.textContent = breachCount.toLocaleString() + '+';
-            }
-            var benefitBreachCount = document.getElementById('benefit-breach-count');
-            if (benefitBreachCount) {
-                benefitBreachCount.textContent = breachCount.toLocaleString() + '+';
+            if (!isNaN(breachCount)) {
+                var breachCountLabel = breachCount.toLocaleString() + '+';
+                if (heroBreachCount) {
+                    heroBreachCount.textContent = breachCountLabel;
+                }
+                if (benefitBreachCount) {
+                    benefitBreachCount.textContent = breachCountLabel;
+                }
+                if (heroDirectoryCount) {
+                    heroDirectoryCount.textContent = breachCountLabel;
+                }
+                if (toolsBreachCount) {
+                    toolsBreachCount.textContent = breachCountLabel;
+                }
             }
             if (heroRecordCount) {
                 var breachRecords = parseInt(response.Breaches_Records, 10);
-                // Convert to billions for readability
                 var billions = (breachRecords / 1000000000).toFixed(1);
                 heroRecordCount.textContent = billions + ' billion';
             }
-        })
-        .fail(function () {
-            // Keep fallback values in HTML
         });
 }
 
