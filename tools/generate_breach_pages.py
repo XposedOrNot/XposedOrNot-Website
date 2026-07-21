@@ -17,7 +17,11 @@ locale copies): real breach/industry counts, last-updated date, Dataset
 JSON-LD dateModified/size, and on the EN page an ItemList schema plus a
 crawlable A-to-Z list of every breach linking its static page. The list
 is the no-JS/crawler fallback; xposed.js hides it once the live table
-renders. Never hand-edit those baked blocks - rerun this script.
+renders. It also stamps the latest addedDate into the home-page
+"Latest breach added" line (index.html, EN + all locale copies) with a
+locale-formatted static date so crawlers see it without JS; index.js
+still refreshes it from the live API in browsers. Never hand-edit those
+baked blocks - rerun this script.
 """
 import argparse
 import html
@@ -34,8 +38,41 @@ ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "tools" / "breach_page_template.html"
 OUT_DIR = ROOT / "breach"
 LOCALES = ["bn", "de", "es", "fr", "hi", "it", "ja", "nl", "pt", "ru", "ta", "zh"]
+INDEX_LOCALES = ["bn", "de", "es", "fr", "hi", "it", "ja", "nl", "pl", "pt",
+                 "ru", "ta", "tr", "zh"]
 ITEMLIST_ID = "directory-itemlist-schema"
 STATIC_SECTION_ID = "breach-directory-static"
+
+BN_DIGITS = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
+FRESHNESS_MONTHS = {
+    "en": ["January", "February", "March", "April", "May", "June", "July",
+           "August", "September", "October", "November", "December"],
+    "de": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
+           "August", "September", "Oktober", "November", "Dezember"],
+    "es": ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+           "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+    "fr": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+           "août", "septembre", "octobre", "novembre", "décembre"],
+    "it": ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
+           "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"],
+    "nl": ["januari", "februari", "maart", "april", "mei", "juni", "juli",
+           "augustus", "september", "oktober", "november", "december"],
+    "pl": ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
+           "lipca", "sierpnia", "września", "października", "listopada",
+           "grudnia"],
+    "pt": ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
+           "agosto", "setembro", "outubro", "novembro", "dezembro"],
+    "ru": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+           "августа", "сентября", "октября", "ноября", "декабря"],
+    "tr": ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz",
+           "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+    "hi": ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई",
+           "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"],
+    "bn": ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই",
+           "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"],
+    "ta": ["ஜனவரி", "பிப்ரவரி", "மார்ச்", "ஏப்ரல்", "மே", "ஜூன்", "ஜூலை",
+           "ஆகஸ்ட்", "செப்டம்பர்", "அக்டோபர்", "நவம்பர்", "டிசம்பர்"],
+}
 
 ID_SAFE = re.compile(r"[A-Za-z0-9._~-]+")
 
@@ -505,6 +542,53 @@ def bake_directory(public):
     return baked
 
 
+def fmt_freshness_date(loc, d):
+    months = FRESHNESS_MONTHS.get(loc)
+    month = months[d.month - 1] if months else ""
+    if loc in ("ja", "zh"):
+        return f"{d.year}年{d.month}月{d.day}日"
+    if loc == "bn":
+        return f"{d.day} {month}, {d.year}".translate(BN_DIGITS)
+    if loc == "ta":
+        return f"{d.day} {month}, {d.year}"
+    if loc == "de":
+        return f"{d.day}. {month} {d.year}"
+    if loc in ("es", "pt"):
+        return f"{d.day} de {month} de {d.year}"
+    if loc == "ru":
+        return f"{d.day} {month} {d.year} г."
+    if loc == "en":
+        return f"{month} {d.day}, {d.year}"
+    return f"{d.day} {month} {d.year}"
+
+
+def bake_index_freshness(public):
+    latest = max(r["addedDate"] for r in public)
+    d = datetime.fromisoformat(latest)
+    iso = latest[:10]
+    stamped = 0
+    for loc in ["en"] + INDEX_LOCALES:
+        page = ROOT / "index.html" if loc == "en" else ROOT / loc / "index.html"
+        if not page.exists():
+            print(f"WARNING: {page} missing, skipped freshness stamp")
+            continue
+        text = page.read_text(encoding="utf-8")
+        stamp = f'<time datetime="{iso}">{fmt_freshness_date(loc, d)}</time>'
+        new, n = re.subn(r'(<span id="last-breach-added">).*?(</span>)',
+                         lambda m: m.group(1) + stamp + m.group(2),
+                         text, flags=re.S)
+        if not n:
+            print(f"WARNING: {page} has no last-breach-added span, "
+                  "freshness stamp skipped")
+            continue
+        new = re.sub(
+            r'(<p class="stats-context" id="stats-freshness")\s+hidden(>)',
+            r"\1\2", new)
+        page.write_text(new, encoding="utf-8", newline="")
+        stamped += 1
+    return stamped
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--id", action="append", dest="ids", metavar="BREACHID",
@@ -584,9 +668,10 @@ def main():
 
     orphans = existing - {r["breachID"] for r in public}
     baked = bake_directory(public)
+    stamped = bake_index_freshness(public)
     print(f"fetched: {len(all_ids)} | rendered now: {len(to_render)} | "
           f"pages on disk: {len(existing)} | sitemap: {len(live)} URLs | "
-          f"directory pages baked: {baked}")
+          f"directory pages baked: {baked} | index pages stamped: {stamped}")
     if orphans:
         print(f"WARNING: {len(orphans)} orphan page dirs no longer in the public API "
               f"list: {sorted(orphans)[:10]} - delete and 301 them")
