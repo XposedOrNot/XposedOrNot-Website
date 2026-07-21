@@ -20,8 +20,12 @@ is the no-JS/crawler fallback; xposed.js hides it once the live table
 renders. It also stamps the latest addedDate into the home-page
 "Latest breach added" line (index.html, EN + all locale copies) with a
 locale-formatted static date so crawlers see it without JS; index.js
-still refreshes it from the live API in browsers. Never hand-edit those
-baked blocks - rerun this script.
+still refreshes it from the live API in browsers. It also bakes real
+values into our-repository.html (stat tiles, insights, size and risk
+cards, top-10/recent tables, sr-only chart data tables, Key Statistics
+summary, FAQ schema, dateModified) from /v1/metrics/detailed plus the
+breaches list, mirroring repository.js; locale copies get the numeric
+values only. Never hand-edit those baked blocks - rerun this script.
 """
 import argparse
 import html
@@ -34,6 +38,7 @@ from pathlib import Path
 
 SITE = "https://xposedornot.com"
 API = "https://api.xposedornot.com/v1/breaches"
+METRICS_API = "https://api.xposedornot.com/v1/metrics/detailed"
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "tools" / "breach_page_template.html"
 OUT_DIR = ROOT / "breach"
@@ -589,6 +594,330 @@ def bake_index_freshness(public):
     return stamped
 
 
+def fmt_js_number(n):
+    n = int(n)
+    if n >= 1e9:
+        return f"{n / 1e9:.2f}B"
+    if n >= 1e6:
+        return f"{n / 1e6:.1f}M"
+    if n >= 1e3:
+        return f"{n / 1e3:.1f}K"
+    return f"{n:,}"
+
+
+REPO_TYPE_LABELS = {
+    "email addresses": "Email Addresses", "passwords": "Passwords",
+    "usernames": "Usernames", "names": "Names",
+    "ip addresses": "IP Addresses", "phone numbers": "Phone Numbers",
+    "dates of birth": "Dates of Birth",
+    "physical addresses": "Physical Addresses", "genders": "Genders",
+    "geographic locations": "Geographic Locations",
+    "social media profiles": "Social Media Profiles",
+}
+
+
+def repo_type_label(t):
+    return REPO_TYPE_LABELS.get(
+        t, re.sub(r"\b\w", lambda m: m.group(0).upper(), t))
+
+
+def repo_norm_types(exposed):
+    seen, types = set(), []
+    for raw in exposed or []:
+        for part in str(raw).split(","):
+            t = part.strip().lower()
+            if not t:
+                continue
+            if t in ("email", "email addresse", "mail addresses"):
+                t = "email addresses"
+            if t == "name":
+                t = "names"
+            if t in ("username", "user names"):
+                t = "usernames"
+            if t not in seen:
+                seen.add(t)
+                types.append(t)
+    return types
+
+
+def repo_compute_stats(public):
+    total = len(public)
+    total_records = 0
+    type_counts = {}
+    risk = {"plaintext": 0, "easy": 0, "hard": 0, "unknown": 0}
+    verified = searchable = 0
+    sizes = {b: [0, 0] for b in ("mega", "large", "medium", "small", "tiny")}
+    risks = {k: [0, 0] for k in ("full", "govid", "financial")}
+    gov = ("government", "national id", "passport", "social security")
+    fin = ("credit card", "bank account", "financial", "account balance")
+    rec_counts = []
+    for b in public:
+        records = int(b.get("exposedRecords") or 0)
+        total_records += records
+        rec_counts.append(records)
+        types = repo_norm_types(b.get("exposedData"))
+        for t in types:
+            type_counts[t] = type_counts.get(t, 0) + 1
+        pr = str(b.get("passwordRisk") or "").lower()
+        risk[{"plaintext": "plaintext", "easytocrack": "easy",
+              "hardtocrack": "hard"}.get(pr, "unknown")] += 1
+        if b.get("verified"):
+            verified += 1
+        if b.get("searchable"):
+            searchable += 1
+        band = ("mega" if records >= 1e8 else "large" if records >= 1e7
+                else "medium" if records >= 1e6 else "small"
+                if records >= 1e5 else "tiny")
+        sizes[band][0] += 1
+        sizes[band][1] += records
+        has_email = "email addresses" in types
+        if all(k in types for k in ("names", "dates of birth",
+                                    "physical addresses", "phone numbers")):
+            risks["full"][0] += 1
+            risks["full"][1] += records
+        if has_email and any(p in t for t in types for p in gov):
+            risks["govid"][0] += 1
+            risks["govid"][1] += records
+        if has_email and any(p in t for t in types for p in fin):
+            risks["financial"][0] += 1
+            risks["financial"][1] += records
+    data_types = [
+        (repo_type_label(t), int(c / total * 100 + 0.5))
+        for t, c in sorted(type_counts.items(), key=lambda kv: -kv[1])[:8]]
+    rec_counts.sort(reverse=True)
+    half = total_records / 2
+    cum = pareto_count = 0
+    for r in rec_counts:
+        cum += r
+        pareto_count += 1
+        if cum >= half:
+            break
+    pareto_pct = int(cum / total_records * 100 + 0.5) if total_records else 0
+    return {
+        "total": total, "total_records": total_records,
+        "data_types": data_types, "risk": risk,
+        "verified": verified,
+        "verified_pct": f"{verified / total * 100:.1f}%" if total else "0%",
+        "searchable": searchable, "sizes": sizes, "risks": risks,
+        "pareto_count": pareto_count, "pareto_pct": pareto_pct,
+    }
+
+
+def set_inner(text, elem_id, value, page=None):
+    pattern = rf'(<(\w+)[^>]*\bid="{re.escape(elem_id)}"[^>]*>).*?(</\2>)'
+    new, n = re.subn(pattern, lambda m: m.group(1) + value + m.group(3),
+                     text, count=1, flags=re.S)
+    if not n and page is not None:
+        print(f"WARNING: {page} missing element id {elem_id}, value not baked")
+    return new
+
+
+def set_tbody(text, table_id, rows, page):
+    pattern = rf'(id="{table_id}".*?<tbody>).*?(</tbody>)'
+    new, n = re.subn(pattern, lambda m: m.group(1) + rows + m.group(2),
+                     text, count=1, flags=re.S)
+    if not n:
+        print(f"WARNING: {page} missing table {table_id}, rows not baked")
+    return new
+
+
+def repo_table_rows(items):
+    rows = []
+    for b in items or []:
+        bid = str(b.get("breachid", ""))
+        if ID_SAFE.fullmatch(bid) and (OUT_DIR / f"{bid}.html").exists():
+            href = f"/breach/{bid}"
+        else:
+            href = f"breach.html#{esc(bid)}"
+        rows.append(
+            f'<tr><td><img src="{esc(b.get("logo", ""))}" alt="{esc(bid)} logo"'
+            ' loading="lazy"></td>'
+            f'<td><a href="{href}" class="breach-link">{esc(bid)}</a></td>'
+            f'<td><span class="description truncated">'
+            f'{esc(str(b.get("description", "")).strip())}</span>'
+            '<button type="button" class="read-toggle" '
+            'onclick="toggleDesc(this)">more</button></td>'
+            f'<td class="record-count">{fmt_js_number(b.get("count") or 0)}'
+            '</td></tr>')
+    return "".join(rows)
+
+
+def repo_yearly_table(yearly):
+    rows = "".join(f'<tr><th scope="row">{y}</th><td>{yearly[y]:,}</td></tr>'
+                   for y in sorted(yearly))
+    return ('<table><caption>Data breaches by year</caption><thead><tr>'
+            '<th scope="col">Year</th><th scope="col">Breaches</th></tr>'
+            f'</thead><tbody>{rows}</tbody></table>')
+
+
+def repo_password_table(risk):
+    labels = (("Plaintext", "plaintext"), ("Easy to crack", "easy"),
+              ("Hard to crack", "hard"), ("Unknown", "unknown"))
+    rows = "".join(f'<tr><th scope="row">{lab}</th><td>{risk[key]:,}</td></tr>'
+                   for lab, key in labels)
+    return ('<table><caption>Password storage risk across breaches</caption>'
+            '<thead><tr><th scope="col">Risk level</th>'
+            '<th scope="col">Breaches</th></tr></thead>'
+            f'<tbody>{rows}</tbody></table>')
+
+
+def repo_datatypes_table(data_types):
+    rows = "".join(f'<tr><th scope="row">{esc(lab)}</th><td>{pct}%</td></tr>'
+                   for lab, pct in data_types)
+    return ('<table><caption>Most exposed data types</caption><thead><tr>'
+            '<th scope="col">Data type</th>'
+            '<th scope="col">Share of breaches</th></tr></thead>'
+            f'<tbody>{rows}</tbody></table>')
+
+
+def repo_summary_block(s, metrics, emails, date_html):
+    inds = sorted(metrics["Industry_Breaches_Count"].items(),
+                  key=lambda kv: -kv[1])
+    top = metrics["Top_Breaches"][0]
+    return (
+        '<h3><i class="fas fa-chart-bar" style="color: var(--accent-primary);'
+        ' margin-right: 8px;" aria-hidden="true"></i>Key Statistics</h3>'
+        f'<p>As of {date_html}, the XposedOrNot data breach repository indexes '
+        f'{s["total"]:,} data breaches totalling {s["total_records"]:,} '
+        f'exposed records, including {emails:,} unique email addresses and '
+        f'{int(metrics["Pastes_Records"]):,} exposed passwords.</p>'
+        f'<p>The most affected industry is {esc(inds[0][0])} with '
+        f'{inds[0][1]:,} breaches, followed by {esc(inds[1][0])} '
+        f'({inds[1][1]:,}) and {esc(inds[2][0])} ({inds[2][1]:,}). '
+        f'Just {s["pareto_count"]} breaches account for {s["pareto_pct"]}% of '
+        f'all exposed records. The largest single breach, '
+        f'{esc(top["breachid"])}, exposed {int(top["count"]):,} records.</p>')
+
+
+def repo_faq_block(s, metrics, date_text):
+    yearly = {int(k): int(v)
+              for k, v in metrics["Yearly_Breaches_Count"].items()}
+    latest_year = max(yearly)
+    inds = sorted(metrics["Industry_Breaches_Count"].items(),
+                  key=lambda kv: -kv[1])
+    top10 = metrics["Top_Breaches"]
+    top = top10[0]
+    qa = [
+        ("How many data breaches are in the XposedOrNot repository?",
+         f"As of {date_text}, the XposedOrNot data breach repository contains "
+         f"{s['total']:,} data breaches with {s['total_records']:,} exposed "
+         "records. New breaches are added as they are verified."),
+        ("What is the largest data breach in the XposedOrNot repository?",
+         f"The largest breach indexed by XposedOrNot is {top['breachid']} "
+         f"with {int(top['count']):,} exposed records. The 10 largest "
+         "breaches together account for "
+         f"{sum(int(b['count']) for b in top10):,} records."),
+        ("Which industry has the most data breaches?",
+         f"{inds[0][0]} is the most breached industry in the XposedOrNot "
+         f"repository with {inds[0][1]:,} breaches, followed by "
+         f"{inds[1][0]} ({inds[1][1]:,}) and {inds[2][0]} ({inds[2][1]:,}), "
+         f"across {len(inds)} industry sectors."),
+        ("How many breaches in XposedOrNot are verified and searchable?",
+         f"Of the {s['total']:,} breaches in the XposedOrNot repository, "
+         f"{s['verified']:,} ({s['verified_pct']}) are verified and "
+         f"{s['searchable']:,} are searchable through the free email breach "
+         "lookup."),
+        (f"How many data breaches occurred in {latest_year}?",
+         f"XposedOrNot has indexed {yearly[latest_year]:,} data breaches that "
+         f"occurred in {latest_year} so far. The repository covers breaches "
+         f"from {min(yearly)} to {latest_year}."),
+    ]
+    data = {"@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [
+                {"@type": "Question", "name": q,
+                 "acceptedAnswer": {"@type": "Answer", "text": a}}
+                for q, a in qa]}
+    return json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+
+
+def bake_repository_stats(public):
+    try:
+        req = urllib.request.Request(
+            METRICS_API,
+            headers={"User-Agent": "XposedOrNot-page-generator/1.0"})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            metrics = json.load(resp)
+    except Exception as e:
+        print(f"WARNING: metrics fetch failed ({e}), "
+              "repository stats not baked")
+        return 0
+
+    s = repo_compute_stats(public)
+    latest = max(r["addedDate"] for r in public)
+    d = datetime.fromisoformat(latest)
+    iso = latest[:10]
+    date_en = fmt_freshness_date("en", d)
+    emails = int(str(metrics.get("Pastes_Count", 0)).replace(",", "") or 0)
+    yearly = {int(k): int(v)
+              for k, v in metrics["Yearly_Breaches_Count"].items()}
+
+    values = [
+        ("breaches-count", fmt_js_number(metrics["Breaches_Count"])),
+        ("records-count", fmt_js_number(metrics["Breaches_Records"])),
+        ("emails-count", fmt_js_number(emails)),
+        ("passwords-count", fmt_js_number(metrics["Pastes_Records"])),
+        ("pareto-breaches", str(s["pareto_count"])),
+        ("pareto-percent", f"{s['pareto_pct']}%"),
+        ("verified-count", f"{s['verified']:,}"),
+        ("verified-percent", s["verified_pct"]),
+        ("searchable-count", f"{s['searchable']:,}"),
+        ("industry-count", str(len(metrics["Industry_Breaches_Count"]))),
+    ]
+    for band in ("mega", "large", "medium", "small", "tiny"):
+        values.append((f"size-{band}", f"{s['sizes'][band][0]:,}"))
+    for key in ("full", "govid", "financial"):
+        values.append((f"risk-{key}-breaches", str(s["risks"][key][0])))
+        values.append((f"risk-{key}-records",
+                       fmt_js_number(s["risks"][key][1])))
+
+    page = ROOT / "our-repository.html"
+    text = page.read_text(encoding="utf-8")
+    for elem_id, value in values:
+        text = set_inner(text, elem_id, value, page)
+    for band in ("mega", "large", "medium", "small", "tiny"):
+        rec = s["sizes"][band][1]
+        pct = rec / s["total_records"] * 100 if s["total_records"] else 0
+        pct_text = f"{pct:.1f}" if pct >= 0.1 else f"{pct:.2f}"
+        text = set_inner(text, f"size-{band}-pct",
+                         f"{pct_text}% of records", page)
+    text = set_inner(text, "dataTimestamp",
+                     f"Data as of: {d.strftime('%b %d, %Y')}", page)
+    text = set_inner(text, "yearly-trend-data", repo_yearly_table(yearly),
+                     page)
+    text = set_inner(text, "password-risk-data",
+                     repo_password_table(s["risk"]), page)
+    text = set_inner(text, "data-types-data",
+                     repo_datatypes_table(s["data_types"]), page)
+    text = set_inner(
+        text, "repo-summary",
+        repo_summary_block(s, metrics, emails,
+                           f'<time datetime="{iso}">{date_en}</time>'), page)
+    text = set_inner(text, "repo-faq-schema",
+                     repo_faq_block(s, metrics, date_en), page)
+    text = set_tbody(text, "topBreachesTable",
+                     repo_table_rows(metrics.get("Top_Breaches")), page)
+    text = set_tbody(text, "recentBreachesTable",
+                     repo_table_rows(metrics.get("Recent_Breaches")), page)
+    text = re.sub(r'("dateModified": ")[^"]*(")', rf"\g<1>{iso}\g<2>", text)
+    text = re.sub(r'("size": ")[^"]*(")',
+                  rf"\g<1>{s['total']} breaches\g<2>", text)
+    page.write_text(text, encoding="utf-8", newline="")
+    baked = 1
+
+    for loc in INDEX_LOCALES:
+        lp = ROOT / loc / "our-repository.html"
+        if not lp.exists():
+            continue
+        lt = lp.read_text(encoding="utf-8")
+        orig = lt
+        for elem_id, value in values:
+            lt = set_inner(lt, elem_id, value)
+        if lt != orig:
+            lp.write_text(lt, encoding="utf-8", newline="")
+            baked += 1
+    return baked
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--id", action="append", dest="ids", metavar="BREACHID",
@@ -669,9 +998,11 @@ def main():
     orphans = existing - {r["breachID"] for r in public}
     baked = bake_directory(public)
     stamped = bake_index_freshness(public)
+    repo = bake_repository_stats(public)
     print(f"fetched: {len(all_ids)} | rendered now: {len(to_render)} | "
           f"pages on disk: {len(existing)} | sitemap: {len(live)} URLs | "
-          f"directory pages baked: {baked} | index pages stamped: {stamped}")
+          f"directory pages baked: {baked} | index pages stamped: {stamped} | "
+          f"repository pages baked: {repo}")
     if orphans:
         print(f"WARNING: {len(orphans)} orphan page dirs no longer in the public API "
               f"list: {sorted(orphans)[:10]} - delete and 301 them")
