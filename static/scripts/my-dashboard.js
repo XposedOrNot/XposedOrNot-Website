@@ -1,6 +1,6 @@
 (function () {
     var SVGNS = "http://www.w3.org/2000/svg";
-    var API = "https://xon-api-test.xposedornot.com/v1";
+    var API = "https://api.xposedornot.com/v1";
     var email = "";
     var token = "";
     if (window.XonSession && window.XonSession.token) {
