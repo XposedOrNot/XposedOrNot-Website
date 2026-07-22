@@ -55,16 +55,66 @@
         el.style.borderLeft = tone === "error" ? "4px solid #cf222e" : "";
     }
 
+    function apiErrText(error) {
+        var body = error && error.responseJSON;
+        if (!body) return "";
+        var d = body.detail !== undefined ? body.detail : body;
+        if (typeof d === "string") return d;
+        if (!d) return "";
+        return String(d.Error || d.error || d.message || d.detail || "");
+    }
+
+    function retryAfterSecs(error) {
+        var raw = null;
+        try {
+            if (error && error.getResponseHeader) raw = error.getResponseHeader("Retry-After");
+        } catch (ex) { }
+        if (!raw && error && error.responseJSON &&
+            typeof error.responseJSON.detail === "object" && error.responseJSON.detail) {
+            raw = error.responseJSON.detail.retry_after;
+        }
+        var n = parseInt(raw, 10);
+        return (isNaN(n) || n <= 0) ? null : n;
+    }
+
+    function rateLimitHtml(error) {
+        var wait = retryAfterSecs(error);
+        var when = wait
+            ? (wait > 120 ? "in about " + Math.ceil(wait / 60) + " minutes" : "in about " + wait + " seconds")
+            : "in a minute or two";
+        return "Too many requests right now (HTTP 429). The free API allows a limited number of requests per network, shared by everyone on your connection. Try again " + when +
+            ". To stay under the limit, switch sections with the left menu instead of reloading the full page, and use your API key from the API keys section for bulk or automated lookups.";
+    }
+
+    function errorHtml(error) {
+        var status = error && error.status;
+        if (status === 0) return "The request never left your browser. Check your internet connection and any ad blocker or privacy extension, then reload this page.";
+        if (status === 400) return "The request was rejected as invalid. Reload the page and try again. If it keeps happening, request a fresh sign-in link from the <a href='login'>sign-in page</a>.";
+        if (status === 401) return "Your session has ended. <a href='login'>Sign in again</a> to get a fresh link by email.";
+        if (status === 403) {
+            if (/permission/i.test(apiErrText(error))) return "Your account does not have permission for that action.";
+            return "Access is temporarily blocked, which usually follows repeated rate-limit hits from your network (HTTP 403). Wait a few minutes, then try again. If your team shares this connection, prefer your API key for automated lookups over frequent dashboard reloads.";
+        }
+        if (status === 404) return "No data was found for this request.";
+        if (status === 429) return rateLimitHtml(error);
+        if (status >= 500) return "The server hit a temporary problem (HTTP " + status + "). Please try again in a few minutes.";
+        return "We couldn't load this data right now. Please try again in a few minutes.";
+    }
+
+    function actionErrorHtml(error, fallback) {
+        var status = error && error.status;
+        if (status === 429 || status === 403 || status === 0 || status >= 500) return errorHtml(error);
+        var msg = apiErrText(error);
+        return msg ? esc(msg) : fallback;
+    }
+
     var authRedirecting = false;
     function authRedirect(error) {
         var status = error && error.status;
-        var errText = "";
-        if (error && error.responseJSON) {
-            var d = error.responseJSON.detail || error.responseJSON;
-            errText = String(d.Error || d.error || "");
-        }
-        var isAuth = status === 400 || status === 401 || status === 403 ||
-            (status === 404 && /session/i.test(errText));
+        var errText = apiErrText(error);
+        var isAuth = status === 401 ||
+            (status === 404 && /session/i.test(errText)) ||
+            (status === 403 && /invalid (token|session)|session (expired|ended)/i.test(errText));
         if (!isAuth) return false;
         if (authRedirecting) return true;
         authRedirecting = true;
@@ -86,16 +136,6 @@
             window.location.href = "login";
         }, 3000);
         return true;
-    }
-
-    function authFailHtml(status) {
-        if (status === 400 || status === 401 || status === 403) {
-            return "Your dashboard link is invalid or has expired. Request a fresh link from the <a href='domains'>domain verification page</a>, then open this page again from that email.";
-        }
-        if (status === 429) {
-            return "Too many requests right now. The free API is rate limited per IP. Please wait a minute and try again.";
-        }
-        return "We couldn't load this data right now. Please try again in a few minutes.";
     }
 
     function yearOf(info) {
@@ -701,9 +741,11 @@
                     data: JSON.stringify({ alert_id: btn.getAttribute("data-ack"), status: "Acknowledged" })
                 }).done(function () {
                     btn.outerHTML = '<span class="pd-delivered"><i class="fas fa-check" aria-hidden="true"></i> acknowledged</span>';
-                }).fail(function () {
+                }).fail(function (xhr) {
                     btn.disabled = false;
-                    btn.textContent = "Failed, retry";
+                    btn.textContent = xhr && xhr.status === 429
+                        ? "Rate limited, retry in a minute"
+                        : "Failed, retry";
                 });
             });
         });
@@ -789,7 +831,7 @@
                 } else {
                     document.querySelectorAll(".pd-needs-domain").forEach(function (el) {
                         el.innerHTML = '<p class="pd-empty-note" style="border-left:4px solid #cf222e">' +
-                            authFailHtml(error.status) + "</p>";
+                            errorHtml(error) + "</p>";
                         el.hidden = false;
                     });
                 }
@@ -829,7 +871,7 @@
             .fail(function (error) {
                 vipLoaded = false;
                 if (authRedirect(error)) return;
-                note(document.getElementById("pd-vip-note"), authFailHtml(error.status), "error");
+                note(document.getElementById("pd-vip-note"), errorHtml(error), "error");
             });
     }
 
@@ -955,9 +997,9 @@
                 .catch(function (e) {
                     btn.disabled = false;
                     note(noteEl,
-                        e && e.status === 429 ? authFailHtml(429)
-                            : e && e.status === 404 ? "Domain not found. Check the spelling and try again."
-                                : "The phishing scan is unavailable right now. Try again later.", "error");
+                        e && e.status === 404
+                            ? "Domain not found. Check the spelling and try again."
+                            : actionErrorHtml(e, "The phishing scan is unavailable right now. Try again later."), "error");
                 });
         });
     }
@@ -979,7 +1021,7 @@
                 if (error.status === 404) {
                     renderApiKey(null);
                 } else {
-                    note(document.getElementById("pd-key-note"), authFailHtml(error.status), "error");
+                    note(document.getElementById("pd-key-note"), errorHtml(error), "error");
                 }
             });
     }
@@ -1055,7 +1097,7 @@
                 .catch(function (e) {
                     gen.disabled = false;
                     if (authRedirect(e)) return;
-                    note(noteEl, authFailHtml(e && e.status), "error");
+                    note(noteEl, errorHtml(e), "error");
                 });
         };
     }
@@ -1170,10 +1212,10 @@
                     navPill("pd-nav-breaches", "-");
                 } else {
                     if (authRedirect(error)) return;
-                    note(document.getElementById("pd-overview-note"), authFailHtml(error.status), "error");
+                    note(document.getElementById("pd-overview-note"), errorHtml(error), "error");
                     populateBreachesPanel([], []);
                     document.getElementById("pd-breaches-live").innerHTML =
-                        '<p class="pd-empty-note">' + authFailHtml(error.status) + "</p>";
+                        '<p class="pd-empty-note">' + errorHtml(error) + "</p>";
                     navPill("pd-nav-breaches", "-");
                 }
             });
@@ -1204,9 +1246,8 @@
                 .fail(function (error) {
                     btn.disabled = false;
                     btn.innerHTML = original;
-                    note(noteEl, error.status === 429
-                        ? "Rate limited. Wait a moment and try again."
-                        : "We couldn't process the Shield request right now. Try again later.", "error");
+                    note(noteEl, actionErrorHtml(error,
+                        "We couldn't process the Shield request right now. Try again later."), "error");
                 });
         });
     }
@@ -1250,9 +1291,8 @@
                     no.disabled = false;
                     yes.innerHTML = original;
                     if (authRedirect(error)) return;
-                    note(noteEl, error.status === 429
-                        ? "Too many requests right now. Wait a minute and try again."
-                        : "We couldn't start the disable request right now. Try again later.", "error");
+                    note(noteEl, actionErrorHtml(error,
+                        "We couldn't start the disable request right now. Try again later."), "error");
                 });
         });
     }
@@ -1330,16 +1370,28 @@
     }
 
     function monHandleError(xhr) {
-        var msg = (xhr.responseJSON && xhr.responseJSON.detail && xhr.responseJSON.detail.Error) || "";
-        if (xhr.status === 401) {
-            monNote("Your session expired. Please sign in again.", true);
+        var status = xhr && xhr.status;
+        if (status === 401) {
+            monNote("Your session expired. Please sign in again from a fresh email link.", true);
             return;
         }
-        if (xhr.status === 429) {
-            monNote("You're doing that too quickly. Please wait a minute, then try again.", true);
+        if (status === 429) {
+            monNote(rateLimitHtml(xhr), true);
             return;
         }
-        monNote(msg || "Something went wrong. Please try again.", true);
+        if (status === 403) {
+            monNote("Access is temporarily blocked, usually after repeated rate-limit hits from your network. Wait a few minutes, then try again.", true);
+            return;
+        }
+        if (status === 0) {
+            monNote("The request never left your browser. Check your connection and any ad blocker or privacy extension, then try again.", true);
+            return;
+        }
+        if (status >= 500) {
+            monNote("The server hit a temporary problem (HTTP " + status + "). Please try again in a few minutes.", true);
+            return;
+        }
+        monNote(apiErrText(xhr) || "Something went wrong. Please try again.", true);
     }
 
     function monNote(text, isError) {
