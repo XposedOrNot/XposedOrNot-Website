@@ -457,10 +457,19 @@
                 : "") +
             "</div>";
         html += '<p class="pd-empty-note">Want the full visual report with heat maps and attack paths? ' +
-            '<a href="data-breaches-risks.html?email=' + encodeURIComponent(email) +
-            (token ? "&token=" + encodeURIComponent(token) : "") +
-            '" target="_blank" rel="noopener">Open your detailed report<span class="sr-only"> (opens in new tab)</span></a>.</p>';
+            '<a href="data-breaches-risks.html" id="pd-report-link" target="_blank" rel="noopener">Open your detailed report<span class="sr-only"> (opens in new tab)</span></a>.</p>';
         host.innerHTML = html;
+        var reportLink = document.getElementById("pd-report-link");
+        if (reportLink) {
+            reportLink.addEventListener("click", function () {
+                var payload = JSON.stringify({ email: email, token: token || null, ts: Date.now() });
+                try {
+                    localStorage.setItem('xon_report_email', payload);
+                } catch (e) {
+                    try { sessionStorage.setItem('xon_report_email', payload); } catch (e2) {}
+                }
+            });
+        }
         var btn = document.getElementById("pd-show-all");
         if (btn) {
             btn.addEventListener("click", function () {

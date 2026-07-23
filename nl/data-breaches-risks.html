@@ -62,6 +62,31 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" as="script" />
     <link rel="preload" href="/static/scripts/data.js" as="script" />
+    <script>
+      (function () {
+        try {
+          var p = new URLSearchParams(window.location.search);
+          if (p.has("email") || p.has("token")) {
+            var e = p.get("email");
+            var t = p.get("token");
+            if (e) {
+              sessionStorage.setItem(
+                "xon_report_session",
+                JSON.stringify({ email: e.toLowerCase(), token: t || null })
+              );
+            }
+            p.delete("email");
+            p.delete("token");
+            var q = p.toString();
+            window.history.replaceState(
+              window.history.state,
+              "",
+              window.location.pathname + (q ? "?" + q : "") + window.location.hash
+            );
+          }
+        } catch (err) {}
+      })();
+    </script>
     <script src="/static/scripts/utils.js" defer></script>
     <script src="/static/scripts/libs/clippy/build/clippy.js" defer></script>
     <script async="" src="/static/scripts/analytics.js"></script>

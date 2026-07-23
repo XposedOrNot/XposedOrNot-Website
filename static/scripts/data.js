@@ -364,15 +364,104 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
     return html;
 }
 
+function showReportEmailEntry() {
+    $.LoadingOverlay("hide");
+    $('#sr-loading-status').remove();
+    $('#floating-button, #dash-nudge').hide();
+    var main = document.getElementById('main-content') || document.body;
+    main.innerHTML =
+        '<div class="xon-row2-left" role="region" aria-label="Generate your breach report" style="max-width: 520px; margin: 70px auto; padding: 32px 28px; text-align: center;">' +
+        '<h1 style="font-size: 24px; margin-bottom: 12px;">Your Data Breach Report</h1>' +
+        '<p style="margin-bottom: 20px;">For your privacy, report links no longer contain an email address. Enter your email to generate your report. It stays in your browser.</p>' +
+        '<form id="report-email-form" novalidate>' +
+        '<label for="report-email-input" class="sr-only">Email address</label>' +
+        '<input id="report-email-input" type="email" class="form-control" required placeholder="you@example.com" autocomplete="email" style="margin-bottom: 12px;" />' +
+        '<button type="submit" class="btn btn-primary btn-block">View my report</button>' +
+        '<p id="report-email-error" role="alert" style="display: none; color: #dc3545; margin-top: 10px;">Please enter a valid email address.</p>' +
+        '</form></div>';
+    document.getElementById('report-email-form').addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var value = document.getElementById('report-email-input').value.toLowerCase().trim();
+        if (!validateEmail(value)) {
+            $('#report-email-error').show();
+            return;
+        }
+        try {
+            sessionStorage.setItem('xon_report_session', JSON.stringify({ email: value, token: null }));
+        } catch (e) {}
+        window.location.reload();
+    });
+    var input = document.getElementById('report-email-input');
+    if (input) input.focus();
+}
+
 let email, token;
 
-try {
-    email = decodeURIComponent($.urlParam('email'));
-    const hasToken = $.urlParam('token');
-    token = hasToken ? decodeURIComponent(hasToken) : null;
-} catch (error) {
-    console.error('Error parsing URL parameters:', error);
-    window.location.replace("https://xposedornot.com");
+(function () {
+    var TAB_KEY = 'xon_report_session';
+    var HANDOFF_KEY = 'xon_report_email';
+
+    function fromTab() {
+        try {
+            var d = JSON.parse(sessionStorage.getItem(TAB_KEY));
+            if (d && typeof d.email === 'string' && d.email) return d;
+        } catch (e) {}
+        return null;
+    }
+
+    function fromHandoff() {
+        var raw = null;
+        try {
+            raw = localStorage.getItem(HANDOFF_KEY);
+            if (raw) localStorage.removeItem(HANDOFF_KEY);
+        } catch (e) {}
+        if (!raw) {
+            try {
+                raw = sessionStorage.getItem(HANDOFF_KEY);
+                if (raw) sessionStorage.removeItem(HANDOFF_KEY);
+            } catch (e) {}
+        }
+        if (!raw) return null;
+        try {
+            var d = JSON.parse(raw);
+            if (d && typeof d.email === 'string' && d.email && Date.now() - d.ts < 300000) {
+                return { email: d.email, token: (typeof d.token === 'string' && d.token) ? d.token : null };
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    var params = null;
+    try { params = new URLSearchParams(window.location.search); } catch (e) {}
+    var urlEmail = params ? params.get('email') : null;
+    var urlToken = params ? params.get('token') : null;
+
+    var resolved = null;
+    if (urlEmail) {
+        resolved = { email: urlEmail.toLowerCase(), token: urlToken || null };
+    } else {
+        resolved = fromTab() || fromHandoff();
+    }
+
+    if (params && (params.has('email') || params.has('token'))) {
+        params.delete('email');
+        params.delete('token');
+        var query = params.toString();
+        try {
+            window.history.replaceState(window.history.state, '', window.location.pathname + (query ? '?' + query : '') + window.location.hash);
+        } catch (e) {}
+    }
+
+    if (resolved) {
+        email = resolved.email;
+        token = resolved.token || null;
+        try { sessionStorage.setItem(TAB_KEY, JSON.stringify({ email: email, token: token })); } catch (e) {}
+    }
+})();
+
+if (!email || !validateEmail(email)) {
+    $(showReportEmailEntry);
+    throw new Error('XposedOrNot: no email available for this report, showing the entry form');
 }
 
 const emailHeader = (category, prefixHtml = '') => `<h2 class="section-heading">${prefixHtml}${escapeHtml(category)} for: ${escapeHtml(email)}</h2>`;

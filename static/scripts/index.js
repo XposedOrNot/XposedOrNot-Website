@@ -292,8 +292,15 @@ $(document).ready(function () {
     });
 
     $("#detailedReport").click(function () {
-        let url = "data-breaches-risks.html?email=" + $("#edhu").val().toLowerCase();
-        window.open(url, '_blank').opener = null;
+        const reportEmail = $("#edhu").val().toLowerCase().trim();
+        const payload = JSON.stringify({ email: reportEmail, ts: Date.now() });
+        try {
+            localStorage.setItem('xon_report_email', payload);
+        } catch (e) {
+            try { sessionStorage.setItem('xon_report_email', payload); } catch (e2) {}
+        }
+        const reportWindow = window.open("data-breaches-risks.html", '_blank');
+        if (reportWindow) reportWindow.opener = null;
     });
 });
 
