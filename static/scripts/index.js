@@ -223,8 +223,7 @@ $(document).ready(function () {
         $("#mbody, #warn, #info").hide();
         $("#succ, #spins, #alert_").show();
         $("#ssvisible").html('<h2 id="thedudalModalLabel">Searching ...</h2>');
-        updateEmailBadge(email);
-        updateBreachBadge('No breaches found!');
+        renderResultSummary('Checking your email…', 'neutral', email);
 
 
         if (!email) {
@@ -263,6 +262,33 @@ $(document).ready(function () {
     // Return focus to search input when modal closes
     $('#thedudalModal').on('hidden.bs.modal', function () {
         $("#edhu").focus();
+        resetResultState();
+    });
+
+    $('#thedudalModal').on('mousedown', function (e) {
+        if (!$(e.target).closest('.modal-content').length) {
+            $(this).modal('hide');
+        }
+    });
+
+    window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+            $('#thedudalModal').modal('hide');
+            resetResultState();
+        }
+    });
+
+    $(document).on('click', '#showAllBreaches', function () {
+        const list = document.getElementById('allBreachTags');
+        if (!list) return;
+        const expand = list.hasAttribute('hidden');
+        if (expand) {
+            list.removeAttribute('hidden');
+        } else {
+            list.setAttribute('hidden', '');
+        }
+        $(this).attr('aria-expanded', expand ? 'true' : 'false')
+            .text(expand ? 'Hide full list' : this.getAttribute('data-show-label'));
     });
 
     $("#detailedReport").click(function () {
@@ -272,12 +298,35 @@ $(document).ready(function () {
 });
 
 
-function updateEmailBadge(email) {
-    $('#data_email').html('<b>Email Checked </b> <span class="badge">' + escapeHtml(email) + '</span>');
+function renderResultSummary(headline, tone, email) {
+    $('#data_breach').attr('class', 'result-headline result-' + tone).text(headline);
+    $('#data_email').attr('class', 'result-emailline').text(email ? 'Checked: ' + email : '');
 }
 
-function updateBreachBadge(text) {
-    $('#data_breach').html('<b>Breaches Found </b> <span class="badge">' + escapeHtml(text) + '</span>');
+function resetResultState() {
+    $('#warn, #succ, #info').hide().empty();
+    $('#data_breach').attr('class', 'result-headline').empty();
+    $('#data_email').attr('class', 'result-emailline').empty();
+    $(".modal-content").css({ 'background-color': '', 'border': '' });
+}
+
+function breachTagLink(name) {
+    return '<a class="breach-tag" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '">' + escapeHtml(name) + '<span class="sr-only"> (opens in new tab)</span></a>';
+}
+
+function formatRecordCount(n) {
+    n = parseInt(n, 10);
+    if (!n || n <= 0) return '';
+    if (n >= 1e9) return (n / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
+    if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1e3) return Math.round(n / 1e3) + 'K';
+    return String(n);
+}
+
+function passwordRiskPill(risk) {
+    if (risk === 'plaintext') return ' <span class="risk-pill risk-plaintext">Plaintext passwords</span>';
+    if (risk === 'easytocrack') return ' <span class="risk-pill risk-weak">Weak password hashing</span>';
+    return '';
 }
 
 
@@ -285,10 +334,9 @@ function updateBreachBadge(text) {
 function updateModalForInvalidEmail(email) {
     $("#hhead").attr("class", "modal-header modal-header-danger");
     $("#dismiss").attr("class", "btn btn-primary");
-    updateEmailBadge(email);
-    updateBreachBadge('Not a valid email to check!');
+    renderResultSummary('Enter a valid email address', 'neutral', email);
     $("#succ, #spins, #warn, #alert_").hide();
-    $("#info").addClass("modal-header-danger").show();
+    $("#info").html(STATUS_MESSAGES.invalidEmail).show();
     $("#mbody").show();
 }
 
@@ -412,7 +460,6 @@ function processSearchResponse(response, email) {
         'background-color': '',
         'border': ''
     });
-    $("#data_email, #data_breach").removeClass('alert-danger alert-success').addClass('alert-primary');
 
     // Always stop spinning and show mbody
     $("#spins").hide();
@@ -433,15 +480,7 @@ function processSearchResponse(response, email) {
         $("#dismiss").attr("class", "btn btn-success");
         $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;" aria-hidden="true"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
 
-        $('#data_email')
-            .removeClass('alert-primary alert-danger')
-            .addClass('alert-success')
-            .html('<b>Searched Email </b> <span class="badge bg-success text-white">' + escapeHtml(email) + '</span>');
-
-        $('#data_breach')
-            .removeClass('alert-primary alert-danger')
-            .addClass('alert-success')
-            .html('<b>Breaches Found </b> <span class="badge bg-success text-white">No breaches found!</span>');
+        renderResultSummary('No breaches found', 'success', email);
 
         $("#detailedReport").hide();
         $("#warn").hide();
@@ -467,24 +506,52 @@ function processSearchResponse(response, email) {
         $("#succ").hide();
         $("#info").hide();
         $("#alert_").show();
-
-        $('#data_email')
-            .removeClass('alert-primary alert-success')
-            .addClass('alert-danger')
-            .html('<b>Searched Email </b> <span class="badge bg-danger text-white">' + escapeHtml(email) + '</span>');
-
-        warningMessage = '<p class="breach-intro">Your email appeared in these data breaches:</p><div class="breach-tags">';
         $("#detailedReport").show();
-        $('#data_breach')
-            .removeClass('alert-primary alert-success')
-            .addClass('alert-danger')
-            .html('<b>Breaches Found </b> <span class="badge bg-danger text-white">' + breachSummary.split(";").length + '</span>');
 
-        const breaches = breachSummary.split(";");
-        for (let i = 0; i < breaches.length; i++) {
-            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="Click for details" href="/breach/' + encodeURIComponent(breaches[i]) + '">' + escapeHtml(breaches[i]) + '<span class="sr-only"> (opens in new tab)</span></a>';
+        const breaches = breachSummary.split(";").filter(Boolean);
+        const total = breaches.length;
+        renderResultSummary('Found in ' + total + (total === 1 ? ' breach' : ' breaches'), 'danger', email);
+
+        const details = (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.breaches_details) || [];
+        warningMessage = '';
+
+        if (details.length > 0) {
+            const sorted = details.slice().sort(function (a, b) {
+                const yearDiff = (parseInt(b.xposed_date, 10) || 0) - (parseInt(a.xposed_date, 10) || 0);
+                if (yearDiff !== 0) return yearDiff;
+                return (b.xposed_records || 0) - (a.xposed_records || 0);
+            });
+
+            warningMessage += '<p class="breach-intro">Most recent breaches with your email:</p><ul class="breach-top-list">';
+            sorted.slice(0, 5).forEach(function (b) {
+                const meta = [];
+                if (b.xposed_date) meta.push(escapeHtml(String(b.xposed_date)));
+                const records = formatRecordCount(b.xposed_records);
+                if (records) meta.push(records + ' records');
+                warningMessage += '<li><a class="breach-top-row" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(b.breach) + '">'
+                    + '<span class="breach-top-name">' + escapeHtml(b.breach) + '</span>'
+                    + '<span class="breach-top-meta">' + meta.join(' · ') + passwordRiskPill(b.password_risk) + '</span>'
+                    + '<span class="sr-only"> (opens in new tab)</span></a></li>';
+            });
+            warningMessage += '</ul>';
+
+            const rest = sorted.slice(5);
+            if (rest.length > 0) {
+                const showLabel = 'Show all ' + total + ' breaches';
+                warningMessage += '<button type="button" id="showAllBreaches" class="breach-showall" aria-expanded="false" aria-controls="allBreachTags" data-show-label="' + showLabel + '">' + showLabel + '</button>';
+                warningMessage += '<div id="allBreachTags" class="breach-tags" hidden>';
+                rest.forEach(function (b) {
+                    warningMessage += breachTagLink(b.breach);
+                });
+                warningMessage += '</div>';
+            }
+        } else {
+            warningMessage += '<p class="breach-intro">Your email appeared in these data breaches:</p><div class="breach-tags">';
+            breaches.forEach(function (name) {
+                warningMessage += breachTagLink(name);
+            });
+            warningMessage += '</div>';
         }
-        warningMessage += '</div>';
 
         $("#warn").html(warningMessage);
         $("#warn").show();
@@ -523,8 +590,7 @@ function processSearchError(error, email) {
         $("#mbody").show();
         $("#spins").hide();
         $("#succ").html(STATUS_MESSAGES.throttled);
-        $('#data_email').html(`<b>Email Checked </b> <span class="badge">${escapeHtml(email)}</span>`);
-        updateBreachBadge('Check not completed');
+        renderResultSummary('Check not completed', 'neutral', email);
     } else if (error.status === 404) {
         $(".modal-content").css({
             'background-color': isDark ? '#131c15' : '#f8fff8',
@@ -535,15 +601,7 @@ function processSearchError(error, email) {
         $("#dismiss").attr("class", "btn btn-success");
         $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;" aria-hidden="true"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
 
-        $('#data_email')
-            .removeClass('alert-primary alert-danger')
-            .addClass('alert-success')
-            .html('<b>Searched Email </b> <span class="badge bg-success text-white">' + escapeHtml(email) + '</span>');
-
-        $('#data_breach')
-            .removeClass('alert-primary alert-danger')
-            .addClass('alert-success')
-            .html('<b>Breaches Found </b> <span class="badge bg-success text-white">No breaches found!</span>');
+        renderResultSummary('No breaches found', 'success', email);
 
         $("#detailedReport").hide();
         $("#warn").hide();
@@ -564,15 +622,7 @@ function processSearchError(error, email) {
         $("#dismiss").attr("class", "btn btn-primary");
         $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-exclamation-triangle fa-2x text-white" aria-hidden="true"></i>&nbsp;&nbsp;We Couldn\'t Check Right Now</h2>');
 
-        $('#data_email')
-            .removeClass('alert-success alert-danger')
-            .addClass('alert-primary')
-            .html('<b>Email Checked </b> <span class="badge">' + escapeHtml(email) + '</span>');
-
-        $('#data_breach')
-            .removeClass('alert-success alert-danger')
-            .addClass('alert-primary')
-            .html('<b>Breaches Found </b> <span class="badge">Check not completed</span>');
+        renderResultSummary('Check not completed', 'neutral', email);
 
         $("#detailedReport").hide();
         $("#spins, #succ, #warn").hide();
