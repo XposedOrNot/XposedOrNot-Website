@@ -310,23 +310,9 @@ function resetResultState() {
     $(".modal-content").css({ 'background-color': '', 'border': '' });
 }
 
-function breachTagLink(name) {
-    return '<a class="breach-tag" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '">' + escapeHtml(name) + '<span class="sr-only"> (opens in new tab)</span></a>';
-}
-
-function formatRecordCount(n) {
-    n = parseInt(n, 10);
-    if (!n || n <= 0) return '';
-    if (n >= 1e9) return (n / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
-    if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
-    if (n >= 1e3) return Math.round(n / 1e3) + 'K';
-    return String(n);
-}
-
-function passwordRiskPill(risk) {
-    if (risk === 'plaintext') return ' <span class="risk-pill risk-plaintext">Plaintext passwords</span>';
-    if (risk === 'easytocrack') return ' <span class="risk-pill risk-weak">Weak password hashing</span>';
-    return '';
+function breachTagLink(name, year) {
+    const yearPart = year ? ' <span class="breach-tag-year">· ' + escapeHtml(String(year)) + '</span>' : '';
+    return '<a class="breach-tag" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '">' + escapeHtml(name) + yearPart + '<span class="sr-only"> (opens in new tab)</span></a>';
 }
 
 
@@ -522,26 +508,19 @@ function processSearchResponse(response, email) {
                 return (b.xposed_records || 0) - (a.xposed_records || 0);
             });
 
-            warningMessage += '<p class="breach-intro">Most recent breaches with your email:</p><ul class="breach-top-list">';
-            sorted.slice(0, 5).forEach(function (b) {
-                const meta = [];
-                if (b.xposed_date) meta.push(escapeHtml(String(b.xposed_date)));
-                const records = formatRecordCount(b.xposed_records);
-                if (records) meta.push(records + ' records');
-                warningMessage += '<li><a class="breach-top-row" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(b.breach) + '">'
-                    + '<span class="breach-top-name">' + escapeHtml(b.breach) + '</span>'
-                    + '<span class="breach-top-meta">' + meta.join(' · ') + passwordRiskPill(b.password_risk) + '</span>'
-                    + '<span class="sr-only"> (opens in new tab)</span></a></li>';
+            warningMessage += '<p class="breach-intro">Your email appeared in these data breaches, newest first:</p><div class="breach-tags">';
+            sorted.slice(0, 10).forEach(function (b) {
+                warningMessage += breachTagLink(b.breach, b.xposed_date);
             });
-            warningMessage += '</ul>';
+            warningMessage += '</div>';
 
-            const rest = sorted.slice(5);
+            const rest = sorted.slice(10);
             if (rest.length > 0) {
                 const showLabel = 'Show all ' + total + ' breaches';
                 warningMessage += '<button type="button" id="showAllBreaches" class="breach-showall" aria-expanded="false" aria-controls="allBreachTags" data-show-label="' + showLabel + '">' + showLabel + '</button>';
                 warningMessage += '<div id="allBreachTags" class="breach-tags" hidden>';
                 rest.forEach(function (b) {
-                    warningMessage += breachTagLink(b.breach);
+                    warningMessage += breachTagLink(b.breach, b.xposed_date);
                 });
                 warningMessage += '</div>';
             }
