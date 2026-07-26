@@ -1226,6 +1226,7 @@ var j = $.ajax(url)
         }
 
         g1();
+        renderExposureTimeline(jsonResponse);
     })
     .fail(function (response) {
         if (response.status === 404) {
@@ -1260,6 +1261,7 @@ function getChartTextColor() {
 let top5ChartInstance = null;
 let passwordsChartInstance = null;
 let lineChartInstance = null;
+let timelineChartInstance = null;
 let lastHeatMapData = null;
 
 function updateChartsForDarkMode() {
@@ -1289,6 +1291,14 @@ function updateChartsForDarkMode() {
         lineChartInstance.options.scales.y.title.color = textColor;
         lineChartInstance.options.scales.y.grid.color = isDark ? '#3a3a3a' : '#e0e0e0';
         lineChartInstance.update('none');
+    }
+
+    if (timelineChartInstance) {
+        timelineChartInstance.options.scales.x.ticks.color = textColor;
+        timelineChartInstance.options.scales.x.title.color = textColor;
+        timelineChartInstance.options.scales.y.ticks.color = textColor;
+        timelineChartInstance.options.scales.x.grid.color = isDark ? '#3a3a3a' : '#e0e0e0';
+        timelineChartInstance.update('none');
     }
 }
 
@@ -2655,6 +2665,145 @@ function generateNextSteps(breachesDetails, jsonResponse) {
     steps.forEach(function (step) { html += '<li>' + step + '</li>'; });
     html += '</ol></div>';
     return html;
+}
+
+function renderExposureTimeline(response) {
+    var bcCanvas = document.getElementById('bc');
+    var host = bcCanvas ? bcCanvas.closest('.container') : null;
+    var anchor = null;
+    if (!host) {
+        anchor = document.querySelector('.breach-timeline-section #scrollable-container');
+        if (!anchor) return;
+    }
+    if (typeof Chart === 'undefined' || document.getElementById('xr-exposure-timeline')) return;
+    var all = collectVisibleBreaches(response);
+    var items = [];
+    all.forEach(function (breach) {
+        var year = parseInt(breach.xposed_date, 10);
+        if (!year) return;
+        var addedDate = new Date(breach.added || '');
+        var hasAdded = !isNaN(addedDate.getTime());
+        var addedDec = hasAdded ? addedDate.getFullYear() + addedDate.getMonth() / 12 : null;
+        items.push({
+            name: breach.breach,
+            year: year,
+            end: Math.max(addedDec === null ? year : addedDec, year + 0.05),
+            addedLabel: hasAdded ? formatAddedDate(breach.added) : '',
+            risk: String(breach.password_risk || '').toLowerCase()
+        });
+    });
+    if (!items.length) return;
+    items.sort(function (a, b) { return a.year - b.year || a.end - b.end; });
+    var MAX_ROWS = 30;
+    var truncated = 0;
+    if (items.length > MAX_ROWS) {
+        truncated = items.length - MAX_ROWS;
+        items = items.slice(items.length - MAX_ROWS);
+    }
+
+    var riskColors = {
+        plaintext: { fill: 'rgba(255, 99, 132, 0.8)', border: 'rgb(255, 99, 132)', label: 'Password exposed in plain text' },
+        easytocrack: { fill: 'rgba(255, 159, 64, 0.8)', border: 'rgb(255, 159, 64)', label: 'Password easy to crack' },
+        other: { fill: 'rgba(54, 162, 235, 0.8)', border: 'rgb(54, 162, 235)', label: 'No password or strongly hashed' }
+    };
+    function riskKey(risk) {
+        return riskColors[risk] ? risk : 'other';
+    }
+
+    var minYear = items[0].year;
+    var maxEnd = items.reduce(function (m, item) { return Math.max(m, item.end); }, minYear);
+    var textColor = getChartTextColor();
+    var isDark = isDarkModeActive();
+    var height = Math.max(200, items.length * 32 + 80);
+
+    var usedKeys = {};
+    items.forEach(function (item) { usedKeys[riskKey(item.risk)] = true; });
+    var legendHtml = '<div class="xr-tl-legend">';
+    ['plaintext', 'easytocrack', 'other'].forEach(function (key) {
+        if (usedKeys[key]) {
+            legendHtml += '<span class="xr-tl-legend-item"><span class="xr-tl-dot" style="background:' + riskColors[key].border + '"></span>' + riskColors[key].label + '</span>';
+        }
+    });
+    legendHtml += '</div>';
+
+    var wrap = document.createElement('div');
+    wrap.className = 'xr-tl-wrap';
+    wrap.innerHTML =
+        '<h3 class="xr-tl-title">From Breach to Discovery</h3>' +
+        '<p class="xr-tl-sub">Each bar starts in the year a breach happened and ends when it was added to XposedOrNot. A long bar means your data circulated for years before you could be warned.</p>' +
+        (truncated ? '<p class="xr-tl-note">Showing the ' + MAX_ROWS + ' most recent of your ' + (items.length + truncated) + ' breaches.</p>' : '') +
+        '<div class="xr-tl-canvas" style="height:' + height + 'px"><canvas id="xr-exposure-timeline" role="img" aria-label="Timeline of your breaches from ' + minYear + ' to ' + Math.ceil(maxEnd) + '. Each bar spans from the breach year to the date the breach was added to XposedOrNot."></canvas></div>' +
+        legendHtml;
+    if (host) {
+        host.appendChild(wrap);
+    } else {
+        anchor.parentNode.insertBefore(wrap, anchor);
+    }
+
+    timelineChartInstance = new Chart(document.getElementById('xr-exposure-timeline'), {
+        type: 'bar',
+        data: {
+            labels: items.map(function (item) { return item.name; }),
+            datasets: [{
+                data: items.map(function (item) { return [item.year, item.end]; }),
+                backgroundColor: items.map(function (item) { return riskColors[riskKey(item.risk)].fill; }),
+                borderColor: items.map(function (item) { return riskColors[riskKey(item.risk)].border; }),
+                borderWidth: 1,
+                borderSkipped: false,
+                borderRadius: 4,
+                minBarLength: 8,
+                barPercentage: 0.7
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function (ctx) {
+                            var item = items[ctx.dataIndex];
+                            var lines = ['Breached in ' + item.year];
+                            lines.push(item.addedLabel ? 'Added to XposedOrNot: ' + item.addedLabel : 'Date added not recorded');
+                            lines.push(riskColors[riskKey(item.risk)].label);
+                            return lines;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'linear',
+                    min: minYear - 1,
+                    max: Math.floor(maxEnd) + 1,
+                    ticks: {
+                        color: textColor,
+                        stepSize: 1,
+                        font: { size: 12, weight: 'bold' },
+                        callback: function (value) { return Number.isInteger(value) ? value : ''; }
+                    },
+                    grid: { color: isDark ? '#3a3a3a' : '#e0e0e0' },
+                    title: {
+                        display: true,
+                        text: 'Year',
+                        color: textColor,
+                        font: { size: 12, weight: 'bold' }
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: textColor,
+                        autoSkip: false,
+                        font: { size: 12, weight: 'bold' }
+                    },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
