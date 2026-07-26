@@ -57,7 +57,7 @@ function showVerificationError(domain, errorDetail) {
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h3 class="verification-error-title">Domain Not Verified</h3>
-                <p class="verification-error-domain">${domain}</p>
+                <p class="verification-error-domain"></p>
                 <p class="verification-error-message">This domain has not been verified for your account. Please verify domain ownership to access the detailed phishing report.</p>
                 <div class="verification-error-actions">
                     <a href="${verifyUrl}" class="btn-verify">
@@ -69,6 +69,7 @@ function showVerificationError(domain, errorDetail) {
                 </div>
             </div>
         `;
+        noteDiv.querySelector('.verification-error-domain').textContent = domain;
     }
 }
 
@@ -399,7 +400,8 @@ $(document).ready(function () {
 
 
     const domain = getUrlParameter('domain');
-    if (domain) {
+    const domainRegex = /^([a-z0-9]+(-+[a-z0-9]+)*\.)+[a-z]{2,}$/;
+    if (domain && domainRegex.test(domain)) {
         checkDomain(domain);
     } else {
         window.location.href = 'index.html';
