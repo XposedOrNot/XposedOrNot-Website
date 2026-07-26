@@ -354,13 +354,13 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
 
     html += '</div>';
 
-    html += generateNextSteps(breachesDetails, jsonResponse);
-
     html += '<div class="risk-cta">';
     html += '<p>Don\'t wait for the next breach to find out.</p>';
     html += '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal">';
     html += '<i class="fa fa-bell" aria-hidden="true"></i>&nbsp; Get Free Breach Alerts</button>';
     html += '</div>';
+
+    html += generateNextSteps(breachesDetails, jsonResponse);
 
     html += '</div>';
     return html;
@@ -2649,9 +2649,9 @@ function generateNextSteps(breachesDetails, jsonResponse) {
         .map(function (key) { return escapeHtml(classes[key].toLowerCase()); });
     var knownBits = friendly.length ? friendly.join(', ') : 'email address';
     steps.push('<strong>Expect targeted phishing.</strong> Attackers now hold details like your ' + knownBits + ', so be suspicious of messages that quote them or name these breaches, and never use password reset links you did not request.');
-    steps.push('<strong>Get alerted about future breaches.</strong> Turn on free breach alerts below and we will notify you the moment your email shows up in a new breach.');
+    steps.push('<strong>Get alerted about future breaches.</strong> Use the Get Free Breach Alerts button above and we will notify you the moment your email shows up in a new breach.');
 
-    var html = '<div class="xr-next-steps"><h3>Your Next Steps</h3><ol>';
+    var html = '<div class="xr-next-steps"><h3><i class="fas fa-tasks" aria-hidden="true"></i> Your Next Steps</h3><ol>';
     steps.forEach(function (step) { html += '<li>' + step + '</li>'; });
     html += '</ol></div>';
     return html;
