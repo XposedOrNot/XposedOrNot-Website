@@ -79,7 +79,8 @@ $.LoadingOverlaySetup({
 
 $.LoadingOverlay("show");
 
-$('body').append('<div id="sr-loading-status" class="sr-only" aria-live="assertive" role="status">Loading your breach report...</div>');
+$('body').append('<div id="sr-loading-status" class="sr-only" aria-live="polite" role="status">Loading your breach report...</div>');
+$('#risk-analysis, #details, #industry, #attack-paths-content').removeAttr('aria-live');
 
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -379,7 +380,7 @@ function showReportEmailEntry() {
         '<label for="report-email-input" class="sr-only">Email address</label>' +
         '<input id="report-email-input" type="email" class="form-control" required placeholder="you@example.com" autocomplete="email" style="margin-bottom: 12px;" />' +
         '<button type="submit" class="btn btn-primary btn-block">View my report</button>' +
-        '<p id="report-email-error" role="alert" style="display: none; color: #dc3545; margin-top: 10px;">Please enter a valid email address.</p>' +
+        '<p id="report-email-error" role="alert" class="xr-form-error" style="display: none; margin-top: 10px;">Please enter a valid email address.</p>' +
         '</form></div>';
     document.getElementById('report-email-form').addEventListener('submit', function (ev) {
         ev.preventDefault();
@@ -469,7 +470,7 @@ if (!email || !validateEmail(email)) {
 const emailHeader = (category, prefixHtml = '') => `<h2 class="section-heading">${prefixHtml}${escapeHtml(category)} for: ${escapeHtml(email)}</h2>`;
 
 $("#email").html(emailHeader("Breach Summary"));
-$("#email_sensitive").html(emailHeader('Sensitive Data Breaches', '<span class="help-icon" tabindex="0" role="button" aria-label="Sensitive breach explanation" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed."><i class="fas fa-question-circle" aria-hidden="true"></i></span>&nbsp;&nbsp; '));
+$("#email_sensitive").html(emailHeader('Sensitive Data Breaches', '<span class="help-icon" tabindex="0" aria-label="Sensitive breach explanation" data-toggle="tooltip" data-placement="auto" title="Breaches that cannot be publicly searched considering the sensitivity of the data exposed."><i class="fas fa-question-circle" aria-hidden="true"></i></span>&nbsp;&nbsp; '));
 $("#data").html(emailHeader("What Data Was Exposed"));
 
 $("#db-sensitive").show();
@@ -1101,7 +1102,10 @@ var j = $.ajax(url)
                             }
                         },
                         datalabels: {
-                            color: getChartTextColor(),
+                            color: '#ffffff',
+                            backgroundColor: 'rgba(15, 18, 31, 0.75)',
+                            borderRadius: 4,
+                            padding: { top: 3, bottom: 3, left: 6, right: 6 },
                             font: {
                                 weight: 'bold',
                                 size: 11
@@ -1123,6 +1127,9 @@ var j = $.ajax(url)
                     }
                 }
             });
+
+            top5.setAttribute('aria-label', 'Top 5 data breaches by exposed records: ' +
+                breaches_id.map(function (name, idx) { return name + ', ' + breaches_cnt[idx].toLocaleString() + ' records'; }).join('; ') + '.');
 
             var passwords = document.getElementById('passwords');
 
@@ -1187,7 +1194,10 @@ var j = $.ajax(url)
                             }
                         },
                         datalabels: {
-                            color: getChartTextColor(),
+                            color: '#ffffff',
+                            backgroundColor: 'rgba(15, 18, 31, 0.75)',
+                            borderRadius: 4,
+                            padding: { top: 3, bottom: 3, left: 6, right: 6 },
                             font: {
                                 weight: 'bold',
                                 size: 11
@@ -1209,6 +1219,9 @@ var j = $.ajax(url)
                     }
                 }
             });
+            passwords.setAttribute('aria-label', 'Password risk distribution: ' + plaintext + ' exposed as plain text, ' +
+                easy + ' easy to crack, ' + hard + ' well protected, ' + unknown + ' unknown.');
+
             $("#data_breach").append(nn);
             $("#details").append(breachesDetailsHtml);
         }
@@ -1272,13 +1285,11 @@ function updateChartsForDarkMode() {
 
     if (top5ChartInstance) {
         top5ChartInstance.options.plugins.legend.labels.color = textColor;
-        top5ChartInstance.options.plugins.datalabels.color = textColor;
         top5ChartInstance.update('none');
     }
 
     if (passwordsChartInstance) {
         passwordsChartInstance.options.plugins.legend.labels.color = textColor;
-        passwordsChartInstance.options.plugins.datalabels.color = textColor;
         passwordsChartInstance.update('none');
     }
 
@@ -1422,10 +1433,36 @@ function g1() {
 
     var ctx = document.getElementById('bc').getContext('2d');
     lineChartInstance = new Chart(ctx, config);
+    var yearCounts = [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24, by25, by26];
+    var yearSummary = chartLabels
+        .map(function (label, idx) { return { label: label, count: yearCounts[idx] }; })
+        .filter(function (item) { return item.count > 0; })
+        .map(function (item) { return item.label + ': ' + item.count; })
+        .join(', ');
+    if (yearSummary) {
+        ctx.canvas.setAttribute('aria-label', 'Yearly trend of your data breaches. ' + yearSummary + '.');
+    }
 }
 
 $(window).on("load", function () {
 });
+
+var _alertModalTrigger = null;
+
+function announceAlertStatus(text) {
+    var region = document.getElementById('xr-alert-status');
+    if (!region) {
+        region = document.createElement('div');
+        region.id = 'xr-alert-status';
+        region.className = 'sr-only';
+        region.setAttribute('role', 'status');
+        region.setAttribute('aria-live', 'polite');
+        var modal = document.getElementById('alertMeModal');
+        (modal || document.body).appendChild(region);
+    }
+    region.textContent = '';
+    setTimeout(function () { region.textContent = text; }, 100);
+}
 
 $('#alertMeModal').on('hidden.bs.modal', function () {
     $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
@@ -1434,6 +1471,10 @@ $('#alertMeModal').on('hidden.bs.modal', function () {
     $('#message-text').val("We'll notify you instantly if your email appears in any new data breach. Verify your email and activate your FREE subscription by clicking 'Start Monitoring'.");
     $("#alertMe").show();
     $("#alertMeClose, #a_succ").hide();
+    if (_alertModalTrigger && document.contains(_alertModalTrigger)) {
+        _alertModalTrigger.focus();
+    }
+    _alertModalTrigger = null;
 });
 
 let turnstileLoaded = false;
@@ -1448,6 +1489,7 @@ function loadTurnstile() {
 }
 
 $('#alertMeModal').on('show.bs.modal', function (event) {
+    _alertModalTrigger = (event.relatedTarget && event.relatedTarget.focus) ? event.relatedTarget : document.activeElement;
     loadTurnstile();
     var button = $(event.relatedTarget)
     var recipient = button.data('whatever')
@@ -1457,7 +1499,7 @@ $('#alertMeModal').on('show.bs.modal', function (event) {
 })
 $(document).ready(function () {
     $('#alertMeModal').on('keydown', function (event) {
-        if (event.keyCode === 13) {
+        if (event.keyCode === 13 && event.target && event.target.id === 'recipient-name') {
             event.preventDefault();
             $('#alertMe').click();
         }
@@ -1467,7 +1509,7 @@ $(document).ready(function () {
         var isValid = validateEmail(email);
         var $errorMsg = $('#email-validation-error');
         if ($errorMsg.length === 0) {
-            $(this).after('<div id="email-validation-error" role="alert" style="color: #c82333; font-size: 13px; margin-top: 4px; display: none;">Please enter a valid email address.</div>');
+            $(this).after('<div id="email-validation-error" role="alert" class="xr-form-error" style="display: none;">Please enter a valid email address.</div>');
             $(this).attr('aria-describedby', 'email-validation-error');
             $errorMsg = $('#email-validation-error');
         }
@@ -1489,6 +1531,7 @@ $(document).ready(function () {
 
         if (!inputValue || !validateEmail(inputValue)) {
             $('#message-text').val("Please enter a valid email address to receive alerts.");
+            announceAlertStatus("Please enter a valid email address to receive alerts.");
             $("#h2head").attr("class", "modal-header-danger");
             $("#recipient-name").css("border", "2px solid #c82333").focus();
             return;
@@ -1505,6 +1548,8 @@ $(document).ready(function () {
 
         $("#alertMe_i1").addClass("fa fa-spinner fa-spin");
         $("#alertMe_i2").removeClass("fa fa-bell ring");
+        announceAlertStatus("Sending verification email...");
+        $("#alertMe").attr('aria-busy', 'true');
 
         var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
         var headers = turnstileResponse ? { 'X-Turnstile-Token': turnstileResponse } : {};
@@ -1521,9 +1566,10 @@ $(document).ready(function () {
         })
             .done(function () {
                 $('#message-text').val(successMessage);
+                announceAlertStatus(successMessage);
                 $("#h2head").attr("class", "modal-header-success");
-                $("#alertMe").hide();
-                $("#alertMeClose").show();
+                $("#alertMe").removeAttr('aria-busy').hide();
+                $("#alertMeClose").show().focus();
                 $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
                 $("#alertMe_i2").addClass("fa fa-bell ring");
             })
@@ -1546,9 +1592,10 @@ $(document).ready(function () {
                 }
 
                 $('#message-text').val(message);
+                announceAlertStatus(message);
                 $("#h2head").attr("class", headerClass);
-                $("#alertMe").hide();
-                $("#alertMeClose").show();
+                $("#alertMe").removeAttr('aria-busy').hide();
+                $("#alertMeClose").show().focus();
                 $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
                 $("#alertMe_i2").addClass("fa fa-bell ring");
             });
@@ -1654,12 +1701,6 @@ $(document).on('mouseleave', function (e) {
     }
 });
 
-$(window).on('beforeunload', function () {
-    if (!leaving) {
-        $('#alertMeModal').modal('show');
-        return false;
-    }
-});
 
 function isEmpty(value) {
     return (value == null || (typeof value === "string" && value.trim().length === 0));
@@ -2251,12 +2292,15 @@ function drawHeatMap(xposedData) {
             .round(true)(root);
 
         container.innerHTML = '';
+        container.removeAttribute('role');
+        container.removeAttribute('aria-label');
 
         var svg = d3.select(container)
             .append('svg')
             .attr('viewBox', '0 0 ' + width + ' ' + height)
             .attr('preserveAspectRatio', 'xMidYMid meet')
-            .attr('role', 'presentation');
+            .attr('role', 'list')
+            .attr('aria-label', 'Treemap showing proportional exposure of each data type across breaches');
 
         var cells = svg.selectAll('g')
             .data(root.leaves())
@@ -2581,8 +2625,14 @@ function attachBreachSort(tbodyId, list, isSensitive, selectId) {
             '<option value="added">Recently added first</option>' +
             '</select></div>'
         );
+        var sortLabels = {
+            newest: 'Table sorted by newest breach first.',
+            oldest: 'Table sorted by oldest breach first.',
+            added: 'Table sorted by recently added first.'
+        };
         $('#' + selectId).on('change', function () {
             renderSortedBreachTable(tbodyId, list, this.value, isSensitive);
+            $('#sr-loading-status').text(sortLabels[this.value] || 'Table sorted.');
         });
     }
     renderSortedBreachTable(tbodyId, list, 'newest', isSensitive);
@@ -2808,10 +2858,13 @@ function renderExposureTimeline(response) {
 
 document.addEventListener('DOMContentLoaded', function() {
     var footerGroups = document.querySelectorAll('.footer-group h3');
+    var footerAccordionActive = window.innerWidth <= 768;
     footerGroups.forEach(function(header) {
-        header.setAttribute('tabindex', '0');
-        header.setAttribute('role', 'button');
-        header.setAttribute('aria-expanded', 'false');
+        if (footerAccordionActive) {
+            header.setAttribute('tabindex', '0');
+            header.setAttribute('role', 'button');
+            header.setAttribute('aria-expanded', 'false');
+        }
 
         function toggleGroup() {
             if (window.innerWidth <= 768) {

@@ -180,10 +180,18 @@
 
     function initNav() {
         var links = document.querySelectorAll(".pd-nav a[data-panel]");
-        function show(name) {
+        function show(name, moveFocus) {
             document.querySelectorAll(".pd-panel").forEach(function (p) {
                 p.hidden = p.id !== "panel-" + name;
             });
+            if (moveFocus) {
+                var panel = document.getElementById("panel-" + name);
+                var panelTitle = panel && panel.querySelector(".pd-panel-title");
+                if (panelTitle) {
+                    panelTitle.setAttribute("tabindex", "-1");
+                    panelTitle.focus();
+                }
+            }
             links.forEach(function (l) {
                 if (l.getAttribute("data-panel") === name) {
                     l.setAttribute("aria-current", "page");
@@ -204,7 +212,7 @@
         }
         links.forEach(function (l) {
             l.addEventListener("click", function () {
-                show(l.getAttribute("data-panel"));
+                show(l.getAttribute("data-panel"), true);
             });
         });
         var start = location.hash.replace("#", "");
@@ -327,7 +335,7 @@
             ["PlainText", "Plaintext", "#cf222e"],
             ["EasyToCrack", "Easy to crack", "#e36209"],
             ["StrongHash", "Strong hash", "#2e9e5b"],
-            ["Unknown", "Unknown", "#94a6bd"]
+            ["Unknown", "Unknown", "#64748b"]
         ];
         var total = 0;
         order.forEach(function (o) { total += ps[o[0]] || 0; });
@@ -587,11 +595,11 @@
         var summary = (domainData && domainData.Domain_Summary) || {};
         var domains = Object.keys(summary);
         var html = domains.length > 1
-            ? '<button type="button" data-dom="all" class="pd-domchip' + (selectedDomain === "all" ? " pd-domchip-on" : "") + '">All domains</button>'
+            ? '<button type="button" data-dom="all" class="pd-domchip' + (selectedDomain === "all" ? " pd-domchip-on" : "") + '" aria-pressed="' + (selectedDomain === "all" ? "true" : "false") + '">All domains</button>'
             : "";
         domains.forEach(function (d) {
             html += '<button type="button" data-dom="' + esc(d) + '" class="pd-domchip' +
-                (selectedDomain === d ? " pd-domchip-on" : "") + '">' + esc(d) +
+                (selectedDomain === d ? " pd-domchip-on" : "") + '" aria-pressed="' + (selectedDomain === d ? "true" : "false") + '">' + esc(d) +
                 ' <span class="pd-navcount">' + summary[d] + "</span></button>";
         });
         host.innerHTML = html;
@@ -740,6 +748,7 @@
                 "</div></li>";
         }).join("") + "</ul>";
         host.querySelectorAll("[data-ack]").forEach(function (btn) {
+            btn.setAttribute("aria-live", "polite");
             btn.addEventListener("click", function () {
                 btn.disabled = true;
                 $.ajax({
@@ -749,7 +758,13 @@
                     contentType: "application/json",
                     data: JSON.stringify({ alert_id: btn.getAttribute("data-ack"), status: "Acknowledged" })
                 }).done(function () {
-                    btn.outerHTML = '<span class="pd-delivered"><i class="fas fa-check" aria-hidden="true"></i> acknowledged</span>';
+                    var span = document.createElement("span");
+                    span.className = "pd-delivered";
+                    span.setAttribute("role", "status");
+                    span.setAttribute("tabindex", "-1");
+                    span.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> acknowledged';
+                    btn.replaceWith(span);
+                    span.focus();
                 }).fail(function (xhr) {
                     btn.disabled = false;
                     btn.textContent = xhr && xhr.status === 429
@@ -939,11 +954,14 @@
             });
         }
         document.querySelectorAll(".pd-vip-filter button").forEach(function (btn) {
+            btn.setAttribute("aria-pressed", btn.classList.contains("pd-domchip-on") ? "true" : "false");
             btn.onclick = function () {
                 document.querySelectorAll(".pd-vip-filter button").forEach(function (b) {
                     b.classList.remove("pd-domchip-on");
+                    b.setAttribute("aria-pressed", "false");
                 });
                 btn.classList.add("pd-domchip-on");
+                btn.setAttribute("aria-pressed", "true");
                 renderVip();
             };
         });
@@ -1251,6 +1269,10 @@
                             ". This email is hidden from public breach searches in XposedOrNot."
                         : "A confirmation email is on its way to " + esc(email) +
                             ". Privacy Shield turns on when you click the link in that email.");
+                    if (already && noteEl) {
+                        noteEl.setAttribute("tabindex", "-1");
+                        noteEl.focus();
+                    }
                 })
                 .fail(function (error) {
                     btn.disabled = false;
@@ -1270,8 +1292,11 @@
         var noteEl = document.getElementById("pd-alert-note");
         if (!disableBtn || !confirmBox || !yes || !no) return;
 
+        disableBtn.setAttribute("aria-controls", "pd-alert-confirm");
+        disableBtn.setAttribute("aria-expanded", "false");
         disableBtn.addEventListener("click", function () {
             confirmBox.hidden = false;
+            disableBtn.setAttribute("aria-expanded", "true");
             if (title) {
                 title.setAttribute("tabindex", "-1");
                 title.focus();
@@ -1279,7 +1304,15 @@
         });
         no.addEventListener("click", function () {
             confirmBox.hidden = true;
+            disableBtn.setAttribute("aria-expanded", "false");
             disableBtn.focus();
+        });
+        confirmBox.addEventListener("keydown", function (ev) {
+            if (ev.key === "Escape" && !yes.disabled) {
+                confirmBox.hidden = true;
+                disableBtn.setAttribute("aria-expanded", "false");
+                disableBtn.focus();
+            }
         });
         yes.addEventListener("click", function () {
             var original = yes.innerHTML;
@@ -1290,10 +1323,15 @@
                 .done(function () {
                     confirmBox.hidden = true;
                     disableBtn.disabled = true;
+                    disableBtn.setAttribute("aria-expanded", "false");
                     disableBtn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Confirmation sent';
                     note(noteEl, "Confirmation email sent to <strong>" + esc(email) +
                         "</strong>. Your alerts and dashboard access stay on until you click the link " +
                         "in that email. Changed your mind? Just ignore that email and nothing changes.");
+                    if (noteEl) {
+                        noteEl.setAttribute("tabindex", "-1");
+                        noteEl.focus();
+                    }
                 })
                 .fail(function (error) {
                     yes.disabled = false;
@@ -1462,7 +1500,7 @@
                     : '<span class="pd-badge pd-badge-warn">' + badgeText + "</span>")
                 : '<span class="pd-badge pd-badge-ok">No breaches</span>';
             var shield = m.shield_override
-                ? '<span class="pd-badge pd-badge-shield" title="Consented despite Privacy Shield"><i class="fas fa-shield-alt" aria-hidden="true"></i></span>'
+                ? '<span class="pd-badge pd-badge-shield" role="img" aria-label="Consented despite Privacy Shield" title="Consented despite Privacy Shield"><i class="fas fa-shield-alt" aria-hidden="true"></i></span>'
                 : "";
             var right = shield + badge +
                 '<button type="button" class="pd-linkbtn pd-mon-remove" data-action="remove" data-email="' + safe + '">Remove</button>';
