@@ -354,6 +354,8 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
 
     html += '</div>';
 
+    html += generateNextSteps(breachesDetails, jsonResponse);
+
     html += '<div class="risk-cta">';
     html += '<p>Don\'t wait for the next breach to find out.</p>';
     html += '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal">';
@@ -550,19 +552,7 @@ var j = $.ajax(url)
                 } else {
                     $("#db-sensitive").hide();
                     $("#sensitive-data-table").show();
-                    let tableRowsHtml = "";
-                    for (var i = 0; i < sensitiveBreaches.length; i++) {
-                        tableRowsHtml += '<tr>' +
-                            '<th scope="row" style="text-align: center;"><span role="img" aria-label="Sensitive breach">🔥</span> ' + escapeHtml(sensitiveBreaches[i].breach) + '<br>' +
-                            '<img src="' + sensitiveBreaches[i].logo + '" alt="' + escapeHtml(sensitiveBreaches[i].breach) + ' logo" style="width: 50px; height: 50px;">' +
-                            '</th>' +
-                            '<td><div class="text">' + escapeHtml(sensitiveBreaches[i].details) + '</div>' +
-                            '<button type="button" class="see-more" aria-expanded="false">See More</button></td>' +
-                            '<td style="text-align: right;">' + parseInt(sensitiveBreaches[i].xposed_records).toLocaleString() +
-                            (formatAddedDate(sensitiveBreaches[i].added, true) ? '<br><span class="xr-added-pill">Added ' + formatAddedDate(sensitiveBreaches[i].added, true) + '</span>' : '') + '</td>' +
-                            '</tr>';
-                    }
-                    $("#data_breach_sensitive").html(tableRowsHtml);
+                    attachBreachSort('data_breach_sensitive', sensitiveBreaches, true, 'xr-sort-sensitive');
                 }
             } else {
                 $("#db-sensitive").show();
@@ -622,10 +612,13 @@ var j = $.ajax(url)
         }
 
         renderRiskBand(Math.round(riskScore));
+        renderExposureSummary(jsonResponse);
 
         function renderRiskBand(score) {
             var el = document.getElementById('chart_div');
             if (!el) return;
+            el.removeAttribute('role');
+            el.removeAttribute('aria-label');
             var clamped = Math.max(0, Math.min(100, score));
             el.innerHTML =
                 '<div class="xr-riskband-wrap">' +
@@ -990,22 +983,11 @@ var j = $.ajax(url)
 
             breachesDetailsHtml = ''
             if (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.breaches_details) {
-                let breachesTable = "";
                 const regularBreaches = jsonResponse.ExposedBreaches.breaches_details;
+                attachBreachSort('data_breach', regularBreaches, false, 'xr-sort-regular');
                 for (var i = 0; i < regularBreaches.length; i++) {
-                    breachesTable += '<tr>' +
-                        '<th scope="row" style="text-align: center;">' + escapeHtml(regularBreaches[i].breach) + '<br>' +
-                        '<img src="' + regularBreaches[i].logo + '" alt="' + escapeHtml(regularBreaches[i].breach) + ' logo" style="width: 50px; height: 50px;">' +
-                        '</th>' +
-                        '<td><div class="text">' + escapeHtml(regularBreaches[i].details) + '</div>' +
-                        '<button type="button" class="see-more" aria-expanded="false">See More</button></td>' +
-                        '<td style="text-align: right;">' + parseInt(regularBreaches[i].xposed_records).toLocaleString() +
-                        (formatAddedDate(regularBreaches[i].added, true) ? '<br><span class="xr-added-pill">Added ' + formatAddedDate(regularBreaches[i].added, true) + '</span>' : '') + '</td>' +
-                        '</tr>';
-
                     breachesDetailsHtml += generateBreachDetailHtml(regularBreaches[i], false);
                 }
-                $("#data_breach").html(breachesTable);
             }
 
             if (token && jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.sensitive_breaches_details) {
@@ -2530,6 +2512,148 @@ function generateBreachDetailHtml(breach, isSensitive) {
     }
     html += isSensitive ? "<span class='notser'>Sensitive Data Breach</span>" : "<span class='notser'>Data Breach</span>";
     html += "</div><hr>";
+    return html;
+}
+
+function buildBreachRowHtml(breach, isSensitive) {
+    var prefix = isSensitive ? '<span role="img" aria-label="Sensitive breach">🔥</span> ' : '';
+    var added = formatAddedDate(breach.added, true);
+    return '<tr>' +
+        '<th scope="row" style="text-align: center;">' + prefix + escapeHtml(breach.breach) + '<br>' +
+        '<img src="' + breach.logo + '" alt="' + escapeHtml(breach.breach) + ' logo" style="width: 50px; height: 50px;">' +
+        '</th>' +
+        '<td><div class="text">' + escapeHtml(breach.details) + '</div>' +
+        '<button type="button" class="see-more" aria-expanded="false">See More</button></td>' +
+        '<td style="text-align: right;">' + parseInt(breach.xposed_records).toLocaleString() +
+        (added ? '<br><span class="xr-added-pill">Added ' + added + '</span>' : '') + '</td>' +
+        '</tr>';
+}
+
+function breachAddedTime(breach) {
+    var t = new Date(breach.added || 0).getTime();
+    return isNaN(t) ? 0 : t;
+}
+
+function sortBreaches(list, mode) {
+    var arr = list.slice();
+    if (mode === 'added') {
+        arr.sort(function (a, b) {
+            return breachAddedTime(b) - breachAddedTime(a);
+        });
+    } else {
+        var dir = mode === 'oldest' ? 1 : -1;
+        arr.sort(function (a, b) {
+            var diff = (parseInt(a.xposed_date, 10) || 0) - (parseInt(b.xposed_date, 10) || 0);
+            if (diff === 0) diff = breachAddedTime(a) - breachAddedTime(b);
+            return dir * diff;
+        });
+    }
+    return arr;
+}
+
+function renderSortedBreachTable(tbodyId, list, mode, isSensitive) {
+    var rows = '';
+    sortBreaches(list, mode).forEach(function (breach) {
+        rows += buildBreachRowHtml(breach, isSensitive);
+    });
+    $('#' + tbodyId).html(rows);
+}
+
+function attachBreachSort(tbodyId, list, isSensitive, selectId) {
+    var table = $('#' + tbodyId).closest('table');
+    if (table.length && list.length > 1 && !document.getElementById(selectId)) {
+        table.before(
+            '<div class="xr-sort">' +
+            '<label for="' + selectId + '">Sort by</label>' +
+            '<select id="' + selectId + '" class="xr-sort-select">' +
+            '<option value="newest" selected>Newest breach first</option>' +
+            '<option value="oldest">Oldest breach first</option>' +
+            '<option value="added">Recently added first</option>' +
+            '</select></div>'
+        );
+        $('#' + selectId).on('change', function () {
+            renderSortedBreachTable(tbodyId, list, this.value, isSensitive);
+        });
+    }
+    renderSortedBreachTable(tbodyId, list, 'newest', isSensitive);
+}
+
+function collectVisibleBreaches(response) {
+    var all = [];
+    if (response && response.ExposedBreaches && response.ExposedBreaches.breaches_details) {
+        all = all.concat(response.ExposedBreaches.breaches_details);
+    }
+    if (token && response && response.ExposedBreaches && response.ExposedBreaches.sensitive_breaches_details) {
+        all = all.concat(response.ExposedBreaches.sensitive_breaches_details);
+    }
+    return all;
+}
+
+function renderExposureSummary(response) {
+    var band = document.getElementById('chart_div');
+    if (!band || document.getElementById('xr-quick-summary')) return;
+    var all = collectVisibleBreaches(response);
+    if (!all.length) return;
+    var withPassword = all.filter(function (breach) {
+        return /password/i.test(breach.xposed_data || '');
+    }).length;
+    var withoutPassword = all.length - withPassword;
+    var breachWord = all.length === 1 ? 'breach' : 'breaches';
+    var text;
+    if (withPassword === 0) {
+        text = 'Your email appeared in <strong>' + all.length + '</strong> ' + breachWord + '. None of them exposed a password, but details like your email address are out there.';
+    } else if (withoutPassword === 0) {
+        text = 'Your email appeared in <strong>' + all.length + '</strong> ' + breachWord + ', and ' + (all.length === 1 ? 'it' : 'every one of them') + ' exposed your password.';
+    } else {
+        text = 'Your email appeared in <strong>' + all.length + '</strong> breaches: <strong>' + withPassword + '</strong> exposed your password, <strong>' + withoutPassword + '</strong> exposed other details like your email but no password.';
+    }
+    band.insertAdjacentHTML('beforeend', '<p class="xr-quick-summary" id="xr-quick-summary">' + text + '</p>');
+}
+
+function generateNextSteps(breachesDetails, jsonResponse) {
+    var all = collectVisibleBreaches(jsonResponse);
+    if (!all.length) all = breachesDetails || [];
+    var classes = {};
+    all.forEach(function (breach) {
+        String(breach.xposed_data || '').split(';').forEach(function (item) {
+            item = item.trim();
+            if (item) classes[item.toLowerCase()] = item;
+        });
+    });
+    function hasClass(re) {
+        return Object.keys(classes).some(function (key) { return re.test(key); });
+    }
+    var passwordSites = [];
+    all.forEach(function (breach) {
+        if (/password/i.test(breach.xposed_data || '')) passwordSites.push(escapeHtml(breach.breach));
+    });
+
+    var steps = [];
+    if (passwordSites.length > 0) {
+        var siteList = passwordSites.length <= 3 ? passwordSites.join(', ') : 'the ' + passwordSites.length + ' sites flagged above';
+        steps.push('<strong>Change your exposed passwords first.</strong> Start with ' + siteList + '. If you reused any of those passwords on other sites, change them there too, and make every new password unique.');
+    }
+    steps.push('<strong>Turn on two-factor authentication (2FA).</strong> Begin with your email account, then banking and social media. With 2FA on, a stolen password alone is not enough to break in.');
+    if (hasClass(/bank|credit|card|financ|payment|transaction|salar|income|tax/)) {
+        steps.push('<strong>Keep an eye on your money.</strong> Financial details were exposed, so review your recent statements and ask your bank to turn on transaction alerts.');
+    }
+    if (hasClass(/phone|mobile|cell/)) {
+        steps.push('<strong>Be careful with calls and texts.</strong> Your phone number was exposed. Treat unexpected calls or messages that ask for codes, payments, or personal details as scams.');
+    }
+    if (hasClass(/passport|government|national|social security|identity|date.{0,4}birth|physical address/)) {
+        steps.push('<strong>Watch for identity theft.</strong> Identity details were exposed. Consider a credit freeze or fraud alert if your country offers one, and question any account or bill you did not initiate.');
+    }
+    var friendly = Object.keys(classes)
+        .filter(function (key) { return !/password|hash/.test(key); })
+        .slice(0, 3)
+        .map(function (key) { return escapeHtml(classes[key].toLowerCase()); });
+    var knownBits = friendly.length ? friendly.join(', ') : 'email address';
+    steps.push('<strong>Expect targeted phishing.</strong> Attackers now hold details like your ' + knownBits + ', so be suspicious of messages that quote them or name these breaches, and never use password reset links you did not request.');
+    steps.push('<strong>Get alerted about future breaches.</strong> Turn on free breach alerts below and we will notify you the moment your email shows up in a new breach.');
+
+    var html = '<div class="xr-next-steps"><h3>Your Next Steps</h3><ol>';
+    steps.forEach(function (step) { html += '<li>' + step + '</li>'; });
+    html += '</ol></div>';
     return html;
 }
 
