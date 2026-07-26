@@ -313,7 +313,7 @@
                      <div class="form-group">
                         <div class="input-group">
                            <input type="text" style="text-align:center; font-weight: bold; font-size:16px;"
-                              class="form-control w-75 form-control" id="api_key" name="api_key"
+                              class="form-control w-75 form-control" id="api_key" name="api_key" data-hj-suppress
                               placeholder="YOUR_API_KEY"
                               readonly>
                            <div class="input-group-append">
@@ -335,7 +335,7 @@
                   <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
                      <i class="fas fa-times-circle"></i> உங்கள் கோரிக்கையைச் செயலாக்கும்போது ஒரு பிழை ஏற்பட்டது. தயவுசெய்து சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்.
                   </div>
-                  <div id="curl" name="curl" class="alert alert-primary mt-3">
+                  <div id="curl" name="curl" class="alert alert-primary mt-3" data-hj-suppress>
                      <blockquote>
                         curl -L -X POST -H "x-api-key: [KEY]" -H "Content-Length: 0"
                         https://api.xposedornot.com/v1/domain-breaches/
@@ -422,7 +422,7 @@
                type: 'GET',
                success: function (res) {
                   $('#api_key').val(res.api_key);
-                  message = '💡 இதைப் பயன்படுத்திச் சோதிக்கலாம் : curl -L -X POST -H "x-api-key:  ' + res.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                  message = '💡 இதைப் பயன்படுத்திச் சோதிக்கலாம் : curl -L -X POST -H "x-api-key:  YOUR_API_KEY" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
                   document.getElementById('curl').innerText = message
                },
                error: function (error) {
@@ -479,7 +479,7 @@
                   if (data.status === "success") {
                      document.getElementById('api_key').value = data.api_key;
                      showSuccessMessage();
-                     message = '💡 இதைப் பயன்படுத்திச் சோதிக்கலாம் : curl -L -X POST -H "x-api-key:  ' + data.api_key + '" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
+                     message = '💡 இதைப் பயன்படுத்திச் சோதிக்கலாம் : curl -L -X POST -H "x-api-key:  YOUR_API_KEY" -H "Content-Length: 0" https://api.xposedornot.com/v1/domain-breaches/'
                      document.getElementById('curl').innerText = message
 
                   } else {

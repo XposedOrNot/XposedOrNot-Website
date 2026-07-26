@@ -1059,7 +1059,7 @@
         noteEl.hidden = true;
         setText("pd-key-endpoint", API + "/domain-breaches/");
         document.getElementById("pd-key-curl").textContent =
-            'curl -L -X POST -H "x-api-key: ' + (key || "YOUR_API_KEY") +
+            'curl -L -X POST -H "x-api-key: YOUR_API_KEY' +
             '" -H "Content-Length: 0" ' + API + "/domain-breaches/";
         if (key) {
             box.hidden = false;
