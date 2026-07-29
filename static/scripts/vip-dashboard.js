@@ -17,15 +17,16 @@ if (!email || !token) {
         : 'Authentication required. Please access this page from the main dashboard.');
 }
 
-function showAuthModal(message, redirectUrl) {
+function showAuthModal(message, redirectUrl, preserveSession) {
     redirectUrl = redirectUrl || 'dashboard.html';
 
-    if (window.XonSession) {
+    if (!preserveSession && window.XonSession) {
         window.XonSession.clear();
     }
 
     $(function() {
         $('#auth-modal-message').text(message);
+        $('.auth-modal-btn').attr('href', redirectUrl);
         $('#auth-modal').show();
 
         // Reset and start progress bar animation
@@ -613,7 +614,11 @@ function handleApiError(xhr) {
 
     switch (xhr.status) {
         case 401:
-            showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
+            if (window.XonSession && window.XonSession.isActive()) {
+                showAuthModal('The VIP dashboard could not verify your session. Returning to your dashboard.', 'breach-dashboard.html', true);
+            } else {
+                showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
+            }
             return;
         case 400:
             errorMessage = 'Invalid request. Please refresh the page and try again.';
