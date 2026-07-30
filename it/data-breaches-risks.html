@@ -58,7 +58,6 @@
       href="/static/scripts/libs/clippy/src/clippy.css"
       media="all"
     />
-    <link rel="stylesheet" href="/static/css/jquery.hortree.min.css" />
     <link rel="preload" href="/static/scripts/libs/jquery-3.7.1.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" as="script" />
@@ -94,10 +93,6 @@
     <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" defer></script>
-    <script
-      src="/static/scripts/jquery.line.js"
-      type="text/javascript"
-     defer></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
       integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
@@ -153,6 +148,68 @@
         font-weight: normal;
         font-display: swap;
         src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+    <style>
+      #floating-button {
+        top: 94px;
+      }
+
+      #floating-button.fb-scrolled {
+        top: 58px;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+
+      @media print {
+        .mobileheader-area,
+        .header-area,
+        #floating-button,
+        #clippy-button,
+        #back-to-top,
+        footer.footer,
+        #xr-jumpnav,
+        #dash-nudge,
+        #xr-print-btn,
+        .xr-sort,
+        .attack-path-cta,
+        .attack-path-nudge,
+        #db-sensitive button,
+        #xr-sec-protect,
+        #xr-sec-community,
+        .modal,
+        .see-more,
+        .xr-detail-link {
+          display: none !important;
+        }
+
+        body {
+          background: #fff !important;
+        }
+
+        .text {
+          display: block !important;
+          overflow: visible !important;
+          -webkit-line-clamp: unset !important;
+        }
+
+        .xon-row2-right,
+        .xon-row3-right,
+        .xon-row2-right_a1 {
+          height: auto !important;
+          overflow: visible !important;
+          box-shadow: none !important;
+        }
+
+        .risk-card,
+        tr,
+        .hybrid-node {
+          break-inside: avoid;
+        }
       }
     </style>
 
@@ -307,9 +364,22 @@
 
     <main id="main-content">
 
-            <section class="xon-row2-area" aria-label="Risk score overview">
+            <section class="xon-row2-area" id="xr-sec-score" aria-label="Risk score overview">
         <div class="container">
           <h1 class="report-h1">Il tuo report sulle violazioni dei dati</h1>
+          <div class="xr-report-meta-row">
+            <div class="xr-report-meta-text">
+              <p id="xr-report-meta" class="xr-report-meta"></p>
+              <p class="xr-privacy-note">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                La tua ricerca resta privata. Non memorizziamo le email che controlli.
+              </p>
+            </div>
+            <button type="button" id="xr-print-btn" class="xr-print-btn">
+              <i class="fas fa-print" aria-hidden="true"></i>
+              Stampa o salva in PDF
+            </button>
+          </div>
           <div class="row">
             <div class="col-lg-4 col-md-12">
               <div class="xon-row2-right">
@@ -345,6 +415,18 @@
         </div>
       </section>
 
+      <nav id="xr-jumpnav" class="xr-jumpnav" aria-label="Vai a una sezione del report">
+        <div class="container xr-jumpnav-inner">
+          <span class="xr-jumpnav-label">In questa pagina:</span>
+          <a href="#xr-sec-score">Punteggio</a>
+          <a href="#xr-next-steps">Prossimi passi</a>
+          <a href="#xr-sec-breaches">Violazioni</a>
+          <a href="#xr-sec-exposed">Dati esposti</a>
+          <a href="#attack-paths-section">Percorsi di attacco</a>
+          <a href="#xr-sec-details">Dettagli</a>
+        </div>
+      </nav>
+
             <section class="xon-row-area" aria-label="Risk analysis and recommendations">
         <div class="container">
           <div class="row">
@@ -370,7 +452,7 @@
         </div>
       </section>
 
-            <section class="xon-row-area" aria-label="Breach summary">
+            <section class="xon-row-area" id="xr-sec-breaches" aria-label="Breach summary">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -389,7 +471,7 @@
                     <tr>
                       <th scope="col" style="width: 20%; text-align: center">Nome della violazione</th>
                       <th scope="col" style="width: 60%">Dettagli della violazione</th>
-                      <th scope="col" style="width: 20%">Record esposti</th>
+                      <th scope="col" style="width: 20%">Account esposti<span class="xr-th-note">nell'intera violazione, non solo i tuoi</span></th>
                     </tr>
                   </thead>
                   <tbody id="data_breach"></tbody>
@@ -443,6 +525,7 @@
                     class="btn-lg btn-primary"
                     data-toggle="modal"
                     data-target="#alertMeModal"
+                    data-intent="unlock"
                   >
                     Verifica ora
                   </button>
@@ -460,7 +543,7 @@
                           Nome della violazione
                         </th>
                         <th scope="col" style="width: 60%">Dettagli della violazione</th>
-                        <th scope="col" style="width: 20%">Record esposti</th>
+                        <th scope="col" style="width: 20%">Account esposti<span class="xr-th-note">nell'intera violazione, non solo i tuoi</span></th>
                       </tr>
                     </thead>
                     <tbody id="data_breach_sensitive"></tbody>
@@ -478,6 +561,7 @@
             <div class="col-6">
               <div class="xon-row2-right">
                 <h2 class="section-heading">Le tue password sono al sicuro?</h2>
+                <p class="xr-chart-note">Come erano conservate le password esposte nelle tue violazioni.</p>
                 <div>
                   <canvas id="passwords" role="img" aria-label="Grafico della distribuzione dei rischi delle password"></canvas>
                 </div>
@@ -486,8 +570,9 @@
             <div class="col-6">
               <div class="xon-row2-right">
                 <h2 class="section-heading">Le tue violazioni più gravi</h2>
+                <p class="xr-chart-note">In ordine di dimensione totale di ogni violazione, non di quanti tuoi dati ha esposto.</p>
                 <div>
-                  <canvas id="top5breaches" role="img" aria-label="Le 5 principali violazioni dei dati per record esposti"></canvas>
+                  <canvas id="top5breaches" role="img" aria-label="Le 5 violazioni principali per record totali esposti"></canvas>
                 </div>
               </div>
             </div>
@@ -495,7 +580,7 @@
         </div>
       </section>
 
-      <section class="xon-row2-area" aria-label="Exposed data heat map">
+      <section class="xon-row2-area" id="xr-sec-exposed" aria-label="Exposed data heat map">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -505,8 +590,27 @@
                     Quali dati sono stati esposti per: Email
                   </h2>
                 </div>
-                <p class="heatmap-description">Le caselle più grandi indicano che quel tipo di dato è stato esposto più spesso. Il colore ti mostra la gravità a colpo d'occhio.</p>
+                <p class="heatmap-description">Più il riquadro è grande e il colore caldo, più spesso quel tipo di dato è comparso nelle tue violazioni.</p>
                 <div id="heatmap-container" role="img" aria-label="Mappa ad albero che mostra l'esposizione proporzionale di ogni tipo di dato nelle varie violazioni"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row3-area" aria-label="Industry exposure">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div class="xon-row2-right">
+                <div class="xon-row2-right_a1">
+                  <h2 class="section-heading">Quali settori hanno fatto trapelare i tuoi dati?</h2>
+                  <div
+                    class="xon-row2-right_a2"
+                    id="industry"
+                    aria-live="polite"
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
@@ -528,49 +632,8 @@
         </div>
       </section>
 
-            <section class="xon-row3-area" aria-label="Industry exposure">
-        <div class="container">
-          <div class="row">
-            <div class="col-6">
-              <div class="xon-row2-right">
-                <div class="xon-row2-right_a1">
-                  <h2 class="section-heading">Quali settori hanno fatto trapelare i tuoi dati?</h2>
-                  <div
-                    class="xon-row2-right_a2"
-                    id="industry"
-                    aria-live="polite"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="xon-row2-right">
-                <div class="text-center" id="github-section">
-                  <br />
-                  <p>
-                    Hai una nuova idea per una funzionalità o vuoi migliorarne
-                    una esistente? <br /><br />
-                    Mi farebbe piacere <strong>sentire la tua opinione</strong>!
-                    Rendiamolo ancora migliore insieme! <br />
-                    Mostra il tuo supporto e il tuo affetto su GitHub <br />
-                  </p>
-                  <br />
-                  <a
-                    href="https://github.com/xposedornot"
-                    class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener"
-                    >Visita il nostro GitHub<span class="sr-only"> (si apre in una nuova scheda)</span></a
-                  >
-                </div>
-                <br />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-            <section class="xon-row3-area" aria-label="Detailed breach breakdown">
+            <section class="xon-row3-area" id="xr-sec-details" aria-label="Detailed breach breakdown">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -583,24 +646,8 @@
         </div>
       </section>
 
-            <section class="xon-row-area breach-timeline-section" aria-label="Breach timeline visualization">
-        <div class="container">
-          <div class="row">
-            <div style="width: 100%; text-align: center">
-              <h2 class="section-heading">La tua cronologia delle violazioni</h2>
-              <div id="scrollable-container">
-                <div
-                  id="tree-container"
-                  class="xon-row-left"
-                  style="width: 100%"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-            <section class="xon-row-area" aria-label="Protect your accounts">
+            <section class="xon-row-area" id="xr-sec-protect" aria-label="Protect your accounts">
         <div class="container">
           <div class="xon">
             <div class="share-section">
@@ -623,6 +670,31 @@
                 </a>
               </div>
 
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row3-area" id="xr-sec-community" aria-label="Community e open source">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div>
+                <div class="text-center" id="github-section">
+                  <br />
+                  <p>
+                    <strong>Completamente open source, sviluppato alla luce del sole.</strong><br />
+                    Ogni riga di XposedOrNot, incluso questo report, è codice pubblico. Esaminalo, miglioralo o costruisci qualcosa di nuovo partendo da esso.
+                  </p>
+                  <a
+                    href="https://github.com/XposedOrNot"
+                    class="btn btn-primary"
+                    target="_blank"
+                    rel="noopener"
+                    >Metti una stella su GitHub<span class="sr-only"> (si apre in una nuova scheda)</span></a
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -657,6 +729,10 @@
             </button>
           </div>
           <div class="modal-body" style="text-align: left">
+            <p id="xr-unlock-note" class="xr-unlock-note" hidden>
+              <i class="fas fa-unlock-alt" aria-hidden="true"></i>
+              Verificando sblocchi anche le violazioni sensibili e i percorsi di attacco personalizzati di questo report.
+            </p>
             <form aria-labelledby="alertMeModalLabel">
               <div class="form-group">
                 <label
@@ -679,15 +755,8 @@
                   class="form-control-label"
                   ><strong>Passi successivi:</strong></label
                 >
-                <p style="font-size: 0.85em; margin: 0 0 8px">Riceverai ora un'email di verifica e in seguito solo avvisi reali di violazione da <!--email_off-->notifications@xposedornot.com<!--/email_off-->.</p>
-                <textarea
-                  disabled
-                  class="form-control"
-                  id="message-text"
-                  rows="2"
-                >
-Ti avviseremo immediatamente se la tua email comparirà in una nuova violazione dei dati. Verifica la tua email e attiva il tuo abbonamento GRATUITO cliccando su 'Avvia il monitoraggio'.</textarea
-                >
+                <p style="font-size: 0.85em; margin: 0 0 8px">Riceverai ora un'email di verifica e in seguito solo avvisi reali di violazione da <!--email_off-->notifications@xposedornot.com<!--/email_off-->. Dopo la verifica puoi accedere a My Dashboard solo con questa email (senza password) per vedere il tuo report completo.</p>
+                <p id="message-text" class="xr-modal-msg">Ti avviseremo immediatamente se la tua email comparirà in una nuova violazione dei dati. Verifica la tua email e attiva il tuo abbonamento GRATUITO cliccando su 'Avvia il monitoraggio'.</p>
               </div>
               <div id="turns"></div>
               <br />

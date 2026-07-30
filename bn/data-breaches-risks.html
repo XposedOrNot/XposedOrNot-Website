@@ -58,7 +58,6 @@
       href="/static/scripts/libs/clippy/src/clippy.css"
       media="all"
     />
-    <link rel="stylesheet" href="/static/css/jquery.hortree.min.css" />
     <link rel="preload" href="/static/scripts/libs/jquery-3.7.1.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" as="script" />
@@ -94,10 +93,6 @@
     <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" defer></script>
-    <script
-      src="/static/scripts/jquery.line.js"
-      type="text/javascript"
-     defer></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
       integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
@@ -153,6 +148,68 @@
         font-weight: normal;
         font-display: swap;
         src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+    <style>
+      #floating-button {
+        top: 94px;
+      }
+
+      #floating-button.fb-scrolled {
+        top: 58px;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+
+      @media print {
+        .mobileheader-area,
+        .header-area,
+        #floating-button,
+        #clippy-button,
+        #back-to-top,
+        footer.footer,
+        #xr-jumpnav,
+        #dash-nudge,
+        #xr-print-btn,
+        .xr-sort,
+        .attack-path-cta,
+        .attack-path-nudge,
+        #db-sensitive button,
+        #xr-sec-protect,
+        #xr-sec-community,
+        .modal,
+        .see-more,
+        .xr-detail-link {
+          display: none !important;
+        }
+
+        body {
+          background: #fff !important;
+        }
+
+        .text {
+          display: block !important;
+          overflow: visible !important;
+          -webkit-line-clamp: unset !important;
+        }
+
+        .xon-row2-right,
+        .xon-row3-right,
+        .xon-row2-right_a1 {
+          height: auto !important;
+          overflow: visible !important;
+          box-shadow: none !important;
+        }
+
+        .risk-card,
+        tr,
+        .hybrid-node {
+          break-inside: avoid;
+        }
       }
     </style>
 
@@ -307,9 +364,22 @@
 
     <main id="main-content">
 
-            <section class="xon-row2-area" aria-label="ঝুঁকি স্কোর পরিদর্শন">
+            <section class="xon-row2-area" id="xr-sec-score" aria-label="ঝুঁকি স্কোর পরিদর্শন">
         <div class="container">
           <h1 class="report-h1">আপনার ডেটা লঙ্ঘন প্রতিবেদন</h1>
+          <div class="xr-report-meta-row">
+            <div class="xr-report-meta-text">
+              <p id="xr-report-meta" class="xr-report-meta"></p>
+              <p class="xr-privacy-note">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                আপনার অনুসন্ধান গোপন থাকে। আপনি যে ইমেইলগুলি যাচাই করেন তা আমরা সংরক্ষণ করি না।
+              </p>
+            </div>
+            <button type="button" id="xr-print-btn" class="xr-print-btn">
+              <i class="fas fa-print" aria-hidden="true"></i>
+              প্রিন্ট বা PDF হিসেবে সংরক্ষণ
+            </button>
+          </div>
           <div class="row">
             <div class="col-lg-4 col-md-12">
               <div class="xon-row2-right">
@@ -345,6 +415,18 @@
         </div>
       </section>
 
+      <nav id="xr-jumpnav" class="xr-jumpnav" aria-label="প্রতিবেদনের বিভাগে যান">
+        <div class="container xr-jumpnav-inner">
+          <span class="xr-jumpnav-label">এই পৃষ্ঠায়:</span>
+          <a href="#xr-sec-score">স্কোর</a>
+          <a href="#xr-next-steps">পরবর্তী পদক্ষেপ</a>
+          <a href="#xr-sec-breaches">লঙ্ঘনসমূহ</a>
+          <a href="#xr-sec-exposed">উন্মোচিত ডেটা</a>
+          <a href="#attack-paths-section">আক্রমণের পথ</a>
+          <a href="#xr-sec-details">বিস্তারিত</a>
+        </div>
+      </nav>
+
             <section class="xon-row-area" aria-label="ঝুঁকি বিশ্লেষণ ও সুপারিশ">
         <div class="container">
           <div class="row">
@@ -370,7 +452,7 @@
         </div>
       </section>
 
-            <section class="xon-row-area" aria-label="লঙ্ঘনের সারসংক্ষেপ">
+            <section class="xon-row-area" id="xr-sec-breaches" aria-label="লঙ্ঘনের সারসংক্ষেপ">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -389,7 +471,7 @@
                     <tr>
                       <th scope="col" style="width: 20%; text-align: center">লঙ্ঘনের নাম</th>
                       <th scope="col" style="width: 60%">লঙ্ঘনের বিবরণ</th>
-                      <th scope="col" style="width: 20%">উন্মোচিত রেকর্ড</th>
+                      <th scope="col" style="width: 20%">উন্মোচিত অ্যাকাউন্ট<span class="xr-th-note">পুরো লঙ্ঘন জুড়ে, শুধু আপনার নয়</span></th>
                     </tr>
                   </thead>
                   <tbody id="data_breach"></tbody>
@@ -443,6 +525,7 @@
                     class="btn-lg btn-primary"
                     data-toggle="modal"
                     data-target="#alertMeModal"
+                    data-intent="unlock"
                   >
                     এখনই যাচাই করুন
                   </button>
@@ -460,7 +543,7 @@
                           লঙ্ঘনের নাম
                         </th>
                         <th scope="col" style="width: 60%">লঙ্ঘনের বিবরণ</th>
-                        <th scope="col" style="width: 20%">উন্মোচিত রেকর্ড</th>
+                        <th scope="col" style="width: 20%">উন্মোচিত অ্যাকাউন্ট<span class="xr-th-note">পুরো লঙ্ঘন জুড়ে, শুধু আপনার নয়</span></th>
                       </tr>
                     </thead>
                     <tbody id="data_breach_sensitive"></tbody>
@@ -478,6 +561,7 @@
             <div class="col-6">
               <div class="xon-row2-right">
                 <h2 class="section-heading">আপনার পাসওয়ার্ড কি নিরাপদ?</h2>
+                <p class="xr-chart-note">আপনার লঙ্ঘনে উন্মোচিত পাসওয়ার্ডগুলি কীভাবে সংরক্ষিত ছিল।</p>
                 <div>
                   <canvas id="passwords" role="img" aria-label="পাসওয়ার্ড ঝুঁকি বণ্টন চার্ট"></canvas>
                 </div>
@@ -486,8 +570,9 @@
             <div class="col-6">
               <div class="xon-row2-right">
                 <h2 class="section-heading">আপনার সবচেয়ে বড় লঙ্ঘনগুলো</h2>
+                <p class="xr-chart-note">প্রতিটি লঙ্ঘনের মোট আকার অনুযায়ী সাজানো, আপনার কতটা ডেটা উন্মোচিত হয়েছে তা অনুযায়ী নয়।</p>
                 <div>
-                  <canvas id="top5breaches" role="img" aria-label="উন্মোচিত রেকর্ড অনুযায়ী শীর্ষ ৫টি ডেটা লঙ্ঘন"></canvas>
+                  <canvas id="top5breaches" role="img" aria-label="মোট উন্মোচিত রেকর্ড অনুযায়ী শীর্ষ ৫টি লঙ্ঘন"></canvas>
                 </div>
               </div>
             </div>
@@ -495,7 +580,7 @@
         </div>
       </section>
 
-      <section class="xon-row2-area" aria-label="উন্মোচিত ডেটার হিট ম্যাপ">
+      <section class="xon-row2-area" id="xr-sec-exposed" aria-label="উন্মোচিত ডেটার হিট ম্যাপ">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -505,8 +590,27 @@
                     কোন ডেটা উন্মোচিত হয়েছিল: Email
                   </h2>
                 </div>
-                <p class="heatmap-description">বড় টাইল মানে সেই ধরনের ডেটা আরও বেশিবার উন্মোচিত হয়েছিল। রঙ এক নজরে আপনাকে তীব্রতা জানিয়ে দেয়।</p>
+                <p class="heatmap-description">টাইল যত বড় এবং রং যত গাঢ়, সেই ধরনের ডেটা তত বেশি লঙ্ঘনে পাওয়া গেছে।</p>
                 <div id="heatmap-container" role="img" aria-label="লঙ্ঘনগুলোতে প্রতিটি ডেটা ধরনের আনুপাতিক উন্মোচন প্রদর্শনকারী ট্রিম্যাপ"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row3-area" aria-label="শিল্পভিত্তিক উন্মোচন">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div class="xon-row2-right">
+                <div class="xon-row2-right_a1">
+                  <h2 class="section-heading">কোন শিল্পগুলো আপনার ডেটা ফাঁস করেছিল?</h2>
+                  <div
+                    class="xon-row2-right_a2"
+                    id="industry"
+                    aria-live="polite"
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
@@ -528,49 +632,8 @@
         </div>
       </section>
 
-            <section class="xon-row3-area" aria-label="শিল্পভিত্তিক উন্মোচন">
-        <div class="container">
-          <div class="row">
-            <div class="col-6">
-              <div class="xon-row2-right">
-                <div class="xon-row2-right_a1">
-                  <h2 class="section-heading">কোন শিল্পগুলো আপনার ডেটা ফাঁস করেছিল?</h2>
-                  <div
-                    class="xon-row2-right_a2"
-                    id="industry"
-                    aria-live="polite"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="xon-row2-right">
-                <div class="text-center" id="github-section">
-                  <br />
-                  <p>
-                    নতুন কোনো ফিচারের অনুরোধ আছে অথবা বিদ্যমান কোনোটি উন্নত
-                    করতে চান? <br /><br />
-                    আমি আপনার কাছ থেকে <strong>শুনতে চাই</strong>!
-                    চলুন একসাথে এটিকে আরও ভালো করি! <br />
-                    GitHub-এ আপনার সমর্থন ও ভালোবাসা দেখান <br />
-                  </p>
-                  <br />
-                  <a
-                    href="https://github.com/xposedornot"
-                    class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener"
-                    >আমাদের GitHub পরিদর্শন করুন<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
-                  >
-                </div>
-                <br />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-            <section class="xon-row3-area" aria-label="বিস্তারিত লঙ্ঘন বিশ্লেষণ">
+            <section class="xon-row3-area" id="xr-sec-details" aria-label="বিস্তারিত লঙ্ঘন বিশ্লেষণ">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -583,24 +646,8 @@
         </div>
       </section>
 
-            <section class="xon-row-area breach-timeline-section" aria-label="লঙ্ঘনের সময়রেখার দৃশ্যায়ন">
-        <div class="container">
-          <div class="row">
-            <div style="width: 100%; text-align: center">
-              <h2 class="section-heading">আপনার লঙ্ঘনের সময়রেখা</h2>
-              <div id="scrollable-container">
-                <div
-                  id="tree-container"
-                  class="xon-row-left"
-                  style="width: 100%"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-            <section class="xon-row-area" aria-label="আপনার অ্যাকাউন্ট সুরক্ষিত করুন">
+            <section class="xon-row-area" id="xr-sec-protect" aria-label="আপনার অ্যাকাউন্ট সুরক্ষিত করুন">
         <div class="container">
           <div class="xon">
             <div class="share-section">
@@ -623,6 +670,31 @@
                 </a>
               </div>
 
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row3-area" id="xr-sec-community" aria-label="কমিউনিটি ও ওপেন সোর্স">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div>
+                <div class="text-center" id="github-section">
+                  <br />
+                  <p>
+                    <strong>সম্পূর্ণ ওপেন সোর্স, প্রকাশ্যে নির্মিত।</strong><br />
+                    এই প্রতিবেদনসহ XposedOrNot-এর প্রতিটি লাইন পাবলিক কোড। এটি পরীক্ষা করুন, উন্নত করুন বা এর উপর নতুন কিছু তৈরি করুন।
+                  </p>
+                  <a
+                    href="https://github.com/XposedOrNot"
+                    class="btn btn-primary"
+                    target="_blank"
+                    rel="noopener"
+                    >GitHub-এ স্টার দিন<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -657,6 +729,10 @@
             </button>
           </div>
           <div class="modal-body" style="text-align: left">
+            <p id="xr-unlock-note" class="xr-unlock-note" hidden>
+              <i class="fas fa-unlock-alt" aria-hidden="true"></i>
+              যাচাই করলে এই প্রতিবেদনের সংবেদনশীল লঙ্ঘন ও ব্যক্তিগতকৃত আক্রমণের পথও আনলক হবে।
+            </p>
             <form aria-labelledby="alertMeModalLabel">
               <div class="form-group">
                 <label
@@ -679,15 +755,8 @@
                   class="form-control-label"
                   ><strong>পরবর্তী ধাপ:</strong></label
                 >
-                <p style="font-size: 0.85em; margin: 0 0 8px">আপনি এখন একটি যাচাইকরণ ইমেল পাবেন, তারপর কেবল <!--email_off-->notifications@xposedornot.com<!--/email_off--> থেকে প্রকৃত ব্রিচ সতর্কতা পাবেন।</p>
-                <textarea
-                  disabled
-                  class="form-control"
-                  id="message-text"
-                  rows="2"
-                >
-আপনার ইমেল কোনো নতুন ডেটা লঙ্ঘনে উপস্থিত হলে আমরা আপনাকে তাৎক্ষণিকভাবে জানাব। আপনার ইমেল যাচাই করুন এবং 'পর্যবেক্ষণ শুরু করুন'-এ ক্লিক করে আপনার বিনামূল্যের সাবস্ক্রিপশন সক্রিয় করুন।</textarea
-                >
+                <p style="font-size: 0.85em; margin: 0 0 8px">আপনি এখন একটি যাচাইকরণ ইমেল পাবেন, তারপর কেবল <!--email_off-->notifications@xposedornot.com<!--/email_off--> থেকে প্রকৃত ব্রিচ সতর্কতা পাবেন। যাচাইয়ের পরে, শুধু এই ইমেইল দিয়ে (পাসওয়ার্ড ছাড়াই) My Dashboard-এ সাইন ইন করে আপনার সম্পূর্ণ প্রতিবেদন দেখতে পারবেন।</p>
+                <p id="message-text" class="xr-modal-msg">আপনার ইমেল কোনো নতুন ডেটা লঙ্ঘনে উপস্থিত হলে আমরা আপনাকে তাৎক্ষণিকভাবে জানাব। আপনার ইমেল যাচাই করুন এবং 'পর্যবেক্ষণ শুরু করুন'-এ ক্লিক করে আপনার বিনামূল্যের সাবস্ক্রিপশন সক্রিয় করুন।</p>
               </div>
               <div id="turns"></div>
               <br />

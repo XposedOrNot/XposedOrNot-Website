@@ -58,7 +58,6 @@
       href="/static/scripts/libs/clippy/src/clippy.css"
       media="all"
     />
-    <link rel="stylesheet" href="/static/css/jquery.hortree.min.css" />
     <link rel="preload" href="/static/scripts/libs/jquery-3.7.1.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" as="script" />
@@ -94,10 +93,6 @@
     <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" defer></script>
-    <script
-      src="/static/scripts/jquery.line.js"
-      type="text/javascript"
-     defer></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
       integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
@@ -153,6 +148,68 @@
         font-weight: normal;
         font-display: swap;
         src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+    <style>
+      #floating-button {
+        top: 94px;
+      }
+
+      #floating-button.fb-scrolled {
+        top: 58px;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+
+      @media print {
+        .mobileheader-area,
+        .header-area,
+        #floating-button,
+        #clippy-button,
+        #back-to-top,
+        footer.footer,
+        #xr-jumpnav,
+        #dash-nudge,
+        #xr-print-btn,
+        .xr-sort,
+        .attack-path-cta,
+        .attack-path-nudge,
+        #db-sensitive button,
+        #xr-sec-protect,
+        #xr-sec-community,
+        .modal,
+        .see-more,
+        .xr-detail-link {
+          display: none !important;
+        }
+
+        body {
+          background: #fff !important;
+        }
+
+        .text {
+          display: block !important;
+          overflow: visible !important;
+          -webkit-line-clamp: unset !important;
+        }
+
+        .xon-row2-right,
+        .xon-row3-right,
+        .xon-row2-right_a1 {
+          height: auto !important;
+          overflow: visible !important;
+          box-shadow: none !important;
+        }
+
+        .risk-card,
+        tr,
+        .hybrid-node {
+          break-inside: avoid;
+        }
       }
     </style>
 
@@ -313,9 +370,22 @@
 
     <main id="main-content" tabindex="-1">
 
-            <section class="xon-row2-area" aria-label="Przegląd oceny ryzyka">
+            <section class="xon-row2-area" id="xr-sec-score" aria-label="Przegląd oceny ryzyka">
         <div class="container">
           <h1 class="report-h1">Twój raport wycieków danych</h1>
+          <div class="xr-report-meta-row">
+            <div class="xr-report-meta-text">
+              <p id="xr-report-meta" class="xr-report-meta"></p>
+              <p class="xr-privacy-note">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                Twoje wyszukiwanie pozostaje prywatne. Nie przechowujemy sprawdzanych adresów e-mail.
+              </p>
+            </div>
+            <button type="button" id="xr-print-btn" class="xr-print-btn">
+              <i class="fas fa-print" aria-hidden="true"></i>
+              Drukuj lub zapisz jako PDF
+            </button>
+          </div>
           <div class="row">
             <div class="col-lg-4 col-md-12">
               <div class="xon-row2-right">
@@ -351,6 +421,18 @@
         </div>
       </section>
 
+      <nav id="xr-jumpnav" class="xr-jumpnav" aria-label="Przejdź do sekcji raportu">
+        <div class="container xr-jumpnav-inner">
+          <span class="xr-jumpnav-label">Na tej stronie:</span>
+          <a href="#xr-sec-score">Wynik</a>
+          <a href="#xr-next-steps">Następne kroki</a>
+          <a href="#xr-sec-breaches">Wycieki</a>
+          <a href="#xr-sec-exposed">Ujawnione dane</a>
+          <a href="#attack-paths-section">Ścieżki ataku</a>
+          <a href="#xr-sec-details">Szczegóły</a>
+        </div>
+      </nav>
+
             <section class="xon-row-area" aria-label="Analiza ryzyka i zalecenia">
         <div class="container">
           <div class="row">
@@ -376,7 +458,7 @@
         </div>
       </section>
 
-            <section class="xon-row-area" aria-label="Podsumowanie wycieków">
+            <section class="xon-row-area" id="xr-sec-breaches" aria-label="Podsumowanie wycieków">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -395,7 +477,7 @@
                     <tr>
                       <th scope="col" style="width: 20%; text-align: center">Nazwa wycieku</th>
                       <th scope="col" style="width: 60%">Szczegóły wycieku</th>
-                      <th scope="col" style="width: 20%">Ujawnione rekordy</th>
+                      <th scope="col" style="width: 20%">Ujawnione konta<span class="xr-th-note">w całym wycieku, nie tylko Twoje</span></th>
                     </tr>
                   </thead>
                   <tbody id="data_breach"></tbody>
@@ -449,6 +531,7 @@
                     class="btn-lg btn-primary"
                     data-toggle="modal"
                     data-target="#alertMeModal"
+                    data-intent="unlock"
                   >
                     Zweryfikuj teraz
                   </button>
@@ -466,7 +549,7 @@
                           Nazwa wycieku
                         </th>
                         <th scope="col" style="width: 60%">Szczegóły wycieku</th>
-                        <th scope="col" style="width: 20%">Ujawnione rekordy</th>
+                        <th scope="col" style="width: 20%">Ujawnione konta<span class="xr-th-note">w całym wycieku, nie tylko Twoje</span></th>
                       </tr>
                     </thead>
                     <tbody id="data_breach_sensitive"></tbody>
@@ -484,6 +567,7 @@
             <div class="col-6">
               <div class="xon-row2-right">
                 <h2 class="section-heading">Czy Twoje hasła są bezpieczne?</h2>
+                <p class="xr-chart-note">Jak były przechowywane hasła ujawnione w Twoich wyciekach.</p>
                 <div>
                   <canvas id="passwords" role="img" aria-label="Wykres rozkładu ryzyka haseł"></canvas>
                 </div>
@@ -492,8 +576,9 @@
             <div class="col-6">
               <div class="xon-row2-right">
                 <h2 class="section-heading">Twoje największe wycieki</h2>
+                <p class="xr-chart-note">Uszeregowane według całkowitej wielkości każdego wycieku, a nie ilości ujawnionych danych o Tobie.</p>
                 <div>
-                  <canvas id="top5breaches" role="img" aria-label="5 największych wycieków danych według ujawnionych rekordów"></canvas>
+                  <canvas id="top5breaches" role="img" aria-label="5 największych wycieków według łącznej liczby ujawnionych rekordów"></canvas>
                 </div>
               </div>
             </div>
@@ -501,7 +586,7 @@
         </div>
       </section>
 
-      <section class="xon-row2-area" aria-label="Mapa cieplna ujawnionych danych">
+      <section class="xon-row2-area" id="xr-sec-exposed" aria-label="Mapa cieplna ujawnionych danych">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -511,8 +596,27 @@
                     Jakie dane zostały ujawnione dla: E-mail
                   </h2>
                 </div>
-                <p class="heatmap-description">Większe kafelki oznaczają, że dany typ danych był ujawniany częściej. Kolor od razu pokazuje powagę.</p>
+                <p class="heatmap-description">Im większy kafelek i cieplejszy kolor, tym częściej ten typ danych pojawiał się w Twoich wyciekach.</p>
                 <div id="heatmap-container" role="img" aria-label="Mapa drzewa pokazująca proporcjonalne ujawnienie każdego typu danych we wszystkich wyciekach"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row3-area" aria-label="Ujawnienia według branż">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div class="xon-row2-right">
+                <div class="xon-row2-right_a1">
+                  <h2 class="section-heading">Które branże ujawniły Twoje dane?</h2>
+                  <div
+                    class="xon-row2-right_a2"
+                    id="industry"
+                    aria-live="polite"
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
@@ -534,49 +638,8 @@
         </div>
       </section>
 
-            <section class="xon-row3-area" aria-label="Ujawnienia według branż">
-        <div class="container">
-          <div class="row">
-            <div class="col-6">
-              <div class="xon-row2-right">
-                <div class="xon-row2-right_a1">
-                  <h2 class="section-heading">Które branże ujawniły Twoje dane?</h2>
-                  <div
-                    class="xon-row2-right_a2"
-                    id="industry"
-                    aria-live="polite"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="xon-row2-right">
-                <div class="text-center" id="github-section">
-                  <br />
-                  <p>
-                    Masz pomysł na nową funkcję lub chcesz ulepszyć
-                    istniejącą? <br /><br />
-                    Chętnie <strong>poznam Twoją opinię</strong>!
-                    Uczyńmy to razem jeszcze lepszym! <br />
-                    Okaż wsparcie i sympatię na GitHub <br />
-                  </p>
-                  <br />
-                  <a
-                    href="https://github.com/xposedornot"
-                    class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener"
-                    >Odwiedź nasz GitHub<span class="sr-only"> (otwiera się w nowej karcie)</span></a
-                  >
-                </div>
-                <br />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-            <section class="xon-row3-area" aria-label="Szczegółowy podział wycieków">
+            <section class="xon-row3-area" id="xr-sec-details" aria-label="Szczegółowy podział wycieków">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -589,24 +652,8 @@
         </div>
       </section>
 
-            <section class="xon-row-area breach-timeline-section" aria-label="Wizualizacja osi czasu wycieków">
-        <div class="container">
-          <div class="row">
-            <div style="width: 100%; text-align: center">
-              <h2 class="section-heading">Twoja oś czasu wycieków</h2>
-              <div id="scrollable-container">
-                <div
-                  id="tree-container"
-                  class="xon-row-left"
-                  style="width: 100%"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-            <section class="xon-row-area" aria-label="Chroń swoje konta">
+            <section class="xon-row-area" id="xr-sec-protect" aria-label="Chroń swoje konta">
         <div class="container">
           <div class="xon">
             <div class="share-section">
@@ -629,6 +676,31 @@
                 </a>
               </div>
 
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row3-area" id="xr-sec-community" aria-label="Społeczność i open source">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div>
+                <div class="text-center" id="github-section">
+                  <br />
+                  <p>
+                    <strong>W pełni open source, tworzone jawnie.</strong><br />
+                    Każda linia XposedOrNot, łącznie z tym raportem, to publiczny kod. Sprawdź go, ulepsz lub buduj na jego podstawie.
+                  </p>
+                  <a
+                    href="https://github.com/XposedOrNot"
+                    class="btn btn-primary"
+                    target="_blank"
+                    rel="noopener"
+                    >Dodaj gwiazdkę na GitHub<span class="sr-only"> (otwiera się w nowej karcie)</span></a
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -663,6 +735,10 @@
             </button>
           </div>
           <div class="modal-body" style="text-align: left">
+            <p id="xr-unlock-note" class="xr-unlock-note" hidden>
+              <i class="fas fa-unlock-alt" aria-hidden="true"></i>
+              Weryfikacja odblokowuje też wrażliwe wycieki i spersonalizowane ścieżki ataku w tym raporcie.
+            </p>
             <form aria-labelledby="alertMeModalLabel">
               <div class="form-group">
                 <label
@@ -685,15 +761,8 @@
                   class="form-control-label"
                   ><strong>Następne kroki:</strong></label
                 >
-                <p style="font-size: 0.85em; margin: 0 0 8px">Otrzymasz teraz jeden e-mail weryfikacyjny, a potem tylko prawdziwe alerty o wyciekach z adresu <!--email_off-->notifications@xposedornot.com<!--/email_off-->.</p>
-                <textarea
-                  disabled
-                  class="form-control"
-                  id="message-text"
-                  rows="2"
-                >
-Powiadomimy Cię natychmiast, jeśli Twój e-mail pojawi się w nowym wycieku danych. Zweryfikuj swój e-mail i aktywuj DARMOWĄ subskrypcję, klikając 'Rozpocznij monitorowanie'.</textarea
-                >
+                <p style="font-size: 0.85em; margin: 0 0 8px">Otrzymasz teraz jeden e-mail weryfikacyjny, a potem tylko prawdziwe alerty o wyciekach z adresu <!--email_off-->notifications@xposedornot.com<!--/email_off-->. Po weryfikacji możesz zalogować się do My Dashboard samym tym adresem e-mail (bez hasła), aby zobaczyć pełny raport.</p>
+                <p id="message-text" class="xr-modal-msg">Powiadomimy Cię natychmiast, jeśli Twój e-mail pojawi się w nowym wycieku danych. Zweryfikuj swój e-mail i aktywuj DARMOWĄ subskrypcję, klikając 'Rozpocznij monitorowanie'.</p>
               </div>
               <div id="turns"></div>
               <br />

@@ -58,7 +58,6 @@
       href="/static/scripts/libs/clippy/src/clippy.css"
       media="all"
     />
-    <link rel="stylesheet" href="/static/css/jquery.hortree.min.css" />
     <link rel="preload" href="/static/scripts/libs/jquery-3.7.1.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" as="script" />
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" as="script" />
@@ -94,10 +93,6 @@
     <script src="/static/scripts/libs/jquery-3.7.1.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" defer></script>
-    <script
-      src="/static/scripts/jquery.line.js"
-      type="text/javascript"
-     defer></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
       integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
@@ -153,6 +148,68 @@
         font-weight: normal;
         font-display: swap;
         src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+    <style>
+      #floating-button {
+        top: 94px;
+      }
+
+      #floating-button.fb-scrolled {
+        top: 58px;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+
+      @media print {
+        .mobileheader-area,
+        .header-area,
+        #floating-button,
+        #clippy-button,
+        #back-to-top,
+        footer.footer,
+        #xr-jumpnav,
+        #dash-nudge,
+        #xr-print-btn,
+        .xr-sort,
+        .attack-path-cta,
+        .attack-path-nudge,
+        #db-sensitive button,
+        #xr-sec-protect,
+        #xr-sec-community,
+        .modal,
+        .see-more,
+        .xr-detail-link {
+          display: none !important;
+        }
+
+        body {
+          background: #fff !important;
+        }
+
+        .text {
+          display: block !important;
+          overflow: visible !important;
+          -webkit-line-clamp: unset !important;
+        }
+
+        .xon-row2-right,
+        .xon-row3-right,
+        .xon-row2-right_a1 {
+          height: auto !important;
+          overflow: visible !important;
+          box-shadow: none !important;
+        }
+
+        .risk-card,
+        tr,
+        .hybrid-node {
+          break-inside: avoid;
+        }
       }
     </style>
 
@@ -307,9 +364,22 @@
 
     <main id="main-content">
 
-            <section class="xon-row2-area" aria-label="जोखिम स्कोर अवलोकन">
+            <section class="xon-row2-area" id="xr-sec-score" aria-label="जोखिम स्कोर अवलोकन">
         <div class="container">
           <h1 class="report-h1">आपकी डेटा उल्लंघन रिपोर्ट</h1>
+          <div class="xr-report-meta-row">
+            <div class="xr-report-meta-text">
+              <p id="xr-report-meta" class="xr-report-meta"></p>
+              <p class="xr-privacy-note">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                आपकी खोज निजी रहती है। आप जो ईमेल जांचते हैं उन्हें हम संग्रहीत नहीं करते।
+              </p>
+            </div>
+            <button type="button" id="xr-print-btn" class="xr-print-btn">
+              <i class="fas fa-print" aria-hidden="true"></i>
+              प्रिंट करें या PDF सहेजें
+            </button>
+          </div>
           <div class="row">
             <div class="col-lg-4 col-md-12">
               <div class="xon-row2-right">
@@ -345,6 +415,18 @@
         </div>
       </section>
 
+      <nav id="xr-jumpnav" class="xr-jumpnav" aria-label="रिपोर्ट अनुभाग पर जाएं">
+        <div class="container xr-jumpnav-inner">
+          <span class="xr-jumpnav-label">इस पृष्ठ पर:</span>
+          <a href="#xr-sec-score">स्कोर</a>
+          <a href="#xr-next-steps">अगले कदम</a>
+          <a href="#xr-sec-breaches">उल्लंघन</a>
+          <a href="#xr-sec-exposed">उजागर डेटा</a>
+          <a href="#attack-paths-section">हमले के रास्ते</a>
+          <a href="#xr-sec-details">विवरण</a>
+        </div>
+      </nav>
+
             <section class="xon-row-area" aria-label="जोखिम विश्लेषण और सिफारिशें">
         <div class="container">
           <div class="row">
@@ -370,7 +452,7 @@
         </div>
       </section>
 
-            <section class="xon-row-area" aria-label="उल्लंघन सारांश">
+            <section class="xon-row-area" id="xr-sec-breaches" aria-label="उल्लंघन सारांश">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -389,7 +471,7 @@
                     <tr>
                       <th scope="col" style="width: 20%; text-align: center">उल्लंघन का नाम</th>
                       <th scope="col" style="width: 60%">उल्लंघन विवरण</th>
-                      <th scope="col" style="width: 20%">उजागर रिकॉर्ड</th>
+                      <th scope="col" style="width: 20%">उजागर खाते<span class="xr-th-note">पूरे उल्लंघन में, केवल आपके नहीं</span></th>
                     </tr>
                   </thead>
                   <tbody id="data_breach"></tbody>
@@ -443,6 +525,7 @@
                     class="btn-lg btn-primary"
                     data-toggle="modal"
                     data-target="#alertMeModal"
+                    data-intent="unlock"
                   >
                     अभी सत्यापित करें
                   </button>
@@ -460,7 +543,7 @@
                           उल्लंघन का नाम
                         </th>
                         <th scope="col" style="width: 60%">उल्लंघन विवरण</th>
-                        <th scope="col" style="width: 20%">उजागर रिकॉर्ड</th>
+                        <th scope="col" style="width: 20%">उजागर खाते<span class="xr-th-note">पूरे उल्लंघन में, केवल आपके नहीं</span></th>
                       </tr>
                     </thead>
                     <tbody id="data_breach_sensitive"></tbody>
@@ -478,6 +561,7 @@
             <div class="col-6">
               <div class="xon-row2-right">
                 <h2 class="section-heading">क्या आपके पासवर्ड सुरक्षित हैं?</h2>
+                <p class="xr-chart-note">आपके उल्लंघनों में उजागर पासवर्ड कैसे संग्रहीत थे।</p>
                 <div>
                   <canvas id="passwords" role="img" aria-label="पासवर्ड जोखिम वितरण चार्ट"></canvas>
                 </div>
@@ -486,8 +570,9 @@
             <div class="col-6">
               <div class="xon-row2-right">
                 <h2 class="section-heading">आपके सबसे बड़े उल्लंघन</h2>
+                <p class="xr-chart-note">प्रत्येक उल्लंघन के कुल आकार के अनुसार क्रमित, आपके कितने डेटा उजागर हुए इसके अनुसार नहीं।</p>
                 <div>
-                  <canvas id="top5breaches" role="img" aria-label="उजागर रिकॉर्ड के अनुसार शीर्ष 5 डेटा उल्लंघन"></canvas>
+                  <canvas id="top5breaches" role="img" aria-label="कुल उजागर रिकॉर्ड के अनुसार शीर्ष 5 उल्लंघन"></canvas>
                 </div>
               </div>
             </div>
@@ -495,7 +580,7 @@
         </div>
       </section>
 
-      <section class="xon-row2-area" aria-label="उजागर डेटा हीट मैप">
+      <section class="xon-row2-area" id="xr-sec-exposed" aria-label="उजागर डेटा हीट मैप">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -505,8 +590,27 @@
                     इसके लिए कौन सा डेटा उजागर हुआ: ईमेल
                   </h2>
                 </div>
-                <p class="heatmap-description">बड़ी टाइलों का अर्थ है कि वह डेटा प्रकार अधिक बार उजागर हुआ। रंग आपको एक नज़र में गंभीरता बताता है।</p>
+                <p class="heatmap-description">टाइल जितनी बड़ी और रंग जितना गहरा, वह डेटा प्रकार उतने ही अधिक उल्लंघनों में मिला।</p>
                 <div id="heatmap-container" role="img" aria-label="उल्लंघनों में प्रत्येक डेटा प्रकार के आनुपातिक उजागर होने को दर्शाता ट्रीमैप"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row3-area" aria-label="उद्योग उजागर">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div class="xon-row2-right">
+                <div class="xon-row2-right_a1">
+                  <h2 class="section-heading">किन उद्योगों ने आपका डेटा लीक किया?</h2>
+                  <div
+                    class="xon-row2-right_a2"
+                    id="industry"
+                    aria-live="polite"
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
@@ -528,49 +632,8 @@
         </div>
       </section>
 
-            <section class="xon-row3-area" aria-label="उद्योग उजागर">
-        <div class="container">
-          <div class="row">
-            <div class="col-6">
-              <div class="xon-row2-right">
-                <div class="xon-row2-right_a1">
-                  <h2 class="section-heading">किन उद्योगों ने आपका डेटा लीक किया?</h2>
-                  <div
-                    class="xon-row2-right_a2"
-                    id="industry"
-                    aria-live="polite"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="xon-row2-right">
-                <div class="text-center" id="github-section">
-                  <br />
-                  <p>
-                    कोई नई सुविधा का अनुरोध है या किसी मौजूदा को बेहतर
-                    बनाना चाहते हैं? <br /><br />
-                    मुझे <strong>आपसे सुनना</strong> अच्छा लगेगा!
-                    आइए मिलकर इसे और भी बेहतर बनाएं! <br />
-                    GitHub पर अपना समर्थन और प्यार दिखाएं <br />
-                  </p>
-                  <br />
-                  <a
-                    href="https://github.com/xposedornot"
-                    class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener"
-                    >हमारा GitHub देखें<span class="sr-only"> (नए टैब में खुलता है)</span></a
-                  >
-                </div>
-                <br />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-            <section class="xon-row3-area" aria-label="विस्तृत उल्लंघन विवरण">
+            <section class="xon-row3-area" id="xr-sec-details" aria-label="विस्तृत उल्लंघन विवरण">
         <div class="container">
           <div class="row">
             <div style="width: 100%">
@@ -583,24 +646,8 @@
         </div>
       </section>
 
-            <section class="xon-row-area breach-timeline-section" aria-label="उल्लंघन समयरेखा दृश्यांकन">
-        <div class="container">
-          <div class="row">
-            <div style="width: 100%; text-align: center">
-              <h2 class="section-heading">आपकी उल्लंघन समयरेखा</h2>
-              <div id="scrollable-container">
-                <div
-                  id="tree-container"
-                  class="xon-row-left"
-                  style="width: 100%"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-            <section class="xon-row-area" aria-label="अपने खातों की सुरक्षा करें">
+            <section class="xon-row-area" id="xr-sec-protect" aria-label="अपने खातों की सुरक्षा करें">
         <div class="container">
           <div class="xon">
             <div class="share-section">
@@ -623,6 +670,31 @@
                 </a>
               </div>
 
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xon-row3-area" id="xr-sec-community" aria-label="समुदाय और ओपन सोर्स">
+        <div class="container">
+          <div class="row">
+            <div style="width: 100%">
+              <div>
+                <div class="text-center" id="github-section">
+                  <br />
+                  <p>
+                    <strong>पूरी तरह ओपन सोर्स, खुले में निर्मित।</strong><br />
+                    इस रिपोर्ट सहित XposedOrNot की हर पंक्ति सार्वजनिक कोड है। इसे जांचें, बेहतर बनाएं या इस पर कुछ नया बनाएं।
+                  </p>
+                  <a
+                    href="https://github.com/XposedOrNot"
+                    class="btn btn-primary"
+                    target="_blank"
+                    rel="noopener"
+                    >GitHub पर स्टार दें<span class="sr-only"> (नए टैब में खुलता है)</span></a
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -657,6 +729,10 @@
             </button>
           </div>
           <div class="modal-body" style="text-align: left">
+            <p id="xr-unlock-note" class="xr-unlock-note" hidden>
+              <i class="fas fa-unlock-alt" aria-hidden="true"></i>
+              सत्यापन से इस रिपोर्ट के संवेदनशील उल्लंघन और वैयक्तिकृत हमले के रास्ते भी अनलॉक हो जाएंगे।
+            </p>
             <form aria-labelledby="alertMeModalLabel">
               <div class="form-group">
                 <label
@@ -679,15 +755,8 @@
                   class="form-control-label"
                   ><strong>अगले कदम:</strong></label
                 >
-                <p style="font-size: 0.85em; margin: 0 0 8px">आपको अभी एक सत्यापन ईमेल मिलेगा, उसके बाद केवल <!--email_off-->notifications@xposedornot.com<!--/email_off--> से वास्तविक ब्रीच अलर्ट मिलेंगे।</p>
-                <textarea
-                  disabled
-                  class="form-control"
-                  id="message-text"
-                  rows="2"
-                >
-यदि आपका ईमेल किसी नए डेटा उल्लंघन में दिखाई देता है तो हम आपको तुरंत सूचित करेंगे। अपना ईमेल सत्यापित करें और 'निगरानी शुरू करें' पर क्लिक करके अपनी मुफ़्त सदस्यता सक्रिय करें।</textarea
-                >
+                <p style="font-size: 0.85em; margin: 0 0 8px">आपको अभी एक सत्यापन ईमेल मिलेगा, उसके बाद केवल <!--email_off-->notifications@xposedornot.com<!--/email_off--> से वास्तविक ब्रीच अलर्ट मिलेंगे। सत्यापन के बाद, केवल इसी ईमेल से (बिना पासवर्ड) My Dashboard में साइन इन करके अपनी पूरी रिपोर्ट देख सकते हैं।</p>
+                <p id="message-text" class="xr-modal-msg">यदि आपका ईमेल किसी नए डेटा उल्लंघन में दिखाई देता है तो हम आपको तुरंत सूचित करेंगे। अपना ईमेल सत्यापित करें और 'निगरानी शुरू करें' पर क्लिक करके अपनी मुफ़्त सदस्यता सक्रिय करें।</p>
               </div>
               <div id="turns"></div>
               <br />
