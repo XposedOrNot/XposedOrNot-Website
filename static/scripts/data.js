@@ -537,12 +537,13 @@ if (!token) {
     } catch (e) {
         dateStr = new Date().toLocaleDateString('en', opts);
     }
-    el.textContent = 'Report generated on ' + dateStr + '.';
+    var prefix = 'Report for <strong>' + escapeHtml(email) + '</strong>, generated on ' + dateStr;
+    el.innerHTML = prefix + '.';
     $.get('https://api.xposedornot.com/v1/metrics')
         .done(function (m) {
             var n = m && parseInt(m.Breaches_Count, 10);
             if (n > 0) {
-                el.textContent = 'Report generated on ' + dateStr + ', checked against ' + n.toLocaleString() + ' data breaches.';
+                el.innerHTML = prefix + ', checked against ' + n.toLocaleString() + ' data breaches.';
             }
         })
         .fail(function () {
@@ -958,41 +959,41 @@ var j = $.ajax(url)
             $('#industry').html(industryList);
 
             const githubSection = `
-                <div class="github-collab-section h-100">
-                    <div class="github-content text-center">
-                        <div class="github-icon mb-3">
-                            <i class="fab fa-github fa-3x" aria-hidden="true"></i>
-                        </div>
-                        <h3 class="mb-3">Join Our Open Source Community</h3>
-                        <p class="mb-4">
-                            Help us make the internet safer by contributing to XposedOrNot.
-                            Your ideas and contributions can make a difference!
-                        </p>
-                        <div class="github-stats mb-3">
-                            <div class="row justify-content-center">
-                                <div class="col-auto px-3">
-                                    <div class="stat-item">
-                                        <i class="fas fa-code-branch" aria-hidden="true"></i>
-                                        <span>Open Source</span>
-                                    </div>
+                <div class="github-collab-section">
+                    <div class="xr-gh-grid">
+                        <div class="xr-gh-main">
+                            <h3><i class="fab fa-github" aria-hidden="true"></i> Fully open source, built in the open</h3>
+                            <p>
+                                Every line of XposedOrNot, including this report, is public code.
+                                See exactly how your data is handled, suggest improvements, or
+                                build your own tools on top of our free API.
+                            </p>
+                            <div class="github-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-code-branch" aria-hidden="true"></i>
+                                    <span>Open Source</span>
                                 </div>
-                                <div class="col-auto px-3">
-                                    <div class="stat-item">
-                                        <i class="fas fa-users" aria-hidden="true"></i>
-                                        <span>Community</span>
-                                    </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-users" aria-hidden="true"></i>
+                                    <span>Community Driven</span>
                                 </div>
-                                <div class="col-auto px-3">
-                                    <div class="stat-item">
-                                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
-                                        <span>Security</span>
-                                    </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                                    <span>Security First</span>
                                 </div>
                             </div>
                         </div>
-                        <a href="https://github.com/xposedornot" target="_blank" rel="noopener" class="btn btn-github">
-                            <i class="fab fa-github mr-2" aria-hidden="true"></i> Visit our GitHub<span class="sr-only"> (opens in new tab)</span>
-                        </a>
+                        <div class="xr-gh-actions">
+                            <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener" class="btn btn-github">
+                                <i class="far fa-star" aria-hidden="true"></i> Star on GitHub<span class="sr-only"> (opens in new tab)</span>
+                            </a>
+                            <a href="api_doc" class="xr-gh-link">
+                                <i class="fas fa-code" aria-hidden="true"></i> Explore the free API
+                            </a>
+                            <a href="our-repository" class="xr-gh-link">
+                                <i class="fas fa-database" aria-hidden="true"></i> How we collect breach data
+                            </a>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1257,6 +1258,7 @@ var j = $.ajax(url)
 
         g1();
         renderExposureTimeline(jsonResponse);
+        initJumpnavSpy();
     })
     .fail(function (response) {
         if (response.status === 404) {
@@ -1385,6 +1387,7 @@ function g1() {
                 fill: false,
                 backgroundColor: chartColors.red,
                 borderColor: chartColors.red,
+                cubicInterpolationMode: 'monotone',
                 data: [by07, by08, by09, by10, by11, by12, by13, by14, by15, by16, by17, by18, by19, by20, by21, by22, by23, by24, by25, by26],
             }]
         },
@@ -1660,48 +1663,17 @@ $(document).ready(function () {
                 'overflow': 'visible',
                 'margin-bottom': '30px'
             });
-
-            $('.github-content').css({
-                'padding': '15px 5px'
-            });
-
-            if (window.innerWidth < 400) {
-                $('.github-stats .row').css({
-                    'flex-direction': 'column',
-                    'align-items': 'center'
-                });
-
-                $('.github-stats .col-auto').css({
-                    'width': '100%',
-                    'text-align': 'center',
-                    'margin-bottom': '10px'
-                });
-            }
         } else {
 
             $('.xon-row2-right').css({
-                'height': '450px',
+                'height': '',
+                'min-height': '450px',
                 'margin-bottom': ''
             });
 
             $('.github-collab-section').css({
                 'height': '100%',
                 'overflow': 'hidden',
-                'margin-bottom': ''
-            });
-
-            $('.github-content').css({
-                'padding': ''
-            });
-
-            $('.github-stats .row').css({
-                'flex-direction': '',
-                'align-items': ''
-            });
-
-            $('.github-stats .col-auto').css({
-                'width': '',
-                'text-align': '',
                 'margin-bottom': ''
             });
         }
@@ -2738,6 +2710,41 @@ function renderExposureSummary(response) {
     band.insertAdjacentHTML('beforeend', '<p class="xr-quick-summary" id="xr-quick-summary">' + text + '</p>');
 }
 
+function initJumpnavSpy() {
+    var nav = document.getElementById('xr-jumpnav');
+    if (!nav || typeof IntersectionObserver === 'undefined') return;
+    var links = nav.querySelectorAll('a[href^="#"]');
+    var linkById = {};
+    var targets = [];
+    Array.prototype.forEach.call(links, function (link) {
+        var id = link.getAttribute('href').slice(1);
+        var el = document.getElementById(id);
+        if (el) {
+            linkById[id] = link;
+            targets.push(el);
+        }
+    });
+    if (!targets.length) return;
+    function setActive(id) {
+        Array.prototype.forEach.call(links, function (link) {
+            link.classList.remove('xr-jumpnav-active');
+            link.removeAttribute('aria-current');
+        });
+        if (linkById[id]) {
+            linkById[id].classList.add('xr-jumpnav-active');
+            linkById[id].setAttribute('aria-current', 'true');
+        }
+    }
+    var observer = new IntersectionObserver(function (entries) {
+        var current = null;
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) current = entry.target;
+        });
+        if (current) setActive(current.id);
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    targets.forEach(function (target) { observer.observe(target); });
+}
+
 function renderStatTiles(response) {
     var heroRow = document.querySelector('#xr-sec-score .row');
     if (!heroRow || document.getElementById('xr-stat-tiles')) return;
@@ -2758,14 +2765,18 @@ function renderStatTiles(response) {
         return Math.max(max, parseInt(breach.xposed_date, 10) || 0);
     }, 0);
     var tiles = [
-        { label: 'Breaches found', value: all.length.toLocaleString() },
-        { label: 'Breaches exposing passwords', value: withPassword.toLocaleString() },
-        { label: 'Data types exposed', value: typeCount.toLocaleString() },
-        { label: 'Most recent breach', value: latestYear ? String(latestYear) : 'n/a' }
+        { label: 'Breaches found', value: all.length.toLocaleString(), icon: 'fa-database' },
+        { label: 'Breaches exposing passwords', value: withPassword.toLocaleString(), icon: 'fa-key' },
+        { label: 'Data types exposed', value: typeCount.toLocaleString(), icon: 'fa-th-large' },
+        { label: 'Most recent breach', value: latestYear ? String(latestYear) : 'n/a', icon: 'fa-calendar-alt' }
     ];
     var html = '<div id="xr-stat-tiles" class="xr-stat-tiles">';
     tiles.forEach(function (tile) {
-        html += '<div class="xr-stat-tile"><span class="xr-stat-value">' + tile.value + '</span><span class="xr-stat-label">' + tile.label + '</span></div>';
+        html += '<div class="xr-stat-tile">' +
+            '<span class="xr-stat-icon" aria-hidden="true"><i class="fas ' + tile.icon + '"></i></span>' +
+            '<span class="xr-stat-value">' + tile.value + '</span>' +
+            '<span class="xr-stat-label">' + tile.label + '</span>' +
+            '</div>';
     });
     html += '</div>';
     heroRow.insertAdjacentHTML('beforebegin', html);
