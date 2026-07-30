@@ -13,8 +13,6 @@ function loadScriptOnce(url) {
 }
 
 var D3_URL = 'https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js';
-var HORTREE_URL = '/static/scripts/jquery.hortree.min.js';
-var _lastTreeData = null;
 
 function _setupHeatMapLazyLoad() {
     var container = document.getElementById('heatmap-container');
@@ -30,28 +28,6 @@ function _setupHeatMapLazyLoad() {
                 observer.disconnect();
                 loadScriptOnce(D3_URL).then(function () {
                     if (typeof lastHeatMapData !== 'undefined' && lastHeatMapData) drawHeatMap(lastHeatMapData);
-                });
-                break;
-            }
-        }
-    }, { rootMargin: '200px' });
-    obs.observe(container);
-}
-
-function _setupTreeLazyLoad() {
-    var container = document.getElementById('tree-container');
-    if (!container || typeof IntersectionObserver === 'undefined') {
-        loadScriptOnce(HORTREE_URL).then(function () {
-            if (_lastTreeData) $('#tree-container').hortree({ data: _lastTreeData });
-        });
-        return;
-    }
-    var obs = new IntersectionObserver(function (entries, observer) {
-        for (var i = 0; i < entries.length; i++) {
-            if (entries[i].isIntersecting) {
-                observer.disconnect();
-                loadScriptOnce(HORTREE_URL).then(function () {
-                    if (_lastTreeData) $('#tree-container').hortree({ data: _lastTreeData });
                 });
                 break;
             }
@@ -171,22 +147,12 @@ function showNoBreachView(emailAddr) {
     $.LoadingOverlay("hide");
     $('#sr-loading-status').text('Report loaded.');
 
-    $('section[aria-label="Risk analysis and recommendations"]').hide();
-    $('section[aria-label="Breach summary"]').hide();
-    $('section[aria-label="Sensitive data breaches"]').hide();
-    $('section[aria-label="Password risk and top breaches"]').hide();
-    $('section[aria-label="Industry exposure"]').hide();
-    $('section[aria-label="Exposed data categories"]').hide();
-    $('section[aria-label="Exposed data heat map"]').hide();
-    $('section[aria-label="Detailed breach breakdown"]').hide();
-    $('section[aria-label="Breach timeline visualization"]').hide();
-    $('section[aria-label="Protect your accounts"]').hide();
-    $('section[aria-label="Attack path visualization"]').hide();
+    $('#main-content > section').slice(1).hide();
 
     var safeEmail = escapeHtml(emailAddr);
     var isDark = isDarkModeActive();
 
-    $('section[aria-label="Risk score overview"] .container').html(
+    $('#main-content > section').first().find('.container').html(
         '<h1 class="report-h1">Your Data Breach Report</h1>' +
         '<div style="text-align:center; padding: 60px 20px; max-width: 600px; margin: 0 auto;">' +
             '<div style="font-size: 72px; margin-bottom: 20px;" role="img" aria-label="Celebration">&#127881;</div>' +
@@ -1668,30 +1634,7 @@ $(document).ready(function () {
     $(window).on('resize', adjustLayoutForScreenSize);
 });
 
-if (token) {
-    $('section[aria-label="Breach timeline visualization"]').hide();
-} else {
-    var analyticsApiUrl = `https://api.xposedornot.com/v1/analytics/${encodeURIComponent(email)}`;
-
-    $.get(analyticsApiUrl)
-        .done(function (response) {
-            if (!response || !response.description || !response.children) {
-                return;
-            }
-            var dataForTree = [{
-                description: response.description,
-                children: response.children.filter(function (year) { return year.children && year.children.length > 0; })
-            }];
-
-            _lastTreeData = dataForTree;
-            if (typeof $.fn.hortree === 'function') {
-                $('#tree-container').hortree({ data: dataForTree });
-            }
-        })
-        .fail(function () {
-        });
-}
-
+$('.breach-timeline-section').hide();
 
 var leaving = false;
 $(document).on('mouseleave', function (e) {
@@ -2539,6 +2482,10 @@ function formatAddedDate(added, monthYearOnly) {
     }
 }
 
+function breachAnchorId(name) {
+    return 'xr-detail-' + String(name).replace(/[^A-Za-z0-9_-]/g, '');
+}
+
 function passwordRiskLabel(risk) {
     switch (String(risk || '').toLowerCase()) {
         case 'plaintext': return 'Exposed in plain text (no protection)';
@@ -2551,7 +2498,7 @@ function passwordRiskLabel(risk) {
 
 function generateBreachDetailHtml(breach, isSensitive) {
     const addedStr = formatAddedDate(breach.added);
-    let html = "<div><b><span class='notser'>" + escapeHtml(breach.xposed_date) + "</span></b><br><br><div class='row'><div class='col-sm-4' style='text-align: center'><img height='75' width='100' src='";
+    let html = "<div id='" + breachAnchorId(breach.breach) + "' class='xr-detail-card'><b><span class='notser'>" + escapeHtml(breach.xposed_date) + "</span></b><br><br><div class='row'><div class='col-sm-4' style='text-align: center'><img height='75' width='100' src='";
     html += breach.logo + "' alt='" + escapeHtml(breach.breach) + " logo'></div><div class='col-sm-4' style='text-align: center'><h3><strong><a href='" + '/breach/' + encodeURIComponent(breach.breach) + "' target='_blank' rel='noopener'>";
     html += escapeHtml(breach.breach) + "<span class='sr-only'> (opens in new tab)</span></a></strong></h3></div><div class='col-sm-4' style='text-align: center'><img height='75' width='75' src='";
     html += 'static/logos/industry/' + encodeURIComponent(breach.industry) + ".png' alt='" + escapeHtml(breach.industry) + " industry icon'>";
@@ -2582,9 +2529,13 @@ function generateBreachDetailHtml(breach, isSensitive) {
 function buildBreachRowHtml(breach, isSensitive) {
     var prefix = isSensitive ? '<span role="img" aria-label="Sensitive breach">🔥</span> ' : '';
     var added = formatAddedDate(breach.added, true);
+    var detailLink = (!isSensitive || token)
+        ? '<br><a class="xr-detail-link" href="#' + breachAnchorId(breach.breach) + '">Full details<span class="sr-only"> for ' + escapeHtml(breach.breach) + '</span> <i class="fas fa-arrow-down" aria-hidden="true"></i></a>'
+        : '';
     return '<tr>' +
         '<th scope="row" style="text-align: center;">' + prefix + escapeHtml(breach.breach) + '<br>' +
         '<img src="' + breach.logo + '" alt="' + escapeHtml(breach.breach) + ' logo" style="width: 50px; height: 50px;">' +
+        detailLink +
         '</th>' +
         '<td><div class="text">' + escapeHtml(breach.details) + '</div>' +
         '<button type="button" class="see-more" aria-expanded="false">See More</button></td>' +
@@ -2728,12 +2679,12 @@ function generateNextSteps(breachesDetails, jsonResponse) {
 }
 
 function renderExposureTimeline(response) {
-    var bcCanvas = document.getElementById('bc');
-    var host = bcCanvas ? bcCanvas.closest('.container') : null;
-    var anchor = null;
+    var detailsEl = document.getElementById('details');
+    var host = detailsEl ? detailsEl.parentElement : null;
     if (!host) {
-        anchor = document.querySelector('.breach-timeline-section #scrollable-container');
-        if (!anchor) return;
+        var bcCanvas = document.getElementById('bc');
+        host = bcCanvas ? bcCanvas.closest('.container') : null;
+        if (!host) return;
     }
     if (typeof Chart === 'undefined' || document.getElementById('xr-exposure-timeline')) return;
     var all = collectVisibleBreaches(response);
@@ -2794,11 +2745,7 @@ function renderExposureTimeline(response) {
         (truncated ? '<p class="xr-tl-note">Showing the ' + MAX_ROWS + ' most recent of your ' + (items.length + truncated) + ' breaches.</p>' : '') +
         '<div class="xr-tl-canvas" style="height:' + height + 'px"><canvas id="xr-exposure-timeline" role="img" aria-label="Timeline of your breaches from ' + minYear + ' to ' + Math.ceil(maxEnd) + '. Each bar spans from the breach year to the date the breach was added to XposedOrNot."></canvas></div>' +
         legendHtml;
-    if (host) {
-        host.appendChild(wrap);
-    } else {
-        anchor.parentNode.insertBefore(wrap, anchor);
-    }
+    host.appendChild(wrap);
 
     timelineChartInstance = new Chart(document.getElementById('xr-exposure-timeline'), {
         type: 'bar',
@@ -2895,4 +2842,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 _setupHeatMapLazyLoad();
-_setupTreeLazyLoad();
