@@ -1128,7 +1128,7 @@ var j = $.ajax(url)
                 }
             });
 
-            top5.setAttribute('aria-label', 'Top 5 data breaches by exposed records: ' +
+            top5.setAttribute('aria-label', 'Top 5 breaches by total records exposed in each breach: ' +
                 breaches_id.map(function (name, idx) { return name + ', ' + breaches_cnt[idx].toLocaleString() + ' records'; }).join('; ') + '.');
 
             var passwords = document.getElementById('passwords');
@@ -2405,9 +2405,9 @@ function drawHeatMap(xposedData) {
         legend.setAttribute('aria-label', 'Heat map color legend');
 
         var tiers = [
-            { color: '#3b6be6', label: 'Low (1\u20135)' },
-            { color: '#e67e22', label: 'Medium (6\u201310)' },
-            { color: '#d63031', label: 'High (11+)' }
+            { color: '#3b6be6', label: 'Exposed 1\u20135 times' },
+            { color: '#e67e22', label: 'Exposed 6\u201310 times' },
+            { color: '#d63031', label: 'Exposed 11+ times' }
         ];
 
         tiers.forEach(function(t) {
@@ -2539,6 +2539,16 @@ function formatAddedDate(added, monthYearOnly) {
     }
 }
 
+function passwordRiskLabel(risk) {
+    switch (String(risk || '').toLowerCase()) {
+        case 'plaintext': return 'Exposed in plain text (no protection)';
+        case 'easytocrack': return 'Weakly protected (easy to crack)';
+        case 'hardtocrack': return 'Strongly protected (hard to crack)';
+        case 'unknown': return 'Unknown (storage method not disclosed)';
+        default: return escapeHtml(risk);
+    }
+}
+
 function generateBreachDetailHtml(breach, isSensitive) {
     const addedStr = formatAddedDate(breach.added);
     let html = "<div><b><span class='notser'>" + escapeHtml(breach.xposed_date) + "</span></b><br><br><div class='row'><div class='col-sm-4' style='text-align: center'><img height='75' width='100' src='";
@@ -2549,20 +2559,20 @@ function generateBreachDetailHtml(breach, isSensitive) {
     html += "<div style='text-align: center'><table style='width: 85%; font-size: 16px' class='table-striped table-bordered table-hover'>";
     html += "<caption class='sr-only'>Breach details for " + escapeHtml(breach.breach) + "</caption>";
     html += "<thead><tr><th scope='col'>Detail</th><th scope='col'>Value</th></tr></thead><tbody>";
-    html += "<tr><th scope='row'>Number of Records Exposed</th><td>" + parseInt(breach.xposed_records).toLocaleString() + "</td></tr>";
+    html += "<tr><th scope='row'>Accounts Exposed (entire breach)</th><td>" + parseInt(breach.xposed_records).toLocaleString() + "</td></tr>";
     if (addedStr) {
         html += "<tr><th scope='row'>Added to XposedOrNot</th><td>" + addedStr + "</td></tr>";
     }
     html += "<tr><th scope='row'>Data Types Exposed</th><td>" + escapeHtml(breach.xposed_data.replace(/;/g, ', ')) + "</td></tr>";
-    html += "<tr><th scope='row'>Password/Hash Status</th><td>" + escapeHtml(breach.password_risk) + "</td></tr>";
+    html += "<tr><th scope='row'>Password Protection</th><td>" + passwordRiskLabel(breach.password_risk) + "</td></tr>";
     html += "<tr><th scope='row'>Affected Domain</th><td>" + escapeHtml(breach.domain) + "</td></tr></tbody></table>";
     html += "<p style='font-size: 16px'>" + escapeHtml(breach.details) + "</p></div><br><br>";
     html += "<b>Reference link(s):</b><br><a target='_blank' rel='noopener' href='" + encodeURI(breach.references) + "'>" + escapeHtml(breach.references) + "<span class='sr-only'> (opens in new tab)</span></a>";
-    html += "<br><br><span class='ver'>Searchable</span>";
+    html += "<br><br>";
     if (breach.verified === "Yes") {
-        html += "<span class='ver'>Verified</span>";
+        html += "<span class='ver'>Verified breach</span>";
     } else {
-        html += "<span class='notver'>Untrusted</span>";
+        html += "<span class='notver'>Unverified breach</span>";
     }
     html += isSensitive ? "<span class='notser'>Sensitive Data Breach</span>" : "<span class='notser'>Data Breach</span>";
     html += "</div><hr>";
