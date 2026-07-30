@@ -449,7 +449,7 @@ $("#db-sensitive").html(`
         Some breaches contain sensitive data that requires email verification to view.
         Verify your email to see your complete breach exposure.
     </p>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal" data-intent="unlock">
         <i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now
     </button>
 `);
@@ -471,7 +471,7 @@ if (!token) {
             Some breaches contain sensitive data that requires email verification to view.
             Verify your email to see your complete breach exposure.
         </p>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal" data-intent="unlock">
             <i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now
         </button>
     `);
@@ -544,7 +544,7 @@ var j = $.ajax(url)
                     Some breaches contain sensitive data that requires email verification to view.
                     Verify your email to see your complete breach exposure.
                 </p>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal" data-intent="unlock">
                     <i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now
                 </button>
             `);
@@ -1414,6 +1414,7 @@ $(window).on("load", function () {
 });
 
 var _alertModalTrigger = null;
+var _alertModalIntent = 'alerts';
 
 function announceAlertStatus(text) {
     var region = document.getElementById('xr-alert-status');
@@ -1434,6 +1435,10 @@ $('#alertMeModal').on('hidden.bs.modal', function () {
     $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
     $("#alertMe_i2").addClass("fa fa-bell ring");
     $("#h2head").attr("class", "modal-header-primary");
+    _alertModalIntent = 'alerts';
+    $('#alertMeModalLabel').text('Get Breach Alerts');
+    var unlockNote = document.getElementById('xr-unlock-note');
+    if (unlockNote) unlockNote.hidden = true;
     $('#message-text').val("We'll notify you instantly if your email appears in any new data breach. Verify your email and activate your FREE subscription by clicking 'Start Monitoring'.");
     $("#alertMe").show();
     $("#alertMeClose, #a_succ").hide();
@@ -1458,7 +1463,13 @@ $('#alertMeModal').on('show.bs.modal', function (event) {
     _alertModalTrigger = (event.relatedTarget && event.relatedTarget.focus) ? event.relatedTarget : document.activeElement;
     loadTurnstile();
     var button = $(event.relatedTarget)
-    var recipient = button.data('whatever')
+    _alertModalIntent = button.data('intent') === 'unlock' ? 'unlock' : 'alerts';
+    $('#alertMeModalLabel').text(_alertModalIntent === 'unlock' ? 'Verify Your Email' : 'Get Breach Alerts');
+    var unlockNote = document.getElementById('xr-unlock-note');
+    if (unlockNote) unlockNote.hidden = _alertModalIntent !== 'unlock';
+    if (_alertModalIntent === 'unlock') {
+        $('#message-text').val("Verify your email to unlock the sensitive breaches and personalized attack paths in this report. You'll also get free alerts for future breaches. Click 'Start Monitoring' to receive your verification email.");
+    }
     var modal = $(this)
     modal.find('.modal-body input').val(email)
     $('#thedudalModal').modal('hide');
@@ -1520,7 +1531,9 @@ $(document).ready(function () {
         var apiUrl = 'https://api.xposedornot.com/v1/alertme/' + encodeURIComponent(inputValue);
         var headers = turnstileResponse ? { 'X-Turnstile-Token': turnstileResponse } : {};
 
-        var successMessage = "Verification email sent! Check your inbox to activate free breach monitoring.";
+        var successMessage = _alertModalIntent === 'unlock'
+            ? "Verification email sent! Click the link inside, then sign in to My Dashboard with this email to view your unlocked report."
+            : "Verification email sent! Check your inbox to activate free breach monitoring.";
         var alreadySubscribedMessage = "You're already protected! This email is registered for breach alerts.";
         var unableToDeliverMessage = "Unable to send email to this address. Please check and try again.";
         var signupFailedMessage = "We couldn't set up alerts right now. Please try again in a few minutes.";
@@ -2033,7 +2046,7 @@ function renderSampleAttackPath() {
     html += '<div class="attack-path-cta">';
     html += '<strong><i class="fas fa-lock" aria-hidden="true"></i> See Your Personalized Attack Paths</strong>';
     html += '<p>Verify your email to see how attackers could target you based on your actual breach data.</p>';
-    html += '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal">';
+    html += '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertMeModal" data-intent="unlock">';
     html += '<i class="fas fa-envelope" aria-hidden="true"></i> Verify Email Now</button>';
     html += '</div>';
 
