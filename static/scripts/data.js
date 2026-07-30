@@ -167,10 +167,41 @@ function showNoBreachView(emailAddr) {
             '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal" style="margin-top: 10px;">' +
                 '<i class="fa fa-bell" aria-hidden="true"></i>&nbsp; Get Free Breach Alerts' +
             '</button>' +
+            '<p class="xr-allclear-alt">Want to double-check? <a href="password">See if a password of yours has been exposed</a>.</p>' +
         '</div>'
     );
 
     setTimeout(fireConfetti, 300);
+}
+
+function showErrorView(kind) {
+    $.LoadingOverlay("hide");
+    $('#sr-loading-status').text('Report could not be loaded.');
+    $('#main-content > section').slice(1).hide();
+    $('#xr-jumpnav, #floating-button, #dash-nudge').hide();
+    var heading, body;
+    if (kind === 'slow') {
+        heading = 'Too many requests';
+        body = "You're checking reports faster than our free service allows. Please wait a minute, then try again.";
+    } else {
+        heading = "We couldn't load your report";
+        body = 'Something went wrong on our side. Please try again in a moment. If it keeps failing, check back a little later.';
+    }
+    $('#main-content > section').first().find('.container').html(
+        '<h1 class="report-h1">Your Data Breach Report</h1>' +
+        '<div class="xr-error-view" role="alert">' +
+            '<div class="xr-error-icon" aria-hidden="true"><i class="fas fa-exclamation-triangle"></i></div>' +
+            '<h2>' + heading + '</h2>' +
+            '<p>' + body + '</p>' +
+            '<button type="button" id="xr-error-retry" class="btn btn-primary">Try again</button>' +
+        '</div>'
+    );
+    var retry = document.getElementById('xr-error-retry');
+    if (retry) {
+        retry.addEventListener('click', function () {
+            window.location.reload();
+        });
+    }
 }
 
 let by26 = 0, by25 = 0, by24 = 0, by23 = 0, by22 = 0, by21 = 0, by20 = 0, by19 = 0, by18 = 0, by17 = 0, by16 = 0, by15 = 0, by14 = 0, by13 = 0, by12 = 0, by11 = 0, by10 = 0, by09 = 0, by08 = 0, by07 = 0;
@@ -599,6 +630,7 @@ var j = $.ajax(url)
 
         renderRiskBand(Math.round(riskScore));
         renderExposureSummary(jsonResponse);
+        renderStatTiles(jsonResponse);
 
         function renderRiskBand(score) {
             var el = document.getElementById('chart_div');
@@ -1230,17 +1262,9 @@ var j = $.ajax(url)
         if (response.status === 404) {
             showNoBreachView(email);
         } else if (response.status === 429) {
-            $.LoadingOverlay("hide");
-            $('#sr-loading-status').text('Report loaded.');
-            document.getElementById("db-s").className = "visible alert alert-danger";
-            $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
-            $("#db-s").show();
+            showErrorView('slow');
         } else {
-            $.LoadingOverlay("hide");
-            $('#sr-loading-status').text('Report loaded.');
-            document.getElementById("db-s").className = "visible alert alert-warning";
-            $("#db-s").html("<b>Something went wrong.</b><br>We couldn't load your breach report. Please try again later.");
-            $("#db-s").show();
+            showErrorView('error');
         }
     })
 
@@ -1479,7 +1503,7 @@ $('#alertMeModal').on('hidden.bs.modal', function () {
     $('#alertMeModalLabel').text('Get Breach Alerts');
     var unlockNote = document.getElementById('xr-unlock-note');
     if (unlockNote) unlockNote.hidden = true;
-    $('#message-text').val("We'll notify you instantly if your email appears in any new data breach. Verify your email and activate your FREE subscription by clicking 'Start Monitoring'.");
+    $('#message-text').text("We'll notify you instantly if your email appears in any new data breach. Verify your email and activate your FREE subscription by clicking 'Start Monitoring'.");
     $("#alertMe").show();
     $("#alertMeClose, #a_succ").hide();
     if (_alertModalTrigger && document.contains(_alertModalTrigger)) {
@@ -1508,7 +1532,7 @@ $('#alertMeModal').on('show.bs.modal', function (event) {
     var unlockNote = document.getElementById('xr-unlock-note');
     if (unlockNote) unlockNote.hidden = _alertModalIntent !== 'unlock';
     if (_alertModalIntent === 'unlock') {
-        $('#message-text').val("Verify your email to unlock the sensitive breaches and personalized attack paths in this report. You'll also get free alerts for future breaches. Click 'Start Monitoring' to receive your verification email.");
+        $('#message-text').text("Verify your email to unlock the sensitive breaches and personalized attack paths in this report. You'll also get free alerts for future breaches. Click 'Start Monitoring' to receive your verification email.");
     }
     var modal = $(this)
     modal.find('.modal-body input').val(email)
@@ -1547,7 +1571,7 @@ $(document).ready(function () {
         var inputValue = $("#recipient-name").val().toLowerCase().trim();
 
         if (!inputValue || !validateEmail(inputValue)) {
-            $('#message-text').val("Please enter a valid email address to receive alerts.");
+            $('#message-text').text("Please enter a valid email address to receive alerts.");
             announceAlertStatus("Please enter a valid email address to receive alerts.");
             $("#h2head").attr("class", "modal-header-danger");
             $("#recipient-name").css("border", "2px solid #c82333").focus();
@@ -1584,7 +1608,7 @@ $(document).ready(function () {
             headers: headers
         })
             .done(function () {
-                $('#message-text').val(successMessage);
+                $('#message-text').text(successMessage);
                 announceAlertStatus(successMessage);
                 $("#h2head").attr("class", "modal-header-success");
                 $("#alertMe").removeAttr('aria-busy').hide();
@@ -1610,7 +1634,7 @@ $(document).ready(function () {
                     }
                 }
 
-                $('#message-text').val(message);
+                $('#message-text').text(message);
                 announceAlertStatus(message);
                 $("#h2head").attr("class", headerClass);
                 $("#alertMe").removeAttr('aria-busy').hide();
@@ -1796,7 +1820,14 @@ document.getElementById('clippy-button').addEventListener('click', function () {
             agent.speak(randomPhrase);
             agent.animate();
         }
-        setInterval(speakRandom, Math.floor(Math.random() * 60000));
+        function scheduleRandomTip() {
+            var delay = 45000 + Math.floor(Math.random() * 45000);
+            setTimeout(function () {
+                speakRandom();
+                scheduleRandomTip();
+            }, delay);
+        }
+        scheduleRandomTip();
     });
 
 });
@@ -2705,6 +2736,39 @@ function renderExposureSummary(response) {
         text = 'Your email appeared in <strong>' + all.length + '</strong> breaches: <strong>' + withPassword + '</strong> exposed your password, <strong>' + withoutPassword + '</strong> exposed other details like your email but no password.';
     }
     band.insertAdjacentHTML('beforeend', '<p class="xr-quick-summary" id="xr-quick-summary">' + text + '</p>');
+}
+
+function renderStatTiles(response) {
+    var heroRow = document.querySelector('#xr-sec-score .row');
+    if (!heroRow || document.getElementById('xr-stat-tiles')) return;
+    var all = collectVisibleBreaches(response);
+    if (!all.length) return;
+    var withPassword = all.filter(function (breach) {
+        return /password/i.test(breach.xposed_data || '');
+    }).length;
+    var types = {};
+    all.forEach(function (breach) {
+        String(breach.xposed_data || '').split(';').forEach(function (item) {
+            item = item.trim();
+            if (item) types[item.toLowerCase()] = true;
+        });
+    });
+    var typeCount = Object.keys(types).length;
+    var latestYear = all.reduce(function (max, breach) {
+        return Math.max(max, parseInt(breach.xposed_date, 10) || 0);
+    }, 0);
+    var tiles = [
+        { label: 'Breaches found', value: all.length.toLocaleString() },
+        { label: 'Breaches exposing passwords', value: withPassword.toLocaleString() },
+        { label: 'Data types exposed', value: typeCount.toLocaleString() },
+        { label: 'Most recent breach', value: latestYear ? String(latestYear) : 'n/a' }
+    ];
+    var html = '<div id="xr-stat-tiles" class="xr-stat-tiles">';
+    tiles.forEach(function (tile) {
+        html += '<div class="xr-stat-tile"><span class="xr-stat-value">' + tile.value + '</span><span class="xr-stat-label">' + tile.label + '</span></div>';
+    });
+    html += '</div>';
+    heroRow.insertAdjacentHTML('beforebegin', html);
 }
 
 function generateNextSteps(breachesDetails, jsonResponse) {
