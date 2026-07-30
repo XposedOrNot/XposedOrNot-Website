@@ -321,12 +321,6 @@ function generateRiskAnalysis(riskLabel, jsonResponse) {
 
     html += '</div>';
 
-    html += '<div class="risk-cta">';
-    html += '<p>Don\'t wait for the next breach to find out.</p>';
-    html += '<button type="button" class="btn btn-lg btn-alert" data-toggle="modal" data-target="#alertMeModal">';
-    html += '<i class="fa fa-bell" aria-hidden="true"></i>&nbsp; Get Free Breach Alerts</button>';
-    html += '</div>';
-
     html += generateNextSteps(breachesDetails, jsonResponse);
 
     html += '</div>';
