@@ -154,10 +154,6 @@
         return String(x);
     }
 
-    function recordsOf(info) {
-        return parseInt(info.xposed_records || info.exposedRecords || 0, 10) || 0;
-    }
-
     function addedOf(info) {
         return info.added || info.addedDate || "";
     }
@@ -734,19 +730,22 @@
             return (a.status || "").toLowerCase() !== "acknowledged";
         }).length;
         navPill("pd-nav-alerts", String(pending), pending === 0);
-        host.innerHTML = '<p class="pd-panel-sub" style="margin-bottom:10px">New breaches requiring your acknowledgment, from the last 30 days.</p>' +
+        host.innerHTML = '<div class="dashboard-card pd-card">' +
+            '<p class="pd-panel-sub pd-feed-intro">New breaches affecting your monitored domains, from the last 30 days.</p>' +
             '<ul class="pd-feed">' + alerts.map(function (a) {
-            var info = breachInfo[a.breach_id] || {};
             var when = a.alert_time ? fmtDate(new Date(a.alert_time)) : "";
             var ack = (a.status || "").toLowerCase() === "acknowledged";
+            var affected = parseInt(a.affected_email_count, 10);
             return '<li><span class="pd-feed-icon"><i class="fas fa-bug" aria-hidden="true"></i></span><div>' +
-                "<time>" + esc(when) + "</time> New exposure: <strong>" + esc(a.breach_id || "") + "</strong>" +
+                "<time>" + esc(when) + "</time> New exposure" +
+                (a.affected_domain ? " for <strong>" + esc(a.affected_domain) + "</strong>" : "") +
+                ': <a href="breach.html#' + encodeURIComponent(a.breach_id || "") + '" target="_blank" rel="noopener"><strong>' + esc(a.breach_id || "") + '</strong><span class="sr-only"> (opens in new tab)</span></a>' +
                 (a.severity ? " &middot; " + esc(a.severity) : "") +
-                (recordsOf(info) ? " &middot; " + recordsOf(info).toLocaleString() + " records" : "") +
+                (affected > 0 ? " &middot; " + affected.toLocaleString() + (affected === 1 ? " email affected" : " emails affected") : "") +
                 (ack ? ' <span class="pd-delivered"><i class="fas fa-check" aria-hidden="true"></i> acknowledged</span>'
                     : ' <button type="button" class="pd-btn pd-btn-quiet pd-btn-sm" data-ack="' + esc(a.alert_id) + '">Acknowledge</button>') +
                 "</div></li>";
-        }).join("") + "</ul>";
+        }).join("") + "</ul></div>";
         host.querySelectorAll("[data-ack]").forEach(function (btn) {
             btn.setAttribute("aria-live", "polite");
             btn.addEventListener("click", function () {
