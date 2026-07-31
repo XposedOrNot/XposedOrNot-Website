@@ -731,21 +731,27 @@
         }).length;
         navPill("pd-nav-alerts", String(pending), pending === 0);
         host.innerHTML = '<div class="dashboard-card pd-card">' +
-            '<p class="pd-panel-sub pd-feed-intro">New breaches affecting your monitored domains, from the last 30 days.</p>' +
-            '<ul class="pd-feed">' + alerts.map(function (a) {
+            '<h2><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> Domain breach alerts <span class="pd-count">' + alerts.length + "</span></h2>" +
+            '<p class="card-desc">New breaches affecting your monitored domains, from the last 30 days.</p>' +
+            alerts.map(function (a) {
             var when = a.alert_time ? fmtDate(new Date(a.alert_time)) : "";
             var ack = (a.status || "").toLowerCase() === "acknowledged";
             var affected = parseInt(a.affected_email_count, 10);
-            return '<li><span class="pd-feed-icon"><i class="fas fa-bug" aria-hidden="true"></i></span><div>' +
-                "<time>" + esc(when) + "</time> New exposure" +
-                (a.affected_domain ? " for <strong>" + esc(a.affected_domain) + "</strong>" : "") +
-                ': <a href="breach.html#' + encodeURIComponent(a.breach_id || "") + '" target="_blank" rel="noopener"><strong>' + esc(a.breach_id || "") + '</strong><span class="sr-only"> (opens in new tab)</span></a>' +
-                (a.severity ? " &middot; " + esc(a.severity) : "") +
-                (affected > 0 ? " &middot; " + affected.toLocaleString() + (affected === 1 ? " email affected" : " emails affected") : "") +
-                (ack ? ' <span class="pd-delivered"><i class="fas fa-check" aria-hidden="true"></i> acknowledged</span>'
-                    : ' <button type="button" class="pd-btn pd-btn-quiet pd-btn-sm" data-ack="' + esc(a.alert_id) + '">Acknowledge</button>') +
-                "</div></li>";
-        }).join("") + "</ul></div>";
+            var meta = [];
+            if (when) meta.push(esc(when));
+            if (a.affected_domain) meta.push(esc(a.affected_domain));
+            if (a.severity) meta.push(esc(a.severity));
+            if (affected > 0) meta.push(affected.toLocaleString() + (affected === 1 ? " email affected" : " emails affected"));
+            return '<div class="pd-status-row">' +
+                '<i class="fas fa-exclamation-triangle pd-status-icon" aria-hidden="true"></i>' +
+                '<div class="pd-status-text">' +
+                '<span class="pd-status-label">New exposure: <a href="breach.html#' + encodeURIComponent(a.breach_id || "") + '" target="_blank" rel="noopener">' + esc(a.breach_id || "") + '<span class="sr-only"> (opens in new tab)</span></a></span>' +
+                '<span class="pd-breach-meta">' + meta.join(" &middot; ") + "</span>" +
+                "</div>" +
+                (ack ? '<span class="pd-delivered"><i class="fas fa-check" aria-hidden="true"></i> acknowledged</span>'
+                    : '<button type="button" class="pd-btn pd-btn-quiet pd-btn-sm" data-ack="' + esc(a.alert_id) + '">Acknowledge</button>') +
+                "</div>";
+        }).join("") + "</div>";
         host.querySelectorAll("[data-ack]").forEach(function (btn) {
             btn.setAttribute("aria-live", "polite");
             btn.addEventListener("click", function () {
