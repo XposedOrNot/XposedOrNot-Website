@@ -962,36 +962,32 @@ var j = $.ajax(url)
                 <div class="github-collab-section">
                     <div class="xr-gh-grid">
                         <div class="xr-gh-main">
-                            <h3><i class="fab fa-github" aria-hidden="true"></i> Fully open source, built in the open</h3>
+                            <h3><i class="fab fa-github" aria-hidden="true"></i> Don't take our word for it, read the code</h3>
                             <p>
-                                Every line of XposedOrNot, including this report, is public code.
-                                See exactly how your data is handled, suggest improvements, or
-                                build your own tools on top of our free API.
+                                Everything behind this report is open source, from the
+                                lookup API to this page. It is free, with no ads and
+                                nothing sold. If it helped you today, a star on GitHub
+                                helps more people find it.
                             </p>
-                            <div class="github-stats">
-                                <div class="stat-item">
-                                    <i class="fas fa-code-branch" aria-hidden="true"></i>
-                                    <span>Open Source</span>
-                                </div>
-                                <div class="stat-item">
-                                    <i class="fas fa-users" aria-hidden="true"></i>
-                                    <span>Community Driven</span>
-                                </div>
-                                <div class="stat-item">
-                                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
-                                    <span>Security First</span>
-                                </div>
+                            <div class="xr-gh-chips">
+                                <span class="xr-gh-chip">
+                                    <i class="fas fa-code" aria-hidden="true"></i> 100% open code
+                                </span>
+                                <span class="xr-gh-chip">
+                                    <i class="fas fa-heart" aria-hidden="true"></i> Free forever
+                                </span>
+                                <span class="xr-gh-chip">
+                                    <i class="fas fa-eye-slash" aria-hidden="true"></i> No ads or trackers
+                                </span>
                             </div>
                         </div>
                         <div class="xr-gh-actions">
                             <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener" class="btn btn-github">
-                                <i class="far fa-star" aria-hidden="true"></i> Star on GitHub<span class="sr-only"> (opens in new tab)</span>
+                                <i class="fab fa-github" aria-hidden="true"></i> Star on GitHub<span class="sr-only"> (opens in new tab)</span>
                             </a>
+                            <span class="xr-gh-note">Free, one click, means a lot</span>
                             <a href="api_doc" class="xr-gh-link">
                                 <i class="fas fa-code" aria-hidden="true"></i> Explore the free API
-                            </a>
-                            <a href="our-repository" class="xr-gh-link">
-                                <i class="fas fa-database" aria-hidden="true"></i> How we collect breach data
                             </a>
                         </div>
                     </div>
