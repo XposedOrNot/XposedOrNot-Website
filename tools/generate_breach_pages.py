@@ -563,6 +563,12 @@ def bake_directory(public):
                             + text[anchor.end():])
                 else:
                     print(f"WARNING: {page} has no seo-summary anchor, list not baked")
+        else:
+            for marker in (ITEMLIST_ID, STATIC_SECTION_ID):
+                if f'id="{marker}"' in text:
+                    print(f"WARNING: {page} carries EN-only block '{marker}'. "
+                          "The A-Z directory is baked for EN only and will go "
+                          "stale here; remove it from this locale page.")
         if '"dateModified"' not in text:
             print(f"WARNING: {page} Dataset schema not baked (marker not found)")
         page.write_text(text, encoding="utf-8", newline="")
