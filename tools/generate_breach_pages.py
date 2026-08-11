@@ -638,6 +638,166 @@ REPO_TYPE_LABELS = {
     "social media profiles": "Social Media Profiles",
 }
 
+REPO_TYPE_ORDER = ["email addresses", "passwords", "usernames", "names",
+                   "ip addresses", "phone numbers", "dates of birth",
+                   "physical addresses", "genders", "geographic locations",
+                   "social media profiles"]
+
+
+def _repo_i18n(cap, heads, risk, types):
+    return {"cap_yearly": cap[0], "cap_password": cap[1], "cap_types": cap[2],
+            "h_year": heads[0], "h_breaches": heads[1], "h_risk": heads[2],
+            "h_type": heads[3], "h_share": heads[4],
+            "risk": dict(zip(("plaintext", "easy", "hard", "unknown"), risk)),
+            "types": dict(zip(REPO_TYPE_ORDER, types))}
+
+
+REPO_TABLE_I18N = {
+    "en": _repo_i18n(
+        ("Data breaches by year", "Password storage risk across breaches",
+         "Most exposed data types"),
+        ("Year", "Breaches", "Risk level", "Data type", "Share of breaches"),
+        ("Plaintext", "Easy to crack", "Hard to crack", "Unknown"),
+        ("Email Addresses", "Passwords", "Usernames", "Names", "IP Addresses",
+         "Phone Numbers", "Dates of Birth", "Physical Addresses", "Genders",
+         "Geographic Locations", "Social Media Profiles")),
+    "de": _repo_i18n(
+        ("Datenlecks nach Jahr", "Passwort-Sicherheitsrisiko über alle Datenlecks",
+         "Am häufigsten offengelegte Datentypen"),
+        ("Jahr", "Datenlecks", "Risikostufe", "Datentyp", "Anteil der Datenlecks"),
+        ("Klartext", "Leicht zu knacken", "Schwer zu knacken", "Unbekannt"),
+        ("E-Mail-Adressen", "Passwörter", "Benutzernamen", "Namen",
+         "IP-Adressen", "Telefonnummern", "Geburtsdaten", "Postanschriften",
+         "Geschlechter", "Geografische Standorte", "Social-Media-Profile")),
+    "es": _repo_i18n(
+        ("Filtraciones de datos por año",
+         "Riesgo de almacenamiento de contraseñas en las filtraciones",
+         "Tipos de datos más expuestos"),
+        ("Año", "Filtraciones", "Nivel de riesgo", "Tipo de dato",
+         "Porcentaje de filtraciones"),
+        ("Texto sin cifrar", "Fáciles de descifrar", "Difíciles de descifrar",
+         "Desconocido"),
+        ("Correos electrónicos", "Contraseñas", "Nombres de usuario", "Nombres",
+         "Direcciones IP", "Números de teléfono", "Fechas de nacimiento",
+         "Direcciones físicas", "Géneros", "Ubicaciones geográficas",
+         "Perfiles de redes sociales")),
+    "fr": _repo_i18n(
+        ("Violations de données par année",
+         "Risque lié au stockage des mots de passe",
+         "Types de données les plus exposés"),
+        ("Année", "Violations", "Niveau de risque", "Type de données",
+         "Part des violations"),
+        ("En clair", "Faciles à déchiffrer", "Difficiles à déchiffrer",
+         "Inconnus"),
+        ("Adresses e-mail", "Mots de passe", "Noms d'utilisateur", "Noms",
+         "Adresses IP", "Numéros de téléphone", "Dates de naissance",
+         "Adresses postales", "Genres", "Localisations géographiques",
+         "Profils de réseaux sociaux")),
+    "it": _repo_i18n(
+        ("Violazioni di dati per anno",
+         "Rischio di archiviazione delle password nelle violazioni",
+         "Tipi di dati più esposti"),
+        ("Anno", "Violazioni", "Livello di rischio", "Tipo di dato",
+         "Quota di violazioni"),
+        ("Testo in chiaro", "Facili da decifrare", "Difficili da decifrare",
+         "Sconosciute"),
+        ("Indirizzi email", "Password", "Nomi utente", "Nomi", "Indirizzi IP",
+         "Numeri di telefono", "Date di nascita", "Indirizzi fisici", "Generi",
+         "Posizioni geografiche", "Profili social")),
+    "nl": _repo_i18n(
+        ("Datalekken per jaar", "Risico van wachtwoordopslag bij datalekken",
+         "Meest blootgestelde gegevenstypen"),
+        ("Jaar", "Datalekken", "Risiconiveau", "Gegevenstype",
+         "Aandeel datalekken"),
+        ("Plaintext", "Makkelijk te kraken", "Moeilijk te kraken", "Onbekend"),
+        ("E-mailadressen", "Wachtwoorden", "Gebruikersnamen", "Namen",
+         "IP-adressen", "Telefoonnummers", "Geboortedata", "Fysieke adressen",
+         "Geslachten", "Geografische locaties", "Socialmediaprofielen")),
+    "pt": _repo_i18n(
+        ("Violações de dados por ano",
+         "Risco de armazenamento de senhas nas violações",
+         "Tipos de dados mais expostos"),
+        ("Ano", "Violações", "Nível de risco", "Tipo de dado",
+         "Porcentagem de violações"),
+        ("Texto simples", "Fáceis de quebrar", "Difíceis de quebrar",
+         "Desconhecido"),
+        ("Endereços de e-mail", "Senhas", "Nomes de usuário", "Nomes",
+         "Endereços IP", "Números de telefone", "Datas de nascimento",
+         "Endereços físicos", "Gêneros", "Localizações geográficas",
+         "Perfis de redes sociais")),
+    "pl": _repo_i18n(
+        ("Wycieki danych według roku",
+         "Ryzyko przechowywania haseł w wyciekach",
+         "Najczęściej ujawniane typy danych"),
+        ("Rok", "Wycieki", "Poziom ryzyka", "Typ danych", "Udział wycieków"),
+        ("Zwykły tekst", "Łatwe do złamania", "Trudne do złamania",
+         "Nieznane"),
+        ("Adresy e-mail", "Hasła", "Nazwy użytkowników", "Imiona i nazwiska",
+         "Adresy IP", "Numery telefonów", "Daty urodzenia",
+         "Adresy zamieszkania", "Płeć", "Lokalizacje geograficzne",
+         "Profile w mediach społecznościowych")),
+    "tr": _repo_i18n(
+        ("Yıllara göre veri ihlalleri", "İhlallerde şifre saklama riski",
+         "En çok ifşa edilen veri türleri"),
+        ("Yıl", "İhlaller", "Risk düzeyi", "Veri türü", "İhlallerdeki payı"),
+        ("Düz metin", "Kolay kırılan", "Zor kırılan", "Bilinmeyen"),
+        ("E-posta adresleri", "Şifreler", "Kullanıcı adları", "İsimler",
+         "IP adresleri", "Telefon numaraları", "Doğum tarihleri",
+         "Fiziksel adresler", "Cinsiyetler", "Coğrafi konumlar",
+         "Sosyal medya profilleri")),
+    "ru": _repo_i18n(
+        ("Утечки данных по годам", "Риск хранения паролей в утечках",
+         "Наиболее раскрываемые типы данных"),
+        ("Год", "Утечки", "Уровень риска", "Тип данных", "Доля утечек"),
+        ("Открытый текст", "Легко взламываемые", "Трудно взламываемые",
+         "Неизвестные"),
+        ("Адреса email", "Пароли", "Имена пользователей", "Имена",
+         "IP-адреса", "Номера телефонов", "Даты рождения", "Почтовые адреса",
+         "Пол", "Географические местоположения", "Профили в соцсетях")),
+    "ja": _repo_i18n(
+        ("年別のデータ侵害件数", "侵害におけるパスワード保存リスク",
+         "最も漏洩したデータの種類"),
+        ("年", "侵害件数", "リスクレベル", "データの種類", "侵害に占める割合"),
+        ("平文", "解読が容易", "解読が困難", "不明"),
+        ("メールアドレス", "パスワード", "ユーザー名", "氏名", "IPアドレス",
+         "電話番号", "生年月日", "住所", "性別", "地理的位置",
+         "ソーシャルメディアプロフィール")),
+    "zh": _repo_i18n(
+        ("按年份划分的数据泄露", "泄露中的密码存储风险", "最常泄露的数据类型"),
+        ("年份", "泄露数量", "风险等级", "数据类型", "泄露占比"),
+        ("明文", "易破解", "难破解", "未知"),
+        ("电子邮件地址", "密码", "用户名", "姓名", "IP 地址", "电话号码",
+         "出生日期", "实际地址", "性别", "地理位置", "社交媒体资料")),
+    "hi": _repo_i18n(
+        ("वर्ष के अनुसार डेटा उल्लंघन", "उल्लंघनों में पासवर्ड संग्रहण जोखिम",
+         "सर्वाधिक उजागर डेटा प्रकार"),
+        ("वर्ष", "उल्लंघन", "जोखिम स्तर", "डेटा प्रकार", "उल्लंघनों में हिस्सा"),
+        ("प्लेनटेक्स्ट", "आसानी से क्रैक होने वाले", "कठिन क्रैक होने वाले",
+         "अज्ञात"),
+        ("ईमेल पते", "पासवर्ड", "उपयोगकर्ता नाम", "नाम", "आईपी पते",
+         "फ़ोन नंबर", "जन्म तिथियाँ", "भौतिक पते", "लिंग", "भौगोलिक स्थान",
+         "सोशल मीडिया प्रोफ़ाइल")),
+    "bn": _repo_i18n(
+        ("বছর অনুযায়ী ডেটা লঙ্ঘন", "লঙ্ঘনে পাসওয়ার্ড সংরক্ষণের ঝুঁকি",
+         "সর্বাধিক উন্মোচিত ডেটার ধরন"),
+        ("বছর", "লঙ্ঘন", "ঝুঁকির স্তর", "ডেটার ধরন", "লঙ্ঘনে অংশ"),
+        ("প্লেইনটেক্সট", "সহজে ভাঙা যায়", "কঠিনভাবে ভাঙা যায়", "অজানা"),
+        ("ইমেল ঠিকানা", "পাসওয়ার্ড", "ইউজারনেম", "নাম", "আইপি ঠিকানা",
+         "ফোন নম্বর", "জন্ম তারিখ", "প্রকৃত ঠিকানা", "লিঙ্গ",
+         "ভৌগোলিক অবস্থান", "সোশ্যাল মিডিয়া প্রোফাইল")),
+    "ta": _repo_i18n(
+        ("ஆண்டு வாரியாக தரவு மீறல்கள்",
+         "மீறல்களில் கடவுச்சொல் சேமிப்பு ஆபத்து",
+         "அதிகம் வெளிப்பட்ட தரவு வகைகள்"),
+        ("ஆண்டு", "மீறல்கள்", "ஆபத்து நிலை", "தரவு வகை", "மீறல்களில் பங்கு"),
+        ("எளிய உரை", "எளிதில் உடைக்கக்கூடியது", "கடினமாக உடைக்கக்கூடியது",
+         "அறியப்படாதது"),
+        ("மின்னஞ்சல் முகவரிகள்", "கடவுச்சொற்கள்", "பயனர்பெயர்கள்", "பெயர்கள்",
+         "ஐபி முகவரிகள்", "தொலைபேசி எண்கள்", "பிறந்த தேதிகள்",
+         "இருப்பிட முகவரிகள்", "பாலினம்", "புவியியல் இருப்பிடங்கள்",
+         "சமூக ஊடக சுயவிவரங்கள்")),
+}
+
 
 def repo_type_label(t):
     return REPO_TYPE_LABELS.get(
@@ -705,7 +865,7 @@ def repo_compute_stats(public):
             risks["financial"][0] += 1
             risks["financial"][1] += records
     data_types = [
-        (repo_type_label(t), int(c / total * 100 + 0.5))
+        (t, int(c / total * 100 + 0.5))
         for t, c in sorted(type_counts.items(), key=lambda kv: -kv[1])[:8]]
     rec_counts.sort(reverse=True)
     half = total_records / 2
@@ -765,31 +925,41 @@ def repo_table_rows(items):
     return "".join(rows)
 
 
-def repo_yearly_table(yearly):
+def repo_i18n(loc):
+    return REPO_TABLE_I18N.get(loc, REPO_TABLE_I18N["en"])
+
+
+def repo_yearly_table(yearly, loc="en"):
+    t = repo_i18n(loc)
     rows = "".join(f'<tr><th scope="row">{y}</th><td>{yearly[y]:,}</td></tr>'
                    for y in sorted(yearly))
-    return ('<table><caption>Data breaches by year</caption><thead><tr>'
-            '<th scope="col">Year</th><th scope="col">Breaches</th></tr>'
+    return (f'<table><caption>{esc(t["cap_yearly"])}</caption><thead><tr>'
+            f'<th scope="col">{esc(t["h_year"])}</th>'
+            f'<th scope="col">{esc(t["h_breaches"])}</th></tr>'
             f'</thead><tbody>{rows}</tbody></table>')
 
 
-def repo_password_table(risk):
-    labels = (("Plaintext", "plaintext"), ("Easy to crack", "easy"),
-              ("Hard to crack", "hard"), ("Unknown", "unknown"))
-    rows = "".join(f'<tr><th scope="row">{lab}</th><td>{risk[key]:,}</td></tr>'
-                   for lab, key in labels)
-    return ('<table><caption>Password storage risk across breaches</caption>'
-            '<thead><tr><th scope="col">Risk level</th>'
-            '<th scope="col">Breaches</th></tr></thead>'
+def repo_password_table(risk, loc="en"):
+    t = repo_i18n(loc)
+    rows = "".join(
+        f'<tr><th scope="row">{esc(t["risk"][key])}</th>'
+        f'<td>{risk[key]:,}</td></tr>'
+        for key in ("plaintext", "easy", "hard", "unknown"))
+    return (f'<table><caption>{esc(t["cap_password"])}</caption>'
+            f'<thead><tr><th scope="col">{esc(t["h_risk"])}</th>'
+            f'<th scope="col">{esc(t["h_breaches"])}</th></tr></thead>'
             f'<tbody>{rows}</tbody></table>')
 
 
-def repo_datatypes_table(data_types):
-    rows = "".join(f'<tr><th scope="row">{esc(lab)}</th><td>{pct}%</td></tr>'
-                   for lab, pct in data_types)
-    return ('<table><caption>Most exposed data types</caption><thead><tr>'
-            '<th scope="col">Data type</th>'
-            '<th scope="col">Share of breaches</th></tr></thead>'
+def repo_datatypes_table(data_types, loc="en"):
+    t = repo_i18n(loc)
+    rows = "".join(
+        f'<tr><th scope="row">{esc(t["types"].get(key, repo_type_label(key)))}'
+        f'</th><td>{pct}%</td></tr>'
+        for key, pct in data_types)
+    return (f'<table><caption>{esc(t["cap_types"])}</caption><thead><tr>'
+            f'<th scope="col">{esc(t["h_type"])}</th>'
+            f'<th scope="col">{esc(t["h_share"])}</th></tr></thead>'
             f'<tbody>{rows}</tbody></table>')
 
 
@@ -940,6 +1110,12 @@ def bake_repository_stats(public, metrics):
         orig = lt
         for elem_id, value in values:
             lt = set_inner(lt, elem_id, value)
+        lt = set_inner(lt, "yearly-trend-data",
+                       repo_yearly_table(yearly, loc), lp)
+        lt = set_inner(lt, "password-risk-data",
+                       repo_password_table(s["risk"], loc), lp)
+        lt = set_inner(lt, "data-types-data",
+                       repo_datatypes_table(s["data_types"], loc), lp)
         if lt != orig:
             lp.write_text(lt, encoding="utf-8", newline="")
             baked += 1
