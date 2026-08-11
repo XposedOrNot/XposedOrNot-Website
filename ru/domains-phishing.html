@@ -197,23 +197,25 @@
   <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content dark-mode">
+      <div class="modal-content">
         <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="Закрыть и вернуться на главную">
           <i class="fas fa-times" aria-hidden="true"></i>
         </button>
-        <div class="modal-header">
-          <h5 class="modal-title" id="domainModalLabel">Проверка фишинговых доменов</h5>
-        </div>
-        <div class="modal-body light-mode">
+        <div class="modal-body domain-modal-body">
           <form id="domainForm" autocomplete="off">
-            <div class="form-group text-center">
-              <p>Введите имя вашего домена ниже, чтобы проверить наличие потенциальных фишинговых доменов.</p><br><br>
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">Проверка фишинговых доменов</h5>
+              <p class="domain-modal-desc">Найдите похожие домены, которые могут выдавать себя за ваш бренд.</p>
               <label for="domainInput" class="sr-only">Имя домена</label>
-              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <input type="text" class="domain-modal-input" id="domainInput" placeholder="example.com" required>
               <div class="invalid-feedback">
                 Введите корректное имя домена.
               </div>
-              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
                 Сканировать домен
               </button>
               <div id="scanProgress" style="display:none; margin-top: 20px;">
@@ -231,10 +233,10 @@
             </div>
           </form>
           <div id="noBreachMessage" style="display: none;">
-            <div class="text-center">
+            <div class="domain-modal-inner">
               <i class="fas fa-shield-alt fa-3x text-success"></i>
-              <h4 class="text-success mt-3">Фишинговых доменов для <span id="searchedDomain"
-                  class="font-weight-bold"></span> не найдено!</h4>
+              <h4 class="text-success mt-3">Фишинговых доменов для<span id="searchedDomain"
+                  class="font-weight-bold"></span>!</h4>
               <p>Похоже, вашему домену не угрожают фишинговые двойники.</p>
               <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>Проверить другой домен</button>
             </div>

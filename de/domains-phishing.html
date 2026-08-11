@@ -196,23 +196,25 @@
   <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content dark-mode">
+      <div class="modal-content">
         <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="Schließen und zur Startseite zurückkehren">
           <i class="fas fa-times" aria-hidden="true"></i>
         </button>
-        <div class="modal-header">
-          <h5 class="modal-title" id="domainModalLabel">Auf Phishing-Domains prüfen</h5>
-        </div>
-        <div class="modal-body light-mode">
+        <div class="modal-body domain-modal-body">
           <form id="domainForm" autocomplete="off">
-            <div class="form-group text-center">
-              <p>Geben Sie unten Ihren Domain-Namen ein, um nach potenziellen Phishing-Domains zu scannen.</p><br><br>
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">Auf Phishing-Domains prüfen</h5>
+              <p class="domain-modal-desc">Suchen Sie nach ähnlichen Domains, die Ihre Marke imitieren könnten.</p>
               <label for="domainInput" class="sr-only">Domain-Name</label>
-              <input type="text" class="form-control" id="domainInput" placeholder="beispiel.de" required>
+              <input type="text" class="domain-modal-input" id="domainInput" placeholder="example.com" required>
               <div class="invalid-feedback">
                 Bitte geben Sie einen gültigen Domain-Namen ein.
               </div>
-              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
                 Domain scannen
               </button>
               <div id="scanProgress" style="display:none; margin-top: 20px;">
@@ -230,9 +232,9 @@
             </div>
           </form>
           <div id="noBreachMessage" style="display: none;">
-            <div class="text-center">
+            <div class="domain-modal-inner">
               <i class="fas fa-shield-alt fa-3x text-success"></i>
-              <h4 class="text-success mt-3">Keine Phishing-Domains gefunden für <span id="searchedDomain"
+              <h4 class="text-success mt-3">Keine Phishing-Domains gefunden für<span id="searchedDomain"
                   class="font-weight-bold"></span>!</h4>
               <p>Ihre Domain scheint sicher vor Phishing-Lookalikes zu sein.</p>
               <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>Andere Domain prüfen</button>

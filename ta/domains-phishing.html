@@ -197,23 +197,25 @@
   <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content dark-mode">
+      <div class="modal-content">
         <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="மூடி முகப்புக்குத் திரும்பு">
           <i class="fas fa-times" aria-hidden="true"></i>
         </button>
-        <div class="modal-header">
-          <h5 class="modal-title" id="domainModalLabel">ஃபிஷிங் டொமைன்களைச் சரிபார்க்கவும்</h5>
-        </div>
-        <div class="modal-body light-mode">
+        <div class="modal-body domain-modal-body">
           <form id="domainForm" autocomplete="off">
-            <div class="form-group text-center">
-              <p>சாத்தியமான ஃபிஷிங் டொமைன்களை ஸ்கேன் செய்ய கீழே உங்கள் டொமைன் பெயரை உள்ளிடவும்.</p><br><br>
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">ஃபிஷிங் டொமைன்களைச் சரிபார்க்கவும்</h5>
+              <p class="domain-modal-desc">உங்கள் பிராண்டைப் போலி செய்யக்கூடிய ஒத்த டொமைன்களைத் தேடுங்கள்.</p>
               <label for="domainInput" class="sr-only">டொமைன் பெயர்</label>
-              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <input type="text" class="domain-modal-input" id="domainInput" placeholder="example.com" required>
               <div class="invalid-feedback">
                 சரியான டொமைன் பெயரை உள்ளிடவும்.
               </div>
-              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
                 டொமைனை ஸ்கேன் செய்
               </button>
               <div id="scanProgress" style="display:none; margin-top: 20px;">
@@ -231,10 +233,10 @@
             </div>
           </form>
           <div id="noBreachMessage" style="display: none;">
-            <div class="text-center">
+            <div class="domain-modal-inner">
               <i class="fas fa-shield-alt fa-3x text-success"></i>
               <h4 class="text-success mt-3"><span id="searchedDomain"
-                  class="font-weight-bold"></span> க்கு ஃபிஷிங் டொமைன்கள் இல்லை!</h4>
+                  class="font-weight-bold"></span>!</h4>
               <p>உங்கள் டொமைன் ஃபிஷிங் போலிகளிலிருந்து பாதுகாப்பாக இருப்பதாகத் தெரிகிறது.</p>
               <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>மற்றொரு டொமைனைச் சரிபார்க்கவும்</button>
             </div>

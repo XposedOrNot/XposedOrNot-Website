@@ -196,23 +196,25 @@
   <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content dark-mode">
+      <div class="modal-content">
         <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="बंद करें और होम पर लौटें">
           <i class="fas fa-times" aria-hidden="true"></i>
         </button>
-        <div class="modal-header">
-          <h5 class="modal-title" id="domainModalLabel">फ़िशिंग डोमेन की जाँच करें</h5>
-        </div>
-        <div class="modal-body light-mode">
+        <div class="modal-body domain-modal-body">
           <form id="domainForm" autocomplete="off">
-            <div class="form-group text-center">
-              <p>संभावित फ़िशिंग डोमेन स्कैन करने के लिए नीचे अपना डोमेन नाम दर्ज करें।</p><br><br>
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">फ़िशिंग डोमेन की जाँच करें</h5>
+              <p class="domain-modal-desc">ऐसे मिलते-जुलते डोमेन स्कैन करें जो आपके ब्रांड की नकल कर सकते हैं।</p>
               <label for="domainInput" class="sr-only">डोमेन नाम</label>
-              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <input type="text" class="domain-modal-input" id="domainInput" placeholder="example.com" required>
               <div class="invalid-feedback">
                 कृपया एक वैध डोमेन नाम दर्ज करें।
               </div>
-              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
                 डोमेन स्कैन करें
               </button>
               <div id="scanProgress" style="display:none; margin-top: 20px;">
@@ -230,10 +232,10 @@
             </div>
           </form>
           <div id="noBreachMessage" style="display: none;">
-            <div class="text-center">
+            <div class="domain-modal-inner">
               <i class="fas fa-shield-alt fa-3x text-success"></i>
               <h4 class="text-success mt-3"><span id="searchedDomain"
-                  class="font-weight-bold"></span> के लिए कोई फ़िशिंग डोमेन नहीं मिला!</h4>
+                  class="font-weight-bold"></span>!</h4>
               <p>आपका डोमेन फ़िशिंग जैसे दिखने वाले डोमेन से सुरक्षित प्रतीत होता है।</p>
               <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>दूसरा डोमेन जाँचें</button>
             </div>

@@ -196,23 +196,25 @@
   <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content dark-mode">
+      <div class="modal-content">
         <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="关闭并返回首页">
           <i class="fas fa-times" aria-hidden="true"></i>
         </button>
-        <div class="modal-header">
-          <h5 class="modal-title" id="domainModalLabel">检查钓鱼域名</h5>
-        </div>
-        <div class="modal-body light-mode">
+        <div class="modal-body domain-modal-body">
           <form id="domainForm" autocomplete="off">
-            <div class="form-group text-center">
-              <p>在下方输入您的域名以扫描潜在的钓鱼域名。</p><br><br>
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">检查钓鱼域名</h5>
+              <p class="domain-modal-desc">扫描可能冒充您品牌的仿冒域名。</p>
               <label for="domainInput" class="sr-only">域名</label>
-              <input type="text" class="form-control" id="domainInput" placeholder="example.com" required>
+              <input type="text" class="domain-modal-input" id="domainInput" placeholder="example.com" required>
               <div class="invalid-feedback">
                 请输入有效的域名。
               </div>
-              <button type="submit" class="btn btn-primary mt-3" id="submitButton">
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
                 扫描域名
               </button>
               <div id="scanProgress" style="display:none; margin-top: 20px;">
@@ -230,10 +232,10 @@
             </div>
           </form>
           <div id="noBreachMessage" style="display: none;">
-            <div class="text-center">
+            <div class="domain-modal-inner">
               <i class="fas fa-shield-alt fa-3x text-success"></i>
-              <h4 class="text-success mt-3">未发现 <span id="searchedDomain"
-                  class="font-weight-bold"></span> 的钓鱼域名！</h4>
+              <h4 class="text-success mt-3">未发现<span id="searchedDomain"
+                  class="font-weight-bold"></span>!</h4>
               <p>您的域名似乎未受钓鱼仿冒域名的威胁。</p>
               <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>检查其他域名</button>
             </div>
