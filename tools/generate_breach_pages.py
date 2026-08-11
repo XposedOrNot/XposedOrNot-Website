@@ -45,11 +45,28 @@ METRICS_API = "https://api.xposedornot.com/v1/metrics/detailed"
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "tools" / "breach_page_template.html"
 OUT_DIR = ROOT / "breach"
-LOCALES = ["bn", "de", "es", "fr", "hi", "it", "ja", "nl", "pt", "ru", "ta", "zh"]
-INDEX_LOCALES = ["bn", "de", "es", "fr", "hi", "it", "ja", "nl", "pl", "pt",
-                 "ru", "ta", "tr", "zh"]
+LOCALES = ["bn", "de", "es", "fr", "hi", "it", "ja", "nl", "pl", "pt",
+           "ru", "ta", "tr", "zh"]
+INDEX_LOCALES = LOCALES
 ITEMLIST_ID = "directory-itemlist-schema"
 STATIC_SECTION_ID = "breach-directory-static"
+LAST_UPDATED_LABELS = {
+    "en": "Last updated",
+    "bn": "সর্বশেষ আপডেট",
+    "de": "Zuletzt aktualisiert",
+    "es": "Última actualización",
+    "fr": "Dernière mise à jour",
+    "hi": "अंतिम अपडेट",
+    "it": "Ultimo aggiornamento",
+    "ja": "最終更新",
+    "nl": "Laatst bijgewerkt",
+    "pl": "Ostatnia aktualizacja",
+    "pt": "Última atualização",
+    "ru": "Последнее обновление",
+    "ta": "கடைசியாக புதுப்பிக்கப்பட்டது",
+    "tr": "Son güncelleme",
+    "zh": "最后更新",
+}
 
 BN_DIGITS = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
 FRESHNESS_MONTHS = {
@@ -441,7 +458,7 @@ def fmt_records_compact(n):
     return str(n)
 
 
-def bake_counts(text, total, industries, latest_added):
+def bake_counts(text, total, industries, latest_added, loc="en"):
     text = re.sub(r'(<span id="seo-breach-count">)[^<]*(</span>)',
                   rf"\g<1>{total:,}\g<2>", text)
     text = re.sub(r'(<span id="seo-industry-count">)[^<]*(</span>)',
@@ -449,8 +466,10 @@ def bake_counts(text, total, industries, latest_added):
     text = re.sub(r'(<span id="total-count">)[^<]*(</span>)',
                   rf"\g<1>{total:,}\g<2>", text)
     d = datetime.fromisoformat(latest_added)
-    updated = ('<i class="far fa-calendar-alt" aria-hidden="true"></i> Last updated: '
-               f'<time datetime="{latest_added[:10]}">{d.strftime("%b %d, %Y")}</time>')
+    label = LAST_UPDATED_LABELS.get(loc, LAST_UPDATED_LABELS["en"])
+    updated = (f'<i class="far fa-calendar-alt" aria-hidden="true"></i> {label}: '
+               f'<time datetime="{latest_added[:10]}">'
+               f'{fmt_freshness_date(loc, d)}</time>')
     text = re.sub(r'(<span class="last-updated" id="seo-last-updated">).*?(</span>)',
                   lambda m: m.group(1) + updated + m.group(2), text, flags=re.S)
     return text
@@ -519,7 +538,8 @@ def bake_directory(public):
             print(f"WARNING: {page} missing, skipped directory bake")
             continue
         text = page.read_text(encoding="utf-8")
-        text = bake_counts(text, total, industries, latest_added)
+        loc = "en" if page.parent == ROOT else page.parent.name
+        text = bake_counts(text, total, industries, latest_added, loc)
         text = bake_dataset(text, total, today)
         if page.parent == ROOT:
             block = itemlist_block(public, total)
