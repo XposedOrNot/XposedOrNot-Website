@@ -670,16 +670,16 @@
 
             <h3>Claude Code</h3>
             <p>One command in your terminal:</p>
-            <div class="code-box">claude mcp add --transport http xposedornot https://api.xposedornot.com/mcp</div>
+            <div class="code-box copyable">claude mcp add --transport http xposedornot https://api.xposedornot.com/mcp</div>
 
             <h3>Claude Desktop</h3>
             <p>Go to <strong>Settings, then Connectors, then Add custom connector</strong> and enter:</p>
-            <div class="code-box">Name: XposedOrNot
+            <div class="code-box copyable">Name: XposedOrNot
 URL:  https://api.xposedornot.com/mcp</div>
 
             <h3>Cursor</h3>
             <p>Add the server to <code>~/.cursor/mcp.json</code> (or via Settings, then MCP, then Add new server):</p>
-            <div class="code-box">{
+            <div class="code-box copyable">{
   "mcpServers": {
     "xposedornot": {
       "url": "https://api.xposedornot.com/mcp"
@@ -737,8 +737,7 @@ URL:  https://api.xposedornot.com/mcp</div>
 
             <h2 id="in-action">See it in action</h2>
             <p>Ask your assistant:</p>
-            <div class="code-box">Check if <!--email_off-->john@example.com<!--/email_off--> has been in any data breaches,
-and summarize what was exposed.</div>
+            <div class="code-box wrap copyable">Check if <!--email_off-->john@example.com<!--/email_off--> has been in any data breaches, and summarize what was exposed.</div>
             <p>
                Your AI assistant calls <code>check_email_breaches</code>, receives live results from the XposedOrNot
                database, and answers with the actual breaches, dates, and exposed data types, not guesses from
@@ -750,8 +749,7 @@ and summarize what was exposed.</div>
 2. SampleShop (2021): email addresses, phone numbers
 3. DemoForum (2019): email addresses, plaintext passwords
 
-Highest risk: DemoForum exposed plaintext passwords. If that password is
-reused anywhere, change it now and enable two-factor authentication.</div>
+Highest risk: DemoForum exposed plaintext passwords. If that password is reused anywhere, change it now and enable two-factor authentication.</div>
             <p>
                Follow-up questions like "which of those exposed passwords?" reuse the same live data.
             </p>
@@ -971,7 +969,7 @@ reused anywhere, change it now and enable two-factor authentication.</div>
         });
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          document.querySelectorAll('.code-box:not(.wrap)').forEach(function(box) {
+          document.querySelectorAll('.code-box.copyable').forEach(function(box) {
             var wrap = document.createElement('div');
             wrap.className = 'code-wrap';
             box.parentNode.insertBefore(wrap, box);
