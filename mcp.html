@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <title>XposedOrNot MCP Server: Data Breach Intelligence for AI Agents</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
+   <meta name="description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 776 breaches. No API key required.">
+   <meta name="keywords" content="MCP server, model context protocol, data breach MCP, breach intelligence, Claude MCP, Cursor MCP, email breach check, AI agent tools">
+   <meta name="author" content="Devanand Premkumar">
+   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+   <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+   <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+   <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+   <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com">
+
+   <meta property="og:title" content="XposedOrNot MCP Server: Data Breach Intelligence for AI Agents" />
+   <meta property="og:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 776 breaches. No API key required." />
+   <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
+   <meta property="og:image:alt" content="XposedOrNot Logo" />
+   <meta property="og:url" content="https://xposedornot.com/mcp" />
+   <meta property="og:type" content="website" />
+   <meta property="og:site_name" content="XposedOrNot" />
+
+   <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:site" content="@XposedOrNot">
+   <meta name="twitter:creator" content="@DevaOnBreaches">
+   <meta name="twitter:title" content="XposedOrNot MCP Server: Data Breach Intelligence for AI Agents">
+   <meta name="twitter:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 776 breaches. No API key required.">
+   <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
+
+   <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+      integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+      integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous" />
+   <link rel="stylesheet"
+      href='https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&subset&display=swap' type="text/css"
+      media="all">
+   <link rel="author" href="/humans.txt" />
+
+   <style>
+      #banner {
+         min-height: 150px !important;
+         padding-bottom: 30px;
+         overflow: visible !important;
+      }
+
+      .grid {
+         overflow: visible !important;
+      }
+
+      .navbar {
+         overflow: visible !important;
+      }
+
+      .dropdown-menu {
+         position: absolute !important;
+         z-index: 1050 !important;
+         max-height: none !important;
+      }
+
+      .transparency-content {
+         background-color: white;
+         padding: 60px 0;
+      }
+
+      .transparency-section {
+         max-width: 1140px;
+         margin: 0 auto;
+         padding: 0 15px;
+      }
+
+      .transparency-section h1 {
+         color: #3f71f3;
+         margin-bottom: 20px;
+         font-size: 2em;
+         font-weight: 600;
+         text-align: center;
+      }
+
+      .transparency-section h2 {
+         color: #3f71f3;
+         margin-top: 45px;
+         margin-bottom: 20px;
+         font-size: 1.8em;
+         font-weight: 600;
+      }
+
+      .transparency-section h3 {
+         color: #3f71f3;
+         margin-top: 40px;
+         margin-bottom: 15px;
+         font-size: 1.4em;
+         font-weight: 600;
+      }
+
+      .transparency-section p {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         font-size: 1.05em;
+      }
+
+      .transparency-section ul {
+         line-height: 1.8;
+         margin-bottom: 20px;
+         padding-left: 25px;
+      }
+
+      .transparency-section ul li {
+         margin-bottom: 10px;
+      }
+
+      .hero-lead {
+         font-size: 1.15em;
+         margin: 0 auto 10px auto;
+      }
+
+      .hero-meta {
+         text-align: center;
+         color: #5a6577;
+         font-size: 0.98em;
+         margin-bottom: 0;
+      }
+
+      .hero-note {
+         margin: 15px auto 0 auto;
+         font-size: 0.98em;
+      }
+
+      .cta-row {
+         text-align: center;
+         margin: 25px 0 10px 0;
+      }
+
+      .cta-button {
+         display: inline-block;
+         background-color: #3567e8;
+         color: #ffffff;
+         padding: 10px 28px;
+         border-radius: 6px;
+         font-weight: 600;
+         text-decoration: none;
+      }
+
+      .cta-button:hover,
+      .cta-button:focus {
+         background-color: #2d5bd7;
+         color: #ffffff;
+         text-decoration: none;
+      }
+
+      .cta-button:focus-visible {
+         outline: 3px solid #2d5bd7;
+         outline-offset: 2px;
+      }
+
+      .page-toc {
+         text-align: center;
+         margin-top: 10px;
+      }
+
+      .page-toc a {
+         color: #2d5bd7;
+         font-weight: 600;
+         margin: 0 10px;
+         display: inline-block;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+         html {
+            scroll-behavior: smooth;
+         }
+      }
+
+      .highlight-box {
+         background-color: #f0f4ff;
+         border-left: 4px solid #3f71f3;
+         padding: 20px;
+         margin: 25px 0;
+         border-radius: 5px;
+      }
+
+      .code-box {
+         background-color: #f5f7fb;
+         border: 1px solid #e0e6f5;
+         border-radius: 6px;
+         padding: 16px 20px;
+         margin: 20px 0;
+         font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+         font-size: 0.92em;
+         overflow-x: auto;
+         white-space: pre;
+         line-height: 1.6;
+      }
+
+      .code-box.wrap {
+         white-space: pre-wrap;
+         word-break: break-word;
+      }
+
+      .code-wrap {
+         position: relative;
+         margin: 20px 0;
+      }
+
+      .code-wrap .code-box {
+         margin: 0;
+         padding-right: 85px;
+      }
+
+      .copy-btn {
+         position: absolute;
+         top: 8px;
+         right: 8px;
+         border: 1px solid #c9d6f2;
+         border-radius: 5px;
+         background-color: #e8eefc;
+         color: #3055c8;
+         font-size: 0.8em;
+         font-weight: 600;
+         padding: 4px 12px;
+         cursor: pointer;
+      }
+
+      .copy-btn:hover,
+      .copy-btn:focus {
+         background-color: #d8e2fa;
+      }
+
+      .copy-btn:focus-visible {
+         outline: 3px solid #2d5bd7;
+         outline-offset: 2px;
+      }
+
+      .transparency-section code {
+         color: #b02458;
+      }
+
+      .status-pill {
+         display: inline-block;
+         padding: 4px 14px;
+         border-radius: 20px;
+         font-size: 0.85em;
+         font-weight: 600;
+         vertical-align: middle;
+      }
+
+      .status-live {
+         background-color: #e2f6e9;
+         color: #177a3e;
+      }
+
+      .hero-pill {
+         font-size: 0.38em;
+         vertical-align: super;
+         line-height: 1.5;
+         margin-left: 6px;
+      }
+
+      .integration-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+         gap: 24px;
+         margin: 30px 0 40px 0;
+      }
+
+      .integration-card {
+         background: white;
+         border: 1px solid #e0e6f5;
+         border-radius: 10px;
+         padding: 24px;
+         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+         display: flex;
+         flex-direction: column;
+      }
+
+      .integration-card h3 {
+         color: #2d5bd7;
+         font-size: 1.1em;
+         font-weight: 600;
+         margin: 0 0 8px 0;
+         font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      }
+
+      .integration-card p {
+         font-size: 0.97em;
+         line-height: 1.6;
+         margin-bottom: 14px;
+         flex-grow: 1;
+      }
+
+      .integration-card .tool-example {
+         font-size: 0.92em;
+         color: #4a5568;
+         background-color: #f5f7fb;
+         border-radius: 6px;
+         padding: 10px 14px;
+         margin: 0;
+      }
+
+      .metrics-table {
+         width: 100%;
+         border-collapse: collapse;
+         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+         background-color: white;
+      }
+
+      .metrics-table th {
+         background-color: #3567e8;
+         color: white;
+         padding: 12px 15px;
+         text-align: left;
+         font-weight: 600;
+      }
+
+      .metrics-table td {
+         padding: 12px 15px;
+         border-bottom: 1px solid #e0e0e0;
+         background-color: white;
+      }
+
+      .table-responsive {
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         margin: 20px 0 30px 0;
+      }
+
+      .faq-item {
+         margin-bottom: 25px;
+      }
+
+      .faq-item h3 {
+         margin-top: 0;
+         font-size: 1.15em;
+         color: #2d5bd7;
+      }
+
+      .faq-item p {
+         margin-bottom: 0;
+      }
+
+      [data-theme="dark"] .transparency-content {
+         background-color: #0e0f19;
+      }
+
+      [data-theme="dark"] .transparency-section h1,
+      [data-theme="dark"] .transparency-section h2,
+      [data-theme="dark"] .transparency-section h3 {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .transparency-section p,
+      [data-theme="dark"] .transparency-section li,
+      [data-theme="dark"] .transparency-section td {
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .hero-meta {
+         color: #9aa8bd;
+      }
+
+      [data-theme="dark"] .hero-note {
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .page-toc a {
+         color: #7ea4f5;
+      }
+
+      [data-theme="dark"] .copy-btn {
+         background-color: #1b2440;
+         border-color: #2a2d40;
+         color: #7ea4f5;
+      }
+
+      [data-theme="dark"] .copy-btn:hover,
+      [data-theme="dark"] .copy-btn:focus {
+         background-color: #242f52;
+      }
+
+      [data-theme="dark"] .transparency-section code {
+         color: #f29cc0;
+      }
+
+      [data-theme="dark"] .highlight-box {
+         background-color: #242842;
+         border-left-color: #5b9aff;
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .code-box {
+         background-color: #181b2d;
+         border-color: #2a2d40;
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .integration-card {
+         background: #181b2d;
+         border-color: #2a2d40;
+         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      [data-theme="dark"] .integration-card h3 {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .integration-card p {
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .integration-card .tool-example {
+         background-color: #242842;
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .metrics-table {
+         background-color: #181b2d;
+      }
+
+      [data-theme="dark"] .metrics-table td {
+         background-color: #181b2d;
+         border-bottom: 1px solid #2a2d40;
+      }
+
+      [data-theme="dark"] .status-live {
+         background-color: #14351f;
+         color: #6fd694;
+      }
+
+      @media (max-width: 768px) {
+         .transparency-section h1 {
+            font-size: 1.6em;
+         }
+
+         .hero-pill {
+            font-size: 0.5em;
+         }
+
+         .transparency-section h2 {
+            font-size: 1.5em;
+         }
+
+         .transparency-section h3 {
+            font-size: 1.2em;
+         }
+      }
+   </style>
+
+   <meta name="robots" content="index, follow">
+   <meta name="theme-color" content="#3f71f3">
+
+   <link rel="canonical" href="https://xposedornot.com/mcp" />
+
+   <script type="application/ld+json">
+   {
+      "@context": "https://schema.org",
+      "@graph": [
+         {
+            "@type": "TechArticle",
+            "@id": "https://xposedornot.com/mcp#article",
+            "headline": "XposedOrNot MCP Server: Data Breach Intelligence for AI Agents",
+            "description": "Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 776 breaches. No API key required.",
+            "url": "https://xposedornot.com/mcp",
+            "dateModified": "2026-08-15",
+            "author": {
+               "@type": "Person",
+               "name": "Devanand Premkumar",
+               "url": "https://xposedornot.com/about"
+            },
+            "publisher": {
+               "@type": "Organization",
+               "name": "XposedOrNot",
+               "url": "https://xposedornot.com"
+            }
+         },
+         {
+            "@type": "SoftwareApplication",
+            "@id": "https://xposedornot.com/mcp#software",
+            "name": "XposedOrNot MCP Server",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any",
+            "url": "https://xposedornot.com/mcp",
+            "softwareVersion": "1.0.0",
+            "license": "https://opensource.org/licenses/MIT",
+            "offers": {
+               "@type": "Offer",
+               "price": "0",
+               "priceCurrency": "USD"
+            },
+            "provider": {
+               "@type": "Organization",
+               "name": "XposedOrNot",
+               "url": "https://xposedornot.com"
+            }
+         },
+         {
+            "@type": "BreadcrumbList",
+            "@id": "https://xposedornot.com/mcp#breadcrumb",
+            "itemListElement": [
+               {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://xposedornot.com/"
+               },
+               {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "MCP Server",
+                  "item": "https://xposedornot.com/mcp"
+               }
+            ]
+         },
+         {
+            "@type": "FAQPage",
+            "@id": "https://xposedornot.com/mcp#faq",
+            "mainEntity": [
+               {
+                  "@type": "Question",
+                  "name": "Is the XposedOrNot MCP server really free?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "Yes. The MCP server uses the free, keyless XposedOrNot community API. If you need higher throughput for a product or busy team, xonAPI+ offers paid plans with much higher rate limits, and that is what keeps the free tier free."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "Do I need an API key to use the MCP server?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "No. Point your MCP client at https://api.xposedornot.com/mcp and it works. No account, no key, no registration."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "Which AI clients work with the XposedOrNot MCP server?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version 2024-11-05 and requires no authentication."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "Are email addresses I query through MCP stored?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "Only the queried email address or domain is sent over TLS to api.xposedornot.com, and it is used to answer the lookup. XposedOrNot does not store user passwords or personally identifiable information from searches, and domain summaries return only counts, never individual addresses."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "How is the MCP server different from the REST API?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "Same data, different consumer. The REST API is for code you write; the MCP server wraps the same breach database in tools an AI assistant can call directly, so Claude or Cursor can answer breach questions with live data instead of guesses from training data."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "How current is the breach data behind the MCP server?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "The MCP server queries the live XposedOrNot database: 776 breaches and over 11.5 billion exposed records as of August 2026, updated as new breaches are verified and indexed."
+                  }
+               }
+            ]
+         }
+      ]
+   }
+   </script>
+</head>
+
+<body>
+   <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+         document.body.setAttribute("data-theme", "dark");
+      }
+   </script>
+
+   <div class="xon">
+      <div class="searchMe">
+         <div class="banner" id="banner">
+            <canvas id="canvas"></canvas>
+            <div class="grid">
+               <nav class="navbar navbar-expand-md navbar-dark justify-content-center">
+                  <a class="navbar-brand abs" href="/" style="text-decoration: none;">
+                     <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+                     <span
+                        style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">Community
+                        Edition</span>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="navbar-collapse collapse" id="collapsingNavbar">
+                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="/password">Password</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="/faq">FAQ</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link xon-nav-tip" href="https://plus.xposedornot.com" target="_blank" data-tip="xonPlus for Business: breach monitoring for teams and companies" aria-label="xonPlus for Business: breach monitoring for teams and companies">xonPlus</a>
+                        </li>
+                        <li class="nav-item active px-4">
+                           <a class="nav-link" href="/api_doc">API</a>
+                        </li>
+                        <li class="nav-item active dropdown px-4">
+                           <a aria-expanded="false" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                              id="navbarDropdownMenuLink" role="button"> Language <i class="fas fa-caret-down"></i></a>
+                           <style>
+                              .dropdown-toggle::after {
+                                 display: none;
+                              }
+                           </style>
+                           <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                              <a class="dropdown-item" href="/zh/">中文 (Chinese)</a>
+                              <a class="dropdown-item" href="/es/">Español (Spanish)</a>
+                              <a class="dropdown-item" href="/hi/">हिन्दी (Hindi)</a>
+                              <a class="dropdown-item" href="/bn/">বাংলা (Bengali)</a>
+                              <a class="dropdown-item" href="/pt/">Português (Portuguese)</a>
+                              <a class="dropdown-item" href="/ru/">Русский (Russian)</a>
+                              <a class="dropdown-item" href="/ja/">日本語 (Japanese)</a>
+                              <a class="dropdown-item" href="/de/">Deutsch (German)</a>
+                              <a class="dropdown-item" href="/ta/">தமிழ் (Tamil)</a>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+         </div>
+      </div>
+
+      <main class="transparency-content">
+         <div class="container transparency-section">
+            <h1>XposedOrNot MCP Server <span class="status-pill status-live hero-pill">Live</span></h1>
+            <p class="hero-meta">776 data breaches and more than 11.5 billion exposed records indexed, as of August 2026.</p>
+
+            <p class="hero-lead">
+               <strong>Give your AI assistant live access to data breach intelligence.</strong>
+               Query the XposedOrNot breach database directly from Claude, Cursor, or any MCP-compatible client.
+               Free, open source, no API key required.
+            </p>
+            <p class="hero-note">
+               New to MCP? The <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context
+               Protocol</a> is an open standard that lets AI assistants call external tools. Connect this server once,
+               and your assistant can answer breach questions with live data instead of guesses.
+            </p>
+            <p class="cta-row"><a class="cta-button" href="#quick-start">Get started</a></p>
+            <nav class="page-toc" aria-label="On this page">
+               <a href="#quick-start">Quick start</a>
+               <a href="#tools">Tools</a>
+               <a href="#rate-limits">Rate limits</a>
+               <a href="#privacy">Privacy</a>
+               <a href="#faq">FAQ</a>
+            </nav>
+
+            <h2 id="quick-start">Quick start</h2>
+
+            <h3>Claude Code</h3>
+            <p>One command in your terminal:</p>
+            <div class="code-box">claude mcp add --transport http xposedornot https://api.xposedornot.com/mcp</div>
+
+            <h3>Claude Desktop</h3>
+            <p>Go to <strong>Settings, then Connectors, then Add custom connector</strong> and enter:</p>
+            <div class="code-box">Name: XposedOrNot
+URL:  https://api.xposedornot.com/mcp</div>
+
+            <h3>Cursor</h3>
+            <p>Add the server to <code>~/.cursor/mcp.json</code> (or via Settings, then MCP, then Add new server):</p>
+            <div class="code-box">{
+  "mcpServers": {
+    "xposedornot": {
+      "url": "https://api.xposedornot.com/mcp"
+    }
+  }
+}</div>
+
+            <h3>Any MCP client</h3>
+            <ul>
+               <li>Server endpoint: <code>https://api.xposedornot.com/mcp</code></li>
+               <li>Transport: streamable HTTP (JSON-RPC 2.0 over HTTPS POST)</li>
+               <li>Protocol version: <code>2024-11-05</code></li>
+               <li>Authentication: none required</li>
+            </ul>
+            <p>
+               To confirm the connection, ask your assistant: <em>"What XposedOrNot tools do you have available?"</em>
+               It should list the six tools below.
+            </p>
+
+            <h2 id="tools">Available tools</h2>
+            <p>The server exposes six tools covering emails, domains, the breach catalog, and live statistics.</p>
+
+            <div class="integration-grid">
+               <div class="integration-card">
+                  <h3>check_email_breaches</h3>
+                  <p>Check whether an email address appears in any known data breach. Returns breach names, dates, and exposed data types.</p>
+                  <p class="tool-example">"Has <!--email_off-->john@example.com<!--/email_off--> appeared in any data breaches?"</p>
+               </div>
+               <div class="integration-card">
+                  <h3>get_breach_analytics</h3>
+                  <p>Detailed exposure analytics for an email: risk score, breach timeline, exposed data categories, and password risk.</p>
+                  <p class="tool-example">"Give me a full breach risk analysis for <!--email_off-->john@example.com<!--/email_off-->."</p>
+               </div>
+               <div class="integration-card">
+                  <h3>list_breaches</h3>
+                  <p>Browse or filter the full breach catalog by domain or breach ID, with records, data classes, and verification status.</p>
+                  <p class="tool-example">"List the breaches XposedOrNot has indexed for example.com."</p>
+               </div>
+               <div class="integration-card">
+                  <h3>domain_breach_summary</h3>
+                  <p>Aggregate breach summary for a domain: breach count, affected accounts, pastes, and the most recent breach date. Returns counts only, never individual addresses.</p>
+                  <p class="tool-example">"How exposed is example.com across known breaches?"</p>
+               </div>
+               <div class="integration-card">
+                  <h3>get_breach_metrics</h3>
+                  <p>System-wide statistics: total breaches and records indexed, breaches per year and industry, and the largest and most recent breaches.</p>
+                  <p class="tool-example">"How many breaches were indexed per industry this year?"</p>
+               </div>
+               <div class="integration-card">
+                  <h3>get_recent_breaches</h3>
+                  <p>The latest data breach news and the breaches most recently added to the XposedOrNot database.</p>
+                  <p class="tool-example">"What are the newest data breaches tracked by XposedOrNot?"</p>
+               </div>
+            </div>
+
+            <h2 id="in-action">See it in action</h2>
+            <p>Ask your assistant:</p>
+            <div class="code-box">Check if <!--email_off-->john@example.com<!--/email_off--> has been in any data breaches,
+and summarize what was exposed.</div>
+            <p>
+               Your AI assistant calls <code>check_email_breaches</code>, receives live results from the XposedOrNot
+               database, and answers with the actual breaches, dates, and exposed data types, not guesses from
+               training data. An answer typically looks like this (illustrative):
+            </p>
+            <div class="code-box wrap"><!--email_off-->john@example.com<!--/email_off--> appears in 3 known breaches:
+
+1. ExampleCorp (2023): email addresses, passwords (bcrypt), names
+2. SampleShop (2021): email addresses, phone numbers
+3. DemoForum (2019): email addresses, plaintext passwords
+
+Highest risk: DemoForum exposed plaintext passwords. If that password is
+reused anywhere, change it now and enable two-factor authentication.</div>
+            <p>
+               Follow-up questions like "which of those exposed passwords?" reuse the same live data.
+            </p>
+
+            <h2 id="rate-limits">Rate limits and access</h2>
+            <p>
+               The MCP server is free for personal and development use and shares the community API's per-IP limits.
+               When a limit is reached, the server returns a clear message rather than failing silently.
+            </p>
+            <div class="table-responsive">
+               <table class="metrics-table">
+                  <caption class="sr-only">Free tier rate limits per IP address for MCP tools</caption>
+                  <tr>
+                     <th scope="col">Tools</th>
+                     <th scope="col">Burst</th>
+                     <th scope="col">Per hour</th>
+                     <th scope="col">Per day</th>
+                  </tr>
+                  <tr>
+                     <td><code>check_email_breaches</code>, <code>get_breach_analytics</code></td>
+                     <td>2 per second</td>
+                     <td>25</td>
+                     <td>100</td>
+                  </tr>
+                  <tr>
+                     <td><code>list_breaches</code>, <code>get_recent_breaches</code></td>
+                     <td>2 per second</td>
+                     <td>50</td>
+                     <td>100</td>
+                  </tr>
+                  <tr>
+                     <td><code>domain_breach_summary</code></td>
+                     <td>2 per second</td>
+                     <td>25</td>
+                     <td>50</td>
+                  </tr>
+                  <tr>
+                     <td><code>get_breach_metrics</code></td>
+                     <td>5 per minute</td>
+                     <td>50</td>
+                     <td>100</td>
+                  </tr>
+               </table>
+            </div>
+            <p>
+               Need higher volume? <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a>
+               offers paid plans with rate limits up to 25,000 requests per minute, API-key access, and commercial
+               support. Full details in the <a href="/api_doc#rate-limits">API documentation</a>.
+            </p>
+
+            <h2 id="privacy">Privacy</h2>
+            <div class="highlight-box">
+               Only the queried email address or domain is sent, over TLS, to api.xposedornot.com. XposedOrNot does
+               not store user passwords or personally identifiable information from searches, and
+               <code>domain_breach_summary</code> returns only counts, never individual addresses. The server is open
+               source: verify how queries are handled in the
+               <a href="https://github.com/XposedOrNot/XposedOrNot-API" target="_blank" rel="noopener">source code</a>
+               or read the <a href="/privacy">privacy policy</a>.
+            </div>
+
+            <h2 id="discovery">Discovery for agents</h2>
+            <p>
+               Agents and registries can discover the server and its tools automatically through two published
+               machine-readable descriptors:
+            </p>
+            <ul>
+               <li>MCP server card: <a href="https://xposedornot.com/.well-known/mcp/server-card.json">/.well-known/mcp/server-card.json</a></li>
+               <li>Agent skills index: <a href="https://xposedornot.com/.well-known/agent-skills/index.json">/.well-known/agent-skills/index.json</a></li>
+            </ul>
+
+            <h2 id="faq">Frequently asked questions</h2>
+
+            <div class="faq-item">
+               <h3>Is it really free?</h3>
+               <p>
+                  Yes. The MCP server uses the free, keyless XposedOrNot community API. If you need higher throughput
+                  for a product or a busy team, <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a>
+                  offers paid plans with much higher limits, and that is what keeps the free tier free.
+               </p>
+            </div>
+
+            <div class="faq-item">
+               <h3>Do I need an API key?</h3>
+               <p>No. Point your MCP client at <code>https://api.xposedornot.com/mcp</code> and it works. No account, no key, no registration.</p>
+            </div>
+
+            <div class="faq-item">
+               <h3>Which clients work?</h3>
+               <p>
+                  Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and
+                  Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version
+                  <code>2024-11-05</code> and requires no authentication.
+               </p>
+            </div>
+
+            <div class="faq-item">
+               <h3>Are the email addresses I query stored?</h3>
+               <p>
+                  Only the queried email address or domain is sent over TLS, and it is used to answer the lookup.
+                  XposedOrNot does not store user passwords or personally identifiable information from searches. See
+                  the <a href="/privacy">privacy policy</a> for details.
+               </p>
+            </div>
+
+            <div class="faq-item">
+               <h3>How is this different from the REST API?</h3>
+               <p>
+                  Same data, different consumer. The <a href="/api_doc">REST API</a> is for code you write; the MCP
+                  server wraps the same breach database in tools an AI assistant can call directly, so your assistant
+                  answers breach questions with live data.
+               </p>
+            </div>
+
+            <div class="faq-item">
+               <h3>How current is the data?</h3>
+               <p>
+                  The MCP server queries the live XposedOrNot database: 776 breaches and more than 11.5 billion
+                  exposed records as of August 2026, updated as new breaches are verified and indexed. See
+                  <a href="/our-repository">live repository statistics</a>.
+               </p>
+            </div>
+
+            <h2 id="go-deeper">Go deeper</h2>
+            <ul>
+               <li><a href="/api_doc">Full API documentation</a></li>
+               <li><a href="https://github.com/XposedOrNot/XposedOrNot-API" target="_blank" rel="noopener">GitHub repository</a> (MIT licensed)</li>
+               <li><a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">Official SDKs</a> for Python, JavaScript/TypeScript, Go, Ruby, PHP, Rust, .NET, and Java</li>
+               <li><a href="/integrations">All integrations</a>: MISP, TheHive/Cortex, OpenCTI, Maltego, Wazuh, Splunk, Microsoft Sentinel</li>
+            </ul>
+
+         </div>
+      </main>
+
+   <div class="footer">
+      <div class="container">
+         <div style="text-align:center;margin-bottom:30px;">
+            <p>Join us in shaping this fully open source site! Contributions welcome ❤️ at our <a
+                  href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+         </div>
+
+         <div class="footer-columns">
+            <div class="footer-group">
+               <h6>Legal</h6>
+            <div class="footer-links-wrapper">
+              <a href="/privacy" class="footer-link">Privacy Policy</a>
+               <a href="/terms" class="footer-link">Terms</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Community</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" class="footer-link">About</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">Blog</a>
+               <a href="/our-repository" class="footer-link">Our Repository</a>
+               <a href="/integrations" class="footer-link">Integrations</a>
+            </div>
+          </div>
+            <div class="footer-group">
+               <h6>Trust</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://stats.uptimerobot.com/3zjQkZ2Caa" target="_blank" rel="noopener" class="footer-link">Status</a>
+              <a href="/transparency" class="footer-link">Transparency</a>
+              <a href="/responsible-disclosure" class="footer-link">Responsible Disclosure</a>
+            </div>
+          </div>
+            <div class="footer-group">
+              <h6>For Business</h6>
+              <div class="footer-links-wrapper">
+                <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+                <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener" class="footer-link">xonEnterprise+</a>
+                <a href="https://plus.xposedornot.com/products/threat-intel" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+                <a href="https://plus.xposedornot.com/pricing" target="_blank" rel="noopener" class="footer-link">Pricing</a>
+              </div>
+            </div>
+            <div class="footer-group">
+               <h6>Follow Us</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" name="twitter" class="footer-link">
+                  <i class="fab fa-twitter"></i> Twitter (X)
+               </a>
+               <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" name="fb" class="footer-link">
+                  <i class="fab fa-facebook"></i> Facebook
+               </a>
+               <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" name="mastodon" class="footer-link">
+                  <i class="fab fa-mastodon"></i> Mastodon
+               </a>
+            </div>
+          </div>
+         </div>
+
+         <div class="custom-control custom-switch" style="text-align:center;margin-top:20px;">
+            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+            <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+         </div>
+      </div>
+   </div>
+
+   <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+      integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"
+      integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
+      crossorigin="anonymous"></script>
+   <script src="/static/scripts/common.js"></script>
+   <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          document.querySelectorAll('.code-box:not(.wrap)').forEach(function(box) {
+            var wrap = document.createElement('div');
+            wrap.className = 'code-wrap';
+            box.parentNode.insertBefore(wrap, box);
+            wrap.appendChild(box);
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'copy-btn';
+            btn.textContent = 'Copy';
+            btn.setAttribute('aria-label', 'Copy to clipboard');
+            btn.addEventListener('click', function() {
+              navigator.clipboard.writeText(box.textContent.trim()).then(function() {
+                btn.textContent = 'Copied';
+                btn.setAttribute('aria-label', 'Copied to clipboard');
+                setTimeout(function() {
+                  btn.textContent = 'Copy';
+                  btn.setAttribute('aria-label', 'Copy to clipboard');
+                }, 2000);
+              });
+            });
+            wrap.appendChild(btn);
+          });
+        }
+      });
+    </script>
+  </body>
+
+</html>
