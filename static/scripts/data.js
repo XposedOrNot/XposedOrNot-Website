@@ -1336,6 +1336,7 @@ function updateChartsForDarkMode() {
         timelineChartInstance.options.scales.x.ticks.color = textColor;
         timelineChartInstance.options.scales.x.title.color = textColor;
         timelineChartInstance.options.scales.y.ticks.color = textColor;
+        timelineChartInstance.options.plugins.datalabels.color = textColor;
         timelineChartInstance.options.scales.x.grid.color = isDark ? '#3a3a3a' : '#e0e0e0';
         timelineChartInstance.update('none');
     }
@@ -2852,6 +2853,29 @@ function renderExposureTimeline(response) {
     });
     if (!items.length) return;
     items.sort(function (a, b) { return a.year - b.year || a.end - b.end; });
+    function lagYears(item) { return item.end - item.year; }
+    function lagText(item) {
+        var r = Math.round(lagYears(item));
+        return r < 1 ? '<1 yr' : r + (r === 1 ? ' yr' : ' yrs');
+    }
+    function lagPhrase(years) {
+        var r = Math.round(years);
+        return r < 1 ? 'less than a year' : 'about ' + r + (r === 1 ? ' year' : ' years');
+    }
+    var lagged = items.filter(function (item) { return item.addedLabel; });
+    var worst = null;
+    var worstPhrase = '';
+    var statHtml = '';
+    if (lagged.length) {
+        worst = lagged.reduce(function (m, item) { return lagYears(item) > lagYears(m) ? item : m; });
+        worstPhrase = lagPhrase(lagYears(worst));
+        if (lagged.length === 1) {
+            statHtml = '<p class="xr-tl-stat"><strong>' + escapeHtml(worst.name) + '</strong> stayed hidden for <strong>' + worstPhrase + '</strong> before surfacing.</p>';
+        } else {
+            var avg = lagged.reduce(function (sum, item) { return sum + lagYears(item); }, 0) / lagged.length;
+            statHtml = '<p class="xr-tl-stat">On average, your breaches stayed hidden for <strong>' + lagPhrase(avg) + '</strong> before surfacing. The longest, <strong>' + escapeHtml(worst.name) + '</strong>, took <strong>' + worstPhrase + '</strong>.</p>';
+        }
+    }
     var MAX_ROWS = 30;
     var truncated = 0;
     if (items.length > MAX_ROWS) {
@@ -2889,8 +2913,9 @@ function renderExposureTimeline(response) {
     wrap.innerHTML =
         '<h3 class="xr-tl-title">From Breach to Discovery</h3>' +
         '<p class="xr-tl-sub">Each bar starts in the year a breach happened and ends when it was added to XposedOrNot. A long bar means your data circulated for years before you could be warned.</p>' +
+        statHtml +
         (truncated ? '<p class="xr-tl-note">Showing the ' + MAX_ROWS + ' most recent of your ' + (items.length + truncated) + ' breaches.</p>' : '') +
-        '<div class="xr-tl-canvas" style="height:' + height + 'px"><canvas id="xr-exposure-timeline" role="img" aria-label="Timeline of your breaches from ' + minYear + ' to ' + Math.ceil(maxEnd) + '. Each bar spans from the breach year to the date the breach was added to XposedOrNot."></canvas></div>' +
+        '<div class="xr-tl-canvas" style="height:' + height + 'px"><canvas id="xr-exposure-timeline" role="img" aria-label="Timeline of your breaches from ' + minYear + ' to ' + Math.ceil(maxEnd) + '. Each bar spans from the breach year to the date the breach was added to XposedOrNot.' + (worst ? ' The longest gap was ' + worstPhrase + ', for ' + escapeHtml(worst.name) + '.' : '') + '"></canvas></div>' +
         legendHtml;
     host.appendChild(wrap);
 
@@ -2913,9 +2938,20 @@ function renderExposureTimeline(response) {
             indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: false,
+            layout: { padding: { right: 56 } },
             plugins: {
                 legend: { display: false },
-                datalabels: { display: false },
+                datalabels: {
+                    display: function (ctx) { return !!items[ctx.dataIndex].addedLabel; },
+                    anchor: 'end',
+                    align: 'end',
+                    offset: 6,
+                    clamp: true,
+                    clip: false,
+                    color: textColor,
+                    font: { size: 11, weight: 'bold' },
+                    formatter: function (value, ctx) { return lagText(items[ctx.dataIndex]); }
+                },
                 tooltip: {
                     callbacks: {
                         label: function (ctx) {
