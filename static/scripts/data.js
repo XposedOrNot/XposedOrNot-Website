@@ -962,16 +962,16 @@ var j = $.ajax(url)
                 <div class="github-collab-section">
                     <div class="xr-gh-grid">
                         <div class="xr-gh-main">
-                            <h3><i class="fab fa-github" aria-hidden="true"></i> Don't take our word for it, read the code</h3>
+                            <h3><i class="fas fa-star xr-gh-star" aria-hidden="true"></i> Helped you today? A star helps the next person</h3>
                             <p>
-                                Everything behind this report is open source, from the
-                                lookup API to this page. It is free, with no ads and
-                                nothing sold. If it helped you today, a star on GitHub
-                                helps more people find it.
+                                XposedOrNot is free, open source, and community run.
+                                No ads, no trackers, and your data is never sold.
+                                Don't take our word for it, the code for this entire
+                                report is public.
                             </p>
                             <div class="xr-gh-chips">
                                 <span class="xr-gh-chip">
-                                    <i class="fas fa-code" aria-hidden="true"></i> 100% open code
+                                    <i class="fas fa-code" aria-hidden="true"></i> Open source
                                 </span>
                                 <span class="xr-gh-chip">
                                     <i class="fas fa-heart" aria-hidden="true"></i> Free forever
@@ -985,7 +985,7 @@ var j = $.ajax(url)
                             <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener" class="btn btn-github">
                                 <i class="fab fa-github" aria-hidden="true"></i> Star on GitHub<span class="sr-only"> (opens in new tab)</span>
                             </a>
-                            <span class="xr-gh-note">Free, one click, means a lot</span>
+                            <span class="xr-gh-note">Takes one click, means a lot</span>
                             <a href="api_doc" class="xr-gh-link">
                                 <i class="fas fa-code" aria-hidden="true"></i> Explore the free API
                             </a>
