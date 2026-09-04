@@ -222,11 +222,29 @@
          max-width: 900px;
       }
 
-      .hero-meta {
-         text-align: center;
-         color: #5a6577;
-         font-size: 0.98em;
-         margin-bottom: 0;
+      .trust-strip {
+         list-style: none;
+         padding: 0;
+         margin: 18px 0 8px 0;
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: center;
+         gap: 10px;
+      }
+
+      .trust-strip li {
+         background: #f0f4ff;
+         color: #1f2a44;
+         border-radius: 999px;
+         padding: 6px 14px;
+         font-size: 0.92em;
+         font-weight: 500;
+         margin: 0;
+      }
+
+      .trust-strip i {
+         color: #2d5bd7;
+         margin-right: 6px;
       }
 
       .cta-row {
@@ -354,18 +372,99 @@
          margin-bottom: 12px;
       }
 
-      .faq-item {
-         margin-bottom: 25px;
+      .check-list {
+         list-style: none;
+         padding: 0;
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+         gap: 12px 24px;
+         margin: 20px 0 30px 0;
       }
 
-      .faq-item h3 {
-         margin-top: 0;
-         font-size: 1.15em;
+      .check-list li {
+         display: flex;
+         align-items: flex-start;
+         gap: 10px;
+         margin: 0;
+         font-size: 1.02em;
+      }
+
+      .check-list i {
+         color: #2d5bd7;
+         margin-top: 5px;
+         flex-shrink: 0;
+      }
+
+      .who-card {
+         align-items: center;
+         text-align: center;
+      }
+
+      .who-icon {
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         width: 52px;
+         height: 52px;
+         border-radius: 50%;
+         background: #f0f4ff;
+         color: #2d5bd7;
+         font-size: 1.3em;
+         margin-bottom: 14px;
+      }
+
+      .faq-list {
+         margin-top: 20px;
+      }
+
+      .faq-item {
+         border: 1px solid #e0e6f5;
+         border-radius: 10px;
+         background: #ffffff;
+         margin-bottom: 12px;
+         padding: 0 20px;
+      }
+
+      .faq-item summary {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 16px;
+         padding: 16px 0;
+         cursor: pointer;
+         list-style: none;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+         display: none;
+      }
+
+      .faq-item summary:focus-visible {
+         outline: 3px solid #2d5bd7;
+         outline-offset: 4px;
+         border-radius: 6px;
+      }
+
+      .faq-item summary i {
+         color: #2d5bd7;
+         transition: transform 0.2s ease;
+         flex-shrink: 0;
+      }
+
+      .faq-item[open] summary i {
+         transform: rotate(180deg);
+      }
+
+      .faq-item .faq-q {
+         margin: 0;
+         font-size: 1.08em;
+         font-weight: 600;
          color: #2d5bd7;
       }
 
       .faq-item p {
-         margin-bottom: 0;
+         margin: 0;
+         padding: 0 0 18px 0;
       }
 
       [data-theme="dark"] .transparency-content {
@@ -383,9 +482,36 @@
          color: #c3d3e8;
       }
 
-      [data-theme="dark"] .hero-meta,
       [data-theme="dark"] .cta-sub {
          color: #9aa8bd;
+      }
+
+      [data-theme="dark"] .trust-strip li {
+         background: #242842;
+         color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .trust-strip i,
+      [data-theme="dark"] .check-list i,
+      [data-theme="dark"] .who-icon {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .who-icon {
+         background: #242842;
+      }
+
+      [data-theme="dark"] .faq-item {
+         background: #181b2d;
+         border-color: #2a2d40;
+      }
+
+      [data-theme="dark"] .faq-item .faq-q {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .faq-item summary i {
+         color: #7ea4f5;
       }
 
       [data-theme="dark"] .page-toc a {
@@ -433,6 +559,12 @@
       [data-theme="dark"] .dm-stat-label,
       [data-theme="dark"] .dm-result-note {
          color: #9aa8bd;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .faq-item summary i {
+            transition: none;
+         }
       }
 
       @media (max-width: 768px) {
@@ -504,7 +636,7 @@
                   "name": "How do I check a domain for data breaches for free?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Type the domain into the check box at the top of this page and press Check my domain. You get the number of breaches the domain appears in, how many of its addresses are exposed, and when it was last seen, with no signup. Verifying the domain unlocks the per-address list and the breach names."
+                     "text": "Type the domain into the box at the top of this page and press Check my domain. You get the breach count, the number of exposed addresses, and the last-seen date, with no signup. Verifying the domain unlocks the address list and the breach names."
                   }
                },
                {
@@ -512,7 +644,7 @@
                   "name": "Is my company domain in a data breach?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Run the free check above. If the domain appears in any of the 782 breaches XposedOrNot indexes, the result shows the breach count and the number of exposed addresses. A zero result means none of the domain's addresses appear in the index today; verify the domain to be alerted the moment that changes."
+                     "text": "Run the free check above. A zero result means none of the domain's addresses appear in the 782 breaches we index today. Verify the domain to be alerted the moment that changes."
                   }
                },
                {
@@ -520,7 +652,7 @@
                   "name": "What does domain exposure mean?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Domain exposure is the set of email addresses on a domain that appear in known data breaches, along with the data that leaked next to them. One exposed address is a phishing target; many exposed addresses with passwords are a credential-stuffing risk for the whole organisation."
+                     "text": "The email addresses on a domain that appear in known breaches, plus whatever leaked alongside them. One exposed address is a phishing target; many with passwords are a credential-stuffing risk for the whole organisation."
                   }
                },
                {
@@ -528,7 +660,7 @@
                   "name": "How is this different from checking one email?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "An email check tells one person whether their address was breached. A domain check covers every address on the domain at once, including staff who never ran a check, and after verification it keeps watching: every new breach is compared against the domain automatically."
+                     "text": "An email check covers one person. A domain check covers every address on the domain at once, including staff who never checked, and after verification it keeps watching every new breach automatically."
                   }
                },
                {
@@ -536,7 +668,7 @@
                   "name": "How is this different from Have I Been Pwned's domain search?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Have I Been Pwned's domain search requires a paid subscription priced by the number of addresses on the domain. XposedOrNot's domain monitoring is free with no size limits: full monitoring, automatic alerts, and stealer-log coverage at no cost, for any organization size."
+                     "text": "Have I Been Pwned charges for domain search by address count. XposedOrNot's domain check and monitoring are free with no size limit, stealer logs included."
                   }
                },
                {
@@ -544,7 +676,7 @@
                   "name": "Really free? What's the catch?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "There is no catch. XposedOrNot is an open-source project run in the open since 2017, searches are not logged, and data is never sold or shared. The commercial xonPlus products (paid API tiers and enterprise tooling) are what keep the free tier free, and the community edition will always remain free."
+                     "text": "No catch. XposedOrNot is open source and has run in the open since 2017. The commercial xonPlus products keep the free tier free. Searches are never logged, sold, or shared."
                   }
                },
                {
@@ -552,7 +684,7 @@
                   "name": "Can someone monitor a domain they don't own?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "No. Domain ownership must be verified before monitoring activates, via a verification link sent to a standard address on the domain, a DNS TXT record, or an HTML tag or file on the website."
+                     "text": "No. Monitoring only activates after ownership is verified by email link, DNS TXT record, or an HTML tag or file on the site."
                   }
                },
                {
@@ -560,7 +692,7 @@
                   "name": "What happens to my employee email data?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "XposedOrNot stores only email addresses extracted from publicly circulating breaches, plus public breach metadata; passwords and other sensitive data are never stored. Per-address results for a domain are only accessible after ownership verification, searches are not logged in any identifiable form, and data is never sold or shared."
+                     "text": "We store only addresses found in publicly circulating breaches, plus public breach metadata, never passwords. Per-address results appear only after verification, and nothing is sold or shared. Details are in the methodology and Transparency Report."
                   }
                },
                {
@@ -568,7 +700,7 @@
                   "name": "How fast are alerts after a new breach?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Alerts are automatic: when a newly indexed breach contains addresses on your verified domain, an alert email goes to your monitoring address and the breach appears in your dashboard's real-time alerts. There is no need to check back manually."
+                     "text": "Automatic. When a newly indexed breach contains addresses on your verified domain, an email goes to your monitoring address and the breach appears in your dashboard's real-time alerts."
                   }
                },
                {
@@ -576,15 +708,15 @@
                   "name": "Can I monitor multiple domains?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Yes. Verify each domain you control and manage them all from one dashboard, which shows monitored domains, exposed emails, and exposed records across your portfolio."
+                     "text": "Yes. Verify each domain you control and manage them all from one dashboard."
                   }
                },
                {
                   "@type": "Question",
-                  "name": "Is there an API for domain breach data?",
+                  "name": "Is there an API?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Yes. After verification, the dashboard's API key management gives access to the domain-breaches API endpoint, and official connectors exist for Microsoft Sentinel, Splunk, Wazuh, and other security tooling."
+                     "text": "Yes. After verification the dashboard issues an API key for the domain-breaches endpoint, and official connectors exist for Microsoft Sentinel, Splunk, and Wazuh. Team access and Slack, Teams, or webhook alerts are in xonEnterprise+."
                   }
                }
             ]
@@ -680,8 +812,12 @@
                Verify the domain by DNS, HTML file or email to see which breaches, and to unlock alerts for every
                address.
             </p>
-            <p class="hero-meta">782 breaches and more than 11.6 billion exposed records indexed, as of September 2026. Every new breach is checked against verified domains automatically.</p>
-            <p class="cta-sub">Want an alert every time a new breach hits your domain? <a href="/domain">Start monitoring your domain</a>, free.</p>
+            <ul class="trust-strip" aria-label="Key facts">
+               <li><i class="fas fa-database" aria-hidden="true"></i> 782 breaches indexed</li>
+               <li><i class="fas fa-layer-group" aria-hidden="true"></i> 11.6 billion+ records</li>
+               <li><i class="fas fa-gift" aria-hidden="true"></i> Free, no size limit</li>
+               <li><i class="fas fa-sync-alt" aria-hidden="true"></i> Updated September 2026</li>
+            </ul>
             <nav class="page-toc" aria-label="On this page">
                <a href="#how-it-works">How it works</a>
                <a href="#free">Free at any size</a>
@@ -691,192 +827,160 @@
             </nav>
 
             <h2 id="how-it-works">How it works</h2>
-            <p>
-               The check above runs against the same index as monitoring. Verifying the domain adds the per-address
-               view, the breach names, and automatic alerts:
-            </p>
             <div class="integration-grid">
                <div class="integration-card">
                   <span class="step-number" aria-hidden="true">1</span>
                   <h3>Verify your domain</h3>
-                  <p>
-                     Prove ownership your way: a verification link sent to a standard address on the domain (the
-                     easiest option), a DNS TXT record, or an HTML tag or file on your website. Only domains you
-                     control can be monitored, and the monitoring email must be an address on the domain itself.
-                  </p>
+                  <p>Email link, DNS TXT record, or an HTML file on your site. Only domains you control.</p>
                </div>
                <div class="integration-card">
                   <span class="step-number" aria-hidden="true">2</span>
                   <h3>We watch, continuously</h3>
-                  <p>
-                     Every new breach indexed by XposedOrNot is checked against your domain, across 782 breaches and
-                     more than 11.6 billion records, stealer logs included. How breaches enter the database is
-                     documented in the <a href="/methodology">methodology</a>.
-                  </p>
+                  <p>Every new breach is checked against your domain, stealer logs included. See the <a href="/methodology">methodology</a>.</p>
                </div>
                <div class="integration-card">
                   <span class="step-number" aria-hidden="true">3</span>
                   <h3>You get alerted automatically</h3>
-                  <p>
-                     When your domain appears in a newly indexed breach, an alert email goes out and the breach shows
-                     up in your dashboard's real-time alerts with severity and affected count. A quarterly summary
-                     report keeps you covered even when nothing happened. Set it once and forget it.
-                  </p>
+                  <p>An email when your domain appears in a new breach, and a quarterly summary even when nothing happened.</p>
                </div>
             </div>
 
             <h2 id="free">Whether you have 10 employees or 50,000, it's free</h2>
             <p>
-               Most breach monitoring services price domain monitoring by the number of addresses on the domain.
-               XposedOrNot doesn't. Every verified domain gets full monitoring, automatic alerts, and full breach
-               history at no cost, regardless of size.
+               Most services price domain monitoring per address. XposedOrNot doesn't: every verified domain gets
+               full monitoring and alerts at no cost.
             </p>
             <div class="highlight-box">
-               <strong>Why is it free?</strong> XposedOrNot has been an open-source project run in the open since
-               2017. The commercial <a href="https://plus.xposedornot.com" target="_blank" rel="noopener">xonPlus</a>
-               products (paid API tiers and enterprise tooling) keep the free tier free, and the community edition
-               will always remain free. Searches are not logged, and your data is never sold or shared:
-               the <a href="/methodology">methodology</a> and <a href="/transparency">Transparency Report</a> spell
-               out exactly how data is handled.
+               <strong>Why free?</strong> XposedOrNot is open source and has run in the open since 2017. The commercial
+               <a href="https://plus.xposedornot.com" target="_blank" rel="noopener">xonPlus</a> products keep the free
+               tier free. Searches are never logged or sold: see the <a href="/methodology">methodology</a> and
+               <a href="/transparency">Transparency Report</a>.
             </div>
 
             <h2 id="dashboard">What you get after verification</h2>
-            <ul>
-               <li><strong>Automatic breach alerts</strong> to your monitoring address, plus a real-time alerts view with breach name, severity, affected count, and acknowledgment tracking.</li>
-               <li><strong>Exposure overview:</strong> monitored domains, exposed emails, and exposed records at a glance.</li>
-               <li><strong>Executive exposure:</strong> see breach exposure for CxO, VP, and director accounts separately.</li>
-               <li><strong>Trends and analytics:</strong> yearly trend of exposed emails, top breaches affecting your domain, and per-breach detail including exposed data types.</li>
-               <li><strong>Phishing analysis:</strong> spot suspicious lookalike domains targeting your organization.</li>
-               <li><strong>Stealer-log exposure</strong> included free: browser-saved passwords, session cookies, and autofill data captured by infostealer malware on infected devices.</li>
-               <li><strong>API access:</strong> manage an API key from the dashboard and pull your domain's breach data into your own tooling, or use the official <a href="/integrations">Sentinel, Splunk, and Wazuh integrations</a>.</li>
+            <ul class="check-list">
+               <li><i class="fas fa-check-circle" aria-hidden="true"></i><span><strong>Automatic breach alerts</strong> by email, with severity and affected count</span></li>
+               <li><i class="fas fa-check-circle" aria-hidden="true"></i><span><strong>Exposure overview</strong> of monitored domains, exposed emails, and records</span></li>
+               <li><i class="fas fa-check-circle" aria-hidden="true"></i><span><strong>Executive exposure</strong> for CxO, VP, and director accounts</span></li>
+               <li><i class="fas fa-check-circle" aria-hidden="true"></i><span><strong>Trends</strong> by year, top breaches, and per-breach data types</span></li>
+               <li><i class="fas fa-check-circle" aria-hidden="true"></i><span><strong>Phishing analysis</strong> of lookalike domains targeting you</span></li>
+               <li><i class="fas fa-check-circle" aria-hidden="true"></i><span><strong>Stealer-log exposure</strong>: browser passwords, cookies, autofill</span></li>
+               <li><i class="fas fa-check-circle" aria-hidden="true"></i><span><strong>API access</strong> plus <a href="/integrations">Sentinel, Splunk, and Wazuh</a> connectors</span></li>
             </ul>
 
             <h2 id="who">Who uses this</h2>
             <div class="integration-grid who-grid">
-               <div class="integration-card">
+               <div class="integration-card who-card">
+                  <span class="who-icon" aria-hidden="true"><i class="fas fa-user-cog"></i></span>
                   <h3>IT admins</h3>
-                  <p>Know when staff credentials are exposed, before attackers use them, and force resets while it matters.</p>
+                  <p>Know when staff credentials leak and force resets while it still matters.</p>
                </div>
-               <div class="integration-card">
+               <div class="integration-card who-card">
+                  <span class="who-icon" aria-hidden="true"><i class="fas fa-network-wired"></i></span>
                   <h3>MSPs</h3>
-                  <p>Verify multiple client domains and watch them all from one dashboard, at no cost per domain or per seat.</p>
+                  <p>Verify every client domain and watch them from one dashboard, with no per-seat cost.</p>
                </div>
-               <div class="integration-card">
+               <div class="integration-card who-card">
+                  <span class="who-icon" aria-hidden="true"><i class="fas fa-shield-alt"></i></span>
                   <h3>Security teams</h3>
-                  <p>Feed domain exposure into incident response and password-reset policy through the API and SIEM integrations.</p>
+                  <p>Feed domain exposure into incident response through the API and SIEM connectors.</p>
                </div>
-               <div class="integration-card">
+               <div class="integration-card who-card">
+                  <span class="who-icon" aria-hidden="true"><i class="fas fa-clipboard-check"></i></span>
                   <h3>Compliance and risk</h3>
-                  <p>Documented, continuous breach monitoring with quarterly summary reports, even for quarters where nothing happened.</p>
+                  <p>Continuous, documented monitoring with quarterly reports, even for quiet quarters.</p>
                </div>
             </div>
 
             <h2 id="faq">Frequently asked questions</h2>
+            <div class="faq-list">
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">How do I check a domain for data breaches for free?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Type the domain into the box at the top of this page and press Check my domain. You get the breach count, the number of exposed addresses, and the last-seen date, with no signup. <a href="/domain">Verifying the domain</a> unlocks the address list and the breach names.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>How do I check a domain for data breaches for free?</h3>
-               <p>
-                  Type the domain into the check box at the top of this page and press Check my domain. You get the
-                  number of breaches the domain appears in, how many of its addresses are exposed, and when it was
-                  last seen, with no signup. <a href="/domain">Verifying the domain</a> unlocks the per-address list
-                  and the breach names.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Is my company domain in a data breach?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Run the free check above. A zero result means none of the domain's addresses appear in the 782 breaches we index today. Verify the domain to be alerted the moment that changes.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>Is my company domain in a data breach?</h3>
-               <p>
-                  Run the free check above. If the domain appears in any of the 782 breaches we index, the result
-                  shows the breach count and the number of exposed addresses. A zero result means none of the
-                  domain's addresses appear in our index today; verify the domain to be alerted the moment that
-                  changes.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">What does domain exposure mean?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>The email addresses on a domain that appear in known breaches, plus whatever leaked alongside them. One exposed address is a phishing target; many with passwords are a credential-stuffing risk for the whole organisation.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>What does domain exposure mean?</h3>
-               <p>
-                  Domain exposure is the set of email addresses on a domain that appear in known data breaches,
-                  along with the data that leaked next to them. One exposed address is a phishing target; many
-                  exposed addresses with passwords are a credential-stuffing risk for the whole organisation.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">How is this different from checking one email?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>An email check covers one person. A domain check covers every address on the domain at once, including staff who never checked, and after verification it keeps watching every new breach automatically.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>How is this different from checking one email?</h3>
-               <p>
-                  An email check tells one person whether their address was breached. A domain check covers every
-                  address on the domain at once, including staff who never ran a check, and after verification it
-                  keeps watching: every new breach is compared against the domain automatically.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">How is this different from Have I Been Pwned's domain search?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Have I Been Pwned charges for domain search by address count. XposedOrNot's domain check and monitoring are free with no size limit, stealer logs included.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>How is this different from Have I Been Pwned's domain search?</h3>
-               <p>
-                  Have I Been Pwned's domain search requires a paid subscription, priced by the number of addresses
-                  on the domain. XposedOrNot's domain monitoring is free with no size limits: full monitoring,
-                  automatic alerts, and stealer-log coverage at no cost, for any organization size.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Really free? What's the catch?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>No catch. XposedOrNot is open source and has run in the open since 2017. The commercial <a href="https://plus.xposedornot.com" target="_blank" rel="noopener">xonPlus</a> products keep the free tier free. Searches are never logged, sold, or shared.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>Really free? What's the catch?</h3>
-               <p>
-                  There is no catch. XposedOrNot is an open-source project maintained by
-                  <a href="/about">Devanand Premkumar</a> and run in the open since 2017. The commercial
-                  <a href="https://plus.xposedornot.com" target="_blank" rel="noopener">xonPlus</a> products are what
-                  keep the free tier free, and the community edition will always remain free. Searches are not
-                  logged, and your data is never sold or shared.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Can someone monitor a domain they don't own?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>No. Monitoring only activates after ownership is verified by email link, DNS TXT record, or an HTML tag or file on the site.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>Can someone monitor a domain they don't own?</h3>
-               <p>
-                  No. Ownership must be verified before monitoring activates: a verification link sent to a standard
-                  address on the domain, a DNS TXT record, or an HTML tag or file on the website.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">What happens to my employee email data?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>We store only addresses found in publicly circulating breaches, plus public breach metadata, never passwords. Per-address results appear only after verification, and nothing is sold or shared. Details in the <a href="/methodology">methodology</a> and <a href="/transparency">Transparency Report</a>.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>What happens to my employee email data?</h3>
-               <p>
-                  XposedOrNot stores only email addresses extracted from publicly circulating breaches, plus public
-                  breach metadata; passwords and other sensitive data are never stored. Per-address results for your
-                  domain are only visible after you verify ownership, searches are not logged in any identifiable
-                  form, and nothing is sold or shared. Details in the <a href="/methodology">methodology</a> and
-                  <a href="/transparency">Transparency Report</a>.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">How fast are alerts after a new breach?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Automatic. When a newly indexed breach contains addresses on your verified domain, an email goes to your monitoring address and the breach appears in your dashboard's real-time alerts.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>How fast are alerts after a new breach?</h3>
-               <p>
-                  Alerts are automatic. When a newly indexed breach contains addresses on your verified domain, an
-                  alert email goes to your monitoring address and the breach appears in your dashboard's real-time
-                  alerts. You never need to check back manually.
-               </p>
-            </div>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Can I monitor multiple domains?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Yes. Verify each domain you control and manage them all from one dashboard.</p>
+            </details>
 
-            <div class="faq-item">
-               <h3>Can I monitor multiple domains?</h3>
-               <p>
-                  Yes. Verify each domain you control and manage them all from one dashboard, which shows monitored
-                  domains, exposed emails, and exposed records across your portfolio.
-               </p>
-            </div>
-
-            <div class="faq-item">
-               <h3>Is there an API?</h3>
-               <p>
-                  Yes. After verification, the dashboard's API key management gives access to the
-                  <a href="/api_doc">domain-breaches API</a>, and official connectors exist for
-                  <a href="/integrations">Microsoft Sentinel, Splunk, and Wazuh</a>. Need team access or alerts in
-                  Slack, Teams, or webhooks?
-                  <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener">xonEnterprise+</a>
-                  covers that.
-               </p>
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Is there an API?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Yes. After verification the dashboard issues an API key for the <a href="/api_doc">domain-breaches endpoint</a>, and official connectors exist for <a href="/integrations">Microsoft Sentinel, Splunk, and Wazuh</a>. Team access and Slack, Teams, or webhook alerts are in <a href="https://plus.xposedornot.com/products/enterprise" target="_blank" rel="noopener">xonEnterprise+</a>.</p>
+            </details>
             </div>
 
             <h2 id="start">Start now</h2>
