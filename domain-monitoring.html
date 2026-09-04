@@ -152,21 +152,42 @@
 
       .dm-result .cta-button {
          margin-top: 4px;
-         background-color: #f59e0b;
-         border: 2px solid #d97706;
-         color: #1f2a44;
+         background: #c2410c;
+         border: 2px solid transparent;
+         color: #ffffff !important;
          font-weight: 700;
+         box-shadow: 0 4px 15px rgba(194, 65, 12, 0.35);
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+      }
+
+      .dm-result .cta-button i {
+         margin: 0;
+         transition: transform 0.2s ease;
       }
 
       .dm-result .cta-button:hover,
       .dm-result .cta-button:focus {
-         background-color: #e8940a;
-         border-color: #b45309;
-         color: #1f2a44;
+         background: #9a3412;
+         border-color: rgba(255, 255, 255, 0.35);
+         color: #ffffff !important;
+         box-shadow: 0 8px 24px rgba(154, 52, 18, 0.5);
+         transform: translateY(-2px);
+         outline-color: #9a3412;
+      }
+
+      .dm-result .cta-button:hover i {
+         transform: translateX(3px);
       }
 
       .dm-result .cta-button:focus-visible {
-         outline: 3px solid #b45309;
+         outline: 3px solid #9a3412;
+         outline-offset: 3px;
+      }
+
+      [data-theme="dark"] .dm-result .cta-button:focus-visible {
+         outline-color: #fb923c;
       }
 
       .modern-search-input {
@@ -619,8 +640,15 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-         .faq-item summary i {
+         .faq-item summary i,
+         .dm-result .cta-button,
+         .dm-result .cta-button i {
             transition: none;
+         }
+
+         .dm-result .cta-button:hover,
+         .dm-result .cta-button:hover i {
+            transform: none;
          }
       }
 
@@ -851,7 +879,7 @@
                   <div class="modern-search-container">
                      <input class="modern-search-input" type="text" id="domainCheckInput" placeholder="example.com"
                         inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false" required
-                        aria-required="true" aria-describedby="domainCheckHint" />
+                        aria-required="true" aria-describedby="domainCheckHint" autofocus />
                      <button class="modern-search-button" type="submit" id="domainCheckBtn">Check my domain</button>
                   </div>
                </form>
@@ -1209,7 +1237,7 @@
                var trimmed = d.breach_emails >= 10000 || d.breach_total >= 10000;
                card.appendChild(el('p', 'dm-result-note', (trimmed ? 'Counts above 10,000 are trimmed. ' : '') +
                   'Verify the domain to see every exposed address and which breaches they appear in.'));
-               link = el('a', 'cta-button', 'Verify to unlock alerts and breach names');
+               link = el('a', 'cta-button', 'Verify domain, see full report');
             } else {
                var none = el('p', 'dm-result-title');
                none.appendChild(document.createTextNode('No exposure found for '));
@@ -1220,6 +1248,9 @@
                link = el('a', 'cta-button', 'Start monitoring, free');
             }
             link.href = '/domain';
+            var arrow = el('i', 'fas fa-arrow-right');
+            arrow.setAttribute('aria-hidden', 'true');
+            link.appendChild(arrow);
             card.appendChild(link);
             show(card);
          }
