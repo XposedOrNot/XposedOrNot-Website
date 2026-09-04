@@ -3,12 +3,12 @@
 
 <head>
    <meta charset="utf-8">
-   <title>Free Domain Breach Monitoring, No Size Limits | XposedOrNot</title>
+   <title>Check Your Domain for Data Breaches, Free | XposedOrNot</title>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description" content="Monitor every email address on your domain for data breaches. Automatic email alerts, quarterly reports, no per-address pricing, no limits. Free for any organization size.">
-   <meta name="keywords" content="domain breach monitoring, free domain breach monitoring, monitor company email breaches, HIBP domain search alternative, corporate email exposure, breach alerts">
+   <meta name="description" content="Free domain breach check: enter a domain to see every breached email address on it, with breach names and dates. No size limit, no per-address fee, alerts included.">
+   <meta name="keywords" content="domain breach check, check domain for data breach free, domain exposure, is my company domain in a data breach, domain breach monitoring, HIBP domain search alternative">
    <meta name="author" content="Devanand Premkumar">
    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
    <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
@@ -20,8 +20,8 @@
    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
    <link rel="preconnect" href="https://fonts.gstatic.com">
 
-   <meta property="og:title" content="Free Domain Breach Monitoring, No Size Limits | XposedOrNot" />
-   <meta property="og:description" content="Monitor every email address on your domain for data breaches. Automatic email alerts, quarterly reports, no per-address pricing, no limits. Free for any organization size." />
+   <meta property="og:title" content="Check Your Domain for Data Breaches, Free | XposedOrNot" />
+   <meta property="og:description" content="Free domain breach check: enter a domain to see every breached email address on it, with breach names and dates. No size limit, no per-address fee, alerts included." />
    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
    <meta property="og:image:alt" content="XposedOrNot Logo" />
    <meta property="og:url" content="https://xposedornot.com/domain-monitoring" />
@@ -31,8 +31,8 @@
    <meta name="twitter:card" content="summary_large_image">
    <meta name="twitter:site" content="@XposedOrNot">
    <meta name="twitter:creator" content="@DevaOnBreaches">
-   <meta name="twitter:title" content="Free Domain Breach Monitoring, No Size Limits | XposedOrNot">
-   <meta name="twitter:description" content="Monitor every email address on your domain for data breaches. Automatic email alerts, quarterly reports, no per-address pricing, no limits. Free for any organization size.">
+   <meta name="twitter:title" content="Check Your Domain for Data Breaches, Free | XposedOrNot">
+   <meta name="twitter:description" content="Free domain breach check: enter a domain to see every breached email address on it, with breach names and dates. No size limit, no per-address fee, alerts included.">
    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
@@ -49,9 +49,113 @@
 
    <style>
       #banner {
-         min-height: 150px !important;
-         padding-bottom: 30px;
+         padding-bottom: 60px;
          overflow: visible !important;
+      }
+
+      .dm-hero {
+         text-align: center;
+         padding: 30px 15px 0;
+         position: relative;
+      }
+
+      .dm-hero-title {
+         font-size: 2.3em;
+         font-weight: 700;
+         color: #ffffff;
+         margin: 0 0 12px;
+      }
+
+      .dm-hero-sub {
+         font-size: 1.1em;
+         color: #ffffff;
+         max-width: 780px;
+         margin: 0 auto;
+         line-height: 1.6;
+      }
+
+      .dm-check-form {
+         margin: 24px auto 0;
+      }
+
+      .dm-hero-note {
+         font-size: 0.85em;
+         color: #ffffff;
+         margin: 12px 0 0;
+      }
+
+      .dm-hero-note a {
+         color: #ffffff;
+         text-decoration: underline;
+      }
+
+      .dm-result {
+         max-width: 800px;
+         margin: 22px auto 0;
+      }
+
+      .dm-result-card {
+         background: #ffffff;
+         border-radius: 12px;
+         padding: 22px 24px;
+         box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+         color: #1f2a44;
+         text-align: center;
+      }
+
+      .dm-result-title {
+         font-size: 1.1em;
+         margin: 0 0 14px;
+      }
+
+      .dm-stats {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+         gap: 14px;
+         margin: 0 0 14px;
+      }
+
+      .dm-stat {
+         background: #f0f4ff;
+         border-radius: 8px;
+         padding: 12px 8px;
+      }
+
+      .dm-stat-value {
+         display: block;
+         font-size: 1.5em;
+         font-weight: 700;
+         color: #2d5bd7;
+      }
+
+      .dm-stat-label {
+         display: block;
+         font-size: 0.85em;
+         color: #4a5568;
+      }
+
+      .dm-result-note {
+         font-size: 0.92em;
+         color: #4a5568;
+         margin: 0 0 14px;
+      }
+
+      .dm-result-error {
+         display: inline-block;
+         background: rgba(0, 0, 0, 0.35);
+         color: #ffffff;
+         font-weight: 600;
+         padding: 10px 18px;
+         border-radius: 8px;
+         margin: 0;
+      }
+
+      .dm-result .cta-button {
+         margin-top: 4px;
+      }
+
+      .modern-search-input {
+         color: #1f2a44;
       }
 
       .grid {
@@ -77,14 +181,6 @@
          max-width: 1140px;
          margin: 0 auto;
          padding: 0 15px;
-      }
-
-      .transparency-section h1 {
-         color: #3f71f3;
-         margin-bottom: 20px;
-         font-size: 2em;
-         font-weight: 600;
-         text-align: center;
       }
 
       .transparency-section h2 {
@@ -131,13 +227,6 @@
          color: #5a6577;
          font-size: 0.98em;
          margin-bottom: 0;
-      }
-
-      .hero-tagline {
-         text-align: center;
-         font-size: 1.2em;
-         font-weight: 600;
-         margin: 20px 0 5px 0;
       }
 
       .cta-row {
@@ -283,7 +372,6 @@
          background-color: #0e0f19;
       }
 
-      [data-theme="dark"] .transparency-section h1,
       [data-theme="dark"] .transparency-section h2,
       [data-theme="dark"] .transparency-section h3 {
          color: #5b9aff;
@@ -328,9 +416,28 @@
          color: #c3d3e8;
       }
 
+      [data-theme="dark"] .dm-result-card {
+         background: #181b2d;
+         color: #c3d3e8;
+         box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+      }
+
+      [data-theme="dark"] .dm-stat {
+         background: #242842;
+      }
+
+      [data-theme="dark"] .dm-stat-value {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .dm-stat-label,
+      [data-theme="dark"] .dm-result-note {
+         color: #9aa8bd;
+      }
+
       @media (max-width: 768px) {
-         .transparency-section h1 {
-            font-size: 1.6em;
+         .dm-hero-title {
+            font-size: 1.7em;
          }
 
          .transparency-section h2 {
@@ -355,9 +462,9 @@
          {
             "@type": "Service",
             "@id": "https://xposedornot.com/domain-monitoring#service",
-            "name": "XposedOrNot Domain Breach Monitoring",
-            "serviceType": "Data breach monitoring",
-            "description": "Free domain breach monitoring with no size limits. Monitor every email address on a verified domain, get automatic email alerts when the domain appears in a new breach, and quarterly summary reports.",
+            "name": "XposedOrNot Domain Breach Check and Monitoring",
+            "serviceType": "Domain data breach check and monitoring",
+            "description": "Free domain breach check with no size limits: enter a domain to see how many of its email addresses appear in known data breaches. Verify the domain to see every address and breach, with automatic alerts and quarterly summary reports.",
             "url": "https://xposedornot.com/domain-monitoring",
             "provider": {
                "@type": "Organization",
@@ -383,7 +490,7 @@
                {
                   "@type": "ListItem",
                   "position": 2,
-                  "name": "Domain Monitoring",
+                  "name": "Domain Breach Check",
                   "item": "https://xposedornot.com/domain-monitoring"
                }
             ]
@@ -392,6 +499,38 @@
             "@type": "FAQPage",
             "@id": "https://xposedornot.com/domain-monitoring#faq",
             "mainEntity": [
+               {
+                  "@type": "Question",
+                  "name": "How do I check a domain for data breaches for free?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "Type the domain into the check box at the top of this page and press Check my domain. You get the number of breaches the domain appears in, how many of its addresses are exposed, and when it was last seen, with no signup. Verifying the domain unlocks the per-address list and the breach names."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "Is my company domain in a data breach?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "Run the free check above. If the domain appears in any of the 782 breaches XposedOrNot indexes, the result shows the breach count and the number of exposed addresses. A zero result means none of the domain's addresses appear in the index today; verify the domain to be alerted the moment that changes."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "What does domain exposure mean?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "Domain exposure is the set of email addresses on a domain that appear in known data breaches, along with the data that leaked next to them. One exposed address is a phishing target; many exposed addresses with passwords are a credential-stuffing risk for the whole organisation."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "How is this different from checking one email?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "An email check tells one person whether their address was breached. A domain check covers every address on the domain at once, including staff who never ran a check, and after verification it keeps watching: every new breach is compared against the domain automatically."
+                  }
+               },
                {
                   "@type": "Question",
                   "name": "How is this different from Have I Been Pwned's domain search?",
@@ -515,22 +654,34 @@
                   </div>
                </nav>
             </div>
+            <div class="container dm-hero">
+               <h1 class="dm-hero-title">Free Domain Breach Check</h1>
+               <p class="dm-hero-sub">See how many email addresses on a domain appear in known data breaches. Free for any organisation, no size limit, no signup.</p>
+               <form id="domainCheckForm" class="dm-check-form" data-breach-count="782" novalidate>
+                  <label for="domainCheckInput" class="sr-only">Domain to check</label>
+                  <div class="modern-search-container">
+                     <input class="modern-search-input" type="text" id="domainCheckInput" placeholder="example.com"
+                        inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false" required
+                        aria-required="true" aria-describedby="domainCheckHint" />
+                     <button class="modern-search-button" type="submit" id="domainCheckBtn">Check my domain</button>
+                  </div>
+               </form>
+               <p id="domainCheckHint" class="dm-hero-note">Checked in memory, <a href="/transparency">never stored</a>. Counts only, until you verify the domain.</p>
+               <div id="domainCheckResult" class="dm-result" role="status" aria-live="polite" hidden></div>
+            </div>
          </div>
       </div>
 
       <main class="transparency-content">
          <div class="container transparency-section">
-            <h1>Free Domain Breach Monitoring, No Size Limits</h1>
-            <p class="hero-meta">Every new breach checked against your domain: 779 breaches and more than 11.6 billion exposed records indexed, as of August 2026.</p>
-
-            <p class="hero-lead" style="margin-top: 25px;">
-               Monitor every email address on your domain. When your employees' addresses appear in a newly indexed
-               data breach, you get an email automatically. No dashboards to babysit, no per-address pricing, no
-               tiers, no credit card.
+            <p class="hero-lead">
+               Enter a domain to see how many of its email addresses appear in the 782 breaches we index, across how
+               many breaches, and when it was last seen. The check is free for any organisation, with no size limit.
+               Verify the domain by DNS, HTML file or email to see which breaches, and to unlock alerts for every
+               address.
             </p>
-            <p class="hero-tagline">Free. Unlimited. Automatic.</p>
-            <p class="cta-row"><a class="cta-button" href="/domain">Start monitoring your domain</a></p>
-            <p class="cta-sub">Setup takes minutes with email, DNS, or HTML verification.</p>
+            <p class="hero-meta">782 breaches and more than 11.6 billion exposed records indexed, as of September 2026. Every new breach is checked against verified domains automatically.</p>
+            <p class="cta-sub">Want an alert every time a new breach hits your domain? <a href="/domain">Start monitoring your domain</a>, free.</p>
             <nav class="page-toc" aria-label="On this page">
                <a href="#how-it-works">How it works</a>
                <a href="#free">Free at any size</a>
@@ -540,6 +691,10 @@
             </nav>
 
             <h2 id="how-it-works">How it works</h2>
+            <p>
+               The check above runs against the same index as monitoring. Verifying the domain adds the per-address
+               view, the breach names, and automatic alerts:
+            </p>
             <div class="integration-grid">
                <div class="integration-card">
                   <span class="step-number" aria-hidden="true">1</span>
@@ -554,7 +709,7 @@
                   <span class="step-number" aria-hidden="true">2</span>
                   <h3>We watch, continuously</h3>
                   <p>
-                     Every new breach indexed by XposedOrNot is checked against your domain, across 779 breaches and
+                     Every new breach indexed by XposedOrNot is checked against your domain, across 782 breaches and
                      more than 11.6 billion records, stealer logs included. How breaches enter the database is
                      documented in the <a href="/methodology">methodology</a>.
                   </p>
@@ -617,6 +772,44 @@
             </div>
 
             <h2 id="faq">Frequently asked questions</h2>
+
+            <div class="faq-item">
+               <h3>How do I check a domain for data breaches for free?</h3>
+               <p>
+                  Type the domain into the check box at the top of this page and press Check my domain. You get the
+                  number of breaches the domain appears in, how many of its addresses are exposed, and when it was
+                  last seen, with no signup. <a href="/domain">Verifying the domain</a> unlocks the per-address list
+                  and the breach names.
+               </p>
+            </div>
+
+            <div class="faq-item">
+               <h3>Is my company domain in a data breach?</h3>
+               <p>
+                  Run the free check above. If the domain appears in any of the 782 breaches we index, the result
+                  shows the breach count and the number of exposed addresses. A zero result means none of the
+                  domain's addresses appear in our index today; verify the domain to be alerted the moment that
+                  changes.
+               </p>
+            </div>
+
+            <div class="faq-item">
+               <h3>What does domain exposure mean?</h3>
+               <p>
+                  Domain exposure is the set of email addresses on a domain that appear in known data breaches,
+                  along with the data that leaked next to them. One exposed address is a phishing target; many
+                  exposed addresses with passwords are a credential-stuffing risk for the whole organisation.
+               </p>
+            </div>
+
+            <div class="faq-item">
+               <h3>How is this different from checking one email?</h3>
+               <p>
+                  An email check tells one person whether their address was breached. A domain check covers every
+                  address on the domain at once, including staff who never ran a check, and after verification it
+                  keeps watching: every new breach is compared against the domain automatically.
+               </p>
+            </div>
 
             <div class="faq-item">
                <h3>How is this different from Have I Been Pwned's domain search?</h3>
@@ -767,6 +960,143 @@
       integrity="sha512-BmM0/BQlqh02wuK5Gz9yrbe7VyIVwOzD1o40yi1IsTjriX/NGF37NyXHfmFzIlMmoSIBXgqDiG1VNU6kB5dBbA=="
       crossorigin="anonymous"></script>
    <script src="/static/scripts/common.js"></script>
+   <script>
+      (function () {
+         var form = document.getElementById('domainCheckForm');
+         if (!form) { return; }
+         var input = document.getElementById('domainCheckInput');
+         var button = document.getElementById('domainCheckBtn');
+         var result = document.getElementById('domainCheckResult');
+         var total = form.getAttribute('data-breach-count') || '782';
+         var domainRegex = /^([a-z0-9-]+\.)+[a-z]{2,24}$/;
+
+         function extractDomain(value) {
+            var s = value.trim().toLowerCase();
+            if (s.indexOf('@') > -1) { s = s.split('@').pop(); }
+            s = s.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[\/?#].*$/, '').replace(/:\d+$/, '');
+            return s;
+         }
+
+         function fmt(n) {
+            return n >= 10000 ? '10,000+' : n.toLocaleString('en-US');
+         }
+
+         function el(tag, cls, text) {
+            var e = document.createElement(tag);
+            if (cls) { e.className = cls; }
+            if (text !== undefined) { e.textContent = text; }
+            return e;
+         }
+
+         function show(node) {
+            result.innerHTML = '';
+            result.appendChild(node);
+            result.hidden = false;
+         }
+
+         function showError(message) {
+            show(el('p', 'dm-result-error', message));
+         }
+
+         function stat(value, label) {
+            var d = el('div', 'dm-stat');
+            d.appendChild(el('span', 'dm-stat-value', value));
+            d.appendChild(el('span', 'dm-stat-label', label));
+            return d;
+         }
+
+         function render(domain, d) {
+            var card = el('div', 'dm-result-card');
+            var link;
+            if (d.breach_count > 0) {
+               var title = el('p', 'dm-result-title');
+               title.appendChild(document.createTextNode('Exposure found for '));
+               title.appendChild(el('strong', '', domain));
+               card.appendChild(title);
+               var stats = el('div', 'dm-stats');
+               stats.appendChild(stat(fmt(d.breach_count), 'Breaches'));
+               stats.appendChild(stat(fmt(d.breach_emails), 'Exposed addresses'));
+               stats.appendChild(stat(fmt(d.breach_total), 'Records'));
+               stats.appendChild(stat(d.breach_last_seen || 'Unknown', 'Last seen'));
+               card.appendChild(stats);
+               var trimmed = d.breach_emails >= 10000 || d.breach_total >= 10000;
+               card.appendChild(el('p', 'dm-result-note', (trimmed ? 'Counts above 10,000 are trimmed. ' : '') +
+                  'Verify the domain to see every exposed address and which breaches they appear in.'));
+               link = el('a', 'cta-button', 'Verify to unlock alerts and breach names');
+            } else {
+               var none = el('p', 'dm-result-title');
+               none.appendChild(document.createTextNode('No exposure found for '));
+               none.appendChild(el('strong', '', domain));
+               none.appendChild(document.createTextNode(' across ' + total + ' breaches.'));
+               card.appendChild(none);
+               card.appendChild(el('p', 'dm-result-note', 'Verify the domain to be alerted the moment that changes.'));
+               link = el('a', 'cta-button', 'Start monitoring, free');
+            }
+            link.href = '/domain';
+            card.appendChild(link);
+            show(card);
+         }
+
+         function runCheck(domain) {
+            button.disabled = true;
+            var label = button.textContent;
+            button.textContent = 'Checking...';
+            fetch('https://api.xposedornot.com/v1/domain-breach-summary?d=' + encodeURIComponent(domain))
+               .then(function (r) {
+                  if (r.status === 429) { throw new Error('rate'); }
+                  if (r.status === 404) { return { sendDomains: { breaches_details: [] } }; }
+                  if (!r.ok) { throw new Error('http'); }
+                  return r.json();
+               })
+               .then(function (data) {
+                  var list = (data.sendDomains && data.sendDomains.breaches_details) || [];
+                  var agg = { breach_count: 0, breach_emails: 0, breach_total: 0, breach_last_seen: null };
+                  list.forEach(function (b) {
+                     agg.breach_count += b.breach_count || 0;
+                     agg.breach_emails += b.breach_emails || 0;
+                     agg.breach_total += b.breach_total || 0;
+                     if (b.breach_last_seen) { agg.breach_last_seen = b.breach_last_seen; }
+                  });
+                  render(domain, agg);
+               })
+               .catch(function (err) {
+                  showError(err.message === 'rate'
+                     ? 'Too many checks in a short time. Wait a minute and try again.'
+                     : 'The check could not be completed. Try again in a moment.');
+               })
+               .then(function () {
+                  button.disabled = false;
+                  button.textContent = label;
+               });
+         }
+
+         form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var domain = extractDomain(input.value);
+            if (!domainRegex.test(domain)) {
+               input.setAttribute('aria-invalid', 'true');
+               showError('Enter a domain such as example.com to run the check.');
+               input.focus();
+               return;
+            }
+            input.removeAttribute('aria-invalid');
+            runCheck(domain);
+         });
+
+         input.addEventListener('input', function () {
+            input.removeAttribute('aria-invalid');
+         });
+
+         var preset = new URLSearchParams(window.location.search).get('d');
+         if (preset) {
+            var presetDomain = extractDomain(preset);
+            if (domainRegex.test(presetDomain)) {
+               input.value = presetDomain;
+               runCheck(presetDomain);
+            }
+         }
+      })();
+   </script>
    <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
