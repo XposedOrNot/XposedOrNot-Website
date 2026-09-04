@@ -417,6 +417,44 @@
          margin-top: 20px;
       }
 
+      .start-band {
+         text-align: center;
+         background: #f0f4ff;
+         border-radius: 12px;
+         padding: 32px 20px 24px;
+         margin: 45px 0 10px;
+      }
+
+      .start-band h2 {
+         margin-top: 0;
+         color: #2d5bd7;
+      }
+
+      .start-band .cta-sub {
+         margin-bottom: 0;
+      }
+
+      .dm-result-logo {
+         display: block;
+         width: 56px;
+         height: 56px;
+         border-radius: 12px;
+         margin: 0 auto 10px;
+         object-fit: contain;
+         background: #ffffff;
+      }
+
+      .dm-result-credit {
+         font-size: 0.78em;
+         color: #ffffff;
+         margin: 8px 0 0;
+      }
+
+      .dm-result-credit a {
+         color: #ffffff;
+         text-decoration: underline;
+      }
+
       .faq-item {
          border: 1px solid #e0e6f5;
          border-radius: 10px;
@@ -504,6 +542,10 @@
       [data-theme="dark"] .faq-item {
          background: #181b2d;
          border-color: #2a2d40;
+      }
+
+      [data-theme="dark"] .start-band {
+         background: #242842;
       }
 
       [data-theme="dark"] .faq-item .faq-q {
@@ -982,9 +1024,11 @@
             </details>
             </div>
 
-            <h2 id="start">Start now</h2>
-            <p class="cta-row"><a class="cta-button" href="/domain">Start monitoring your domain</a></p>
-            <p class="cta-sub">Free, no limits, automatic alerts. Verified setup in minutes.</p>
+            <div class="start-band">
+               <h2 id="start">Start now</h2>
+               <p class="cta-row"><a class="cta-button" href="/domain">Start monitoring your domain</a></p>
+               <p class="cta-sub">Free, no limits, automatic alerts. Verified setup in minutes.</p>
+            </div>
 
          </div>
       </main>
@@ -1108,9 +1152,34 @@
             return d;
          }
 
+         function addLogo(card, domain) {
+            var img = el('img', 'dm-result-logo');
+            img.alt = '';
+            img.width = 56;
+            img.height = 56;
+            img.hidden = true;
+            img.addEventListener('load', function () {
+               img.hidden = false;
+               var credit = el('p', 'dm-result-credit');
+               credit.appendChild(document.createTextNode('Logo provided by '));
+               var a = el('a', '', 'Logo.dev');
+               a.href = 'https://logo.dev';
+               a.target = '_blank';
+               a.rel = 'noopener';
+               credit.appendChild(a);
+               result.appendChild(credit);
+            });
+            img.addEventListener('error', function () {
+               img.remove();
+            });
+            img.src = 'https://img.logo.dev/' + encodeURIComponent(domain) + '?size=200&fallback=404&token=pk_SfmfJZb2RYiEgGDl2nxd3Q';
+            card.appendChild(img);
+         }
+
          function render(domain, d) {
             var card = el('div', 'dm-result-card');
             var link;
+            addLogo(card, domain);
             if (d.breach_count > 0) {
                var title = el('p', 'dm-result-title');
                title.appendChild(document.createTextNode('Exposure found for '));
