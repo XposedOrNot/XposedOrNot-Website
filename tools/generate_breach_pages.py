@@ -623,6 +623,11 @@ def bake_counts(text, total, industries, latest_added, loc="en"):
     return text
 
 
+def existing_modified(text, fallback):
+    m = re.search(r'"dateModified": "([^"]*)"', text)
+    return m.group(1) if m else fallback
+
+
 def bake_dataset(text, total, today):
     def repl(m):
         block = m.group(0)
@@ -686,10 +691,11 @@ def bake_directory(public):
         if not page.exists():
             print(f"WARNING: {page} missing, skipped directory bake")
             continue
-        text = page.read_text(encoding="utf-8")
+        original = page.read_text(encoding="utf-8")
+        text = original
         loc = "en" if page.parent == ROOT else page.parent.name
         text = bake_counts(text, total, industries, latest_added, loc)
-        text = bake_dataset(text, total, today)
+        text = bake_dataset(text, total, existing_modified(text, today))
         if page.parent == ROOT:
             block = itemlist_block(public, total)
             pattern = (r'<script type="application/ld\+json" '
@@ -720,6 +726,9 @@ def bake_directory(public):
                           "stale here; remove it from this locale page.")
         if '"dateModified"' not in text:
             print(f"WARNING: {page} Dataset schema not baked (marker not found)")
+        if text == original:
+            continue
+        text = bake_dataset(text, total, today)
         page.write_text(text, encoding="utf-8", newline="")
         baked += 1
     return baked
@@ -1225,7 +1234,8 @@ def bake_repository_stats(public, metrics):
                        fmt_js_number(s["risks"][key][1])))
 
     page = ROOT / "our-repository.html"
-    text = page.read_text(encoding="utf-8")
+    original = page.read_text(encoding="utf-8")
+    text = original
     for elem_id, value in values:
         text = set_inner(text, elem_id, value, page)
     for band in ("mega", "large", "medium", "small", "tiny"):
@@ -1252,11 +1262,14 @@ def bake_repository_stats(public, metrics):
                      repo_table_rows(metrics.get("Top_Breaches")), page)
     text = set_tbody(text, "recentBreachesTable",
                      repo_table_rows(metrics.get("Recent_Breaches")), page)
-    text = re.sub(r'("dateModified": ")[^"]*(")', rf"\g<1>{iso}\g<2>", text)
     text = re.sub(r'("size": ")[^"]*(")',
                   rf"\g<1>{s['total']} breaches\g<2>", text)
-    page.write_text(text, encoding="utf-8", newline="")
-    baked = 1
+    baked = 0
+    if text != original:
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        text = re.sub(r'("dateModified": ")[^"]*(")', rf"\g<1>{today}\g<2>", text)
+        page.write_text(text, encoding="utf-8", newline="")
+        baked = 1
 
     for loc in INDEX_LOCALES:
         lp = ROOT / loc / "our-repository.html"
