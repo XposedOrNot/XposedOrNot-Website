@@ -7,7 +7,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 779 breaches. No API key required.">
+   <meta name="description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 783 breaches. No API key required.">
    <meta name="keywords" content="MCP server, model context protocol, data breach MCP, breach intelligence, Claude MCP, Cursor MCP, email breach check, AI agent tools">
    <meta name="author" content="Devanand Premkumar">
    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
@@ -21,7 +21,7 @@
    <link rel="preconnect" href="https://fonts.gstatic.com">
 
    <meta property="og:title" content="XposedOrNot MCP Server: Data Breach Intelligence for AI Agents" />
-   <meta property="og:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 779 breaches. No API key required." />
+   <meta property="og:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 783 breaches. No API key required." />
    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
    <meta property="og:image:alt" content="XposedOrNot Logo" />
    <meta property="og:url" content="https://xposedornot.com/mcp" />
@@ -32,7 +32,7 @@
    <meta name="twitter:site" content="@XposedOrNot">
    <meta name="twitter:creator" content="@DevaOnBreaches">
    <meta name="twitter:title" content="XposedOrNot MCP Server: Data Breach Intelligence for AI Agents">
-   <meta name="twitter:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 779 breaches. No API key required.">
+   <meta name="twitter:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 783 breaches. No API key required.">
    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
@@ -287,8 +287,15 @@
          color: #2d5bd7;
          font-size: 1.1em;
          font-weight: 600;
-         margin: 0 0 8px 0;
+         margin: 0 0 4px 0;
+      }
+
+      .integration-card .tool-name {
          font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+         font-size: 0.85em;
+         color: #4a5568;
+         margin: 0 0 10px 0;
+         flex-grow: 0;
       }
 
       .integration-card p {
@@ -413,6 +420,10 @@
          color: #5b9aff;
       }
 
+      [data-theme="dark"] .integration-card .tool-name {
+         color: #a9b8d0;
+      }
+
       [data-theme="dark"] .integration-card p {
          color: #c3d3e8;
       }
@@ -468,9 +479,9 @@
             "@type": "TechArticle",
             "@id": "https://xposedornot.com/mcp#article",
             "headline": "XposedOrNot MCP Server: Data Breach Intelligence for AI Agents",
-            "description": "Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 779 breaches. No API key required.",
+            "description": "Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 783 breaches. No API key required.",
             "url": "https://xposedornot.com/mcp",
-            "dateModified": "2026-08-27",
+            "dateModified": "2026-09-08",
             "author": {
                "@type": "Person",
                "name": "Devanand Premkumar",
@@ -545,7 +556,7 @@
                   "name": "Which AI clients work with the XposedOrNot MCP server?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version 2024-11-05 and requires no authentication."
+                     "text": "Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version 2025-06-18 (also accepts 2024-11-05), negotiated at initialize, and requires no authentication."
                   }
                },
                {
@@ -569,7 +580,15 @@
                   "name": "How current is the breach data behind the MCP server?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "The MCP server queries the live XposedOrNot database: 779 breaches and over 11.6 billion exposed records as of August 2026, updated as new breaches are verified and indexed."
+                     "text": "The MCP server queries the live XposedOrNot database: 783 breaches and more than 11.6 billion exposed records as of September 2026, updated as new breaches are verified and indexed."
+                  }
+               },
+               {
+                  "@type": "Question",
+                  "name": "What happens if I pass an invalid email or domain?",
+                  "acceptedAnswer": {
+                     "@type": "Answer",
+                     "text": "If you pass a malformed email address or domain, the server returns a specific error saying what to fix. A clean not-found answer always means the address genuinely is not in the index."
                   }
                }
             ]
@@ -645,7 +664,7 @@
       <main class="transparency-content">
          <div class="container transparency-section">
             <h1>XposedOrNot MCP Server <span class="status-pill status-live hero-pill">Live</span></h1>
-            <p class="hero-meta">779 data breaches and more than 11.6 billion exposed records indexed, as of August 2026.</p>
+            <p class="hero-meta">783 data breaches and more than 11.6 billion exposed records indexed, as of September 2026.</p>
 
             <p class="hero-lead">
                <strong>Give your AI assistant live access to data breach intelligence.</strong>
@@ -691,7 +710,7 @@ URL:  https://api.xposedornot.com/mcp</div>
             <ul>
                <li>Server endpoint: <code>https://api.xposedornot.com/mcp</code></li>
                <li>Transport: streamable HTTP (JSON-RPC 2.0 over HTTPS POST)</li>
-               <li>Protocol version: <code>2024-11-05</code></li>
+               <li>Protocol version: <code>2025-06-18</code> (also accepts <code>2024-11-05</code>), negotiated at initialize</li>
                <li>Authentication: none required</li>
             </ul>
             <p>
@@ -704,32 +723,38 @@ URL:  https://api.xposedornot.com/mcp</div>
 
             <div class="integration-grid">
                <div class="integration-card">
-                  <h3>check_email_breaches</h3>
-                  <p>Check whether an email address appears in any known data breach. Returns breach names, dates, and exposed data types.</p>
+                  <h3>Check Email for Breaches</h3>
+                  <p class="tool-name">check_email_breaches</p>
+                  <p>Check whether an email address appears in the XposedOrNot index of known public data breaches. Returns the list of breach names only. Never returns passwords.</p>
                   <p class="tool-example">"Has <!--email_off-->john@example.com<!--/email_off--> appeared in any data breaches?"</p>
                </div>
                <div class="integration-card">
-                  <h3>get_breach_analytics</h3>
+                  <h3>Get Email Breach Analytics</h3>
+                  <p class="tool-name">get_breach_analytics</p>
                   <p>Detailed exposure analytics for an email: risk score, breach timeline, exposed data categories, and password risk.</p>
                   <p class="tool-example">"Give me a full breach risk analysis for <!--email_off-->john@example.com<!--/email_off-->."</p>
                </div>
                <div class="integration-card">
-                  <h3>list_breaches</h3>
-                  <p>Browse or filter the full breach catalog by domain or breach ID, with records, data classes, and verification status.</p>
+                  <h3>List Indexed Breaches</h3>
+                  <p class="tool-name">list_breaches</p>
+                  <p>Browse or filter the full breach catalog by domain or breach ID, with records, data classes, and verification status. Accepts an optional <code>limit</code> (default 25, maximum 100). The full exposure description is included only on single <code>breach_id</code> lookups; domain-filtered and unfiltered lists return compact fields. When results are truncated the response says so and how to narrow the query.</p>
                   <p class="tool-example">"List the breaches XposedOrNot has indexed for example.com."</p>
                </div>
                <div class="integration-card">
-                  <h3>domain_breach_summary</h3>
+                  <h3>Summarize Domain Breach Exposure</h3>
+                  <p class="tool-name">domain_breach_summary</p>
                   <p>Aggregate breach summary for a domain: breach count, affected accounts, pastes, and the most recent breach date. Returns counts only, never individual addresses.</p>
                   <p class="tool-example">"How exposed is example.com across known breaches?"</p>
                </div>
                <div class="integration-card">
-                  <h3>get_breach_metrics</h3>
+                  <h3>Get Breach Index Metrics</h3>
+                  <p class="tool-name">get_breach_metrics</p>
                   <p>System-wide statistics: total breaches and records indexed, breaches per year and industry, and the largest and most recent breaches.</p>
                   <p class="tool-example">"How many breaches were indexed per industry this year?"</p>
                </div>
                <div class="integration-card">
-                  <h3>get_recent_breaches</h3>
+                  <h3>Get Recent Breaches</h3>
+                  <p class="tool-name">get_recent_breaches</p>
                   <p>The latest data breach news and the breaches most recently added to the XposedOrNot database.</p>
                   <p class="tool-example">"What are the newest data breaches tracked by XposedOrNot?"</p>
                </div>
@@ -775,7 +800,7 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                      <td>100</td>
                   </tr>
                   <tr>
-                     <td><code>list_breaches</code>, <code>get_recent_breaches</code></td>
+                     <td><code>list_breaches</code></td>
                      <td>2 per second</td>
                      <td>50</td>
                      <td>100</td>
@@ -788,12 +813,23 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                   </tr>
                   <tr>
                      <td><code>get_breach_metrics</code></td>
+                     <td>No burst limit</td>
+                     <td>100</td>
+                     <td>500</td>
+                  </tr>
+                  <tr>
+                     <td><code>get_recent_breaches</code></td>
                      <td>5 per minute</td>
                      <td>50</td>
                      <td>100</td>
                   </tr>
                </table>
             </div>
+            <p>
+               Limits are evaluated against your combined MCP tool usage per client, not separately per tool.
+               Connection overhead (<code>initialize</code>, <code>tools/list</code>) has its own light limit of
+               2 per second, 25 per hour, and 100 per day; <code>ping</code> and notifications are not rate-limited.
+            </p>
             <p>
                Need higher volume? <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a>
                offers paid plans with rate limits up to 25,000 requests per minute, API-key access, and commercial
@@ -841,7 +877,8 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                <p>
                   Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and
                   Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version
-                  <code>2024-11-05</code> and requires no authentication.
+                  <code>2025-06-18</code> (also accepts <code>2024-11-05</code>), negotiated at initialize, and
+                  requires no authentication.
                </p>
             </div>
 
@@ -866,9 +903,17 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
             <div class="faq-item">
                <h3>How current is the data?</h3>
                <p>
-                  The MCP server queries the live XposedOrNot database: 779 breaches and more than 11.6 billion
-                  exposed records as of August 2026, updated as new breaches are verified and indexed. See
+                  The MCP server queries the live XposedOrNot database: 783 breaches and more than 11.6 billion
+                  exposed records as of September 2026, updated as new breaches are verified and indexed. See
                   <a href="/our-repository">live repository statistics</a>.
+               </p>
+            </div>
+
+            <div class="faq-item">
+               <h3>What happens if I pass an invalid email or domain?</h3>
+               <p>
+                  If you pass a malformed email address or domain, the server returns a specific error saying what to
+                  fix. A clean not-found answer always means the address genuinely is not in the index.
                </p>
             </div>
 

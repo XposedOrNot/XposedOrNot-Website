@@ -1,7 +1,7 @@
 {
   "serverInfo": {
     "name": "XON_MCP",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "title": "XposedOrNot Breach Intelligence",
     "description": "Real-time data-breach lookup and analytics for emails and domains.",
     "vendor": "XposedOrNot",
@@ -10,7 +10,7 @@
     "repository": "https://github.com/XposedOrNot/XposedOrNot-API",
     "license": "MIT"
   },
-  "protocolVersion": "2024-11-05",
+  "protocolVersion": "2025-06-18",
   "transport": {
     "type": "http",
     "url": "https://api.xposedornot.com/mcp"
@@ -21,27 +21,51 @@
   "tools": [
     {
       "name": "check_email_breaches",
-      "description": "Check if an email address appears in any known data breaches."
+      "title": "Check Email for Breaches",
+      "description": "Check whether an email address appears in the XposedOrNot index of known public data breaches. Returns the list of breach names only. Never returns passwords.",
+      "annotations": {
+        "readOnlyHint": true
+      }
     },
     {
       "name": "get_breach_analytics",
-      "description": "Detailed breach analytics for an email: risk score, timeline, exposure categories."
+      "title": "Get Email Breach Analytics",
+      "description": "Get detailed breach analytics for an email address: risk score, breach timeline, exposed data categories, and password risk.",
+      "annotations": {
+        "readOnlyHint": true
+      }
     },
     {
       "name": "list_breaches",
-      "description": "List or filter known breaches by domain or breach ID."
+      "title": "List Indexed Breaches",
+      "description": "List or filter indexed breaches by domain or breach ID. Accepts an optional limit (default 25, maximum 100). The full exposure description is returned only for a single breach_id lookup; filtered and unfiltered lists return compact fields.",
+      "annotations": {
+        "readOnlyHint": true
+      }
     },
     {
       "name": "domain_breach_summary",
-      "description": "Aggregate breach summary for a domain: number of breaches, affected email accounts, pastes, and most recent breach date. Returns only counts, not individual email addresses."
+      "title": "Summarize Domain Breach Exposure",
+      "description": "Get an aggregate breach summary for a domain, including the number of breaches, affected email accounts, pastes, and the most recent breach date. Returns only counts, not individual email addresses.",
+      "annotations": {
+        "readOnlyHint": true
+      }
     },
     {
       "name": "get_breach_metrics",
-      "description": "System-wide breach statistics: total breaches and records indexed, breaches per year and industry, largest and most recent breaches, and when the latest breach was added."
+      "title": "Get Breach Index Metrics",
+      "description": "Get system-wide breach statistics: total breaches and records indexed, breaches per year and industry, the largest and most recent breaches, and when the latest breach was added.",
+      "annotations": {
+        "readOnlyHint": true
+      }
     },
     {
       "name": "get_recent_breaches",
-      "description": "Latest data breach news and recently added breaches tracked by XposedOrNot."
+      "title": "Get Recent Breaches",
+      "description": "Get the latest data breach news and recently added breaches tracked by XposedOrNot.",
+      "annotations": {
+        "readOnlyHint": true
+      }
     }
   ]
 }
