@@ -512,6 +512,20 @@ if (dnsDiv) {
     dnsObserver.observe(dnsDiv, { attributes: true, attributeFilter: ["style"] });
 }
 
+function getPresetDomain() {
+    if (typeof URLSearchParams !== "function") return "";
+    var raw = new URLSearchParams(window.location.search).get("d");
+    if (!raw) return "";
+    var domain = raw.trim().toLowerCase();
+    if (domain.indexOf("@") > -1) domain = domain.split("@").pop();
+    domain = domain
+        .replace(/^https?:\/\//, "")
+        .replace(/^www\./, "")
+        .replace(/[\/?#].*$/, "")
+        .replace(/:\d+$/, "");
+    return /^([a-z0-9-]+\.)+[a-z]{2,24}$/.test(domain) ? domain : "";
+}
+
 function validateEmail(email) {
     var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
@@ -546,6 +560,11 @@ function setupEmailValidation(inputId, buttonId) {
 document.addEventListener("DOMContentLoaded", function () {
     var eventInput = document.getElementById("eventName");
     if (eventInput) {
+        var presetDomain = getPresetDomain();
+        if (presetDomain) {
+            eventInput.value = presetDomain;
+            updateDomainLabel();
+        }
         eventInput.focus();
     }
 
