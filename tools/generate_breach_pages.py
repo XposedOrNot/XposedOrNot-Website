@@ -21,7 +21,10 @@ map so index.js, xposed.js and breach.js show one name everywhere.
 dateModified comes from tools/breach_page_state.json, which stores a hash
 of each breach's own fields: the date moves only when those facts change,
 never on a template edit or a rank shuffle. Seed it once with
-tools/seed_breach_state.py. The template and all formatting mirror the
+tools/seed_breach_state.py. Seeded entries carry source "seed" and stay
+silent on the page; only a date the generator moved itself (source
+"change") prints a visible "Last updated" line, so the page never
+advertises a bulk regeneration as an update. The template and all formatting mirror the
 client-rendered breach.html detail page (breach.js). BreachIDs are used
 as-is (case preserved). Never hand-edit files under breach/ - rerun this
 script instead.
@@ -491,7 +494,7 @@ def page_fingerprint(breach, display):
     return hashlib.sha256("␟".join(fields).encode("utf-8")).hexdigest()[:16]
 
 
-def render(template, breach, public, rank, total, modified):
+def render(template, breach, public, rank, total, modified, show_updated):
     bid = breach["breachID"]
     records = fmt_number(breach["exposedRecords"])
     url = f"{SITE}/breach/{bid}"
@@ -550,6 +553,10 @@ def render(template, breach, public, rank, total, modified):
                     f'    <script type="application/ld+json">\n{breadcrumb}\n    </script>\n'
                     f'    <script type="application/ld+json">\n{faq_ld}\n    </script>')
 
+    added_line = f"Added to XposedOrNot on {fmt_date(breach['addedDate'])}"
+    if show_updated and modified[:10] != breach["addedDate"][:10]:
+        added_line += f" &middot; Last updated {fmt_date(modified)}"
+
     is_sensitive = not breach["searchable"]
     if is_sensitive:
         sensitive_note = (
@@ -580,7 +587,7 @@ def render(template, breach, public, rank, total, modified):
         "{{PASSWORD_RISK_HTML}}": fmt_password_risk(breach["passwordRisk"]),
         "{{INDUSTRY}}": esc(industry),
         "{{INDUSTRY_IMG}}": esc(f"/static/logos/industry/{industry}.png"),
-        "{{ADDED_LINE}}": f"Added to XposedOrNot on {fmt_date(breach['addedDate'])}",
+        "{{ADDED_LINE}}": added_line,
         "{{DESCRIPTION}}": esc(breach["exposureDescription"]),
         "{{DATA_BADGES}}": data_badges(breach["exposedData"]),
         "{{BREACH_TYPE_HTML}}": fmt_breach_type(breach.get("breachType")),
@@ -1471,14 +1478,18 @@ def main():
         known = state.get(bid)
         if known and known.get("hash") == fingerprint:
             modified = known["modified"]
+            source = known.get("source", "seed")
         else:
             modified = today
+            source = "change"
             changed += 1
-        state[bid] = {"hash": fingerprint, "modified": modified}
+        state[bid] = {"hash": fingerprint, "modified": modified,
+                      "source": source}
         with open(OUT_DIR / f"{bid}.html", "w",
                   encoding="utf-8", newline="") as f:
             f.write(render(template, breach, public,
-                           rank_of[bid], total, modified))
+                           rank_of[bid], total, modified,
+                           source == "change"))
 
     existing = {p.stem for p in OUT_DIR.glob("*.html") if p.name != "index.html"}
     live = [r for r in public if r["breachID"] in existing]

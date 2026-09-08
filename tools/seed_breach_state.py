@@ -77,6 +77,7 @@ def main():
         state[bid] = {
             "hash": gen.page_fingerprint(breach, gen.display_name(bid)),
             "modified": modified,
+            "source": "seed",
         }
 
     gen.save_state(state)
