@@ -800,6 +800,8 @@
         }
     </style>
 
+    <script src="/breach/ids.js"></script>
+    <script src="/breach/names.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js" integrity="sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
       @font-face {
@@ -933,6 +935,16 @@
     </div>
 
     <script>
+        function xonDisplayName(id) {
+            const map = window.XON_BREACH_NAMES;
+            return (map && map[id]) || id;
+        }
+
+        function breachHref(id) {
+            const hasStatic = window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(id) !== -1;
+            return hasStatic ? '/breach/' + encodeURIComponent(id) : '/breach-detail#' + encodeURIComponent(id);
+        }
+
         const colorPalettes = {
             2026: ['#3A0CA3','#3F37C9','#4361EE','#4895EF','#4CC9F0'],
             2025: ['#C92A2A','#E03131','#F03E3E','#FA5252','#FF6B6B'],
@@ -986,7 +998,8 @@
                 const breaches = apiData['exposedBreaches'];
                 allBreachData = breaches.map(b => ({
                     year: new Date(b.breachedDate).getFullYear(),
-                    name: b.breachID,
+                    id: b.breachID,
+                    name: xonDisplayName(b.breachID),
                     logo: b.logo,
                     description: b.exposureDescription,
                     count: b.exposedRecords,
@@ -1220,7 +1233,7 @@
                 '<div class="bs-description">' + breach.description + '</div>' +
                 '<div class="bs-actions">' +
                     '<button class="bs-close-btn" id="bsCloseBtn">Close</button>' +
-                    '<a href="breach#' + breach.name + '" class="bs-detail-link">Details <i class="fas fa-arrow-right" style="font-size:0.7rem"></i></a>' +
+                    '<a href="' + breachHref(breach.id) + '" class="bs-detail-link">Details <i class="fas fa-arrow-right" style="font-size:0.7rem"></i></a>' +
                 '</div>';
 
             document.getElementById('bottomSheet').classList.add('active');

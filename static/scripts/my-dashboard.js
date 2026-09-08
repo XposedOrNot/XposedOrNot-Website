@@ -1,3 +1,8 @@
+function xonDisplayName(id) {
+    var map = window.XON_BREACH_NAMES;
+    return (map && map[id]) || id;
+}
+
 (function () {
     var SVGNS = "http://www.w3.org/2000/svg";
     var API = "https://api.xposedornot.com/v1";
@@ -296,8 +301,8 @@
                 var rec = parseInt(b.xposed_records, 10) || 1;
                 return {
                     year: yr, value: rec, pw: hasPassword(b), stealer: isStealer(b),
-                    label: b.breach,
-                    tip: b.breach + ", " + yr + ". " + Number(rec).toLocaleString() +
+                    label: xonDisplayName(b.breach),
+                    tip: xonDisplayName(b.breach) + ", " + yr + ". " + Number(rec).toLocaleString() +
                         " accounts exposed." + (isStealer(b) ? " Stealer log." : hasPassword(b) ? " Password exposed." : "")
                 };
             }), "Taller bars mean more accounts were exposed in that breach.");
@@ -363,12 +368,12 @@
             return b.password_risk === "plaintext" || b.password_risk === "easytocrack";
         });
         if (stealers.length) {
-            items.push("Sign out of all sessions and change browser-saved passwords (" + stealers[0].breach + ")");
+            items.push("Sign out of all sessions and change browser-saved passwords (" + xonDisplayName(stealers[0].breach) + ")");
             items.push("Run an antivirus scan on the device you use most");
         }
         if (plain.length) {
             items.push("Retire the passwords exposed in " +
-                plain.slice(0, 2).map(function (b) { return b.breach; }).join(" and ") +
+                plain.slice(0, 2).map(function (b) { return xonDisplayName(b.breach); }).join(" and ") +
                 (plain.length > 2 ? " and " + (plain.length - 2) + " more breaches" : ""));
         }
         items.push("Turn on two-factor authentication for your most important accounts");
@@ -397,7 +402,7 @@
                     m.Recent_Breaches[0].breachid) || "";
                 var link = name
                     ? '<a href="breach.html#' + encodeURIComponent(name) +
-                        '" target="_blank" rel="noopener">' + esc(name) +
+                        '" target="_blank" rel="noopener">' + esc(xonDisplayName(name)) +
                         '<span class="sr-only"> (opens in new tab)</span></a> &middot; added '
                     : "";
                 document.getElementById("pd-freshness-date").innerHTML = link + fmtDate(d);
@@ -415,7 +420,7 @@
         return '<article class="pd-breach">' +
             '<img class="pd-breach-logo" src="' + esc(b.logo || "/static/images/logos/logo.svg") + '" alt="" loading="lazy" onerror="this.src=\'/static/images/logos/logo.svg\'" />' +
             '<div class="pd-breach-main"><div class="pd-breach-title">' +
-            '<a href="breach.html#' + encodeURIComponent(b.breach) + '" target="_blank" rel="noopener">' + esc(b.breach) + '<span class="sr-only"> (opens in new tab)</span></a>' +
+            '<a href="breach.html#' + encodeURIComponent(b.breach) + '" target="_blank" rel="noopener">' + esc(xonDisplayName(b.breach)) + '<span class="sr-only"> (opens in new tab)</span></a>' +
             (stealer ? '<span class="pd-badge-stealer"><i class="fas fa-bug" aria-hidden="true"></i> Stealer log</span>' : "") +
             (sensitive ? '<span class="pd-badge-sensitive"><span aria-hidden="true">🔥</span> Sensitive</span>' : "") +
             '<span class="pd-breach-meta">' + esc(b.xposed_date || "") +
@@ -650,7 +655,7 @@
             var when = addedOf(b.info);
             return '<div class="pd-mini-breach">' +
                 '<img class="pd-mini-logo" src="' + esc(logoFor(b.name)) + '" alt="" onerror="this.src=\'/static/images/logos/logo.svg\'" />' +
-                '<div><span class="pd-mini-name"><a href="breach.html#' + encodeURIComponent(b.name) + '" target="_blank" rel="noopener">' + esc(b.name) + '<span class="sr-only"> (opens in new tab)</span></a></span> ' +
+                '<div><span class="pd-mini-name"><a href="breach.html#' + encodeURIComponent(b.name) + '" target="_blank" rel="noopener">' + esc(xonDisplayName(b.name)) + '<span class="sr-only"> (opens in new tab)</span></a></span> ' +
                 '<span class="pd-breach-meta">' + esc(when ? fmtDate(new Date(when)) : yearOf(b.info)) + "</span></div>" +
                 '<div class="pd-mini-right"><span class="pd-breach-meta">' + cnt + (cnt === 1 ? " email" : " emails") + "</span></div></div>";
         }).join("") || '<p class="pd-panel-sub">No breaches affect this domain.</p>';
@@ -679,7 +684,7 @@
             var info = breachInfo[r.breach] || {};
             return [
                 esc(r.email),
-                "<a href='breach.html#" + encodeURIComponent(r.breach) + "' target='_blank' rel='noopener'>" + esc(r.breach) + "</a>",
+                "<a href='breach.html#" + encodeURIComponent(r.breach) + "' target='_blank' rel='noopener'>" + esc(xonDisplayName(r.breach)) + "</a>",
                 esc(yearOf(info)),
                 esc(dataOf(info).split(";").join(", "))
             ];
@@ -745,7 +750,7 @@
             return '<div class="pd-status-row">' +
                 '<i class="fas fa-exclamation-triangle pd-status-icon" aria-hidden="true"></i>' +
                 '<div class="pd-status-text">' +
-                '<span class="pd-status-label">New exposure: <a href="breach.html#' + encodeURIComponent(a.breach_id || "") + '" target="_blank" rel="noopener">' + esc(a.breach_id || "") + '<span class="sr-only"> (opens in new tab)</span></a></span>' +
+                '<span class="pd-status-label">New exposure: <a href="breach.html#' + encodeURIComponent(a.breach_id || "") + '" target="_blank" rel="noopener">' + esc(xonDisplayName(a.breach_id || "")) + '<span class="sr-only"> (opens in new tab)</span></a></span>' +
                 '<span class="pd-breach-meta">' + meta.join(" &middot; ") + "</span>" +
                 "</div>" +
                 (ack ? '<span class="pd-delivered"><i class="fas fa-check" aria-hidden="true"></i> acknowledged</span>'
@@ -1523,7 +1528,7 @@
                         var t = c.trim();
                         return '<span class="pd-mon-xchip pd-xsev-' + monDataSeverity(t) + '">' + esc(t) + "</span>";
                     }).join("");
-                    var bn = esc(d.breach || "");
+                    var bn = esc(xonDisplayName(d.breach || ""));
                     var link = '<a class="pd-mon-blink" href="breach.html#' + encodeURIComponent(d.breach || "") +
                         '" target="_blank" rel="noopener">' + bn +
                         ' <i class="fas fa-external-link-alt pd-mon-ext" aria-hidden="true"></i>' +

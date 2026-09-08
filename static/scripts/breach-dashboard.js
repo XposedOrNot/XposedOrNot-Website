@@ -1,3 +1,8 @@
+function xonDisplayName(id) {
+    var map = window.XON_BREACH_NAMES;
+    return (map && map[id]) || id;
+}
+
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results ? results[1] : 0;
@@ -416,7 +421,7 @@ function buildTopBreachesTable(breachNames, breachCounts) {
         for (let i = 0; i < breaches.length; i++) {
             let rowColor = i % 2 === 0 ? '#f8f8f8' : '#ffffff';
             let breachLink = `https://xposedornot.com/xposed#${breaches[i].name}`;
-            tableHtml += `<tr style="background-color: ${rowColor}; border-bottom: 1px solid #ddd;"><td style="padding: 10px;"><a href="${breachLink}" target="_blank">${breaches[i].name}</a></td><td style="padding: 10px;">${breaches[i].count}</td></tr>`;
+            tableHtml += `<tr style="background-color: ${rowColor}; border-bottom: 1px solid #ddd;"><td style="padding: 10px;"><a href="${breachLink}" target="_blank">${xonDisplayName(breaches[i].name)}</a></td><td style="padding: 10px;">${breaches[i].count}</td></tr>`;
         }
 
         tableHtml += '</table>';
@@ -1474,7 +1479,7 @@ $(document).on('click', '.dynamic-acknowledge-btn', function() {
     };
 
     // Update modal content
-    $('#modal-breach-name').text(breachName);
+    $('#modal-breach-name').text(xonDisplayName(breachName));
     $('#modal-alert-id').text(alertId);
 
     // Show modal
@@ -1670,7 +1675,7 @@ $(document).on('click', '.dynamic-unacknowledge-btn', function() {
     };
 
     // Update modal content
-    $('#unack-modal-breach-name').text(breachName);
+    $('#unack-modal-breach-name').text(xonDisplayName(breachName));
     $('#unack-modal-alert-id').text(alertId);
 
     // Show modal

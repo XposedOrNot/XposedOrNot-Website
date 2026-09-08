@@ -1,3 +1,8 @@
+function xonDisplayName(id) {
+    var map = window.XON_BREACH_NAMES;
+    return (map && map[id]) || id;
+}
+
 Chart.plugins.register(ChartDataLabels);
 
 function formatNumber(num) {
@@ -623,8 +628,8 @@ function renderTopBreachesTable(breaches) {
     var breachUrl = 'breach.html#' + encodeURIComponent(breach.breachid);
     tbody.append(
       '<tr>' +
-      '<td><img src="' + escapeHtml(breach.logo) + '" alt="' + escapeHtml(breach.breachid) + ' logo"></td>' +
-      '<td><a href="' + breachUrl + '" class="breach-link">' + escapeHtml(breach.breachid) + '</a></td>' +
+      '<td><img src="' + escapeHtml(breach.logo) + '" alt="' + escapeHtml(xonDisplayName(breach.breachid)) + ' logo"></td>' +
+      '<td><a href="' + breachUrl + '" class="breach-link">' + escapeHtml(xonDisplayName(breach.breachid)) + '</a></td>' +
       '<td>' +
       '<span class="description truncated">' + escapeHtml(breach.description) + '</span>' +
       '<button type="button" class="read-toggle" onclick="toggleDesc(this)">more</button>' +
@@ -643,8 +648,8 @@ function renderRecentBreachesTable(breaches) {
     var breachUrl = 'breach.html#' + encodeURIComponent(breach.breachid);
     tbody.append(
       '<tr>' +
-      '<td><img src="' + escapeHtml(breach.logo) + '" alt="' + escapeHtml(breach.breachid) + ' logo"></td>' +
-      '<td><a href="' + breachUrl + '" class="breach-link">' + escapeHtml(breach.breachid) + '</a></td>' +
+      '<td><img src="' + escapeHtml(breach.logo) + '" alt="' + escapeHtml(xonDisplayName(breach.breachid)) + ' logo"></td>' +
+      '<td><a href="' + breachUrl + '" class="breach-link">' + escapeHtml(xonDisplayName(breach.breachid)) + '</a></td>' +
       '<td>' +
       '<span class="description truncated">' + escapeHtml(breach.description) + '</span>' +
       '<button type="button" class="read-toggle" onclick="toggleDesc(this)">more</button>' +

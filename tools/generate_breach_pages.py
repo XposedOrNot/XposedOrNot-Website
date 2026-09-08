@@ -776,6 +776,8 @@ def bake_index_freshness(public):
         new = re.sub(
             r'(<p class="stats-context" id="stats-freshness")\s+hidden(>)',
             r"\1\2", new)
+        if new == text:
+            continue
         page.write_text(new, encoding="utf-8", newline="")
         stamped += 1
     return stamped
@@ -1346,7 +1348,10 @@ def bake_llms(public):
                      section, text, flags=re.S)
     if not n:
         print("WARNING: llms.txt Notable Breaches section not found")
+    if new == text:
+        return 0
     path.write_text(new, encoding="utf-8", newline="")
+    return 1
 
 
 def bake_llms_full(public, metrics):
@@ -1391,8 +1396,12 @@ def bake_llms_full(public, metrics):
             f"- [{r['breachID']}]({SITE}/breach/{r['breachID']}): "
             f"{r['breachedDate'][:4]}, {int(r['exposedRecords']):,} records, "
             f"{str(r.get('industry', '')).strip()}\n")
-    (ROOT / "llms-full.txt").write_text("".join(parts), encoding="utf-8",
-                                        newline="")
+    out = "".join(parts)
+    path = ROOT / "llms-full.txt"
+    if path.exists() and path.read_text(encoding="utf-8") == out:
+        return 0
+    path.write_text(out, encoding="utf-8", newline="")
+    return 1
 
 
 def main():
@@ -1502,12 +1511,12 @@ def main():
     stamped = bake_index_freshness(public)
     metrics = fetch_metrics()
     repo = bake_repository_stats(public, metrics)
-    bake_llms(public)
-    bake_llms_full(public, metrics)
+    llms = bake_llms(public) + bake_llms_full(public, metrics)
     print(f"fetched: {len(all_ids)} | rendered now: {len(to_render)} | "
           f"pages on disk: {len(existing)} | sitemap: {len(live)} URLs | "
           f"directory pages baked: {baked} | index pages stamped: {stamped} | "
-          f"repository pages baked: {repo} | llms files updated")
+          f"repository pages baked: {repo} | llms files updated: {llms} | "
+          f"breach facts changed: {changed}")
     if orphans:
         print(f"WARNING: {len(orphans)} orphan page dirs no longer in the public API "
               f"list: {sorted(orphans)[:10]} - delete and 301 them")
