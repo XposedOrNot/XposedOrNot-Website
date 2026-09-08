@@ -13,7 +13,9 @@ Headings, titles, descriptions and FAQs use the human-readable name from
 tools/breach_display_names.json (propose new ones with
 tools/extract_display_names.py); breachIDs still own every URL, canonical
 and breadcrumb. Titles and descriptions only say "leak" where the breach
-is verified, unhedged and not a scrape. breach/names.js exports the same
+is verified, unhedged and not a scrape; the 34 entries flagged
+Verified: No are titled "Reported Data Breach" so the title does not assert
+more than the page does. breach/names.js exports the same
 map so index.js, xposed.js and breach.js show one name everywhere.
 
 dateModified comes from tools/breach_page_state.json, which stores a hash
@@ -125,6 +127,7 @@ LEAK_CLAUSE = {
     "StealerLogs": "Stealer Log Leak",
 }
 PLAIN_CLAUSE = "Data Breach"
+UNVERIFIED_CLAUSE = "Reported Data Breach"
 TITLE_MAX = 72
 DESC_MAX = 158
 
@@ -345,7 +348,8 @@ def faq_pairs(breach, display, rank, total):
     types = ", ".join(breach["exposedData"])
     return [
         (f"When did the {display} data breach happen?",
-         f"{display} was breached in {when}. The breach was added to the "
+         f"{display} was {'reportedly ' if not breach.get('verified') else ''}"
+         f"breached in {when}. The breach was added to the "
          f"XposedOrNot index on {fmt_date(breach['addedDate'])}."),
         (f"How many records were exposed in the {display} breach?",
          f"{records} records were exposed, making it the #{rank} largest "
@@ -420,6 +424,8 @@ def name_says(display, word):
 
 
 def title_clause(breach, display):
+    if not breach.get("verified"):
+        return UNVERIFIED_CLAUSE
     if not leaked_wording(breach) or name_says(display, "leak"):
         return "Data Leak" if name_says(display, "breach") else PLAIN_CLAUSE
     clause = LEAK_CLAUSE.get(breach.get("breachType"), LEAK_CLAUSE["DataBreach"])
@@ -1325,7 +1331,7 @@ def notable_breaches_section(public):
     top = sorted(public, key=lambda r: int(r["exposedRecords"]),
                  reverse=True)[:10]
     lines = "\n".join(
-        f"- [{r['breachID']}]({SITE}/breach/{r['breachID']}): "
+        f"- [{display_name(r['breachID'])}]({SITE}/breach/{r['breachID']}): "
         f"{int(r['exposedRecords']):,} records ({r['breachedDate'][:4]})"
         for r in top)
     return ("## Notable Breaches\n\n"
@@ -1393,7 +1399,7 @@ def bake_llms_full(public, metrics):
         "industry.\n\n")
     for r in rows:
         parts.append(
-            f"- [{r['breachID']}]({SITE}/breach/{r['breachID']}): "
+            f"- [{display_name(r['breachID'])}]({SITE}/breach/{r['breachID']}): "
             f"{r['breachedDate'][:4]}, {int(r['exposedRecords']):,} records, "
             f"{str(r.get('industry', '')).strip()}\n")
     out = "".join(parts)

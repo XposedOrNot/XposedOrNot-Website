@@ -7,7 +7,9 @@ Usage:
 Maps each <loc> to its page file (/ -> index.html, /xx/ -> xx/index.html,
 /name -> name.html) and sets its <lastmod> to the file's last commit date.
 Files with uncommitted changes get today's date so a same-day deploy stays
-honest. sitemap-breaches.xml is not touched; its dates come from breach
+honest. Commits that only touch a page's dateModified line are skipped, so
+correcting a stale schema date does not advertise a content change that
+never happened. sitemap-breaches.xml is not touched; its dates come from breach
 addedDate via generate_breach_pages.py. Rerun after committing page changes.
 """
 import re
@@ -31,6 +33,25 @@ def loc_to_file(loc):
     return path.lstrip("/")
 
 
+def content_changed(rel, sha):
+    diff = git(["show", "--format=", "--unified=0", sha, "--", rel])
+    lines = [l for l in diff.splitlines()
+             if (l.startswith("+") or l.startswith("-"))
+             and not l.startswith(("+++", "---"))]
+    if not lines:
+        return True
+    return any("dateModified" not in l for l in lines)
+
+
+def last_content_commit(rel, depth=8):
+    log = git(["log", f"-{depth}", "--format=%H %cs", "--", rel]).splitlines()
+    for entry in log:
+        sha, _, date = entry.partition(" ")
+        if content_changed(rel, sha):
+            return date.strip()
+    return log[0].partition(" ")[2].strip() if log else ""
+
+
 def main():
     text = SITEMAP.read_text(encoding="utf-8")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -50,7 +71,7 @@ def main():
         if rel in dirty:
             date = today
         else:
-            date = git(["log", "-1", "--format=%cs", "--", rel]).strip()
+            date = last_content_commit(rel)
         if not date:
             print(f"WARNING: {rel} has no git history, lastmod left as-is")
             return block
