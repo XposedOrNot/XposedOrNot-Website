@@ -150,6 +150,40 @@
          margin: 0;
       }
 
+      .dm-result-checking {
+         display: inline-block;
+         background: rgba(0, 0, 0, 0.35);
+         color: #ffffff;
+         font-weight: 600;
+         padding: 10px 18px;
+         border-radius: 8px;
+         margin: 0;
+      }
+
+      .modern-search-button[aria-busy="true"] {
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         gap: 10px;
+      }
+
+      .dm-btn-spinner {
+         width: 16px;
+         height: 16px;
+         flex-shrink: 0;
+         border: 2px solid transparent;
+         border-top-color: #ffffff;
+         border-right-color: #ffffff;
+         border-radius: 50%;
+         animation: dm-spin 0.7s linear infinite;
+      }
+
+      @keyframes dm-spin {
+         to {
+            transform: rotate(360deg);
+         }
+      }
+
       .dm-result .cta-button {
          margin-top: 4px;
          background: #c2410c;
@@ -188,6 +222,91 @@
 
       [data-theme="dark"] .dm-result .cta-button:focus-visible {
          outline-color: #fb923c;
+      }
+
+      .dm-result-actions {
+         display: flex;
+         flex-wrap: wrap;
+         align-items: center;
+         justify-content: center;
+         gap: 12px;
+         margin-top: 4px;
+      }
+
+      .dm-result-actions .cta-button {
+         margin-top: 0;
+      }
+
+      .dm-result-reset {
+         background: transparent;
+         border: 2px solid #2d5bd7;
+         color: #2d5bd7;
+         padding: 12px 28px;
+         border-radius: 6px;
+         font-weight: 600;
+         font-size: 1.05em;
+         cursor: pointer;
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+         transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      }
+
+      .dm-result-reset:hover,
+      .dm-result-reset:focus {
+         background: #2d5bd7;
+         color: #ffffff;
+         transform: translateY(-2px);
+      }
+
+      .dm-result-reset:focus-visible {
+         outline: 3px solid #2d5bd7;
+         outline-offset: 3px;
+      }
+
+      .dm-result-card--clear {
+         background: #f5fdf8;
+         border-top: 4px solid #15803d;
+      }
+
+      .dm-clear-badge {
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+         background: #dcfce7;
+         color: #166534;
+         font-size: 0.85em;
+         font-weight: 700;
+         letter-spacing: 0.02em;
+         text-transform: uppercase;
+         padding: 6px 16px;
+         border-radius: 30px;
+         margin: 0 0 12px;
+      }
+
+      [data-theme="dark"] .dm-result-reset {
+         border-color: #5b9aff;
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .dm-result-reset:hover,
+      [data-theme="dark"] .dm-result-reset:focus {
+         background: #5b9aff;
+         color: #0f1220;
+      }
+
+      [data-theme="dark"] .dm-result-reset:focus-visible {
+         outline-color: #5b9aff;
+      }
+
+      [data-theme="dark"] .dm-result-card--clear {
+         background: #14251d;
+         border-top-color: #4ade80;
+      }
+
+      [data-theme="dark"] .dm-clear-badge {
+         background: #1c3a2a;
+         color: #86efac;
       }
 
       .modern-search-input {
@@ -642,12 +761,19 @@
       @media (prefers-reduced-motion: reduce) {
          .faq-item summary i,
          .dm-result .cta-button,
-         .dm-result .cta-button i {
+         .dm-result .cta-button i,
+         .dm-result-reset {
             transition: none;
          }
 
+         .dm-btn-spinner {
+            display: none;
+         }
+
          .dm-result .cta-button:hover,
-         .dm-result .cta-button:hover i {
+         .dm-result .cta-button:hover i,
+         .dm-result-reset:hover,
+         .dm-result-reset:focus {
             transform: none;
          }
       }
@@ -1159,6 +1285,7 @@
          var result = document.getElementById('domainCheckResult');
          var total = form.getAttribute('data-breach-count') || '782';
          var domainRegex = /^([a-z0-9-]+\.)+[a-z]{2,24}$/;
+         var buttonLabel = button.textContent;
 
          function extractDomain(value) {
             var s = value.trim().toLowerCase();
@@ -1202,6 +1329,7 @@
             img.height = 56;
             img.hidden = true;
             img.addEventListener('load', function () {
+               if (!img.parentNode) { return; }
                img.hidden = false;
                var credit = el('p', 'dm-result-credit');
                credit.appendChild(document.createTextNode('Logo provided by '));
@@ -1219,9 +1347,118 @@
             card.appendChild(img);
          }
 
+         function clearResult() {
+            result.innerHTML = '';
+            result.hidden = true;
+         }
+
+         function setChecking(on, domain) {
+            button.disabled = on;
+            if (on) {
+               button.setAttribute('aria-busy', 'true');
+               button.textContent = '';
+               var spinner = el('span', 'dm-btn-spinner');
+               spinner.setAttribute('aria-hidden', 'true');
+               button.appendChild(spinner);
+               button.appendChild(document.createTextNode('Checking\u2026'));
+               var line = el('p', 'dm-result-checking', 'Checking ' + domain + '\u2026');
+               show(line);
+            } else {
+               button.removeAttribute('aria-busy');
+               button.textContent = buttonLabel;
+            }
+         }
+
+         function stopConfetti() {
+            confettiTimers.forEach(clearTimeout);
+            confettiTimers = [];
+            if (typeof confetti === 'function' && typeof confetti.reset === 'function') {
+               confetti.reset();
+            }
+         }
+
+         function prefersReducedMotion() {
+            return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+         }
+
+         function resetCheck() {
+            stopConfetti();
+            clearResult();
+            input.value = '';
+            input.removeAttribute('aria-invalid');
+            if (window.history && window.history.replaceState) {
+               var params = new URLSearchParams(window.location.search);
+               if (params.has('d')) {
+                  params.delete('d');
+                  var query = params.toString();
+                  window.history.replaceState(null, '', window.location.pathname + (query ? '?' + query : '') + window.location.hash);
+               }
+            }
+            input.focus({ preventScroll: true });
+            if (input.scrollIntoView) {
+               input.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+            }
+         }
+
+         function buildResetButton() {
+            var reset = el('button', 'dm-result-reset', 'Check another domain');
+            reset.type = 'button';
+            var icon = el('i', 'fas fa-search');
+            icon.setAttribute('aria-hidden', 'true');
+            reset.insertBefore(icon, reset.firstChild);
+            reset.addEventListener('click', resetCheck);
+            return reset;
+         }
+
+         var confettiLoading = false;
+         var confettiTimers = [];
+         function loadConfetti() {
+            return new Promise(function (resolve, reject) {
+               if (typeof confetti === 'function') {
+                  resolve();
+                  return;
+               }
+               if (confettiLoading) {
+                  var poll = setInterval(function () {
+                     if (typeof confetti === 'function') {
+                        clearInterval(poll);
+                        resolve();
+                     }
+                  }, 50);
+                  return;
+               }
+               confettiLoading = true;
+               var script = document.createElement('script');
+               script.src = '/static/scripts/libs/confetti.browser.js';
+               script.onload = resolve;
+               script.onerror = reject;
+               document.head.appendChild(script);
+            });
+         }
+
+         function triggerConfetti() {
+            if (prefersReducedMotion()) { return; }
+            loadConfetti().then(function () {
+               var colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+               var base = {
+                  colors: colors,
+                  shapes: ['square', 'circle'],
+                  ticks: 120,
+                  disableForReducedMotion: true
+               };
+               confetti(Object.assign({ particleCount: 100, spread: 70, origin: { y: 0.6 } }, base));
+               confettiTimers.push(setTimeout(function () {
+                  confetti(Object.assign({ particleCount: 80, angle: 60, spread: 80, origin: { x: 0, y: 0.6 } }, base));
+                  confetti(Object.assign({ particleCount: 80, angle: 120, spread: 80, origin: { x: 1, y: 0.6 } }, base));
+               }, 400));
+               confettiTimers.push(setTimeout(stopConfetti, 2800));
+            }).catch(function () { });
+         }
+
          function render(domain, d) {
             var card = el('div', 'dm-result-card');
             var link;
+            var isClear = false;
             addLogo(card, domain);
             if (d.breach_count > 0) {
                var title = el('p', 'dm-result-title');
@@ -1239,6 +1476,14 @@
                   'Verify the domain to see every exposed address and which breaches they appear in.'));
                link = el('a', 'cta-button', 'Verify domain, see full report');
             } else {
+               isClear = true;
+               card.className = 'dm-result-card dm-result-card--clear';
+               var badge = el('p', 'dm-clear-badge');
+               var badgeIcon = el('i', 'fas fa-check-circle');
+               badgeIcon.setAttribute('aria-hidden', 'true');
+               badge.appendChild(badgeIcon);
+               badge.appendChild(document.createTextNode('All clear'));
+               card.appendChild(badge);
                var none = el('p', 'dm-result-title');
                none.appendChild(document.createTextNode('No exposure found for '));
                none.appendChild(el('strong', '', domain));
@@ -1251,14 +1496,17 @@
             var arrow = el('i', 'fas fa-arrow-right');
             arrow.setAttribute('aria-hidden', 'true');
             link.appendChild(arrow);
-            card.appendChild(link);
+            var actions = el('div', 'dm-result-actions');
+            actions.appendChild(link);
+            actions.appendChild(buildResetButton());
+            card.appendChild(actions);
             show(card);
+            if (isClear) { triggerConfetti(); }
          }
 
          function runCheck(domain) {
-            button.disabled = true;
-            var label = button.textContent;
-            button.textContent = 'Checking...';
+            stopConfetti();
+            setChecking(true, domain);
             fetch('https://api.xposedornot.com/v1/domain-breach-summary?d=' + encodeURIComponent(domain))
                .then(function (r) {
                   if (r.status === 429) { throw new Error('rate'); }
@@ -1283,8 +1531,7 @@
                      : 'The check could not be completed. Try again in a moment.');
                })
                .then(function () {
-                  button.disabled = false;
-                  button.textContent = label;
+                  setChecking(false);
                });
          }
 
