@@ -29,8 +29,12 @@ def git(args):
 
 def loc_to_file(loc):
     path = re.sub(r"^https://xposedornot\.com", "", loc.strip())
-    path = path + "index.html" if path.endswith("/") else path + ".html"
-    return path.lstrip("/")
+    if path.endswith("/"):
+        return (path + "index.html").lstrip("/")
+    rel = (path + ".html").lstrip("/")
+    if not (ROOT / rel).exists() and (ROOT / path.lstrip("/") / "index.html").exists():
+        return (path.lstrip("/") + "/index.html")
+    return rel
 
 
 def content_changed(rel, sha):

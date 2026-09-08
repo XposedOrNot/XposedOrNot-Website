@@ -7,7 +7,9 @@ Usage:
 Reads /v1/breaches (or a cached JSON file) and, for every breach ID that
 has no entry in tools/breach_display_names.json, looks for the same
 letters inside the breach's own exposureDescription and reports the
-spelling used there. An ID ending in -YYYY is reported as "Name (YYYY)".
+spelling used there. Accents are ignored when matching but kept in the
+answer, so Hemmakvall recovers "Hemmakvall" the way the description writes
+it. An ID ending in -YYYY is reported as "Name (YYYY)".
 
 Proposals are printed for review and are never written to the curated
 file: names ship only after a human approves them. Run this when a new
@@ -16,6 +18,7 @@ breach is added, before generate_breach_pages.py.
 import argparse
 import json
 import re
+import unicodedata
 import sys
 import urllib.request
 from pathlib import Path
@@ -27,7 +30,9 @@ YEAR_SUFFIX = re.compile(r"-((?:19|20)\d\d)$")
 
 
 def norm(value):
-    return re.sub(r"[^a-z0-9]", "", value.lower())
+    folded = "".join(c for c in unicodedata.normalize("NFKD", value)
+                     if not unicodedata.combining(c))
+    return re.sub(r"[^a-z0-9]", "", folded.lower())
 
 
 def split_year(bid):

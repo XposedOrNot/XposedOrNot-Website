@@ -393,7 +393,8 @@ def load_display_names():
     if not NAMES_FILE.exists():
         return {}
     names = json.loads(NAMES_FILE.read_text(encoding="utf-8"))
-    return {str(k): str(v).strip() for k, v in names.items() if str(v).strip()}
+    return {str(k): str(v).strip() for k, v in names.items()
+            if v and str(v).strip()}
 
 
 DISPLAY_NAMES = load_display_names()
