@@ -7,7 +7,19 @@ Usage:
 Fetches /v1/breaches (or reads a cached JSON file), renders the newest N
 breaches (default: all, sensitive included) through
 tools/breach_page_template.html into breach/{breachID}.html, and
-writes sitemap-breaches.xml. The template and all formatting mirror the
+writes sitemap-breaches.xml.
+
+Headings, titles, descriptions and FAQs use the human-readable name from
+tools/breach_display_names.json (propose new ones with
+tools/extract_display_names.py); breachIDs still own every URL, canonical
+and breadcrumb. Titles and descriptions only say "leak" where the breach
+is verified, unhedged and not a scrape. breach/names.js exports the same
+map so index.js, xposed.js and breach.js show one name everywhere.
+
+dateModified comes from tools/breach_page_state.json, which stores a hash
+of each breach's own fields: the date moves only when those facts change,
+never on a template edit or a rank shuffle. Seed it once with
+tools/seed_breach_state.py. The template and all formatting mirror the
 client-rendered breach.html detail page (breach.js). BreachIDs are used
 as-is (case preserved). Never hand-edit files under breach/ - rerun this
 script instead.
@@ -31,6 +43,7 @@ key statistics, the FAQ from the FAQPage schemas, and the complete
 breach index). Never hand-edit those baked blocks - rerun this script.
 """
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -100,6 +113,20 @@ FRESHNESS_MONTHS = {
 }
 
 ID_SAFE = re.compile(r"[A-Za-z0-9._~-]+")
+
+NAMES_FILE = ROOT / "tools" / "breach_display_names.json"
+STATE_FILE = ROOT / "tools" / "breach_page_state.json"
+YEAR_SUFFIX = re.compile(r"-((?:19|20)\d\d)$")
+HEDGED = re.compile(r"alleg|claim|speculat|unconfirm|purport", re.I)
+NO_LEAK_IDS = {"Twitter-Scraped"}
+LEAK_CLAUSE = {
+    "DataBreach": "Data Breach and Leak",
+    "ComboList": "Combolist Leak",
+    "StealerLogs": "Stealer Log Leak",
+}
+PLAIN_CLAUSE = "Data Breach"
+TITLE_MAX = 72
+DESC_MAX = 158
 
 DATA_ICONS = [
     ("email", "fas fa-envelope"), ("password", "fas fa-key"),
@@ -305,28 +332,27 @@ def related_section(breach, public):
     links = "".join(
         f'<a class="data-badge" style="text-decoration: none;" '
         f'href="/breach/{r["breachID"]}">'
-        f'<i class="fas fa-database"></i> {esc(r["breachID"])}</a>'
+        f'<i class="fas fa-database"></i> {esc(display_name(r["breachID"]))}</a>'
         for r in picks)
     return ('<div class="content-section">'
             f'<h2 class="section-title">{heading}</h2>'
             f'<div class="data-types">{links}</div></div>')
 
 
-def faq_pairs(breach, rank, total):
-    bid = breach["breachID"]
+def faq_pairs(breach, display, rank, total):
     records = fmt_number(breach["exposedRecords"])
     when = fmt_date_card(breach["breachedDate"])
     types = ", ".join(breach["exposedData"])
     return [
-        (f"When did the {bid} data breach happen?",
-         f"{bid} was breached in {when}. The breach was added to the "
+        (f"When did the {display} data breach happen?",
+         f"{display} was breached in {when}. The breach was added to the "
          f"XposedOrNot index on {fmt_date(breach['addedDate'])}."),
-        (f"How many records were exposed in the {bid} breach?",
+        (f"How many records were exposed in the {display} breach?",
          f"{records} records were exposed, making it the #{rank} largest "
          f"of the {total} breaches in our index."),
-        (f"What data was exposed in the {bid} breach?",
+        (f"What data was exposed in the {display} breach?",
          f"The exposed data includes: {types}."),
-        (f"What should I do if I was affected by the {bid} breach?",
+        (f"What should I do if I was affected by the {display} breach?",
          "Change your password on the affected service (and anywhere you reused it), "
          "turn on two-factor authentication, and set up free breach alerts on "
          "XposedOrNot so you know the moment your email appears in a new breach."),
@@ -342,20 +368,137 @@ def faq_section(pairs):
             f"{items}</div>")
 
 
-def render(template, breach, public, rank, total):
+def load_state():
+    if not STATE_FILE.exists():
+        return {}
+    return json.loads(STATE_FILE.read_text(encoding="utf-8"))
+
+
+def save_state(state):
+    out = json.dumps(state, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
+    with open(STATE_FILE, "w", encoding="utf-8", newline="") as f:
+        f.write(out)
+
+
+def page_modified(state, breach):
+    known = state.get(breach["breachID"])
+    return known["modified"] if known else breach["addedDate"][:10]
+
+
+def load_display_names():
+    if not NAMES_FILE.exists():
+        return {}
+    names = json.loads(NAMES_FILE.read_text(encoding="utf-8"))
+    return {str(k): str(v).strip() for k, v in names.items() if str(v).strip()}
+
+
+DISPLAY_NAMES = load_display_names()
+
+
+def display_name(bid):
+    curated = DISPLAY_NAMES.get(bid)
+    if curated:
+        return curated
+    m = YEAR_SUFFIX.search(bid)
+    if m:
+        return f"{bid[:m.start()]} ({m.group(1)})"
+    return bid
+
+
+def leaked_wording(breach):
+    if breach["breachID"] in NO_LEAK_IDS:
+        return False
+    if not breach.get("verified"):
+        return False
+    if breach.get("breachType") == "Scrape":
+        return False
+    return not HEDGED.search(str(breach.get("exposureDescription") or ""))
+
+
+def name_says(display, word):
+    return word in display.lower()
+
+
+def title_clause(breach, display):
+    if not leaked_wording(breach) or name_says(display, "leak"):
+        return "Data Leak" if name_says(display, "breach") else PLAIN_CLAUSE
+    clause = LEAK_CLAUSE.get(breach.get("breachType"), LEAK_CLAUSE["DataBreach"])
+    if name_says(display, "breach"):
+        return "Data Leak"
+    stem = re.sub(r"[^a-z0-9]", "", clause.replace("Leak", "").replace("and", "").lower())
+    if stem and stem in re.sub(r"[^a-z0-9]", "", display.lower()):
+        return "Leak"
+    return clause
+
+
+def page_title(breach, display):
+    clause = title_clause(breach, display)
+    records = int(breach["exposedRecords"])
+    title = (f"{display} {clause}: {fmt_number(records)} "
+             f"Records Exposed | XposedOrNot")
+    if len(title) > TITLE_MAX:
+        title = (f"{display} {clause}: {fmt_records_compact(records)} "
+                 f"Records Exposed | XposedOrNot")
+    return title
+
+
+def page_description(breach, display):
+    when = fmt_date_card(breach["breachedDate"])
+    clause = title_clause(breach, display).lower()
+    lead = f"{display} {clause} ({when})"
+    cta = (" Check free if your email was affected."
+           if breach["searchable"] else " Sign up for free alerts to find out.")
+    records = int(breach["exposedRecords"])
+    exposed = breach["exposedData"]
+    variants = (
+        (fmt_number(records), exposed[:3]),
+        (fmt_records_compact(records), exposed[:3]),
+        (fmt_records_compact(records), exposed[:2]),
+        (fmt_records_compact(records), []),
+    )
+    for count, types in variants:
+        tail = f" including {', '.join(types)}." if types else "."
+        desc = f"{lead}: {count} records exposed{tail}{cta}"
+        if len(desc) <= DESC_MAX:
+            return desc
+    return desc
+
+
+def page_fingerprint(breach, display):
+    fields = [
+        display,
+        str(breach["exposedRecords"]),
+        breach["breachedDate"],
+        breach["addedDate"],
+        str(breach.get("breachType") or ""),
+        str(breach.get("industry") or ""),
+        str(breach.get("domain") or ""),
+        str(breach.get("logo") or ""),
+        str(breach.get("referenceURL") or ""),
+        str(breach.get("passwordRisk") or ""),
+        str(breach.get("exposureDescription") or ""),
+        "1" if breach.get("searchable") else "0",
+        "1" if breach.get("verified") else "0",
+        "|".join(breach["exposedData"]),
+    ]
+    return hashlib.sha256("␟".join(fields).encode("utf-8")).hexdigest()[:16]
+
+
+def render(template, breach, public, rank, total, modified):
     bid = breach["breachID"]
     records = fmt_number(breach["exposedRecords"])
     url = f"{SITE}/breach/{bid}"
     logo = str(breach["logo"] or f"{SITE}/static/images/xon.png")
     industry = str(breach["industry"]).strip()
 
-    title = f"{bid} Data Breach: {records} Records Exposed | XposedOrNot"
-    top_types = ", ".join(breach["exposedData"][:3])
-    desc = (f"{bid} was breached in {fmt_date_card(breach['breachedDate'])}: "
-            f"{records} records exposed including {top_types}. "
-            "Check free if your email was affected.")
-    keywords = (f"{bid} data breach, {bid} breach, was {bid} breached, "
-                f"{bid} hack, check email breach")
+    display = display_name(bid)
+    title = page_title(breach, display)
+    desc = page_description(breach, display)
+    keyword_names = [display] if display == bid else [display, bid]
+    keywords = ", ".join(
+        [f"{n} data breach" for n in keyword_names]
+        + [f"{n} data leak" for n in keyword_names]
+        + [f"was {display} breached", "check email breach"])
 
     ref = str(breach.get("referenceURL") or "").strip()
     if ref.startswith("http"):
@@ -368,16 +511,16 @@ def render(template, breach, public, rank, total):
     jsonld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": f"{bid} Data Breach",
+        "headline": f"{display} Data Breach",
         "description": desc,
         "url": url,
         "datePublished": breach["addedDate"],
-        "dateModified": breach["addedDate"],
+        "dateModified": modified,
         "publisher": {"@type": "Organization", "name": "XposedOrNot",
                       "url": SITE, "logo": f"{SITE}/static/images/xon.png"},
         "mainEntityOfPage": url,
     }, ensure_ascii=False, indent=6)
-    pairs = faq_pairs(breach, rank, total)
+    pairs = faq_pairs(breach, display, rank, total)
     faq_ld = json.dumps({
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -408,8 +551,12 @@ def render(template, breach, public, rank, total):
             "This breach is marked sensitive, so it is excluded from public email search "
             'results. To find out if you were affected, sign up for '
             '<a href="/">free breach alerts</a> and verify your email.</div>')
+        primary_cta = ('<a href="/" class="btn-primary-custom">'
+                       '<i class="fas fa-bell"></i> Set Up Free Breach Alerts</a>')
     else:
         sensitive_note = ""
+        primary_cta = ('<a href="/" class="btn-primary-custom">'
+                       '<i class="fas fa-search"></i> Check If You Were Affected</a>')
     fills = {
         "{{TITLE}}": esc(title),
         "{{DESC}}": esc(desc),
@@ -418,7 +565,7 @@ def render(template, breach, public, rank, total):
         "{{LOGO}}": esc(logo),
         "{{LOGO_ABS}}": esc(logo),
         "{{JSONLD}}": jsonld_block,
-        "{{NAME}}": esc(bid),
+        "{{NAME}}": esc(display),
         "{{DOMAIN}}": esc(breach["domain"]) or "&nbsp;",
         "{{RECORDS}}": records,
         "{{BREACH_DATE_CARD}}": fmt_date_card(breach["breachedDate"]),
@@ -435,6 +582,7 @@ def render(template, breach, public, rank, total):
         "{{SENSITIVE_HTML}}": fmt_sensitive(is_sensitive),
         "{{REFERENCE_HTML}}": reference,
         "{{SENSITIVE_NOTE}}": sensitive_note,
+        "{{PRIMARY_CTA}}": primary_cta,
         "{{RANK_LINE}}": (f" &middot; #{rank} of {total} breaches by records exposed"),
         "{{RELATED_SECTION}}": related_section(breach, public),
         "{{FAQ_SECTION}}": faq_section(pairs),
@@ -501,7 +649,8 @@ def itemlist_block(public, total):
         "numberOfItems": total,
         "itemListOrder": "https://schema.org/ItemListOrderDescending",
         "itemListElement": [
-            {"@type": "ListItem", "position": i + 1, "name": r["breachID"],
+            {"@type": "ListItem", "position": i + 1,
+             "name": display_name(r["breachID"]),
              "url": f"{SITE}/breach/{r['breachID']}"}
             for i, r in enumerate(top)],
     }
@@ -513,7 +662,7 @@ def itemlist_block(public, total):
 def static_section(public, total):
     rows = sorted(public, key=lambda r: r["breachID"].lower())
     items = "".join(
-        f'<li><a href="/breach/{r["breachID"]}">{esc(r["breachID"])}</a> '
+        f'<li><a href="/breach/{r["breachID"]}">{esc(display_name(r["breachID"]))}</a> '
         f"({r['breachedDate'][:4]}, {fmt_records_compact(r['exposedRecords'])} records)</li>"
         for r in rows)
     return (f'<section class="seo-summary" id="{STATIC_SECTION_ID}">'
@@ -919,9 +1068,10 @@ def repo_table_rows(items):
         else:
             href = f"breach.html#{esc(bid)}"
         rows.append(
-            f'<tr><td><img src="{esc(b.get("logo", ""))}" alt="{esc(bid)} logo"'
-            ' loading="lazy"></td>'
-            f'<td><a href="{href}" class="breach-link">{esc(bid)}</a></td>'
+            f'<tr><td><img src="{esc(b.get("logo", ""))}"'
+            f' alt="{esc(display_name(bid))} logo" loading="lazy"></td>'
+            f'<td><a href="{href}" class="breach-link">'
+            f'{esc(display_name(bid))}</a></td>'
             f'<td><span class="description truncated">'
             f'{esc(str(b.get("description", "")).strip())}</span>'
             '<button type="button" class="read-toggle" '
@@ -1283,14 +1433,30 @@ def main():
     rank_of = {r["breachID"]: i + 1 for i, r in enumerate(by_records)}
     total = len(public)
 
+    state = load_state()
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    changed = 0
     for breach in to_render:
-        with open(OUT_DIR / f"{breach['breachID']}.html", "w",
+        bid = breach["breachID"]
+        fingerprint = page_fingerprint(breach, display_name(bid))
+        known = state.get(bid)
+        if known and known.get("hash") == fingerprint:
+            modified = known["modified"]
+        else:
+            modified = today
+            changed += 1
+        state[bid] = {"hash": fingerprint, "modified": modified}
+        with open(OUT_DIR / f"{bid}.html", "w",
                   encoding="utf-8", newline="") as f:
             f.write(render(template, breach, public,
-                           rank_of[breach["breachID"]], total))
+                           rank_of[bid], total, modified))
 
     existing = {p.stem for p in OUT_DIR.glob("*.html") if p.name != "index.html"}
     live = [r for r in public if r["breachID"] in existing]
+
+    for bid in [b for b in state if b not in existing]:
+        del state[bid]
+    save_state(state)
 
     ids_js = ("window.XON_STATIC_BREACH_IDS=" +
               json.dumps(sorted(r["breachID"] for r in live),
@@ -1298,9 +1464,18 @@ def main():
     with open(OUT_DIR / "ids.js", "w", encoding="utf-8", newline="") as f:
         f.write(ids_js)
 
+    names_js = ("window.XON_BREACH_NAMES=" +
+                json.dumps({r["breachID"]: display_name(r["breachID"])
+                            for r in live
+                            if display_name(r["breachID"]) != r["breachID"]},
+                           ensure_ascii=False, separators=(",", ":"),
+                           sort_keys=True) + ";\n")
+    with open(OUT_DIR / "names.js", "w", encoding="utf-8", newline="") as f:
+        f.write(names_js)
+
     sitemap_entries = [
         f"  <url>\n    <loc>{SITE}/breach/{r['breachID']}</loc>\n"
-        f"    <lastmod>{r['addedDate'][:10]}</lastmod>\n"
+        f"    <lastmod>{page_modified(state, r)}</lastmod>\n"
         f"    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>"
         for r in live]
     sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'

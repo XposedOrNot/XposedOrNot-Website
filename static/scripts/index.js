@@ -327,9 +327,14 @@ function resetResultState() {
     $(".modal-content").css({ 'background-color': '', 'border': '' });
 }
 
+function xonDisplayName(id) {
+    var map = window.XON_BREACH_NAMES;
+    return (map && map[id]) || id;
+}
+
 function breachTagLink(name, year) {
     const yearPart = year ? ' <span class="breach-tag-year">· ' + escapeHtml(String(year)) + '</span>' : '';
-    return '<a class="breach-tag" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '">' + escapeHtml(name) + yearPart + '<span class="sr-only"> (opens in new tab)</span></a>';
+    return '<a class="breach-tag" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '">' + escapeHtml(xonDisplayName(name)) + yearPart + '<span class="sr-only"> (opens in new tab)</span></a>';
 }
 
 

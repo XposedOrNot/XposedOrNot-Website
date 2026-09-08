@@ -1,4 +1,10 @@
 var breachesTable;
+
+function xonDisplayName(id) {
+    var map = window.XON_BREACH_NAMES;
+    return (map && map[id]) || id;
+}
+
 var allBreaches = [];
 var defaultLogo = 'https://xposedornot.com/static/logos/combolist.png';
 
@@ -149,7 +155,7 @@ function initDataTable(breaches) {
         var hasStatic = window.XON_STATIC_BREACH_IDS && XON_STATIC_BREACH_IDS.indexOf(breach.breachID) !== -1;
         var breachHref = hasStatic ? '/breach/' + encodeURIComponent(breach.breachID) : '/breach-detail#' + encodeURIComponent(breach.breachID);
         var nameHtml = '<a href="' + breachHref + '" target="_blank" rel="noopener noreferrer" class="breach-name-link">' +
-                       '<div class="breach-name">' + breach.breachID +
+                       '<div class="breach-name">' + xonDisplayName(breach.breachID) +
                        '<i class="fas fa-chevron-right breach-chevron" aria-hidden="true"></i></div>' +
                        '<div class="breach-domain">' + (breach.domain || '-') + '</div>' +
                        '<span class="sr-only">(opens in new tab)</span>' +

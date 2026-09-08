@@ -1,3 +1,8 @@
+function xonDisplayName(id) {
+    var map = window.XON_BREACH_NAMES;
+    return (map && map[id]) || id;
+}
+
 function getBreachId() {
     if (window.location.hash) {
         return window.location.hash.substring(1);
@@ -282,8 +287,8 @@ function displayBreachData(breach) {
     document.getElementById('content').style.display = 'block';
 
     document.getElementById('breach-logo').src = breach.logo || '/static/images/xon.png';
-    document.getElementById('breach-logo').alt = breach.breachID + ' logo';
-    document.getElementById('breach-name').innerHTML = breach.breachID + (!breach.searchable ? ' <span style="font-size: 0.7em;" title="Sensitive Breach">\uD83D\uDD25</span>' : '');
+    document.getElementById('breach-logo').alt = xonDisplayName(breach.breachID) + ' logo';
+    document.getElementById('breach-name').innerHTML = xonDisplayName(breach.breachID) + (!breach.searchable ? ' <span style="font-size: 0.7em;" title="Sensitive Breach">\uD83D\uDD25</span>' : '');
     document.getElementById('breach-domain').innerHTML = '<i class="fas fa-globe" style="font-size: 0.8em; margin-right: 8px; opacity: 0.7;"></i>' + breach.domain;
 
     document.getElementById('exposed-records').textContent = formatNumber(breach.exposedRecords);
