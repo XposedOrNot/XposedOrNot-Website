@@ -24,7 +24,21 @@
       "title": "Check Email for Breaches",
       "description": "Check whether an email address appears in the XposedOrNot index of known public data breaches. Returns the list of breach names only. Never returns passwords.",
       "annotations": {
-        "readOnlyHint": true
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email address to check"
+          }
+        },
+        "required": [
+          "email"
+        ]
       }
     },
     {
@@ -32,7 +46,21 @@
       "title": "Get Email Breach Analytics",
       "description": "Get detailed breach analytics for an email address: risk score, breach timeline, exposed data categories, and password risk.",
       "annotations": {
-        "readOnlyHint": true
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email address to analyze"
+          }
+        },
+        "required": [
+          "email"
+        ]
       }
     },
     {
@@ -40,7 +68,29 @@
       "title": "List Indexed Breaches",
       "description": "List or filter indexed breaches by domain or breach ID. Accepts an optional limit (default 25, maximum 100). The full exposure description is returned only for a single breach_id lookup; filtered and unfiltered lists return compact fields.",
       "annotations": {
-        "readOnlyHint": true
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Filter breaches by domain"
+          },
+          "breach_id": {
+            "type": "string",
+            "description": "Look up a single breach by ID"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 25,
+            "description": "Maximum number of breaches to return"
+          }
+        }
       }
     },
     {
@@ -48,7 +98,21 @@
       "title": "Summarize Domain Breach Exposure",
       "description": "Get an aggregate breach summary for a domain, including the number of breaches, affected email accounts, pastes, and the most recent breach date. Returns only counts, not individual email addresses.",
       "annotations": {
-        "readOnlyHint": true
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Domain to summarize"
+          }
+        },
+        "required": [
+          "domain"
+        ]
       }
     },
     {
@@ -56,7 +120,13 @@
       "title": "Get Breach Index Metrics",
       "description": "Get system-wide breach statistics: total breaches and records indexed, breaches per year and industry, the largest and most recent breaches, and when the latest breach was added.",
       "annotations": {
-        "readOnlyHint": true
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
       }
     },
     {
@@ -64,7 +134,13 @@
       "title": "Get Recent Breaches",
       "description": "Get the latest data breach news and recently added breaches tracked by XposedOrNot.",
       "annotations": {
-        "readOnlyHint": true
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
       }
     }
   ]

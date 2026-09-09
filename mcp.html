@@ -7,7 +7,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 783 breaches. No API key required.">
+   <meta name="description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and the full XposedOrNot breach database. No API key required.">
    <meta name="keywords" content="MCP server, model context protocol, data breach MCP, breach intelligence, Claude MCP, Cursor MCP, email breach check, AI agent tools">
    <meta name="author" content="Devanand Premkumar">
    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
@@ -21,7 +21,7 @@
    <link rel="preconnect" href="https://fonts.gstatic.com">
 
    <meta property="og:title" content="XposedOrNot MCP Server: Data Breach Intelligence for AI Agents" />
-   <meta property="og:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 783 breaches. No API key required." />
+   <meta property="og:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and the full XposedOrNot breach database. No API key required." />
    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
    <meta property="og:image:alt" content="XposedOrNot Logo" />
    <meta property="og:url" content="https://xposedornot.com/mcp" />
@@ -32,7 +32,7 @@
    <meta name="twitter:site" content="@XposedOrNot">
    <meta name="twitter:creator" content="@DevaOnBreaches">
    <meta name="twitter:title" content="XposedOrNot MCP Server: Data Breach Intelligence for AI Agents">
-   <meta name="twitter:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 783 breaches. No API key required.">
+   <meta name="twitter:description" content="Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and the full XposedOrNot breach database. No API key required.">
    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
@@ -100,6 +100,14 @@
          margin-top: 40px;
          margin-bottom: 15px;
          font-size: 1.4em;
+         font-weight: 600;
+      }
+
+      .transparency-section h4 {
+         color: #2d5bd7;
+         margin-top: 28px;
+         margin-bottom: 10px;
+         font-size: 1.1em;
          font-weight: 600;
       }
 
@@ -173,6 +181,20 @@
          font-weight: 600;
          margin: 0 10px;
          display: inline-block;
+      }
+
+      .transparency-section p a,
+      .transparency-section li a,
+      .transparency-section td a,
+      .transparency-section .highlight-box a {
+         color: #2d5bd7;
+      }
+
+      .transparency-section p a:hover,
+      .transparency-section li a:hover,
+      .transparency-section td a:hover,
+      .transparency-section .highlight-box a:hover {
+         color: #1f4fc9;
       }
 
       @media (prefers-reduced-motion: no-preference) {
@@ -305,6 +327,13 @@
          flex-grow: 1;
       }
 
+      .integration-card .tool-params {
+         font-size: 0.88em;
+         color: #4a5568;
+         margin: 0 0 10px 0;
+         flex-grow: 0;
+      }
+
       .integration-card .tool-example {
          font-size: 0.92em;
          color: #4a5568;
@@ -341,18 +370,68 @@
          margin: 20px 0 30px 0;
       }
 
-      .faq-item {
-         margin-bottom: 25px;
+      .faq-list {
+         margin-top: 20px;
       }
 
-      .faq-item h3 {
-         margin-top: 0;
-         font-size: 1.15em;
+      .faq-list .faq-item:last-child {
+         margin-bottom: 0;
+      }
+
+      .faq-item {
+         border: 1px solid #e0e6f5;
+         border-radius: 10px;
+         background: #ffffff;
+         margin-bottom: 10px;
+         padding: 0 20px;
+      }
+
+      .faq-item summary {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 16px;
+         padding: 16px 0;
+         cursor: pointer;
+         list-style: none;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+         display: none;
+      }
+
+      .faq-item summary:focus-visible {
+         outline: 3px solid #2d5bd7;
+         outline-offset: 4px;
+         border-radius: 6px;
+      }
+
+      .faq-item summary i {
+         color: #2d5bd7;
+         transition: transform 0.2s ease;
+         flex-shrink: 0;
+      }
+
+      .faq-item[open] summary i {
+         transform: rotate(180deg);
+      }
+
+      .faq-item .faq-q {
+         margin: 0;
+         font-size: 1.08em;
+         font-weight: 600;
          color: #2d5bd7;
       }
 
       .faq-item p {
-         margin-bottom: 0;
+         margin: 0;
+         padding: 0 0 18px 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .faq-item summary i {
+            transition: none;
+         }
       }
 
       [data-theme="dark"] .transparency-content {
@@ -379,8 +458,43 @@
          color: #c3d3e8;
       }
 
+      [data-theme="dark"] .transparency-section h4 {
+         color: #7ea4f5;
+      }
+
+      [data-theme="dark"] .faq-item {
+         background: #181b2d;
+         border-color: #2a2d40;
+      }
+
+      [data-theme="dark"] .faq-item .faq-q {
+         color: #5b9aff;
+      }
+
+      [data-theme="dark"] .faq-item summary i {
+         color: #7ea4f5;
+      }
+
+      [data-theme="dark"] .faq-item summary:focus-visible {
+         outline-color: #7ea4f5;
+      }
+
       [data-theme="dark"] .page-toc a {
          color: #7ea4f5;
+      }
+
+      [data-theme="dark"] .transparency-section p a,
+      [data-theme="dark"] .transparency-section li a,
+      [data-theme="dark"] .transparency-section td a,
+      [data-theme="dark"] .transparency-section .highlight-box a {
+         color: #7ea4f5;
+      }
+
+      [data-theme="dark"] .transparency-section p a:hover,
+      [data-theme="dark"] .transparency-section li a:hover,
+      [data-theme="dark"] .transparency-section td a:hover,
+      [data-theme="dark"] .transparency-section .highlight-box a:hover {
+         color: #9fbbff;
       }
 
       [data-theme="dark"] .copy-btn {
@@ -426,6 +540,10 @@
 
       [data-theme="dark"] .integration-card p {
          color: #c3d3e8;
+      }
+
+      [data-theme="dark"] .integration-card .tool-params {
+         color: #a9b8d0;
       }
 
       [data-theme="dark"] .integration-card .tool-example {
@@ -479,7 +597,7 @@
             "@type": "TechArticle",
             "@id": "https://xposedornot.com/mcp#article",
             "headline": "XposedOrNot MCP Server: Data Breach Intelligence for AI Agents",
-            "description": "Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and a database of 783 breaches. No API key required.",
+            "description": "Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and the full XposedOrNot breach database. No API key required.",
             "url": "https://xposedornot.com/mcp",
             "dateModified": "2026-09-08",
             "author": {
@@ -580,7 +698,7 @@
                   "name": "How current is the breach data behind the MCP server?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "The MCP server queries the live XposedOrNot database: 783 breaches and more than 11.6 billion exposed records as of September 2026, updated as new breaches are verified and indexed."
+                     "text": "The MCP server queries the live XposedOrNot database, which is updated as new breaches are verified and indexed. Browse everything currently indexed in the data breach directory at xposedornot.com/xposed."
                   }
                },
                {
@@ -664,7 +782,7 @@
       <main class="transparency-content">
          <div class="container transparency-section">
             <h1>XposedOrNot MCP Server <span class="status-pill status-live hero-pill">Live</span></h1>
-            <p class="hero-meta">783 data breaches and more than 11.6 billion exposed records indexed, as of September 2026.</p>
+            <p class="hero-meta">Live breach intelligence from the full XposedOrNot index. Browse everything indexed in the <a href="/xposed">data breach directory</a>.</p>
 
             <p class="hero-lead">
                <strong>Give your AI assistant live access to data breach intelligence.</strong>
@@ -678,25 +796,50 @@
             </p>
             <p class="cta-row"><a class="cta-button" href="#quick-start">Get started</a></p>
             <nav class="page-toc" aria-label="On this page">
-               <a href="#quick-start">Quick start</a>
+               <a href="#quick-start">Set up</a>
                <a href="#tools">Tools</a>
                <a href="#rate-limits">Rate limits</a>
                <a href="#privacy">Privacy</a>
                <a href="#faq">FAQ</a>
             </nav>
 
-            <h2 id="quick-start">Quick start</h2>
+            <h2 id="how-it-works">How it works</h2>
+            <div class="integration-grid">
+               <div class="integration-card">
+                  <h3>1. You ask in plain English</h3>
+                  <p>Type a question in your assistant, such as "Has this email been in a breach?". No API calls, no code.</p>
+               </div>
+               <div class="integration-card">
+                  <h3>2. Your assistant picks a tool</h3>
+                  <p>The assistant chooses one of the six XposedOrNot tools and sends the query to api.xposedornot.com over HTTPS.</p>
+               </div>
+               <div class="integration-card">
+                  <h3>3. You get a live answer</h3>
+                  <p>The reply is built from the current breach database, not from training data, so it reflects breaches added today.</p>
+               </div>
+            </div>
 
-            <h3>Claude Code</h3>
-            <p>One command in your terminal:</p>
+            <h2 id="quick-start">Set up in 4 steps</h2>
+            <p>
+               You need one of Claude Code, Claude Desktop, or Cursor installed, plus internet access. No account,
+               API key, or extra software is required. The whole setup takes about two minutes.
+            </p>
+
+            <h3 id="step-1">Step 1: Add the server</h3>
+            <p>Pick your client. Each block is copy-and-paste ready.</p>
+
+            <h4>Claude Code</h4>
+            <p>Run this in any terminal:</p>
             <div class="code-box copyable">claude mcp add --transport http xposedornot https://api.xposedornot.com/mcp</div>
+            <p>Expected reply: <code>Added HTTP MCP server xposedornot with URL: https://api.xposedornot.com/mcp</code>.</p>
 
-            <h3>Claude Desktop</h3>
+            <h4>Claude Desktop</h4>
             <p>Go to <strong>Settings, then Connectors, then Add custom connector</strong> and enter:</p>
             <div class="code-box copyable">Name: XposedOrNot
 URL:  https://api.xposedornot.com/mcp</div>
+            <p>Save, then fully quit and reopen Claude Desktop. The connector is not loaded until you restart.</p>
 
-            <h3>Cursor</h3>
+            <h4>Cursor</h4>
             <p>Add the server to <code>~/.cursor/mcp.json</code> (or via Settings, then MCP, then Add new server):</p>
             <div class="code-box copyable">{
   "mcpServers": {
@@ -705,68 +848,60 @@ URL:  https://api.xposedornot.com/mcp</div>
     }
   }
 }</div>
+            <p>Save the file. Cursor picks up the change within a few seconds; if not, reload the window.</p>
 
-            <h3>Any MCP client</h3>
+            <h4>Any other MCP client</h4>
+            <p>Point the client at the endpoint below. These are the only details it needs.</p>
             <ul>
                <li>Server endpoint: <code>https://api.xposedornot.com/mcp</code></li>
-               <li>Transport: streamable HTTP (JSON-RPC 2.0 over HTTPS POST)</li>
+               <li>Transport: stateless streamable HTTP, one JSON-RPC 2.0 request per HTTPS POST. No sessions, no <code>Mcp-Session-Id</code>, and no SSE stream: a GET returns 405 with <code>Allow: POST</code></li>
                <li>Protocol version: <code>2025-06-18</code> (also accepts <code>2024-11-05</code>), negotiated at initialize</li>
                <li>Authentication: none required</li>
+               <li>Clients: server-side clients only. Requests with a browser <code>Origin</code> header from any site other than xposedornot.com are rejected with 403 as a DNS-rebinding protection</li>
             </ul>
-            <p>
-               To confirm the connection, ask your assistant: <em>"What XposedOrNot tools do you have available?"</em>
-               It should list the six tools below.
-            </p>
 
-            <h2 id="tools">Available tools</h2>
-            <p>The server exposes six tools covering emails, domains, the breach catalog, and live statistics.</p>
-
-            <div class="integration-grid">
-               <div class="integration-card">
-                  <h3>Check Email for Breaches</h3>
-                  <p class="tool-name">check_email_breaches</p>
-                  <p>Check whether an email address appears in the XposedOrNot index of known public data breaches. Returns the list of breach names only. Never returns passwords.</p>
-                  <p class="tool-example">"Has <!--email_off-->john@example.com<!--/email_off--> appeared in any data breaches?"</p>
-               </div>
-               <div class="integration-card">
-                  <h3>Get Email Breach Analytics</h3>
-                  <p class="tool-name">get_breach_analytics</p>
-                  <p>Detailed exposure analytics for an email: risk score, breach timeline, exposed data categories, and password risk.</p>
-                  <p class="tool-example">"Give me a full breach risk analysis for <!--email_off-->john@example.com<!--/email_off-->."</p>
-               </div>
-               <div class="integration-card">
-                  <h3>List Indexed Breaches</h3>
-                  <p class="tool-name">list_breaches</p>
-                  <p>Browse or filter the full breach catalog by domain or breach ID, with records, data classes, and verification status. Accepts an optional <code>limit</code> (default 25, maximum 100). The full exposure description is included only on single <code>breach_id</code> lookups; domain-filtered and unfiltered lists return compact fields. When results are truncated the response says so and how to narrow the query.</p>
-                  <p class="tool-example">"List the breaches XposedOrNot has indexed for example.com."</p>
-               </div>
-               <div class="integration-card">
-                  <h3>Summarize Domain Breach Exposure</h3>
-                  <p class="tool-name">domain_breach_summary</p>
-                  <p>Aggregate breach summary for a domain: breach count, affected accounts, pastes, and the most recent breach date. Returns counts only, never individual addresses.</p>
-                  <p class="tool-example">"How exposed is example.com across known breaches?"</p>
-               </div>
-               <div class="integration-card">
-                  <h3>Get Breach Index Metrics</h3>
-                  <p class="tool-name">get_breach_metrics</p>
-                  <p>System-wide statistics: total breaches and records indexed, breaches per year and industry, and the largest and most recent breaches.</p>
-                  <p class="tool-example">"How many breaches were indexed per industry this year?"</p>
-               </div>
-               <div class="integration-card">
-                  <h3>Get Recent Breaches</h3>
-                  <p class="tool-name">get_recent_breaches</p>
-                  <p>The latest data breach news and the breaches most recently added to the XposedOrNot database.</p>
-                  <p class="tool-example">"What are the newest data breaches tracked by XposedOrNot?"</p>
-               </div>
+            <h3 id="step-2">Step 2: Confirm it is installed</h3>
+            <p>Before asking any breach questions, check that your client can see the server.</p>
+            <div class="table-responsive">
+               <table class="metrics-table">
+                  <caption class="sr-only">How to confirm the XposedOrNot MCP server is installed in each client</caption>
+                  <tr>
+                     <th scope="col">Client</th>
+                     <th scope="col">Where to check</th>
+                     <th scope="col">What you should see</th>
+                  </tr>
+                  <tr>
+                     <td>Claude Code</td>
+                     <td>Run <code>claude mcp list</code></td>
+                     <td><code>xposedornot: https://api.xposedornot.com/mcp (HTTP) - Connected</code></td>
+                  </tr>
+                  <tr>
+                     <td>Claude Desktop</td>
+                     <td>Settings, then Connectors</td>
+                     <td>XposedOrNot listed as connected, with six tools when expanded</td>
+                  </tr>
+                  <tr>
+                     <td>Cursor</td>
+                     <td>Settings, then MCP</td>
+                     <td>xposedornot with a green status dot and six tools</td>
+                  </tr>
+                  <tr>
+                     <td>Any client</td>
+                     <td>Ask: "What XposedOrNot tools do you have available?"</td>
+                     <td>A list of the six tools, starting with <code>check_email_breaches</code></td>
+                  </tr>
+               </table>
             </div>
+            <p>If the server is missing or shows as disconnected, jump to <a href="#step-4">Step 4</a>.</p>
 
-            <h2 id="in-action">See it in action</h2>
+            <h3 id="step-3">Step 3: Run your first query</h3>
             <p>Ask your assistant:</p>
             <div class="code-box wrap copyable">Check if <!--email_off-->john@example.com<!--/email_off--> has been in any data breaches, and summarize what was exposed.</div>
             <p>
-               Your AI assistant calls <code>check_email_breaches</code>, receives live results from the XposedOrNot
-               database, and answers with the actual breaches, dates, and exposed data types, not guesses from
-               training data. An answer typically looks like this (illustrative):
+               Your AI assistant calls <code>check_email_breaches</code> to get the list of breach names, then
+               <code>get_breach_analytics</code> for the dates, exposed data types, and password risk, all from the
+               live XposedOrNot database rather than guesses from training data. An answer typically looks like this
+               (illustrative):
             </p>
             <div class="code-box wrap"><!--email_off-->john@example.com<!--/email_off--> appears in 3 known breaches:
 
@@ -778,6 +913,126 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
             <p>
                Follow-up questions like "which of those exposed passwords?" reuse the same live data.
             </p>
+
+            <p>
+               The first time a tool is called, most clients ask you to approve it. Approving is safe: every tool is
+               read-only and only sends the email or domain you asked about.
+            </p>
+
+            <h3 id="step-4">Step 4: If it did not work</h3>
+            <div class="table-responsive">
+               <table class="metrics-table">
+                  <caption class="sr-only">Common setup problems and how to fix them</caption>
+                  <tr>
+                     <th scope="col">What you see</th>
+                     <th scope="col">Likely cause</th>
+                     <th scope="col">Fix</th>
+                  </tr>
+                  <tr>
+                     <td>Server not listed, or no XposedOrNot tools</td>
+                     <td>The client has not loaded the new config</td>
+                     <td>Repeat Step 1, then fully restart the client and check Step 2 again</td>
+                  </tr>
+                  <tr>
+                     <td>"Disconnected" or "failed to connect"</td>
+                     <td>No network path to api.xposedornot.com, often a proxy or firewall</td>
+                     <td>Open <a href="https://api.xposedornot.com/mcp">the endpoint</a> in a browser; a JSON reply means the server is reachable</td>
+                  </tr>
+                  <tr>
+                     <td>Assistant says it cannot call the tool</td>
+                     <td>The tool call was declined or is disabled in the client</td>
+                     <td>Re-run the prompt and approve the tool call when asked; check the tool is enabled in client settings</td>
+                  </tr>
+                  <tr>
+                     <td>"Rate limit exceeded" or HTTP 429</td>
+                     <td>You hit the free tier limit</td>
+                     <td>Wait the number of seconds in <code>retry_after</code>, then retry. See <a href="#rate-limits">rate limits</a></td>
+                  </tr>
+                  <tr>
+                     <td>HTTP 403</td>
+                     <td>The request came from a browser page on another site</td>
+                     <td>Use a server-side client such as Claude Code, Claude Desktop, or Cursor</td>
+                  </tr>
+                  <tr>
+                     <td>"is not a valid email address" or similar</td>
+                     <td>Typo or incomplete input</td>
+                     <td>Fix the address or domain and ask again. See <a href="#errors">errors</a></td>
+                  </tr>
+               </table>
+            </div>
+            <p>
+               Still stuck? Open an issue on the
+               <a href="https://github.com/XposedOrNot/XposedOrNot-API/issues" target="_blank" rel="noopener">API repository</a>
+               with your client name and the exact message you saw.
+            </p>
+
+            <h2 id="tools">Available tools</h2>
+            <p>
+               The server exposes six tools covering emails, domains, the breach catalog, and live statistics. All six
+               are read-only and idempotent: they only query the database and never modify anything, and each tool
+               declares this through its MCP annotations so clients can approve calls safely.
+            </p>
+            <p>Not sure which tool you need? Start from the question you want answered.</p>
+            <div class="table-responsive">
+               <table class="metrics-table">
+                  <caption class="sr-only">Which MCP tool answers which question</caption>
+                  <tr>
+                     <th scope="col">Your question</th>
+                     <th scope="col">Tool the assistant uses</th>
+                  </tr>
+                  <tr><td>Has this email been in a breach?</td><td><code>check_email_breaches</code></td></tr>
+                  <tr><td>How bad is the exposure for this email?</td><td><code>get_breach_analytics</code></td></tr>
+                  <tr><td>What breaches are known for this company or site?</td><td><code>list_breaches</code></td></tr>
+                  <tr><td>How exposed is my organization's domain?</td><td><code>domain_breach_summary</code></td></tr>
+                  <tr><td>How big is the breach database overall?</td><td><code>get_breach_metrics</code></td></tr>
+                  <tr><td>What breaches were added recently?</td><td><code>get_recent_breaches</code></td></tr>
+               </table>
+            </div>
+
+            <div class="integration-grid">
+               <div class="integration-card">
+                  <h3>Check Email for Breaches</h3>
+                  <p class="tool-name">check_email_breaches</p>
+                  <p>Check whether an email address appears in the XposedOrNot index of known public data breaches. Returns the list of breach names only. Never returns passwords.</p>
+                  <p class="tool-params">Parameters: <code>email</code> (required)</p>
+                  <p class="tool-example">"Has <!--email_off-->john@example.com<!--/email_off--> appeared in any data breaches?"</p>
+               </div>
+               <div class="integration-card">
+                  <h3>Get Email Breach Analytics</h3>
+                  <p class="tool-name">get_breach_analytics</p>
+                  <p>Detailed exposure analytics for an email: risk score, breach timeline, exposed data categories, and password risk.</p>
+                  <p class="tool-params">Parameters: <code>email</code> (required)</p>
+                  <p class="tool-example">"Give me a full breach risk analysis for <!--email_off-->john@example.com<!--/email_off-->."</p>
+               </div>
+               <div class="integration-card">
+                  <h3>List Indexed Breaches</h3>
+                  <p class="tool-name">list_breaches</p>
+                  <p>Browse or filter the full breach catalog by domain or breach ID, with records, data classes, and verification status. Accepts an optional <code>limit</code> (default 25, maximum 100). The full exposure description is included only on single <code>breach_id</code> lookups; domain-filtered and unfiltered lists return compact fields. When results are truncated the response says so and how to narrow the query.</p>
+                  <p class="tool-params">Parameters: <code>domain</code>, <code>breach_id</code>, <code>limit</code> (all optional)</p>
+                  <p class="tool-example">"List the breaches XposedOrNot has indexed for example.com."</p>
+               </div>
+               <div class="integration-card">
+                  <h3>Summarize Domain Breach Exposure</h3>
+                  <p class="tool-name">domain_breach_summary</p>
+                  <p>Aggregate breach summary for a domain: breach count, affected accounts, pastes, and the most recent breach date. Returns counts only, never individual addresses.</p>
+                  <p class="tool-params">Parameters: <code>domain</code> (required)</p>
+                  <p class="tool-example">"How exposed is example.com across known breaches?"</p>
+               </div>
+               <div class="integration-card">
+                  <h3>Get Breach Index Metrics</h3>
+                  <p class="tool-name">get_breach_metrics</p>
+                  <p>System-wide statistics: total breaches and records indexed, breaches per year and industry, and the largest and most recent breaches.</p>
+                  <p class="tool-params">Parameters: none</p>
+                  <p class="tool-example">"How many breaches were indexed per industry this year?"</p>
+               </div>
+               <div class="integration-card">
+                  <h3>Get Recent Breaches</h3>
+                  <p class="tool-name">get_recent_breaches</p>
+                  <p>The latest data breach news and the breaches most recently added to the XposedOrNot database.</p>
+                  <p class="tool-params">Parameters: none</p>
+                  <p class="tool-example">"What are the newest data breaches tracked by XposedOrNot?"</p>
+               </div>
+            </div>
 
             <h2 id="rate-limits">Rate limits and access</h2>
             <p>
@@ -830,6 +1085,33 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                Connection overhead (<code>initialize</code>, <code>tools/list</code>) has its own light limit of
                2 per second, 25 per hour, and 100 per day; <code>ping</code> and notifications are not rate-limited.
             </p>
+
+            <h3 id="errors">Errors</h3>
+            <p>
+               Failures come back as standard JSON-RPC error objects. Invalid input returns code <code>-32602</code>
+               with a message that says what to fix:
+            </p>
+            <div class="code-box wrap">{
+  "jsonrpc": "2.0",
+  "id": 7,
+  "error": {
+    "code": -32602,
+    "message": "'x' is not a valid email address. Provide a full address such as <!--email_off-->user@example.com<!--/email_off-->."
+  }
+}</div>
+            <p>
+               A rate limit returns code <code>-32000</code> with the number of seconds to wait in
+               <code>error.data.retry_after</code>, so clients can back off instead of retrying immediately:
+            </p>
+            <div class="code-box wrap">{
+  "jsonrpc": "2.0",
+  "id": 8,
+  "error": {
+    "code": -32000,
+    "message": "Rate limit exceeded. Retry after 42 seconds.",
+    "data": { "retry_after": 42 }
+  }
+}</div>
             <p>
                Need higher volume? <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a>
                offers paid plans with rate limits up to 25,000 requests per minute, API-key access, and commercial
@@ -846,6 +1128,65 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                or read the <a href="/privacy">privacy policy</a>.
             </div>
 
+            <h2 id="faq">Frequently asked questions</h2>
+            <div class="faq-list">
+            <details class="faq-item" open>
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Is it really free?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Yes. The MCP server uses the free, keyless XposedOrNot community API. If you need higher throughput for a product or a busy team, <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a> offers paid plans with much higher limits, and that is what keeps the free tier free.</p>
+            </details>
+
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Do I need an API key?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>No. Point your MCP client at <code>https://api.xposedornot.com/mcp</code> and it works. No account, no key, no registration.</p>
+            </details>
+
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Which clients work?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version <code>2025-06-18</code> (also accepts <code>2024-11-05</code>), negotiated at initialize, and requires no authentication.</p>
+            </details>
+
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">Are the email addresses I query stored?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Only the queried email address or domain is sent over TLS, and it is used to answer the lookup. XposedOrNot does not store user passwords or personally identifiable information from searches. See the <a href="/privacy">privacy policy</a> for details.</p>
+            </details>
+
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">How is this different from the REST API?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>Same data, different consumer. The <a href="/api_doc">REST API</a> is for code you write; the MCP server wraps the same breach database in tools an AI assistant can call directly, so your assistant answers breach questions with live data.</p>
+            </details>
+
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">How current is the data?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>The MCP server queries the live XposedOrNot database, which is updated as new breaches are verified and indexed. Browse everything currently indexed in the <a href="/xposed">data breach directory</a> or see <a href="/our-repository">live repository statistics</a>.</p>
+            </details>
+
+            <details class="faq-item">
+               <summary>
+                  <span class="faq-q" role="heading" aria-level="3">What happens if I pass an invalid email or domain?</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+               </summary>
+               <p>If you pass a malformed email address or domain, the server returns a specific error saying what to fix. A clean not-found answer always means the address genuinely is not in the index.</p>
+            </details>
+            </div>
+
             <h2 id="discovery">Discovery for agents</h2>
             <p>
                Agents and registries can discover the server and its tools automatically through two published
@@ -855,67 +1196,6 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                <li>MCP server card: <a href="https://xposedornot.com/.well-known/mcp/server-card.json">/.well-known/mcp/server-card.json</a></li>
                <li>Agent skills index: <a href="https://xposedornot.com/.well-known/agent-skills/index.json">/.well-known/agent-skills/index.json</a></li>
             </ul>
-
-            <h2 id="faq">Frequently asked questions</h2>
-
-            <div class="faq-item">
-               <h3>Is it really free?</h3>
-               <p>
-                  Yes. The MCP server uses the free, keyless XposedOrNot community API. If you need higher throughput
-                  for a product or a busy team, <a href="https://plus.xposedornot.com/products/api" target="_blank" rel="noopener">xonAPI+</a>
-                  offers paid plans with much higher limits, and that is what keeps the free tier free.
-               </p>
-            </div>
-
-            <div class="faq-item">
-               <h3>Do I need an API key?</h3>
-               <p>No. Point your MCP client at <code>https://api.xposedornot.com/mcp</code> and it works. No account, no key, no registration.</p>
-            </div>
-
-            <div class="faq-item">
-               <h3>Which clients work?</h3>
-               <p>
-                  Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and
-                  Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version
-                  <code>2025-06-18</code> (also accepts <code>2024-11-05</code>), negotiated at initialize, and
-                  requires no authentication.
-               </p>
-            </div>
-
-            <div class="faq-item">
-               <h3>Are the email addresses I query stored?</h3>
-               <p>
-                  Only the queried email address or domain is sent over TLS, and it is used to answer the lookup.
-                  XposedOrNot does not store user passwords or personally identifiable information from searches. See
-                  the <a href="/privacy">privacy policy</a> for details.
-               </p>
-            </div>
-
-            <div class="faq-item">
-               <h3>How is this different from the REST API?</h3>
-               <p>
-                  Same data, different consumer. The <a href="/api_doc">REST API</a> is for code you write; the MCP
-                  server wraps the same breach database in tools an AI assistant can call directly, so your assistant
-                  answers breach questions with live data.
-               </p>
-            </div>
-
-            <div class="faq-item">
-               <h3>How current is the data?</h3>
-               <p>
-                  The MCP server queries the live XposedOrNot database: 783 breaches and more than 11.6 billion
-                  exposed records as of September 2026, updated as new breaches are verified and indexed. See
-                  <a href="/our-repository">live repository statistics</a>.
-               </p>
-            </div>
-
-            <div class="faq-item">
-               <h3>What happens if I pass an invalid email or domain?</h3>
-               <p>
-                  If you pass a malformed email address or domain, the server returns a specific error saying what to
-                  fix. A clean not-found answer always means the address genuinely is not in the index.
-               </p>
-            </div>
 
             <h2 id="go-deeper">Go deeper</h2>
             <ul>
