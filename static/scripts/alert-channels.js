@@ -9,6 +9,7 @@
         cardTitle: "Alert channels",
         cardIntro: "Get new-breach alerts for every domain you have verified in Slack, Microsoft Teams, or your own webhook. One setup covers all your domains.",
         guideBtn: "Setup guide",
+        rowsIntro: "One setup covers every domain you have verified.",
         fab: "Setup guide",
         checking: "Checking",
         notConnected: "Not connected",
@@ -143,6 +144,7 @@
 
     var state = { slack: null, teams: null, webhook: null };
     var mountEl = null;
+    var embedded = false;
     var drawer = null;
     var backdrop = null;
     var lastFocus = null;
@@ -242,11 +244,15 @@
     function renderCard() {
         if (!mountEl) return;
         mountEl.innerHTML = "";
-        var card = el(
-            '<section class="xch-card" aria-labelledby="xch-card-title">' +
-            '<div class="xch-card-head"><div><h3 id="xch-card-title">' + esc(T.cardTitle) + '</h3><p>' + esc(T.cardIntro) + '</p></div>' +
-            '<button type="button" class="xch-btn xch-btn-quiet" data-xch-guide><i class="fas fa-book-open" aria-hidden="true"></i> ' + esc(T.guideBtn) + '</button></div>' +
-            '<ul class="xch-rows" role="list"></ul></section>'
+        var card = el(embedded
+            ? '<div class="xch-embedded" role="group" aria-labelledby="xch-card-title">' +
+              '<div class="xch-embedded-head"><div><h3 id="xch-card-title" class="xch-embedded-title">' + esc(T.cardTitle) + '</h3><p>' + esc(T.rowsIntro) + '</p></div>' +
+              '<button type="button" class="xch-btn xch-btn-quiet xch-btn-sm" data-xch-guide><i class="fas fa-book-open" aria-hidden="true"></i> ' + esc(T.guideBtn) + '</button></div>' +
+              '<ul class="xch-rows" role="list"></ul></div>'
+            : '<section class="xch-card" aria-labelledby="xch-card-title">' +
+              '<div class="xch-card-head"><div><h3 id="xch-card-title">' + esc(T.cardTitle) + '</h3><p>' + esc(T.cardIntro) + '</p></div>' +
+              '<button type="button" class="xch-btn xch-btn-quiet" data-xch-guide><i class="fas fa-book-open" aria-hidden="true"></i> ' + esc(T.guideBtn) + '</button></div>' +
+              '<ul class="xch-rows" role="list"></ul></section>'
         );
         var list = card.querySelector(".xch-rows");
         Object.keys(PLATFORMS).forEach(function (p) {
@@ -792,6 +798,7 @@
     function init() {
         mountEl = document.querySelector("[data-xon-channels]");
         if (!mountEl) return;
+        embedded = mountEl.getAttribute("data-xon-channels") === "embedded";
         if (!creds()) { mountEl.innerHTML = ""; return; }
         renderCard();
         renderFab();

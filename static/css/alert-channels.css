@@ -1,4 +1,5 @@
 .xch-card,
+.xch-embedded,
 .xch-drawer,
 .xch-fab {
   --xch-surface: #ffffff;
@@ -30,6 +31,7 @@
 }
 
 body[data-theme="dark"] .xch-card,
+body[data-theme="dark"] .xch-embedded,
 body[data-theme="dark"] .xch-drawer,
 body[data-theme="dark"] .xch-fab {
   --xch-surface: #12141f;
@@ -142,6 +144,57 @@ body[data-theme="dark"] .xch-fab {
   font-size: 0.85rem;
   color: var(--xch-muted);
   overflow-wrap: anywhere;
+}
+
+.xch-embedded {
+  margin: 0;
+}
+
+.xch-embedded-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 0 6px;
+  border-top: 1px solid var(--xch-border);
+}
+
+.xch-embedded-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin: 0 0 2px;
+  padding: 0;
+  color: var(--xch-text);
+}
+
+.xch-embedded-head p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--xch-muted);
+}
+
+.xch-embedded .xch-rows {
+  gap: 0;
+}
+
+.xch-embedded .xch-row {
+  grid-template-columns: 18px 1fr auto auto;
+  gap: 12px;
+  padding: 12px 0;
+  border: 0;
+  border-top: 1px solid var(--xch-border);
+  border-radius: 0;
+  background: transparent;
+}
+
+.xch-embedded .xch-row-icon {
+  width: 18px;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 18px;
 }
 
 .xch-chip {
@@ -749,8 +802,13 @@ body.xch-locked {
 }
 
 @media (max-width: 640px) {
-  .xch-row {
+  .xch-row,
+  .xch-embedded .xch-row {
     grid-template-columns: 40px 1fr;
+  }
+
+  .xch-embedded .xch-row {
+    grid-template-columns: 18px 1fr;
   }
 
   .xch-row .xch-chip,
