@@ -99,7 +99,7 @@ if (!authValid) {
 }
 
 $(document).ready(function () {
-    $('.btn-lg.btn-primary').not('#xonPlusModal .btn-primary').click(function () {
+    $('.btn-lg.btn-primary').click(function () {
         window.location.href = dashboardPageUrl('api_key_management.html');
     });
 
@@ -1076,11 +1076,6 @@ function addDomainSummaryToTable(domainSummary, email, token) {
                 <td>${emailCount}</td>
                 <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Success</button></td>
                 <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Email</button></td>
-                <td>
-                    <button type="button" class="btn btn-outline-primary" onclick="showXonPlusModal('teams')"><em class='fab fa-microsoft' style='color:#6264a7;font-size: 18px;'> &nbsp</em>Teams</button>
-                    <button type="button" class="btn btn-outline-primary" onclick="showXonPlusModal('slack')"><em class='fab fa-slack' style='color:#611f69;font-size: 18px;'> &nbsp</em>Slack</button>
-                    <button type="button" class="btn btn-outline-primary" onclick="showXonPlusModal('webhook')"><em class='fas fa-plug' style='color:#0e7490;font-size: 18px;'> &nbsp</em>Webhook</button>
-                </td>
             </tr>`;
         tbody.append(rowHTML);
     }
@@ -1276,48 +1271,6 @@ function initializePhishingButton() {
             domainDropdown.style.display = 'none';
         }
     });
-}
-
-// Function to show xonPlus migration modal
-function showXonPlusModal(service) {
-    const modal = $('#xonPlusModal');
-    const content = modal.find('.xonplus-modal');
-    const modalLabel = modal.find('#xonPlusModalLabel');
-    const modalTitle = modal.find('#xonPlusModalTitle');
-    const modalIcon = modal.find('#xonPlusModalIcon');
-    const modalDescription = modal.find('#xonPlusModalDescription');
-    const previewApp = modal.find('#xonPlusPreviewApp');
-    const previewIcon = modal.find('#xonPlusPreviewIcon');
-
-    content.removeClass('svc-teams svc-slack svc-webhook');
-
-    if (service === 'teams') {
-        content.addClass('svc-teams');
-        modalLabel.text('Get breach alerts in Microsoft Teams');
-        modalTitle.text('Real-time notifications, right where your team works');
-        modalIcon.html('<i class="fab fa-microsoft"></i>');
-        previewIcon.attr('class', 'fab fa-microsoft');
-        previewApp.text('via Microsoft Teams');
-        modalDescription.text('Pipe breach notifications straight into your Teams channels, so your whole team sees an exposure the moment it happens, not days later.');
-    } else if (service === 'slack') {
-        content.addClass('svc-slack');
-        modalLabel.text('Get breach alerts in Slack');
-        modalTitle.text('Real-time notifications, right where your team works');
-        modalIcon.html('<i class="fab fa-slack"></i>');
-        previewIcon.attr('class', 'fab fa-slack');
-        previewApp.text('via Slack');
-        modalDescription.text('Push breach alerts to any Slack channel and let your team respond to exposures within minutes, not days.');
-    } else if (service === 'webhook') {
-        content.addClass('svc-webhook');
-        modalLabel.text('Send breach alerts to a custom webhook');
-        modalTitle.text('Real-time notifications, wired into your stack');
-        modalIcon.html('<i class="fas fa-plug"></i>');
-        previewIcon.attr('class', 'fas fa-plug');
-        previewApp.text('via Webhook');
-        modalDescription.text('Stream breach events as JSON to any endpoint you control, and plug XposedOrNot straight into your SIEM, on-call, or automation workflows.');
-    }
-
-    modal.modal('show');
 }
 
 // Function to populate dynamic alert management table
