@@ -7,9 +7,9 @@
 
     var EN = {
         cardTitle: "Alert channels",
-        cardIntro: "Get new-breach alerts for every domain you have verified in Slack, Microsoft Teams, or your own webhook. One setup covers all your domains.",
+        cardIntro: "Send new-breach alerts for all your verified domains to Slack, Microsoft Teams, or your own webhook. Connect a channel once and every domain is covered.",
         guideBtn: "Setup guide",
-        rowsIntro: "One setup covers every domain you have verified.",
+        rowsIntro: "Connect a channel once and every verified domain is covered.",
         fab: "Setup guide",
         checking: "Checking",
         notConnected: "Not connected",
@@ -27,13 +27,13 @@
         slack: "Slack",
         teams: "Microsoft Teams",
         webhook: "Webhook",
-        slackDesc: "Breach alerts posted to a Slack channel.",
-        teamsDesc: "Breach alerts posted to a Teams channel.",
-        webhookDesc: "Signed JSON alerts posted to your own endpoint.",
-        pendingMeta: "A verification code was sent. Enter it to finish.",
-        pausedMeta: "Paused after repeated delivery failures. Reconnect to resume.",
+        slackDesc: "New-breach alerts posted to a Slack channel.",
+        teamsDesc: "New-breach alerts posted to a Teams channel.",
+        webhookDesc: "Signed JSON POSTs (HMAC-SHA256) to your own endpoint.",
+        pendingMeta: "Verification code sent. Enter it to finish connecting.",
+        pausedMeta: "Paused after 10 failed deliveries. Reconnect to resume.",
         connectedMeta: "Alerts on for all verified domains.",
-        sessionError: "Your session has expired. Open this page again from the dashboard.",
+        sessionError: "Your session has expired. Sign in again to continue.",
         noDomainError: "Verify at least one domain first, then come back to connect a channel.",
         rateLimit: "Too many attempts. Wait a minute and try again.",
         serverError: "Something went wrong on our side. Please try again in a moment.",
@@ -55,9 +55,9 @@
         urlLabel: "Webhook URL",
         urlHelpSlack: "Starts with https://hooks.slack.com/services/. The verification code is posted to that channel.",
         urlHelpTeams: "The HTTP POST URL from your Teams workflow. The verification code is posted to that channel as a card.",
-        urlHelpWebhook: "Public HTTPS endpoint that accepts POST JSON. We will send a signed verification request to it.",
+        urlHelpWebhook: "Public HTTPS endpoint that accepts JSON POSTs. Connect sends a signed verification request; the code you need is in its body.",
         headersLabel: "Custom headers (optional)",
-        headersHelp: "Sent with every delivery, for example an Authorization header. Values are stored encrypted and never shown again.",
+        headersHelp: "Up to 10, sent with every delivery, for example Authorization. Values are stored encrypted and never shown again.",
         headerName: "Header name",
         headerValue: "Value",
         addHeader: "Add header",
@@ -65,14 +65,14 @@
         connectBtn: "Connect",
         connecting: "Connecting",
         codeLabel: "Verification code",
-        codeHelp: "8 characters, letters and numbers, from the message we just sent.",
+        codeHelp: "8 letters and numbers from the message we just sent. Case does not matter.",
         verifyBtn: "Verify",
         verifying: "Verifying",
-        resend: "Send a new code",
-        resendWebhook: "Send the verification request again",
+        resend: "Resend the code",
+        resendWebhook: "Resend the verification request",
         secretTitle: "Copy your signing secret now",
         secretIntro: "This is the only time it is shown. Use it to verify the X-XON-Signature header on every delivery.",
-        secretAck: "I have stored this secret somewhere safe",
+        secretAck: "I have saved this secret",
         reveal: "Reveal",
         hide: "Hide",
         copy: "Copy",
@@ -88,6 +88,10 @@
         none: "None",
         replaceUrl: "Change URL",
         replaceHelp: "Changing the URL disconnects the current channel and starts a fresh verification.",
+        replaceHelpWebhook: "Changing the URL pauses alerts until the new endpoint is verified. Your signing secret stays the same.",
+        verify: "Verify",
+        verifySubChannel: "Enter the code we posted to your channel.",
+        verifySubWebhook: "Enter the code from the verification request body.",
         rotate: "Rotate signing secret",
         rotateHelp: "Issues a new secret and shows it once. The old secret keeps working for a short grace window so you can switch without missing alerts.",
         rotateConfirm: "Rotate the signing secret now? The new secret is shown only once.",
@@ -96,7 +100,7 @@
         removeConfirm: "Remove this channel? Alerts will stop until you connect it again.",
         replaceConfirm: "Change the URL? The current channel is removed and a new verification starts.",
         pausedTitle: "Deliveries paused",
-        pausedBody: "We stopped sending after 10 failed deliveries in a row. Fix the endpoint, then reconnect to send a new verification and resume alerts.",
+        pausedBody: "Delivery failed 10 times in a row, so alerts to this endpoint are paused. Fix the endpoint, then reconnect. You will get a new signing secret and a new verification request.",
         working: "Working",
         guideTitle: "Setup guide",
         guideIntro: "Pick a channel to see how to get its URL and what to expect."
@@ -173,6 +177,11 @@
         var d = new Date(iso);
         if (isNaN(d.getTime())) return iso;
         return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    }
+
+    function hostOf(u) {
+        var m = /^https?:\/\/([^\/?#]+)/i.exec(u || "");
+        return m ? m[1] : "";
     }
 
     function maskUrl(u) {
@@ -272,7 +281,7 @@
         var rowMeta = meta.desc;
         var action = null;
         if (st) {
-            if (st.kind === "connected") { chipCls += " xch-chip-ok"; chipTxt = T.connected; rowMeta = T.connectedMeta; action = { label: T.manage, quiet: true }; }
+            if (st.kind === "connected") { chipCls += " xch-chip-ok"; chipTxt = T.connected; rowMeta = T.connectedMeta + (p !== "slack" && st.cfg && st.cfg.webhook ? " \u00b7 " + hostOf(st.cfg.webhook) : ""); action = { label: T.manage, quiet: true }; }
             else if (st.kind === "pending") { chipCls += " xch-chip-warn"; chipTxt = T.pending; rowMeta = T.pendingMeta; action = { label: T.enterCode }; }
             else if (st.kind === "disabled") { chipCls += " xch-chip-bad"; chipTxt = T.disabled; rowMeta = T.pausedMeta; action = { label: T.reconnect }; }
             else if (st.kind === "error") { chipCls += " xch-chip-bad"; chipTxt = T.unavailable; rowMeta = st.error; }
@@ -388,7 +397,7 @@
         var meta = PLATFORMS[p];
         var v = current.view;
         if (v === "setup") { setHead(p, T.connect + " " + meta.label, meta.desc); renderSetup(flow, p); }
-        else if (v === "verify") { setHead(p, T.enterCode, meta.label); renderVerify(flow, p); }
+        else if (v === "verify") { setHead(p, T.verify + " " + meta.label, meta.secret ? T.verifySubWebhook : T.verifySubChannel); renderVerify(flow, p); }
         else if (v === "secret") { setHead(p, T.secretTitle, meta.label); renderSecret(flow, p); }
         else if (v === "manage") { setHead(p, meta.label, T.connectedMeta); renderManage(flow, p); }
         renderGuide(guide, p, false);
@@ -671,7 +680,7 @@
         });
         acts.appendChild(rep);
         flow.appendChild(acts);
-        flow.appendChild(el('<span class="xch-help">' + esc(T.replaceHelp) + '</span>'));
+        flow.appendChild(el('<span class="xch-help">' + esc(meta.secret ? T.replaceHelpWebhook : T.replaceHelp) + '</span>'));
 
         if (meta.secret) {
             flow.appendChild(el('<hr class="xch-divider">'));
@@ -729,6 +738,7 @@
                 '<li>Click <strong>Add New Webhook to Workspace</strong> and choose the channel that should receive breach alerts.</li>' +
                 '<li>Copy the Webhook URL (it starts with <code>https://hooks.slack.com/services/</code>) and paste it here.</li>' +
                 '<li>An 8-character code is posted to that channel. Enter it here to finish.</li></ol>' +
+                '<p>Each Slack webhook URL is tied to one channel. To move alerts to another channel, create a new webhook URL and use <strong>Change URL</strong> here.</p>' +
                 '<h4>What you will receive</h4><p>One message per new breach that affects any of your verified domains, with the breach name, date, records exposed, the data types involved, and how many of your domain’s emails were found.</p>';
         },
         teams: function () {
@@ -737,12 +747,12 @@
                 '<li>Pick the template <strong>Post to a channel when a webhook request is received</strong> and confirm the team and channel.</li>' +
                 '<li>Copy the HTTP POST URL the workflow shows (from <code>webhook.office.com</code> or <code>api.powerplatform.com</code>) and paste it here.</li>' +
                 '<li>An 8-character code is posted to that channel as a card. Enter it here to finish.</li></ol>' +
-                '<p>Classic Incoming Webhook connector URLs from <code>outlook.office.com</code> still work while Microsoft keeps them alive, but new setups should use Workflows.</p>' +
+                '<p>Classic Incoming Webhook connector URLs from <code>outlook.office.com</code> still work while Microsoft keeps them alive, but new setups should use Workflows. The workflow stays owned by the account that created it, so use a service or team-owned account if people move on.</p>' +
                 '<h4>What you will receive</h4><p>An Adaptive Card per new breach affecting any of your verified domains, with the same details as the Slack alert.</p>';
         },
         webhook: function () {
             return '<h3>' + esc(T.webhook) + '</h3><ol class="xch-steps">' +
-                '<li>Expose a public HTTPS endpoint that accepts <code>POST</code> requests with a JSON body and replies with a 2xx status within 10 seconds.</li>' +
+                '<li>Expose a public HTTPS endpoint that accepts <code>POST</code> requests with a JSON body. Reply with any 2xx within 10 seconds and do the heavy work asynchronously.</li>' +
                 '<li>Paste the URL here. Add custom headers if your endpoint needs them, for example <code>Authorization</code>.</li>' +
                 '<li>Copy the signing secret when it appears. It is shown once and never again.</li>' +
                 '<li>Find the first request in your endpoint logs. Its body contains <code>verification_code</code>. Enter that code here to finish.</li></ol>' +
