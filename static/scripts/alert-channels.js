@@ -1,8 +1,7 @@
 (function () {
     "use strict";
 
-    var PROD_API = "https://api.xposedornot.com";
-    var DEV_API = "https://xon-api-test.xposedornot.com";
+    var API_BASE = "https://xon-api-test.xposedornot.com";
     var SECRET_MASK = "••••••••••••••••";
     var BLOCKED_HEADERS = ["host", "content-type", "content-length", "transfer-encoding", "connection", "keep-alive", "upgrade", "te", "trailer", "expect"];
 
@@ -149,13 +148,6 @@
     var lastFocus = null;
     var current = { platform: null, view: null, secret: null, secretAck: false, mode: null };
 
-    function apiBase() {
-        if (window.XON_API_BASE) return window.XON_API_BASE;
-        var h = window.location.hostname || "";
-        if (/\.pages\.dev$/.test(h) || h === "localhost" || h === "127.0.0.1") return DEV_API;
-        return PROD_API;
-    }
-
     function creds() {
         var s = window.XonSession;
         if (!s || !s.token || !s.email) return null;
@@ -191,7 +183,7 @@
         var c = creds();
         if (!c) return Promise.reject({ status: 401, detail: T.sessionError });
         var payload = Object.assign({}, body || {}, { email: c.email, token: c.token });
-        return fetch(apiBase() + "/v1/" + platform + "/" + route, {
+        return fetch(API_BASE + "/v1/" + platform + "/" + route, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -533,7 +525,7 @@
         var secret = current.secret || "";
         var wrap = el(
             '<div class="xch-secret-box"><span class="xch-label">' + esc(T.secretTitle) + '</span><p class="xch-help">' + esc(T.secretIntro) + '</p>' +
-            '<code class="xch-secret-value" data-hj-suppress aria-label="signing secret"></code>' +
+            '<code class="xch-secret-value" data-hj-suppress></code>' +
             '<div class="xch-actions" style="margin-top:0"><button type="button" class="xch-btn xch-btn-quiet xch-btn-sm" data-reveal aria-pressed="false">' + esc(T.reveal) + '</button><button type="button" class="xch-btn xch-btn-quiet xch-btn-sm" data-copy>' + esc(T.copy) + '</button></div>' +
             '<label class="xch-check"><input type="checkbox"><span>' + esc(T.secretAck) + '</span></label></div>'
         );
@@ -582,7 +574,7 @@
         if (st && st.cfg && st.cfg.last_verification_error) {
             flow.appendChild(el('<div class="xch-msg xch-msg-warn"><strong>' + esc(T.lastError) + ':</strong> ' + esc(st.cfg.last_verification_error) + '</div>'));
         }
-        var field = el('<div class="xch-field"><label for="xch-code">' + esc(T.codeLabel) + '</label><input class="xch-input xch-code-input" id="xch-code" type="text" inputmode="latin" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="8" pattern="[A-Za-z0-9]{8}"><span class="xch-help">' + esc(T.codeHelp) + '</span></div>');
+        var field = el('<div class="xch-field"><label for="xch-code">' + esc(T.codeLabel) + '</label><input class="xch-input xch-code-input" id="xch-code" type="text" inputmode="text" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="8" pattern="[A-Za-z0-9]{8}"><span class="xch-help">' + esc(T.codeHelp) + '</span></div>');
         flow.appendChild(field);
         var input = field.querySelector("input");
         var actions = el('<div class="xch-actions"><button type="button" class="xch-btn" data-label="' + esc(T.verifyBtn) + '">' + esc(T.verifyBtn) + '</button><button type="button" class="xch-link" data-resend>' + esc(meta.secret ? T.resendWebhook : T.resend) + '</button></div>');
@@ -765,17 +757,27 @@
         if (withTabs) {
             var tabs = el('<div class="xch-tabs" role="tablist" aria-label="' + esc(T.guideTitle) + '"></div>');
             Object.keys(PLATFORMS).forEach(function (k) {
-                var t = el('<button type="button" class="xch-tab" role="tab" aria-selected="' + (k === p ? "true" : "false") + '"><i class="' + PLATFORMS[k].icon + '" aria-hidden="true"></i> ' + esc(PLATFORMS[k].label) + '</button>');
+                var t = el('<button type="button" class="xch-tab" role="tab" id="xch-tab-' + k + '" aria-controls="xch-panel-' + k + '" aria-selected="' + (k === p ? "true" : "false") + '" tabindex="' + (k === p ? "0" : "-1") + '"><i class="' + PLATFORMS[k].icon + '" aria-hidden="true"></i> ' + esc(PLATFORMS[k].label) + '</button>');
                 t.addEventListener("click", function () {
                     current.platform = k;
                     renderGuide(pane, k, true);
+                    pane.querySelector('.xch-tab[aria-selected="true"]').focus();
+                });
+                t.addEventListener("keydown", function (e) {
+                    var keys = Object.keys(PLATFORMS);
+                    var i = keys.indexOf(k);
+                    var n = e.key === "ArrowRight" ? (i + 1) % keys.length : e.key === "ArrowLeft" ? (i - 1 + keys.length) % keys.length : e.key === "Home" ? 0 : e.key === "End" ? keys.length - 1 : -1;
+                    if (n === -1) return;
+                    e.preventDefault();
+                    current.platform = keys[n];
+                    renderGuide(pane, keys[n], true);
                     pane.querySelector('.xch-tab[aria-selected="true"]').focus();
                 });
                 tabs.appendChild(t);
             });
             pane.appendChild(tabs);
         }
-        var body = el('<div role="tabpanel"></div>');
+        var body = el(withTabs ? '<div role="tabpanel" id="xch-panel-' + p + '" aria-labelledby="xch-tab-' + p + '" tabindex="0"></div>' : '<div></div>');
         body.innerHTML = GUIDES[p]();
         pane.appendChild(body);
     }
