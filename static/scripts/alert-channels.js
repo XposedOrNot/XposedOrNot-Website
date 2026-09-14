@@ -281,13 +281,16 @@
         return d;
     }
 
+    var STATUS_GLYPH = { connected: "fas fa-check-circle", none: "far fa-circle", pending: "fas fa-clock", disabled: "fas fa-pause-circle", error: "fas fa-exclamation-circle", loading: "fas fa-hourglass-half" };
+
     function paintButton(btn) {
         var p = btn.getAttribute("data-xch-platform");
         if (!PLATFORMS[p]) return;
         var d = describe(p);
-        var chipCls = "xch-chip" + (d.tone === "idle" ? "" : " xch-chip-" + d.tone);
-        btn.innerHTML = '<i class="' + d.icon + '" aria-hidden="true"></i><span class="xch-cell-label">' + esc(d.label) + '</span><span class="' + chipCls + '">' + esc(d.status) + '</span>';
-        btn.setAttribute("aria-label", d.label + ": " + d.status + ". " + d.action);
+        var detail = d.label + ": " + d.status + ". " + d.action;
+        btn.innerHTML = '<em class="' + (STATUS_GLYPH[d.kind] || STATUS_GLYPH.loading) + ' xch-st xch-st-' + d.tone + '" aria-hidden="true"></em><i class="' + d.icon + '" aria-hidden="true"></i>' + esc(d.label);
+        btn.setAttribute("aria-label", detail);
+        btn.setAttribute("title", detail);
         btn.setAttribute("data-xch-state", d.kind);
     }
 

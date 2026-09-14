@@ -1072,7 +1072,7 @@ function alertChannelButtons() {
         { key: 'teams', icon: 'fab fa-microsoft', label: 'Teams' },
         { key: 'webhook', icon: 'fas fa-plug', label: 'Webhook' }
     ];
-    return channels.map(c => `<button type="button" class="btn btn-outline-primary" data-xch-platform="${c.key}"><i class="${c.icon}" aria-hidden="true"></i><span class="xch-cell-label">${c.label}</span></button>`).join('');
+    return channels.map(c => `<button type="button" class="btn btn-outline-primary" data-xch-platform="${c.key}"><em class="fas fa-hourglass-half xch-st" aria-hidden="true"></em><i class="${c.icon}" aria-hidden="true"></i>${c.label}</button>`).join('');
 }
 
 function addDomainSummaryToTable(domainSummary, email, token) {
@@ -1084,7 +1084,8 @@ function addDomainSummaryToTable(domainSummary, email, token) {
                 <td>${domain}</td>
                 <td>${emailCount}</td>
                 <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Success</button></td>
-                <td><div class="xch-cell"><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Email</button>${alertChannelButtons()}</div></td>
+                <td><button type="button" class="btn btn-outline-primary"><em class='fa fa-check-circle' style='color:green;font-size: 20px;'> &nbsp</em>Email</button></td>
+                <td><div class="xch-channels">${alertChannelButtons()}</div></td>
             </tr>`;
         tbody.append(rowHTML);
     }
