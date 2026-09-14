@@ -7,10 +7,9 @@
 
     var EN = {
         cardTitle: "Alert channels",
-        cardIntro: "Send new-breach alerts for all your verified domains to Slack, Microsoft Teams, or your own webhook. Connect a channel once and every domain is covered.",
-        guideBtn: "Setup guide",
-        rowsIntro: "Connect a channel once and every verified domain is covered.",
-        fab: "Setup guide",
+        guideAria: "Alert channel setup guide",
+        enabled: "Enabled",
+        off: "Disabled",
         checking: "Checking",
         notConnected: "Not connected",
         pending: "Code sent",
@@ -148,7 +147,6 @@
 
     var state = { slack: null, teams: null, webhook: null };
     var mountEl = null;
-    var embedded = false;
     var drawer = null;
     var backdrop = null;
     var lastFocus = null;
@@ -253,24 +251,60 @@
     function renderCard() {
         if (!mountEl) return;
         mountEl.innerHTML = "";
-        var card = el(embedded
-            ? '<div class="xch-embedded" role="group" aria-labelledby="xch-card-title">' +
-              '<div class="xch-embedded-head"><div><h3 id="xch-card-title" class="xch-embedded-title">' + esc(T.cardTitle) + '</h3><p>' + esc(T.rowsIntro) + '</p></div>' +
-              '<button type="button" class="xch-btn xch-btn-quiet xch-btn-sm" data-xch-guide><i class="fas fa-book-open" aria-hidden="true"></i> ' + esc(T.guideBtn) + '</button></div>' +
-              '<ul class="xch-rows" role="list"></ul></div>'
-            : '<section class="xch-card" aria-labelledby="xch-card-title">' +
-              '<div class="xch-card-head"><div><h3 id="xch-card-title">' + esc(T.cardTitle) + '</h3><p>' + esc(T.cardIntro) + '</p></div>' +
-              '<button type="button" class="xch-btn xch-btn-quiet" data-xch-guide><i class="fas fa-book-open" aria-hidden="true"></i> ' + esc(T.guideBtn) + '</button></div>' +
-              '<ul class="xch-rows" role="list"></ul></section>'
-        );
+        var card = el('<div class="xch-embedded" role="group" aria-label="' + esc(T.cardTitle) + '"><ul class="xch-rows" role="list"></ul></div>');
         var list = card.querySelector(".xch-rows");
         Object.keys(PLATFORMS).forEach(function (p) {
             list.appendChild(renderRow(p));
         });
-        card.querySelector("[data-xch-guide]").addEventListener("click", function () {
-            openDrawer("slack", "guide");
-        });
         mountEl.appendChild(card);
+    }
+
+    function guideIcon() {
+        return '<button type="button" class="xch-guide-icon" data-xch-guide aria-label="' + esc(T.guideAria) + '" title="' + esc(T.guideAria) + '"><i class="fas fa-book-open" aria-hidden="true"></i></button>';
+    }
+
+    function viewFor(p) {
+        var kind = state[p] ? state[p].kind : "none";
+        return kind === "connected" ? "manage" : kind === "pending" ? "verify" : "setup";
+    }
+
+    function describe(p) {
+        var meta = PLATFORMS[p];
+        var st = state[p];
+        var d = { platform: p, label: meta.label, icon: meta.icon, kind: st ? st.kind : "loading", tone: "idle", status: T.checking, action: T.connect };
+        if (!st) return d;
+        if (st.kind === "connected") { d.tone = "ok"; d.status = T.enabled; d.action = T.manage; }
+        else if (st.kind === "pending") { d.tone = "warn"; d.status = T.pending; d.action = T.enterCode; }
+        else if (st.kind === "disabled") { d.tone = "bad"; d.status = T.disabled; d.action = T.reconnect; }
+        else if (st.kind === "error") { d.tone = "bad"; d.status = T.unavailable; d.action = T.connect; }
+        else { d.status = T.off; d.action = T.connect; }
+        return d;
+    }
+
+    function paintButton(btn) {
+        var p = btn.getAttribute("data-xch-platform");
+        if (!PLATFORMS[p]) return;
+        var d = describe(p);
+        var chipCls = "xch-chip" + (d.tone === "idle" ? "" : " xch-chip-" + d.tone);
+        btn.innerHTML = '<i class="' + d.icon + '" aria-hidden="true"></i><span class="xch-cell-label">' + esc(d.label) + '</span><span class="' + chipCls + '">' + esc(d.status) + '</span>';
+        btn.setAttribute("aria-label", d.label + ": " + d.status + ". " + d.action);
+        btn.setAttribute("data-xch-state", d.kind);
+    }
+
+    function paintAll() {
+        Array.prototype.forEach.call(document.querySelectorAll("[data-xch-platform]"), paintButton);
+    }
+
+    var listeners = [];
+    var notifyQueued = false;
+    function notify() {
+        if (notifyQueued) return;
+        notifyQueued = true;
+        Promise.resolve().then(function () {
+            notifyQueued = false;
+            paintAll();
+            listeners.forEach(function (fn) { try { fn(); } catch (e) { } });
+        });
     }
 
     function renderRow(p) {
@@ -293,20 +327,20 @@
             '<div class="xch-row-text"><span class="xch-row-label">' + esc(meta.label) + '</span><span class="xch-row-meta">' + esc(rowMeta) + '</span></div>' +
             '<span class="' + chipCls + '" role="status">' + esc(chipTxt) + '</span>' +
             (action ? '<button type="button" class="xch-btn' + (action.quiet ? " xch-btn-quiet" : "") + '" data-xch-open="' + p + '">' + esc(action.label) + '<span class="xch-sr-only"> ' + esc(meta.label) + '</span></button>' : "") +
+            (p === "slack" ? guideIcon() : '<span class="xch-guide-slot" aria-hidden="true"></span>') +
             '</li>'
         );
         var btn = row.querySelector("[data-xch-open]");
         if (btn) {
             btn.addEventListener("click", function () {
-                var kind = state[p] ? state[p].kind : "none";
-                var view = kind === "connected" ? "manage" : kind === "pending" ? "verify" : "setup";
-                openDrawer(p, view);
+                openDrawer(p, viewFor(p));
             });
         }
         return row;
     }
 
     function refreshRow(p) {
+        notify();
         if (!mountEl) return;
         var old = mountEl.querySelector('.xch-row[data-platform="' + p + '"]');
         if (old) old.replaceWith(renderRow(p));
@@ -471,6 +505,10 @@
         opts = opts || {};
         var meta = PLATFORMS[p];
         var st = state[p];
+        if (st && st.kind === "disabled") {
+            opts.reset = true;
+            if (!opts.prefill && st.cfg && st.cfg.webhook) opts.prefill = st.cfg.webhook;
+        }
         var box = msgBox();
         flow.appendChild(guideToggle());
         if (st && st.kind === "disabled") {
@@ -798,26 +836,46 @@
         pane.appendChild(body);
     }
 
-    function renderFab() {
-        if (document.querySelector(".xch-fab")) return;
-        var b = el('<button type="button" class="xch-fab" aria-label="' + esc(T.fab) + '"><i class="fas fa-book-open" aria-hidden="true"></i><span>' + esc(T.fab) + '</span></button>');
-        b.addEventListener("click", function () { openDrawer("slack", "guide"); });
-        document.body.appendChild(b);
+    function bindDelegates() {
+        if (document.body.hasAttribute("data-xch-bound")) return;
+        document.body.setAttribute("data-xch-bound", "");
+        document.addEventListener("click", function (e) {
+            var t = e.target.closest ? e.target.closest("[data-xch-platform], [data-xch-guide]") : null;
+            if (!t) return;
+            if (t.hasAttribute("data-xch-guide")) { openDrawer("slack", "guide"); return; }
+            var p = t.getAttribute("data-xch-platform");
+            if (PLATFORMS[p]) openDrawer(p, viewFor(p));
+        });
+        Array.prototype.forEach.call(document.querySelectorAll("[data-xch-guide]"), function (b) {
+            b.setAttribute("aria-label", T.guideAria);
+            b.setAttribute("title", T.guideAria);
+        });
+    }
+
+    function reload() {
+        return loadAll().then(function () { Object.keys(PLATFORMS).forEach(refreshRow); });
     }
 
     function init() {
         mountEl = document.querySelector("[data-xon-channels]");
-        if (!mountEl) return;
-        embedded = mountEl.getAttribute("data-xon-channels") === "embedded";
-        if (!creds()) { mountEl.innerHTML = ""; return; }
+        if (!creds()) { if (mountEl) mountEl.innerHTML = ""; return; }
+        bindDelegates();
         renderCard();
-        renderFab();
-        loadAll().then(function () {
-            Object.keys(PLATFORMS).forEach(refreshRow);
-        });
+        paintAll();
+        reload();
     }
 
-    window.XonChannels = { init: init, open: openDrawer, reload: function () { return loadAll().then(function () { Object.keys(PLATFORMS).forEach(refreshRow); }); } };
+    window.XonChannels = {
+        init: init,
+        open: openDrawer,
+        openFor: function (p) { if (PLATFORMS[p]) openDrawer(p, viewFor(p)); },
+        openGuide: function () { openDrawer("slack", "guide"); },
+        platforms: function () { return Object.keys(PLATFORMS); },
+        describe: describe,
+        paint: paintAll,
+        onChange: function (fn) { if (typeof fn === "function") listeners.push(fn); },
+        reload: reload
+    };
 
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
     else init();
