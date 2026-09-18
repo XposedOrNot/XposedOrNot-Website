@@ -210,14 +210,52 @@ function xonDisplayName(id) {
             if (name === "analysis" && analysisTable) analysisTable.columns.adjust();
             if (name === "phishing" && phishingTable) phishingTable.columns.adjust();
             if (name === "vip" && vipTable) vipTable.columns.adjust();
+            if (name === "breaches" && breachTable) breachTable.columns.adjust();
         }
-        links.forEach(function (l) {
+        document.querySelectorAll("[data-panel]").forEach(function (l) {
             l.addEventListener("click", function () {
                 show(l.getAttribute("data-panel"), true);
             });
         });
         var start = location.hash.replace("#", "");
         if (document.getElementById("panel-" + start)) show(start);
+    }
+
+    function initTopbar() {
+        var bar = document.querySelector(".pd-topbar");
+        if (!bar) return;
+        function measure() {
+            document.documentElement.style.setProperty("--pd-topbar-h", bar.offsetHeight + "px");
+        }
+        measure();
+        window.addEventListener("resize", measure);
+        window.addEventListener("load", measure);
+    }
+
+    var RAIL_KEY = "xon_pd_rail";
+    function initRail() {
+        var shell = document.getElementById("pd-shell");
+        var btn = document.getElementById("pd-rail-toggle");
+        if (!shell || !btn) return;
+        var label = btn.querySelector(".pd-nav-label");
+        var icon = btn.querySelector("i");
+        function apply(collapsed) {
+            shell.classList.toggle("pd-rail-collapsed", collapsed);
+            btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+            btn.setAttribute("aria-label", collapsed ? "Expand menu" : "Collapse menu");
+            btn.setAttribute("data-label", collapsed ? "Expand menu" : "Collapse menu");
+            if (label) label.textContent = collapsed ? "Expand menu" : "Collapse menu";
+            if (icon) icon.className = collapsed ? "fas fa-angle-double-right" : "fas fa-angle-double-left";
+        }
+        var stored = null;
+        try { stored = localStorage.getItem(RAIL_KEY); } catch (e) { }
+        var narrow = window.matchMedia("(max-width: 1199px)").matches;
+        apply(stored ? stored === "collapsed" : narrow);
+        btn.addEventListener("click", function () {
+            var next = !shell.classList.contains("pd-rail-collapsed");
+            apply(next);
+            try { localStorage.setItem(RAIL_KEY, next ? "collapsed" : "expanded"); } catch (e) { }
+        });
     }
 
     function greeting() {
@@ -229,7 +267,8 @@ function xonDisplayName(id) {
 
     function drawStems(svg, points, caption) {
         while (svg.firstChild) svg.removeChild(svg.firstChild);
-        var left = 40, right = 700, base = 130;
+        var vbW = (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) || 720;
+        var left = 40, right = vbW - 20, base = 130;
         svg.appendChild(svgEl("line", { x1: left, y1: 35, x2: right, y2: 35 }, "pd-grid"));
         svg.appendChild(svgEl("line", { x1: left, y1: 82, x2: right, y2: 82 }, "pd-grid"));
         svg.appendChild(svgEl("line", { x1: left, y1: base, x2: right, y2: base }, "pd-axis"));
@@ -283,7 +322,7 @@ function xonDisplayName(id) {
             lbl.textContent = yr;
             svg.appendChild(lbl);
         });
-        var today = svgEl("text", { x: 695, y: 150, "text-anchor": "middle" }, "pd-chart-yearlabel");
+        var today = svgEl("text", { x: right - 5, y: 150, "text-anchor": "middle" }, "pd-chart-yearlabel");
         today.textContent = "Today";
         svg.appendChild(today);
         var cap = svgEl("text", { x: left, y: 172, "text-anchor": "start" }, "pd-chart-valuelabel");
@@ -407,69 +446,265 @@ function xonDisplayName(id) {
                     : "";
                 document.getElementById("pd-freshness-date").innerHTML = link + fmtDate(d);
                 document.querySelector(".pd-freshline").hidden = false;
+                window.dispatchEvent(new Event("resize"));
             });
     }
 
-    function breachCard(b, stealer, sensitive) {
-        var chips = (b.xposed_data || "").split(";").filter(Boolean).map(function (c) {
-            var pw = /password|cookie/i.test(c);
-            return '<span class="pd-data-chip' + (pw ? " pd-data-chip-pw" : "") + '">' +
-                '<span aria-hidden="true">' + dataEmoji(c) + "</span> " + esc(c.trim()) + "</span>";
-        }).join("");
-        var risk = { plaintext: "Plaintext passwords", easytocrack: "Easy-to-crack hashes", hardtocrack: "Strong hashes", unknown: "Password storage unknown" }[b.password_risk] || "";
-        return '<article class="pd-breach">' +
+    var breachTable = null;
+    var breachRows = [];
+    var breachFilter = "all";
+    var breachYear = "";
+
+    function breachDetailHtml(b) {
+        var facts = [];
+        if (b.industry) facts.push('<span><i class="fas fa-industry" aria-hidden="true"></i>' + esc(b.industry) + "</span>");
+        if (riskWord(b)) facts.push('<span><i class="fas fa-key" aria-hidden="true"></i>' + esc(riskWord(b)) + " passwords</span>");
+        if (b.domain) facts.push('<span><i class="fas fa-globe" aria-hidden="true"></i>' + esc(b.domain) + "</span>");
+        if (b.xposed_records) facts.push('<span><i class="fas fa-users" aria-hidden="true"></i>' + Number(parseInt(b.xposed_records, 10) || 0).toLocaleString() + " accounts in the breach</span>");
+        if (b.sensitiveFlag) facts.push('<span><i class="fas fa-user-secret" aria-hidden="true"></i>Sensitive breach, hidden from public search and visible only because you are signed in</span>');
+        var advice = [];
+        if (b.stealerFlag) {
+            advice.push("Sign out of every session on this device, then change the browser-saved passwords it captured.");
+            advice.push("Run a full antivirus scan before signing in to anything important again.");
+        } else if (b.password_risk === "plaintext" || b.password_risk === "easytocrack") {
+            advice.push("Change this password now, and anywhere else you reused it.");
+        } else if (hasPassword(b)) {
+            advice.push("Change this password if you still use it, or reused it elsewhere.");
+        }
+        if (/(credit|card|bank|financial|iban)/i.test(b.xposed_data || "")) {
+            advice.push("Watch your statements for unfamiliar charges.");
+        }
+        advice.push("Turn on two-factor authentication for this account if it offers it.");
+        return '<div class="pd-ledger-detail">' +
             '<img class="pd-breach-logo" src="' + esc(b.logo || "/static/images/logos/logo.svg") + '" alt="" loading="lazy" onerror="this.src=\'/static/images/logos/logo.svg\'" />' +
-            '<div class="pd-breach-main"><div class="pd-breach-title">' +
-            '<a href="breach.html#' + encodeURIComponent(b.breach) + '" target="_blank" rel="noopener">' + esc(xonDisplayName(b.breach)) + '<span class="sr-only"> (opens in new tab)</span></a>' +
-            (stealer ? '<span class="pd-badge-stealer"><i class="fas fa-bug" aria-hidden="true"></i> Stealer log</span>' : "") +
-            (sensitive ? '<span class="pd-badge-sensitive"><span aria-hidden="true">🔥</span> Sensitive</span>' : "") +
-            '<span class="pd-breach-meta">' + esc(b.xposed_date || "") +
-            (b.xposed_records ? " &middot; " + Number(parseInt(b.xposed_records, 10) || 0).toLocaleString() + " accounts" : "") +
-            "</span></div>" +
+            '<div class="pd-ledger-detail-main">' +
             (b.details ? '<p class="pd-breach-desc">' + esc(b.details) + "</p>" : "") +
-            '<div class="pd-breach-facts">' +
-            (b.industry ? '<span><i class="fas fa-industry" aria-hidden="true"></i>' + esc(b.industry) + "</span>" : "") +
-            (risk ? '<span><i class="fas fa-key" aria-hidden="true"></i>' + esc(risk) + "</span>" : "") +
-            (b.domain ? '<span><i class="fas fa-globe" aria-hidden="true"></i>' + esc(b.domain) + "</span>" : "") +
-            "</div>" +
-            '<div class="pd-data-chips">' + chips + "</div>" +
-            "</div></article>";
+            '<div class="pd-breach-facts">' + facts.join("") + "</div>" +
+            '<div class="pd-data-chips">' + chipsHtml(b) + "</div>" +
+            '<ul class="pd-ledger-advice">' + advice.map(function (t) {
+                return '<li><i class="fas fa-arrow-right" aria-hidden="true"></i><span>' + esc(t) + "</span></li>";
+            }).join("") + "</ul>" +
+            '<a class="pd-btn pd-btn-quiet pd-btn-sm" href="breach.html#' + encodeURIComponent(b.breach) + '" target="_blank" rel="noopener">' +
+            '<i class="fas fa-external-link-alt" aria-hidden="true"></i> Full breach page<span class="sr-only"> (opens in new tab)</span></a>' +
+            "</div></div>";
+    }
+
+    function breachesError(html) {
+        var n = document.getElementById("pd-br-note");
+        note(n, html, "error");
+        document.getElementById("pd-br-card").hidden = true;
+        document.getElementById("pd-br-report").hidden = true;
+        document.getElementById("pd-br-stealer-note").hidden = true;
+        navPill("pd-nav-breaches", "-");
+    }
+
+    function breachMatches(r) {
+        if (breachYear && String(r.year) !== breachYear) return false;
+        if (breachFilter === "password") return hasPassword(r);
+        if (breachFilter === "plaintext") return r.password_risk === "plaintext";
+        if (breachFilter === "stealer") return r.stealerFlag;
+        if (breachFilter === "sensitive") return r.sensitiveFlag;
+        return true;
     }
 
     function populateBreachesPanel(breaches, sensitive) {
-        var host = document.getElementById("pd-breaches-live");
-        var sorted = breaches.slice().sort(function (a, b) {
-            return (b.added || "") > (a.added || "") ? 1 : -1;
+        var stealers = breaches.filter(isStealer);
+        breachRows = breaches.map(function (b) {
+            return $.extend({}, b, { stealerFlag: isStealer(b), sensitiveFlag: false });
+        }).concat((sensitive || []).map(function (b) {
+            return $.extend({}, b, { stealerFlag: isStealer(b), sensitiveFlag: true });
+        }));
+        breachRows.forEach(function (r) {
+            r.year = parseInt(r.xposed_date, 10) || 0;
+            r.records = parseInt(r.xposed_records, 10) || 0;
+            r.name = xonDisplayName(r.breach);
         });
-        var stealers = sorted.filter(isStealer);
-        var rest = sorted.filter(function (b) { return !isStealer(b); });
-        var html = "";
+        var total = breachRows.length;
+        var card = document.getElementById("pd-br-card");
+        var report = document.getElementById("pd-br-report");
+        var noteEl = document.getElementById("pd-br-note");
+        var stealerNote = document.getElementById("pd-br-stealer-note");
+        if (!total) {
+            card.hidden = true;
+            report.hidden = true;
+            stealerNote.hidden = true;
+            note(noteEl, '<span class="pd-allclear-inline"><i class="fas fa-check-circle" aria-hidden="true"></i> All clear.</span> No known breaches expose this email. Keep alerts on so you hear the moment that changes.');
+            navPill("pd-nav-breaches", "0", true);
+            return;
+        }
+        noteEl.hidden = true;
+        card.hidden = false;
+        report.hidden = false;
         if (stealers.length) {
-            html += '<div class="dashboard-card pd-card"><h2><i class="fas fa-bug" aria-hidden="true"></i> Stealer logs <span class="pd-count">' +
-                stealers.length + " found</span></h2>" +
-                '<p class="pd-panel-sub" style="margin-bottom:12px">Captured directly from an infected device. Treat these first: sign out of sessions, rotate browser-saved passwords, scan the device.</p>' +
-                stealers.map(function (b) { return breachCard(b, true); }).join("") + "</div>";
+            stealerNote.innerHTML = '<strong><i class="fas fa-bug" aria-hidden="true"></i> ' + stealers.length +
+                (stealers.length === 1 ? " stealer-log capture" : " stealer-log captures") +
+                "</strong> came straight from an infected device. Treat these first: sign out of sessions, rotate browser-saved passwords, scan the device. " +
+                '<button type="button" class="pd-linkbtn" data-filter-jump="stealer">Show only stealer logs</button>';
+            stealerNote.hidden = false;
+        } else {
+            stealerNote.hidden = true;
         }
-        if (sensitive && sensitive.length) {
-            html += '<div class="dashboard-card pd-card"><h2><i class="fas fa-user-secret" aria-hidden="true"></i> Sensitive breaches <span class="pd-count">' +
-                sensitive.length + "</span></h2>" +
-                '<p class="pd-panel-sub" style="margin-bottom:12px">Hidden from public search. Visible to you because you are signed in to this account.</p>' +
-                sensitive.map(function (b) { return breachCard(b, false, true); }).join("") + "</div>";
+        var counts = { all: total, password: 0, plaintext: 0, stealer: 0, sensitive: 0 };
+        var years = {};
+        breachRows.forEach(function (r) {
+            if (hasPassword(r)) counts.password++;
+            if (r.password_risk === "plaintext") counts.plaintext++;
+            if (r.stealerFlag) counts.stealer++;
+            if (r.sensitiveFlag) counts.sensitive++;
+            if (r.year) years[r.year] = (years[r.year] || 0) + 1;
+        });
+        Object.keys(counts).forEach(function (k) { setText("pd-br-c-" + k, String(counts[k])); });
+        document.querySelectorAll(".pd-br-filters [data-filter]").forEach(function (btn) {
+            btn.hidden = counts[btn.getAttribute("data-filter")] === 0 && btn.getAttribute("data-filter") !== "all";
+        });
+        var yearSel = document.getElementById("pd-br-year");
+        yearSel.innerHTML = '<option value="">All years</option>' + Object.keys(years).sort().reverse().map(function (y) {
+            return '<option value="' + y + '">' + y + " (" + years[y] + ")</option>";
+        }).join("");
+        breachFilter = "all";
+        breachYear = "";
+        document.querySelectorAll(".pd-br-filters [data-filter]").forEach(function (b) {
+            var on = b.getAttribute("data-filter") === "all";
+            b.classList.toggle("pd-domchip-on", on);
+            b.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        if (breachTable) {
+            breachTable.clear().rows.add(breachRows).draw();
+        } else if ($.fn.DataTable) {
+            breachTable = $("#pd-br-table").DataTable({
+                data: breachRows,
+                pageLength: 50,
+                order: [[3, "desc"]],
+                autoWidth: false,
+                dom: '<"pd-br-toolbar"lfB>rtip',
+                buttons: [{
+                    extend: "collection",
+                    text: '<i class="fas fa-download" aria-hidden="true"></i> Export',
+                    autoClose: true,
+                    buttons: [
+                        { extend: "csv", text: '<i class="fas fa-file-csv" aria-hidden="true"></i> Download CSV', filename: "xon-my-breaches", exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7], orthogonal: "export" } },
+                        { extend: "copy", text: '<i class="fas fa-copy" aria-hidden="true"></i> Copy to clipboard', exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7], orthogonal: "export" } }
+                    ]
+                }],
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search breaches",
+                    lengthMenu: "_MENU_ per page",
+                    emptyTable: "No breaches match this filter.",
+                    zeroRecords: "No breaches match this filter."
+                },
+                columns: [
+                    {
+                        data: null, orderable: false, searchable: false, className: "pd-ledger-x",
+                        render: function (d, type, row, meta) {
+                            return '<button type="button" class="pd-ledger-btn" aria-expanded="false" aria-label="Show details for ' +
+                                esc(row.name) + '"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>';
+                        }
+                    },
+                    {
+                        data: "name", className: "pd-ledger-name",
+                        render: function (d, type, row) {
+                            if (type !== "display") return d;
+                            return breachLink(row) +
+                                (row.stealerFlag ? ' <span class="pd-badge-stealer"><i class="fas fa-bug" aria-hidden="true"></i> Stealer log</span>' : "") +
+                                (row.sensitiveFlag ? ' <span class="pd-badge-sensitive"><span aria-hidden="true">🔥</span> Sensitive</span>' : "");
+                        }
+                    },
+                    {
+                        data: "year", className: "pd-ledger-date",
+                        render: function (d, type, row) {
+                            return type === "display" || type === "export" ? esc(row.xposed_date || "") : d;
+                        }
+                    },
+                    {
+                        data: "added", className: "pd-ledger-added",
+                        render: function (d, type) {
+                            if (type === "display" || type === "export") return addedText(d);
+                            return d || "";
+                        }
+                    },
+                    {
+                        data: "records", className: "pd-ledger-num",
+                        render: function (d, type) {
+                            return type === "display" ? (d ? Number(d).toLocaleString() : '<span class="pd-muted">-</span>') : d;
+                        }
+                    },
+                    {
+                        data: "xposed_data", className: "pd-ledger-data",
+                        render: function (d, type, row) {
+                            if (type === "display") return '<div class="pd-data-chips pd-data-chips-sm">' + chipsHtml(row, 4) + "</div>";
+                            return (d || "").split(";").join(", ");
+                        }
+                    },
+                    {
+                        data: "password_risk", className: "pd-ledger-pw",
+                        render: function (d, type, row) {
+                            var w = pwLabel(row);
+                            if (type === "display") return '<span class="pd-pw ' + riskClass(row) + '">' + esc(w) + "</span>";
+                            return w;
+                        }
+                    },
+                    { data: "industry", className: "pd-ledger-ind", render: function (d, type) { return type === "display" ? esc(d || "") : (d || ""); } }
+                ],
+                createdRow: function (tr, row) {
+                    if (row.stealerFlag) tr.className += " pd-row-stealer";
+                    else if (row.password_risk === "plaintext") tr.className += " pd-row-plain";
+                }
+            });
+            var toolbar = document.querySelector("#pd-br-card .pd-br-toolbar");
+            var yearPick = document.querySelector(".pd-yearpick");
+            if (toolbar && yearPick) {
+                var dtButtons = toolbar.querySelector(".dt-buttons");
+                if (dtButtons) toolbar.insertBefore(yearPick, dtButtons);
+                else toolbar.appendChild(yearPick);
+            }
+            $.fn.dataTable.ext.search.push(function (settings, data, idx, rowData) {
+                if (settings.nTable.id !== "pd-br-table") return true;
+                return breachMatches(rowData);
+            });
+            $("#pd-br-table tbody").on("click", ".pd-ledger-btn", function () {
+                var btn = this;
+                var tr = $(btn).closest("tr");
+                var row = breachTable.row(tr);
+                if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass("pd-row-open");
+                    btn.setAttribute("aria-expanded", "false");
+                } else {
+                    row.child(breachDetailHtml(row.data()), "pd-ledger-child").show();
+                    tr.addClass("pd-row-open");
+                    btn.setAttribute("aria-expanded", "true");
+                }
+            });
+            $("#pd-br-table tbody").on("click", "td:not(.pd-ledger-x):not(.pd-ledger-child)", function (ev) {
+                if ($(ev.target).closest("a, button").length) return;
+                var btn = $(this).closest("tr").find(".pd-ledger-btn")[0];
+                if (btn) btn.click();
+            });
+            document.querySelectorAll(".pd-br-filters [data-filter]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    document.querySelectorAll(".pd-br-filters [data-filter]").forEach(function (b) {
+                        b.classList.remove("pd-domchip-on");
+                        b.setAttribute("aria-pressed", "false");
+                    });
+                    btn.classList.add("pd-domchip-on");
+                    btn.setAttribute("aria-pressed", "true");
+                    breachFilter = btn.getAttribute("data-filter");
+                    breachTable.draw();
+                });
+            });
+            yearSel.addEventListener("change", function () {
+                breachYear = yearSel.value;
+                breachTable.draw();
+            });
+            $(document).on("click", "[data-filter-jump]", function () {
+                var target = document.querySelector('.pd-br-filters [data-filter="' + this.getAttribute("data-filter-jump") + '"]');
+                if (target) { target.click(); target.focus(); }
+            });
         }
-        var LIMIT = 30;
-        var shown = rest.slice(0, LIMIT);
-        html += '<div class="dashboard-card pd-card"><h2><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> All breaches <span class="pd-count">' +
-            rest.length + "</span></h2>" +
-            shown.map(function (b) { return breachCard(b, false); }).join("") +
-            (rest.length > LIMIT
-                ? '<button type="button" class="pd-btn pd-btn-quiet" id="pd-show-all">Show all ' + rest.length + " breaches</button>"
-                : "") +
-            "</div>";
-        html += '<p class="pd-empty-note">Want the full visual report with heat maps and attack paths? ' +
-            '<a href="data-breaches-risks.html" id="pd-report-link" target="_blank" rel="noopener">Open your detailed report<span class="sr-only"> (opens in new tab)</span></a>.</p>';
-        host.innerHTML = html;
         var reportLink = document.getElementById("pd-report-link");
-        if (reportLink) {
+        if (reportLink && !reportLink.dataset.wired) {
+            reportLink.dataset.wired = "1";
             reportLink.addEventListener("click", function () {
                 var payload = JSON.stringify({ email: email, token: token || null, ts: Date.now() });
                 try {
@@ -479,15 +714,6 @@ function xonDisplayName(id) {
                 }
             });
         }
-        var btn = document.getElementById("pd-show-all");
-        if (btn) {
-            btn.addEventListener("click", function () {
-                btn.insertAdjacentHTML("beforebegin",
-                    rest.slice(LIMIT).map(function (b) { return breachCard(b, false); }).join(""));
-                btn.remove();
-            });
-        }
-        var total = sorted.length + (sensitive ? sensitive.length : 0);
         navPill("pd-nav-breaches", String(total), total === 0);
     }
 
@@ -543,8 +769,14 @@ function xonDisplayName(id) {
                 (sensitive.length ? ", " + sensitive.length + " of them sensitive" : "") + ".";
         }
         setText("pd-risk-why", why);
+        var topRisk = document.getElementById("pd-top-risk");
+        setText("pd-top-risk-text", risk.risk_label + " risk, " + risk.risk_score + "/100");
+        topRisk.className = "pd-topbar-risk pd-risk-tone-" + String(risk.risk_label || "low").toLowerCase();
+        topRisk.hidden = false;
+        window.dispatchEvent(new Event("resize"));
         setText("pd-stat-breaches", (breaches.length + sensitive.length).toLocaleString());
         setText("pd-stat-stealer", stealerCount.toLocaleString());
+        document.querySelector(".pd-stat-hot").classList.toggle("pd-stat-alert", stealerCount > 0);
         setText("pd-stat-passwords", pwCount.toLocaleString());
         setText("pd-stat-pastes", Number(pastes).toLocaleString());
         buildStrengthBar(metrics);
@@ -559,7 +791,97 @@ function xonDisplayName(id) {
                 "</strong> right now. Keep breach alerts on so you hear the moment that changes.");
         }
         buildChecklist(breaches);
+        buildInsights(breaches.concat(sensitive));
+        buildRecent(breaches.concat(sensitive));
         populateBreachesPanel(breaches, sensitive);
+    }
+
+    function riskWord(b) {
+        return { plaintext: "Plaintext", easytocrack: "Easy to crack", hardtocrack: "Strong hash", unknown: "Unknown" }[b.password_risk] || "";
+    }
+
+    function pwLabel(b) {
+        if (!hasPassword(b)) return "No password";
+        return riskWord(b) || "Exposed";
+    }
+
+    function riskClass(b) {
+        if (!hasPassword(b)) return "pd-pw-none";
+        return b.password_risk === "plaintext" ? "pd-pw-plain" :
+            b.password_risk === "easytocrack" ? "pd-pw-easy" :
+            b.password_risk === "hardtocrack" ? "pd-pw-strong" : "pd-pw-none";
+    }
+
+    function chipsHtml(b, limit) {
+        var parts = (b.xposed_data || "").split(";").map(function (c) { return c.trim(); }).filter(Boolean);
+        var shown = limit ? parts.slice(0, limit) : parts;
+        var html = shown.map(function (c) {
+            var pw = /password|cookie/i.test(c);
+            return '<span class="pd-data-chip' + (pw ? " pd-data-chip-pw" : "") + '">' +
+                (limit ? "" : '<span aria-hidden="true">' + dataEmoji(c) + "</span> ") + esc(c) + "</span>";
+        }).join("");
+        if (limit && parts.length > limit) {
+            html += '<span class="pd-data-chip pd-data-chip-more">+' + (parts.length - limit) + " more</span>";
+        }
+        return html;
+    }
+
+    function addedText(v) {
+        if (!v) return "-";
+        var d = new Date(v);
+        return isNaN(d.getTime()) ? esc(String(v)) : fmtDate(d);
+    }
+
+    function breachLink(b) {
+        return '<a href="breach.html#' + encodeURIComponent(b.breach) + '" target="_blank" rel="noopener">' +
+            esc(xonDisplayName(b.breach)) + '<span class="sr-only"> (opens in new tab)</span></a>';
+    }
+
+    function buildInsights(all) {
+        var wrap = document.getElementById("pd-insights");
+        if (!all.length) { wrap.hidden = true; return; }
+        var ind = {};
+        all.forEach(function (b) {
+            var k = (b.industry || "").trim() || "Unknown";
+            ind[k] = (ind[k] || 0) + 1;
+        });
+        var keys = Object.keys(ind).sort(function (a, b) { return ind[b] - ind[a]; });
+        var max = ind[keys[0]] || 1;
+        document.getElementById("pd-industries").innerHTML = keys.slice(0, 6).map(function (k) {
+            var pct = Math.max(6, Math.round((ind[k] / max) * 100));
+            return '<li><span class="pd-bar-label">' + esc(k) + '</span>' +
+                '<span class="pd-bar-track" aria-hidden="true"><span class="pd-bar-fill" style="width:' + pct + '%"></span></span>' +
+                '<span class="pd-bar-num">' + ind[k] + "</span></li>";
+        }).join("");
+        var biggest = all.filter(function (b) { return parseInt(b.xposed_records, 10) > 0; })
+            .sort(function (a, b) { return (parseInt(b.xposed_records, 10) || 0) - (parseInt(a.xposed_records, 10) || 0); })
+            .slice(0, 5);
+        document.getElementById("pd-biggest").innerHTML = biggest.map(function (b) {
+            return '<li><span class="pd-rank-name">' + breachLink(b) +
+                '<span class="pd-breach-meta">' + esc(b.xposed_date || "") + "</span></span>" +
+                '<span class="pd-rank-num">' + Number(parseInt(b.xposed_records, 10)).toLocaleString() +
+                '<small>accounts</small></span></li>';
+        }).join("") || '<li class="pd-muted">No account counts available.</li>';
+        wrap.hidden = false;
+    }
+
+    function buildRecent(all) {
+        var card = document.getElementById("pd-recent-card");
+        if (!all.length) { card.hidden = true; return; }
+        var sorted = all.slice().sort(function (a, b) {
+            return (b.added || "") > (a.added || "") ? 1 : -1;
+        });
+        document.getElementById("pd-recent-body").innerHTML = sorted.slice(0, 5).map(function (b) {
+            return "<tr><td class=\"pd-ledger-name\">" + breachLink(b) +
+                (isStealer(b) ? ' <span class="pd-badge-stealer"><i class="fas fa-bug" aria-hidden="true"></i> Stealer log</span>' : "") +
+                "</td><td>" + esc(b.xposed_date || "") +
+                '</td><td class="pd-ledger-added">' + addedText(b.added) +
+                '</td><td><div class="pd-data-chips pd-data-chips-sm">' + chipsHtml(b, 3) + "</div></td>" +
+                '<td><span class="pd-pw ' + riskClass(b) + '">' + esc(pwLabel(b)) + "</span></td></tr>";
+        }).join("");
+        var all_ = document.getElementById("pd-recent-all");
+        all_.textContent = "See all " + all.length + (all.length === 1 ? " breach" : " breaches");
+        card.hidden = false;
     }
 
     function buildInfoMap(detailed) {
@@ -1162,7 +1484,7 @@ function xonDisplayName(id) {
         document.querySelector(".pd-email").textContent = email;
         setText("pd-greeting", greeting());
         var greetSub = document.getElementById("pd-greeting-sub");
-        if (greetSub) greetSub.innerHTML = "Here is where <span class=\"pd-greeting-email\">" + esc(email) + "</span> stands today, " + esc(fmtDate(new Date())) + ".";
+        if (greetSub) greetSub.textContent = "Here is where you stand today, " + fmtDate(new Date()) + ".";
         document.getElementById("pd-signout").addEventListener("click", function (e) {
             e.preventDefault();
             var link = this;
@@ -1193,6 +1515,9 @@ function xonDisplayName(id) {
         });
         navPill("pd-nav-breaches", "-");
         document.getElementById("pd-chart-card").hidden = true;
+        document.getElementById("pd-insights").hidden = true;
+        document.getElementById("pd-recent-card").hidden = true;
+        document.getElementById("pd-top-risk").hidden = true;
         document.getElementById("pd-strength").hidden = true;
         document.querySelector(".pd-checklist").innerHTML = "";
         document.querySelector(".pd-freshline").hidden = true;
@@ -1244,16 +1569,12 @@ function xonDisplayName(id) {
                     var blockMsg = "The request to the breach-data API was blocked before it left your browser, most likely by an ad blocker: the endpoint name contains the word analytics, which many blocker filter lists match. Allow xposedornot.com in your blocker or pause it for this page, then reload.";
                     note(document.getElementById("pd-overview-note"), blockMsg, "error");
                     populateBreachesPanel([], []);
-                    document.getElementById("pd-breaches-live").innerHTML =
-                        '<p class="pd-empty-note">' + blockMsg + "</p>";
-                    navPill("pd-nav-breaches", "-");
+                    breachesError(blockMsg);
                 } else {
                     if (authRedirect(error)) return;
                     note(document.getElementById("pd-overview-note"), errorHtml(error), "error");
                     populateBreachesPanel([], []);
-                    document.getElementById("pd-breaches-live").innerHTML =
-                        '<p class="pd-empty-note">' + errorHtml(error) + "</p>";
-                    navPill("pd-nav-breaches", "-");
+                    breachesError(errorHtml(error));
                 }
             });
     }
@@ -1711,6 +2032,8 @@ function xonDisplayName(id) {
             return;
         }
         initNav();
+        initRail();
+        initTopbar();
         initPhishing();
         initShield();
         initAlertControl();

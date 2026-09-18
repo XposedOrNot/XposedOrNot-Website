@@ -115,43 +115,62 @@
           </div>
         </nav>
       </div>
-      <div class="container" style="text-align: center; position: relative">
-        <h1 class="dashboard-hero-title">My Dashboard</h1>
-        <p class="hero-subtitle">
-          Your breaches, alerts, and next steps. One place, always current.
-        </p>
-      </div>
     </div>
 
     <main id="main-content">
-      <div class="pd-shell">
-        <aside class="pd-sidebar" aria-label="Dashboard navigation">
-          <div class="pd-who">
-            <div class="pd-avatar" aria-hidden="true">
-              <i class="fas fa-user-shield"></i>
-            </div>
+      <div class="pd-topbar">
+        <div class="pd-topbar-in">
+          <h1 class="pd-topbar-title">My Dashboard</h1>
+          <div class="pd-topbar-who">
+            <i class="fas fa-user-shield" aria-hidden="true"></i>
+            <span class="sr-only">Signed in as </span>
+            <span class="pd-email"></span>
+          </div>
+          <a class="pd-topbar-risk" id="pd-top-risk" href="#overview" data-panel="overview" hidden>
+            <span class="sr-only">Risk level </span>
+            <span class="pd-topbar-risk-dot" aria-hidden="true"></span>
+            <span id="pd-top-risk-text"></span>
+            <span class="sr-only">, open overview</span>
+          </a>
+          <div class="pd-freshline" hidden>
+            <i class="fas fa-database" aria-hidden="true"></i>
             <div>
-              <div class="pd-who-label">Signed in</div>
-              <div class="pd-email"></div>
+              <span class="pd-fresh-label">Latest breach tracked</span>
+              <span class="pd-fresh-val" id="pd-freshness-date"></span>
             </div>
           </div>
-          <ul class="pd-nav">
+        </div>
+      </div>
+      <div class="pd-shell" id="pd-shell">
+        <aside class="pd-sidebar" aria-label="Dashboard navigation">
+          <button
+            type="button"
+            class="pd-rail-toggle"
+            id="pd-rail-toggle"
+            aria-expanded="true"
+            aria-controls="pd-nav"
+            aria-label="Collapse menu"
+          >
+            <i class="fas fa-angle-double-left" aria-hidden="true"></i>
+            <span class="pd-nav-label">Collapse menu</span>
+          </button>
+          <ul class="pd-nav" id="pd-nav">
             <li class="pd-navgroup">Your exposure</li>
             <li>
-              <a href="#overview" data-panel="overview" aria-current="page"
-                ><i class="fas fa-home" aria-hidden="true"></i> Overview</a
+              <a href="#overview" data-panel="overview" data-label="Overview" aria-current="page"
+                ><i class="fas fa-home" aria-hidden="true"></i><span class="pd-nav-label">Overview</span></a
               >
             </li>
             <li>
-              <a href="#breaches" data-panel="breaches"
+              <a href="#breaches" data-panel="breaches" data-label="My Breaches"
                 ><i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-                My Breaches <span class="pd-navcount" id="pd-nav-breaches">-</span></a
+                <span class="pd-nav-label">My Breaches</span> <span class="pd-navcount" id="pd-nav-breaches">-</span></a
               >
             </li>
             <li class="pd-navgroup">My domains</li>
             <li>
-              <a href="#domain" data-panel="domain"
-                ><i class="fas fa-globe" aria-hidden="true"></i> Domains
+              <a href="#domain" data-panel="domain" data-label="Domains"
+                ><i class="fas fa-globe" aria-hidden="true"></i><span class="pd-nav-label">Domains</span>
                 <span class="pd-navcount" id="pd-nav-domains" hidden></span
                 ><span class="pd-nav-lock" hidden title="Needs a verified domain"
                   ><i class="fas fa-lock" aria-hidden="true"></i
@@ -160,60 +179,60 @@
               >
             </li>
             <li>
-              <a href="#analysis" data-panel="analysis"
-                ><i class="fas fa-chart-bar" aria-hidden="true"></i> Breach
-                Analysis<span class="pd-nav-lock" hidden title="Needs a verified domain"
+              <a href="#analysis" data-panel="analysis" data-label="Breach Analysis"
+                ><i class="fas fa-chart-bar" aria-hidden="true"></i><span class="pd-nav-label">Breach
+                Analysis</span><span class="pd-nav-lock" hidden title="Needs a verified domain"
                   ><i class="fas fa-lock" aria-hidden="true"></i
                   ><span class="sr-only"> (needs a verified domain)</span></span
                 ></a
               >
             </li>
             <li>
-              <a href="#vip" data-panel="vip"
-                ><i class="fas fa-user-tie" aria-hidden="true"></i> VIP
-                Dashboard<span class="pd-nav-lock" hidden title="Needs a verified domain"
+              <a href="#vip" data-panel="vip" data-label="VIP Dashboard"
+                ><i class="fas fa-user-tie" aria-hidden="true"></i><span class="pd-nav-label">VIP
+                Dashboard</span><span class="pd-nav-lock" hidden title="Needs a verified domain"
                   ><i class="fas fa-lock" aria-hidden="true"></i
                   ><span class="sr-only"> (needs a verified domain)</span></span
                 ></a
               >
             </li>
             <li>
-              <a href="#phishing" data-panel="phishing"
-                ><i class="fas fa-fish" aria-hidden="true"></i> Phishing
-                Analysis<span class="pd-nav-lock" hidden title="Needs a verified domain"
+              <a href="#phishing" data-panel="phishing" data-label="Phishing Analysis"
+                ><i class="fas fa-fish" aria-hidden="true"></i><span class="pd-nav-label">Phishing
+                Analysis</span><span class="pd-nav-lock" hidden title="Needs a verified domain"
                   ><i class="fas fa-lock" aria-hidden="true"></i
                   ><span class="sr-only"> (needs a verified domain)</span></span
                 ></a
               >
             </li>
             <li>
-              <a href="domain" target="_blank" rel="noopener"
-                ><i class="fas fa-plus-circle" aria-hidden="true"></i> Add
-                Domain<span class="sr-only"> (opens in new tab)</span></a
+              <a href="domain" target="_blank" rel="noopener" data-label="Add Domain"
+                ><i class="fas fa-plus-circle" aria-hidden="true"></i><span class="pd-nav-label">Add
+                Domain</span><span class="sr-only"> (opens in new tab)</span></a
               >
             </li>
             <li class="pd-navgroup">Account</li>
             <li>
-              <a href="#alerts" data-panel="alerts"
-                ><i class="fas fa-bell" aria-hidden="true"></i> Alerts
+              <a href="#alerts" data-panel="alerts" data-label="Alerts"
+                ><i class="fas fa-bell" aria-hidden="true"></i><span class="pd-nav-label">Alerts</span>
                 <span class="pd-navcount" id="pd-nav-alerts" hidden></span></a
               >
             </li>
             <li>
-              <a href="#monitor" data-panel="monitor" id="pd-nav-monitor"
-                ><i class="fas fa-users" aria-hidden="true"></i> My Circle</a
+              <a href="#monitor" data-panel="monitor" id="pd-nav-monitor" data-label="My Circle"
+                ><i class="fas fa-users" aria-hidden="true"></i><span class="pd-nav-label">My Circle</span></a
               >
             </li>
             <li>
-              <a href="#privacy" data-panel="privacy"
+              <a href="#privacy" data-panel="privacy" data-label="Privacy"
                 ><i class="fas fa-user-shield" aria-hidden="true"></i>
-                Privacy</a
+                <span class="pd-nav-label">Privacy</span></a
               >
             </li>
             <li>
-              <a href="#apikeys" data-panel="apikeys"
-                ><i class="fas fa-code" aria-hidden="true"></i> API
-                Keys<span class="pd-nav-lock" hidden title="Needs a verified domain"
+              <a href="#apikeys" data-panel="apikeys" data-label="API Keys"
+                ><i class="fas fa-code" aria-hidden="true"></i><span class="pd-nav-label">API
+                Keys</span><span class="pd-nav-lock" hidden title="Needs a verified domain"
                   ><i class="fas fa-lock" aria-hidden="true"></i
                   ><span class="sr-only"> (needs a verified domain)</span></span
                 ></a
@@ -221,9 +240,9 @@
             </li>
           </ul>
           <div class="pd-signout">
-            <a href="#" id="pd-signout" role="button"
-              ><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign
-              out</a
+            <a href="#" id="pd-signout" role="button" data-label="Sign out"
+              ><i class="fas fa-sign-out-alt" aria-hidden="true"></i><span class="pd-nav-label">Sign
+              out</span></a
             >
           </div>
         </aside>
@@ -235,13 +254,6 @@
                 <h2 class="pd-panel-title" id="pd-greeting">Welcome</h2>
                 <p class="pd-panel-sub" id="pd-greeting-sub"></p>
               </div>
-              <div class="pd-freshline" hidden>
-                <i class="fas fa-database" aria-hidden="true"></i>
-                <div>
-                  <span class="pd-fresh-label">Latest breach tracked</span>
-                  <span class="pd-fresh-val" id="pd-freshness-date"></span>
-                </div>
-              </div>
             </div>
 
             <p class="pd-empty-note" id="pd-overview-note" aria-live="polite" hidden></p>
@@ -249,6 +261,25 @@
               <i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i>
               Checking your exposure
             </div>
+            <div class="pd-statstrip" role="list" aria-label="Exposure summary">
+              <div class="pd-stat" role="listitem">
+                <span class="pd-stat-num" id="pd-stat-breaches">-</span>
+                <span class="pd-stat-label">Breaches</span>
+              </div>
+              <div class="pd-stat" role="listitem">
+                <span class="pd-stat-num" id="pd-stat-passwords">-</span>
+                <span class="pd-stat-label">Password exposures</span>
+              </div>
+              <div class="pd-stat pd-stat-hot" role="listitem">
+                <span class="pd-stat-num" id="pd-stat-stealer">-</span>
+                <span class="pd-stat-label">Stealer-log captures</span>
+              </div>
+              <div class="pd-stat" role="listitem">
+                <span class="pd-stat-num" id="pd-stat-pastes">-</span>
+                <span class="pd-stat-label">Public pastes</span>
+              </div>
+            </div>
+
             <div class="dashboard-card pd-card">
               <div class="pd-overview-grid">
                 <div>
@@ -288,34 +319,18 @@
                       exposure can outweigh several old, well-hashed ones.
                     </p>
                   </details>
-                </div>
-                <div class="pd-tiles">
-                  <div class="pd-tile">
-                    <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-                    <div class="pd-tile-num" id="pd-stat-breaches">-</div>
-                    <div class="pd-tile-label">Breaches</div>
-                  </div>
-                  <div class="pd-tile pd-tile-hot">
-                    <i class="fas fa-bug" aria-hidden="true"></i>
-                    <div class="pd-tile-num" id="pd-stat-stealer">-</div>
-                    <div class="pd-tile-label">Stealer-log captures</div>
-                  </div>
-                  <div class="pd-tile">
-                    <i class="fas fa-key" aria-hidden="true"></i>
-                    <div class="pd-tile-num" id="pd-stat-passwords">-</div>
-                    <div class="pd-tile-label">Password exposures</div>
-                  </div>
-                  <div class="pd-tile">
-                    <i class="fas fa-paste" aria-hidden="true"></i>
-                    <div class="pd-tile-num" id="pd-stat-pastes">-</div>
-                    <div class="pd-tile-label">Public pastes</div>
+                  <div class="pd-strength" id="pd-strength" hidden>
+                    <div class="pd-risk-label">Password exposure quality</div>
+                    <div class="pd-strength-bar" id="pd-strength-bar"></div>
+                    <div class="pd-legend" id="pd-strength-legend"></div>
                   </div>
                 </div>
-              </div>
-              <div class="pd-strength" id="pd-strength" hidden>
-                <div class="pd-risk-label">Password exposure quality</div>
-                <div class="pd-strength-bar" id="pd-strength-bar"></div>
-                <div class="pd-legend" id="pd-strength-legend"></div>
+                <div class="pd-next">
+                  <h2>
+                    <i class="fas fa-tasks" aria-hidden="true"></i> What to do next
+                  </h2>
+                  <ul class="pd-checklist"></ul>
+                </div>
               </div>
             </div>
 
@@ -328,7 +343,7 @@
                 <svg
                   class="pd-chart"
                   id="pd-chart"
-                  viewBox="0 0 720 190"
+                  viewBox="0 0 1000 190"
                   role="img"
                   aria-label="Timeline of your breaches"
                 ></svg>
@@ -340,11 +355,45 @@
               </div>
             </div>
 
-            <div class="dashboard-card pd-card">
-              <h2>
-                <i class="fas fa-tasks" aria-hidden="true"></i> What to do next
-              </h2>
-              <ul class="pd-checklist"></ul>
+            <div class="pd-insights" id="pd-insights" hidden>
+              <div class="dashboard-card pd-card">
+                <h2>
+                  <i class="fas fa-industry" aria-hidden="true"></i> Industries
+                  that leaked your data
+                </h2>
+                <ul class="pd-bars" id="pd-industries"></ul>
+              </div>
+              <div class="dashboard-card pd-card">
+                <h2>
+                  <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                  Your biggest breaches
+                </h2>
+                <ol class="pd-rank" id="pd-biggest"></ol>
+              </div>
+            </div>
+
+            <div class="dashboard-card pd-card" id="pd-recent-card" hidden>
+              <div class="pd-card-head">
+                <h2>
+                  <i class="fas fa-history" aria-hidden="true"></i> Recent
+                  breaches
+                </h2>
+                <a href="#breaches" data-panel="breaches" class="pd-seeall" id="pd-recent-all"></a>
+              </div>
+              <div class="pd-table-wrap">
+                <table class="pd-table pd-recent" id="pd-recent-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Breach</th>
+                      <th scope="col">Year</th>
+                      <th scope="col">Added</th>
+                      <th scope="col">Exposed data</th>
+                      <th scope="col">Password</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pd-recent-body"></tbody>
+                </table>
+              </div>
             </div>
           </section>
 
@@ -363,7 +412,48 @@
               </div>
             </div>
 
-            <div id="pd-breaches-live" class="pd-live-only" hidden></div>
+            <div id="pd-breaches-live" class="pd-live-only" hidden>
+              <p class="pd-empty-note pd-callout-hot" id="pd-br-stealer-note" hidden></p>
+              <p class="pd-empty-note" id="pd-br-note" aria-live="polite" hidden></p>
+              <div class="dashboard-card pd-card" id="pd-br-card">
+                <div class="pd-filterrow pd-br-filters" role="group" aria-label="Filter breaches">
+                  <button type="button" class="pd-domchip pd-domchip-on" data-filter="all" aria-pressed="true">All <span class="pd-chipcount" id="pd-br-c-all"></span></button>
+                  <button type="button" class="pd-domchip" data-filter="password" aria-pressed="false">Password exposed <span class="pd-chipcount" id="pd-br-c-password"></span></button>
+                  <button type="button" class="pd-domchip" data-filter="plaintext" aria-pressed="false">Plaintext <span class="pd-chipcount" id="pd-br-c-plaintext"></span></button>
+                  <button type="button" class="pd-domchip" data-filter="stealer" aria-pressed="false">Stealer log <span class="pd-chipcount" id="pd-br-c-stealer"></span></button>
+                  <button type="button" class="pd-domchip" data-filter="sensitive" aria-pressed="false">Sensitive <span class="pd-chipcount" id="pd-br-c-sensitive"></span></button>
+                  <label class="pd-yearpick">
+                    <span class="sr-only">Filter by year</span>
+                    <select class="pd-ph-input" id="pd-br-year">
+                      <option value="">All years</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="pd-table-wrap">
+                  <table class="pd-table pd-ledger" id="pd-br-table" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="pd-ledger-x"><span class="sr-only">Details</span></th>
+                        <th scope="col">Breach</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Added</th>
+                        <th scope="col">Accounts <span class="pd-th-note">in the breach</span></th>
+                        <th scope="col">Exposed data</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Industry</th>
+                      </tr>
+                    </thead>
+                    <tbody id="pd-br-body"></tbody>
+                  </table>
+                </div>
+              </div>
+              <p class="pd-empty-note" id="pd-br-report" hidden>
+                Want the full visual report with heat maps and attack paths?
+                <a href="data-breaches-risks.html" id="pd-report-link" target="_blank" rel="noopener"
+                  >Open your detailed report<span class="sr-only"> (opens in new tab)</span></a
+                >.
+              </p>
+            </div>
           </section>
 
           <section
@@ -637,7 +727,7 @@
                   <svg
                     class="pd-chart"
                     id="pd-dom-chart"
-                    viewBox="0 0 720 190"
+                    viewBox="0 0 1000 190"
                     role="img"
                     aria-label="Domain exposure timeline"
                   ></svg>
@@ -936,7 +1026,7 @@
     <script src="/static/scripts/common.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.5/loadingoverlay.min.js" defer></script>
     <script src="/breach/names.js"></script>
-    <script src="/static/scripts/my-dashboard.js?v=20260709b" defer></script>
+    <script src="/static/scripts/my-dashboard.js?v=20260918" defer></script>
     <script src="/static/scripts/alert-channels.js" defer></script>
     <script
       async
