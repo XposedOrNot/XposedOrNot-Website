@@ -45,9 +45,17 @@ breaches list, mirroring repository.js; locale copies get the numeric
 values only. It also refreshes llms.txt (Last updated line, Notable
 Breaches section) and regenerates llms-full.txt (llms.txt content plus
 key statistics, the FAQ from the FAQPage schemas, and the complete
-breach index). Never hand-edit those baked blocks - rerun this script.
+breach index). It also bakes the live totals, verified count, breach-type
+table and data-as-of dates into methodology.html and the breach count,
+record total and updated month into domain-monitoring.html (trust strip,
+check-widget attribute and JS fallback, FAQ answer and schema).
+Whenever one of those baked pages changes, its sitemap.xml <lastmod>
+(home, xposed and our-repository with locale copies, methodology,
+domain-monitoring) is stamped with today's date; sitemap-breaches.xml is
+rewritten in full. Never hand-edit those baked blocks - rerun this script.
 """
 import argparse
+import collections
 import hashlib
 import html
 import json
@@ -1347,6 +1355,113 @@ def notable_breaches_section(public):
             f"{lines}\n")
 
 
+def sub_once(text, pattern, repl, page, label):
+    new, n = re.subn(pattern, repl, text, count=1, flags=re.S)
+    if not n:
+        print(f"WARNING: {page} missing {label}, value not baked")
+    return new
+
+
+def bake_deep_pages(public, metrics):
+    if metrics is None:
+        print("WARNING: no metrics data, methodology/domain-monitoring not baked")
+        return 0
+    total = int(metrics["Breaches_Count"])
+    records = int(metrics["Breaches_Records"])
+    billions = f"{records / 1e9:.1f}"
+    verified = sum(1 for b in public if b.get("verified"))
+    types = collections.Counter(b.get("breachType") or "" for b in public)
+    latest = max(r["addedDate"] for r in public)
+    d = datetime.fromisoformat(latest)
+    date_en = fmt_freshness_date("en", d)
+    month_en = f"{FRESHNESS_MONTHS['en'][d.month - 1]} {d.year}"
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    baked = 0
+
+    page = ROOT / "methodology.html"
+    original = page.read_text(encoding="utf-8")
+    text = original
+    for elem_id, value in (
+        ("meth-total", str(total)), ("meth-records", billions),
+        ("meth-asof", date_en), ("meth-verified-month", month_en),
+        ("meth-verified", str(verified)), ("meth-verified-total", str(total)),
+        ("meth-types-month", month_en), ("meth-types-total", str(total)),
+        ("meth-caption-month", month_en),
+        ("meth-cite-total", str(total)), ("meth-cite-asof", date_en),
+    ):
+        text = set_inner(text, elem_id, value, page)
+    for btype, count in types.items():
+        if f'id="meth-type-{btype}"' not in text:
+            print(f"WARNING: {page} has no table row for breach type "
+                  f"{btype!r} ({count}), add one")
+            continue
+        text = set_inner(text, f"meth-type-{btype}", str(count), page)
+    text = sub_once(
+        text, r'("description": "Index of )\d[\d,]*( data breaches covering more than )[\d.]+( billion)',
+        rf"\g<1>{total}\g<2>{billions}\g<3>", page, "Dataset description")
+    if text != original:
+        text = re.sub(r'("dateModified": ")[^"]*(")', rf"\g<1>{today}\g<2>",
+                      text, count=1)
+        page.write_text(text, encoding="utf-8", newline="")
+        baked += 1
+
+    page = ROOT / "domain-monitoring.html"
+    original = page.read_text(encoding="utf-8")
+    text = original
+    for elem_id, value in (("dm-total", str(total)), ("dm-records", billions),
+                           ("dm-updated", month_en)):
+        text = set_inner(text, elem_id, value, page)
+    text = sub_once(text, r'(data-breach-count=")\d+(")', rf"\g<1>{total}\g<2>",
+                    page, "data-breach-count attribute")
+    text = sub_once(text, r"(getAttribute\('data-breach-count'\) \|\| ')\d+(')",
+                    rf"\g<1>{total}\g<2>", page, "data-breach-count JS fallback")
+    text, n = re.subn(r"(appear in the )\d+( breaches we index today)",
+                      rf"\g<1>{total}\g<2>", text)
+    if n != 2:
+        print(f"WARNING: {page} expected 2 'breaches we index today' spots, found {n}")
+    if text != original:
+        page.write_text(text, encoding="utf-8", newline="")
+        baked += 1
+    return baked
+
+
+def sitemap_pages():
+    pages = {ROOT / "index.html": "/", ROOT / "xposed.html": "/xposed",
+             ROOT / "our-repository.html": "/our-repository",
+             ROOT / "methodology.html": "/methodology",
+             ROOT / "domain-monitoring.html": "/domain-monitoring"}
+    for loc in LOCALES:
+        pages[ROOT / loc / "index.html"] = f"/{loc}/"
+        pages[ROOT / loc / "xposed.html"] = f"/{loc}/xposed"
+        pages[ROOT / loc / "our-repository.html"] = f"/{loc}/our-repository"
+    return pages
+
+
+def snapshot_pages(pages):
+    return {p: p.read_bytes() if p.exists() else None for p in pages}
+
+
+def stamp_sitemap(pages, before):
+    changed = [path for p, path in pages.items()
+               if p.exists() and p.read_bytes() != before.get(p)]
+    if not changed:
+        return 0
+    sm = ROOT / "sitemap.xml"
+    text = sm.read_text(encoding="utf-8")
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    stamped = 0
+    for path in changed:
+        pattern = (rf"(<loc>{re.escape(SITE)}{re.escape(path)}</loc>\s*<lastmod>)"
+                   rf"[^<]*(</lastmod>)")
+        text, n = re.subn(pattern, rf"\g<1>{today}\g<2>", text, count=1)
+        if n:
+            stamped += 1
+        else:
+            print(f"WARNING: sitemap.xml has no entry for {path}, lastmod not stamped")
+    sm.write_text(text, encoding="utf-8", newline="")
+    return stamped
+
+
 def bake_llms(public):
     latest = max(r["addedDate"] for r in public)
     date_en = fmt_freshness_date("en", datetime.fromisoformat(latest))
@@ -1525,15 +1640,20 @@ def main():
         f.write(sitemap)
 
     orphans = existing - {r["breachID"] for r in public}
+    tracked = sitemap_pages()
+    before = snapshot_pages(tracked)
     baked = bake_directory(public)
     stamped = bake_index_freshness(public)
     metrics = fetch_metrics()
     repo = bake_repository_stats(public, metrics)
+    deep = bake_deep_pages(public, metrics)
+    lastmods = stamp_sitemap(tracked, before)
     llms = bake_llms(public) + bake_llms_full(public, metrics)
     print(f"fetched: {len(all_ids)} | rendered now: {len(to_render)} | "
           f"pages on disk: {len(existing)} | sitemap: {len(live)} URLs | "
           f"directory pages baked: {baked} | index pages stamped: {stamped} | "
-          f"repository pages baked: {repo} | llms files updated: {llms} | "
+          f"repository pages baked: {repo} | deep pages baked: {deep} | "
+          f"sitemap lastmods stamped: {lastmods} | llms files updated: {llms} | "
           f"breach facts changed: {changed}")
     if orphans:
         print(f"WARNING: {len(orphans)} orphan page dirs no longer in the public API "
