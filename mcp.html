@@ -834,7 +834,7 @@
             <p>Expected reply: <code>Added HTTP MCP server xposedornot with URL: https://api.xposedornot.com/mcp</code>.</p>
 
             <h4>Claude Desktop</h4>
-            <p>Go to <strong>Settings, then Connectors, then Add custom connector</strong> and enter:</p>
+            <p>Go to <strong>Customize, then Connectors, then + Add, then Add custom connector</strong> and enter:</p>
             <div class="code-box copyable">Name: XposedOrNot
 URL:  https://api.xposedornot.com/mcp</div>
             <p>Save, then fully quit and reopen Claude Desktop. The connector is not loaded until you restart.</p>
@@ -852,7 +852,7 @@ URL:  https://api.xposedornot.com/mcp</div>
             <p>Or install in one click: <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=xposedornot&amp;config=eyJ1cmwiOiJodHRwczovL2FwaS54cG9zZWRvcm5vdC5jb20vbWNwIn0=">Add to Cursor</a> (needs Cursor installed).</p>
 
             <h4>VS Code</h4>
-            <p>Add the server to <code>.vscode/mcp.json</code> in your workspace, or use the one-click link: <a href="https://vscode.dev/redirect/mcp/install?name=xposedornot&amp;config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//api.xposedornot.com/mcp%22%7D" target="_blank" rel="noopener">Add to VS Code</a>.</p>
+            <p>Add the server to <code>.vscode/mcp.json</code> in your workspace, or use the one-click link: <a href="vscode:mcp/install?%7B%22name%22%3A%22xposedornot%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fapi.xposedornot.com%2Fmcp%22%7D">Add to VS Code</a> (needs VS Code installed).</p>
             <div class="code-box copyable">{
   "servers": {
     "xposedornot": {
@@ -863,7 +863,7 @@ URL:  https://api.xposedornot.com/mcp</div>
 }</div>
 
             <h4>Windsurf</h4>
-            <p>Add the server to <code>mcp_config.json</code> (Settings, then Cascade, then MCP servers):</p>
+            <p>In the Cascade panel, open the Actions menu (the three dots at the top right), choose <strong>Open MCP config file</strong>, and add the server to <code>mcp_config.json</code>:</p>
             <div class="code-box copyable">{
   "mcpServers": {
     "xposedornot": {
@@ -883,7 +883,7 @@ URL:  https://api.xposedornot.com/mcp</div>
             <div class="code-box copyable">gemini mcp add --transport http xposedornot https://api.xposedornot.com/mcp</div>
 
             <h4>Cline</h4>
-            <p>Add the server to <code>cline_mcp_settings.json</code> (MCP Servers, then Configure MCP Servers):</p>
+            <p>Click the MCP Servers icon, open the Configure tab, choose <strong>Configure MCP Servers</strong>, and add the server to the settings file that opens:</p>
             <div class="code-box copyable">{
   "mcpServers": {
     "xposedornot": {
@@ -921,7 +921,7 @@ URL:  https://api.xposedornot.com/mcp</div>
                   </tr>
                   <tr>
                      <td>Claude Desktop</td>
-                     <td>Settings, then Connectors</td>
+                     <td>Customize, then Connectors</td>
                      <td>XposedOrNot listed as connected, with six tools when expanded</td>
                   </tr>
                   <tr>
@@ -998,7 +998,7 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                      <td>Re-run the prompt and approve the tool call when asked; check the tool is enabled in client settings</td>
                   </tr>
                   <tr>
-                     <td>"Rate limit exceeded" or HTTP 429</td>
+                     <td>"Rate limit reached", "Rate limit exceeded", or HTTP 429</td>
                      <td>You hit the free tier limit</td>
                      <td>Wait the number of seconds in <code>retry_after</code>, then retry. See <a href="#rate-limits">rate limits</a></td>
                   </tr>
@@ -1157,8 +1157,8 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
   "id": 8,
   "error": {
     "code": -32000,
-    "message": "Rate limit exceeded. Retry after 42 seconds.",
-    "data": { "retry_after": 42 }
+    "message": "Rate limit reached for Breach analytics. Retry after 42 seconds.",
+    "data": { "status": 429, "retry_after": 42 }
   }
 }</div>
             <p>
