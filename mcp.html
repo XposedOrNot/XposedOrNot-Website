@@ -599,7 +599,7 @@
             "headline": "XposedOrNot MCP Server: Data Breach Intelligence for AI Agents",
             "description": "Connect AI assistants to live breach data. Free MCP server with email breach checks, breach analytics, and the full XposedOrNot breach database. No API key required.",
             "url": "https://xposedornot.com/mcp",
-            "dateModified": "2026-09-08",
+            "dateModified": "2026-10-03",
             "author": {
                "@type": "Person",
                "name": "Devanand Premkumar",
@@ -618,7 +618,7 @@
             "applicationCategory": "DeveloperApplication",
             "operatingSystem": "Any",
             "url": "https://xposedornot.com/mcp",
-            "softwareVersion": "1.0.0",
+            "softwareVersion": "2.0.0",
             "license": "https://opensource.org/licenses/MIT",
             "offers": {
                "@type": "Offer",
@@ -674,7 +674,7 @@
                   "name": "Which AI clients work with the XposedOrNot MCP server?",
                   "acceptedAnswer": {
                      "@type": "Answer",
-                     "text": "Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version 2025-06-18 (also accepts 2024-11-05), negotiated at initialize, and requires no authentication."
+                     "text": "Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Codex CLI, Gemini CLI, and Cline. Browser-based clients and hosted inspectors work too, since the endpoint has no Origin restrictions. The server speaks standard JSON-RPC over HTTPS with protocol version 2025-06-18 (also accepts 2024-11-05), negotiated at initialize, and requires no authentication."
                   }
                },
                {
@@ -821,7 +821,7 @@
 
             <h2 id="quick-start">Set up in 4 steps</h2>
             <p>
-               You need one of Claude Code, Claude Desktop, or Cursor installed, plus internet access. No account,
+               You need an MCP client such as Claude Code, Claude Desktop, Cursor, VS Code, Windsurf, Codex CLI, or Gemini CLI, plus internet access. No account,
                API key, or extra software is required. The whole setup takes about two minutes.
             </p>
 
@@ -849,6 +849,49 @@ URL:  https://api.xposedornot.com/mcp</div>
   }
 }</div>
             <p>Save the file. Cursor picks up the change within a few seconds; if not, reload the window.</p>
+            <p>Or install in one click: <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=xposedornot&amp;config=eyJ1cmwiOiJodHRwczovL2FwaS54cG9zZWRvcm5vdC5jb20vbWNwIn0=">Add to Cursor</a> (needs Cursor installed).</p>
+
+            <h4>VS Code</h4>
+            <p>Add the server to <code>.vscode/mcp.json</code> in your workspace, or use the one-click link: <a href="https://vscode.dev/redirect/mcp/install?name=xposedornot&amp;config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//api.xposedornot.com/mcp%22%7D" target="_blank" rel="noopener">Add to VS Code</a>.</p>
+            <div class="code-box copyable">{
+  "servers": {
+    "xposedornot": {
+      "type": "http",
+      "url": "https://api.xposedornot.com/mcp"
+    }
+  }
+}</div>
+
+            <h4>Windsurf</h4>
+            <p>Add the server to <code>mcp_config.json</code> (Settings, then Cascade, then MCP servers):</p>
+            <div class="code-box copyable">{
+  "mcpServers": {
+    "xposedornot": {
+      "serverUrl": "https://api.xposedornot.com/mcp"
+    }
+  }
+}</div>
+
+            <h4>Codex CLI</h4>
+            <p>Run this in any terminal:</p>
+            <div class="code-box copyable">codex mcp add xposedornot --url https://api.xposedornot.com/mcp</div>
+
+            <h4>Gemini CLI</h4>
+            <p>Install the extension from the API repository:</p>
+            <div class="code-box copyable">gemini extensions install https://github.com/XposedOrNot/XposedOrNot-API</div>
+            <p>Or add the server directly:</p>
+            <div class="code-box copyable">gemini mcp add --transport http xposedornot https://api.xposedornot.com/mcp</div>
+
+            <h4>Cline</h4>
+            <p>Add the server to <code>cline_mcp_settings.json</code> (MCP Servers, then Configure MCP Servers):</p>
+            <div class="code-box copyable">{
+  "mcpServers": {
+    "xposedornot": {
+      "type": "streamableHttp",
+      "url": "https://api.xposedornot.com/mcp"
+    }
+  }
+}</div>
 
             <h4>Any other MCP client</h4>
             <p>Point the client at the endpoint below. These are the only details it needs.</p>
@@ -857,7 +900,8 @@ URL:  https://api.xposedornot.com/mcp</div>
                <li>Transport: stateless streamable HTTP, one JSON-RPC 2.0 request per HTTPS POST. No sessions, no <code>Mcp-Session-Id</code>, and no SSE stream: a GET returns 405 with <code>Allow: POST</code></li>
                <li>Protocol version: <code>2025-06-18</code> (also accepts <code>2024-11-05</code>), negotiated at initialize</li>
                <li>Authentication: none required</li>
-               <li>Clients: server-side clients only. Requests with a browser <code>Origin</code> header from any site other than xposedornot.com are rejected with 403 as a DNS-rebinding protection</li>
+               <li>Clients: any MCP client that supports streamable HTTP, whether desktop, terminal, or browser-based (hosted inspectors and web connectors included). There are no <code>Origin</code> restrictions, and the server uses no cookies or credentials</li>
+               <li>Server card: machine-readable metadata at <a href="https://api.xposedornot.com/.well-known/mcp/server-card.json">api.xposedornot.com/.well-known/mcp/server-card.json</a></li>
             </ul>
 
             <h3 id="step-2">Step 2: Confirm it is installed</h3>
@@ -884,6 +928,16 @@ URL:  https://api.xposedornot.com/mcp</div>
                      <td>Cursor</td>
                      <td>Settings, then MCP</td>
                      <td>xposedornot with a green status dot and six tools</td>
+                  </tr>
+                  <tr>
+                     <td>VS Code</td>
+                     <td>Command Palette, then "MCP: List Servers"</td>
+                     <td>xposedornot listed as running, with six tools</td>
+                  </tr>
+                  <tr>
+                     <td>Codex CLI, Gemini CLI</td>
+                     <td>Run <code>codex mcp list</code> or <code>gemini mcp list</code></td>
+                     <td>xposedornot with the endpoint URL</td>
                   </tr>
                   <tr>
                      <td>Any client</td>
@@ -947,11 +1001,6 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                      <td>"Rate limit exceeded" or HTTP 429</td>
                      <td>You hit the free tier limit</td>
                      <td>Wait the number of seconds in <code>retry_after</code>, then retry. See <a href="#rate-limits">rate limits</a></td>
-                  </tr>
-                  <tr>
-                     <td>HTTP 403</td>
-                     <td>The request came from a browser page on another site</td>
-                     <td>Use a server-side client such as Claude Code, Claude Desktop, or Cursor</td>
                   </tr>
                   <tr>
                      <td>"is not a valid email address" or similar</td>
@@ -1028,8 +1077,8 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                <div class="integration-card">
                   <h3>Get Recent Breaches</h3>
                   <p class="tool-name">get_recent_breaches</p>
-                  <p>The latest data breach news and the breaches most recently added to the XposedOrNot database.</p>
-                  <p class="tool-params">Parameters: none</p>
+                  <p>The breaches most recently added to XposedOrNot, newest first, each with a title, date, short summary, and URL. Accepts an optional <code>limit</code> (default 10, maximum 50). When the list is cut short, the response says how many there are in total and how to raise the limit.</p>
+                  <p class="tool-params">Parameters: <code>limit</code> (optional)</p>
                   <p class="tool-example">"What are the newest data breaches tracked by XposedOrNot?"</p>
                </div>
             </div>
@@ -1151,7 +1200,7 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
                   <span class="faq-q" role="heading" aria-level="3">Which clients work?</span>
                   <i class="fas fa-chevron-down" aria-hidden="true"></i>
                </summary>
-               <p>Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, and Cursor. The server speaks standard JSON-RPC over HTTPS with protocol version <code>2025-06-18</code> (also accepts <code>2024-11-05</code>), negotiated at initialize, and requires no authentication.</p>
+               <p>Any MCP client that supports streamable HTTP transport, including Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Codex CLI, Gemini CLI, and Cline. Browser-based clients and hosted inspectors work too, since the endpoint has no Origin restrictions. The server speaks standard JSON-RPC over HTTPS with protocol version <code>2025-06-18</code> (also accepts <code>2024-11-05</code>), negotiated at initialize, and requires no authentication.</p>
             </details>
 
             <details class="faq-item">
@@ -1199,6 +1248,8 @@ Highest risk: DemoForum exposed plaintext passwords. If that password is reused 
 
             <h2 id="go-deeper">Go deeper</h2>
             <ul>
+               <li><a href="https://blog.xposedornot.com/mcp-ai-assistant-breach-aware/" target="_blank" rel="noopener">MCP Makes Your AI Assistant Breach-Aware</a>: the walkthrough post, with examples in Cursor, Windsurf, and Claude Desktop</li>
+               <li><a href="https://github.com/XposedOrNot/XposedOrNot-API/blob/master/llms-install.md" target="_blank" rel="noopener">Install notes for agents</a> and the <a href="https://github.com/XposedOrNot/XposedOrNot-API/blob/master/server.json" target="_blank" rel="noopener">registry manifest</a></li>
                <li><a href="/api_doc">Full API documentation</a></li>
                <li><a href="https://github.com/XposedOrNot/XposedOrNot-API" target="_blank" rel="noopener">GitHub repository</a> (MIT licensed)</li>
                <li><a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">Official SDKs</a> for Python, JavaScript/TypeScript, Go, Ruby, PHP, Rust, .NET, and Java</li>
