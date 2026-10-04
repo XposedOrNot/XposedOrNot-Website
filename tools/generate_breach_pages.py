@@ -577,8 +577,9 @@ def render(template, breach, public, rank, total, modified, show_updated):
                        '<i class="fas fa-bell"></i> Set Up Free Breach Alerts</a>')
     else:
         sensitive_note = ""
-        primary_cta = ('<a href="/" class="btn-primary-custom">'
-                       '<i class="fas fa-search"></i> Check If You Were Affected</a>')
+        primary_cta = ('<a href="/data-breach-check" class="btn-primary-custom">'
+                       '<i class="fas fa-search"></i> Check if your email was in '
+                       f'{esc(display)}</a>')
     fills = {
         "{{TITLE}}": esc(title),
         "{{DESC}}": esc(desc),
@@ -1362,6 +1363,32 @@ def sub_once(text, pattern, repl, page, label):
     return new
 
 
+def dbc_newest_rows(public):
+    rows = []
+    for b in public[:10]:
+        bid = b["breachID"]
+        d = datetime.fromisoformat(b["addedDate"])
+        logo = b.get("logo") or ""
+        if logo.startswith(SITE):
+            logo = logo[len(SITE):]
+        types = [t for t in b["exposedData"] if t.strip()]
+        exposed = esc(", ".join(types[:3]))
+        if types[3:]:
+            exposed += (f' <span class="dbc-more" aria-hidden="true">+{len(types[3:])} more</span>'
+                        f'<span class="sr-only">, {esc(", ".join(types[3:]))}</span>')
+        img = (f'<img class="dbc-logo" src="{esc(logo)}" alt="" width="30" height="30" '
+               'loading="lazy" decoding="async">' if logo else "")
+        rows.append(
+            "                     <tr>\n"
+            f'                        <th scope="row">{img}<a href="/breach/{esc(bid)}" target="_blank" '
+            f'rel="noopener">{esc(display_name(bid))}<span class="sr-only"> (opens in new tab)</span></a></th>\n'
+            f"                        <td>{d.strftime('%b')} {d.day}, {d.year}</td>\n"
+            f"                        <td>{int(b['exposedRecords']):,}</td>\n"
+            f"                        <td>{exposed}</td>\n"
+            "                     </tr>")
+    return "\n" + "\n".join(rows) + "\n                  "
+
+
 def bake_deep_pages(public, metrics):
     if metrics is None:
         print("WARNING: no metrics data, methodology/domain-monitoring not baked")
@@ -1422,6 +1449,31 @@ def bake_deep_pages(public, metrics):
     if text != original:
         page.write_text(text, encoding="utf-8", newline="")
         baked += 1
+
+    page = ROOT / "data-breach-check.html"
+    original = page.read_text(encoding="utf-8")
+    text = original
+    records_text = f"{billions} billion"
+    for elem_id, value in (
+        ("dbc-hero-records", records_text), ("dbc-hero-total", str(total)),
+        ("dbc-strip-total", str(total)), ("dbc-strip-records", records_text),
+        ("dbc-strip-verified", str(verified)), ("dbc-list-total", str(total)),
+        ("dbc-verified", str(verified)), ("dbc-verified-total", str(total)),
+        ("dbc-faq-total", str(total)), ("dbc-faq-records", records_text),
+        ("dbc-newest", dbc_newest_rows(public)),
+    ):
+        text = set_inner(text, elem_id, value, page)
+    text, n = re.subn(r"(Free data breach check across )[\d.]+ billion( records and )\d+( breaches)",
+                      rf"\g<1>{records_text}\g<2>{total}\g<3>", text)
+    if n != 4:
+        print(f"WARNING: {page} expected 4 description spots, found {n}")
+    text = sub_once(text, r'("text": ")\d+( breaches holding )[\d.]+ billion( records)',
+                    rf"\g<1>{total}\g<2>{records_text}\g<3>", page, "FAQ schema count")
+    if text != original:
+        text = re.sub(r'("dateModified": ")[^"]*(")', rf"\g<1>{today}\g<2>",
+                      text, count=1)
+        page.write_text(text, encoding="utf-8", newline="")
+        baked += 1
     return baked
 
 
@@ -1429,7 +1481,8 @@ def sitemap_pages():
     pages = {ROOT / "index.html": "/", ROOT / "xposed.html": "/xposed",
              ROOT / "our-repository.html": "/our-repository",
              ROOT / "methodology.html": "/methodology",
-             ROOT / "domain-monitoring.html": "/domain-monitoring"}
+             ROOT / "domain-monitoring.html": "/domain-monitoring",
+             ROOT / "data-breach-check.html": "/data-breach-check"}
     for loc in LOCALES:
         pages[ROOT / loc / "index.html"] = f"/{loc}/"
         pages[ROOT / loc / "xposed.html"] = f"/{loc}/xposed"
