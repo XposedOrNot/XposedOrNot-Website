@@ -1513,6 +1513,26 @@ def dbc_newest_rows(public):
     return "\n" + "\n".join(rows) + "\n                  "
 
 
+DM_LOCALE_PATTERNS = {
+    "ru": r"(встречается в )\d+( утечках, которые мы индексируем)",
+    "es": r"(aparece en las )\d+( filtraciones que indexamos hoy)",
+    "fr": r"(ne figure dans les )\d+( violations que nous indexons)",
+    "pt": r"(aparece nas )\d+( violações que indexamos hoje)",
+    "de": r"(in den )\d+( Datenlecks auftaucht, die wir heute)",
+}
+RU_MONTHS_NOMINATIVE = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль",
+                        "август", "сентябрь", "октябрь", "ноябрь", "декабрь"]
+
+
+def fmt_month_year(loc, d):
+    if loc == "ru":
+        return f"{RU_MONTHS_NOMINATIVE[d.month - 1]} {d.year}"
+    month = FRESHNESS_MONTHS[loc][d.month - 1]
+    if loc in ("es", "pt"):
+        return f"{month} de {d.year}"
+    return f"{month} {d.year}"
+
+
 def bake_deep_pages(public, metrics):
     if metrics is None:
         print("WARNING: no metrics data, methodology/domain-monitoring not baked")
@@ -1574,6 +1594,28 @@ def bake_deep_pages(public, metrics):
         page.write_text(text, encoding="utf-8", newline="")
         baked += 1
 
+    for loc, pattern in DM_LOCALE_PATTERNS.items():
+        page = ROOT / loc / "domain-monitoring.html"
+        if not page.exists():
+            print(f"WARNING: {page} missing, skipped domain-monitoring bake")
+            continue
+        original = page.read_text(encoding="utf-8")
+        text = original
+        for elem_id, value in (("dm-total", str(total)),
+                               ("dm-records", billions.replace(".", ",")),
+                               ("dm-updated", fmt_month_year(loc, d))):
+            text = set_inner(text, elem_id, value, page)
+        text = sub_once(text, r'(data-breach-count=")\d+(")', rf"\g<1>{total}\g<2>",
+                        page, "data-breach-count attribute")
+        text = sub_once(text, r"(getAttribute\('data-breach-count'\) \|\| ')\d+(')",
+                        rf"\g<1>{total}\g<2>", page, "data-breach-count JS fallback")
+        text, n = re.subn(pattern, rf"\g<1>{total}\g<2>", text)
+        if n != 2:
+            print(f"WARNING: {page} expected 2 FAQ count spots, found {n}")
+        if text != original:
+            page.write_text(text, encoding="utf-8", newline="")
+            baked += 1
+
     page = ROOT / "data-breach-check.html"
     original = page.read_text(encoding="utf-8")
     text = original
@@ -1607,6 +1649,8 @@ def sitemap_pages():
              ROOT / "methodology.html": "/methodology",
              ROOT / "domain-monitoring.html": "/domain-monitoring",
              ROOT / "data-breach-check.html": "/data-breach-check"}
+    for loc in DM_LOCALE_PATTERNS:
+        pages[ROOT / loc / "domain-monitoring.html"] = f"/{loc}/domain-monitoring"
     for loc in LOCALES:
         pages[ROOT / loc / "index.html"] = f"/{loc}/"
         pages[ROOT / loc / "xposed.html"] = f"/{loc}/xposed"
