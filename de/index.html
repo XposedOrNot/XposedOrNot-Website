@@ -231,7 +231,7 @@
       "name": "Wie prüfe ich, ob meine E-Mail von einem Datenleck betroffen war?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Geben Sie Ihre E-Mail in das Suchfeld oben ein und klicken Sie auf „Meine E-Mail prüfen“. Wir durchsuchen Milliarden offengelegter Datensätze und zeigen Ihnen jedes Leck, in dem Ihre E-Mail auftauchte, welche Daten offengelegt wurden und einen Risiko-Score, damit Sie wissen, wo Sie stehen. Keine Anmeldung erforderlich."
+        "text": "Geben Sie Ihre E-Mail in das Suchfeld oben ein und klicken Sie auf „Meine E-Mail prüfen\". Wir durchsuchen Milliarden offengelegter Datensätze und zeigen Ihnen jedes Leck, in dem Ihre E-Mail auftauchte, welche Daten offengelegt wurden und einen Risiko-Score, damit Sie wissen, wo Sie stehen. Keine Anmeldung erforderlich."
       }
     },
     {
@@ -239,7 +239,7 @@
       "name": "Kann ich prüfen, ob die Domain meines Unternehmens betroffen ist?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja. Unser Domain-Leck-Checker zeigt Ihnen genau, wie stark Ihr Unternehmen betroffen ist, einschließlich der Anzahl der Lecks, der Gesamtzahl offengelegter Datensätze und einer Aufschlüsselung, welche Datentypen kompromittiert wurden. Eine schnelle Möglichkeit für Sicherheitsteams, den Leck-Fußabdruck ihrer Organisation zu bewerten."
+        "text": "Ja. Unser kostenloser Domain-Leck-Check zeigt Ihnen genau, wie stark Ihr Unternehmen betroffen ist, einschließlich der Anzahl der Lecks, der Gesamtzahl offengelegter Datensätze und einer Aufschlüsselung, welche Datentypen kompromittiert wurden. Eine schnelle Möglichkeit für Sicherheitsteams, den Leck-Fußabdruck ihrer Organisation zu bewerten."
       }
     },
     {
@@ -263,7 +263,7 @@
       "name": "Was soll ich tun, wenn meine E-Mail in einem Leck gefunden wurde?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ändern Sie zuerst sofort das Passwort des betroffenen Kontos. Falls Sie dieses Passwort anderswo wiederverwendet haben, ändern Sie auch diese. Aktivieren Sie überall die Zwei-Faktor-Authentifizierung, wo möglich. Richten Sie dann kostenlose Leck-Benachrichtigungen ein, damit Sie sofort erfahren, wenn Ihre E-Mail in einem künftigen Leck auftaucht."
+        "text": "Ändern Sie zuerst sofort das Passwort des betroffenen Kontos. Falls Sie dieses Passwort anderswo wiederverwendet haben, ändern Sie auch diese. Aktivieren Sie überall die Zwei-Faktor-Authentifizierung, wo möglich. Richten Sie dann kostenlose Leck-Benachrichtigungen ein, damit Sie sofort erfahren, wenn Ihre E-Mail in einem künftigen Leck auftaucht. Wir haben einen ausführlichen Leitfaden dazu erstellt, was nach einem Datenleck zu tun ist."
       }
     },
     {
@@ -287,15 +287,7 @@
       "name": "Prüfen Sie auch Stealer-Logs (Daten aus Infostealer-Malware)?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja, und das kostenlos. Von Infostealer-Malware erbeutete Daten, darunter im Browser gespeicherte Passwörter, Sitzungs-Cookies, Autofill-Daten und Krypto-Wallets, werden indexiert und erscheinen ohne Aufpreis in Ihrer normalen E-Mail-Suche und in Domain-Scans. Andere Dienste bieten Stealer-Log-Zugriff nur in kostenpflichtigen Tarifen an."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Kann ich XposedOrNot mit meinem SIEM oder meiner Threat-Intel-Plattform nutzen?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Ja. Konnektoren für Microsoft Sentinel, Splunk, Wazuh und Maltego sind bereits verfügbar, Integrationen für MISP, TheHive/Cortex und OpenCTI sind in Arbeit. Sie können auch eigene Anbindungen mit offiziellen SDKs in acht Sprachen erstellen oder KI-Assistenten über unseren MCP-Server (xposedornot.com/mcp) verbinden. Auf der Integrationsseite finden Sie den aktuellen Status und Einrichtungsanleitungen."
+        "text": "Ja, und das kostenlos. Von Infostealer-Malware erbeutete Daten, darunter im Browser gespeicherte Passwörter, Sitzungs-Cookies, Autofill-Daten und Krypto-Wallets, werden indexiert und erscheinen ohne Aufpreis in Ihrer normalen E-Mail-Suche und in Domain-Scans. Andere Dienste bieten Stealer-Log-Zugriff nur in kostenpflichtigen Tarifen an. Mehr dazu im Blogbeitrag zum Launch."
       }
     },
     {
@@ -456,6 +448,58 @@
           flex-direction: row;
           gap: 12px;
         }
+      }
+      .free-checks {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px 14px;
+        margin: 0 0 30px;
+      }
+      .free-checks-label {
+        font-weight: 600;
+        color: #3d4b5c;
+      }
+      .free-checks ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      section.add .free-checks a {
+        display: inline-block;
+        padding: 6px 16px;
+        border: 1px solid #2e5fd9;
+        border-radius: 999px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      section.add .free-checks a:hover,
+      section.add .free-checks a:focus {
+        background: #2e5fd9;
+        color: #ffffff;
+      }
+      section.add .free-checks a:focus-visible {
+        outline: 3px solid #1e3fa0;
+        outline-offset: 2px;
+      }
+      [data-theme="dark"] .free-checks-label {
+        color: #c3d3e8;
+      }
+      [data-theme="dark"] section.add .free-checks a {
+        border-color: #5b9aff;
+      }
+      [data-theme="dark"] section.add .free-checks a:hover,
+      [data-theme="dark"] section.add .free-checks a:focus {
+        background: #5b9aff;
+        color: #0e0f19;
+      }
+      [data-theme="dark"] section.add .free-checks a:focus-visible {
+        outline-color: #c3d9ff;
       }
     </style>
 
@@ -1046,8 +1090,17 @@
 
       <section class="add" aria-label="Kostenlose Sicherheitstools">
         <div class="container">
-          <h2 class="gradient-text">Kostenloser Datenleck-Checker & Sicherheitstools</h2>
+          <h2 class="gradient-text">Weitere kostenlose Sicherheitstools</h2>
           <p class="faq-subtitle">Durchsuchen Sie <a href="xposed">alle <span id="tools-breach-count">787</span> Datenlecks</a> in unserem Index oder steigen Sie direkt in eines der kostenlosen Tools unten ein.</p>
+          <nav class="free-checks" aria-label="Kostenlose Checks">
+            <span class="free-checks-label">Kostenlose Checks</span>
+            <ul>
+              <li><a href="/data-breach-check" hreflang="en">Datenleck-Check</a></li>
+              <li><a href="/de/domain-monitoring">Domain-Leck-Check</a></li>
+              <li><a href="password">Passwort-Leck-Check</a></li>
+              <li><a href="xposed">Datenleck-Datenbank</a></li>
+            </ul>
+          </nav>
           <div class="add-row1">
             <div class="add-flex-5">
               <a href="password" class="adds">
@@ -1198,28 +1251,6 @@
             <a href="/de/">XposedOrNot</a> Sicherheits- und Datenschutz-Tools sind
             <u>immer <b>KOSTENLOS</b></u> für jeden.
           </p>
-        </div>
-      </section>
-
-      <section class="event-strip" aria-label="Bevorstehendes Event: WATCHLIST CTF">
-        <div class="container">
-          <div class="event-strip-inner">
-            <div class="event-strip-text">
-              <span class="event-eyebrow">
-                <span class="event-dot" aria-hidden="true"></span>
-                BEVORSTEHENDES EVENT
-                <span class="event-badge">NEU</span>
-              </span>
-              <h2 class="event-title">WATCHLIST &mdash; Ein CTF zur digitalen Ermittlung</h2>
-              <p class="event-desc">24 Challenges. 6 Domänen. Eine fortlaufende Story. Kostenlos spielbar.</p>
-              <p class="event-meta">19. September 2026 &middot; 24 Stunden &middot; Online</p>
-            </div>
-            <div class="event-strip-cta">
-              <a href="/ctf/" class="cta-button event-cta">
-                Event-Details ansehen <i class="fas fa-arrow-right" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 

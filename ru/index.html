@@ -240,7 +240,7 @@
       "name": "Могу ли я проверить, был ли скомпрометирован домен моей компании?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Да. Наш сервис проверки утечек домена показывает, насколько именно уязвима ваша компания, включая количество утечек, общее число раскрытых записей и разбивку по типам скомпрометированных данных. Это быстрый способ для команд безопасности оценить «след» утечек своей организации."
+        "text": "Да. Наш бесплатная проверка утечек домена показывает, насколько именно уязвима ваша компания, включая количество утечек, общее число раскрытых записей и разбивку по типам скомпрометированных данных. Это быстрый способ для команд безопасности оценить «след» утечек своей организации."
       }
     },
     {
@@ -264,7 +264,7 @@
       "name": "Что делать, если мой email обнаружен в утечке?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Сначала немедленно смените пароль скомпрометированного аккаунта. Если вы использовали этот пароль где-то ещё, смените и там. Включите двухфакторную аутентификацию везде, где можете. Затем настройте бесплатные оповещения об утечках, чтобы узнавать в тот же момент, когда ваш email появится в новой утечке."
+        "text": "Сначала немедленно смените пароль скомпрометированного аккаунта. Если вы использовали этот пароль где-то ещё, смените и там. Включите двухфакторную аутентификацию везде, где можете. Затем настройте бесплатные оповещения об утечках, чтобы узнавать в тот же момент, когда ваш email появится в новой утечке. Мы подготовили подробное руководство о том, что делать после утечки данных."
       }
     },
     {
@@ -288,15 +288,7 @@
       "name": "Проверяете ли вы стилер-логи (данные инфостилеров)?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Да, и это бесплатно. Данные, похищенные инфостилерами, включая сохранённые в браузере пароли, cookies сессий, данные автозаполнения и криптокошельки, индексируются и отображаются без оплаты в обычном поиске по e-mail и при проверке доменов. Другие сервисы открывают доступ к стилер-логам только в платных тарифах."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Могу ли я использовать XposedOrNot со своей SIEM или платформой киберразведки?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Да. Коннекторы для Microsoft Sentinel, Splunk, Wazuh и Maltego уже работают, а интеграции с MISP, TheHive/Cortex и OpenCTI находятся в разработке. Вы также можете создать собственную интеграцию с помощью официальных SDK для восьми языков или подключить ИИ-ассистентов через наш MCP-сервер (xposedornot.com/mcp). Актуальный статус и руководства по настройке смотрите на странице интеграций."
+        "text": "Да, и это бесплатно. Данные, похищенные инфостилерами, включая сохранённые в браузере пароли, cookies сессий, данные автозаполнения и криптокошельки, индексируются и отображаются без оплаты в обычном поиске по e-mail и при проверке доменов. Другие сервисы открывают доступ к стилер-логам только в платных тарифах. Подробности в анонсе."
       }
     },
     {
@@ -459,6 +451,58 @@
           flex-direction: row;
           gap: 12px;
         }
+      }
+      .free-checks {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px 14px;
+        margin: 0 0 30px;
+      }
+      .free-checks-label {
+        font-weight: 600;
+        color: #3d4b5c;
+      }
+      .free-checks ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      section.add .free-checks a {
+        display: inline-block;
+        padding: 6px 16px;
+        border: 1px solid #2e5fd9;
+        border-radius: 999px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      section.add .free-checks a:hover,
+      section.add .free-checks a:focus {
+        background: #2e5fd9;
+        color: #ffffff;
+      }
+      section.add .free-checks a:focus-visible {
+        outline: 3px solid #1e3fa0;
+        outline-offset: 2px;
+      }
+      [data-theme="dark"] .free-checks-label {
+        color: #c3d3e8;
+      }
+      [data-theme="dark"] section.add .free-checks a {
+        border-color: #5b9aff;
+      }
+      [data-theme="dark"] section.add .free-checks a:hover,
+      [data-theme="dark"] section.add .free-checks a:focus {
+        background: #5b9aff;
+        color: #0e0f19;
+      }
+      [data-theme="dark"] section.add .free-checks a:focus-visible {
+        outline-color: #c3d9ff;
       }
     </style>
 
@@ -1049,8 +1093,17 @@
 
       <section class="add" aria-label="Бесплатные инструменты безопасности">
         <div class="container">
-          <h2 class="gradient-text">Бесплатный сервис проверки утечек данных и инструменты безопасности</h2>
+          <h2 class="gradient-text">Другие бесплатные инструменты безопасности</h2>
           <p class="faq-subtitle">Просматривайте <a href="xposed">все <span id="tools-breach-count">787</span> утечек</a> из нашего индекса или сразу переходите к любому бесплатному инструменту ниже.</p>
+          <nav class="free-checks" aria-label="Бесплатные проверки">
+            <span class="free-checks-label">Бесплатные проверки</span>
+            <ul>
+              <li><a href="/data-breach-check" hreflang="en">Проверка утечек данных</a></li>
+              <li><a href="/ru/domain-monitoring">Проверка домена</a></li>
+              <li><a href="password">Проверка пароля на утечку</a></li>
+              <li><a href="xposed">База данных утечек</a></li>
+            </ul>
+          </nav>
           <div class="add-row1">
             <div class="add-flex-5">
               <a href="password" class="adds">
@@ -1201,28 +1254,6 @@
             Инструменты безопасности и конфиденциальности <a href="/ru/">XposedOrNot</a>
             <u>всегда <b>БЕСПЛАТНЫ</b></u> для пользы каждого.
           </p>
-        </div>
-      </section>
-
-      <section class="event-strip" aria-label="Предстоящее событие: WATCHLIST CTF">
-        <div class="container">
-          <div class="event-strip-inner">
-            <div class="event-strip-text">
-              <span class="event-eyebrow">
-                <span class="event-dot" aria-hidden="true"></span>
-                ПРЕДСТОЯЩЕЕ СОБЫТИЕ
-                <span class="event-badge">НОВОЕ</span>
-              </span>
-              <h2 class="event-title">WATCHLIST &mdash; CTF по цифровому расследованию</h2>
-              <p class="event-desc">24 задания. 6 направлений. Одна непрерывная история. Бесплатно.</p>
-              <p class="event-meta">19 сентября 2026 &middot; 24 часа &middot; Онлайн</p>
-            </div>
-            <div class="event-strip-cta">
-              <a href="/ctf/" class="cta-button event-cta">
-                Подробности события <i class="fas fa-arrow-right" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 

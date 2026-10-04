@@ -263,7 +263,7 @@
             "name": "Czy mogę sprawdzić, czy domena mojej firmy padła ofiarą wycieku?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Tak. Nasze narzędzie do sprawdzania wycieków domen pokazuje dokładnie, jak bardzo ujawniona jest Twoja firma, w tym liczbę wycieków, łączną liczbę wyciekłych rekordów oraz zestawienie typów naruszonych danych. To szybki sposób dla zespołów bezpieczeństwa na ocenę skali wycieków w organizacji."
+              "text": "Tak. Nasze darmowe sprawdzenie wycieków domeny pokazuje dokładnie, jak bardzo ujawniona jest Twoja firma, w tym liczbę wycieków, łączną liczbę wyciekłych rekordów oraz zestawienie typów naruszonych danych. To szybki sposób dla zespołów bezpieczeństwa na ocenę skali wycieków w organizacji."
             }
           },
           {
@@ -287,7 +287,7 @@
             "name": "Co zrobić, jeśli mój e-mail znalazł się w wycieku?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Najpierw natychmiast zmień hasło do konta objętego wyciekiem. Jeśli używasz tego hasła gdziekolwiek indziej, zmień je również tam. Włącz uwierzytelnianie dwuskładnikowe wszędzie, gdzie się da. Następnie ustaw darmowe alerty o wyciekach, aby dowiedzieć się od razu, gdy Twój e-mail pojawi się w przyszłym wycieku."
+              "text": "Najpierw natychmiast zmień hasło do konta objętego wyciekiem. Jeśli używasz tego hasła gdziekolwiek indziej, zmień je również tam. Włącz uwierzytelnianie dwuskładnikowe wszędzie, gdzie się da. Następnie ustaw darmowe alerty o wyciekach, aby dowiedzieć się od razu, gdy Twój e-mail pojawi się w przyszłym wycieku. Przygotowaliśmy szczegółowy poradnik o tym, co robić po wycieku danych."
             }
           },
           {
@@ -311,7 +311,7 @@
             "name": "Czy sprawdzacie logi stealerów (dane ze złośliwego oprogramowania infostealer)?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Tak, i to za darmo. Dane przechwycone przez złośliwe oprogramowanie typu infostealer, w tym hasła zapisane w przeglądarce, pliki cookie sesji, dane autouzupełniania i portfele kryptowalut, są indeksowane i pojawiają się w zwykłym wyszukiwaniu e-maila oraz skanach domen bez żadnych opłat. Inne usługi udostępniają logi stealerów tylko w płatnych planach."
+              "text": "Tak, i to za darmo. Dane przechwycone przez złośliwe oprogramowanie typu infostealer, w tym hasła zapisane w przeglądarce, pliki cookie sesji, dane autouzupełniania i portfele kryptowalut, są indeksowane i pojawiają się w zwykłym wyszukiwaniu e-maila oraz skanach domen bez żadnych opłat. Inne usługi udostępniają logi stealerów tylko w płatnych planach. Szczegóły znajdziesz we wpisie premierowym."
             }
           },
           {
@@ -319,7 +319,7 @@
             "name": "Czy mogę używać XposedOrNot z moim SIEM lub platformą threat intel?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Tak. Konektory dla Microsoft Sentinel, Splunk, Wazuh i Maltego działają już dziś, a integracje z MISP, TheHive/Cortex i OpenCTI są w drodze. Możesz też zbudować własne rozwiązanie dzięki oficjalnym SDK w ośmiu językach lub podłączyć asystentów AI przez nasz serwer MCP (xposedornot.com/mcp). Aktualny status i przewodniki konfiguracji znajdziesz na stronie integracji."
+              "text": "Tak. Konektory dla Microsoft Sentinel, Splunk, Wazuh i Maltego działają już dziś, a integracje z MISP, TheHive/Cortex i OpenCTI są w drodze. Możesz też zbudować własne rozwiązanie dzięki oficjalnym SDK w ośmiu językach lub podłączyć asystentów AI przez nasz serwer MCP. Aktualny status i przewodniki konfiguracji znajdziesz na stronie integracji."
             }
           }
         ]
@@ -473,6 +473,58 @@
           flex-direction: row;
           gap: 12px;
         }
+      }
+      .free-checks {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px 14px;
+        margin: 0 0 30px;
+      }
+      .free-checks-label {
+        font-weight: 600;
+        color: #3d4b5c;
+      }
+      .free-checks ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      section.add .free-checks a {
+        display: inline-block;
+        padding: 6px 16px;
+        border: 1px solid #2e5fd9;
+        border-radius: 999px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      section.add .free-checks a:hover,
+      section.add .free-checks a:focus {
+        background: #2e5fd9;
+        color: #ffffff;
+      }
+      section.add .free-checks a:focus-visible {
+        outline: 3px solid #1e3fa0;
+        outline-offset: 2px;
+      }
+      [data-theme="dark"] .free-checks-label {
+        color: #c3d3e8;
+      }
+      [data-theme="dark"] section.add .free-checks a {
+        border-color: #5b9aff;
+      }
+      [data-theme="dark"] section.add .free-checks a:hover,
+      [data-theme="dark"] section.add .free-checks a:focus {
+        background: #5b9aff;
+        color: #0e0f19;
+      }
+      [data-theme="dark"] section.add .free-checks a:focus-visible {
+        outline-color: #c3d9ff;
       }
     </style>
     </head>
@@ -1076,8 +1128,17 @@
       <!-- Free Tools -->
       <section class="add" aria-label="Darmowe narzędzia bezpieczeństwa">
         <div class="container">
-          <h2 class="gradient-text">Darmowe sprawdzanie wycieków danych i narzędzia bezpieczeństwa</h2>
+          <h2 class="gradient-text">Więcej darmowych narzędzi bezpieczeństwa</h2>
           <p class="faq-subtitle">Przeglądaj <a href="xposed">wszystkie <span id="tools-breach-count">787</span> wycieków</a> z naszego indeksu lub przejdź od razu do dowolnego darmowego narzędzia poniżej.</p>
+          <nav class="free-checks" aria-label="Darmowe sprawdzenia">
+            <span class="free-checks-label">Darmowe sprawdzenia</span>
+            <ul>
+              <li><a href="/data-breach-check" hreflang="en">Sprawdzanie wycieków danych</a></li>
+              <li><a href="/domain-monitoring" hreflang="en">Sprawdzanie domeny</a></li>
+              <li><a href="password">Sprawdzanie wycieku haseł</a></li>
+              <li><a href="xposed">Baza wycieków</a></li>
+            </ul>
+          </nav>
           <div class="add-row1">
             <div class="add-flex-5">
               <a href="password" class="adds">
@@ -1236,28 +1297,6 @@
             <a href="/pl/">XposedOrNot</a>, darmowa wyszukiwarka wycieków danych, narzędzie do sprawdzania wycieków e-maili i wykrywania wycieków danych.
             <u>Zawsze <b>ZA DARMO</b></u> dla każdego.
           </p>
-        </div>
-      </section>
-
-      <section class="event-strip" aria-label="Nadchodzące wydarzenie: WATCHLIST CTF">
-        <div class="container">
-          <div class="event-strip-inner">
-            <div class="event-strip-text">
-              <span class="event-eyebrow">
-                <span class="event-dot" aria-hidden="true"></span>
-                NADCHODZĄCE WYDARZENIE
-                <span class="event-badge">NOWOŚĆ</span>
-              </span>
-              <h2 class="event-title">WATCHLIST: CTF o cyfrowym śledztwie</h2>
-              <p class="event-desc">24 wyzwania. 6 dziedzin. Jedna ciągła historia. Gra za darmo.</p>
-              <p class="event-meta">19 września 2026 &middot; 24 godziny &middot; Online</p>
-            </div>
-            <div class="event-strip-cta">
-              <a href="/ctf/" class="cta-button event-cta">
-                Zobacz szczegóły wydarzenia <i class="fas fa-arrow-right" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 
