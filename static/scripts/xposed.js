@@ -93,12 +93,18 @@ function updateSEO(totalBreaches, totalIndustries, latestDate) {
     if (latestDate) {
         var d = new Date(latestDate);
         var isoDate = d.toISOString().split('T')[0];
-        var displayDate = d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
-
-        $('#seo-last-updated').html(
-            '<i class="far fa-calendar-alt" aria-hidden="true"></i> Last updated: ' +
-            '<time datetime="' + isoDate + '">' + displayDate + '</time>'
-        );
+        var timeEl = document.querySelector('#seo-last-updated time');
+        if (timeEl) {
+            var lang = document.documentElement.lang || 'en';
+            var displayDate;
+            try {
+                displayDate = d.toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' });
+            } catch (e) {
+                displayDate = d.toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' });
+            }
+            timeEl.setAttribute('datetime', isoDate);
+            timeEl.textContent = displayDate;
+        }
 
         var wpSchema = document.getElementById('webpage-schema');
         if (wpSchema) {
