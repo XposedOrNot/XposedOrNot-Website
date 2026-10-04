@@ -701,6 +701,123 @@ def static_section(public, total):
             f'<ul class="static-directory-list">{items}</ul></section>')
 
 
+XPOSED_I18N = json.loads(
+    (ROOT / "tools" / "xposed_i18n.json").read_text(encoding="utf-8"))
+
+
+def loc_num(loc, n):
+    return str(n).translate(BN_DIGITS) if loc == "bn" else str(n)
+
+
+def xposed_recent_section(public, loc):
+    t = XPOSED_I18N[loc]
+    hreflang = "" if loc == "en" else ' hreflang="en"'
+    rows = []
+    for i, b in enumerate(public[:8]):
+        bid = b["breachID"]
+        logo = b.get("logo") or ""
+        if logo.startswith(SITE):
+            logo = logo[len(SITE):]
+        img = (f'<img class="xr-logo" src="{esc(logo)}" alt="" width="28" height="28" '
+               'loading="lazy" decoding="async">' if logo else "")
+        added = datetime.fromisoformat(b["addedDate"])
+        month = b["breachedDate"][:7]
+        rows.append(
+            f'<tr{" class=" + chr(34) + "xr-extra" + chr(34) if i >= 4 else ""}>'
+            f'<th scope="row">{img}<a href="/breach/{esc(bid)}"{hreflang}>'
+            f"{esc(display_name(bid))}</a></th>"
+            f"<td>{esc(str(b.get('industry') or ''))}</td>"
+            f"<td>{int(b['exposedRecords']):,}</td>"
+            f'<td><time datetime="{month}">{month}</time></td>'
+            f'<td><time datetime="{b["addedDate"][:10]}">'
+            f"{fmt_freshness_date(loc, added)}</time></td></tr>")
+    head = "".join(f'<th scope="col">{esc(c)}</th>' for c in t["cols"])
+    return ('<section class="seo-summary xposed-recent" id="recently-added">'
+            f'<h2>{esc(t["recent_h2"])}</h2><p>{esc(t["recent_sub"])}</p>'
+            '<div class="xr-wrap"><table class="xr-table">'
+            f'<caption class="sr-only">{esc(t["recent_h2"])}</caption>'
+            f"<thead><tr>{head}</tr></thead><tbody>{''.join(rows)}</tbody></table></div>"
+            '<button type="button" class="xr-toggle" id="xr-toggle" aria-expanded="false" '
+            f'data-more="{esc(t["show_all"])}" data-less="{esc(t["show_fewer"])}" hidden>'
+            f'{esc(t["show_all"])}</button></section>')
+
+
+def xposed_faq_pairs(loc, total):
+    t = XPOSED_I18N[loc]
+    label = LAST_UPDATED_LABELS.get(loc, LAST_UPDATED_LABELS["en"])
+    return [(q, a.replace("{n}", loc_num(loc, total)).replace("{updated_label}", label))
+            for q, a in t["faqs"]]
+
+
+def xposed_about_section(loc, total):
+    t = XPOSED_I18N[loc]
+    if loc == "en":
+        meth, api = '<a href="/methodology">', '<a href="/api_doc">'
+    else:
+        meth = '<a href="/methodology" hreflang="en">'
+        api = f'<a href="/{loc}/api_doc">'
+    p3 = (esc(t["built_p3"]).replace("{meth_open}", meth)
+          .replace("{api_open}", api).replace("{a_close}", "</a>"))
+    faqs = "".join(f'<div class="xf-item"><h3>{esc(q)}</h3><p>{esc(a)}</p></div>'
+                   for q, a in xposed_faq_pairs(loc, total))
+    return ('<section class="xposed-about" id="xposed-about">'
+            f'<h2>{esc(t["built_h2"])}</h2><p>{esc(t["built_p1"])}</p>'
+            f'<p>{esc(t["built_p2"])}</p><p>{p3}</p>'
+            f'<h2 id="xposed-faq-heading">{esc(t["faq_h2"])}</h2>'
+            f'<div class="xposed-faq">{faqs}</div></section>')
+
+
+def bake_xposed_copy(text, public, loc, total, industries, page):
+    t = XPOSED_I18N[loc]
+    n = loc_num(loc, total)
+    heading = t["title"].replace("{n}", n)
+    title = f"{heading} | XposedOrNot"
+    desc = t["desc"].replace("{n}", n)
+    text = sub_once(text, r"(<title>).*?(</title>)",
+                    lambda m: m.group(1) + esc(title) + m.group(2), page, "title")
+    for label, pattern, value in (
+        ("description", r'(name="description"\s+content=")[^"]*(")', desc),
+        ("og:title", r'(content=")[^"]*("\s+property="og:title")', title),
+        ("og:description", r'(content=")[^"]*("\s+property="og:description")', desc),
+        ("twitter:title", r'(name="twitter:title"\s+content=")[^"]*(")', title),
+        ("twitter:description", r'(name="twitter:description"\s+content=")[^"]*(")', desc),
+    ):
+        text = sub_once(text, pattern,
+                        lambda m, v=value: m.group(1) + esc(v) + m.group(2), page, label)
+    text = set_inner(text, "xposed-h1", esc(heading), page)
+    text = set_inner(text, "xposed-intro", esc(t["intro"]), page)
+    text = set_inner(text, "xposed-table-heading",
+                     esc(t["table_heading"].replace("{n}", n)), page)
+    for marker, block in (
+        ('<section class="seo-summary xposed-recent" id="recently-added">',
+         xposed_recent_section(public, loc)),
+        ('<section class="xposed-about" id="xposed-about">',
+         xposed_about_section(loc, total)),
+    ):
+        text = sub_once(text, re.escape(marker) + r".*?</section>",
+                        lambda m, b=block: b, page, marker)
+    faq_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}}
+                       for q, a in xposed_faq_pairs(loc, total)]},
+        ensure_ascii=False, indent=2).replace("\n", "\n      ")
+    text = sub_once(text, r'(<script type="application/ld\+json" id="faq-schema">).*?(</script>)',
+                    lambda m: f"{m.group(1)}\n      {faq_ld}\n    {m.group(2)}", page, "faq-schema")
+    text = sub_once(
+        text, r'(<script type="application/ld\+json" id="webpage-schema">.*?"name": ")[^"]*(")',
+        lambda m: m.group(1) + heading.replace('"', '\\"') + m.group(2), page, "webpage-schema name")
+    year = datetime.now(timezone.utc).year
+    this_year = sum(1 for r in public if r["breachedDate"][:4] == str(year))
+    records = sum(int(r["exposedRecords"]) for r in public)
+    for elem_id, value in (("stat-total", f"{total:,}"),
+                           ("stat-records", fmt_records_compact(records)),
+                           ("stat-industries", str(industries)),
+                           ("stat-recent", str(this_year))):
+        text = set_inner(text, elem_id, value, page)
+    return text
+
+
 def bake_directory(public):
     total = len(public)
     industries = len({str(r["industry"]).strip() for r in public})
@@ -718,6 +835,7 @@ def bake_directory(public):
         text = original
         loc = "en" if page.parent == ROOT else page.parent.name
         text = bake_counts(text, total, industries, latest_added, loc)
+        text = bake_xposed_copy(text, public, loc, total, industries, page)
         text = bake_dataset(text, total, existing_modified(text, today))
         if page.parent == ROOT:
             block = itemlist_block(public, total)
@@ -799,6 +917,12 @@ def bake_index_freshness(public):
         new = re.sub(
             r'(<p class="stats-context" id="stats-freshness")\s+hidden(>)',
             r"\1\2", new)
+        count = loc_num(loc, len(public))
+        for span_id in ("hero-directory-count", "tools-breach-count"):
+            new, n = re.subn(rf'(<span id="{span_id}"[^>]*>)[^<]*(</span>)',
+                             rf"\g<1>{count}\g<2>", new)
+            if not n:
+                print(f"WARNING: {page} has no {span_id} span, count not baked")
         if new == text:
             continue
         page.write_text(new, encoding="utf-8", newline="")

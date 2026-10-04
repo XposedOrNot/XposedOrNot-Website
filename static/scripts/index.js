@@ -881,10 +881,10 @@ function populateHeroMetrics() {
                     benefitBreachCount.textContent = breachCountLabel;
                 }
                 if (heroDirectoryCount) {
-                    heroDirectoryCount.textContent = breachCountLabel;
+                    heroDirectoryCount.textContent = breachCount.toLocaleString();
                 }
                 if (toolsBreachCount) {
-                    toolsBreachCount.textContent = breachCountLabel;
+                    toolsBreachCount.textContent = breachCount.toLocaleString();
                 }
             }
             if (heroRecordCount) {

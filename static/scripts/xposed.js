@@ -12,6 +12,13 @@ function formatWithCommas(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function formatCompact(num) {
+    if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+    }
+    return formatWithCommas(num);
+}
+
 function formatDate(dateStr) {
     if (!dateStr) return 'Unknown';
     var date = new Date(dateStr);
@@ -69,7 +76,7 @@ function updateStats(breaches) {
     }).length;
 
     $('#stat-total').text(formatWithCommas(totalBreaches));
-    $('#stat-records').text(formatWithCommas(totalRecords));
+    $('#stat-records').text(formatCompact(totalRecords));
     $('#stat-industries').text(totalIndustries);
     $('#stat-recent').text(recentBreaches);
     $('#total-count').text(formatWithCommas(totalBreaches));
@@ -79,17 +86,6 @@ function updateStats(breaches) {
 
 function updateSEO(totalBreaches, totalIndustries, latestDate) {
     var count = formatWithCommas(totalBreaches);
-    var countPlus = totalBreaches + '+';
-
-    document.title = 'Data Breach Directory & Database: Browse ' + countPlus + ' Known Breaches | XposedOrNot';
-
-    var descText = 'Browse our complete directory of ' + countPlus + ' data breaches across ' + totalIndustries +
-        ' industries. Search by company, date, or data type exposed. Free breach database with record counts, risk levels, and details.';
-    $('meta[name="description"]').attr('content', descText);
-    $('meta[property="og:title"]').attr('content', document.title);
-    $('meta[property="og:description"]').attr('content', descText);
-    $('meta[name="twitter:title"]').attr('content', document.title);
-    $('meta[name="twitter:description"]').attr('content', descText);
 
     $('#seo-breach-count').text(count);
     $('#seo-industry-count').text(totalIndustries);
@@ -363,3 +359,16 @@ $(document).ready(function() {
 
     $('#btn-reset').on('click', resetFilters);
 });
+
+(function () {
+    var section = document.getElementById('recently-added');
+    var toggle = document.getElementById('xr-toggle');
+    if (!section || !toggle) return;
+    section.classList.add('is-collapsed');
+    toggle.hidden = false;
+    toggle.addEventListener('click', function () {
+        var collapsed = section.classList.toggle('is-collapsed');
+        toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        toggle.textContent = toggle.getAttribute(collapsed ? 'data-more' : 'data-less');
+    });
+})();
