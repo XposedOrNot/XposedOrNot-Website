@@ -45,7 +45,7 @@ const validateEmail = (email) => {
 $('#alertMeModal').on('hidden.bs.modal', (e) => {
     $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
     $("#h2head").attr("class", "modal-header-primary");
-    $('#message-text').text("We'll notify you instantly if your email appears in any new data breach. You can unsubscribe anytime. This service is completely free.");
+    $('#message-text').text("We'll notify you when your email appears in a newly indexed data breach. You can unsubscribe anytime. This service is completely free.");
     $("#alertMe").show();
     $("#alertMeClose, #a_succ").hide();
 });

@@ -1503,7 +1503,7 @@ $('#alertMeModal').on('hidden.bs.modal', function () {
     $('#alertMeModalLabel').text('Get Breach Alerts');
     var unlockNote = document.getElementById('xr-unlock-note');
     if (unlockNote) unlockNote.hidden = true;
-    $('#message-text').text("We'll notify you instantly if your email appears in any new data breach. Verify your email and activate your FREE subscription by clicking 'Start Monitoring'.");
+    $('#message-text').text("We'll notify you when your email appears in a newly indexed data breach. Verify your email and activate your FREE subscription by clicking 'Start Monitoring'.");
     $("#alertMe").show();
     $("#alertMeClose, #a_succ").hide();
     if (_alertModalTrigger && document.contains(_alertModalTrigger)) {
