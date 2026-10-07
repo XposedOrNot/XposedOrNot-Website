@@ -1,6 +1,8 @@
 var DOMAIN_API = 'https://api.xposedornot.com/v1/domain_verification';
 
-var proofChallenge = { domain: '', email: '', code: '' };
+var PROOF_CODE_TTL_MS = (72 * 60 * 60 * 1000) - (5 * 60 * 1000);
+
+var proofChallenge = { domain: '', email: '', code: '', issuedAt: 0 };
 
 function escapeHtml(unsafe) {
     if (typeof unsafe !== 'string') return unsafe;
@@ -50,8 +52,16 @@ function normalizedEmail(inputId) {
     return ($('#' + inputId).val() || '').trim().toLowerCase();
 }
 
-function hasBoundCode(email) {
+function isBoundTo(email) {
     return !!proofChallenge.code && proofChallenge.domain === currentDomain() && proofChallenge.email === email;
+}
+
+function proofCodeExpired() {
+    return !!proofChallenge.code && (Date.now() - proofChallenge.issuedAt) > PROOF_CODE_TTL_MS;
+}
+
+function hasBoundCode(email) {
+    return isBoundTo(email) && !proofCodeExpired();
 }
 
 function renderProofFields(show) {
@@ -93,10 +103,14 @@ function requestProofCode(inputId, buttonId, verifyId) {
     }
     $("#dang").hide();
     $("#info").hide();
+    var expired = isBoundTo(email) && proofCodeExpired();
     if (hasBoundCode(email)) {
-        syncProofCard(inputId, verifyId);
-        return true;
+        if (!window.confirm('You already have a valid verification code for this email. Request a new one? You will need to update your published TXT record or file.')) {
+            syncProofCard(inputId, verifyId);
+            return true;
+        }
     }
+    var replacing = isBoundTo(email);
     var button = $('#' + buttonId);
     var icon = $('#' + buttonId + '_i1');
     button.prop('disabled', true);
@@ -111,8 +125,14 @@ function requestProofCode(inputId, buttonId, verifyId) {
                 $('#dang').html('⛔ We could not start the verification for this domain and email. Please check both and try again.');
                 return;
             }
-            proofChallenge = { domain: domain, email: email, code: code };
+            proofChallenge = { domain: domain, email: email, code: code, issuedAt: Date.now() };
             syncProofCard(inputId, verifyId);
+            if (replacing) {
+                $("#info").show();
+                $("#info").html(expired
+                    ? 'Your previous code expired. Publish the new record or file shown below before you verify.'
+                    : 'A new code was issued. Update your published TXT record or file before you verify.');
+            }
         })
         .fail(function (r) {
             if (r.status === 429) {
@@ -343,7 +363,12 @@ function verifyProof(command, inputId, verifyId, retryHint) {
     }
     if (!hasBoundCode(email)) {
         $("#dang").show();
-        $('#dang').html('⛔ Please get your verification code for this email first.');
+        if (isBoundTo(email) && proofCodeExpired()) {
+            renderProofFields(false);
+            $('#dang').html('⛔ Your verification code has expired. Click Get code for a replacement, then publish the new record or file.');
+        } else {
+            $('#dang').html('⛔ Please get your verification code for this email first.');
+        }
         $('#' + verifyId).prop('disabled', true);
         return false;
     }
@@ -354,8 +379,8 @@ function verifyProof(command, inputId, verifyId, retryHint) {
 
     $.ajax(url)
         .done(function (n4) {
-            var l4 = n4 ? n4.domainVerification : 'Failure';
-            if (l4 == "Failure") {
+            var ok = !!n4 && n4.status === 'success' && typeof n4.domainVerification === 'string' && n4.domainVerification !== 'Failure';
+            if (!ok) {
                 $("#dang").show();
                 $("#div_t3").show();
                 $("#info").hide();
