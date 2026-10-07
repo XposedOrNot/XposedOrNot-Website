@@ -457,13 +457,34 @@
               <strong>Ważne uwagi:</strong>
               <ul>
                 <li>Pozostaw tę stronę otwartą podczas całego procesu weryfikacji</li>
-                <li>Klucze weryfikacyjne zmieniają się przy każdej próbie - zawsze używaj najnowszego wyświetlonego klucza</li>
+                <li>Wpisz swój adres e-mail i kliknij „Pobierz kod”, aby otrzymać rekord TXT. Pozostaje on ważny przez 72 godziny, więc możesz ponowić próbę z tym samym rekordem</li>
                 <li>Poczekaj na propagację DNS (może potrwać 10-30 minut)</li>
                 <li>Użyj <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (otwiera się w nowej karcie)</span></a>, aby potwierdzić, że Twój rekord TXT jest widoczny, zanim klikniesz weryfikuj</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">Twój adres e-mail</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="Adres e-mail do otrzymania ujawnionych danych"
+                  aria-label="Adres e-mail do weryfikacji DNS"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Pobierz kod <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">Rekord DNS TXT</label>
               <div class="v2-field-row">
@@ -491,26 +512,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">Twój adres e-mail</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="Adres e-mail do otrzymania ujawnionych danych"
-                  aria-label="Adres e-mail do weryfikacji DNS"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  Zweryfikuj
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Zweryfikuj
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -594,6 +605,7 @@
             <div>
               <strong>Proste kroki:</strong>
               <ul>
+                <li>Wpisz swój adres e-mail i kliknij „Pobierz kod”, aby otrzymać nazwę i zawartość pliku</li>
                 <li>Utwórz nowy plik o dokładnie takiej nazwie, jak pokazano poniżej</li>
                 <li>Skopiuj kod weryfikacyjny dokładnie tak, jak pokazano</li>
                 <li>Prześlij ten plik do katalogu głównego swojej strony</li>
@@ -619,6 +631,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">Twój adres e-mail</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="Adres e-mail do otrzymania ujawnionych danych"
+                  aria-label="Adres e-mail do weryfikacji HTML"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Pobierz kod <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">Nazwa pliku</label>
               <div class="v2-field-row">
@@ -661,26 +694,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">Twój adres e-mail</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="Adres e-mail do otrzymania ujawnionych danych"
-                  aria-label="Adres e-mail do weryfikacji HTML"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  Zweryfikuj <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Zweryfikuj <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

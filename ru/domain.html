@@ -456,13 +456,34 @@
               <strong>Важные замечания:</strong>
               <ul>
                 <li>Не закрывайте эту страницу на протяжении всего процесса подтверждения</li>
-                <li>Ключи подтверждения меняются при каждой попытке — всегда используйте последний показанный ключ</li>
+                <li>Введите адрес электронной почты и нажмите «Получить код», чтобы получить TXT-запись. Она действительна 72 часа, поэтому можно повторить попытку с той же записью</li>
                 <li>Дождитесь распространения DNS (может занять от 10 до 30 минут)</li>
                 <li>Используйте <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (откроется в новой вкладке)</span></a>, чтобы убедиться, что ваша TXT-запись видна, прежде чем нажимать «Подтвердить»</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">Ваш адрес email</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="Адрес email для получения раскрытых данных"
+                  aria-label="Адрес email для подтверждения через DNS"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Получить код <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS TXT-запись</label>
               <div class="v2-field-row">
@@ -490,26 +511,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">Ваш адрес email</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="Адрес email для получения раскрытых данных"
-                  aria-label="Адрес email для подтверждения через DNS"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  Подтвердить
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Подтвердить
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -593,6 +604,7 @@
             <div>
               <strong>Простые шаги:</strong>
               <ul>
+                <li>Введите адрес электронной почты и нажмите «Получить код», чтобы получить имя и содержимое файла</li>
                 <li>Создайте новый файл с точным именем, показанным ниже</li>
                 <li>Скопируйте код подтверждения в точности как показано</li>
                 <li>Загрузите этот файл в корневой каталог вашего сайта</li>
@@ -618,6 +630,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">Ваш адрес email</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="Адрес email для получения раскрытых данных"
+                  aria-label="Адрес email для подтверждения через HTML"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Получить код <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">Имя файла</label>
               <div class="v2-field-row">
@@ -660,26 +693,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">Ваш адрес email</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="Адрес email для получения раскрытых данных"
-                  aria-label="Адрес email для подтверждения через HTML"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  Подтвердить <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Подтвердить <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

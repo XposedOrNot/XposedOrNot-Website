@@ -456,13 +456,34 @@
               <strong>গুরুত্বপূর্ণ নোট:</strong>
               <ul>
                 <li>সম্পূর্ণ যাচাইকরণ প্রক্রিয়া চলাকালীন এই পেজটি খোলা রাখুন</li>
-                <li>প্রতিটি প্রচেষ্টায় যাচাইকরণ কী পরিবর্তিত হয় - সর্বদা সর্বশেষ দেখানো কী ব্যবহার করুন</li>
+                <li>আপনার ইমেল লিখে TXT রেকর্ড পেতে «কোড নিন» ক্লিক করুন। এটি ৭২ ঘণ্টা বৈধ থাকে, তাই একই রেকর্ড দিয়ে আবার চেষ্টা করতে পারেন</li>
                 <li>DNS প্রচারের জন্য অপেক্ষা করুন (১০-৩০ মিনিট সময় লাগতে পারে)</li>
                 <li>যাচাই করুন ক্লিক করার আগে আপনার TXT রেকর্ড দৃশ্যমান কিনা তা নিশ্চিত করতে <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (নতুন ট্যাবে খোলে)</span></a> ব্যবহার করুন</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">আপনার ইমেল ঠিকানা</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
+                  aria-label="DNS যাচাইকরণের জন্য ইমেল ঠিকানা"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  কোড নিন <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS TXT রেকর্ড</label>
               <div class="v2-field-row">
@@ -490,26 +511,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">আপনার ইমেল ঠিকানা</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
-                  aria-label="DNS যাচাইকরণের জন্য ইমেল ঠিকানা"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  যাচাই করুন
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                যাচাই করুন
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -593,6 +604,7 @@
             <div>
               <strong>সহজ ধাপ:</strong>
               <ul>
+                <li>আপনার ইমেল লিখে ফাইলের নাম ও বিষয়বস্তু পেতে «কোড নিন» ক্লিক করুন</li>
                 <li>নিচে দেখানো হুবহু নাম দিয়ে একটি নতুন ফাইল তৈরি করুন</li>
                 <li>যাচাইকরণ কোডটি হুবহু দেখানো অনুযায়ী অনুলিপি করুন</li>
                 <li>এই ফাইলটি আপনার ওয়েবসাইটের রুট ডিরেক্টরিতে আপলোড করুন</li>
@@ -618,6 +630,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">আপনার ইমেল ঠিকানা</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
+                  aria-label="HTML যাচাইকরণের জন্য ইমেল ঠিকানা"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  কোড নিন <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">ফাইলের নাম</label>
               <div class="v2-field-row">
@@ -660,26 +693,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">আপনার ইমেল ঠিকানা</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="উন্মোচিত ডেটা গ্রহণের জন্য ইমেল ঠিকানা"
-                  aria-label="HTML যাচাইকরণের জন্য ইমেল ঠিকানা"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  যাচাই করুন <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                যাচাই করুন <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

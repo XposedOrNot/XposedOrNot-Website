@@ -457,13 +457,34 @@
               <strong>Önemli Notlar:</strong>
               <ul>
                 <li>Doğrulama süreci boyunca bu sayfayı açık tutun</li>
-                <li>Doğrulama anahtarları her denemede değişir, her zaman gösterilen en son anahtarı kullanın</li>
+                <li>E-posta adresinizi girin ve TXT kaydınızı almak için «Kod al» düğmesine tıklayın. 72 saat geçerli kalır, bu yüzden aynı kayıtla yeniden deneyebilirsiniz</li>
                 <li>DNS yayılımını bekleyin (10-30 dakika sürebilir)</li>
                 <li>Doğrulayın düğmesine tıklamadan önce TXT kaydınızın görünür olduğunu teyit etmek için <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (yeni sekmede açılır)</span></a> aracını kullanın</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">E-posta Adresiniz</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="İfşa edilen verileri alacak e-posta adresi"
+                  aria-label="DNS doğrulaması için e-posta adresi"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Kod al <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS TXT Kaydı</label>
               <div class="v2-field-row">
@@ -491,26 +512,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">E-posta Adresiniz</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="İfşa edilen verileri alacak e-posta adresi"
-                  aria-label="DNS doğrulaması için e-posta adresi"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  Doğrulayın
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Doğrulayın
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -594,6 +605,7 @@
             <div>
               <strong>Basit Adımlar:</strong>
               <ul>
+                <li>E-posta adresinizi girin ve dosya adı ile içeriğini almak için «Kod al» düğmesine tıklayın</li>
                 <li>Aşağıda gösterilen adla birebir aynı olacak şekilde yeni bir dosya oluşturun</li>
                 <li>Doğrulama kodunu tam olarak gösterildiği gibi kopyalayın</li>
                 <li>Bu dosyayı web sitenizin kök dizinine yükleyin</li>
@@ -619,6 +631,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">E-posta Adresiniz</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="İfşa edilen verileri alacak e-posta adresi"
+                  aria-label="HTML doğrulaması için e-posta adresi"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Kod al <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">Dosya Adı</label>
               <div class="v2-field-row">
@@ -661,26 +694,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">E-posta Adresiniz</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="İfşa edilen verileri alacak e-posta adresi"
-                  aria-label="HTML doğrulaması için e-posta adresi"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  Doğrulayın <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Doğrulayın <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

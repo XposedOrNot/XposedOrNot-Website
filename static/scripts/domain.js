@@ -1,8 +1,6 @@
-/* ============================================================
-   Core domain verification logic (restored from pre-v2)
-   ============================================================ */
-
 var DOMAIN_API = 'https://api.xposedornot.com/v1/domain_verification';
+
+var proofChallenge = { domain: '', email: '', code: '' };
 
 function escapeHtml(unsafe) {
     if (typeof unsafe !== 'string') return unsafe;
@@ -44,18 +42,95 @@ function val_e(input) {
     }
 }
 
-function dec2hex(dec) {
-    return ('0' + dec.toString(16)).substr(-2);
+function currentDomain() {
+    return ($('#eventName').val() || '').trim().toLowerCase();
 }
 
-function generateId(len) {
-    var arr = new Uint8Array((len || 40) / 2);
-    window.crypto.getRandomValues(arr);
-    return Array.from(arr, dec2hex).join('');
+function normalizedEmail(inputId) {
+    return ($('#' + inputId).val() || '').trim().toLowerCase();
 }
 
-function choices() {
-    $('#hid1').val(generateId());
+function hasBoundCode(email) {
+    return !!proofChallenge.code && proofChallenge.domain === currentDomain() && proofChallenge.email === email;
+}
+
+function renderProofFields(show) {
+    var code = show ? proofChallenge.code : '';
+    var record = code ? 'xon_verification=' + code : '';
+    $('#hid1').val(code);
+    $('#edhu_dns').val(record);
+    $('#edhu_html_filename').val(code ? code + '.html' : '');
+    $('#edhu_html_filecontent').val(record);
+    if (code) {
+        var url = 'https://' + currentDomain() + '/' + code + '.html';
+        var hint = code.charAt(0) === '-' ? '<br>The file name starts with a hyphen, so quote it when creating the file.' : '';
+        $('#html_text').html("Verification file should be reachable at: " + escapeHtml(url) + hint + "<br>");
+    } else {
+        $('#html_text').html('');
+    }
+}
+
+function syncProofCard(inputId, verifyId) {
+    var bound = hasBoundCode(normalizedEmail(inputId));
+    renderProofFields(bound);
+    $('#' + verifyId).prop('disabled', !bound);
+}
+
+function prefillProofEmail(inputId) {
+    var input = $('#' + inputId);
+    if (proofChallenge.code && proofChallenge.domain === currentDomain() && !input.val()) {
+        input.val(proofChallenge.email);
+        input[0].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+}
+
+function requestProofCode(inputId, buttonId, verifyId) {
+    var email = normalizedEmail(inputId);
+    var domain = currentDomain();
+    if ((email == '') || (val_e(email) == false)) {
+        $('#' + inputId).focus();
+        return false;
+    }
+    $("#dang").hide();
+    $("#info").hide();
+    if (hasBoundCode(email)) {
+        syncProofCard(inputId, verifyId);
+        return true;
+    }
+    var button = $('#' + buttonId);
+    var icon = $('#' + buttonId + '_i1');
+    button.prop('disabled', true);
+    icon.removeClass('fa-key').addClass('fa-spinner fa-spin');
+    var url = DOMAIN_API + '?z=b&d=' + encodeURIComponent(domain) + '&a=' + encodeURIComponent(email);
+
+    $.ajax(url)
+        .done(function (r) {
+            var code = r && r.status === 'success' ? r.domainVerification : '';
+            if (typeof code !== 'string' || code === '' || code === 'Failure') {
+                $("#dang").show();
+                $('#dang').html('⛔ We could not start the verification for this domain and email. Please check both and try again.');
+                return;
+            }
+            proofChallenge = { domain: domain, email: email, code: code };
+            syncProofCard(inputId, verifyId);
+        })
+        .fail(function (r) {
+            if (r.status === 429) {
+                $("#info").show();
+                $("#info").html("You are currently being throttled. Please slow down and try again !");
+            } else if (r.status === 502) {
+                $("#info").show();
+                $("#info").html("Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time.");
+            } else {
+                $("#dang").show();
+                $('#dang').html('⛔ We could not start the verification for this domain and email. Please check both and try again.');
+            }
+        })
+        .always(function () {
+            icon.removeClass('fa-spinner fa-spin').addClass('fa-key');
+            button.prop('disabled', !val_e(normalizedEmail(inputId)));
+        });
+    return true;
 }
 
 $("#strat").focus(function () {
@@ -63,8 +138,6 @@ $("#strat").focus(function () {
     $('#div_t3').hide();
     $('#div_t2').hide();
 });
-
-choices();
 
 $("#strat").change(function () {
     $("#info").hide();
@@ -81,7 +154,7 @@ $("#strat").change(function () {
         $('#succ').hide();
         $('#div_t2').show();
         var options = $('#sel1');
-        var edutu2 = DOMAIN_API + '?z=c&d=' + $('#eventName').val();
+        var edutu2 = DOMAIN_API + '?z=c&d=' + encodeURIComponent($('#eventName').val());
 
         var myjson2;
         var j = $.ajax(edutu2)
@@ -104,14 +177,14 @@ $("#strat").change(function () {
         $('#div_email').hide();
         $('#succ').hide();
         $('#div_dns').show();
-        var h_val = "xon_verification=" + $('#hid1').val();
-        $('#edhu_dns').val(h_val);
         $('#div_t1').hide();
         $('#div_t3').hide();
         $('#div_t4').hide();
         $('#div_t2').show();
         $('#div_meta').hide();
         $('#div_html').hide();
+        prefillProofEmail('txt_dns');
+        syncProofCard('txt_dns', 'searchMe_d');
     } else {
         $('#div_html').show();
         $('#succ').hide();
@@ -121,12 +194,8 @@ $("#strat").change(function () {
         $('#div_t2').show();
         $('#div_dns').hide();
         $('#div_email').hide();
-        $('#edhu_html_filename').val($('#hid1').val() + '.html');
-        var domainName = $('#eventName').val();
-        var filename = $('#edhu_html_filename').val();
-        var url = 'https://' + domainName + '/' + filename;
-        $('#html_text').html("Verification file should be reachable at: " + escapeHtml(url) + "<br>");
-        $('#edhu_html_filecontent').val('xon_verification=' + $('#hid1').val());
+        prefillProofEmail('txt_email_h');
+        syncProofCard('txt_email_h', 'searchMe_h');
     }
 });
 
@@ -219,7 +288,7 @@ $("#searchMe_e").click(function (func_alert6) {
     }
     $("#searchMe_e_i1").removeClass("glyphicon glyphicon-ok");
     $("#searchMe_e_i1").addClass("fa fa-spinner fa-spin");
-    var edutu4 = DOMAIN_API + '?z=d&d=' + $('#eventName').val() + '&a=' + roleEmail + '&r=' + str;
+    var edutu4 = DOMAIN_API + '?z=d&d=' + encodeURIComponent($('#eventName').val()) + '&a=' + encodeURIComponent(roleEmail) + '&r=' + encodeURIComponent(str);
 
     var myjson4;
     var j4 = $.ajax(edutu4)
@@ -266,47 +335,46 @@ $("#searchMe_e").click(function (func_alert6) {
         });
 });
 
-$("#searchMe_d").click(function (func_alert) {
-    func_alert.preventDefault();
-    var str = document.getElementById("txt_dns").value.toLowerCase();
-    if ((str == '') || (val_e(str) == false)) {
-        $("#txt_email").focus();
+function verifyProof(command, inputId, verifyId, retryHint) {
+    var email = normalizedEmail(inputId);
+    if ((email == '') || (val_e(email) == false)) {
+        $('#' + inputId).focus();
         return false;
     }
-    $("#searchMe_d_i1").removeClass("glyphicon glyphicon-ok");
-    $("#searchMe_d_i1").addClass("fa fa-spinner fa-spin");
-    var edutu4 = DOMAIN_API + '?z=e&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_dns').val();
+    if (!hasBoundCode(email)) {
+        $("#dang").show();
+        $('#dang').html('⛔ Please get your verification code for this email first.');
+        $('#' + verifyId).prop('disabled', true);
+        return false;
+    }
+    var icon = $('#' + verifyId + '_i1');
+    icon.removeClass("glyphicon glyphicon-ok");
+    icon.addClass("fa fa-spinner fa-spin");
+    var url = DOMAIN_API + '?z=' + command + '&d=' + encodeURIComponent(proofChallenge.domain) + '&e=xon_verification' + '&v=' + encodeURIComponent(proofChallenge.code) + '&a=' + encodeURIComponent(proofChallenge.email);
 
-    var myjson4;
-    var j4 = $.ajax(edutu4)
+    $.ajax(url)
         .done(function (n4) {
-            myjson4 = n4;
-            var l4 = myjson4.domainVerification;
+            var l4 = n4 ? n4.domainVerification : 'Failure';
             if (l4 == "Failure") {
                 $("#dang").show();
                 $("#div_t3").show();
                 $("#info").hide();
                 $("#div_t2").hide();
-                $('#div_dns').hide();
-                $("#s1").hide();
-                $("#searchMe_d").removeClass("fa fa-spinner fa-spin");
-                $('#dang').html('⛔ Domain verification was not completed successfully. Please try again when you are ready with the verification requirements  !');
-                $('#strat').hide();
-                $("#div_html").hide();
+                $('#dang').html('⛔ Verification did not succeed yet. Your code is still valid, so ' + retryHint + ' and click Verify again.');
             } else {
                 $("#succ").show();
                 $("#div_t4").show();
                 $("#div_t2").hide();
                 $("#div_t1").hide();
+                $("#div_t3").hide();
                 $("#div_html").hide();
                 $('#div_dns').hide();
                 $("#s1").hide();
-                $("#searchMe_d").removeClass("fa fa-spinner fa-spin");
                 $("#succ").html('🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 10 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button class="btn btn-primary btn-lg" onClick="window.location.href=\'dashboard.html\'">CXO Dashboard</button> <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Verify Another Domain</button><br></div><br>');
             }
-            if (n4.status === 429) {
+            if (n4 && n4.status === 429) {
                 $("#info").html("You are currently being throttled. Please slow down and try again !");
-                $('#data_email').html(str);
+                $('#data_email').html(email);
             }
         })
         .fail(function (n4) {
@@ -320,9 +388,19 @@ $("#searchMe_d").click(function (func_alert) {
                 $("#dang").show();
                 $("#div_t3").show();
                 $("#div_t2").hide();
-                $('#dang').html('Domain verification was not completed successfully. Please try again when you are ready with the verification requirements  !');
+                $('#dang').html('Verification did not succeed yet. Your code is still valid, so ' + retryHint + ' and click Verify again.');
             }
+        })
+        .always(function () {
+            icon.removeClass("fa fa-spinner fa-spin");
+            icon.addClass("glyphicon glyphicon-ok");
         });
+    return true;
+}
+
+$("#searchMe_d").click(function (func_alert) {
+    func_alert.preventDefault();
+    verifyProof('e', 'txt_dns', 'searchMe_d', 'make sure the TXT record is live (check it with MX Toolbox)');
 });
 
 $("#searchMe_m").click(function (func_alert3) {
@@ -334,7 +412,7 @@ $("#searchMe_m").click(function (func_alert3) {
     }
     $("#searchMe_m_i1").removeClass("glyphicon glyphicon-ok");
     $("#searchMe_m_i1").addClass("fa fa-spinner fa-spin");
-    var edutu3 = DOMAIN_API + '?z=v&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_m').val();
+    var edutu3 = DOMAIN_API + '?z=v&d=' + encodeURIComponent($('#eventName').val()) + '&e=xon_verification' + '&v=' + encodeURIComponent($('#hid1').val()) + '&a=' + encodeURIComponent($('#txt_email_m').val());
 
     var myjson3;
     var j3 = $.ajax(edutu3)
@@ -384,60 +462,18 @@ $("#searchMe_m").click(function (func_alert3) {
 
 $("#searchMe_h").click(function (func_alert4) {
     func_alert4.preventDefault();
-    var str = document.getElementById("txt_email_h").value.toLowerCase();
-    if ((str == '') || (val_e(str) == false)) {
-        $("#txt_email_h").focus();
-        return false;
-    }
-    $("#searchMe_h_i1").removeClass("glyphicon glyphicon-ok");
-    $("#searchMe_h_i1").addClass("fa fa-spinner fa-spin");
-    var edutu4 = DOMAIN_API + '?z=a&d=' + $('#eventName').val() + '&e=xon_verification' + '&v=' + $('#hid1').val() + '&a=' + $('#txt_email_h').val();
-
-    var myjson4;
-    var j4 = $.ajax(edutu4)
-        .done(function (n4) {
-            myjson4 = n4;
-            var l4 = myjson4.domainVerification;
-            if (l4 == "Failure") {
-                $("#div_t3").show();
-                $("#info").hide();
-                $("#div_t2").hide();
-                $('#strat').hide();
-                $('#dang').html('⛔ Domain verification was not completed successfully. Please try again when you are ready with the verification requirements  !');
-                $("#searchMe_h_i1").removeClass("fa fa-spinner fa-spin");
-                $("#div_html").hide();
-                $("#dang").show();
-            } else {
-                $("#div_t4").show();
-                $("#succ").show();
-                $("#div_t2").hide();
-                $("#div_html").hide();
-                $("#succ").html('🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 10 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button class="btn btn-primary btn-lg" onClick="window.location.href=\'dashboard.html\'">CXO Dashboard</button> <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Verify Another Domain</button><br></div><br>');
-            }
-            if (n4.status === 429) {
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
-                $('#data_email').html(str);
-            }
-        })
-        .fail(function (n4) {
-            if (n4.status === 429) {
-                $("#info").show();
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
-            } else if (n4.status === 502) {
-                $("#info").show();
-                $("#info").html("Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time.");
-            } else {
-                $("#dang").show();
-                $("#div_t3").show();
-                $("#div_t2").hide();
-                $('#dang').html('Domain verification was not completed successfully. Please try again when you are ready with the verification requirements  !');
-            }
-        });
+    verifyProof('a', 'txt_email_h', 'searchMe_h', 'make sure the file is live at the URL shown above');
 });
 
-/* ============================================================
-   v2 UI enhancements
-   ============================================================ */
+$("#get_code_d").click(function (ev) {
+    ev.preventDefault();
+    requestProofCode('txt_dns', 'get_code_d', 'searchMe_d');
+});
+
+$("#get_code_h").click(function (ev) {
+    ev.preventDefault();
+    requestProofCode('txt_email_h', 'get_code_h', 'searchMe_h');
+});
 
 var clipboard = new ClipboardJS(".copy-btn");
 
@@ -557,6 +593,14 @@ function setupEmailValidation(inputId, buttonId) {
     });
 }
 
+function setupProofEmailSync(inputId, verifyId) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    input.addEventListener("input", function () {
+        syncProofCard(inputId, verifyId);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     var eventInput = document.getElementById("eventName");
     if (eventInput) {
@@ -568,10 +612,12 @@ document.addEventListener("DOMContentLoaded", function () {
         eventInput.focus();
     }
 
-    setupEmailValidation("txt_email_h", "searchMe_h");
+    setupEmailValidation("txt_email_h", "get_code_h");
     setupEmailValidation("txt_email_e", "searchMe_e");
     setupEmailValidation("txt_email_m", "searchMe_m");
-    setupEmailValidation("txt_dns", "searchMe_d");
+    setupEmailValidation("txt_dns", "get_code_d");
+    setupProofEmailSync("txt_dns", "searchMe_d");
+    setupProofEmailSync("txt_email_h", "searchMe_h");
 
     var recipientInput = document.getElementById("txt_email_e");
     if (recipientInput) {

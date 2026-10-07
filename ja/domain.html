@@ -453,13 +453,34 @@
               <strong>重要な注意事項：</strong>
               <ul>
                 <li>認証プロセスが完了するまで、このページを開いたままにしてください</li>
-                <li>認証キーは試行ごとに変わります。常に表示されている最新のキーを使用してください</li>
+                <li>メールアドレスを入力し「コードを取得」をクリックするとTXTレコードが表示されます。72時間有効なので、同じレコードで再試行できます</li>
                 <li>DNSの反映をお待ちください（10～30分かかる場合があります）</li>
                 <li>「認証」をクリックする前に、<a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only">（新しいタブで開きます）</span></a> でTXTレコードが反映されていることを確認してください</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">メールアドレス</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="漏洩データを受け取るメールアドレス"
+                  aria-label="DNS認証用のメールアドレス"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  コードを取得 <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS TXTレコード</label>
               <div class="v2-field-row">
@@ -487,26 +508,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">メールアドレス</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="漏洩データを受け取るメールアドレス"
-                  aria-label="DNS認証用のメールアドレス"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  認証
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                認証
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -589,6 +600,7 @@
             <div>
               <strong>簡単な手順：</strong>
               <ul>
+                <li>メールアドレスを入力し「コードを取得」をクリックするとファイル名と内容が表示されます</li>
                 <li>以下に表示されている名前と同じファイルを新規作成します</li>
                 <li>認証コードを表示されているとおりに正確にコピーします</li>
                 <li>このファイルをウェブサイトのルートディレクトリにアップロードします</li>
@@ -614,6 +626,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">メールアドレス</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="漏洩データを受け取るメールアドレス"
+                  aria-label="HTML認証用のメールアドレス"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  コードを取得 <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">ファイル名</label>
               <div class="v2-field-row">
@@ -656,26 +689,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">メールアドレス</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="漏洩データを受け取るメールアドレス"
-                  aria-label="HTML認証用のメールアドレス"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  認証 <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                認証 <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

@@ -456,13 +456,34 @@
               <strong>முக்கியக் குறிப்புகள்:</strong>
               <ul>
                 <li>முழு சரிபார்ப்பு செயல்முறையின் போதும் இந்தப் பக்கத்தைத் திறந்தே வைக்கவும்</li>
-                <li>ஒவ்வொரு முயற்சியிலும் சரிபார்ப்பு விசைகள் மாறும் - எப்போதும் காட்டப்படும் சமீபத்திய விசையைப் பயன்படுத்தவும்</li>
+                <li>உங்கள் மின்னஞ்சலை உள்ளிட்டு TXT பதிவைப் பெற «குறியீட்டைப் பெறுக» என்பதைக் கிளிக் செய்யவும். இது 72 மணிநேரம் செல்லுபடியாகும், எனவே அதே பதிவுடன் மீண்டும் முயற்சிக்கலாம்</li>
                 <li>DNS பரவலுக்காகக் காத்திருக்கவும் (10-30 நிமிடங்கள் ஆகலாம்)</li>
                 <li>சரிபார் என்பதைக் கிளிக் செய்வதற்கு முன் உங்கள் TXT பதிவு தெரிகிறதா என்பதை உறுதிப்படுத்த <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (புதிய தாவலில் திறக்கிறது)</span></a> ஐப் பயன்படுத்தவும்</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">உங்கள் மின்னஞ்சல் முகவரி</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="வெளிப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
+                  aria-label="DNS சரிபார்ப்புக்கான மின்னஞ்சல் முகவரி"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  குறியீட்டைப் பெறுக <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS TXT பதிவு</label>
               <div class="v2-field-row">
@@ -490,26 +511,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">உங்கள் மின்னஞ்சல் முகவரி</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="வெளிப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
-                  aria-label="DNS சரிபார்ப்புக்கான மின்னஞ்சல் முகவரி"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  சரிபார்
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                சரிபார்
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -593,6 +604,7 @@
             <div>
               <strong>எளிய படிகள்:</strong>
               <ul>
+                <li>உங்கள் மின்னஞ்சலை உள்ளிட்டு கோப்பின் பெயர் மற்றும் உள்ளடக்கத்தைப் பெற «குறியீட்டைப் பெறுக» என்பதைக் கிளிக் செய்யவும்</li>
                 <li>கீழே காட்டப்பட்டுள்ள சரியான பெயருடன் ஒரு புதிய கோப்பை உருவாக்கவும்</li>
                 <li>சரிபார்ப்புக் குறியீட்டைக் காட்டப்பட்டுள்ளபடியே சரியாக நகலெடுக்கவும்</li>
                 <li>இந்தக் கோப்பை உங்கள் இணையதளத்தின் ரூட் கோப்பகத்திற்குப் பதிவேற்றவும்</li>
@@ -618,6 +630,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">உங்கள் மின்னஞ்சல் முகவரி</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="வெளிப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
+                  aria-label="HTML சரிபார்ப்புக்கான மின்னஞ்சல் முகவரி"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  குறியீட்டைப் பெறுக <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">கோப்புப் பெயர்</label>
               <div class="v2-field-row">
@@ -660,26 +693,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">உங்கள் மின்னஞ்சல் முகவரி</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="வெளிப்பட்ட தரவைப் பெற மின்னஞ்சல் முகவரி"
-                  aria-label="HTML சரிபார்ப்புக்கான மின்னஞ்சல் முகவரி"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  சரிபார் <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                சரிபார் <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

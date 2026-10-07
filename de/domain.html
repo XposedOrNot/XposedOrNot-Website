@@ -456,13 +456,34 @@
               <strong>Wichtige Hinweise:</strong>
               <ul>
                 <li>Lassen Sie diese Seite während des gesamten Verifizierungsprozesses geöffnet</li>
-                <li>Die Verifizierungsschlüssel ändern sich bei jedem Versuch – verwenden Sie stets den zuletzt angezeigten Schlüssel</li>
+                <li>Geben Sie Ihre E-Mail-Adresse ein und klicken Sie auf „Code anfordern“, um Ihren TXT-Eintrag zu erhalten. Er bleibt 72 Stunden gültig, Sie können es also mit demselben Eintrag erneut versuchen</li>
                 <li>Warten Sie auf die DNS-Propagierung (kann 10–30 Minuten dauern)</li>
                 <li>Nutzen Sie <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (wird in neuem Tab geöffnet)</span></a>, um zu bestätigen, dass Ihr TXT-Eintrag sichtbar ist, bevor Sie auf „Verifizieren“ klicken</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">Ihre E-Mail-Adresse</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="E-Mail-Adresse zum Empfang der offengelegten Daten"
+                  aria-label="E-Mail-Adresse für die DNS-Verifizierung"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Code anfordern <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS-TXT-Eintrag</label>
               <div class="v2-field-row">
@@ -490,26 +511,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">Ihre E-Mail-Adresse</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="E-Mail-Adresse zum Empfang der offengelegten Daten"
-                  aria-label="E-Mail-Adresse für die DNS-Verifizierung"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  Verifizieren
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Verifizieren
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -593,6 +604,7 @@
             <div>
               <strong>Einfache Schritte:</strong>
               <ul>
+                <li>Geben Sie Ihre E-Mail-Adresse ein und klicken Sie auf „Code anfordern“, um Dateiname und Dateiinhalt zu erhalten</li>
                 <li>Erstellen Sie eine neue Datei mit dem unten angezeigten exakten Namen</li>
                 <li>Kopieren Sie den Verifizierungscode exakt wie angezeigt</li>
                 <li>Laden Sie diese Datei in das Stammverzeichnis Ihrer Website hoch</li>
@@ -618,6 +630,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">Ihre E-Mail-Adresse</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="E-Mail-Adresse zum Empfang der offengelegten Daten"
+                  aria-label="E-Mail-Adresse für die HTML-Verifizierung"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Code anfordern <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">Dateiname</label>
               <div class="v2-field-row">
@@ -660,26 +693,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">Ihre E-Mail-Adresse</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="E-Mail-Adresse zum Empfang der offengelegten Daten"
-                  aria-label="E-Mail-Adresse für die HTML-Verifizierung"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  Verifizieren <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Verifizieren <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

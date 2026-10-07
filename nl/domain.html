@@ -456,13 +456,34 @@
               <strong>Belangrijke opmerkingen:</strong>
               <ul>
                 <li>Houd deze pagina open gedurende het volledige verificatieproces</li>
-                <li>Verificatiesleutels veranderen bij elke poging — gebruik altijd de meest recente sleutel</li>
+                <li>Voer uw e-mailadres in en klik op 'Code ophalen' om uw TXT-record te ontvangen. Het blijft 72 uur geldig, dus u kunt het met hetzelfde record opnieuw proberen</li>
                 <li>Wacht op DNS-propagatie (kan 10-30 minuten duren)</li>
                 <li>Gebruik <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (opent in nieuw tabblad)</span></a> om te bevestigen dat uw TXT-record zichtbaar is voordat u op Verifieer klikt</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">Uw e-mailadres</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="E-mailadres om de blootgestelde gegevens te ontvangen"
+                  aria-label="E-mailadres voor DNS-verificatie"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Code ophalen <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS TXT-record</label>
               <div class="v2-field-row">
@@ -490,26 +511,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">Uw e-mailadres</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="E-mailadres om de blootgestelde gegevens te ontvangen"
-                  aria-label="E-mailadres voor DNS-verificatie"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  Verifiëren
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Verifiëren
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -593,6 +604,7 @@
             <div>
               <strong>Eenvoudige stappen:</strong>
               <ul>
+                <li>Voer uw e-mailadres in en klik op 'Code ophalen' om de bestandsnaam en -inhoud te ontvangen</li>
                 <li>Maak een nieuw bestand aan met de exacte naam zoals hieronder vermeld</li>
                 <li>Kopieer de verificatiecode precies zoals weergegeven</li>
                 <li>Upload dit bestand naar de hoofdmap van uw website</li>
@@ -618,6 +630,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">Uw e-mailadres</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="E-mailadres om de blootgestelde gegevens te ontvangen"
+                  aria-label="E-mailadres voor HTML-verificatie"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  Code ophalen <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">Bestandsnaam</label>
               <div class="v2-field-row">
@@ -660,26 +693,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">Uw e-mailadres</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="E-mailadres om de blootgestelde gegevens te ontvangen"
-                  aria-label="E-mailadres voor HTML-verificatie"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  Verifiëren <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Verifiëren <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

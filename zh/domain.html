@@ -455,13 +455,34 @@
               <strong>重要提示：</strong>
               <ul>
                 <li>在整个验证流程中请保持此页面处于打开状态</li>
-                <li>每次尝试时验证密钥都会变化——请始终使用所显示的最新密钥</li>
+                <li>输入您的邮箱并点击“获取代码”以获取 TXT 记录。该记录 72 小时内有效，因此您可以使用同一记录重试</li>
                 <li>等待 DNS 传播（可能需要 10-30 分钟）</li>
                 <li>在点击验证之前，请使用 <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only">（在新标签页中打开）</span></a> 确认您的 TXT 记录已可见</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">您的电子邮件地址</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="接收泄露数据的电子邮件地址"
+                  aria-label="用于 DNS 验证的电子邮件地址"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  获取代码 <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS TXT 记录</label>
               <div class="v2-field-row">
@@ -489,26 +510,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">您的电子邮件地址</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="接收泄露数据的电子邮件地址"
-                  aria-label="用于 DNS 验证的电子邮件地址"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  验证
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                验证
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -592,6 +603,7 @@
             <div>
               <strong>简单步骤：</strong>
               <ul>
+                <li>输入您的邮箱并点击“获取代码”以获取文件名和文件内容</li>
                 <li>创建一个文件名与下方所示完全一致的新文件</li>
                 <li>完全按照所示内容复制验证代码</li>
                 <li>将此文件上传到您网站的根目录</li>
@@ -617,6 +629,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">您的电子邮件地址</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="接收泄露数据的电子邮件地址"
+                  aria-label="用于 HTML 验证的电子邮件地址"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  获取代码 <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">文件名</label>
               <div class="v2-field-row">
@@ -659,26 +692,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">您的电子邮件地址</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="接收泄露数据的电子邮件地址"
-                  aria-label="用于 HTML 验证的电子邮件地址"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  验证 <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                验证 <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>

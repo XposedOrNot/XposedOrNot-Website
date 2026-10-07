@@ -456,13 +456,34 @@
               <strong>महत्वपूर्ण सूचनाएं:</strong>
               <ul>
                 <li>पूरी सत्यापन प्रक्रिया के दौरान इस पृष्ठ को खुला रखें</li>
-                <li>प्रत्येक प्रयास के साथ सत्यापन कुंजियां बदलती हैं - हमेशा दिखाई गई नवीनतम कुंजी का उपयोग करें</li>
+                <li>अपना ईमेल दर्ज करें और TXT रिकॉर्ड पाने के लिए «कोड प्राप्त करें» पर क्लिक करें। यह 72 घंटे तक मान्य रहता है, इसलिए आप उसी रिकॉर्ड के साथ फिर से प्रयास कर सकते हैं</li>
                 <li>DNS प्रसार की प्रतीक्षा करें (इसमें 10-30 मिनट लग सकते हैं)</li>
                 <li>सत्यापित करें पर क्लिक करने से पहले अपना TXT रिकॉर्ड दृश्यमान है यह पुष्टि करने के लिए <a href="https://mxtoolbox.com/TXTLookup.aspx" id="mxtoolbox-link" target="_blank" rel="noopener">MX Toolbox<span class="sr-only"> (नए टैब में खुलता है)</span></a> का उपयोग करें</li>
               </ul>
             </div>
           </div>
           <form id="dns_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_dns" class="v2-field-label">आपका ईमेल पता</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_dns"
+                  placeholder="उजागर डेटा प्राप्त करने के लिए ईमेल पता"
+                  aria-label="DNS सत्यापन के लिए ईमेल पता"
+                />
+                <button
+                  type="button"
+                  id="get_code_d"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  कोड प्राप्त करें <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_dns" class="v2-field-label">DNS TXT रिकॉर्ड</label>
               <div class="v2-field-row">
@@ -490,26 +511,16 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_dns" class="v2-field-label">आपका ईमेल पता</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_dns"
-                  placeholder="उजागर डेटा प्राप्त करने के लिए ईमेल पता"
-                  aria-label="DNS सत्यापन के लिए ईमेल पता"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                >
-                  सत्यापित करें
-                  <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_d"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                सत्यापित करें
+                <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
             </div>
           </form>
         </div>
@@ -593,6 +604,7 @@
             <div>
               <strong>सरल चरण:</strong>
               <ul>
+                <li>अपना ईमेल दर्ज करें और फ़ाइल का नाम व सामग्री पाने के लिए «कोड प्राप्त करें» पर क्लिक करें</li>
                 <li>नीचे दिखाए गए सटीक नाम के साथ एक नई फ़ाइल बनाएं</li>
                 <li>सत्यापन कोड को ठीक वैसे ही कॉपी करें जैसा दिखाया गया है</li>
                 <li>इस फ़ाइल को अपनी वेबसाइट की रूट डायरेक्टरी में अपलोड करें</li>
@@ -618,6 +630,27 @@
           </div>
 
           <form id="html_form" method="post">
+            <div class="v2-field-group">
+              <label for="txt_email_h" class="v2-field-label">आपका ईमेल पता</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_h"
+                  placeholder="उजागर डेटा प्राप्त करने के लिए ईमेल पता"
+                  aria-label="HTML सत्यापन के लिए ईमेल पता"
+                />
+                <button
+                  type="button"
+                  id="get_code_h"
+                  class="btn btn-lg btn-primary v2-verify-btn"
+                  disabled
+                >
+                  कोड प्राप्त करें <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="validation-message" aria-live="polite"></div>
+            </div>
             <div class="v2-field-group">
               <label for="edhu_html_filename" class="v2-field-label">फ़ाइल का नाम</label>
               <div class="v2-field-row">
@@ -660,26 +693,15 @@
                 </button>
               </div>
             </div>
-            <div class="v2-field-group">
-              <label for="txt_email_h" class="v2-field-label">आपका ईमेल पता</label>
-              <div class="v2-field-row">
-                <input
-                  class="form-control input-lg v2-field-input"
-                  type="text"
-                  id="txt_email_h"
-                  placeholder="उजागर डेटा प्राप्त करने के लिए ईमेल पता"
-                  aria-label="HTML सत्यापन के लिए ईमेल पता"
-                />
-                <button
-                  type="submit"
-                  id="searchMe_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
-                  disabled
-                >
-                  सत्यापित करें <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="validation-message" aria-live="polite"></div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_h"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                सत्यापित करें <i class="fas fa-check" aria-hidden="true"></i>
+              </button>
             </div>
           </form>
         </div>
