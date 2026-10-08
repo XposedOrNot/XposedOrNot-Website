@@ -62,6 +62,7 @@ import json
 import re
 import sys
 import urllib.request
+from urllib.parse import quote
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -124,6 +125,9 @@ FRESHNESS_MONTHS = {
     "ta": ["ஜனவரி", "பிப்ரவரி", "மார்ச்", "ஏப்ரல்", "மே", "ஜூன்", "ஜூலை",
            "ஆகஸ்ட்", "செப்டம்பர்", "அக்டோபர்", "நவம்பர்", "டிசம்பர்"],
 }
+
+INDUSTRY_ICON_DIR = ROOT / "static" / "logos" / "industry"
+NEW_BADGE_DAYS = 7
 
 ID_SAFE = re.compile(r"[A-Za-z0-9._~-]+")
 
@@ -712,26 +716,37 @@ def loc_num(loc, n):
 def xposed_recent_section(public, loc):
     t = XPOSED_I18N[loc]
     hreflang = "" if loc == "en" else ' hreflang="en"'
+    today = datetime.now(timezone.utc).date()
     rows = []
     for i, b in enumerate(public[:8]):
         bid = b["breachID"]
         logo = b.get("logo") or ""
         if logo.startswith(SITE):
             logo = logo[len(SITE):]
-        img = (f'<img class="xr-logo" src="{esc(logo)}" alt="" width="28" height="28" '
+        img = (f'<img class="xr-logo" src="{esc(logo)}" alt="" width="32" height="32" '
                'loading="lazy" decoding="async">' if logo else "")
         added = datetime.fromisoformat(b["addedDate"])
         month = b["breachedDate"][:7]
+        industry = str(b.get("industry") or "")
+        icon = ""
+        if industry and (INDUSTRY_ICON_DIR / f"{industry}.png").is_file():
+            icon = (f'<img class="xr-ind" src="/static/logos/industry/{quote(industry)}.png" '
+                    'alt="" width="18" height="18" loading="lazy" decoding="async">')
+        is_new = (today - added.date()).days <= NEW_BADGE_DAYS
+        badge = f'<span class="xr-new">{esc(t["new_badge"])}</span>' if is_new else ""
         rows.append(
             f'<tr{" class=" + chr(34) + "xr-extra" + chr(34) if i >= 4 else ""}>'
             f'<th scope="row">{img}<a href="/breach/{esc(bid)}"{hreflang}>'
             f"{esc(display_name(bid))}</a></th>"
-            f"<td>{esc(str(b.get('industry') or ''))}</td>"
-            f"<td>{int(b['exposedRecords']):,}</td>"
-            f'<td><time datetime="{month}">{month}</time></td>'
+            f"<td>{icon}{esc(industry)}</td>"
+            f'<td class="xr-num">{loc_num(loc, f"{int(b["exposedRecords"]):,}")}</td>'
+            f'<td><time datetime="{month}">'
+            f"{fmt_month_year(loc, datetime.fromisoformat(b['breachedDate']))}</time></td>"
             f'<td><time datetime="{b["addedDate"][:10]}">'
-            f"{fmt_freshness_date(loc, added)}</time></td></tr>")
-    head = "".join(f'<th scope="col">{esc(c)}</th>' for c in t["cols"])
+            f"{fmt_freshness_date(loc, added)}</time>{badge}</td></tr>")
+    head = "".join(
+        f'<th scope="col"{" class=" + chr(34) + "xr-num" + chr(34) if i == 2 else ""}>{esc(c)}</th>'
+        for i, c in enumerate(t["cols"]))
     return ('<section class="seo-summary xposed-recent" id="recently-added">'
             f'<h2>{esc(t["recent_h2"])}</h2><p>{esc(t["recent_sub"])}</p>'
             '<div class="xr-wrap"><table class="xr-table">'
@@ -1524,12 +1539,23 @@ RU_MONTHS_NOMINATIVE = ["январь", "февраль", "март", "апре�
                         "август", "сентябрь", "октябрь", "ноябрь", "декабрь"]
 
 
+PL_MONTHS_NOMINATIVE = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec",
+                        "lipiec", "sierpień", "wrzesień", "październik", "listopad",
+                        "grudzień"]
+
+
 def fmt_month_year(loc, d):
+    if loc in ("ja", "zh"):
+        return f"{d.year}年{d.month}月"
     if loc == "ru":
         return f"{RU_MONTHS_NOMINATIVE[d.month - 1]} {d.year}"
+    if loc == "pl":
+        return f"{PL_MONTHS_NOMINATIVE[d.month - 1]} {d.year}"
     month = FRESHNESS_MONTHS[loc][d.month - 1]
     if loc in ("es", "pt"):
         return f"{month} de {d.year}"
+    if loc == "bn":
+        return f"{month} {d.year}".translate(BN_DIGITS)
     return f"{month} {d.year}"
 
 
