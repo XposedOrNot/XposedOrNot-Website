@@ -852,13 +852,13 @@ def bake_directory(public):
                 text = re.sub(pattern, lambda m: section, text, flags=re.S)
             else:
                 anchor = re.search(
-                    r'<section class="seo-summary" id="seo-summary">.*?</section>',
+                    r'<section class="seo-summary xposed-recent" id="recently-added">.*?</section>',
                     text, flags=re.S)
                 if anchor:
                     text = (text[:anchor.end()] + "\n\n        " + section
                             + text[anchor.end():])
                 else:
-                    print(f"WARNING: {page} has no seo-summary anchor, list not baked")
+                    print(f"WARNING: {page} has no recently-added anchor, list not baked")
         else:
             for marker in (ITEMLIST_ID, STATIC_SECTION_ID):
                 if f'id="{marker}"' in text:
