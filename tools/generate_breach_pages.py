@@ -42,7 +42,9 @@ values into our-repository.html (stat tiles, insights, size and risk
 cards, top-10/recent tables, sr-only chart data tables, Key Statistics
 summary, FAQ schema, dateModified) from /v1/metrics/detailed plus the
 breaches list, mirroring repository.js; locale copies get the numeric
-values only. It also refreshes llms.txt (Last updated line, Notable
+values only. When /v1/metrics/detailed lags the breaches list (its
+count or Last_Breach_Added is behind), the breach-derived fields are
+rebuilt from the list so every baked page agrees on the same total. It also refreshes llms.txt (Last updated line, Notable
 Breaches section) and regenerates llms-full.txt (llms.txt content plus
 key statistics, the FAQ from the FAQPage schemas, and the complete
 breach index). It also bakes the live totals, verified count, breach-type
@@ -1364,6 +1366,38 @@ def fetch_metrics():
         return None
 
 
+def reconcile_metrics(metrics, public):
+    if metrics is None or not public:
+        return metrics
+    latest = max(r["addedDate"] for r in public)
+    if (int(metrics["Breaches_Count"]) == len(public)
+            and metrics.get("Last_Breach_Added") == latest):
+        return metrics
+    print(f"WARNING: /v1/metrics/detailed lags the breaches list "
+          f"({metrics['Breaches_Count']} vs {len(public)}, last added "
+          f"{metrics.get('Last_Breach_Added')} vs {latest}); rebuilding "
+          f"breach-derived metrics from the list")
+
+    def row(b):
+        return {"breachid": b["breachID"], "logo": b["logo"],
+                "description": b["exposureDescription"],
+                "count": int(b["exposedRecords"])}
+
+    fresh = dict(metrics)
+    fresh["Breaches_Count"] = len(public)
+    fresh["Breaches_Records"] = sum(int(b["exposedRecords"]) for b in public)
+    fresh["Last_Breach_Added"] = latest
+    fresh["Yearly_Breaches_Count"] = dict(
+        collections.Counter(b["breachedDate"][:4] for b in public))
+    fresh["Industry_Breaches_Count"] = dict(
+        collections.Counter(b["industry"] for b in public))
+    fresh["Top_Breaches"] = [
+        row(b) for b in sorted(public, key=lambda b: -int(b["exposedRecords"]))[:10]]
+    fresh["Recent_Breaches"] = [
+        row(b) for b in sorted(public, key=lambda b: b["addedDate"], reverse=True)[:10]]
+    return fresh
+
+
 def bake_repository_stats(public, metrics):
     if metrics is None:
         print("WARNING: no metrics data, repository stats not baked")
@@ -1891,7 +1925,7 @@ def main():
     before = snapshot_pages(tracked)
     baked = bake_directory(public)
     stamped = bake_index_freshness(public)
-    metrics = fetch_metrics()
+    metrics = reconcile_metrics(fetch_metrics(), public)
     repo = bake_repository_stats(public, metrics)
     deep = bake_deep_pages(public, metrics)
     lastmods = stamp_sitemap(tracked, before)
