@@ -281,6 +281,7 @@ $(document).ready(function () {
                     $("#status").hide();
 
                     $('#domain-display').text(domainName);
+                    setDomainLogo(domainName);
                 }
                 e.preventDefault();
             }
@@ -539,6 +540,42 @@ observer.observe(document.getElementById("html_text"), {
     characterData: true,
     subtree: true,
 });
+
+function setDomainLogo(domainName) {
+    var label = document.getElementById('label_srategy');
+    var credit = document.getElementById('domain-logo-credit');
+    if (!label) {
+        return;
+    }
+    var logo = document.getElementById('domain-logo');
+    if (!logo) {
+        logo = document.createElement('img');
+        logo.id = 'domain-logo';
+        logo.className = 'v2-domain-logo';
+        logo.alt = '';
+        logo.width = 56;
+        logo.height = 56;
+        label.parentNode.insertBefore(logo, label);
+    }
+    logo.hidden = true;
+    if (credit) {
+        credit.hidden = true;
+    }
+    logo.onload = function () {
+        logo.hidden = false;
+        if (credit) {
+            credit.hidden = false;
+        }
+    };
+    logo.onerror = function () {
+        logo.hidden = true;
+        logo.removeAttribute('src');
+        if (credit) {
+            credit.hidden = true;
+        }
+    };
+    logo.src = 'https://img.logo.dev/' + encodeURIComponent(domainName) + '?size=200&fallback=404&token=pk_SfmfJZb2RYiEgGDl2nxd3Q';
+}
 
 function updateDomainLabel() {
     var domain = document.getElementById("eventName").value;

@@ -426,7 +426,12 @@
               <option value="dns_txt">DNS Text based validation</option>
               <option value="html">HTML Page based validation</option>
             </select>
-            <br />
+            <p class="v2-logo-credit" id="domain-logo-credit" hidden>
+              Logo provided by
+              <a href="https://logo.dev" target="_blank" rel="noopener"
+                >Logo.dev<span class="sr-only"> (opens in new tab)</span></a
+              >
+            </p>
           </div>
         </div>
 
@@ -477,7 +482,7 @@
                 <button
                   type="button"
                   id="get_code_d"
-                  class="btn btn-lg btn-primary v2-verify-btn"
+                  class="btn btn-outline-primary v2-code-btn"
                   disabled
                 >
                   Get code <i id="get_code_d_i1" class="fas fa-key" aria-hidden="true"></i>
@@ -522,62 +527,11 @@
                 Verify
                 <span id="searchMe_d_i1" class="glyphicon glyphicon-ok"></span>
               </button>
+              <p class="v2-verify-hint" aria-live="polite">Request your code above to enable Verify.</p>
             </div>
           </form>
         </div>
 
-        <div
-          class="alert alert-primary"
-          role="alert"
-          id="div_meta"
-          style="text-align: center; border-radius: 8px; border: 2px solid #6daae0"
-        >
-          <strong>META tag based validation.!</strong> Please create a temporary
-          META data tag in your home page as shown below. <br />
-          <br />
-          <form id="meta_form" method="post">
-            <div class="input-group" id="div2">
-              <span class="input-group-addon">
-                <em class="fa fa-bullseye" aria-hidden="true"></em>
-              </span>
-              <input
-                class="form-control input-lg"
-                autocapitalize="off"
-                data-val="true"
-                data-val-maxlength="Maximum is only 255 ! "
-                data-val-maxlength-max="255"
-                data-val-minlength="Minimum is &#39;3&#39;!"
-                data-val-minlength-min="3"
-                id="edhu_meta"
-                maxlength="255"
-                name="edhu_meta"
-                autofocus="true"
-                readonly
-              />
-            </div>
-            <br />
-            <div style="text-align: left" class="input-group">
-              <input
-                class="form-control input-lg"
-                type="text"
-                id="txt_email_m"
-                placeholder="Email address to receive the exposed data"
-                aria-label="Email address for meta verification"
-              />
-              <span class="input-group-btn">
-                <button
-                  type="submit"
-                  id="searchMe_m"
-                  class="btn btn-lg btn-primary"
-                >
-                  Verify &nbsp;
-                  <span id="searchMe_m_i1" class="glyphicon glyphicon-ok"></span>
-                </button>
-              </span>
-              <div class="validation-message" aria-live="polite"></div>
-            </div>
-          </form>
-        </div>
 
         <div
           class="v2-verify-card"
@@ -644,7 +598,7 @@
                 <button
                   type="button"
                   id="get_code_h"
-                  class="btn btn-lg btn-primary v2-verify-btn"
+                  class="btn btn-outline-primary v2-code-btn"
                   disabled
                 >
                   Get code <i id="get_code_h_i1" class="fas fa-key" aria-hidden="true"></i>
@@ -703,6 +657,7 @@
               >
                 Verify <i class="fas fa-check" aria-hidden="true"></i>
               </button>
+              <p class="v2-verify-hint" aria-live="polite">Request your code above to enable Verify.</p>
             </div>
           </form>
         </div>
@@ -715,20 +670,25 @@
         ></div>
 
         <div
-          class="alert alert-primary"
+          class="v2-verify-card"
           role="alert"
           id="div_email"
-          style="text-align: center; border-radius: 8px; border: 2px solid #6daae0"
         >
-          <div class="verification-info">
-            <div class="d-flex align-items-center mb-2">
-              <i class="fas fa-envelope fa-2x text-primary mr-2" aria-hidden="true"></i>
+          <div class="v2-verify-header">
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+            <div>
               <h5 class="mb-0">Email Verification</h5>
-              <span class="badge badge-success ml-2">Easiest Method</span>
+              <span class="v2-verify-badge v2-badge-success">Easiest Method</span>
             </div>
-            <div class="alert alert-info mt-2" style="text-align: left">
+          </div>
+          <p class="v2-verify-desc">
+            We email a one-time link to a standard address on your domain. Open it to finish verification.
+          </p>
+          <div class="v2-verify-notice v2-notice-info">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <div>
               <strong>How it works:</strong>
-              <ul style="margin: 8px 0 0; padding-left: 20px">
+              <ul>
                 <li>
                   We email a one-time link to <strong>one of these 5 addresses</strong>
                   on your domain:
@@ -744,31 +704,39 @@
             </div>
           </div>
           <form id="email_form" method="post">
-            <select class="form-control input-lg" id="sel1" aria-label="Select which of the 5 allowed addresses receives the one-time link">
-              <option>
-                Choose one of the 5 addresses to get the link
-              </option>
-            </select>
-            <br />
-            <div style="text-align: left" class="input-group">
-              <input
-                class="form-control input-lg"
-                type="text"
-                id="txt_email_e"
-                placeholder="Monitoring email on this domain (e.g. soc@yourdomain.com)"
-                aria-label="Monitoring email address to receive breach alerts"
-              />
-              <span class="input-group-btn">
-                <button
-                  type="submit"
-                  id="searchMe_e"
-                  class="btn btn-lg btn-primary"
-                  disabled
-                >
-                  Verify &nbsp; <i class="fas fa-check" aria-hidden="true"></i>
-                </button>
-              </span>
+            <div class="v2-field-group">
+              <label for="sel1" class="v2-field-label">Address That Receives the Link</label>
+              <div class="v2-field-row">
+                <select class="form-control input-lg v2-field-input" id="sel1">
+                  <option>
+                    Choose one of the 5 addresses to get the link
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="v2-field-group">
+              <label for="txt_email_e" class="v2-field-label">Monitoring Email on This Domain</label>
+              <div class="v2-field-row">
+                <input
+                  class="form-control input-lg v2-field-input"
+                  type="text"
+                  id="txt_email_e"
+                  placeholder="e.g. soc@yourdomain.com"
+                />
+              </div>
               <div class="validation-message" aria-live="polite"></div>
+            </div>
+            <div class="v2-field-group v2-verify-actions">
+              <button
+                type="submit"
+                id="searchMe_e"
+                class="btn btn-lg btn-primary v2-verify-btn"
+                disabled
+              >
+                Verify
+                <span id="searchMe_e_i1" class="glyphicon glyphicon-ok"></span>
+              </button>
+              <p class="v2-verify-hint" aria-live="polite">Enter a valid monitoring email to enable Verify.</p>
             </div>
           </form>
         </div>
