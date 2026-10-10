@@ -163,7 +163,11 @@ function initDataTable(breaches) {
                        '<span class="sr-only">(opens in new tab)</span>' +
                        '</a>';
 
-        var industryHtml = '<span class="industry-badge">' + (breach.industry || 'Unknown') + '</span>';
+        var industryName = breach.industry || 'Unknown';
+        var industryIcon = breach.industry
+            ? '<img class="xr-ind" src="/static/logos/industry/' + encodeURI(breach.industry) + '.png" alt="" width="18" height="18" loading="lazy" decoding="async">'
+            : '';
+        var industryHtml = '<span class="industry-badge">' + industryIcon + industryName + '</span>';
 
         var recordsHtml = '<span class="records-count">' + formatWithCommas(breach.exposedRecords || 0) + '</span>';
 

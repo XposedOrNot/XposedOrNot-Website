@@ -736,8 +736,9 @@ def xposed_recent_section(public, loc):
                     'alt="" width="18" height="18" loading="lazy" decoding="async">')
         is_new = (today - added.date()).days <= NEW_BADGE_DAYS
         badge = f'<span class="xr-new">{esc(t["new_badge"])}</span>' if is_new else ""
+        row_classes = " ".join(c for c in ("xr-is-new" if is_new else "", "xr-extra" if i >= 4 else "") if c)
         rows.append(
-            f'<tr{" class=" + chr(34) + "xr-extra" + chr(34) if i >= 4 else ""}>'
+            f'<tr{" class=" + chr(34) + row_classes + chr(34) if row_classes else ""}>'
             f'<th scope="row">{img}<a href="/breach/{esc(bid)}"{hreflang}>'
             f"{esc(display_name(bid))}</a></th>"
             f"<td>{icon}{esc(industry)}</td>"
