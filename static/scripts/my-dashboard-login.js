@@ -55,7 +55,7 @@
             var emailVal = $email.val().trim();
 
             if (!validateEmail(emailVal)) {
-                showAlert("#errorMessage");
+                showAlert("#invalidEmailMessage");
                 return;
             }
 
@@ -76,8 +76,10 @@
                 error: function (xhr) {
                     if (xhr.status === 429) {
                         showAlert("#rateLimitMessage");
-                    } else {
+                    } else if (xhr.status === 400) {
                         showAlert("#errorMessage");
+                    } else {
+                        showAlert("#serverErrorMessage");
                     }
                 },
                 complete: function () {
