@@ -332,9 +332,25 @@ function xonDisplayName(id) {
     return (map && map[id]) || id;
 }
 
-function breachTagLink(name, year) {
+function xonFocusBreach() {
+    try {
+        return new URLSearchParams(window.location.search).get('breach') || '';
+    } catch (e) {
+        return '';
+    }
+}
+
+function focusBreachLine(hit, focus) {
+    const name = escapeHtml(xonDisplayName(focus));
+    return hit
+        ? '<p class="breach-focus">Yes, your email was in ' + name + '.</p>'
+        : '<p class="breach-focus">Your email was not in ' + name + ', but it was in these breaches:</p>';
+}
+
+function breachTagLink(name, year, focus) {
     const yearPart = year ? ' <span class="breach-tag-year">· ' + escapeHtml(String(year)) + '</span>' : '';
-    return '<a class="breach-tag" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '">' + escapeHtml(xonDisplayName(name)) + yearPart + '<span class="sr-only"> (opens in new tab)</span></a>';
+    const cls = focus && focus === name ? 'breach-tag is-focus' : 'breach-tag';
+    return '<a class="' + cls + '" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '">' + escapeHtml(xonDisplayName(name)) + yearPart + '<span class="sr-only"> (opens in new tab)</span></a>';
 }
 
 
@@ -358,8 +374,13 @@ const STATUS_MESSAGES = {
 
 function successMessage() {
     const count = metricsData ? parseInt(metricsData.Breaches_Count, 10) : 0;
+    const focus = xonFocusBreach();
+    const notIn = focus ? "Your email was not in " + escapeHtml(xonDisplayName(focus)) + ", or in" : "Your email isn't in";
     if (count > 0) {
-        return "🎉 Good news! Your email isn't in any of the " + count.toLocaleString() + " data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.";
+        return "🎉 Good news! " + notIn + " any of the " + count.toLocaleString() + " data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.";
+    }
+    if (focus) {
+        return "Your email was not in " + escapeHtml(xonDisplayName(focus)) + ". " + STATUS_MESSAGES.success;
     }
     return STATUS_MESSAGES.success;
 }
@@ -521,6 +542,7 @@ function processSearchResponse(response, email) {
         renderResultSummary(countValue(total), 'danger', email);
 
         const details = (jsonResponse.ExposedBreaches && jsonResponse.ExposedBreaches.breaches_details) || [];
+        const focus = xonFocusBreach();
         warningMessage = '';
 
         if (details.length > 0) {
@@ -529,10 +551,15 @@ function processSearchResponse(response, email) {
                 if (yearDiff !== 0) return yearDiff;
                 return (b.xposed_records || 0) - (a.xposed_records || 0);
             });
+            if (focus) {
+                const at = sorted.findIndex(function (b) { return b.breach === focus; });
+                if (at > 0) sorted.unshift(sorted.splice(at, 1)[0]);
+                warningMessage += focusBreachLine(at > -1, focus);
+            }
 
             warningMessage += '<p class="breach-intro">Your email appeared in these data breaches, newest first:</p><div class="breach-tags">';
             sorted.slice(0, 10).forEach(function (b) {
-                warningMessage += breachTagLink(b.breach, b.xposed_date);
+                warningMessage += breachTagLink(b.breach, b.xposed_date, focus);
             });
             warningMessage += '</div>';
 
@@ -542,14 +569,19 @@ function processSearchResponse(response, email) {
                 warningMessage += '<button type="button" id="showAllBreaches" class="breach-showall" aria-expanded="false" aria-controls="allBreachTags" data-show-label="' + showLabel + '">' + showLabel + '</button>';
                 warningMessage += '<div id="allBreachTags" class="breach-tags" hidden>';
                 rest.forEach(function (b) {
-                    warningMessage += breachTagLink(b.breach, b.xposed_date);
+                    warningMessage += breachTagLink(b.breach, b.xposed_date, focus);
                 });
                 warningMessage += '</div>';
             }
         } else {
+            if (focus) {
+                const at = breaches.indexOf(focus);
+                if (at > 0) breaches.unshift(breaches.splice(at, 1)[0]);
+                warningMessage += focusBreachLine(at > -1, focus);
+            }
             warningMessage += '<p class="breach-intro">Your email appeared in these data breaches:</p><div class="breach-tags">';
             breaches.forEach(function (name) {
-                warningMessage += breachTagLink(name);
+                warningMessage += breachTagLink(name, undefined, focus);
             });
             warningMessage += '</div>';
         }
@@ -910,4 +942,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+});
+
+$(function () {
+    const focus = xonFocusBreach();
+    const form = document.querySelector('form.dbc-form');
+    if (!focus || !form) return;
+    const note = document.createElement('p');
+    note.className = 'dbc-hero-note';
+    note.id = 'dbcFocusNote';
+    note.innerHTML = 'Checking whether your email was in <strong>' + escapeHtml(xonDisplayName(focus)) + '</strong>. Enter it above.';
+    form.insertAdjacentElement('afterend', note);
 });

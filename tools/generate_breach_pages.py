@@ -294,17 +294,43 @@ def data_badges(exposed):
     return "".join(out)
 
 
-def action_cards(exposed):
+FINANCIAL_TERMS = ("credit card", "bank account", "account balance", "income",
+                   "financial")
+
+
+def has_financial(exposed):
+    lower = " ".join(d.lower() for d in exposed)
+    return any(k in lower for k in FINANCIAL_TERMS)
+
+
+def password_advice(breach, display):
+    risk = str(breach.get("passwordRisk") or "").lower()
+    where = f"on {display} and anywhere you reused it"
+    if risk == "plaintext":
+        lead = f"Your password was exposed as plain text. Change it now {where}."
+    elif risk == "easytocrack":
+        lead = ("Passwords were stored with weak protection and are likely "
+                f"cracked. Change it now {where}.")
+    elif risk == "hardtocrack":
+        lead = ("Passwords were strongly hashed, but change it anyway if you "
+                "reused it elsewhere.")
+    else:
+        lead = f"Change it now {where}."
+    return lead + " Make the new one long and unique."
+
+
+def action_cards(breach, display):
+    exposed = breach["exposedData"]
     lower = " ".join(d.lower() for d in exposed)
     has = lambda k: k in lower
     cards = []
     if has("password"):
         cards.append(("Urgent", "urgent", "fas fa-key", "Change Your Passwords",
-                      "Update your password immediately, using 12+ characters with numbers and symbols."))
+                      esc(password_advice(breach, display))))
     if has("email") or has("password") or has("username"):
         cards.append(("High Priority", "high", "fas fa-shield-alt", "Enable Two-Factor Authentication",
                       "Add 2FA on all supported accounts using an authenticator app like Google Authenticator or Authy."))
-    if has("credit card") or has("bank account") or has("account balance") or has("income"):
+    if has_financial(exposed):
         cards.append(("Urgent", "urgent", "fas fa-university", "Alert Your Bank",
                       "Contact your bank immediately and monitor statements for unauthorized transactions."))
     if has("social security") or has("government") or has("passport"):
@@ -376,10 +402,24 @@ def faq_pairs(breach, display, rank, total):
         (f"What data was exposed in the {display} breach?",
          f"The exposed data includes: {types}."),
         (f"What should I do if I was affected by the {display} breach?",
-         "Change your password on the affected service (and anywhere you reused it), "
-         "turn on two-factor authentication, and set up free breach alerts on "
-         "XposedOrNot so you know the moment your email appears in a new breach."),
+         what_to_do(breach, display)),
     ]
+
+
+def what_to_do(breach, display):
+    exposed = breach["exposedData"]
+    if any("password" in d.lower() for d in exposed):
+        text = (f"Change your password on {display} and anywhere you reused it, "
+                "and make the new one long and unique. Turn on two-factor "
+                "authentication")
+    else:
+        text = ("No password was in this breach, so the main risk is phishing. "
+                "Be wary of emails, calls or texts that quote these details, "
+                "turn on two-factor authentication")
+    if has_financial(exposed):
+        text += ", contact your bank and watch your statements"
+    return (text + ", and set up free breach alerts on XposedOrNot so you know "
+            "the moment your email appears in a new breach.")
 
 
 def faq_section(pairs):
@@ -585,7 +625,8 @@ def render(template, breach, public, rank, total, modified, show_updated):
                        '<i class="fas fa-bell"></i> Set Up Free Breach Alerts</a>')
     else:
         sensitive_note = ""
-        primary_cta = ('<a href="/data-breach-check" class="btn-primary-custom">'
+        primary_cta = (f'<a href="/data-breach-check?breach={quote(bid, safe="")}" '
+                       'class="btn-primary-custom">'
                        '<i class="fas fa-search"></i> Check if your email was in '
                        f'{esc(display)}</a>')
     fills = {
@@ -617,7 +658,7 @@ def render(template, breach, public, rank, total, modified, show_updated):
         "{{RANK_LINE}}": (f" &middot; #{rank} of {total} breaches by records exposed"),
         "{{RELATED_SECTION}}": related_section(breach, public),
         "{{FAQ_SECTION}}": faq_section(pairs),
-        "{{ACTION_CARDS}}": action_cards(breach["exposedData"]),
+        "{{ACTION_CARDS}}": action_cards(breach, display),
     }
     out = template
     for key, val in fills.items():
