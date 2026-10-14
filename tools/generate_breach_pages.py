@@ -36,8 +36,10 @@ crawlable A-to-Z list of every breach linking its static page. The list
 is the no-JS/crawler fallback; xposed.js hides it once the live table
 renders. It also stamps the latest addedDate into the home-page
 "Latest breach added" line (index.html, EN + all locale copies) with a
-locale-formatted static date so crawlers see it without JS; index.js
-still refreshes it from the live API in browsers. It also bakes real
+locale-formatted static date so crawlers see it without JS, and bakes
+the four stat tiles (b1/b2 from the breaches list, p1/p2 from
+/v1/metrics/detailed) with exact locale-digit values; index.js
+still refreshes them from the live API in browsers. It also bakes real
 values into our-repository.html (stat tiles, insights, size and risk
 cards, top-10/recent tables, sr-only chart data tables, Key Statistics
 summary, FAQ schema, dateModified) from /v1/metrics/detailed plus the
@@ -913,8 +915,15 @@ def fmt_freshness_date(loc, d):
     return f"{d.day} {month} {d.year}"
 
 
-def bake_index_freshness(public):
+def bake_index_freshness(public, metrics=None):
     latest = max(r["addedDate"] for r in public)
+    tiles = {"b1": len(public),
+             "b2": sum(int(b["exposedRecords"]) for b in public)}
+    if metrics:
+        tiles["p1"] = int(str(metrics["Pastes_Count"]).replace(",", ""))
+        tiles["p2"] = int(metrics["Pastes_Records"])
+    else:
+        print("WARNING: no metrics, p1/p2 stat tiles not baked")
     d = datetime.fromisoformat(latest)
     iso = latest[:10]
     stamped = 0
@@ -941,6 +950,13 @@ def bake_index_freshness(public):
                              rf"\g<1>{count}\g<2>", new)
             if not n:
                 print(f"WARNING: {page} has no {span_id} span, count not baked")
+        for tile_id, value in tiles.items():
+            baked = loc_num(loc, f"{value:,}")
+            new, n = re.subn(
+                rf'(<div class="stat-number" id="{tile_id}">)[^<]*(</div>)',
+                rf"\g<1>{baked}\g<2>", new)
+            if n != 1:
+                print(f"WARNING: {page} has {n} {tile_id} stat tiles, value not baked")
         if new == text:
             continue
         page.write_text(new, encoding="utf-8", newline="")
@@ -1925,8 +1941,8 @@ def main():
     tracked = sitemap_pages()
     before = snapshot_pages(tracked)
     baked = bake_directory(public)
-    stamped = bake_index_freshness(public)
     metrics = reconcile_metrics(fetch_metrics(), public)
+    stamped = bake_index_freshness(public, metrics)
     repo = bake_repository_stats(public, metrics)
     deep = bake_deep_pages(public, metrics)
     lastmods = stamp_sitemap(tracked, before)
