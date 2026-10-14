@@ -604,6 +604,11 @@ function processSearchResponse(response, email) {
         $("#warn").show();
     }
 
+    if (warningMessage) {
+        warningMessage += '<p class="breach-intro" style="margin-top:16px">Don\'t want this email showing up in public searches? <a href="shield">Turn on Privacy Shield</a>, it\'s free.</p>';
+        $("#warn").html(warningMessage);
+    }
+
     if (breachSummary && breachSummary.length > 0) {
         warningMessage += '<p class="breach-intro" style="margin-top:16px">Do this now:</p>' +
             '<ol style="text-align: left; display: inline-block; margin: 0; padding-left: 1.4em">' +

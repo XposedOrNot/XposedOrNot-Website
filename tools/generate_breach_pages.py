@@ -40,7 +40,9 @@ table renders. It also stamps the latest addedDate into the home-page
 locale-formatted static date so crawlers see it without JS, and bakes
 the four stat tiles (b1/b2 from the breaches list, p1/p2 from
 /v1/metrics/detailed) with exact locale-digit values; index.js
-still refreshes them from the live API in browsers. It also bakes real
+still refreshes them from the live API in browsers. The compare page
+(EN + locales) gets the same exact breach and record counts baked into
+its breachCount/recordCount spans. It also bakes real
 values into our-repository.html (stat tiles, insights, size and risk
 cards, top-10/recent tables, sr-only chart data tables, Key Statistics
 summary, FAQ schema, dateModified) from /v1/metrics/detailed plus the
@@ -1761,8 +1763,31 @@ def bake_deep_pages(public, metrics):
     return baked
 
 
+def bake_compare_counts(public):
+    count = len(public)
+    records = sum(int(b["exposedRecords"]) for b in public)
+    baked = 0
+    for loc in ["en"] + LOCALES:
+        page = ROOT / "compare.html" if loc == "en" else ROOT / loc / "compare.html"
+        if not page.exists():
+            print(f"WARNING: {page} missing, skipped compare count bake")
+            continue
+        text = page.read_text(encoding="utf-8")
+        new = text
+        for span_id, value in (("breachCount", count), ("recordCount", records)):
+            new, n = re.subn(rf'(<span id="{span_id}">)[^<]*(</span>)',
+                             rf"\g<1>{loc_num(loc, f'{value:,}')}\g<2>", new)
+            if n != 1:
+                print(f"WARNING: {page} has {n} {span_id} spans, count not baked")
+        if new != text:
+            page.write_text(new, encoding="utf-8", newline="")
+            baked += 1
+    return baked
+
+
 def sitemap_pages():
     pages = {ROOT / "index.html": "/", ROOT / "xposed.html": "/xposed",
+             ROOT / "compare.html": "/compare",
              ROOT / "our-repository.html": "/our-repository",
              ROOT / "methodology.html": "/methodology",
              ROOT / "domain-monitoring.html": "/domain-monitoring",
@@ -1772,6 +1797,7 @@ def sitemap_pages():
     for loc in LOCALES:
         pages[ROOT / loc / "index.html"] = f"/{loc}/"
         pages[ROOT / loc / "xposed.html"] = f"/{loc}/xposed"
+        pages[ROOT / loc / "compare.html"] = f"/{loc}/compare"
         pages[ROOT / loc / "our-repository.html"] = f"/{loc}/our-repository"
     return pages
 
@@ -1984,6 +2010,7 @@ def main():
     baked = bake_directory(public)
     metrics = reconcile_metrics(fetch_metrics(), public)
     stamped = bake_index_freshness(public, metrics)
+    compared = bake_compare_counts(public)
     repo = bake_repository_stats(public, metrics)
     deep = bake_deep_pages(public, metrics)
     lastmods = stamp_sitemap(tracked, before)
@@ -1991,6 +2018,7 @@ def main():
     print(f"fetched: {len(all_ids)} | rendered now: {len(to_render)} | "
           f"pages on disk: {len(existing)} | sitemap: {len(live)} URLs | "
           f"directory pages baked: {baked} | index pages stamped: {stamped} | "
+          f"compare pages baked: {compared} | "
           f"repository pages baked: {repo} | deep pages baked: {deep} | "
           f"sitemap lastmods stamped: {lastmods} | llms files updated: {llms} | "
           f"breach facts changed: {changed}")
