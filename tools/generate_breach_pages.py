@@ -32,9 +32,10 @@ script instead.
 Every run also bakes the breach directory into xposed.html (EN + all
 locale copies): real breach/industry counts, last-updated date, Dataset
 JSON-LD dateModified/size, and on the EN page an ItemList schema plus a
-crawlable A-to-Z list of every breach linking its static page. The list
-is the no-JS/crawler fallback; xposed.js hides it once the live table
-renders. It also stamps the latest addedDate into the home-page
+crawlable A-to-Z list of every breach linking its static page, placed
+below the live table and above the "How this database is built" section.
+The list is the no-JS/crawler fallback; xposed.js hides it once the live
+table renders. It also stamps the latest addedDate into the home-page
 "Latest breach added" line (index.html, EN + all locale copies) with a
 locale-formatted static date so crawlers see it without JS, and bakes
 the four stat tiles (b1/b2 from the breaches list, p1/p2 from
@@ -913,13 +914,12 @@ def bake_directory(public):
                 text = re.sub(pattern, lambda m: section, text, flags=re.S)
             else:
                 anchor = re.search(
-                    r'<section class="seo-summary xposed-recent" id="recently-added">.*?</section>',
-                    text, flags=re.S)
+                    r'[ \t]*<section class="xposed-about" id="xposed-about">', text)
                 if anchor:
-                    text = (text[:anchor.end()] + "\n\n        " + section
-                            + text[anchor.end():])
+                    text = (text[:anchor.start()] + "        " + section
+                            + "\n\n" + text[anchor.start():])
                 else:
-                    print(f"WARNING: {page} has no recently-added anchor, list not baked")
+                    print(f"WARNING: {page} has no xposed-about anchor, list not baked")
         else:
             for marker in (ITEMLIST_ID, STATIC_SECTION_ID):
                 if f'id="{marker}"' in text:
