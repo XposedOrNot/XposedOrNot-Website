@@ -260,7 +260,7 @@ $.ajax(emailVerificationUrl)
         } else if (n.status === 429) {
             $.LoadingOverlay("hide");
             document.getElementById("db-s").className = "visible alert alert-danger";
-            $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
+            $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.").append(rateLimitUpsell('breach-dashboard'));
             $("#db-s").show();
         } else if (n.status === 401) {
             showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
@@ -1176,7 +1176,7 @@ function updateApiCall(timeFilter) {
             } else if (n.status === 429) {
                 $.LoadingOverlay("hide");
                 document.getElementById("db-s").className = "visible alert alert-danger";
-                $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.");
+                $("#db-s").html("<b>Please Slow down.</b><br>Looks like you're going too fast, please try again after some time.").append(rateLimitUpsell('breach-dashboard'));
                 $("#db-s").show();
             } else if (n.status === 401) {
                 showAuthModal('Your dashboard link has expired. Please request a new one from the dashboard page.');
@@ -1828,3 +1828,19 @@ $('#unacknowledgeAlertModal').on('hidden.bs.modal', function() {
     cancelBtn.prop('disabled', false);
     confirmBtn.html('<i class="fas fa-undo mr-1"></i>Un-acknowledge');
 });
+
+function rateLimitUpsell(campaign) {
+    var wrap = document.createElement('span');
+    wrap.appendChild(document.createTextNode(' Need more requests? '));
+    var a = document.createElement('a');
+    a.href = 'https://plus.xposedornot.com/products/api?utm_source=xposedornot.com&utm_medium=api-error&utm_campaign=' + campaign + '&utm_content=rate-limit';
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.style.color = 'inherit';
+    a.style.textDecoration = 'underline';
+    a.style.fontWeight = '600';
+    a.textContent = 'xonAPI+';
+    wrap.appendChild(a);
+    wrap.appendChild(document.createTextNode(' offers higher limits.'));
+    return wrap;
+}

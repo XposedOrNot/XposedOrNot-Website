@@ -356,6 +356,7 @@ function showError(errorType) {
         errorIcon.className = 'fas fa-hourglass-half';
         errorTitle.textContent = 'Slow Down!';
         errorMessage.textContent = 'You\'re making too many requests. Please wait a moment and try again.';
+        errorMessage.appendChild(rateLimitUpsell('breach'));
     } else if (errorType === 'error') {
         errorIcon.className = 'fas fa-exclamation-circle';
         errorTitle.textContent = 'Something Went Wrong';
@@ -370,3 +371,19 @@ function showError(errorType) {
 document.addEventListener('DOMContentLoaded', function () {
     loadBreachData();
 });
+
+function rateLimitUpsell(campaign) {
+    var wrap = document.createElement('span');
+    wrap.appendChild(document.createTextNode(' Need more requests? '));
+    var a = document.createElement('a');
+    a.href = 'https://plus.xposedornot.com/products/api?utm_source=xposedornot.com&utm_medium=api-error&utm_campaign=' + campaign + '&utm_content=rate-limit';
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.style.color = 'inherit';
+    a.style.textDecoration = 'underline';
+    a.style.fontWeight = '600';
+    a.textContent = 'xonAPI+';
+    wrap.appendChild(a);
+    wrap.appendChild(document.createTextNode(' offers higher limits.'));
+    return wrap;
+}

@@ -129,7 +129,7 @@ $(document).ready(function () {
             handleNoBreach(domainName);
         } else if (jqXHR.status === 429) {
             var retryAfter = JSON.parse(jqXHR.responseText).retry_after_seconds;
-            $('#errorMessage').text(`Rate limit exceeded. Please try again after ${retryAfter} seconds.`).show();
+            $('#errorMessage').text(`Rate limit exceeded. Please try again after ${retryAfter} seconds.`).append(rateLimitUpsell('domains')).show();
         } else {
             $("#alertMe").text("An error occurred. Please try again later.");
         }
@@ -269,3 +269,19 @@ $(document).ready(function () {
         }
     }
 });
+
+function rateLimitUpsell(campaign) {
+    var wrap = document.createElement('span');
+    wrap.appendChild(document.createTextNode(' Need more requests? '));
+    var a = document.createElement('a');
+    a.href = 'https://plus.xposedornot.com/products/api?utm_source=xposedornot.com&utm_medium=api-error&utm_campaign=' + campaign + '&utm_content=rate-limit';
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.style.color = 'inherit';
+    a.style.textDecoration = 'underline';
+    a.style.fontWeight = '600';
+    a.textContent = 'xonAPI+';
+    wrap.appendChild(a);
+    wrap.appendChild(document.createTextNode(' offers higher limits.'));
+    return wrap;
+}
