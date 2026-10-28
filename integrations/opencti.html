@@ -7,7 +7,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0">
-   <meta name="description" content="OpenCTI internal-enrichment connector for XposedOrNot: enrich Email-Addr observables with breach exposure. In development.">
+   <meta name="description" content="Enrich OpenCTI Email-Addr observables with data-breach exposure using the XposedOrNot connector, merged upstream. No API key required.">
    <meta name="keywords" content="OpenCTI connector, internal enrichment, Email-Addr, data breach, threat intelligence platform">
    <meta name="author" content="Devanand Premkumar">
    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
@@ -21,7 +21,7 @@
    <link rel="preconnect" href="https://fonts.gstatic.com">
 
    <meta property="og:title" content="OpenCTI Connector | XposedOrNot" />
-   <meta property="og:description" content="OpenCTI internal-enrichment connector for XposedOrNot: enrich Email-Addr observables with breach exposure. In development." />
+   <meta property="og:description" content="Enrich OpenCTI Email-Addr observables with data-breach exposure using the XposedOrNot connector, merged upstream. No API key required." />
    <meta property="og:image" content="https://xposedornot.com/static/images/xon.png" />
    <meta property="og:image:alt" content="XposedOrNot Logo" />
    <meta property="og:url" content="https://xposedornot.com/integrations/opencti" />
@@ -32,7 +32,7 @@
    <meta name="twitter:site" content="@XposedOrNot">
    <meta name="twitter:creator" content="@DevaOnBreaches">
    <meta name="twitter:title" content="OpenCTI Connector | XposedOrNot">
-   <meta name="twitter:description" content="OpenCTI internal-enrichment connector for XposedOrNot: enrich Email-Addr observables with breach exposure. In development.">
+   <meta name="twitter:description" content="Enrich OpenCTI Email-Addr observables with data-breach exposure using the XposedOrNot connector, merged upstream. No API key required.">
    <meta name="twitter:image" content="https://xposedornot.com/static/images/xon.png">
 
    <link href="/static/css/style-new.css" type="text/css" rel="stylesheet">
@@ -366,34 +366,150 @@
       <div class="transparency-content">
          <div class="container transparency-section">
             <h2 align="center">XposedOrNot for OpenCTI</h2>
-            <p style="text-align:center;"><span class="status-pill status-review">Pull request under review</span> &nbsp;<a href="https://github.com/OpenCTI-Platform/connectors/pull/6999" target="_blank" rel="noopener">OpenCTI-Platform/connectors#6999</a></p>
+            <p style="text-align:center;"><span class="status-pill status-live">Live</span> &nbsp;<a href="https://github.com/OpenCTI-Platform/connectors/pull/6999" target="_blank" rel="noopener">Merged in OpenCTI-Platform/connectors#6999</a></p>
 
             <p>
-               The XposedOrNot internal-enrichment connector is complete and its pull request is under community
-               review at <a href="https://github.com/OpenCTI-Platform/connectors/pull/6999" target="_blank" rel="noopener">OpenCTI-Platform/connectors#6999</a>.
-               This page will carry the full installation guide once it merges.
+               The XposedOrNot internal-enrichment connector adds data-breach exposure to <code>Email-Addr</code>
+               observables in <a href="https://filigran.io/solutions/open-cti/" target="_blank" rel="noopener">OpenCTI</a>:
+               which breaches an address appears in, when, how many records were exposed, which data classes leaked and
+               how passwords were stored. It ships in the official
+               <a href="https://github.com/OpenCTI-Platform/connectors/tree/master/internal-enrichment/xposedornot" target="_blank" rel="noopener">OpenCTI-Platform/connectors</a>
+               repository and works without an API key.
             </p>
 
-            <h3>What it does</h3>
+            <h3>What you get</h3>
+            <p>For a breached address the connector enriches the observable in place and attaches one Note:</p>
             <ul>
-               <li>Internal-enrichment connector for <code>Email-Addr</code> observables.</li>
-               <li>Score derived from breach risk, <code>data-breach</code> labels, and a plaintext-password-exposure label where applicable.</li>
-               <li>A structured note with the full breach table (name, date, records, data classes, password risk) on the observable.</li>
-               <li>Optional per-breach Incident objects behind a config flag, off by default to keep graphs clean.</li>
-               <li>TLP-gated, deterministic re-enrichment (no duplicates), keyless by default with an optional commercial key.</li>
+               <li><strong>Labels</strong> <code>data-breach</code> and, when at least one breach stored passwords in plaintext,
+                   <code>plaintext-password-exposure</code>. Both are refreshed on every run; your other labels are kept.</li>
+               <li><strong>A markdown Note</strong> with the breach table (newest 50 by default): breach name, date, records
+                   exposed, affected domain, industry, exposed data classes, password-storage risk, verification status and a short
+                   description, plus first and latest exposure years and totals. Re-enriching updates the same Note instead of adding a second one.</li>
+               <li><strong>An external reference</strong> to xposedornot.com on the observable.</li>
+               <li><strong>An optional score</strong>: the XposedOrNot risk score (0 to 100) is written to the observable only when
+                   <code>XPOSEDORNOT_UPDATE_SCORE=true</code>. See the score note below before switching it on.</li>
+            </ul>
+            <p>A clean address (no known breach) completes with the status
+               <em>No known breach exposure for this email address (XposedOrNot)</em> and changes nothing. The connector is
+               playbook-compatible: when there is nothing to add, the incoming bundle is handed back unchanged so the next step still runs.</p>
+
+            <h3>Requirements</h3>
+            <ul>
+               <li>OpenCTI Platform 7.261026.0 or newer.</li>
+               <li>No XposedOrNot account or API key. An optional commercial key raises the rate limits.</li>
             </ul>
 
-            <h3>In the meantime</h3>
-            <ul>
-               <li>Use the <a href="/api_doc">free, keyless API</a> or one of the
-                   <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">eight official SDKs</a> to bring
-                   breach checks into your own workflows today.</li>
-               <li>Follow progress on <a href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a> and the
-                   <a href="https://blog.xposedornot.com" target="_blank" rel="noopener">blog</a>.</li>
-               <li>Want early access or have requirements? Write to <!--email_off--><a href="mailto:help@xposedornot.com">help@xposedornot.com</a><!--/email_off-->.</li>
-            </ul>
+            <h3>Installation</h3>
+            <p><strong>Docker</strong> (recommended): add the connector service to the <code>docker-compose.yml</code> of your
+               OpenCTI stack, next to your other connectors, then start it.</p>
+            <div class="code-box">  connector-xposedornot:
+    image: opencti/connector-xposedornot:latest
+    environment:
+      - OPENCTI_URL=${OPENCTI_URL}
+      - OPENCTI_TOKEN=${OPENCTI_TOKEN}
+      - CONNECTOR_ID=c6b0f5f2-c47e-4d49-92a9-10371b40f5d8
+      - CONNECTOR_NAME=XposedOrNot
+      - CONNECTOR_SCOPE=Email-Addr
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_MAX_TLP=amber
+      - CONNECTOR_LOG_LEVEL=error
+      - XPOSEDORNOT_API_KEY=
+      - XPOSEDORNOT_TLP_LEVEL=amber
+      - XPOSEDORNOT_MAX_NOTE_BREACHES=50
+      - XPOSEDORNOT_UPDATE_SCORE=false
+    restart: always
+    depends_on:
+      - opencti</div>
+            <div class="code-box">docker compose up -d connector-xposedornot</div>
+            <p>Use a fresh UUIDv4 for <code>CONNECTOR_ID</code> if you run more than one instance.</p>
+            <p><strong>Manual</strong> (Python 3, from a clone of the connectors repository):</p>
+            <div class="code-box">cd internal-enrichment/xposedornot
+pip3 install -r src/requirements.txt
+cp config.yml.sample config.yml
+python3 -m src</div>
+            <p>Edit <code>config.yml</code> before the last step: set <code>opencti.url</code> and <code>opencti.token</code>;
+               the remaining keys mirror the environment variables in the table below.</p>
 
-            <p><a href="/integrations">← All integrations</a></p>
+            <h3>Confirm it is running</h3>
+            <p>In OpenCTI open <em>Data → Ingestion → Connectors</em>. <em>XposedOrNot</em> should be listed as an
+               internal enrichment connector with a green status and <code>Email-Addr</code> in its scope. If it is missing,
+               check the container logs:</p>
+            <div class="code-box">docker compose logs -f connector-xposedornot</div>
+
+            <h3>First enrichment</h3>
+            <ol>
+               <li>Open any <code>Email-Addr</code> observable (<em>Observations → Observables</em>), or create one.</li>
+               <li>Click the enrichment icon in the top-right toolbar and pick <em>XposedOrNot</em>.</li>
+               <li>Within a few seconds the observable gains the <code>data-breach</code> label, an external reference and a
+                   Note tabulating each breach. If the address is clean, the work completes with no changes.</li>
+            </ol>
+            <p>To enrich automatically, set <code>CONNECTOR_AUTO=true</code>. Keep it off on the keyless API: the limits
+               below are easy to hit with automatic enrichment, so configure an API key first.</p>
+
+            <h3>Configuration</h3>
+            <p><strong>None required.</strong> The defaults use the free, keyless community API. The variables you are most likely to change:</p>
+            <div class="table-responsive">
+               <table class="metrics-table">
+                  <tr><th>Variable</th><th>Default</th><th>What it does</th></tr>
+                  <tr><td><code>XPOSEDORNOT_API_KEY</code></td><td><em>empty</em></td>
+                      <td>Optional key from <a href="https://plus.xposedornot.com?utm_source=xposedornot.com&amp;utm_medium=referral&amp;utm_campaign=integrations-opencti&amp;utm_content=body-brand" target="_blank" rel="noopener">plus.xposedornot.com</a>. Switches to the commercial Plus API with higher rate limits.</td></tr>
+                  <tr><td><code>CONNECTOR_MAX_TLP</code></td><td><code>amber</code></td>
+                      <td>Highest TLP an observable may carry and still be enriched. The email address leaves your platform, so this gates what may be sent.</td></tr>
+                  <tr><td><code>XPOSEDORNOT_TLP_LEVEL</code></td><td><code>amber</code></td>
+                      <td>TLP marking applied to the Note. The Note also inherits every marking of the source observable.</td></tr>
+                  <tr><td><code>XPOSEDORNOT_UPDATE_SCORE</code></td><td><code>false</code></td>
+                      <td>Write the XposedOrNot risk score to the observable's score. Community API only; it overwrites the existing score.</td></tr>
+                  <tr><td><code>XPOSEDORNOT_MAX_NOTE_BREACHES</code></td><td><code>50</code></td>
+                      <td>How many breaches the Note tabulates, newest first. <code>0</code> renders all of them.</td></tr>
+                  <tr><td><code>CONNECTOR_AUTO</code></td><td><code>false</code></td>
+                      <td>Enrich every new <code>Email-Addr</code> automatically. Needs an API key in practice.</td></tr>
+                  <tr><td><code>CONNECTOR_LOG_LEVEL</code></td><td><code>error</code></td>
+                      <td><code>debug</code>, <code>info</code>, <code>warn</code> or <code>error</code>.</td></tr>
+               </table>
+            </div>
+            <p>The full reference, including <code>XPOSEDORNOT_API_BASE_URL</code>, is in the connector's
+               <a href="https://github.com/OpenCTI-Platform/connectors/blob/master/internal-enrichment/xposedornot/README.md" target="_blank" rel="noopener">README</a>.</p>
+
+            <div class="highlight-box">
+               <strong>Score semantics:</strong> OpenCTI usually reads an observable's score as a level of threat. The XposedOrNot
+               risk score measures how exposed a <em>victim</em> address is across known breaches; a heavily breached address scores
+               100 without being malicious. That is why the score is off by default. Think twice before routing scored
+               <code>Email-Addr</code> observables into detection-oriented workflows or feeds.
+            </div>
+
+            <h3>Rate limits</h3>
+            <p>Keyless community API: 2 requests/second, 25/hour, 100/day per IP. HTTP 429 responses are retried twice with
+               backoff honouring <code>Retry-After</code>; if the limit is still hit, that single enrichment is reported in
+               error and the connector keeps running. The optional commercial key raises these limits.</p>
+
+            <h3>Troubleshooting</h3>
+            <p>Set <code>CONNECTOR_LOG_LEVEL=debug</code> and watch the connector logs. The email address and API key are redacted from every message.</p>
+            <div class="table-responsive">
+               <table class="metrics-table">
+                  <tr><th>Log message</th><th>Meaning</th></tr>
+                  <tr><td><code>XposedOrNot rate limited; backing off</code></td><td>Expected under keyless bursts. Configure a key for volume.</td></tr>
+                  <tr><td><code>XposedOrNot: still rate limited after retries</code></td><td>Three attempts exhausted; only that enrichment failed.</td></tr>
+                  <tr><td><code>XposedOrNot: request rejected (check the API key)</code></td><td>The Plus API refused the key in <code>XPOSEDORNOT_API_KEY</code>.</td></tr>
+                  <tr><td><code>XposedOrNot: redirect refused</code></td><td>The base URL redirected. Point <code>XPOSEDORNOT_API_BASE_URL</code> at the endpoint that answers directly (https only).</td></tr>
+                  <tr><td><code>XposedOrNot request failed</code></td><td>Network or TLS failure between the connector and the API.</td></tr>
+                  <tr><td>Observable not enriched, no error</td><td>Its TLP is above <code>CONNECTOR_MAX_TLP</code>, it is not an <code>Email-Addr</code>, or the address has no known breach.</td></tr>
+               </table>
+            </div>
+
+            <div class="highlight-box">
+               <strong>Privacy:</strong> only the observable's email address is sent, over TLS, to xposedornot.com (or to the Plus
+               endpoint when a key is set); nothing else about the observable or the bundle leaves your platform. Breach exposure tied to an
+               email address is personal information: gate it with <code>CONNECTOR_MAX_TLP</code>, mark results restrictively and use them
+               within lawful, authorised investigations. See our <a href="/privacy">privacy policy</a>.
+            </div>
+
+            <h3>Links</h3>
+            <ul>
+               <li><a href="https://github.com/OpenCTI-Platform/connectors/tree/master/internal-enrichment/xposedornot" target="_blank" rel="noopener">Connector source and README</a></li>
+               <li><a href="https://github.com/OpenCTI-Platform/connectors/pull/6999" target="_blank" rel="noopener">Pull request: OpenCTI-Platform/connectors#6999</a></li>
+               <li><a href="https://api.xposedornot.com/docs" target="_blank" rel="noopener">XposedOrNot API documentation</a></li>
+               <li><a href="/integrations">All integrations</a></li>
+            </ul>
 
          </div>
       </div>
