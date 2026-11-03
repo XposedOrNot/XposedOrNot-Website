@@ -390,11 +390,34 @@ def related_section(breach, public):
             f'<div class="data-types">{links}</div></div>')
 
 
+def how_to_check(breach, display):
+    if breach["searchable"]:
+        href = f'/data-breach-check?breach={quote(breach["breachID"], safe="")}'
+        lead = "Type your email address into the search box on our "
+        link_text = "data breach check page"
+        rest = (f". If it appears in the {display} breach, or any other, you'll see "
+                "the breach name, date and what was exposed. It's free and nothing "
+                "you type is stored.")
+        text = f"{lead}{link_text}{rest}"
+        html = (f'{esc(lead)}<a href="{esc(href)}">{esc(link_text)}</a>{esc(rest)}')
+        return text, html
+    text = (f"{display} is marked sensitive, so it is left out of public email search "
+            "results. Sign up for free breach alerts and verify your email address; "
+            "you will be told if it appears in this breach or any future one.")
+    html = (esc(f"{display} is marked sensitive, so it is left out of public email search "
+                "results. Sign up for ") + '<a href="/">free breach alerts</a>'
+            + esc(" and verify your email address; you will be told if it appears in "
+                  "this breach or any future one."))
+    return text, html
+
+
 def faq_pairs(breach, display, rank, total):
     records = fmt_number(breach["exposedRecords"])
     when = fmt_date_card(breach["breachedDate"])
     types = ", ".join(breach["exposedData"])
+    check_text, check_html = how_to_check(breach, display)
     return [
+        (f"How do I check if I was in the {display} breach?", check_text, check_html),
         (f"When did the {display} data breach happen?",
          f"{display} was {'reportedly ' if not breach.get('verified') else ''}"
          f"breached in {when}. The breach was added to the "
@@ -427,8 +450,9 @@ def what_to_do(breach, display):
 
 def faq_section(pairs):
     items = "".join(
-        f'<div class="faq-item"><h3>{esc(q)}</h3><p>{esc(a)}</p></div>'
-        for q, a in pairs)
+        f'<div class="faq-item"><h3>{esc(pair[0])}</h3>'
+        f'<p>{pair[2] if len(pair) > 2 and pair[2] else esc(pair[1])}</p></div>'
+        for pair in pairs)
     return ('<div class="content-section">'
             '<h2 class="section-title">Frequently Asked Questions</h2>'
             f"{items}</div>")
@@ -511,23 +535,38 @@ def page_title(breach, display):
     return title
 
 
+def page_h1(breach, display):
+    d = datetime.fromisoformat(breach["breachedDate"])
+    return f"{display} {title_clause(breach, display)} ({d.strftime('%B')} {d.year})"
+
+
+def question_noun(breach, display):
+    clause = title_clause(breach, display).lower()
+    return "data breach" if clause == "data breach and leak" else clause
+
+
 def page_description(breach, display):
     when = fmt_date_card(breach["breachedDate"])
-    clause = title_clause(breach, display).lower()
-    lead = f"{display} {clause} ({when})"
-    cta = (" Check free if your email was affected."
-           if breach["searchable"] else " Sign up for free alerts to find out.")
+    opening = (f"Were you in the {display} {question_noun(breach, display)} ({when})? "
+               + ("Check your email free." if breach["searchable"]
+                  else "Sign up for free alerts to find out."))
+    if breach.get("verified"):
+        ref = str(breach.get("referenceURL") or "").strip()
+        closing = " Verified, with source." if ref.startswith("http") else " Verified."
+    else:
+        closing = f" Added {fmt_date_card(breach['addedDate'])}."
     records = int(breach["exposedRecords"])
-    exposed = breach["exposedData"]
+    exposed = [t for t in breach["exposedData"] if t.strip()]
     variants = (
-        (fmt_number(records), exposed[:3]),
-        (fmt_records_compact(records), exposed[:3]),
-        (fmt_records_compact(records), exposed[:2]),
-        (fmt_records_compact(records), []),
+        (fmt_number(records), exposed[:3], closing),
+        (fmt_records_compact(records), exposed[:3], closing),
+        (fmt_records_compact(records), exposed[:2], closing),
+        (fmt_records_compact(records), [], closing),
+        (fmt_records_compact(records), [], ""),
     )
-    for count, types in variants:
+    for count, types, suffix in variants:
         tail = f" including {', '.join(types)}." if types else "."
-        desc = f"{lead}: {count} records exposed{tail}{cta}"
+        desc = f"{opening} {count} records exposed{tail}{suffix}"
         if len(desc) <= DESC_MAX:
             return desc
     return desc
@@ -580,7 +619,7 @@ def render(template, breach, public, rank, total, modified, show_updated):
     jsonld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": f"{display} Data Breach",
+        "headline": page_h1(breach, display),
         "description": desc,
         "url": url,
         "datePublished": breach["addedDate"],
@@ -594,9 +633,9 @@ def render(template, breach, public, rank, total, modified, show_updated):
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-            {"@type": "Question", "name": q,
-             "acceptedAnswer": {"@type": "Answer", "text": a}}
-            for q, a in pairs],
+            {"@type": "Question", "name": pair[0],
+             "acceptedAnswer": {"@type": "Answer", "text": pair[1]}}
+            for pair in pairs],
     }, ensure_ascii=False, indent=6)
     breadcrumb = json.dumps({
         "@context": "https://schema.org",
@@ -641,6 +680,7 @@ def render(template, breach, public, rank, total, modified, show_updated):
         "{{LOGO_ABS}}": esc(logo),
         "{{JSONLD}}": jsonld_block,
         "{{NAME}}": esc(display),
+        "{{H1}}": esc(page_h1(breach, display)),
         "{{DOMAIN}}": esc(breach["domain"]) or "&nbsp;",
         "{{RECORDS}}": records,
         "{{BREACH_DATE_CARD}}": fmt_date_card(breach["breachedDate"]),
