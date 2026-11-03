@@ -1657,6 +1657,49 @@ def fmt_month_year(loc, d):
     return f"{month} {d.year}"
 
 
+DLC_TYPES = (
+    ("Email addresses", ("Email addresses",)),
+    ("Passwords", ("Passwords",)),
+    ("Names", ("Names",)),
+    ("Usernames", ("Usernames",)),
+    ("Phone numbers", ("Phone numbers",)),
+    ("IP addresses", ("IP addresses",)),
+    ("Physical addresses", ("Physical addresses",)),
+    ("Dates of birth", ("Dates of birth",)),
+    ("Government IDs", ("Government IDs", "Government issued IDs")),
+)
+
+
+def dlc_type_counts(public):
+    counts = {}
+    for label, keys in DLC_TYPES:
+        counts[label] = sum(
+            1 for b in public
+            if any(t.strip() in keys for t in b["exposedData"] if t.strip()))
+    return counts
+
+
+def dlc_type_rows(counts):
+    rows = "\n".join(
+        "                     <tr>\n"
+        f'                        <th scope="row">{esc(label)}</th>\n'
+        f"                        <td>{counts[label]:,}</td>\n"
+        "                     </tr>" for label, _ in DLC_TYPES)
+    return f"\n{rows}\n                  "
+
+
+def dlc_fraction_guard(counts, total):
+    checks = (
+        ("passwords 'about two out of three'", counts["Passwords"] / total, 0.58, 0.75),
+        ("phone numbers 'about one in three'", counts["Phone numbers"] / total, 0.27, 0.40),
+        ("home addresses 'more than one in four'", counts["Physical addresses"] / total, 0.25, 0.34),
+    )
+    for label, share, lo, hi in checks:
+        if not lo <= share <= hi:
+            print(f"WARNING: data-leak-checker.html says {label} but the live "
+                  f"share is {share:.0%}; reword that sentence")
+
+
 def bake_deep_pages(public, metrics):
     if metrics is None:
         print("WARNING: no metrics data, methodology/domain-monitoring not baked")
@@ -1764,6 +1807,47 @@ def bake_deep_pages(public, metrics):
                       text, count=1)
         page.write_text(text, encoding="utf-8", newline="")
         baked += 1
+
+    page = ROOT / "data-leak-checker.html"
+    if page.exists():
+        original = page.read_text(encoding="utf-8")
+        text = original
+        type_counts = dlc_type_counts(public)
+        plaintext = sum(
+            1 for b in public
+            if str(b.get("passwordRisk") or "").lower() == "plaintext"
+            and any("password" in t.lower() for t in b["exposedData"]))
+        for elem_id, value in (
+            ("dlc-lead-records", records_text), ("dlc-lead-total", str(total)),
+            ("dlc-strip-total", str(total)), ("dlc-strip-records", records_text),
+            ("dlc-strip-verified", str(verified)), ("dlc-table-total", str(total)),
+            ("dlc-types", dlc_type_rows(type_counts)), ("dlc-plaintext", str(plaintext)),
+            ("dlc-faq-verified", str(verified)), ("dlc-faq-total", str(total)),
+        ):
+            text = set_inner(text, elem_id, value, page)
+        stealer = next((b for b in public if b["breachID"] == "AlienStealerLogs"), None)
+        if stealer:
+            text = set_inner(text, "dlc-stealer-emails",
+                             f"{int(stealer['exposedRecords']):,}", page)
+        else:
+            print(f"WARNING: AlienStealerLogs missing from the API, {page} stealer count not baked")
+        short = f"{records / 1e9:.1f}B"
+        text, n = re.subn(r"(Free Data Leak Checker: )[\d.]+B( Leaked Records)",
+                          rf"\g<1>{short}\g<2>", text)
+        if n != 4:
+            print(f"WARNING: {page} expected 4 title spots, found {n}")
+        text, n = re.subn(r"(Search )[\d.]+ billion( leaked records across )\d+( breaches)",
+                          rf"\g<1>{records_text}\g<2>{total}\g<3>", text)
+        if n != 4:
+            print(f"WARNING: {page} expected 4 description spots, found {n}")
+        text = sub_once(text, r'("text": "From leaks and breaches[^"]*?Today )\d+( of )\d+( entries)',
+                        rf"\g<1>{verified}\g<2>{total}\g<3>", page, "FAQ schema verified count")
+        dlc_fraction_guard(type_counts, total)
+        if text != original:
+            text = re.sub(r'("dateModified": ")[^"]*(")', rf"\g<1>{today}\g<2>",
+                          text, count=1)
+            page.write_text(text, encoding="utf-8", newline="")
+            baked += 1
     return baked
 
 
@@ -1795,7 +1879,8 @@ def sitemap_pages():
              ROOT / "our-repository.html": "/our-repository",
              ROOT / "methodology.html": "/methodology",
              ROOT / "domain-monitoring.html": "/domain-monitoring",
-             ROOT / "data-breach-check.html": "/data-breach-check"}
+             ROOT / "data-breach-check.html": "/data-breach-check",
+             ROOT / "data-leak-checker.html": "/data-leak-checker"}
     for loc in DM_LOCALE_PATTERNS:
         pages[ROOT / loc / "domain-monitoring.html"] = f"/{loc}/domain-monitoring"
     for loc in LOCALES:
