@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, maximum-scale=5.0, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#3f71f3">
+  <title>XposedOrNot: ما مدى أمان نطاقك من اختراقات البيانات المسربة</title>
+  <meta name="robots" content="noindex, follow" />
+  <meta name="description"
+    content="تحقق مما إذا كان نطاقك قد تعرض لاختراقات بيانات مع XposedOrNot. احصل على ملخص مفصل لتبقى على اطلاع وفي أمان." />
+  <meta name="author" content="Devanand Premkumar">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128 256x256" type="image/x-icon" />
+  <link rel="icon" href="/static/images/logos/logo.svg" type="image/svg+xml" />
+  <link rel="icon" href="/static/images/logos/logo-96x96.png" sizes="96x96" type="image/png" />
+  <link rel="icon" href="/static/images/logos/logo-32x32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="/static/images/logos/logo-192x192.png" sizes="192x192" type="image/png" />
+  <link rel="icon" href="/static/images/logos/logo-512x512.png" sizes="512x512" type="image/png" />
+  <link rel="apple-touch-icon" href="/static/images/logos/logo-180x180.png" />
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://static.hotjar.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta content="XposedOrNot: ما مدى أمان نطاقك من اختراقات البيانات المسربة" property="og:title">
+  <meta property="og:description"
+    content="تحقق مما إذا كان نطاقك قد تعرض لاختراقات بيانات مع XposedOrNot. احصل على ملخص مفصل لتبقى على اطلاع وفي أمان.">
+  <meta property="og:image" content="https://xposedornot.com/static/images/og/og-domains.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="مراقبة مجانية للنطاق، هل نطاقك مكشوف في اختراق">
+  <meta property="og:url" content="https://xposedornot.com/ar/domains" />
+    <meta property="og:locale" content="ar_AR" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@XposedOrNot">
+  <meta name="twitter:creator" content="@DevaOnBreaches">
+  <meta name="twitter:title" content="ما مدى أمان نطاقك من اختراقات البيانات المسربة؟">
+  <meta name="twitter:description"
+    content="تحقق مما إذا كان نطاقك قد تعرض لاختراقات بيانات مع XposedOrNot. احصل على ملخص مفصل لتبقى على اطلاع وفي أمان.">
+  <meta name="twitter:image" content="https://xposedornot.com/static/images/og/og-domains.png">
+  <meta name="twitter:image:alt" content="مراقبة مجانية للنطاق، هل نطاقك مكشوف في اختراق">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    integrity="sha256-BtbhCIbtfeVWGsqxk1vOHEYXS6qcvQvLMZqjtpWUEx8" crossorigin="anonymous">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C500%2C600%2C700%2C900&#038;subset&display=swap"
+    type="text/css" media="all">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&amp;display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&amp;display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&amp;display=swap" />
+    </noscript>
+  <link rel="Devanand Premkumar" href="/humans.txt">
+  <script>window.XON_I18N = {"alertIntro": "سنُخطرك عندما يظهر بريدك الإلكتروني في اختراق بيانات مفهرس حديثاً. يمكنك إلغاء الاشتراك في أي وقت. هذه الخدمة مجانية بالكامل.", "alertInvalidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح لتلقي التنبيهات.", "searchingTitle": "جارٍ البحث...", "checking": "جارٍ الفحص…", "notValidEmail": "بريد إلكتروني غير صالح", "notCompleted": "لم يكتمل الفحص", "hideList": "إخفاء القائمة الكاملة", "emailChecked": "البريد الإلكتروني المفحوص", "breachesFound": "الاختراقات التي عُثر عليها", "focusYes": "نعم، كان بريدك الإلكتروني في {name}.", "focusNo": "لم يكن بريدك الإلكتروني في {name}، لكنه كان في هذه الاختراقات:", "opensNewTab": " (يفتح في علامة تبويب جديدة)", "searching": "جارٍ فحص بريدك الإلكتروني في قاعدة بيانات الاختراقات...", "success": "🎉 خبر جيد! بريدك الإلكتروني غير موجود في أي من اختراقات البيانات التي فهرسناها. تظهر اختراقات جديدة باستمرار، لذا تستحق التنبيهات المجانية التفعيل.", "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح للفحص", "throttled": "يرجى الانتظار قليلاً قبل المحاولة مرة أخرى", "serverError": "نواجه صعوبات تقنية. يرجى المحاولة مرة أخرى بعد بضع دقائق.", "notInFocusOr": "بريدك الإلكتروني لم يكن في {name}، ولا في", "notIn": "بريدك الإلكتروني غير موجود في", "goodNewsCount": "🎉 خبر جيد! {notIn} أي من اختراقات البيانات التي فهرسناها ({count}). تظهر اختراقات جديدة باستمرار، لذا تستحق التنبيهات المجانية التفعيل.", "notInFocus": "بريدك الإلكتروني لم يكن في {name}.", "subscribe": "احصل على إشعارات فورية إذا ظهر بريدك الإلكتروني في اختراقات بيانات مستقبلية", "subscribeSuccess": "أُرسلت رسالة التحقق! تفقد بريدك الوارد لتفعيل مراقبة الاختراقات المجانية.", "alreadySubscribed": "أنت محمي بالفعل! هذا البريد مسجل لتلقي تنبيهات الاختراق.", "unableToDeliver": "تعذر إرسال رسالة إلى هذا العنوان. يرجى التحقق منه والمحاولة مرة أخرى.", "signupFailed": "لم نتمكن من تفعيل التنبيهات الآن. يرجى المحاولة مرة أخرى بعد بضع دقائق.", "noBreachesTitle": "رائع! لم يُعثر على اختراقات", "breachTitle": "ظهر بريدك الإلكتروني في اختراق", "errorTitle": "لم نتمكن من الفحص الآن", "appearedNewest": "ظهر بريدك الإلكتروني في اختراقات البيانات هذه، الأحدث أولاً:", "appeared": "ظهر بريدك الإلكتروني في اختراقات البيانات هذه:", "showAll": "عرض كل الاختراقات ({n})", "pastes": "عُثر عليه أيضاً في منشورات عامة (pastes):", "clickToOpen": "اضغط للفتح", "shieldLine": "لا تريد ظهور هذا البريد في عمليات البحث العامة؟ <a href=\"shield\">فعّل درع الخصوصية</a>، وهو مجاني.", "doNow": "افعل هذا الآن:", "doNow1": "غيّر كلمة مرورك في المواقع المخترقة أعلاه.", "doNow2": "فعّل المصادقة الثنائية على حساب بريدك الإلكتروني.", "doNow3": "فعّل التنبيهات المجانية لتعرف فور حدوث اختراق جديد.", "focusNote": "نتحقق مما إذا كان بريدك الإلكتروني في <strong><bdi>{name}</bdi></strong>. أدخله أعلاه.", "pwGood": "خبر جيد: كلمة المرور هذه غير موجودة في أي اختراق بيانات معروف. ومع ذلك، لا تستخدم كلمة المرور نفسها في مواقع متعددة.", "pwEnter": "يرجى إدخال كلمة مرور للفحص", "pwResultsTitle": "نتائج البحث", "pwGoodHtml": "<b>خبر جيد</b>: <b>كلمة المرور</b> هذه غير موجودة في أي اختراق بيانات معروف. <br>ومع ذلك، لا تستخدم كلمة المرور نفسها في مواقع متعددة، وفكّر في استخدام مدير كلمات مرور. <br>", "pwExposed": "<b>عذراً</b>! <b>كلمة المرور</b> هذه ظهرت من قبل في اختراق بيانات، ورُصدت <b>{count}</b> مرة. <br>ننصحك بتغييرها وعدم استخدامها في أي حساب، واختيار كلمة مرور قوية وفريدة لكل موقع.", "pwThrottled": "يتم تقييد طلباتك حالياً. يرجى التمهل والمحاولة مرة أخرى.", "unknown": "غير معروف", "dateLocale": "ar-u-nu-latn", "riskPlaintext": "نص صريح", "riskEasy": "سهلة الكسر", "riskHard": "صعبة الكسر", "notVerified": "غير موثق", "sensitive": "حساس", "verified": "موثق", "details": "التفاصيل", "colLogo": "الشعار", "colBreach": "الاختراق", "colIndustry": "القطاع", "colRecords": "السجلات", "colDate": "تاريخ الاختراق", "colRisk": "خطر كلمات المرور", "colStatus": "الحالة", "colAction": "إجراء", "all": "الكل", "dtLengthMenu": "عرض _MENU_ اختراق", "dtInfo": "عرض _START_ إلى _END_ من _TOTAL_ اختراق", "dtInfoEmpty": "لم يُعثر على اختراقات", "dtInfoFiltered": "(مصفاة من _MAX_ إجمالاً)"};</script>
+  <script src="/static/scripts/libs/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"
+    integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <link href="static/css/style-domain.css" type="text/css" rel="stylesheet">
+  <link href="static/css/responsive.css" type="text/css" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-regular-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Free";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Font Awesome 5 Brands";
+        font-style: normal;
+        font-weight: normal;
+        font-display: swap;
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-brands-400.woff2") format("woff2");
+      }
+    </style>
+
+    <link rel="canonical" href="https://xposedornot.com/ar/domains" />
+    <link rel="alternate" hreflang="en" href="https://xposedornot.com/domains" />
+    <link rel="alternate" hreflang="bn" href="https://xposedornot.com/bn/domains" />
+    <link rel="alternate" hreflang="de" href="https://xposedornot.com/de/domains" />
+    <link rel="alternate" hreflang="es" href="https://xposedornot.com/es/domains" />
+    <link rel="alternate" hreflang="fr" href="https://xposedornot.com/fr/domains" />
+    <link rel="alternate" hreflang="hi" href="https://xposedornot.com/hi/domains" />
+    <link rel="alternate" hreflang="it" href="https://xposedornot.com/it/domains" />
+    <link rel="alternate" hreflang="ja" href="https://xposedornot.com/ja/domains" />
+    <link rel="alternate" hreflang="nl" href="https://xposedornot.com/nl/domains" />
+    <link rel="alternate" hreflang="pt" href="https://xposedornot.com/pt/domains" />
+    <link rel="alternate" hreflang="ru" href="https://xposedornot.com/ru/domains" />
+    <link rel="alternate" hreflang="ta" href="https://xposedornot.com/ta/domains" />
+    <link rel="alternate" hreflang="zh" href="https://xposedornot.com/zh/domains" />
+    <link rel="alternate" hreflang="tr" href="https://xposedornot.com/tr/domains" />
+    <link rel="alternate" hreflang="pl" href="https://xposedornot.com/pl/domains" />
+    <link rel="alternate" hreflang="ar" href="https://xposedornot.com/ar/domains" />
+    <link rel="alternate" hreflang="x-default" href="https://xposedornot.com/domains" />
+    </head>
+
+<body>
+    <script>
+      if (localStorage.getItem("darkSwitch") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    </script>
+
+  <div class="overlay"></div>
+  <div id="content" class="blurred">
+    <div>
+      <div class="banner-nav" style="padding: 20px 0px;">
+        <div class="grid">
+          <nav class="navbar navbar-expand-md navbar-dark justify-content-center" aria-label="التنقل الرئيسي">
+            <a class="navbar-brand abs" href="/ar/" style="text-decoration: none;">
+              <span style="font-size: 1.5em; font-weight: bold; display: block; color: white;">XposedOrNot</span>
+              <span style="font-size: 0.8em; display: block; color: white; opacity: 0.85; margin-top: -10px;">النسخة المجتمعية</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#collapsingNavbar" aria-controls="collapsingNavbar"
+              aria-expanded="false" aria-label="فتح قائمة التنقل أو إغلاقها">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="collapsingNavbar">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item active px-4">
+                  <a class="nav-link" href="password">كلمة المرور</a>
+                </li>
+                <li class="nav-item active px-4">
+                  <a class="nav-link" href="/faq" hreflang="en">الأسئلة الشائعة</a>
+                </li>
+                <li class="nav-item active px-4">
+                  <a
+                    class="nav-link xon-nav-tip"
+                    href="https://plus.xposedornot.com/" data-utm-campaign="domains" data-utm-content="nav-brand"
+                    target="_blank"
+                    rel="noopener"
+                     data-tip="xonPlus للشركات: مراقبة الاختراقات للفرق والشركات" aria-label="xonPlus للشركات: مراقبة الاختراقات للفرق والشركات">xonPlus<span class="sr-only"> (يفتح في علامة تبويب جديدة)</span></a
+                  >
+                </li>
+                <li class="nav-item active px-4">
+                  <a class="nav-link" href="/api_doc" hreflang="en">API</a>
+                </li>
+                  <li class="nav-item active dropdown px-4">
+                    <a
+                      aria-expanded="false"
+                      class="nav-link dropdown-toggle"
+                      data-toggle="dropdown"
+                      href="#"
+                      id="navbarDropdownMenuLink"
+                      role="button"
+                    >
+                      اللغة <i class="fas fa-caret-down" aria-hidden="true"></i
+                    ></a>
+                    <style>
+                      .dropdown-toggle::after {
+                        display: none;
+                      }
+                    </style>
+                    <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                      <a class="dropdown-item" href="/domains" lang="en">English</a>
+                      <a class="dropdown-item" href="/zh/domains" lang="zh">中文 (Chinese)</a>
+                      <a class="dropdown-item" href="/es/domains" lang="es">Español (Spanish)</a>
+                      <a class="dropdown-item" href="/hi/domains" lang="hi">हिन्दी (Hindi)</a>
+                      <a class="dropdown-item" href="/bn/domains" lang="bn">বাংলা (Bengali)</a>
+                      <a class="dropdown-item" href="/pt/domains" lang="pt">Português (Portuguese)</a>
+                      <a class="dropdown-item" href="/ru/domains" lang="ru">Русский (Russian)</a>
+                      <a class="dropdown-item" href="/ja/domains" lang="ja">日本語 (Japanese)</a>
+                      <a class="dropdown-item" href="/de/domains" lang="de">Deutsch (German)</a>
+                      <a class="dropdown-item" href="/fr/domains" lang="fr">Français (French)</a>
+                      <a class="dropdown-item" href="/it/domains" lang="it">Italiano (Italian)</a>
+                      <a class="dropdown-item" href="/ta/domains" lang="ta">தமிழ் (Tamil)</a>
+                      <a class="dropdown-item" href="/nl/domains" lang="nl">Nederlands (Dutch)</a>
+                      <a class="dropdown-item" href="/tr/domains" lang="tr">Türkçe (Turkish)</a>
+                      <a class="dropdown-item" href="/pl/domains" lang="pl">Polski (Polish)</a>
+                    </div>
+                  </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="banner">
+        <div class="grid">
+          <div class="banner-row">
+            <h1>تُظهر بياناتنا أن شركتك<br> لديها <span>بيانات مكشوفة</span></h1>
+          </div>
+        </div>
+      </div>
+      <div class="sec3">
+        <div class="grid">
+          <div class="sec3-row">
+            <h4>تقرير اختراقات البيانات المسربة لنطاقك: <b id="domain-display"></b>
+              </b><img id="logo" src="" alt="Logo" width="120"></h4>
+            <div class="updt">
+              <p>آخر تسريب: <span id="last-exposure"></span></p>
+            </div>
+          </div>
+          <div class="sec3-flex">
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="static/images/close-circle.png" alt="">
+                </div>
+                <h4 id="breach-count">--</h4>
+                <h5>الاختراقات</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="static/images/document-text.png" alt="">
+                </div>
+                <h4 id="record-count">--</h4>
+                <h5>Records</h5>
+              </div>
+            </div>
+            <div class="web-bx1">
+              <div class="web-in">
+                <div class="web-bx-icn">
+                  <img src="static/images/sms.png" alt="">
+                </div>
+                <h4 id="email-count">-</h4>
+                <h5>عناوين البريد</h5>
+              </div>
+            </div>
+            <div class="web-bx1 web-bx4">
+              <div id="chart_div" style="width: 150px; height: 150px;"></div>
+            </div>
+          </div>
+          <div id="note" class="text-center mt-3" style="display: none; text-align: left !important;">
+            <small>* عدد السجلات مختصر للإيجاز. يمكنك إثبات ملكية النطاق لعرض السجلات الكاملة.</small>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sec4">
+        <div class="grid">
+          <div class="sec4-row">
+            <div class="sec4-text">
+              <img src="static/images/lock.png" class="img-responsive lock" alt="">
+              <h4>هذا المحتوى مقفل، أثبت ملكية النطاق لعرضه.</h4>
+              <a href="domain" target="_blank" class="verify-btn">تحقق الآن</a>
+            </div>
+          </div>
+        </div>
+        <div align="center"><button type="button" class="btn-modern mt-4" id="checkAnotherDomainBtn"><i class="fas fa-search"></i>افحص نطاقاً آخر</button></div>
+      </div>
+      <div align="center"><a href="https://logo.dev" alt="Logo API">الشعارات مقدمة من Logo.dev</a></div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <button type="button" class="domain-modal-close" id="modalCloseBtn" aria-label="إغلاق والعودة إلى الرئيسية">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="modal-body domain-modal-body">
+          <form id="domainForm" autocomplete="off">
+            <div class="domain-modal-inner">
+              <div class="domain-modal-icon" aria-hidden="true">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h5 class="domain-modal-title" id="domainModalLabel">هل تعرض نطاقك لاختراق؟</h5>
+              <p class="domain-modal-desc">اعرف ما إذا كان نطاقك يظهر في أي اختراق بيانات معروف.</p>
+              <label for="domainInput" class="sr-only">اسم النطاق</label>
+              <input type="text" class="domain-modal-input" id="domainInput" dir="ltr" placeholder="example.com" required>
+              <div class="invalid-feedback">
+                يرجى إدخال اسم نطاق صالح.
+              </div>
+              <button type="submit" class="domain-modal-btn" id="submitButton">
+                <i class="fas fa-search" aria-hidden="true"></i>
+                احصل على تقريري
+                <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                  style="display:none;"></span>
+              </button>
+              <div id="errorMessage" class="error-message" style="display:none;"></div>
+            </div>
+          </form>
+          <div id="noBreachMessage" style="display: none;">
+            <div class="domain-modal-inner">
+              <i class="fas fa-smile-beam fa-3x text-success"></i>
+              <h4 class="text-success mt-3">لم يُعثر على سجلات اختراق لـ <span id="searchedDomain"
+                  class="font-weight-bold"></span>!</h4>
+              <p>رائع! يبدو أن نطاقك آمن.</p>
+              <button type="button" class="btn-modern mt-3" id="checkAnotherDomainBtnInModal"><i class="fas fa-search"></i>افحص نطاقاً آخر</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:30px;">
+        <p>شاركنا في تطوير هذا الموقع مفتوح المصدر بالكامل! المساهمات مرحب بها ❤️ على <a
+              href="https://github.com/XposedOrNot" target="_blank" rel="noopener">GitHub</a>.</p>
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-group">
+          <h6>قانوني</h6>
+            <div class="footer-links-wrapper">
+              <a href="/privacy" hreflang="en" class="footer-link">سياسة الخصوصية</a>
+          <a href="/terms" hreflang="en" class="footer-link">الشروط</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>المجتمع</h6>
+            <div class="footer-links-wrapper">
+              <a href="/about" hreflang="en" class="footer-link">من نحن</a>
+              <a href="https://blog.xposedornot.com" class="footer-link">المدونة</a>
+          <a href="/our-repository" hreflang="en" class="footer-link">مستودعنا</a>
+          <a href="/data-breach-check" hreflang="en" class="footer-link">فحص اختراق البيانات</a>
+          <a href="/data-leak-checker" hreflang="en" class="footer-link">فاحص تسريب البيانات</a>
+          <a href="/integrations" hreflang="en" class="footer-link">التكاملات</a>
+          <a href="/mcp" hreflang="en" class="footer-link">خادم MCP</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>الثقة</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://status.xposedornot.com/" target="_blank" rel="noopener" class="footer-link">حالة الخدمة</a>
+              <a href="/transparency" hreflang="en" class="footer-link">الشفافية</a>
+              <a href="/responsible-disclosure" hreflang="en" class="footer-link">الإفصاح المسؤول</a>
+              <a href="/methodology" hreflang="en" class="footer-link">المنهجية</a>
+            </div>
+          </div>
+        <div class="footer-group">
+          <h6>للشركات</h6>
+          <div class="footer-links-wrapper">
+            <a href="/domain-monitoring" hreflang="en" class="footer-link">مراقبة النطاق مجاناً</a>
+            <a href="https://plus.xposedornot.com/products/api" data-utm-campaign="domains" data-utm-content="footer-xonapi" target="_blank" rel="noopener" class="footer-link">xonAPI+</a>
+            <a href="https://plus.xposedornot.com/products/threat-intel" data-utm-campaign="domains" data-utm-content="footer-xonti" target="_blank" rel="noopener" class="footer-link">xonThreatIntel+</a>
+            <a href="https://plus.xposedornot.com/pricing" data-utm-campaign="domains" data-utm-content="footer-pricing" target="_blank" rel="noopener" class="footer-link">الأسعار</a>
+          </div>
+        </div>
+        <div class="footer-group">
+          <h6>تابعنا</h6>
+            <div class="footer-links-wrapper">
+              <a href="https://twitter.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-twitter"></i> Twitter (X)
+          </a>
+          <a href="https://facebook.com/xposedornot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-facebook"></i> Facebook
+          </a>
+          <a href="https://infosec.exchange/@XposedOrNot" target="_blank" rel="noopener" class="footer-link">
+            <i class="fab fa-mastodon"></i> Mastodon
+          </a>
+            </div>
+          </div>
+      </div>
+
+      <div class="custom-control custom-switch" style="text-align: center; margin-top: 20px;">
+        <input type="checkbox" class="custom-control-input" id="darkSwitch">
+        <label class="custom-control-label" for="darkSwitch">الوضع الداكن</label>
+      </div>
+    </div>
+  </div>
+
+  <script defer async src="https://www.googletagmanager.com/gtag/js?id=G-MHXCCZ0EYY"></script>
+  <script src="static/scripts/domains.js"></script>
+  <script src="static/scripts/common.js"></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var footerGroups = document.querySelectorAll('.footer-group h6');
+        footerGroups.forEach(function(header) {
+          header.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+              var group = this.parentElement;
+              group.classList.toggle('active');
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>
