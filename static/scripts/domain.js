@@ -1,3 +1,13 @@
+function xonT(key, fallback) {
+    var d = window.XON_I18N;
+    return d && typeof d[key] === 'string' ? d[key] : fallback;
+}
+
+function xonNumLocale() {
+    var lang = document.documentElement.lang || '';
+    return /^ar(-|$)/i.test(lang) ? 'ar-u-nu-latn' : undefined;
+}
+
 var DOMAIN_API = 'https://api.xposedornot.com/v1/domain_verification';
 
 var PROOF_CODE_TTL_MS = (72 * 60 * 60 * 1000) - (5 * 60 * 1000);
@@ -73,8 +83,8 @@ function renderProofFields(show) {
     $('#edhu_html_filecontent').val(record);
     if (code) {
         var url = 'https://' + currentDomain() + '/' + code + '.html';
-        var hint = code.charAt(0) === '-' ? '<br>The file name starts with a hyphen, so quote it when creating the file.' : '';
-        $('#html_text').html("Verification file should be reachable at: " + escapeHtml(url) + hint + "<br>");
+        var hint = code.charAt(0) === '-' ? '<br>' + xonT('dvHyphenHint', 'The file name starts with a hyphen, so quote it when creating the file.') : '';
+        $('#html_text').html(xonT('dvFileAt', "Verification file should be reachable at: ") + escapeHtml(url) + hint + "<br>");
     } else {
         $('#html_text').html('');
     }
@@ -105,7 +115,7 @@ function requestProofCode(inputId, buttonId, verifyId) {
     $("#info").hide();
     var expired = isBoundTo(email) && proofCodeExpired();
     if (hasBoundCode(email)) {
-        if (!window.confirm('You already have a valid verification code for this email. Request a new one? You will need to update your published TXT record or file.')) {
+        if (!window.confirm(xonT('dvConfirmNew', 'You already have a valid verification code for this email. Request a new one? You will need to update your published TXT record or file.'))) {
             syncProofCard(inputId, verifyId);
             return true;
         }
@@ -122,7 +132,7 @@ function requestProofCode(inputId, buttonId, verifyId) {
             var code = r && r.status === 'success' ? r.domainVerification : '';
             if (typeof code !== 'string' || code === '' || code === 'Failure') {
                 $("#dang").show();
-                $('#dang').html('⛔ We could not start the verification for this domain and email. Please check both and try again.');
+                $('#dang').html('⛔ ' + xonT('dvStartFailed', 'We could not start the verification for this domain and email. Please check both and try again.'));
                 return;
             }
             proofChallenge = { domain: domain, email: email, code: code, issuedAt: Date.now() };
@@ -130,20 +140,20 @@ function requestProofCode(inputId, buttonId, verifyId) {
             if (replacing) {
                 $("#info").show();
                 $("#info").html(expired
-                    ? 'Your previous code expired. Publish the new record or file shown below before you verify.'
-                    : 'A new code was issued. Update your published TXT record or file before you verify.');
+                    ? xonT('dvCodeExpiredNew', 'Your previous code expired. Publish the new record or file shown below before you verify.')
+                    : xonT('dvCodeIssued', 'A new code was issued. Update your published TXT record or file before you verify.'));
             }
         })
         .fail(function (r) {
             if (r.status === 429) {
                 $("#info").show();
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
+                $("#info").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !"));
             } else if (r.status === 502) {
                 $("#info").show();
-                $("#info").html("Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time.");
+                $("#info").html(xonT('dvServerEnd', "Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time."));
             } else {
                 $("#dang").show();
-                $('#dang').html('⛔ We could not start the verification for this domain and email. Please check both and try again.');
+                $('#dang').html('⛔ ' + xonT('dvStartFailed', 'We could not start the verification for this domain and email. Please check both and try again.'));
             }
         })
         .always(function () {
@@ -162,8 +172,8 @@ $("#strat").focus(function () {
 $("#strat").change(function () {
     $("#info").hide();
     $("#dang").hide();
-    var id = $("#strat option:selected").text();
-    if (id == "Email based validation") {
+    var id = $("#strat").val();
+    if (id == "email") {
         $('#div_email').show();
         $('#div_dns').hide();
         $('#div_meta').hide();
@@ -184,7 +194,7 @@ $("#strat").change(function () {
                 $('#sel1').html('');
                 if (!site1 || site1.length === 0) {
                     $('#dang').show();
-                    $('#dang').html('Please enter a valid domain and try again !');
+                    $('#dang').html(xonT('dvInvalidDomain', 'Please enter a valid domain and try again !'));
                     $('#div_email').hide();
                 } else {
                     var options = $('#sel1');
@@ -193,7 +203,7 @@ $("#strat").change(function () {
                     }
                 }
             });
-    } else if (id == "DNS Text based validation") {
+    } else if (id == "dns_txt") {
         $('#div_email').hide();
         $('#succ').hide();
         $('#div_dns').show();
@@ -233,10 +243,10 @@ $(document).ready(function () {
                     validators: {
                         regexp: {
                             regexp: /^(?!:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/i,
-                            message: ' Please enter a valid domain address ...'
+                            message: ' ' + xonT('dvInvalidDomainAddr', 'Please enter a valid domain address ...')
                         },
                         notEmpty: {
-                            message: ' Please enter a valid domain address ...'
+                            message: ' ' + xonT('dvInvalidDomainAddr', 'Please enter a valid domain address ...')
                         }
                     }
                 },
@@ -260,15 +270,7 @@ $(document).ready(function () {
                     $("#alertMe_i1").addClass("glyphicon glyphicon-ok");
                     $("#eventName").hide();
 
-                    $("#lbl_1").html('<div align="left" class="container alert alert-primary">' +
-                        '<strong>Let us get your authorization sorted for ' +
-                        '<span class="domain-label">' + escapeHtml($('#eventName').val()) + '</span>' +
-                        ' 🌟</strong><br><br>' +
-                        "We've got a few super easy methods for you to choose from, so you can pick the one that suits you best. You can:<br>" +
-                        "1. Respond to an email sent to one of the standard email addresses we provide (it'll pop up in your inbox before you know it).<br>" +
-                        "2. Add a nifty TXT entry to your domain's DNS settings (think of it as a secret code that confirms you're the real owner).<br>" +
-                        "3. Upload a .html file to your site with the given info (kind of like attaching a digital name tag).<br><br>" +
-                        "Remember, keep this page open until you're done, or you'll need to start from square one. Don't worry, though; we're here to help make this process a breeze! 🍃<br><br></div>");
+                    $("#lbl_1").html(xonT('dvIntro', "<div align=\"left\" class=\"container alert alert-primary\"><strong>Let us get your authorization sorted for <span class=\"domain-label\">{domain}</span> 🌟</strong><br><br>We've got a few super easy methods for you to choose from, so you can pick the one that suits you best. You can:<br>1. Respond to an email sent to one of the standard email addresses we provide (it'll pop up in your inbox before you know it).<br>2. Add a nifty TXT entry to your domain's DNS settings (think of it as a secret code that confirms you're the real owner).<br>3. Upload a .html file to your site with the given info (kind of like attaching a digital name tag).<br><br>Remember, keep this page open until you're done, or you'll need to start from square one. Don't worry, though; we're here to help make this process a breeze! 🍃<br><br></div>").replace('{domain}', escapeHtml($('#eventName').val())));
 
                     $("#lbl_1").hide();
                     $("#div_input").hide();
@@ -303,7 +305,7 @@ $("#searchMe_e").click(function (func_alert6) {
     }
     if (str.split('@').pop() !== domainName) {
         $("#dang").show();
-        $('#dang').html('⛔ The monitoring email must be on the same domain (for example, soc@' + escapeHtml(domainName) + '). Please enter an address on this domain.');
+        $('#dang').html('⛔ ' + xonT('dvSameDomain', 'The monitoring email must be on the same domain (for example, soc@{domain}). Please enter an address on this domain.').replace('{domain}', escapeHtml(domainName)));
         $("#txt_email_e").focus();
         return false;
     }
@@ -323,7 +325,7 @@ $("#searchMe_e").click(function (func_alert6) {
                 $("#div_t2").hide();
                 $('#div_email').hide();
                 $('#strat').hide();
-                $('#dang').html('⛔ Domain verification was not completed successfully. Please try again when you are ready with the verification requirements  !');
+                $('#dang').html('⛔ ' + xonT('dvNotCompletedTry', 'Domain verification was not completed successfully. Please try again when you are ready with the verification requirements  !'));
                 $("#searchMe_e_i1").removeClass("fa fa-spinner fa-spin");
                 $("#div_html").hide();
             } else {
@@ -336,22 +338,22 @@ $("#searchMe_e").click(function (func_alert6) {
                 $("#succ").html('📩 <strong>Almost there! Check the inbox for ' + escapeHtml(roleEmail) + '.</strong><br><br> We\'ve emailed a one-time verification link to that address. Open it within 30 minutes to finish verifying <span class="domain-label">' + escapeHtml(domainName) + '</span>. Once confirmed, breach alerts and dashboard access will go to <strong>' + escapeHtml(str) + '</strong>.<br><br><div align="center"> <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Verify Another Domain</button><br></div><p class="domain-upsell">Monitoring customer domains as an MSSP or partner, or alerting your customers from inside your own app? <a href="https://plus.xposedornot.com/products/threat-intel" data-utm-campaign="domain" data-utm-content="body-xonti" target="_blank" rel="noopener">xonThreatIntel+<span class="sr-only"> (opens in new tab)</span></a> is built for that.</p>');
             }
             if (n4.status === 429) {
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
+                $("#info").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !"));
                 $('#data_email').html(str);
             }
         })
         .fail(function (n4) {
             if (n4.status === 429) {
                 $("#info").show();
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
+                $("#info").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !"));
             } else if (n4.status === 502) {
                 $("#info").show();
-                $("#info").html("Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time.");
+                $("#info").html(xonT('dvServerEnd', "Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time."));
             } else {
                 $("#dang").show();
                 $("#div_t3").show();
                 $("#div_t2").hide();
-                $('#dang').html('Domain verification was not completed successfully. Please try again when you are ready with the verification requirements  !');
+                $('#dang').html(xonT('dvNotCompletedTry', 'Domain verification was not completed successfully. Please try again when you are ready with the verification requirements  !'));
             }
         });
 });
@@ -366,9 +368,9 @@ function verifyProof(command, inputId, verifyId, retryHint) {
         $("#dang").show();
         if (isBoundTo(email) && proofCodeExpired()) {
             renderProofFields(false);
-            $('#dang').html('⛔ Your verification code has expired. Click Get code for a replacement, then publish the new record or file.');
+            $('#dang').html('⛔ ' + xonT('dvCodeExpired', 'Your verification code has expired. Click Get code for a replacement, then publish the new record or file.'));
         } else {
-            $('#dang').html('⛔ Please get your verification code for this email first.');
+            $('#dang').html('⛔ ' + xonT('dvGetCodeFirst', 'Please get your verification code for this email first.'));
         }
         $('#' + verifyId).prop('disabled', true);
         return false;
@@ -386,7 +388,7 @@ function verifyProof(command, inputId, verifyId, retryHint) {
                 $("#div_t3").show();
                 $("#info").hide();
                 $("#div_t2").hide();
-                $('#dang').html('⛔ Verification did not succeed yet. Your code is still valid, so ' + retryHint + ' and click Verify again.');
+                $('#dang').html('⛔ ' + xonT('dvNotYet', 'Verification did not succeed yet. Your code is still valid, so {hint} and click Verify again.').replace('{hint}', retryHint));
             } else {
                 $("#succ").show();
                 $("#div_t4").show();
@@ -399,22 +401,22 @@ function verifyProof(command, inputId, verifyId, retryHint) {
                 $("#succ").html('🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 11.7 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button class="btn btn-primary btn-lg" onClick="window.location.href=\'dashboard.html\'">CXO Dashboard</button> <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Verify Another Domain</button><br></div><p class="domain-upsell">Monitoring customer domains as an MSSP or partner, or alerting your customers from inside your own app? <a href="https://plus.xposedornot.com/products/threat-intel" data-utm-campaign="domain" data-utm-content="body-xonti" target="_blank" rel="noopener">xonThreatIntel+<span class="sr-only"> (opens in new tab)</span></a> is built for that.</p>');
             }
             if (n4 && n4.status === 429) {
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
+                $("#info").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !"));
                 $('#data_email').html(email);
             }
         })
         .fail(function (n4) {
             if (n4.status === 429) {
                 $("#info").show();
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
+                $("#info").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !"));
             } else if (n4.status === 502) {
                 $("#info").show();
-                $("#info").html("Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time.");
+                $("#info").html(xonT('dvServerEnd', "Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time."));
             } else {
                 $("#dang").show();
                 $("#div_t3").show();
                 $("#div_t2").hide();
-                $('#dang').html('Verification did not succeed yet. Your code is still valid, so ' + retryHint + ' and click Verify again.');
+                $('#dang').html(xonT('dvNotYet', 'Verification did not succeed yet. Your code is still valid, so {hint} and click Verify again.').replace('{hint}', retryHint));
             }
         })
         .always(function () {
@@ -426,7 +428,7 @@ function verifyProof(command, inputId, verifyId, retryHint) {
 
 $("#searchMe_d").click(function (func_alert) {
     func_alert.preventDefault();
-    verifyProof('e', 'txt_dns', 'searchMe_d', 'make sure the TXT record is live (check it with MX Toolbox)');
+    verifyProof('e', 'txt_dns', 'searchMe_d', xonT('dvHintTxt', 'make sure the TXT record is live (check it with MX Toolbox)'));
 });
 
 $("#searchMe_m").click(function (func_alert3) {
@@ -455,7 +457,7 @@ $("#searchMe_m").click(function (func_alert3) {
                 $("#searchMe_m_i1").removeClass("glyphicon glyphicon-ok");
                 $("#searchMe_m_i1").addClass("fa fa-spinner fa-spin");
                 $('#strat').hide();
-                $('#dang').html('⛔ Domain verification was not completed successfully. Please verify again when you are ready with the verification requirements  !');
+                $('#dang').html('⛔ ' + xonT('dvNotCompletedVerify', 'Domain verification was not completed successfully. Please verify again when you are ready with the verification requirements  !'));
             } else {
                 $("#succ").show();
                 $("#div_t4").show();
@@ -465,30 +467,30 @@ $("#searchMe_m").click(function (func_alert3) {
                 $("#succ").html('🎉 <strong>Yay! Domain verification is almost complete.</strong> <BR><br> We are now actively retrieving breach records specifically for your domain from our extensive database of over 11.7 billion entries. Once this process is complete, you will be promptly notified. You will then have the ability to access and review these records directly from our CXO dashboard. <br><br><div align="center"> <button class="btn btn-primary btn-lg" onClick="window.location.href=\'dashboard.html\'">CXO Dashboard</button> <button class="btn btn-primary btn-lg" onClick="window.location.reload();">Verify Another Domain</button><br></div><p class="domain-upsell">Monitoring customer domains as an MSSP or partner, or alerting your customers from inside your own app? <a href="https://plus.xposedornot.com/products/threat-intel" data-utm-campaign="domain" data-utm-content="body-xonti" target="_blank" rel="noopener">xonThreatIntel+<span class="sr-only"> (opens in new tab)</span></a> is built for that.</p>');
             }
             if (n3.status === 429) {
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
+                $("#info").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !"));
                 $('#data_email').html(str);
             }
         })
         .fail(function (n3) {
             if (n3.status === 429) {
                 $("#info").show();
-                $("#info").html("You are currently being throttled. Please slow down and try again !");
+                $("#info").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !"));
             } else if (n3.status === 502) {
                 $("#info").show();
-                $("#info").html("Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time.");
+                $("#info").html(xonT('dvServerEnd', "Looks like something is not right at server end. I have notified the right person to check on this.Please try again after some time."));
             } else {
                 $("#dang").show();
                 $("#div_t3").show();
                 $("#div_t2").hide();
                 $("#div_t4").hide();
-                $('#dang').html('Domain verification was not completed successfully. Please verify again when you are ready with the verification requirements  !');
+                $('#dang').html(xonT('dvNotCompletedVerify', 'Domain verification was not completed successfully. Please verify again when you are ready with the verification requirements  !'));
             }
         });
 });
 
 $("#searchMe_h").click(function (func_alert4) {
     func_alert4.preventDefault();
-    verifyProof('a', 'txt_email_h', 'searchMe_h', 'make sure the file is live at the URL shown above');
+    verifyProof('a', 'txt_email_h', 'searchMe_h', xonT('dvHintFile', 'make sure the file is live at the URL shown above'));
 });
 
 $("#get_code_d").click(function (ev) {
@@ -506,7 +508,7 @@ var clipboard = new ClipboardJS(".copy-btn");
 clipboard.on("success", function (e) {
     e.trigger.textContent = "Copied!";
     setTimeout(function () {
-        e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+        e.trigger.innerHTML = '<i class="fas fa-copy"></i> ' + xonT('copy', 'Copy');
     }, 10000);
     e.clearSelection();
 });
@@ -514,7 +516,7 @@ clipboard.on("success", function (e) {
 clipboard.on("error", function (e) {
     e.trigger.textContent = "Failed!";
     setTimeout(function () {
-        e.trigger.innerHTML = '<i class="fas fa-copy"></i> Copy';
+        e.trigger.innerHTML = '<i class="fas fa-copy"></i> ' + xonT('copy', 'Copy');
     }, 10000);
 });
 
@@ -648,7 +650,7 @@ function setupEmailValidation(inputId, buttonId) {
         if (messageContainer) {
             messageContainer.textContent = isValid
                 ? ""
-                : "Please enter a valid email address";
+                : xonT('dvInvalidEmail', "Please enter a valid email address");
         }
 
         button.disabled = !isValid;

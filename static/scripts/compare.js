@@ -1,3 +1,13 @@
+function xonT(key, fallback) {
+    var d = window.XON_I18N;
+    return d && typeof d[key] === 'string' ? d[key] : fallback;
+}
+
+function xonNumLocale() {
+    var lang = document.documentElement.lang || '';
+    return /^ar(-|$)/i.test(lang) ? 'ar-u-nu-latn' : undefined;
+}
+
 /**
  * XposedOrNot - Breach Comparison Tool
  * Compare breach exposure between two emails
@@ -68,7 +78,7 @@ $.LoadingOverlaySetup({
     image: "/static/images/shield-alt.svg",
     imageAnimation: "1s fadein",
     imageColor: "#6daae0",
-    text: "Checking breaches...",
+    text: xonT('cmpChecking', "Checking breaches..."),
     textColor: "#fff",
     textResizeFactor: 0.2
 });
@@ -180,14 +190,14 @@ function renderTurnstileInModal() {
             },
             'error-callback': function() {
                 turnstileToken = null;
-                showTurnstileError('Verification failed. Please try again.');
+                showTurnstileError(xonT('tsFailed', 'Verification failed. Please try again.'));
             }
         });
 
         turnstileRendered = true;
     } catch (e) {
         console.error('Error rendering Turnstile:', e);
-        showTurnstileError('Verification error. Please refresh the page.');
+        showTurnstileError(xonT('tsError', 'Verification error. Please refresh the page.'));
     }
 }
 
@@ -334,8 +344,8 @@ function fetchDatabaseMetrics() {
         timeout: 5000
     }).done(function(data) {
         if (data && data.Breaches_Count && data.Breaches_Records) {
-            const breachCount = parseInt(data.Breaches_Count, 10).toLocaleString();
-            const recordCount = parseInt(data.Breaches_Records, 10).toLocaleString();
+            const breachCount = parseInt(data.Breaches_Count, 10).toLocaleString(xonNumLocale());
+            const recordCount = parseInt(data.Breaches_Records, 10).toLocaleString(xonNumLocale());
             $('#breachCount').text(breachCount);
             $('#recordCount').text(recordCount);
         }
@@ -402,25 +412,25 @@ function initializeCompareButton() {
 
         // Validate both emails are provided
         if (!email1 || !email2) {
-            showError('Please enter both email addresses to compare.');
+            showError(xonT('cmpEnterBoth', 'Please enter both email addresses to compare.'));
             return;
         }
 
         // Validate email formats
         if (!validateEmail(email1)) {
-            showError('Please enter a valid first email address.');
+            showError(xonT('cmpInvalidFirst', 'Please enter a valid first email address.'));
             $('#email1').focus();
             return;
         }
 
         if (!validateEmail(email2)) {
-            showError('Please enter a valid second email address.');
+            showError(xonT('cmpInvalidSecond', 'Please enter a valid second email address.'));
             $('#email2').focus();
             return;
         }
 
         if (email1 === email2) {
-            showError('Please enter two different email addresses to compare.');
+            showError(xonT('cmpDifferent', 'Please enter two different email addresses to compare.'));
             return;
         }
 
@@ -445,12 +455,12 @@ function clearUrlParams() {
 function showError(message) {
     const $error = $('#errorMessage');
     $error.html('<i class="fas fa-exclamation-circle"></i> ' + escapeHtml(message)).show();
-    if (message.includes('Too many requests')) {
+    if (message.includes('Too many requests') || message === xonT('cmpTooMany', '')) {
         $error.append(rateLimitUpsell('compare'));
     }
 
     // Keep rate limit errors visible longer
-    const timeout = message.includes('Too many requests') ? 15000 : 5000;
+    const timeout = (message.includes('Too many requests') || message === xonT('cmpTooMany', '')) ? 15000 : 5000;
     setTimeout(() => $error.fadeOut(), timeout);
 }
 
@@ -461,7 +471,7 @@ function compareBreaches(email1, email2) {
     // Client-side rate limiting
     const now = Date.now();
     if (now - lastRequestTime < MIN_REQUEST_INTERVAL) {
-        showError('Please wait a moment before comparing again.');
+        showError(xonT('cmpWait', 'Please wait a moment before comparing again.'));
         return;
     }
 
@@ -503,7 +513,7 @@ function compareBreaches(email1, email2) {
  */
 function showCancelledMessage() {
     const $error = $('#errorMessage');
-    $error.html('<i class="fas fa-info-circle"></i> Verification cancelled. Click "Compare Breaches" to try again.').show();
+    $error.html('<i class="fas fa-info-circle"></i> ' + xonT('cmpCancelled', 'Verification cancelled. Click "Compare Breaches" to try again.')).show();
     setTimeout(() => $error.fadeOut(), 5000);
 }
 
@@ -560,7 +570,7 @@ async function executeComparison(email1, email2) {
 
     } catch (error) {
         console.error('Comparison error:', error);
-        showError(error.message || 'An error occurred while comparing breaches. Please try again.');
+        showError(error.message || xonT('cmpGenericError', 'An error occurred while comparing breaches. Please try again.'));
         // Hide any previous results on error
         $('#celebrationSection').hide();
         $('#resultsSection').hide();
@@ -587,9 +597,9 @@ async function fetchBreachData(email) {
     } catch (error) {
         clearTimeout(timeoutId);
         if (error.name === 'AbortError') {
-            throw new Error('Request timed out. Please check your connection and try again.');
+            throw new Error(xonT('cmpTimeout', 'Request timed out. Please check your connection and try again.'));
         }
-        throw new Error('Network error. Please check your connection and try again.');
+        throw new Error(xonT('cmpNetwork', 'Network error. Please check your connection and try again.'));
     }
     clearTimeout(timeoutId);
 
@@ -608,7 +618,7 @@ async function fetchBreachData(email) {
     }
 
     if (response.status === 429) {
-        throw new Error('Too many requests. Please wait 30 seconds and try again. Our API has rate limits to ensure fair usage for everyone.');
+        throw new Error(xonT('cmpTooMany', 'Too many requests. Please wait 30 seconds and try again. Our API has rate limits to ensure fair usage for everyone.'));
     }
 
     if (!response.ok) {
@@ -668,7 +678,7 @@ function truncateEmail(email, maxLength = 20) {
 }
 
 function breachWord(count) {
-    return count === 1 ? 'breach' : 'breaches';
+    return count === 1 ? xonT('breachOne', 'breach') : xonT('breachMany', 'breaches');
 }
 
 /**
@@ -702,8 +712,8 @@ function renderVennDiagram() {
     $('#vennCountB').text(onlyB);
     $('#vennCountShared').text(shared);
 
-    $('#vennLabelA').text('Only first email');
-    $('#vennLabelB').text('Only second email');
+    $('#vennLabelA').text(xonT('cmpOnlyFirst', 'Only first email'));
+    $('#vennLabelB').text(xonT('cmpOnlySecond', 'Only second email'));
 
     // Add full email as tooltip
     $('#vennLeft').attr('title', comparisonData.emailA);
@@ -714,23 +724,23 @@ function renderVennDiagram() {
 
     let overlapText = '';
     if (shared === 0) {
-        overlapText = '<strong>No shared breaches.</strong> These emails were exposed in completely different breaches.';
+        overlapText = xonT('cmpNoShared', '<strong>No shared breaches.</strong> These emails were exposed in completely different breaches.');
     } else if (shared === 1) {
-        overlapText = `<strong>1 breach affects both emails.</strong> Out of ${totalBreaches} total breaches, both emails appear in the same one.`;
+        overlapText = xonT('cmpOneShared', '<strong>1 breach affects both emails.</strong> Out of {total} total breaches, both emails appear in the same one.').replace('{total}', String(totalBreaches));
     } else {
-        overlapText = `<strong>${shared} breaches affect both emails.</strong> Out of ${totalBreaches} total breaches, both emails appear in ${shared} of them.`;
+        overlapText = xonT('cmpNShared', '<strong>{shared} breaches affect both emails.</strong> Out of {total} total breaches, both emails appear in {shared} of them.').split('{shared}').join(String(shared)).replace('{total}', String(totalBreaches));
     }
     $('#overlapStats').html(overlapText);
 
     // Update Venn labels with breach list tooltip
     if (comparisonData.onlyA.size > 0) {
-        $('#vennLeft').attr('title', 'Only in ' + comparisonData.emailA + ':\n' + [...comparisonData.onlyA].join('\n'));
+        $('#vennLeft').attr('title', xonT('cmpOnlyIn', 'Only in ') + comparisonData.emailA + ':\n' + [...comparisonData.onlyA].join('\n'));
     }
     if (comparisonData.onlyB.size > 0) {
-        $('#vennRight').attr('title', 'Only in ' + comparisonData.emailB + ':\n' + [...comparisonData.onlyB].join('\n'));
+        $('#vennRight').attr('title', xonT('cmpOnlyIn', 'Only in ') + comparisonData.emailB + ':\n' + [...comparisonData.onlyB].join('\n'));
     }
     if (shared > 0) {
-        $('#vennOverlap').attr('title', 'Shared breaches:\n' + [...comparisonData.sharedBreaches].join('\n'));
+        $('#vennOverlap').attr('title', xonT('cmpSharedTitle', 'Shared breaches:') + '\n' + [...comparisonData.sharedBreaches].join('\n'));
     }
 }
 
@@ -744,7 +754,8 @@ function renderRiskComparison() {
     // Calculate combined risk (higher of the two + bonus for shared breaches)
     const sharedBonus = Math.min(comparisonData.sharedBreaches.size * 2, 15);
     const combinedScore = Math.min(Math.max(riskA.risk_score, riskB.risk_score) + sharedBonus, 100);
-    const combinedLabel = combinedScore >= 76 ? 'Critical' : (combinedScore >= 51 ? 'High' : (combinedScore >= 26 ? 'Moderate' : 'Low'));
+    const combinedLabel = combinedScore >= 76 ? xonT('riskCritical', 'Critical') : (combinedScore >= 51 ? xonT('riskHigh', 'High') : (combinedScore >= 26 ? xonT('riskModerate', 'Moderate') : xonT('riskLow', 'Low')));
+    const riskLabelText = (label) => xonT('risk' + String(label || 'None').replace(/\s+/g, ''), String(label || 'None'));
 
     const getRiskClass = (score) => {
         if (score >= 76) return 'risk-critical';
@@ -757,7 +768,7 @@ function renderRiskComparison() {
         <div class="risk-meter">
             <div class="label">
                 <span title="${escapeHtml(comparisonData.emailA)}">${escapeHtml(truncateEmail(comparisonData.emailA, 25))}</span>
-                <span>${escapeHtml(riskA.risk_label)} (${Math.round(riskA.risk_score)}/100)</span>
+                <span>${escapeHtml(riskLabelText(riskA.risk_label))} (${Math.round(riskA.risk_score)}/100)</span>
             </div>
             <div class="progress">
                 <div class="progress-bar ${getRiskClass(riskA.risk_score)}" style="width: ${riskA.risk_score}%">
@@ -768,7 +779,7 @@ function renderRiskComparison() {
         <div class="risk-meter">
             <div class="label">
                 <span title="${escapeHtml(comparisonData.emailB)}">${escapeHtml(truncateEmail(comparisonData.emailB, 25))}</span>
-                <span>${escapeHtml(riskB.risk_label)} (${Math.round(riskB.risk_score)}/100)</span>
+                <span>${escapeHtml(riskLabelText(riskB.risk_label))} (${Math.round(riskB.risk_score)}/100)</span>
             </div>
             <div class="progress">
                 <div class="progress-bar ${getRiskClass(riskB.risk_score)}" style="width: ${riskB.risk_score}%">
@@ -778,7 +789,7 @@ function renderRiskComparison() {
         </div>
         <div class="risk-meter">
             <div class="label">
-                <span><strong>Combined Risk</strong></span>
+                <span><strong>${xonT('cmpCombinedRisk', 'Combined Risk')}</strong></span>
                 <span><strong>${combinedLabel} (${Math.round(combinedScore)}/100)</strong></span>
             </div>
             <div class="progress">
@@ -796,7 +807,7 @@ function renderRiskComparison() {
         $('#combinedRiskAlert').show();
         const sharedCount = comparisonData.sharedBreaches.size;
         $('#combinedRiskText').text(
-            `${sharedCount} shared ${breachWord(sharedCount)} ${sharedCount === 1 ? 'raises' : 'raise'} your combined risk: if you reused a password across these accounts, one leak could unlock both.`
+            xonT(sharedCount === 1 ? 'cmpSharedRiskOne' : 'cmpSharedRiskMany', sharedCount === 1 ? '{count} shared breach raises your combined risk: if you reused a password across these accounts, one leak could unlock both.' : '{count} shared breaches raise your combined risk: if you reused a password across these accounts, one leak could unlock both.').replace('{count}', String(sharedCount))
         );
     } else {
         $('#combinedRiskAlert').hide();
@@ -850,7 +861,7 @@ function renderComparisonTable() {
                     <a href="breach.html#${encodeURIComponent(name)}" target="_blank" class="breach-link">
                         ${escapeHtml(name)}
                         <i class="fas fa-external-link-alt breach-link-icon"></i>
-                        ${isShared ? '<span class="badge badge-danger ml-2">Shared</span>' : ''}
+                        ${isShared ? '<span class="badge badge-danger ml-2">' + xonT('cmpSharedBadge', 'Shared') + '</span>' : ''}
                     </a>
                 </td>
                 <td>${breach.inA ? '<i class="fas fa-check check-icon"></i>' : '<i class="fas fa-times cross-icon"></i>'}</td>
@@ -866,7 +877,7 @@ function renderComparisonTable() {
             <tr>
                 <td colspan="5" class="text-center py-4">
                     <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
-                    <p class="mt-2 mb-0">Neither email has been found in any data breaches!</p>
+                    <p class="mt-2 mb-0">${xonT('cmpNeitherFound', 'Neither email has been found in any data breaches!')}</p>
                 </td>
             </tr>
         `;
@@ -884,11 +895,11 @@ function renderComparisonTable() {
             info: true,
             order: [], // Keep the pre-sorted order (shared first, then by date)
             language: {
-                search: "Filter breaches:",
-                lengthMenu: "Show _MENU_ breaches",
-                info: "Showing _START_ to _END_ of _TOTAL_ breaches",
-                infoEmpty: "No breaches found",
-                emptyTable: "No breaches to display"
+                search: xonT('dtSearch', "Filter breaches:"),
+                lengthMenu: xonT('dtLengthMenu', "Show _MENU_ breaches"),
+                info: xonT('dtInfo', "Showing _START_ to _END_ of _TOTAL_ breaches"),
+                infoEmpty: xonT('dtInfoEmpty', "No breaches found"),
+                emptyTable: xonT('dtEmptyTable', "No breaches to display")
             },
             columnDefs: [
                 { orderable: true, targets: [0, 4] },
@@ -1154,7 +1165,7 @@ function renderTimelineChart() {
                     },
                     title: {
                         display: true,
-                        text: 'Number of Breaches',
+                        text: xonT('cmpChartTitle', 'Number of Breaches'),
                         color: isDarkMode ? '#FFFFFF' : '#666666',
                         font: {
                             size: 12,
@@ -1189,16 +1200,16 @@ function renderInsights() {
         insights.push({
             type: 'critical',
             icon: 'fa-exclamation-circle',
-            title: 'Critical: Shared Password Risk',
+            title: xonT('insPwTitle', 'Critical: Shared Password Risk'),
             content: `
-                <p>Both emails appear in <strong>${sharedPasswordBreaches.length} ${breachWord(sharedPasswordBreaches.length)}</strong> where passwords were stolen.</p>
-                <p><strong>What this means:</strong> If you used the same password for both emails on any of these sites, hackers may already have access to your accounts.</p>
+                <p>${xonT('insPwP1', 'Both emails appear in <strong>{count} {word}</strong> where passwords were stolen.').replace('{count}', String(sharedPasswordBreaches.length)).replace('{word}', breachWord(sharedPasswordBreaches.length))}</p>
+                <p>${xonT('insPwP2', '<strong>What this means:</strong> If you used the same password for both emails on any of these sites, hackers may already have access to your accounts.')}</p>
                 <div class="action-checklist">
-                    <p><strong>Action checklist:</strong></p>
+                    <p>${xonT('insChecklist', '<strong>Action checklist:</strong>')}</p>
                     <ol>
-                        <li><strong>Change passwords immediately</strong> on these services: ${sharedPasswordBreaches.slice(0, 3).map(b => escapeHtml(b)).join(', ')}${sharedPasswordBreaches.length > 3 ? ` and ${sharedPasswordBreaches.length - 3} more` : ''}</li>
-                        <li><strong>Use different passwords</strong> for each site (a password manager like Bitwarden or 1Password helps)</li>
-                        <li><strong>Check your accounts</strong> for any suspicious activity or unauthorized logins</li>
+                        <li>${xonT('insPwLi1', '<strong>Change passwords immediately</strong> on these services: {list}{more}').replace('{list}', sharedPasswordBreaches.slice(0, 3).map(b => escapeHtml(b)).join(', ')).replace('{more}', sharedPasswordBreaches.length > 3 ? xonT('andMore', ' and {n} more').replace('{n}', String(sharedPasswordBreaches.length - 3)) : '')}</li>
+                        <li>${xonT('insPwLi2', '<strong>Use different passwords</strong> for each site (a password manager like Bitwarden or 1Password helps)')}</li>
+                        <li>${xonT('insPwLi3', '<strong>Check your accounts</strong> for any suspicious activity or unauthorized logins')}</li>
                     </ol>
                 </div>
             `
@@ -1215,16 +1226,16 @@ function renderInsights() {
         insights.push({
             type: 'warning',
             icon: 'fa-phone',
-            title: 'Warning: Shared Phone Number',
+            title: xonT('insPhoneTitle', 'Warning: Shared Phone Number'),
             content: `
-                <p>Both accounts have phone numbers exposed in <strong>${sharedPhoneBreaches.length} ${breachWord(sharedPhoneBreaches.length)}</strong>.</p>
-                <p><strong>What this means:</strong> Scammers may call or text you pretending to be your bank or a company you trust.</p>
+                <p>${xonT('insPhoneP1', 'Both accounts have phone numbers exposed in <strong>{count} {word}</strong>.').replace('{count}', String(sharedPhoneBreaches.length)).replace('{word}', breachWord(sharedPhoneBreaches.length))}</p>
+                <p>${xonT('insPhoneP2', '<strong>What this means:</strong> Scammers may call or text you pretending to be your bank or a company you trust.')}</p>
                 <div class="action-checklist">
-                    <p><strong>Action checklist:</strong></p>
+                    <p>${xonT('insChecklist', '<strong>Action checklist:</strong>')}</p>
                     <ol>
-                        <li><strong>Use an authenticator app</strong> (like Google Authenticator) instead of SMS for two-factor authentication</li>
-                        <li><strong>Be suspicious of unexpected calls</strong> asking for personal info or passwords</li>
-                        <li><strong>Contact your phone carrier</strong> to add a PIN to prevent SIM-swap fraud</li>
+                        <li>${xonT('insPhoneLi1', '<strong>Use an authenticator app</strong> (like Google Authenticator) instead of SMS for two-factor authentication')}</li>
+                        <li>${xonT('insPhoneLi2', '<strong>Be suspicious of unexpected calls</strong> asking for personal info or passwords')}</li>
+                        <li>${xonT('insPhoneLi3', '<strong>Contact your phone carrier</strong> to add a PIN to prevent SIM-swap fraud')}</li>
                     </ol>
                 </div>
             `
@@ -1242,16 +1253,16 @@ function renderInsights() {
         insights.push({
             type: 'critical',
             icon: 'fa-unlock-alt',
-            title: 'Critical: Weak Password Storage',
+            title: xonT('insWeakTitle', 'Critical: Weak Password Storage'),
             content: `
-                <p><strong>${highRiskBreaches.length} shared ${breachWord(highRiskBreaches.length)}</strong> stored passwords without proper protection.</p>
-                <p><strong>What this means:</strong> Your exact passwords from these sites are likely known to hackers: ${highRiskBreaches.map(b => escapeHtml(b)).join(', ')}</p>
+                <p>${xonT('insWeakP1', '<strong>{count} shared {word}</strong> stored passwords without proper protection.').replace('{count}', String(highRiskBreaches.length)).replace('{word}', breachWord(highRiskBreaches.length))}</p>
+                <p>${xonT('insWeakP2', '<strong>What this means:</strong> Your exact passwords from these sites are likely known to hackers: {list}').replace('{list}', highRiskBreaches.map(b => escapeHtml(b)).join(', '))}</p>
                 <div class="action-checklist">
-                    <p><strong>Action checklist:</strong></p>
+                    <p>${xonT('insChecklist', '<strong>Action checklist:</strong>')}</p>
                     <ol>
-                        <li><strong>Change these passwords immediately</strong> and anywhere else you used the same password</li>
-                        <li><strong>Check for unauthorized access</strong> to your accounts on these services</li>
-                        <li><strong>Never reuse passwords</strong> from these breaches anywhere</li>
+                        <li>${xonT('insWeakLi1', '<strong>Change these passwords immediately</strong> and anywhere else you used the same password')}</li>
+                        <li>${xonT('insWeakLi2', '<strong>Check for unauthorized access</strong> to your accounts on these services')}</li>
+                        <li>${xonT('insWeakLi3', '<strong>Never reuse passwords</strong> from these breaches anywhere')}</li>
                     </ol>
                 </div>
             `
@@ -1263,10 +1274,10 @@ function renderInsights() {
         insights.push({
             type: 'positive',
             icon: 'fa-shield-alt',
-            title: 'Good News: No Shared Breaches',
+            title: xonT('insNoSharedTitle', 'Good News: No Shared Breaches'),
             content: `
-                <p>These emails were not found in any of the same data breaches.</p>
-                <p>This lowers the chance that a single stolen password unlocks both accounts.</p>
+                <p>${xonT('insNoSharedP1', 'These emails were not found in any of the same data breaches.')}</p>
+                <p>${xonT('insNoSharedP2', 'This lowers the chance that a single stolen password unlocks both accounts.')}</p>
             `
         });
     }
@@ -1276,10 +1287,10 @@ function renderInsights() {
         insights.push({
             type: 'positive',
             icon: 'fa-check-circle',
-            title: 'Excellent: No Breaches Found',
+            title: xonT('insNoneTitle', 'Excellent: No Breaches Found'),
             content: `
-                <p>Neither email appears in any known data breaches.</p>
-                <p>Keep up the good security practices!</p>
+                <p>${xonT('insNoneP1', 'Neither email appears in any known data breaches.')}</p>
+                <p>${xonT('insNoneP2', 'Keep up the good security practices!')}</p>
             `
         });
     }
@@ -1289,15 +1300,15 @@ function renderInsights() {
         insights.push({
             type: 'warning',
             icon: 'fa-key',
-            title: 'Recommendation: Protect Your Accounts',
+            title: xonT('insRecTitle', 'Recommendation: Protect Your Accounts'),
             content: `
-                <p>Since these emails share <strong>${sharedCount} ${breachWord(sharedCount)}</strong>, here is how to stay safe:</p>
+                <p>${xonT('insRecP1', 'Since these emails share <strong>{count} {word}</strong>, here is how to stay safe:').replace('{count}', String(sharedCount)).replace('{word}', breachWord(sharedCount))}</p>
                 <div class="action-checklist">
                     <ol>
-                        <li><strong>Use unique passwords</strong> for every account (never reuse passwords)</li>
-                        <li><strong>Get a password manager</strong> like Bitwarden (free) or 1Password to create and remember strong passwords</li>
-                        <li><strong>Turn on two-factor authentication (2FA)</strong> wherever available. This sends a code to your phone when logging in, so hackers cannot access your account with just your password</li>
-                        <li><strong>Consider using separate emails</strong> for important accounts like banking</li>
+                        <li>${xonT('insRecLi1', '<strong>Use unique passwords</strong> for every account (never reuse passwords)')}</li>
+                        <li>${xonT('insRecLi2', '<strong>Get a password manager</strong> like Bitwarden (free) or 1Password to create and remember strong passwords')}</li>
+                        <li>${xonT('insRecLi3', '<strong>Turn on two-factor authentication (2FA)</strong> wherever available. This sends a code to your phone when logging in, so hackers cannot access your account with just your password')}</li>
+                        <li>${xonT('insRecLi4', '<strong>Consider using separate emails</strong> for important accounts like banking')}</li>
                     </ol>
                 </div>
             `
@@ -1318,8 +1329,8 @@ function renderInsights() {
     if (insights.length === 0) {
         insightsHtml = `
             <div class="insight-card positive">
-                <h5><i class="fas fa-info-circle"></i> Analysis Complete</h5>
-                <p>No specific security concerns identified from this comparison.</p>
+                <h5><i class="fas fa-info-circle"></i> ${xonT('insDoneTitle', 'Analysis Complete')}</h5>
+                <p>${xonT('insDoneP1', 'No specific security concerns identified from this comparison.')}</p>
             </div>
         `;
     }
@@ -1367,7 +1378,7 @@ function startNewComparison() {
  */
 function exportToCSV() {
     if (!comparisonData.emailA || !comparisonData.emailB) {
-        showError('Please run a comparison first.');
+        showError(xonT('cmpRunFirst', 'Please run a comparison first.'));
         return;
     }
 
