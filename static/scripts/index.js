@@ -307,13 +307,13 @@ $(document).ready(function () {
 
 function renderResultSummary(valueHtml, tone, email) {
     $('#data_email').attr('class', 'result-row result-row-' + tone)
-        .html('<span class="result-row-label">Email checked</span><span class="result-row-value">' + escapeHtml(email || '') + '</span>');
+        .html('<span class="result-row-label">Email checked</span><span class="result-row-value"><bdi>' + escapeHtml(email || '') + '</bdi></span>');
     $('#data_breach').attr('class', 'result-row result-row-' + tone)
         .html('<span class="result-row-label">Breaches found</span>' + valueHtml);
 }
 
 function countValue(n) {
-    return '<span class="result-row-count">' + n + '</span>';
+    return '<span class="result-row-count"><bdi>' + n + '</bdi></span>';
 }
 
 function statusValue(text) {
@@ -341,7 +341,7 @@ function xonFocusBreach() {
 }
 
 function focusBreachLine(hit, focus) {
-    const name = escapeHtml(xonDisplayName(focus));
+    const name = '<bdi>' + escapeHtml(xonDisplayName(focus)) + '</bdi>';
     return hit
         ? '<p class="breach-focus">Yes, your email was in ' + name + '.</p>'
         : '<p class="breach-focus">Your email was not in ' + name + ', but it was in these breaches:</p>';
@@ -350,7 +350,7 @@ function focusBreachLine(hit, focus) {
 function breachTagLink(name, year, focus) {
     const yearPart = year ? ' <span class="breach-tag-year">· ' + escapeHtml(String(year)) + '</span>' : '';
     const cls = focus && focus === name ? 'breach-tag is-focus' : 'breach-tag';
-    return '<a class="' + cls + '" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '">' + escapeHtml(xonDisplayName(name)) + yearPart + '<span class="sr-only"> (opens in new tab)</span></a>';
+    return '<a class="' + cls + '" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '"><bdi>' + escapeHtml(xonDisplayName(name)) + yearPart + '</bdi><span class="sr-only"> (opens in new tab)</span></a>';
 }
 
 
@@ -597,7 +597,7 @@ function processSearchResponse(response, email) {
         warningMessage += '<p class="breach-intro" style="margin-top:16px">Also found in public pastes:</p><div class="breach-tags">';
         const pastes = jsonResponse.PastesSummary.tweet_id.split(";");
         for (let i = 0; i < pastes.length; i++) {
-            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="Click to open" href="https://pastebin.com/' + encodeURIComponent(pastes[i]) + '">' + escapeHtml(pastes[i]) + '<span class="sr-only"> (opens in new tab)</span></a>';
+            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="Click to open" href="https://pastebin.com/' + encodeURIComponent(pastes[i]) + '"><bdi>' + escapeHtml(pastes[i]) + '</bdi><span class="sr-only"> (opens in new tab)</span></a>';
         }
         warningMessage += '</div>';
         $("#warn").html(warningMessage);
@@ -741,6 +741,7 @@ function renderLastBreachAdded() {
     var added = new Date(metricsData.Last_Breach_Added);
     if (isNaN(added.getTime())) return;
     var lang = document.documentElement.lang || 'en';
+    if (/^ar(-|$)/i.test(lang)) lang = 'ar-u-nu-latn';
     var formatted;
     try {
         formatted = added.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
@@ -956,7 +957,7 @@ $(function () {
     const note = document.createElement('p');
     note.className = 'dbc-hero-note';
     note.id = 'dbcFocusNote';
-    note.innerHTML = 'Checking whether your email was in <strong>' + escapeHtml(xonDisplayName(focus)) + '</strong>. Enter it above.';
+    note.innerHTML = 'Checking whether your email was in <strong><bdi>' + escapeHtml(xonDisplayName(focus)) + '</bdi></strong>. Enter it above.';
     form.insertAdjacentElement('afterend', note);
 });
 

@@ -96,6 +96,7 @@ function updateSEO(totalBreaches, totalIndustries, latestDate) {
         var timeEl = document.querySelector('#seo-last-updated time');
         if (timeEl) {
             var lang = document.documentElement.lang || 'en';
+            if (/^ar(-|$)/i.test(lang)) lang = 'ar-u-nu-latn';
             var displayDate;
             try {
                 displayDate = d.toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' });
