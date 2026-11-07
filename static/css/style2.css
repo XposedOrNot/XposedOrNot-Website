@@ -57,7 +57,7 @@ a {
 	width: 45%;
 	padding: 20px;
 	border-radius: 5px;
-	text-align: right;
+	text-align: end;
 	-webkit-box-shadow: 0 3px 0 #6daae0; // blue ; //rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 3px 0 #6daae0; // rgba(0, 0, 0, 0.1);
 	-ms-box-shadow: 0 3px 0 #6daae0; //rgba(0, 0, 0, 0.1);
@@ -270,16 +270,16 @@ a {
 
 .main-timeline .timeline-content.right {
 	float: right;
-	text-align: left;
+	text-align: start;
 }
 
 @media only screen and (max-width: 767px) {
 	.main-timeline:before {
-		left: 0;
+		inset-inline-start: 0;
 	}
 
 	.main-timeline .timeline-icon {
-		left: -8px;
+		inset-inline-start: -8px;
 		margin: 0;
 	}
 
@@ -319,7 +319,7 @@ a {
 
 #clippy-button {
 	position: fixed;
-	right: 0;
+	inset-inline-end: 0;
 	bottom: 10px;
 	cursor: pointer;
 	// box-sizing: border-box;
@@ -430,7 +430,7 @@ a {
 .back-to-top {
 	position: fixed;
 	bottom: 20px;
-	right: 20px;
+	inset-inline-end: 20px;
 	background: #3c5fec;
 	color: white;
 	width: 40px;
@@ -473,4 +473,12 @@ a {
 	.back-to-top i {
 		font-size: 1.2em;
 	}
+}
+
+[dir="rtl"] .main-timeline .timeline-content.right {
+	float: left;
+}
+
+[dir="rtl"] .main-timeline .timeline-content {
+	float: left;
 }
