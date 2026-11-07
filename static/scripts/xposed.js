@@ -1,3 +1,8 @@
+function xonNumLocale() {
+    var lang = document.documentElement.lang || '';
+    return /^ar(-|$)/i.test(lang) ? 'ar-u-nu-latn' : undefined;
+}
+
 function xonT(key, fallback) {
     var d = window.XON_I18N;
     return d && typeof d[key] === 'string' ? d[key] : fallback;
@@ -100,8 +105,7 @@ function updateSEO(totalBreaches, totalIndustries, latestDate) {
         var isoDate = d.toISOString().split('T')[0];
         var timeEl = document.querySelector('#seo-last-updated time');
         if (timeEl) {
-            var lang = document.documentElement.lang || 'en';
-            if (/^ar(-|$)/i.test(lang)) lang = 'ar-u-nu-latn';
+            var lang = xonNumLocale() || document.documentElement.lang || 'en';
             var displayDate;
             try {
                 displayDate = d.toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' });

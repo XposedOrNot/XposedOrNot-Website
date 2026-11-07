@@ -1,3 +1,8 @@
+function xonNumLocale() {
+    var lang = document.documentElement.lang || '';
+    return /^ar(-|$)/i.test(lang) ? 'ar-u-nu-latn' : undefined;
+}
+
 function xonT(key, fallback) {
     var d = window.XON_I18N;
     return d && typeof d[key] === 'string' ? d[key] : fallback;
@@ -36,10 +41,10 @@ const validateEmail = (email) => {
                 duration: opt.duration,
                 easing: 'linear',
                 step: function () {
-                    $this.text(Math.floor(this.counter).toLocaleString());
+                    $this.text(Math.floor(this.counter).toLocaleString(xonNumLocale()));
                 },
                 complete: function () {
-                    $this.text(opt.end.toLocaleString());
+                    $this.text(opt.end.toLocaleString(xonNumLocale()));
                 }
             });
         });
@@ -383,7 +388,7 @@ function successMessage() {
     const focusName = focus ? '<bdi>' + escapeHtml(xonDisplayName(focus)) + '</bdi>' : '';
     const notIn = focus ? xonT('notInFocusOr', "Your email was not in {name}, or in").replace('{name}', focusName) : xonT('notIn', "Your email isn't in");
     if (count > 0) {
-        return xonT('goodNewsCount', "🎉 Good news! {notIn} any of the {count} data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.").replace('{notIn}', notIn).replace('{count}', count.toLocaleString());
+        return xonT('goodNewsCount', "🎉 Good news! {notIn} any of the {count} data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.").replace('{notIn}', notIn).replace('{count}', count.toLocaleString(xonNumLocale()));
     }
     if (focus) {
         return xonT('notInFocus', "Your email was not in {name}.").replace('{name}', focusName) + " " + STATUS_MESSAGES.success;
@@ -715,16 +720,16 @@ function startCounters() {
     let breachesRecords = parseInt(metricsData.Breaches_Records, 10);
 
     runCounter(pastesCountElement, pastesCount, 10000, function () {
-        $(pastesCountElement).text(pastesCount.toLocaleString());
+        $(pastesCountElement).text(pastesCount.toLocaleString(xonNumLocale()));
     });
     runCounter(pastesRecordsElement, pastesRecords, 10000, function () {
-        $(pastesRecordsElement).text(pastesRecords.toLocaleString());
+        $(pastesRecordsElement).text(pastesRecords.toLocaleString(xonNumLocale()));
     });
     runCounter(breachesCountElement, breachesCount, 10000, function () {
-        $(breachesCountElement).text(breachesCount.toLocaleString());
+        $(breachesCountElement).text(breachesCount.toLocaleString(xonNumLocale()));
     });
     runCounter(breachesRecordsElement, breachesRecords, 10000, function () {
-        $(breachesRecordsElement).text(breachesRecords.toLocaleString());
+        $(breachesRecordsElement).text(breachesRecords.toLocaleString(xonNumLocale()));
     });
 }
 
@@ -746,8 +751,7 @@ function renderLastBreachAdded() {
     if (!wrap || !dateEl || !metricsData || !metricsData.Last_Breach_Added) return;
     var added = new Date(metricsData.Last_Breach_Added);
     if (isNaN(added.getTime())) return;
-    var lang = document.documentElement.lang || 'en';
-    if (/^ar(-|$)/i.test(lang)) lang = 'ar-u-nu-latn';
+    var lang = xonNumLocale() || document.documentElement.lang || 'en';
     var formatted;
     try {
         formatted = added.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
@@ -917,7 +921,7 @@ function populateHeroMetrics() {
 
             var breachCount = parseInt(response.Breaches_Count, 10);
             if (!isNaN(breachCount)) {
-                var breachCountLabel = breachCount.toLocaleString() + '+';
+                var breachCountLabel = breachCount.toLocaleString(xonNumLocale()) + '+';
                 if (heroBreachCount) {
                     heroBreachCount.textContent = breachCountLabel;
                 }
@@ -925,10 +929,10 @@ function populateHeroMetrics() {
                     benefitBreachCount.textContent = breachCountLabel;
                 }
                 if (heroDirectoryCount) {
-                    heroDirectoryCount.textContent = breachCount.toLocaleString();
+                    heroDirectoryCount.textContent = breachCount.toLocaleString(xonNumLocale());
                 }
                 if (toolsBreachCount) {
-                    toolsBreachCount.textContent = breachCount.toLocaleString();
+                    toolsBreachCount.textContent = breachCount.toLocaleString(xonNumLocale());
                 }
             }
             if (heroRecordCount) {
