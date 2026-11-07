@@ -973,7 +973,7 @@ $(function () {
 
 function rateLimitUpsell(campaign) {
     var wrap = document.createElement('span');
-    wrap.appendChild(document.createTextNode(' Need more requests? '));
+    wrap.appendChild(document.createTextNode(xonT('upsellNeed', ' Need more requests? ')));
     var a = document.createElement('a');
     a.href = 'https://plus.xposedornot.com/products/api?utm_source=xposedornot.com&utm_medium=api-error&utm_campaign=' + campaign + '&utm_content=rate-limit';
     a.target = '_blank';
@@ -983,6 +983,6 @@ function rateLimitUpsell(campaign) {
     a.style.fontWeight = '600';
     a.textContent = 'xonAPI+';
     wrap.appendChild(a);
-    wrap.appendChild(document.createTextNode(' offers higher limits.'));
+    wrap.appendChild(document.createTextNode(xonT('upsellOffers', ' offers higher limits.')));
     return wrap;
 }
