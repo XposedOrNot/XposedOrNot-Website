@@ -874,7 +874,8 @@ def xposed_about_section(loc, total):
         api = f'<a href="/{loc}/api_doc">'
     blog = ('<a href="https://blog.xposedornot.com/largest-data-breaches/" '
             'target="_blank" rel="noopener">')
-    blog_close = '<span class="sr-only"> (opens in new tab)</span></a>'
+    blog_close = (f'<span class="sr-only">{esc(t.get("opens_new_tab", " (opens in new tab)"))}'
+                  '</span></a>')
     p3 = (esc(t["built_p3"]).replace("{meth_open}", meth)
           .replace("{api_open}", api).replace("{a_close}", "</a>")
           .replace("{blog_open}", blog).replace("{blog_close}", blog_close))
