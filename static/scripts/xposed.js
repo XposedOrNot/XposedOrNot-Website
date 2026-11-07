@@ -1,3 +1,8 @@
+function xonT(key, fallback) {
+    var d = window.XON_I18N;
+    return d && typeof d[key] === 'string' ? d[key] : fallback;
+}
+
 var breachesTable;
 
 function xonDisplayName(id) {
@@ -20,33 +25,33 @@ function formatCompact(num) {
 }
 
 function formatDate(dateStr) {
-    if (!dateStr) return 'Unknown';
+    if (!dateStr) return xonT('unknown', 'Unknown');
     var date = new Date(dateStr);
     var options = { year: 'numeric', month: 'short' };
-    return date.toLocaleDateString('en-US', options);
+    return date.toLocaleDateString(xonT('dateLocale', 'en-US'), options);
 }
 
 function getRiskBadge(risk) {
     var riskClass = risk || 'unknown';
     var riskLabels = {
-        'plaintext': 'Plain Text',
-        'easytocrack': 'Easy to Crack',
-        'hardtocrack': 'Hard to Crack',
-        'unknown': 'Unknown'
+        'plaintext': xonT('riskPlaintext', 'Plain Text'),
+        'easytocrack': xonT('riskEasy', 'Easy to Crack'),
+        'hardtocrack': xonT('riskHard', 'Hard to Crack'),
+        'unknown': xonT('unknown', 'Unknown')
     };
-    return '<span class="risk-badge ' + riskClass + '">' + (riskLabels[riskClass] || 'Unknown') + '</span>';
+    return '<span class="risk-badge ' + riskClass + '">' + (riskLabels[riskClass] || xonT('unknown', 'Unknown')) + '</span>';
 }
 
 function getStatusBadges(breach) {
     var badges = '';
     if (!breach.verified) {
-        badges += '<span class="status-badge not-verified"><i class="fas fa-times"></i> Not Verified</span>';
+        badges += '<span class="status-badge not-verified"><i class="fas fa-times"></i> ' + xonT('notVerified', 'Not Verified') + '</span>';
     }
     if (!breach.searchable) {
-        badges += '<span class="status-badge sensitive"><i class="fas fa-exclamation-triangle"></i> Sensitive</span>';
+        badges += '<span class="status-badge sensitive"><i class="fas fa-exclamation-triangle"></i> ' + xonT('sensitive', 'Sensitive') + '</span>';
     }
     if (!badges) {
-        badges = '<span class="status-badge verified"><i class="fas fa-check"></i> Verified</span>';
+        badges = '<span class="status-badge verified"><i class="fas fa-check"></i> ' + xonT('verified', 'Verified') + '</span>';
     }
     return '<div class="status-badges">' + badges + '</div>';
 }
@@ -161,10 +166,10 @@ function initDataTable(breaches) {
                        '<div class="breach-name">' + xonDisplayName(breach.breachID) +
                        '<i class="fas fa-chevron-right breach-chevron" aria-hidden="true"></i></div>' +
                        '<div class="breach-domain">' + (breach.domain || '-') + '</div>' +
-                       '<span class="sr-only">(opens in new tab)</span>' +
+                       '<span class="sr-only">' + xonT('opensNewTab', '(opens in new tab)') + '</span>' +
                        '</a>';
 
-        var industryName = breach.industry || 'Unknown';
+        var industryName = breach.industry || xonT('unknown', 'Unknown');
         var industryIcon = breach.industry
             ? '<img class="xr-ind" src="/static/logos/industry/' + encodeURI(breach.industry) + '.png" alt="" width="18" height="18" loading="lazy" decoding="async">'
             : '';
@@ -179,7 +184,7 @@ function initDataTable(breaches) {
         var statusHtml = getStatusBadges(breach);
 
         var actionsHtml = '<a href="' + breachHref + '" target="_blank" rel="noopener noreferrer" class="btn-details">' +
-                          '<i class="fas fa-eye" aria-hidden="true"></i> Details<span class="sr-only">(opens in new tab)</span></a>';
+                          '<i class="fas fa-eye" aria-hidden="true"></i> ' + xonT('details', 'Details') + '<span class="sr-only">' + xonT('opensNewTab', '(opens in new tab)') + '</span></a>';
 
         var breachYear = breach.breachedDate ? new Date(breach.breachedDate).getFullYear().toString() : '';
 
@@ -203,14 +208,14 @@ function initDataTable(breaches) {
     breachesTable = $('#breachesTable').DataTable({
         data: tableData,
         columns: [
-            { data: 'logo', title: "Logo", width: "50px", orderable: false },
-            { data: 'name', title: "Breach", width: "180px" },
-            { data: 'industry', title: "Industry", width: "120px" },
-            { data: 'records', title: "Records", width: "100px", orderData: 11 },
-            { data: 'date', title: "Breach Date", width: "90px", orderData: 12 },
-            { data: 'risk', title: "Password Risk", width: "110px" },
-            { data: 'status', title: "Status", width: "150px", orderable: false },
-            { data: 'action', title: "Action", width: "90px", orderable: false },
+            { data: 'logo', title: xonT('colLogo', "Logo"), width: "50px", orderable: false },
+            { data: 'name', title: xonT('colBreach', "Breach"), width: "180px" },
+            { data: 'industry', title: xonT('colIndustry', "Industry"), width: "120px" },
+            { data: 'records', title: xonT('colRecords', "Records"), width: "100px", orderData: 11 },
+            { data: 'date', title: xonT('colDate', "Breach Date"), width: "90px", orderData: 12 },
+            { data: 'risk', title: xonT('colRisk', "Password Risk"), width: "110px" },
+            { data: 'status', title: xonT('colStatus', "Status"), width: "150px", orderable: false },
+            { data: 'action', title: xonT('colAction', "Action"), width: "90px", orderable: false },
             { data: '_industry', visible: false },
             { data: '_year', visible: false },
             { data: '_risk', visible: false },
@@ -219,12 +224,12 @@ function initDataTable(breaches) {
         ],
         order: [[4, 'desc']],
         pageLength: -1,
-        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, xonT('all', "All")]],
         language: {
-            lengthMenu: "Show _MENU_ breaches",
-            info: "Showing _START_ to _END_ of _TOTAL_ breaches",
-            infoEmpty: "No breaches found",
-            infoFiltered: "(filtered from _MAX_ total)",
+            lengthMenu: xonT('dtLengthMenu', "Show _MENU_ breaches"),
+            info: xonT('dtInfo', "Showing _START_ to _END_ of _TOTAL_ breaches"),
+            infoEmpty: xonT('dtInfoEmpty', "No breaches found"),
+            infoFiltered: xonT('dtInfoFiltered', "(filtered from _MAX_ total)"),
             paginate: {
                 first: '<i class="fas fa-angle-double-left"></i>',
                 last: '<i class="fas fa-angle-double-right"></i>',

@@ -1,3 +1,8 @@
+function xonT(key, fallback) {
+    var d = window.XON_I18N;
+    return d && typeof d[key] === 'string' ? d[key] : fallback;
+}
+
 function escapeHtml(unsafe) {
     if (typeof unsafe !== 'string') return unsafe;
     return unsafe
@@ -18,7 +23,7 @@ $("#edhu").on("change keyup paste", function () {
 })
 $('#alertMeModal').on('hidden.bs.modal', function (e) {
     document.getElementById("h2head").className = "modal-header-primary";
-    $('#message-text').text("We'll notify you instantly if your email appears in any new data breach. You can unsubscribe anytime. This service is completely free.");
+    $('#message-text').text(xonT('alertIntro', "We'll notify you instantly if your email appears in any new data breach. You can unsubscribe anytime. This service is completely free."));
     $("#alertMe").show();
     $("#alertMeClose").hide();
     $("#a_succ").hide();
@@ -77,16 +82,16 @@ $(document).ready(function () {
         var myjson;
         var j = $.ajax(koodudal)
             .done(function (n) {
-                $('#message-text').text("Verification email sent! Check your inbox to activate free breach monitoring.");
+                $('#message-text').text(xonT('subscribeSuccess', "Verification email sent! Check your inbox to activate free breach monitoring."));
                 document.getElementById("h2head").className = "modal-header-success";
                 $("#alertMe").hide();
                 $("#alertMeClose").show();
             })
             .fail(function (jqXHR) {
-                var message = "You're already protected! This email is registered for breach alerts.";
+                var message = xonT('alreadySubscribed', "You're already protected! This email is registered for breach alerts.");
                 var headerClass = "modal-header-success";
                 if (jqXHR.status === 0 || jqXHR.status === 429 || jqXHR.status >= 500) {
-                    message = "We couldn't set up alerts right now. Please try again in a few minutes.";
+                    message = xonT('signupFailed', "We couldn't set up alerts right now. Please try again in a few minutes.");
                     headerClass = "modal-header-danger";
                 } else {
                     var response = jqXHR.responseJSON;
@@ -98,7 +103,7 @@ $(document).ready(function () {
                         }
                     }
                     if (response && response.status === "Error") {
-                        message = "Unable to send email to this address. Please check and try again.";
+                        message = xonT('unableToDeliver', "Unable to send email to this address. Please check and try again.");
                         headerClass = "modal-header-danger";
                     }
                 }
@@ -118,20 +123,20 @@ $(document).ready(function () {
         $("#hhead").removeClass().addClass("modal-header-success");
         $("#dismiss").removeClass().addClass("btn-primary btn btn-success");
         $("#mbody").hide();
-        $("#ssvisible").html('<h2>Searching ...</h2>');
+        $("#ssvisible").html('<h2>' + xonT('searchingTitle', 'Searching ...') + '</h2>');
         $("#warn").hide();
         $("#info").hide();
         $("#succ").show();
         $("#spins").show();
         $("#alert_").show();
         $('#data_email').text(email);
-        $('#data_breach').html("Good news: this password isn't in any known data breach. Still, never reuse passwords across sites.");
+        $('#data_breach').html(xonT('pwGood', "Good news: this password isn't in any known data breach. Still, never reuse passwords across sites."));
 
         if (!email || !domain) {
             document.getElementById("hhead").className = "modal-header-danger";
             document.getElementById("dismiss").className = "btn btn-danger";
             $('#data_email').text(email);
-            $('#data_breach').html('Please enter a password to check');
+            $('#data_breach').html(xonT('pwEnter', 'Please enter a password to check'));
             $("#succ").hide();
             $("#spins").hide();
             $("#warn").hide();
@@ -154,12 +159,12 @@ $(document).ready(function () {
                 const breachChars = myjson.SearchPassAnon.char;
                 const breachWordList = myjson.SearchPassAnon.wordlist;
                 if (breachChars.toString().length < 0) {
-                    $('#data_breach').html("Good news: this password isn't in any known data breach. Still, never reuse passwords across sites.");
+                    $('#data_breach').html(xonT('pwGood', "Good news: this password isn't in any known data breach. Still, never reuse passwords across sites."));
                 } else {
                     document.getElementById("hhead").className = "modal-header-danger";
                     document.getElementById("dismiss").className = "btn-danger btn";
                     $("#mbody").show();
-                    $("#ssvisible").html('<h2>Search results for you</h2>');
+                    $("#ssvisible").html('<h2>' + xonT('pwResultsTitle', 'Search results for you') + '</h2>');
                     $("#warn").show();
                     $("#succ").hide();
                     $("#spins").hide();
@@ -171,16 +176,16 @@ $(document).ready(function () {
                     }
 
                     if (breachCount > 0) {
-                        nn = '<b>Oops</b> ! This <b>password</b> has already been exposed in a previous data breach and it was seen  <b>' + breachCount + ' </b>time(s).  ' + nn1 + '<br>We would recommend you to change & avoid using this credential for any of your accounts/transactions. <br>  <br>Please read <a href="https://blog.xposedornot.com/password-security-guide/" target="_blank"> password best practices </a>and stay safe.<b>';
+                        nn = xonT('pwExposed', '') ? xonT('pwExposed', '').replace('{count}', breachCount) : ('<b>Oops</b> ! This <b>password</b> has already been exposed in a previous data breach and it was seen  <b>' + breachCount + ' </b>time(s).  ' + nn1 + '<br>We would recommend you to change & avoid using this credential for any of your accounts/transactions. <br>  <br>Please read <a href="https://blog.xposedornot.com/password-security-guide/" target="_blank"> password best practices </a>and stay safe.<b>');
                     } else {
-                        nn = '<b>Good news</b>: this <b>password</b> isn\'t in any known data breach. <br>Still, never reuse passwords across sites, and consider using a password manager. <br>';
+                        nn = xonT('pwGoodHtml', '<b>Good news</b>: this <b>password</b> isn\'t in any known data breach. <br>Still, never reuse passwords across sites, and consider using a password manager. <br>');
                     }
                     $("#warn").html(nn);
                 }
                 if (response.status === 429) {
                     $("#mbody").show();
                     $("#spins").hide();
-                    $("#succ").html("You are currently being throttled. Please slow down and try again !").append(rateLimitUpsell('password'))
+                    $("#succ").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !")).append(rateLimitUpsell('password'))
                     $('#data_email').text(email);
                 }
             })
@@ -190,14 +195,14 @@ $(document).ready(function () {
                     $("#spins").hide();
                     $("#warn").hide();
                     $('#data_email').text(email);
-                    $('#data_breach').html("Good news: this password isn't in any known data breach. Still, never reuse passwords across sites.");
-                    $("#ssvisible").html('<h2>Search results for you</h2>');
+                    $('#data_breach').html(xonT('pwGood', "Good news: this password isn't in any known data breach. Still, never reuse passwords across sites."));
+                    $("#ssvisible").html('<h2>' + xonT('pwResultsTitle', 'Search results for you') + '</h2>');
                 } else if (response.status === 429) {
                     $("#mbody").show();
                     $("#spins").hide();
-                    $("#succ").html("You are currently being throttled. Please slow down and try again !").append(rateLimitUpsell('password'))
+                    $("#succ").html(xonT('pwThrottled', "You are currently being throttled. Please slow down and try again !")).append(rateLimitUpsell('password'))
                     $('#data_email').text(email);
-                    $('#data_breach').html('Check not completed');
+                    $('#data_breach').html(xonT('notCompleted', 'Check not completed'));
                 } else {
                     document.getElementById("hhead").className = "modal-header-danger";
                     document.getElementById("dismiss").className = "btn btn-danger";
@@ -206,10 +211,10 @@ $(document).ready(function () {
                     $("#spins").hide();
                     $("#succ").hide();
                     $("#warn").hide();
-                    $("#ssvisible").html('<h2>We couldn\'t check right now</h2>');
-                    $("#info").html("We're experiencing technical difficulties. Please try again in a few minutes.");
+                    $("#ssvisible").html('<h2>' + xonT('errorTitle', 'We couldn\'t check right now') + '</h2>');
+                    $("#info").html(xonT('serverError', "We're experiencing technical difficulties. Please try again in a few minutes."));
                     $('#data_email').text(email);
-                    $('#data_breach').html('Check not completed');
+                    $('#data_breach').html(xonT('notCompleted', 'Check not completed'));
                 }
             })
         $('#thedudalModal').modal()

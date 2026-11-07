@@ -1,3 +1,8 @@
+function xonT(key, fallback) {
+    var d = window.XON_I18N;
+    return d && typeof d[key] === 'string' ? d[key] : fallback;
+}
+
 const escapeHtml = (unsafe) => {
     return unsafe
         .replace(/&/g, "&amp;")
@@ -45,7 +50,7 @@ const validateEmail = (email) => {
 $('#alertMeModal').on('hidden.bs.modal', (e) => {
     $("#alertMe_i1").removeClass("fa fa-spinner fa-spin");
     $("#h2head").attr("class", "modal-header-primary");
-    $('#message-text').text("We'll notify you when your email appears in a newly indexed data breach. You can unsubscribe anytime. This service is completely free.");
+    $('#message-text').text(xonT('alertIntro', "We'll notify you when your email appears in a newly indexed data breach. You can unsubscribe anytime. This service is completely free."));
     $("#alertMe").show();
     $("#alertMeClose, #a_succ").hide();
 });
@@ -129,7 +134,7 @@ $(document).ready(function () {
 
         // Validate email before proceeding
         if (!inputValue || !validateEmail(inputValue)) {
-            $('#message-text').text("Please enter a valid email address to receive alerts.");
+            $('#message-text').text(xonT('alertInvalidEmail', "Please enter a valid email address to receive alerts."));
             $("#h2head").attr("class", "modal-header-danger");
             $("#recipient-name").css("border", "1px solid red").focus();
             return;
@@ -222,8 +227,8 @@ $(document).ready(function () {
         $("#dismiss").attr("class", "btn btn-success");
         $("#mbody, #warn, #info").hide();
         $("#succ, #spins, #alert_").show();
-        $("#ssvisible").html('<h2 id="thedudalModalLabel">Searching ...</h2>');
-        renderResultSummary(statusValue('Checking…'), 'primary', email);
+        $("#ssvisible").html('<h2 id="thedudalModalLabel">' + xonT('searchingTitle', 'Searching ...') + '</h2>');
+        renderResultSummary(statusValue(xonT('checking', 'Checking…')), 'primary', email);
 
 
         if (!email) {
@@ -288,7 +293,7 @@ $(document).ready(function () {
             list.setAttribute('hidden', '');
         }
         $(this).attr('aria-expanded', expand ? 'true' : 'false')
-            .text(expand ? 'Hide full list' : this.getAttribute('data-show-label'));
+            .text(expand ? xonT('hideList', 'Hide full list') : this.getAttribute('data-show-label'));
     });
 
     $("#detailedReport").click(function () {
@@ -307,9 +312,9 @@ $(document).ready(function () {
 
 function renderResultSummary(valueHtml, tone, email) {
     $('#data_email').attr('class', 'result-row result-row-' + tone)
-        .html('<span class="result-row-label">Email checked</span><span class="result-row-value"><bdi>' + escapeHtml(email || '') + '</bdi></span>');
+        .html('<span class="result-row-label">' + xonT('emailChecked', 'Email checked') + '</span><span class="result-row-value"><bdi>' + escapeHtml(email || '') + '</bdi></span>');
     $('#data_breach').attr('class', 'result-row result-row-' + tone)
-        .html('<span class="result-row-label">Breaches found</span>' + valueHtml);
+        .html('<span class="result-row-label">' + xonT('breachesFound', 'Breaches found') + '</span>' + valueHtml);
 }
 
 function countValue(n) {
@@ -342,15 +347,15 @@ function xonFocusBreach() {
 
 function focusBreachLine(hit, focus) {
     const name = '<bdi>' + escapeHtml(xonDisplayName(focus)) + '</bdi>';
-    return hit
-        ? '<p class="breach-focus">Yes, your email was in ' + name + '.</p>'
-        : '<p class="breach-focus">Your email was not in ' + name + ', but it was in these breaches:</p>';
+    return '<p class="breach-focus">' + (hit
+        ? xonT('focusYes', 'Yes, your email was in {name}.')
+        : xonT('focusNo', 'Your email was not in {name}, but it was in these breaches:')).replace('{name}', name) + '</p>';
 }
 
 function breachTagLink(name, year, focus) {
     const yearPart = year ? ' <span class="breach-tag-year">· ' + escapeHtml(String(year)) + '</span>' : '';
     const cls = focus && focus === name ? 'breach-tag is-focus' : 'breach-tag';
-    return '<a class="' + cls + '" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '"><bdi>' + escapeHtml(xonDisplayName(name)) + yearPart + '</bdi><span class="sr-only"> (opens in new tab)</span></a>';
+    return '<a class="' + cls + '" rel="noopener" target="_blank" href="/breach/' + encodeURIComponent(name) + '"><bdi>' + escapeHtml(xonDisplayName(name)) + yearPart + '</bdi><span class="sr-only">' + xonT('opensNewTab', ' (opens in new tab)') + '</span></a>';
 }
 
 
@@ -358,39 +363,40 @@ function breachTagLink(name, year, focus) {
 function updateModalForInvalidEmail(email) {
     $("#hhead").attr("class", "modal-header modal-header-danger");
     $("#dismiss").attr("class", "btn btn-primary");
-    renderResultSummary(statusValue('Not a valid email'), 'danger', email);
+    renderResultSummary(statusValue(xonT('notValidEmail', 'Not a valid email')), 'danger', email);
     $("#succ, #spins, #warn, #alert_").hide();
     $("#info").html(STATUS_MESSAGES.invalidEmail).show();
     $("#mbody").show();
 }
 
 const STATUS_MESSAGES = {
-    searching: "Checking your email against our breach database...",
-    success: "🎉 Good news! Your email isn't in any of the data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.",
-    invalidEmail: "Please enter a valid email address to check",
-    throttled: "Please wait a moment before trying again",
-    serverError: "We're experiencing technical difficulties. Please try again in a few minutes."
+    searching: xonT('searching', "Checking your email against our breach database..."),
+    success: xonT('success', "🎉 Good news! Your email isn't in any of the data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up."),
+    invalidEmail: xonT('invalidEmail', "Please enter a valid email address to check"),
+    throttled: xonT('throttled', "Please wait a moment before trying again"),
+    serverError: xonT('serverError', "We're experiencing technical difficulties. Please try again in a few minutes.")
 };
 
 function successMessage() {
     const count = metricsData ? parseInt(metricsData.Breaches_Count, 10) : 0;
     const focus = xonFocusBreach();
-    const notIn = focus ? "Your email was not in " + escapeHtml(xonDisplayName(focus)) + ", or in" : "Your email isn't in";
+    const focusName = focus ? '<bdi>' + escapeHtml(xonDisplayName(focus)) + '</bdi>' : '';
+    const notIn = focus ? xonT('notInFocusOr', "Your email was not in {name}, or in").replace('{name}', focusName) : xonT('notIn', "Your email isn't in");
     if (count > 0) {
-        return "🎉 Good news! " + notIn + " any of the " + count.toLocaleString() + " data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.";
+        return xonT('goodNewsCount', "🎉 Good news! {notIn} any of the {count} data breaches we've indexed. New breaches surface all the time, so free alerts are worth setting up.").replace('{notIn}', notIn).replace('{count}', count.toLocaleString());
     }
     if (focus) {
-        return "Your email was not in " + escapeHtml(xonDisplayName(focus)) + ". " + STATUS_MESSAGES.success;
+        return xonT('notInFocus', "Your email was not in {name}.").replace('{name}', focusName) + " " + STATUS_MESSAGES.success;
     }
     return STATUS_MESSAGES.success;
 }
 
 const ALERT_MESSAGES = {
-    subscribe: "Get instant notifications if your email appears in future data breaches",
-    subscribeSuccess: "Verification email sent! Check your inbox to activate free breach monitoring.",
-    alreadySubscribed: "You're already protected! This email is registered for breach alerts.",
-    unableToDeliver: "Unable to send email to this address. Please check and try again.",
-    signupFailed: "We couldn't set up alerts right now. Please try again in a few minutes."
+    subscribe: xonT('subscribe', "Get instant notifications if your email appears in future data breaches"),
+    subscribeSuccess: xonT('subscribeSuccess', "Verification email sent! Check your inbox to activate free breach monitoring."),
+    alreadySubscribed: xonT('alreadySubscribed', "You're already protected! This email is registered for breach alerts."),
+    unableToDeliver: xonT('unableToDeliver', "Unable to send email to this address. Please check and try again."),
+    signupFailed: xonT('signupFailed', "We couldn't set up alerts right now. Please try again in a few minutes.")
 };
 
 // Lazy-load confetti library
@@ -507,7 +513,7 @@ function processSearchResponse(response, email) {
 
         $("#hhead").attr("class", "modal-header modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
-        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;" aria-hidden="true"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
+        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;" aria-hidden="true"></i>&nbsp;&nbsp;' + xonT('noBreachesTitle', 'Yay! No Breaches Found') + '</h2>');
 
         renderResultSummary(countValue(0), 'success', email);
 
@@ -530,7 +536,7 @@ function processSearchResponse(response, email) {
 
         $("#hhead").attr("class", "modal-header modal-header-danger");
         $("#dismiss").attr("class", "btn-danger btn");
-        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-exclamation-triangle fa-2x text-white" aria-hidden="true"></i>&nbsp;&nbsp;Your Email Appeared in a Breach</h2>');
+        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-exclamation-triangle fa-2x text-white" aria-hidden="true"></i>&nbsp;&nbsp;' + xonT('breachTitle', 'Your Email Appeared in a Breach') + '</h2>');
         $("#warn").show();
         $("#succ").hide();
         $("#info").hide();
@@ -557,7 +563,7 @@ function processSearchResponse(response, email) {
                 warningMessage += focusBreachLine(at > -1, focus);
             }
 
-            warningMessage += '<p class="breach-intro">Your email appeared in these data breaches, newest first:</p><div class="breach-tags">';
+            warningMessage += '<p class="breach-intro">' + xonT('appearedNewest', 'Your email appeared in these data breaches, newest first:') + '</p><div class="breach-tags">';
             sorted.slice(0, 10).forEach(function (b) {
                 warningMessage += breachTagLink(b.breach, b.xposed_date, focus);
             });
@@ -565,7 +571,7 @@ function processSearchResponse(response, email) {
 
             const rest = sorted.slice(10);
             if (rest.length > 0) {
-                const showLabel = 'Show all ' + total + ' breaches';
+                const showLabel = xonT('showAll', 'Show all {n} breaches').replace('{n}', total);
                 warningMessage += '<button type="button" id="showAllBreaches" class="breach-showall" aria-expanded="false" aria-controls="allBreachTags" data-show-label="' + showLabel + '">' + showLabel + '</button>';
                 warningMessage += '<div id="allBreachTags" class="breach-tags" hidden>';
                 rest.forEach(function (b) {
@@ -579,7 +585,7 @@ function processSearchResponse(response, email) {
                 if (at > 0) breaches.unshift(breaches.splice(at, 1)[0]);
                 warningMessage += focusBreachLine(at > -1, focus);
             }
-            warningMessage += '<p class="breach-intro">Your email appeared in these data breaches:</p><div class="breach-tags">';
+            warningMessage += '<p class="breach-intro">' + xonT('appeared', 'Your email appeared in these data breaches:') + '</p><div class="breach-tags">';
             breaches.forEach(function (name) {
                 warningMessage += breachTagLink(name, undefined, focus);
             });
@@ -594,10 +600,10 @@ function processSearchResponse(response, email) {
     const pasteCount = jsonResponse.PastesSummary.cnt;
     if (pasteCount > 0) {
         $("#detailedReport").show();
-        warningMessage += '<p class="breach-intro" style="margin-top:16px">Also found in public pastes:</p><div class="breach-tags">';
+        warningMessage += '<p class="breach-intro" style="margin-top:16px">' + xonT('pastes', 'Also found in public pastes:') + '</p><div class="breach-tags">';
         const pastes = jsonResponse.PastesSummary.tweet_id.split(";");
         for (let i = 0; i < pastes.length; i++) {
-            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="Click to open" href="https://pastebin.com/' + encodeURIComponent(pastes[i]) + '"><bdi>' + escapeHtml(pastes[i]) + '</bdi><span class="sr-only"> (opens in new tab)</span></a>';
+            warningMessage += '<a class="breach-tag" rel="noopener" target="_blank" title="' + xonT('clickToOpen', 'Click to open') + '" href="https://pastebin.com/' + encodeURIComponent(pastes[i]) + '"><bdi>' + escapeHtml(pastes[i]) + '</bdi><span class="sr-only">' + xonT('opensNewTab', ' (opens in new tab)') + '</span></a>';
         }
         warningMessage += '</div>';
         $("#warn").html(warningMessage);
@@ -605,16 +611,16 @@ function processSearchResponse(response, email) {
     }
 
     if (warningMessage) {
-        warningMessage += '<p class="breach-intro" style="margin-top:16px">Don\'t want this email showing up in public searches? <a href="shield">Turn on Privacy Shield</a>, it\'s free.</p>';
+        warningMessage += '<p class="breach-intro" style="margin-top:16px">' + xonT('shieldLine', 'Don\'t want this email showing up in public searches? <a href="shield">Turn on Privacy Shield</a>, it\'s free.') + '</p>';
         $("#warn").html(warningMessage);
     }
 
     if (breachSummary && breachSummary.length > 0) {
-        warningMessage += '<p class="breach-intro" style="margin-top:16px">Do this now:</p>' +
-            '<ol style="text-align: left; display: inline-block; margin: 0; padding-left: 1.4em">' +
-            '<li>Change your password on the breached sites above.</li>' +
-            '<li>Turn on two-factor authentication on your email account.</li>' +
-            '<li>Set up free alerts so you know the moment a new breach hits.</li>' +
+        warningMessage += '<p class="breach-intro" style="margin-top:16px">' + xonT('doNow', 'Do this now:') + '</p>' +
+            '<ol style="text-align: start; display: inline-block; margin: 0; padding-inline-start: 1.4em">' +
+            '<li>' + xonT('doNow1', 'Change your password on the breached sites above.') + '</li>' +
+            '<li>' + xonT('doNow2', 'Turn on two-factor authentication on your email account.') + '</li>' +
+            '<li>' + xonT('doNow3', 'Set up free alerts so you know the moment a new breach hits.') + '</li>' +
             '</ol>';
         $("#warn").html(warningMessage);
     }
@@ -628,7 +634,7 @@ function processSearchError(error, email) {
         $("#mbody").show();
         $("#spins").hide();
         $("#succ").html(STATUS_MESSAGES.throttled).append(rateLimitUpsell('home'));
-        renderResultSummary(statusValue('Check not completed'), 'primary', email);
+        renderResultSummary(statusValue(xonT('notCompleted', 'Check not completed')), 'primary', email);
     } else if (error.status === 404) {
         $(".modal-content").css({
             'background-color': isDark ? '#131c15' : '#f8fff8',
@@ -637,7 +643,7 @@ function processSearchError(error, email) {
 
         $("#hhead").attr("class", "modal-header modal-header-success");
         $("#dismiss").attr("class", "btn btn-success");
-        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;" aria-hidden="true"></i>&nbsp;&nbsp;Yay! No Breaches Found</h2>');
+        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-smile-beam fa-2x text-success" style="background-color: white; border-radius: 50%; padding: 5px;" aria-hidden="true"></i>&nbsp;&nbsp;' + xonT('noBreachesTitle', 'Yay! No Breaches Found') + '</h2>');
 
         renderResultSummary(countValue(0), 'success', email);
 
@@ -658,9 +664,9 @@ function processSearchError(error, email) {
 
         $("#hhead").attr("class", "modal-header modal-header-danger");
         $("#dismiss").attr("class", "btn btn-primary");
-        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-exclamation-triangle fa-2x text-white" aria-hidden="true"></i>&nbsp;&nbsp;We Couldn\'t Check Right Now</h2>');
+        $("#ssvisible").html('<h2 id="thedudalModalLabel"><i class="fas fa-exclamation-triangle fa-2x text-white" aria-hidden="true"></i>&nbsp;&nbsp;' + xonT('errorTitle', 'We Couldn\'t Check Right Now') + '</h2>');
 
-        renderResultSummary(statusValue('Check not completed'), 'primary', email);
+        renderResultSummary(statusValue(xonT('notCompleted', 'Check not completed')), 'primary', email);
 
         $("#detailedReport").hide();
         $("#spins, #succ, #warn").hide();
@@ -957,7 +963,7 @@ $(function () {
     const note = document.createElement('p');
     note.className = 'dbc-hero-note';
     note.id = 'dbcFocusNote';
-    note.innerHTML = 'Checking whether your email was in <strong><bdi>' + escapeHtml(xonDisplayName(focus)) + '</bdi></strong>. Enter it above.';
+    note.innerHTML = xonT('focusNote', 'Checking whether your email was in <strong><bdi>{name}</bdi></strong>. Enter it above.').replace('{name}', escapeHtml(xonDisplayName(focus)));
     form.insertAdjacentElement('afterend', note);
 });
 

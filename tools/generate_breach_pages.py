@@ -79,7 +79,7 @@ METRICS_API = "https://api.xposedornot.com/v1/metrics/detailed"
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "tools" / "breach_page_template.html"
 OUT_DIR = ROOT / "breach"
-LOCALES = ["bn", "de", "es", "fr", "hi", "it", "ja", "nl", "pl", "pt",
+LOCALES = ["ar", "bn", "de", "es", "fr", "hi", "it", "ja", "nl", "pl", "pt",
            "ru", "ta", "tr", "zh"]
 INDEX_LOCALES = LOCALES
 ITEMLIST_ID = "directory-itemlist-schema"
@@ -99,6 +99,7 @@ LAST_UPDATED_LABELS = {
     "ru": "Последнее обновление",
     "ta": "கடைசியாக புதுப்பிக்கப்பட்டது",
     "tr": "Son güncelleme",
+    "ar": "آخر تحديث",
     "zh": "最后更新",
 }
 
@@ -125,6 +126,8 @@ FRESHNESS_MONTHS = {
            "августа", "сентября", "октября", "ноября", "декабря"],
     "tr": ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz",
            "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+    "ar": ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو",
+           "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
     "hi": ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई",
            "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"],
     "bn": ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই",
@@ -846,11 +849,20 @@ def xposed_recent_section(public, loc):
             f'{esc(t["show_all"])}</button></section>')
 
 
-def xposed_faq_pairs(loc, total):
+def xposed_faq_pairs(loc, total, html=False):
     t = XPOSED_I18N[loc]
     label = LAST_UPDATED_LABELS.get(loc, LAST_UPDATED_LABELS["en"])
-    return [(q, a.replace("{n}", loc_num(loc, total)).replace("{updated_label}", label))
-            for q, a in t["faqs"]]
+    home = '<a href="/">' if loc == "en" else f'<a href="/{loc}/">'
+    pairs = []
+    for q, a in t["faqs"]:
+        a = a.replace("{n}", loc_num(loc, total)).replace("{updated_label}", label)
+        if html:
+            q = esc(q)
+            a = esc(a).replace("{home_open}", home).replace("{a_close}", "</a>")
+        else:
+            a = a.replace("{home_open}", "").replace("{a_close}", "")
+        pairs.append((q, a))
+    return pairs
 
 
 def xposed_about_section(loc, total):
@@ -866,8 +878,8 @@ def xposed_about_section(loc, total):
     p3 = (esc(t["built_p3"]).replace("{meth_open}", meth)
           .replace("{api_open}", api).replace("{a_close}", "</a>")
           .replace("{blog_open}", blog).replace("{blog_close}", blog_close))
-    faqs = "".join(f'<div class="xf-item"><h3>{esc(q)}</h3><p>{esc(a)}</p></div>'
-                   for q, a in xposed_faq_pairs(loc, total))
+    faqs = "".join(f'<div class="xf-item"><h3>{q}</h3><p>{a}</p></div>'
+                   for q, a in xposed_faq_pairs(loc, total, html=True))
     return ('<section class="xposed-about" id="xposed-about">'
             f'<h2>{esc(t["built_h2"])}</h2><p>{esc(t["built_p1"])}</p>'
             f'<p>{esc(t["built_p2"])}</p><p>{p3}</p>'
