@@ -201,8 +201,6 @@ themeSwitch.on("change", resetTheme);
         copy.appendChild(head);
         copy.appendChild(p);
         var btn = plusLink('/exposure-check', 'body-exposure-result', 'btn btn-primary', 'Check your company domain');
-        btn.style.backgroundColor = '#0062cc';
-        btn.style.borderColor = '#0062cc';
         row.appendChild(copy);
         row.appendChild(btn);
         return row;
