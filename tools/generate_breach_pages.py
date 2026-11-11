@@ -1973,18 +1973,17 @@ def bake_llms(public):
     latest = max(r["addedDate"] for r in public)
     date_en = fmt_freshness_date("en", datetime.fromisoformat(latest))
     path = ROOT / "llms.txt"
-    text = path.read_text(encoding="utf-8")
-    new, n = re.subn(r"(?m)^Last updated: [^.]*\.",
-                     f"Last updated: {date_en}.", text)
+    original = path.read_text(encoding="utf-8")
+    text, n = re.subn(r"(?m)^Last updated: [^.]*\.",
+                      f"Last updated: {date_en}.", original)
     if not n:
         print("WARNING: llms.txt Last updated line not found, not stamped")
-    text = new
     section = notable_breaches_section(public)
     new, n = re.subn(r"## Notable Breaches\n.*?(?=\n## )",
                      section, text, flags=re.S)
     if not n:
         print("WARNING: llms.txt Notable Breaches section not found")
-    if new == text:
+    if new == original:
         return 0
     path.write_text(new, encoding="utf-8", newline="")
     return 1
