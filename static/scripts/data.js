@@ -143,13 +143,6 @@ function fireConfetti() {
     });
 }
 
-function placeWorkCta(emailAddr, anchor) {
-    $('#work-cta-section').remove();
-    if (!window.xonWorkEmailCta || !anchor || !anchor.length) return;
-    var node = window.xonWorkEmailCta.build(emailAddr, 'report');
-    if (node) anchor.after(node);
-}
-
 function showNoBreachView(emailAddr) {
     $.LoadingOverlay("hide");
     $('#sr-loading-status').text('Report loaded.');
@@ -177,7 +170,6 @@ function showNoBreachView(emailAddr) {
             '<p class="xr-allclear-alt">Want to double-check? <a href="password">See if a password of yours has been exposed</a>.</p>' +
         '</div>'
     );
-    placeWorkCta(emailAddr, $('#main-content > section').first());
 
     setTimeout(fireConfetti, 300);
 }
@@ -627,7 +619,6 @@ var j = $.ajax(url)
 
         const riskAnalysisHtml = generateRiskAnalysis(riskLabel, jsonResponse);
         $('#risk-analysis').html(riskAnalysisHtml);
-        placeWorkCta(email, $('#risk-analysis').closest('section'));
 
         drawHeatMap(xposedData.children)
 

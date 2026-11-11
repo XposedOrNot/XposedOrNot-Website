@@ -232,7 +232,6 @@ $(document).ready(function () {
         $("#dismiss").attr("class", "btn btn-success");
         $("#mbody, #warn, #info").hide();
         $("#succ, #spins, #alert_").show();
-        xonPlaceWorkCta(null);
         $("#ssvisible").html('<h2 id="thedudalModalLabel">' + xonT('searchingTitle', 'Searching ...') + '</h2>');
         renderResultSummary(statusValue(xonT('checking', 'Checking…')), 'primary', email);
 
@@ -331,15 +330,7 @@ function statusValue(text) {
     return '<span class="result-row-status">' + escapeHtml(text) + '</span>';
 }
 
-function xonPlaceWorkCta(email) {
-    $('#work_email_cta').remove();
-    if (!email || !window.xonWorkEmailCta) return;
-    var node = window.xonWorkEmailCta.build(email, 'result');
-    if (node) $('#alert_').after(node);
-}
-
 function resetResultState() {
-    xonPlaceWorkCta(null);
     $('#warn, #succ, #info').hide().empty();
     $('#data_breach').attr('class', 'result-row result-row-primary').empty();
     $('#data_email').attr('class', 'result-row result-row-primary').empty();
@@ -513,7 +504,6 @@ function processSearchResponse(response, email) {
     // Always stop spinning and show mbody
     $("#spins").hide();
     $("#mbody").show();
-    xonPlaceWorkCta(email);
 
     var isDark = document.body.getAttribute('data-theme') === 'dark';
     let warningMessage = '';
@@ -669,7 +659,6 @@ function processSearchError(error, email) {
         $("#succ").show();
         $("#alert_").show();
         $("#succ").html(successMessage());
-        xonPlaceWorkCta(email);
 
         setTimeout(fireConfetti, 100);
     } else {
