@@ -356,14 +356,6 @@ def action_cards(breach, display):
     if has("password"):
         cards.append(("Best Practice", "info", "fas fa-lock", "Use a Password Manager",
                       "Never reuse passwords: use a password manager to generate unique ones for each account."))
-    if breach["searchable"]:
-        cards.append(("For companies", "business", "fas fa-building", "Check your company domain",
-                      f"Did your staff sign up to {esc(display)} with a work address? "
-                      '<a href="https://plus.xposedornot.com/exposure-check" '
-                      'data-utm-campaign="breach" data-utm-content="body-exposure-breach" '
-                      'target="_blank" rel="noopener">Check your company domain free'
-                      '<span class="sr-only"> (opens in new tab)</span></a> '
-                      "to see how many addresses appear in this breach and others."))
     return "".join(
         f'<div class="action-card {cls}">'
         f'<div class="action-card-header">'
@@ -676,8 +668,15 @@ def render(template, breach, public, rank, total, modified, show_updated):
             '<a href="/">free breach alerts</a> and verify your email.</div>')
         primary_cta = ('<a href="/" class="btn-primary-custom">'
                        '<i class="fas fa-bell"></i> Set Up Free Breach Alerts</a>')
+        company_note = ""
     else:
         sensitive_note = ""
+        company_note = (
+            '\n                <p class="company-note">For companies: '
+            '<a href="https://plus.xposedornot.com/exposure-check" '
+            'data-utm-campaign="breach" data-utm-content="body-exposure-breach" '
+            'target="_blank" rel="noopener">check how many addresses on your domain '
+            'appear in breaches<span class="sr-only"> (opens in new tab)</span></a>, free.</p>')
         primary_cta = (f'<a href="/data-breach-check?breach={quote(bid, safe="")}" '
                        'class="btn-primary-custom">'
                        '<i class="fas fa-search"></i> Check if your email was in '
@@ -709,6 +708,7 @@ def render(template, breach, public, rank, total, modified, show_updated):
         "{{REFERENCE_HTML}}": reference,
         "{{SENSITIVE_NOTE}}": sensitive_note,
         "{{PRIMARY_CTA}}": primary_cta,
+        "{{COMPANY_NOTE}}": company_note,
         "{{RANK_LINE}}": (f" &middot; #{rank} of {total} breaches by records exposed"),
         "{{RELATED_SECTION}}": related_section(breach, public),
         "{{FAQ_SECTION}}": faq_section(pairs),
