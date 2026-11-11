@@ -61,10 +61,15 @@ themeSwitch.on("change", resetTheme);
             var u = new URL(a.href);
             if (u.hostname !== PLUS_HOST) return;
             if (u.searchParams.has('utm_source')) return;
+            var content = a.getAttribute('data-utm-content') || 'body';
+            if (content === 'nav-brand' && u.pathname === '/') {
+                u.pathname = '/pricing';
+                content = 'nav-pricing';
+            }
             u.searchParams.set('utm_source', 'xposedornot.com');
             u.searchParams.set('utm_medium', 'referral');
             u.searchParams.set('utm_campaign', a.getAttribute('data-utm-campaign') || pageSlug());
-            u.searchParams.set('utm_content', a.getAttribute('data-utm-content') || 'body');
+            u.searchParams.set('utm_content', content);
             a.href = u.toString();
         } catch (e) {}
     }
