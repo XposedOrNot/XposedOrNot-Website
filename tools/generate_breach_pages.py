@@ -356,6 +356,14 @@ def action_cards(breach, display):
     if has("password"):
         cards.append(("Best Practice", "info", "fas fa-lock", "Use a Password Manager",
                       "Never reuse passwords: use a password manager to generate unique ones for each account."))
+    if breach["searchable"]:
+        cards.append(("For companies", "business", "fas fa-building", "Check your company domain",
+                      f"Did your staff sign up to {esc(display)} with a work address? "
+                      '<a href="https://plus.xposedornot.com/exposure-check" '
+                      'data-utm-campaign="breach" data-utm-content="body-exposure-breach" '
+                      'target="_blank" rel="noopener">Check your company domain free'
+                      '<span class="sr-only"> (opens in new tab)</span></a> '
+                      "to see how many addresses appear in this breach and others."))
     return "".join(
         f'<div class="action-card {cls}">'
         f'<div class="action-card-header">'
