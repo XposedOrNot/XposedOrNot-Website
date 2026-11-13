@@ -10,7 +10,10 @@ var themeSwitch = $("#darkSwitch");
 var themeKey = "darkSwitch";
 
 function initTheme() {
-    var isDark = localStorage.getItem(themeKey) === "dark";
+    var isDark = false;
+    try {
+        isDark = localStorage.getItem(themeKey) === "dark";
+    } catch (e) {}
     themeSwitch.prop("checked", isDark);
     if (isDark) {
         $("body").attr("data-theme", "dark");
@@ -22,10 +25,14 @@ function initTheme() {
 function resetTheme() {
     if (themeSwitch.is(":checked")) {
         $("body").attr("data-theme", "dark");
-        localStorage.setItem(themeKey, "dark");
+        try {
+            localStorage.setItem(themeKey, "dark");
+        } catch (e) {}
     } else {
         $("body").removeAttr("data-theme");
-        localStorage.removeItem(themeKey);
+        try {
+            localStorage.removeItem(themeKey);
+        } catch (e) {}
     }
 }
 initTheme();
@@ -82,6 +89,9 @@ themeSwitch.on("change", resetTheme);
 
     document.addEventListener('click', onActivate, true);
     document.addEventListener('auxclick', onActivate, true);
+    document.addEventListener('mousedown', onActivate, true);
+    document.addEventListener('touchstart', onActivate, { capture: true, passive: true });
+    document.addEventListener('contextmenu', onActivate, true);
     document.addEventListener('keydown', function (ev) {
         if (ev.key === 'Enter') onActivate(ev);
     }, true);
