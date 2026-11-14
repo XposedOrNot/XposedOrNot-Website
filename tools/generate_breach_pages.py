@@ -860,6 +860,9 @@ def xposed_recent_section(public, loc):
 XONAPI_OPEN = ('<a href="https://plus.xposedornot.com/products/api" '
                'data-utm-campaign="xposed" data-utm-content="body-xonapi" '
                'target="_blank" rel="noopener">')
+XONTI_OPEN = ('<a href="https://plus.xposedornot.com/products/threat-intel/{0}" '
+              'data-utm-campaign="xposed" data-utm-content="body-xonti-{0}" '
+              'target="_blank" rel="noopener">')
 
 
 def xposed_faq_pairs(loc, total, html=False):
@@ -872,12 +875,15 @@ def xposed_faq_pairs(loc, total, html=False):
         if html:
             q = esc(q)
             a = esc(a).replace("{home_open}", home).replace("{a_close}", "</a>")
+            a = a.replace("{xontimssp_open}", XONTI_OPEN.format("mssp"))
+            a = a.replace("{xontiint_open}", XONTI_OPEN.format("integrate"))
             a = a.replace("{xonapi_open}", XONAPI_OPEN).replace(
                 "{xonapi_close}",
                 f'<span class="sr-only">{esc(t.get("opens_new_tab", " (opens in new tab)"))}</span></a>')
         else:
             a = a.replace("{home_open}", "").replace("{a_close}", "")
             a = a.replace("{xonapi_open}", "").replace("{xonapi_close}", "")
+            a = a.replace("{xontimssp_open}", "").replace("{xontiint_open}", "")
         pairs.append((q, a))
     return pairs
 
