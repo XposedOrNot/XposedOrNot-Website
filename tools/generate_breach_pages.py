@@ -857,6 +857,11 @@ def xposed_recent_section(public, loc):
             f'{esc(t["show_all"])}</button></section>')
 
 
+XONAPI_OPEN = ('<a href="https://plus.xposedornot.com/products/api" '
+               'data-utm-campaign="xposed" data-utm-content="body-xonapi" '
+               'target="_blank" rel="noopener">')
+
+
 def xposed_faq_pairs(loc, total, html=False):
     t = XPOSED_I18N[loc]
     label = LAST_UPDATED_LABELS.get(loc, LAST_UPDATED_LABELS["en"])
@@ -867,8 +872,12 @@ def xposed_faq_pairs(loc, total, html=False):
         if html:
             q = esc(q)
             a = esc(a).replace("{home_open}", home).replace("{a_close}", "</a>")
+            a = a.replace("{xonapi_open}", XONAPI_OPEN).replace(
+                "{xonapi_close}",
+                f'<span class="sr-only">{esc(t.get("opens_new_tab", " (opens in new tab)"))}</span></a>')
         else:
             a = a.replace("{home_open}", "").replace("{a_close}", "")
+            a = a.replace("{xonapi_open}", "").replace("{xonapi_close}", "")
         pairs.append((q, a))
     return pairs
 
